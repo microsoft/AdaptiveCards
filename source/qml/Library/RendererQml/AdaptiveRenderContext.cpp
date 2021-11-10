@@ -408,4 +408,14 @@ namespace RendererQml
     {
         return m_isShowCardLastBodyElement;
     }
+
+    void AdaptiveRenderContext::addToLastShowCardComponentIdsList(const std::string& componentId)
+    {
+        m_LastShowCardComponentIdList.push_back(componentId);
+    }
+
+    const std::vector<std::string>& RendererQml::AdaptiveRenderContext::getLastShowCardComponentIdsList()
+    {
+        return m_LastShowCardComponentIdList;
+    }
 }

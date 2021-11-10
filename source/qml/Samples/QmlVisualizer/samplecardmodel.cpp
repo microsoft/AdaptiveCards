@@ -510,7 +510,8 @@ ToggleButtonConfig SampleCardModel::getToggleButtonConfig(const bool isDark)
         toggleButtonConfig.borderColorOnUncheckedAndHovered = "#33000000";
         toggleButtonConfig.borderColorOnUnchecked = "#1C000000";
         toggleButtonConfig.textColor = "#F2000000";
-        toggleButtonConfig.radioButtonInnerCircleColorOnChecked = "#FFFFFFFF";
+        toggleButtonConfig.radioButtonInnerCircleColorOnChecked = "#F2FFFFFF";
+        toggleButtonConfig.checkBoxIconColorOnChecked = "#F2FFFFFF";
     }
 
     return toggleButtonConfig;

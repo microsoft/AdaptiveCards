@@ -93,11 +93,15 @@ namespace RendererQml
         void setIsShowCardLastBodyElement(bool isShowCardLastBodyElement);
         const bool isShowCardLastBodyElement();
 
+        void addToLastShowCardComponentIdsList(const std::string& componentId);
+        const std::vector<std::string>& getLastShowCardComponentIdsList();
+
     private:
         bool m_isShowCardinAction{ false };
         bool m_isShowCardLastBodyElement{ false };
         AdaptiveCards::InternalId m_LastActionSetInternalIds;
         std::vector<std::string> m_ShowCardLoaderIdList;
+        std::vector<std::string> m_LastShowCardComponentIdList;
 
         std::vector<AdaptiveWarning> m_warnings;
         bool m_ancestorHasFallback;

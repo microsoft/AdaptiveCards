@@ -26,13 +26,13 @@ namespace RendererQml
         int borderWidth{ 1 };
         int clearIconSize{ 16 };
         int clearIconHorizontalPadding{ 12 };
+        int textHorizontalPadding{ 12 };
+        int textVerticalPadding{ 4 };
     };
 
     struct InputTextConfig : InputFieldConfig
     {
         int multiLineTextHeight{ 96 };
-        int textHorizontalPadding{ 12 };
-        int textVerticalPadding{ 4 };
         int multiLineTextTopPadding{ 7 };
         int multiLineTextBottomPadding{ 4 };
     };
@@ -52,7 +52,7 @@ namespace RendererQml
         std::string timePickerBackgroundColor{ "#FF0F0F0F" };
         std::string timePickerElementColorNormal{ "#FF0F0F0F" };
         std::string timePickerElementColorOnHover{ "#0DFFFFFF" };
-        std::string timePickerElementColorOnFocus{ "#FF64B4FA" };
+        std::string timePickerElementColorOnFocus{ "#FF1170CF" };
         std::string timePickerElementTextColorNormal{ "#F2FFFFFF" };
         std::string timePickerElementTextColorOnHighlighted{ "#F2FFFFFF" };
         int timeIconHorizontalPadding{ 12 };
@@ -77,7 +77,7 @@ namespace RendererQml
         std::string calendarBackgroundColor{ "#FF0F0F0F" };
         std::string dateElementColorNormal{ "#FF0F0F0F" };
         std::string dateElementColorOnHover{ "#0DFFFFFF" };
-        std::string dateElementColorOnFocus{ "#FF64B4FA" };
+        std::string dateElementColorOnFocus{ "#FF1170CF" };
         std::string dateElementTextColorNormal{ "#F2FFFFFF" };
         std::string dateElementTextColorOnHighlighted{ "#F2FFFFFF" };
         std::string notAvailabledateElementTextColor{ "#B3FFFFFF" };
@@ -131,7 +131,8 @@ namespace RendererQml
         std::string borderColorOnUncheckedAndHovered{ "#33FFFFFF" };
         std::string borderColorOnUnchecked{ "#1CFFFFFF" };
         std::string textColor{ "#F2FFFFFF" };
-        std::string radioButtonInnerCircleColorOnChecked{ "#FF0F0F0F" };
+        std::string radioButtonInnerCircleColorOnChecked{ "#F2000000" };
+        std::string checkBoxIconColorOnChecked{ "#F2000000" };
         int radioButtonOuterCircleSize{ 16 };
         int radioButtonInnerCircleSize{ 6 };
         int checkBoxSize{ 16 };
@@ -152,14 +153,16 @@ namespace RendererQml
         std::string textColorNormal{ "#F2000000" };
         std::string textColorHovered{ "#F2000000" };
         std::string textColorPressed{ "#F2000000" };
+        std::string fontWeight{ "Font.DemiBold" };
         int buttonRadius = 16;
         int horizotalPadding = 10;
         int verticalPadding = 5;
-        int buttonHeight = 32;
-        int iconWidth = 14;
-        int iconHeight = 14;
+        int buttonHeight = 28;
+        int iconWidth = 12;
+        int iconHeight = 12;
         int imageSize = 14;
         int iconTextSpacing = 5;
+        int pixelSize = 14;
     };
 
     struct ActionButtonsConfig

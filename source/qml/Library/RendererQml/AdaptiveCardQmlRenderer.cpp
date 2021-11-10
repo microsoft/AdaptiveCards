@@ -77,10 +77,9 @@ namespace RendererQml
 		uiCard->Property("readonly property int margins", std::to_string(margin));
         uiCard->AddFunctions("signal buttonClicked(var title, var type, var data)");
 		//1px extra height to accomodate the border of a showCard if present at the bottom
-        uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight+1");
+        uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
 		uiCard->Property("Layout.fillWidth", "true");
 		uiCard->Property("readonly property string bgColor", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
-		uiCard->Property("readonly property string inputElementsBorderColor", "'#CCCCCC'");
 		uiCard->Property("color", "bgColor");
 		uiCard->Property("border.color", isChildCard? " bgColor" : "'#B2B2B2'");
         uiCard->AddFunctions("MouseArea{anchors.fill: parent;onClicked: adaptiveCard.nextItemInFocusChain().forceActiveFocus();}");
@@ -109,7 +108,7 @@ namespace RendererQml
 		rectangle->Property("id", "adaptiveCardRectangle");
 		rectangle->Property("color", "'transparent'");
 		rectangle->Property("Layout.topMargin", "margins");
-		rectangle->Property("Layout.bottomMargin", "removeBottomMargin? 0 : margins");
+		rectangle->Property("Layout.bottomMargin", "removeBottomMargin? 1 : margins");
 		rectangle->Property("Layout.leftMargin", "margins");
 		rectangle->Property("Layout.rightMargin", "margins");
 		rectangle->Property("Layout.fillWidth", "true");
@@ -150,6 +149,33 @@ namespace RendererQml
 		{
 			tempMargin += margin;
 		}
+
+        if ((!rectangle->HasProperty("Layout.topMargin") || !rectangle->HasProperty("Layout.bottomMargin")) && !isChildCard)
+        {
+            if (!rectangle->HasProperty("Layout.topMargin"))
+            {
+                rectangle->Property("Layout.topMargin", "1");
+            }
+
+            if (!rectangle->HasProperty("Layout.bottomMargin"))
+            {
+                rectangle->Property("Layout.bottomMargin", "1");
+            }
+        }
+
+        if (!isChildCard)
+        {
+            auto clipRectangle = std::make_shared<QmlTag>("Rectangle");
+            clipRectangle->Property("id", "clipRectangle");
+            clipRectangle->Property("anchors.fill", "parent");
+            clipRectangle->Property("clip", "true");
+            clipRectangle->Property("radius", Formatter() << cardConfig.cardRadius);
+            clipRectangle->Property("border.color", "'#B2B2B2'");
+            clipRectangle->Property("border.width", "1");
+            clipRectangle->Property("color", "'transparent'");
+            clipRectangle->Property("z", "1");
+            uiCard->AddChild(clipRectangle);
+        }
 
 		bodyLayout->Property("onImplicitHeightChanged", Formatter() << "{" << context->getCardRootId() << ".generateStretchHeight(children," << int(card->GetMinHeight()) - tempMargin << ")}");
 
@@ -283,6 +309,11 @@ namespace RendererQml
 						//2 px reduction in width to avoid child card displaying over parent card's border
 						uiLoader->Property("width", Formatter() << uiContainer->GetProperty("id") << ".width + 2*margins - 2");
 						uiLoader->Property("readonly property bool removeBottomMargin", removeBottomMargin ? "true" : "false");
+
+                        if (removeBottomMargin)
+                        {
+                            context->addToLastShowCardComponentIdsList(componentId);
+                        }
 
 						context->addToShowCardsLoaderIdsList(loaderId);
                         uiContainer->AddChild(uiLoader);
@@ -580,6 +611,11 @@ namespace RendererQml
             uiTextInput->Property("onReleased", Formatter() << "colorChange(" << inputWrapper->GetId() << "," << input->GetId() << ",false)");
             uiTextInput->Property("onHoveredChanged", Formatter() << "colorChange(" << inputWrapper->GetId() << "," << input->GetId() << ",false)");
             uiTextInput->Property("onActiveFocusChanged", Formatter() << "colorChange(" << inputWrapper->GetId() << "," << input->GetId() << ",false)");
+            uiTextInput->Property("leftPadding", Formatter() << textConfig.textHorizontalPadding);
+            uiTextInput->Property("rightPadding", Formatter() << textConfig.textHorizontalPadding);
+            uiTextInput->Property("topPadding", Formatter() << textConfig.textVerticalPadding);
+            uiTextInput->Property("bottomPadding", Formatter() << textConfig.textVerticalPadding);
+            uiTextInput->Property("padding", "0");
 
             if (input->GetMaxLength() > 0)
             {
@@ -591,7 +627,7 @@ namespace RendererQml
             clearIcon->Property("visible", Formatter() << input->GetId() << ".text.length != 0");
             clearIcon->Property("onClicked", Formatter() << "{nextItemInFocusChain().forceActiveFocus();" << input->GetId() << ".clear()}");
 
-            uiTextInput->Property("width", Formatter() << "parent.width - " << clearIcon->GetId() << ".width");
+            uiTextInput->Property("width", Formatter() << "parent.width - " << clearIcon->GetId() << ".width - " << textConfig.clearIconHorizontalPadding);
 
             inputWrapper->AddChild(uiTextInput);
             inputWrapper->AddChild(clearIcon);
@@ -686,7 +722,7 @@ namespace RendererQml
 
         auto uiNumberInput = std::make_shared<QmlTag>("SpinBox");
         uiNumberInput->Property("id", inputId);
-        uiNumberInput->Property("width", "parent.width");
+        uiNumberInput->Property("width", Formatter() << "parent.width - " << numberConfig.clearIconSize << " - " << numberConfig.clearIconHorizontalPadding);
         uiNumberInput->Property("padding", "0");
         uiNumberInput->Property("stepSize", "1");
         uiNumberInput->Property("editable", "true");
@@ -711,6 +747,11 @@ namespace RendererQml
         contentItemTag->Property("onReleased", Formatter() << numberInputRectangle->GetId() << ".colorChange(false)");
         contentItemTag->Property("onHoveredChanged", Formatter() << numberInputRectangle->GetId() << ".colorChange(false)");
         contentItemTag->Property("onActiveFocusChanged", Formatter() << numberInputRectangle->GetId() << ".colorChange(false)");
+        contentItemTag->Property("leftPadding", Formatter() << numberConfig.textHorizontalPadding);
+        contentItemTag->Property("rightPadding", Formatter() << numberConfig.textHorizontalPadding);
+        contentItemTag->Property("topPadding", Formatter() << numberConfig.textVerticalPadding);
+        contentItemTag->Property("bottomPadding", Formatter() << numberConfig.textVerticalPadding);
+        contentItemTag->Property("padding", "0");
         {
             contentItemTag->Property("placeholderText", input->GetPlaceholder(), true);
         }
@@ -1002,9 +1043,9 @@ namespace RendererQml
 
         checkbox->AddFunctions(Formatter() << "function colorChange(item,isPressed){\n"
             "if (isPressed) item.indicator.color = item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndPressed) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndPressed) << ";\n"
-            "else  item.indicator.color = (item.hovered || item.activeFocus) ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUnchecked) << ")\n"
+            "else  item.indicator.color = item.hovered ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUnchecked) << ")\n"
             "if (isPressed) item.indicator.border.color = item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndPressed) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndPressed) << ";\n"
-            "else  item.indicator.border.color = (item.hovered || item.activeFocus) ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUnchecked) << ")\n"
+            "else  item.indicator.border.color = item.hovered ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUnchecked) << ")\n"
             "}\n"
         );
         checkbox->Property("onPressed", Formatter() << checkbox->GetId() << ".colorChange(" << checkbox->GetId() << ", true)");
@@ -1187,6 +1228,11 @@ namespace RendererQml
         uiContentItem_Text->Property("leftPadding", Formatter() << choiceSetConfig.textHorizontalPadding);
         uiContentItem_Text->Property("elide", "Text.ElideRight");
         uiContentItem_Text->Property("color", context->GetHexColor(choiceSetConfig.textColor));
+        uiContentItem_Text->Property("leftPadding", Formatter() << choiceSetConfig.textHorizontalPadding);
+        uiContentItem_Text->Property("rightPadding", Formatter() << choiceSetConfig.textHorizontalPadding);
+        uiContentItem_Text->Property("topPadding", Formatter() << choiceSetConfig.textVerticalPadding);
+        uiContentItem_Text->Property("bottomPadding", Formatter() << choiceSetConfig.textVerticalPadding);
+        uiContentItem_Text->Property("padding", "0");
 
         uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
 
@@ -1303,9 +1349,9 @@ namespace RendererQml
 
         uiColumn->AddFunctions(Formatter() << "function colorChange(item,isPressed){\n"
             "if (isPressed) item.indicator.color = item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndPressed) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndPressed) << ";\n"
-            "else  item.indicator.color = (item.hovered || item.activeFocus) ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUnchecked) << ")\n"
+            "else  item.indicator.color = item.hovered ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUnchecked) << ")\n"
             "if (isPressed) item.indicator.border.color = item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndPressed) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndPressed) << ";\n"
-            "else  item.indicator.border.color = (item.hovered || item.activeFocus) ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUnchecked) << ")\n"
+            "else  item.indicator.border.color = item.hovered ? (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnCheckedAndHovered) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUncheckedAndHovered) << ") : (item.checked ? " << context->GetHexColor(toggleButtonConfig.borderColorOnChecked) << " : " << context->GetHexColor(toggleButtonConfig.borderColorOnUnchecked) << ")\n"
             "}\n"
         );
 
@@ -1413,12 +1459,19 @@ namespace RendererQml
         }
         else
         {
-            uiInnerSegment = std::make_shared<QmlTag>("Image");
+            uiInnerSegment = std::make_shared<QmlTag>("Button");
             uiInnerSegment->Property("anchors.centerIn", "parent");
             uiInnerSegment->Property("width", "parent.width - 3");
             uiInnerSegment->Property("height", "parent.height - 3");
+            uiInnerSegment->Property("verticalPadding", "0");
+            uiInnerSegment->Property("horizontalPadding", "0");
+            uiInnerSegment->Property("enabled", "false");
+            uiInnerSegment->Property("background", "Rectangle{color:'transparent'}");
+            uiInnerSegment->Property("icon.width", "width");
+            uiInnerSegment->Property("icon.height", "height");
+            uiInnerSegment->Property("icon.color", context->GetHexColor(toggleButtonConfig.checkBoxIconColorOnChecked));
+            uiInnerSegment->Property("icon.source", RendererQml::check_icon_12, true);
             uiInnerSegment->Property("visible", checkbox.id + ".checked");
-            uiInnerSegment->Property("source", RendererQml::check_icon_12, true);
             uiButton->Property("Keys.onReturnPressed", "{checked = !checked;}");
         }
 
@@ -1468,6 +1521,11 @@ namespace RendererQml
         uiTextField->Property("color", context->GetHexColor(dateInputConfig.textColor));
         uiTextField->Property("property string selectedDate", input->GetValue(), true);
         uiTextField->AddFunctions(Formatter() << "signal " << "textChanged" << uiTextField->GetId() << "(var dateText)");
+        uiTextField->Property("leftPadding", Formatter() << dateInputConfig.textHorizontalPadding);
+        uiTextField->Property("rightPadding", Formatter() << dateInputConfig.textHorizontalPadding);
+        uiTextField->Property("topPadding", Formatter() << dateInputConfig.textVerticalPadding);
+        uiTextField->Property("bottomPadding", Formatter() << dateInputConfig.textVerticalPadding);
+        uiTextField->Property("padding", "0");
 
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("color", "'transparent'");
@@ -1630,6 +1688,7 @@ namespace RendererQml
         dateIcon->RemoveProperty("anchors.verticalCenter");
         dateIcon->Property("id", Formatter() << input->GetId() << "_icon");
         dateIcon->Property("Layout.leftMargin", Formatter() << dateInputConfig.dateIconHorizontalPadding);
+        dateIcon->Property("Layout.alignment", "Qt.AlignVCenter");
         dateIcon->Property("focusPolicy", "Qt.NoFocus");
         dateIcon->Property("width", "18");
         dateIcon->Property("height", "18");
@@ -2143,6 +2202,11 @@ namespace RendererQml
         uiTimeInput->Property("onPressed", Formatter() << uiTimeInputWrapper->GetId() << ".colorChange(true)");
         uiTimeInput->Property("onReleased", Formatter() << uiTimeInputWrapper->GetId() << ".colorChange(false)");
         uiTimeInput->Property("onHoveredChanged", Formatter() << uiTimeInputWrapper->GetId() << ".colorChange(false)");
+        uiTimeInput->Property("leftPadding", Formatter() << timeConfig.textHorizontalPadding);
+        uiTimeInput->Property("rightPadding", Formatter() << timeConfig.textHorizontalPadding);
+        uiTimeInput->Property("topPadding", Formatter() << timeConfig.textVerticalPadding);
+        uiTimeInput->Property("bottomPadding", Formatter() << timeConfig.textVerticalPadding);
+        uiTimeInput->Property("padding", "0");
 
         uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
 
@@ -2203,6 +2267,7 @@ namespace RendererQml
         timeIcon->RemoveProperty("anchors.verticalCenter");
         timeIcon->Property("id", Formatter() << id << "_icon");
         timeIcon->Property("Layout.leftMargin", Formatter() << timeConfig.timeIconHorizontalPadding);
+        timeIcon->Property("Layout.alignment", "Qt.AlignVCenter");
         timeIcon->Property("focusPolicy", "Qt.NoFocus");
         timeIcon->Property("width", "18");
         timeIcon->Property("height", "18");
@@ -2936,7 +3001,6 @@ namespace RendererQml
             const auto config = context->GetConfig();
             const auto actionsConfig = config->GetActions();
             const std::string buttonId = Formatter() << "button_auto_" << context->getButtonCounter();
-            const auto fontSize = config->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default);
             const bool isShowCardButton = Utils::IsInstanceOfSmart<AdaptiveCards::ShowCardAction>(action);
             const bool isIconLeftOfTitle = actionsConfig.iconPlacement == AdaptiveCards::IconPlacement::LeftOfTitle;
 
@@ -3024,7 +3088,8 @@ namespace RendererQml
             {
                 contentText->Property("text", action->GetTitle(), true);
             }
-            contentText->Property("font.pixelSize", Formatter() << fontSize);
+            contentText->Property("font.pixelSize", Formatter() << buttonConfig.pixelSize);
+            contentText->Property("font.weight", buttonConfig.fontWeight);
             contentText->Property("elide", "Text.ElideRight");
 
             bgRectangle->Property("border.width", Formatter() << buttonId << ".activeFocus ? 2 : 1");
@@ -3151,6 +3216,14 @@ namespace RendererQml
                 const auto containerColor = context->GetRGBColor(context->GetConfig()->GetBackgroundColor(context->GetConfig()->GetActions().showCard.style));
 
                 uiCard->Property("color", containerColor);
+
+                const auto lastShowCards = context->getLastShowCardComponentIdsList();
+                auto cardConfig = context->GetRenderConfig()->getCardConfig();
+                if (std::find(lastShowCards.begin(), lastShowCards.end(), componentElement.first) != lastShowCards.end())
+                {
+                    uiCard->Property("radius", Formatter() << cardConfig.cardRadius);
+                    uiCard = AddCornerRectangles(uiCard, cardConfig.cardRadius);
+                }
 
                 // Add show card component to root element
                 const auto showCardComponent = GetComponent(componentElement.first, uiCard);
@@ -3955,5 +4028,28 @@ namespace RendererQml
         std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
         dir_path = std::string("file:/") + dir_path;
         return dir_path;
+    }
+
+    std::shared_ptr<QmlTag> RendererQml::AdaptiveCardQmlRenderer::AddCornerRectangles(std::shared_ptr<QmlTag> uiCard, int rectangleSize)
+    {
+        auto leftRectangle = std::make_shared<QmlTag>("Rectangle");
+        auto rightRectangle = std::make_shared<QmlTag>("Rectangle");
+
+        leftRectangle->Property("color", Formatter() << uiCard->GetId() << ".color");
+        leftRectangle->Property("width", Formatter() << rectangleSize);
+        leftRectangle->Property("height", Formatter() << rectangleSize);
+        leftRectangle->Property("x", Formatter() << uiCard->GetId() << ".x + 1");
+        leftRectangle->Property("y", Formatter() << uiCard->GetId() << ".y + 1");
+
+        rightRectangle->Property("color", Formatter() << uiCard->GetId() << ".color");
+        rightRectangle->Property("width", Formatter() << rectangleSize);
+        rightRectangle->Property("height", Formatter() << rectangleSize);
+        rightRectangle->Property("x", Formatter() << uiCard->GetId() << ".width - 1 - " << rectangleSize);
+        rightRectangle->Property("y", Formatter() << uiCard->GetId() << ".y + 1");
+
+        uiCard->AddChild(leftRectangle);
+        uiCard->AddChild(rightRectangle);
+
+        return uiCard;
     }
 }
