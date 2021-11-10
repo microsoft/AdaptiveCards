@@ -565,10 +565,10 @@ void HandleMediaClick(rtrender::AdaptiveRenderContext const& renderContext,
 
             auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
 
-            winrt::hstring lambdaMimeType{mimeType};
+            /*winrt::hstring lambdaMimeType{mimeType};*/
 
             getResourceStreamOperation.Completed(
-                [mediaElement, lambdaMimeType](winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> operation,
+                [mediaElement, mimeType](winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> operation,
                                                winrt::Windows::Foundation::AsyncStatus status) -> void
                 {
                     // Take ownership of the passed in HSTRING
@@ -576,10 +576,11 @@ void HandleMediaClick(rtrender::AdaptiveRenderContext const& renderContext,
                      localMimeType.Attach(lambdaMimeType);*/
 
                     // TODO: not sure why this is done?
-                    winrt::hstring localMimeType{};
-                    localMimeType = lambdaMimeType;
+                    // TODO: hstring duplicates string whether in constructor or assingment operator, not sure how to do Attach
+                    //winrt::hstring localMimeType{};
+                    //localMimeType = lambdaMimeType;
 
-                    return HandleMediaResourceResolverCompleted(operation, status, mediaElement, lambdaMimeType);
+                    return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType);
                 });
         }
 
