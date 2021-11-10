@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ConcatPlugin = require('webpack-concat-files-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -38,24 +38,32 @@ module.exports = (env, argv) => {
 					test: /\.css$/,
 					use: [
 						'style-loader',
-						MiniCssExtractPlugin.loader,
-						'css-loader',
-						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
+						'css-loader'
 					]
 				}
 			]
 		},
 		plugins: [
+			new ConcatPlugin({
+				bundles: [
+					{
+						dest: 'lib/adaptivecards.css',
+						src: [
+                            'src/adaptivecards.css',
+                            'node_modules/swiper/swiper.min.css',
+                            'node_modules/swiper/modules/pagination/pagination.min.css',
+                            'node_modules/swiper/modules/navigation/navigation.min.css'
+                        ]
+					}
+				],
+			}),
 			new CopyWebpackPlugin(
 				{
 					patterns: [
 						{
-							from: 'src/adaptivecards.css',
-							to: '../lib/[name][ext]'
-						},
-						{
-							from: 'src/adaptivecards.css',
-							to: '../dist/[name][ext]'
+							from: 'lib/adaptivecards.css',
+							to: '../dist/adaptivecards.css',
+                            noErrorOnMissing: true // doesn't exist when object constructed. don't error.
 						}
 					]
 				}
