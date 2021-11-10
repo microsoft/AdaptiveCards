@@ -4,6 +4,7 @@
 	"version": "1.6",
 	"body": {
 		"type": "Carousel",
+		"timer": 5000,
 		"pages": [
 			{
 				"type": "CarouselPage",

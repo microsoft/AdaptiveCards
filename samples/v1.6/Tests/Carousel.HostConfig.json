@@ -177,7 +177,7 @@
 			},
 			{
 				"type": "CarouselPage",
-				"id": "10",
+				"id": "page10",
 				"items": [
 				{
 					"type" : "TextBlock",

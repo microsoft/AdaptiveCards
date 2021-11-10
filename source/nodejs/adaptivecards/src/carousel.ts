@@ -297,8 +297,7 @@ export class Carousel extends Container {
                 Scrollbar,
                 A11y,
                 History,
-                Keyboard,
-                Autoplay
+                Keyboard
             ],
             pagination: {
                 el: paginationElement,
@@ -318,6 +317,7 @@ export class Carousel extends Container {
         };
 
         if (this.timer && !this.isDesignMode()) {
+            swiperOptions.modules?.push(Autoplay);
             swiperOptions.autoplay = { delay: this.timer, pauseOnMouseEnter: true };
         }
 
@@ -327,11 +327,11 @@ export class Carousel extends Container {
         // mouse exit it doesn't do it, so adding custom events to handle it
 
         swiperContainer.addEventListener("mouseenter", function(event) {
-            swiper.autoplay.stop();
+            swiper.autoplay?.stop();
         });
 
         swiperContainer.addEventListener("mouseleave", function(event) {
-            swiper.autoplay.start();
+            swiper.autoplay?.start();
         });
 
         this._swiper = swiper;
