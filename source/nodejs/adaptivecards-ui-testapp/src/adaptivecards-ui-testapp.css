@@ -83,6 +83,10 @@ body {
     visibility: visible;
 }
 
+.ac-container.ac-carousel-page-container {
+    width: 100%;
+}
+
 .swiper-slide.ac-carousel-page {
     text-align: center;
     font-size: 18px;
@@ -101,6 +105,8 @@ body {
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
+
+    width: 100%;
 
     visibility: hidden;
 }

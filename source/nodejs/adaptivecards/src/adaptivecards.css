@@ -305,6 +305,10 @@ a.ac-anchor:visited:active {
     visibility: hidden;
 }
 
+.ac-container.ac-carousel-page-container {
+    width: 100%;
+}
+
 .swiper-button-next.ac-carousel-right::after {
     font-size: 14px;
     font-family: 'Segoe Fluent Icons';

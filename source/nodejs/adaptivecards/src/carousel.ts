@@ -260,6 +260,7 @@ export class Carousel extends Container {
                 const page = this._pages[i];
                 const renderedItem = this.isElementAllowed(page) ? page.render() : undefined;
                 renderedItem?.classList.add("ac-carousel-page");
+                renderedItem?.children[0]?.classList.add("ac-carousel-page-container");
 
                 if (renderedItem) {
                     Utils.appendChild(swiperWrapper, renderedItem);
