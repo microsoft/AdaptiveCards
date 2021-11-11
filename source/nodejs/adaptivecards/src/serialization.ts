@@ -118,7 +118,7 @@ export class Versions {
     static readonly latest = Versions.v1_5;
     // version over latest is considered "vNext feature"
     // if latest or maxSupportedVersion is changed,
-    // don't forget to update getPreviewMarkDown in ac-typed-schema\src\markdown\generate-markdown.ts
+    // don't forget to update styles .ac-schema-version-1-?::after to add/remove Preview tag from adaptivecards-site\themes\adaptivecards\source\css\style.css
     static readonly maxSupportedVersion = Versions.v1_6;
 }
 

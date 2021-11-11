@@ -14,11 +14,7 @@ import * as mdTable from "markdown-table";
 import * as style from "./style";
 
 const getPreviewMarkDown = (version: string) => {
-	if (version === '1.6') {
-		return '![Preview Feature](preview.png "This is a vNext preview feature.")';
-	} else {
-		return '';
-	}
+	return `<span class="ac-schema-version-${version?.replace(/\./, '-')}"></span>`
 }
 
 class MarkdownConfig {
@@ -55,7 +51,7 @@ const __ = markdownConfig.i18n.__;
 export { __ };
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
-	var md = getPreviewMarkDown(elementVersion);
+	var md = "";
 
 	var properties: Map<string, SchemaProperty> = classDefinition.getAllProperties();
 	if (properties !== undefined && properties.size > 0) {

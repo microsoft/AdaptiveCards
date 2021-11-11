@@ -4,6 +4,11 @@
 var typedschema = require("ac-typed-schema");
 var path = require("path");
 
+function getPreviewClassName(version)
+{
+	return `ac-schema-version-${version?.replace(/\./, '-')}`;
+};
+
 hexo.extend.generator.register("generator-explorer", function (locals) {
 
     return new Promise(function (resolve, reject) {
@@ -28,6 +33,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 							schema: schemaModel,
 							element: child,
 							childPath: child.htmlPath,
+							previewClassName: getPreviewClassName(child.version),
 							propertiesSummary: typedschema.markdown.createPropertiesSummary(child.type, null, true, true, child.version)
 						}
 					}
@@ -44,6 +50,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 								schema: schemaModel,
 								element: child,
 								childPath: child.htmlPath,
+								previewClassName: getPreviewClassName(child.version),
 								propertiesSummary: typedschema.markdown.createPropertiesSummary(child.type, null, false, true)
 							}
 						});

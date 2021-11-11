@@ -703,3 +703,13 @@ input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
 }
+
+.ac-schema-version-1-6::after {
+  content: "Preview";
+  color: White;
+  background-color: blue;
+  padding: 0px 4px 4px 4px;
+  margin: 1px;
+  font-size: 120%;
+  border-radius: 4px;
+}
