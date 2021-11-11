@@ -310,7 +310,7 @@ a.ac-anchor:visited:active {
 }
 
 .swiper-button-next.ac-carousel-right::after {
-    font-size: 50px;
+    font-size: 14px;
     font-family: 'Segoe Fluent Icons';
     content: "\EDDA";
 }
