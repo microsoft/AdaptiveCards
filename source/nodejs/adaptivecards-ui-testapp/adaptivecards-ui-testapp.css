@@ -557,7 +557,13 @@ body {
     -webkit-align-items: center;
     align-items: center;
 
+    width: 100%;
+
     visibility: hidden;
+}
+
+.ac-container.ac-carousel-page-container {
+    width: 100%;
 }
 
 .swiper-button-next.ac-carousel-right::after {

@@ -187,7 +187,6 @@ describe("Mock function", function() {
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
 
     }), timeOutValue);
-
     test("Test rtl on carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.rtl");
 
