@@ -79,6 +79,14 @@ namespace AdaptiveCards::Rendering::WinUI3
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer,
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** rootUIElement) noexcept;
 
+
+        // TODO: can we move word static to the function name?
+        static std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>
+        CreateRootCardElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard const& adaptiveCard,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                              XamlBuilder* xamlBuilder);
+
         template<typename T>
         void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
         template<typename T>

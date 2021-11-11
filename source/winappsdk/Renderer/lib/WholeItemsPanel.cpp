@@ -312,8 +312,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
 
-    UINT WholeItemsPanel::s_bleedMargin = 0;
-    void WholeItemsPanel::SetBleedMargin(UINT bleedMargin)
+    // TODO: fix this
+    uint32_t WholeItemsPanel::s_bleedMargin = 0;
+    void WholeItemsPanel::SetBleedMargin(uint32_t bleedMargin)
     {
         // Bleed margin is the extent to which the content may "bleed" out of the panel on the left and right. It is
         // used to ensure that the clip rectangle doesn't clip off bleeding content.

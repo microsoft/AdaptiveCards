@@ -516,6 +516,7 @@ CATCH_RETURN();
 
 winrt::Windows::UI::Color GetBackgroundColorFromStyle(rtom::ContainerStyle const& style, rtrender::AdaptiveHostConfig const& hostConfig)
 {
+    // TODO: how do I handle errors here? are there gonna be any?
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BackgroundColor();
 }
@@ -1256,10 +1257,11 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAd
 
 bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImageElement)
 {
-    // what is the reason to create impl?
+    // TODO: what is the reason to create impl?
     auto backgroundImage = winrt::make_self<rtom::AdaptiveBackgroundImage>(backgroundImageElement);
     if (backgroundImage != NULL)
     {
+        // TODO: is this a proper check? instead of HString.isValid()?
         return !backgroundImage->Url().empty();
     }
     return false;

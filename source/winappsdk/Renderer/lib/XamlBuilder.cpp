@@ -19,14 +19,18 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
+// TODO: fix this later
+using WholeItemsPanelWinRT = winrt::AdaptiveCards::Rendering::WinUI3::implementation::WholeItemsPanel;
+
 namespace AdaptiveCards::Rendering::WinUI3
 {
     XamlBuilder::XamlBuilder()
     {
-        m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
+        // TODO: work on this
+        m_imageLoadTracker->AddListener(static_cast<IImageLoadTrackerListener>(*this));
 
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(),
-                                             &m_randomAccessStreamStatics));
+        /*THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(),
+                                             &m_randomAccessStreamStatics));*/
     }
 
     HRESULT XamlBuilder::AllImagesLoaded() noexcept
@@ -45,11 +49,122 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
     CATCH_RETURN();
 
-    rtxaml::FrameworkElement BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
-                                                           rtrender::AdaptiveRenderContext renderContext,
-                                                           XamlBuilder* xamlBuilder,
-                                                           rtom::ContainerStyle defaultContainerStyle)
+    rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
+                                                                        rtrender::AdaptiveRenderContext renderContext,
+                                                                        XamlBuilder* xamlBuilder,
+                                                                        rtom::ContainerStyle defaultContainerStyle)
     {
+        try
+        {
+            rtxaml::FrameworkElement xamlTreeRoot{nullptr};
+
+            auto hostConfig = renderContext.HostConfig();
+
+            bool ifSupportsInteractivity = XamlHelpers::SupportsInteractivity(hostConfig);
+
+            // TODO: why is it called adaptiveCard if it's config? :D
+            auto adaptiveCardConfig = hostConfig.AdaptiveCard();
+
+            bool allowCustomStyle = adaptiveCardConfig.AllowCustomStyle();
+
+            auto containerStyle = defaultContainerStyle;
+            if (allowCustomStyle)
+            {
+                auto cardStyle = adaptiveCard.Style();
+
+                if (cardStyle != rtom::ContainerStyle::None)
+                {
+                    containerStyle = cardStyle;
+                }
+            }
+            auto renderArgs =
+                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, adaptiveCard, nullptr);
+
+            rtxaml::Controls::Panel bodyElementContainer{nullptr};
+            rtxaml::UIElement rootElement{nullptr};
+
+            std::tie(bodyElementContainer, rootElement) =
+                CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder);
+
+            rtxaml::FrameworkElement rootAsFrameworkElement = rootElement.as<rtxaml::FrameworkElement>();
+            uint32_t cardMinHeight = adaptiveCard.MinHeight();
+
+            if (cardMinHeight > 0)
+            {
+                rootAsFrameworkElement.MinHeight(cardMinHeight);
+            }
+
+            auto selectAction = adaptiveCard.SelectAction();
+
+            // Create a new UIElement pointer to house the root element decorated with select action
+
+            auto rootSelectActionElement =
+                ActionHelpers::HandleSelectAction(nullptr, selectAction, renderContext, rootElement, ifSupportsInteractivity, true);
+
+            rootAsFrameworkElement = rootSelectActionElement.as<rtxaml::FrameworkElement>();
+
+            // Enumerate the child items of the card and build xaml for them
+            auto body = adaptiveCard.Body();
+            auto bodyRenderArgs =
+                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, adaptiveCard, nullptr);
+
+            BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](rtxaml::UIElement) {});
+
+            rtom::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
+
+            XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer, verticalContentAlignment);
+
+            auto actions = adaptiveCard.Actions();
+
+            if (actions.Size() > 0)
+            {
+                if (ifSupportsInteractivity)
+                {
+                    ActionHelpers::BuildActions(adaptiveCard, actions, bodyElementContainer, body.Size() > 0, renderContext, renderArgs);
+                }
+                else
+                {
+                    renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                             L"Actions collection was present in card, but interactivity is not supported");
+                }
+            }
+
+            bool isInShowCard = renderArgs.IsInShowCard();
+
+            if (isInShowCard)
+            {
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement);
+            }
+            else
+            {
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
+            }
+
+            xamlTreeRoot = rootAsFrameworkElement;
+
+            if (!isInShowCard && (xamlBuilder != nullptr))
+            {
+                // TODO: do we need to check if m_listeners is nullptr?
+                if (xamlBuilder->m_listeners.size() == 0)
+                {
+                    // If we're done and no one's listening for the images to load, make sure
+                    // any outstanding image loads are no longer tracked.
+                    xamlBuilder->m_imageLoadTracker->AbandonOutstandingImages();
+                }
+                else if (xamlBuilder->m_imageLoadTracker->GetTotalImagesTracked() == 0)
+                {
+                    // If there are no images to track, fire the all images loaded
+                    // event to signal the xaml is ready
+                    xamlBuilder->FireAllImagesLoaded();
+                }
+            }
+            return xamlTreeRoot;
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            // TODO: what do we do here?
+            return nullptr;
+        }
     }
 
     HRESULT XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
@@ -226,6 +341,101 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
+    std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>
+    XamlBuilder::CreateRootCardElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard const& adaptiveCard,
+                                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                                       XamlBuilder* xamlBuilder)
+    {
+        // The root of an adaptive card is a composite of several elements, depending on the card
+        // properties.  From back to front these are:
+        // Grid - Root element, used to enable children to stack above each other and size to fit
+        // Image (optional) - Holds the background image if one is set
+        // Shape (optional) - Provides the background image overlay, if one is set
+        // StackPanel - The container for all the card's body elements
+        try
+        {
+            rtxaml::Controls::Panel bodyElementContainer{nullptr};
+            rtxaml::UIElement rootElementResult{nullptr};
+
+            rtxaml::Controls::Grid rootElement{};
+
+            auto hostConfig = renderContext.HostConfig();
+            auto adaptiveHostConfig = hostConfig.AdaptiveCard();
+
+            auto containerStyle = renderArgs.ContainerStyle();
+
+            /*ABI::Windows::UI::Color backgroundColor;
+            if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
+            {
+                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
+                RETURN_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
+            }*/
+            // TODO: How do I check for errors here? are there gonna be any?
+            auto backgroundColor = GetBackgroundColorFromStyle(containerStyle, hostConfig);
+            rootElement.Background(XamlHelpers::GetSolidColorBrush(backgroundColor));
+
+            auto backgroundImage = adaptiveCard.BackgroundImage();
+            bool isBackgroundImageValid = IsBackgroundImageValid(backgroundImage);
+
+            if (isBackgroundImageValid)
+            {
+                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext, renderArgs);
+            }
+
+            auto spacingConfig = hostConfig.Spacing();
+            uint32_t padding = spacingConfig.Padding();
+
+            // Configure WholeItemsPanel to not clip bleeding containers
+            WholeItemsPanelWinRT::SetBleedMargin(padding);
+
+            /* ComPtr<WholeItemsPanel> bodyElementHost;
+            RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
+            bodyElementHost->SetMainPanel(TRUE);
+            bodyElementHost->SetAdaptiveHeight(TRUE);*/
+
+            auto bodyElementHostImpl = winrt::make_self<WholeItemsPanelWinRT>();
+            bodyElementHostImpl->SetMainPanel(true);
+            bodyElementHostImpl->SetAdaptiveHeight(true);
+            winrt::AdaptiveCards::Rendering::WinUI3::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
+
+            XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+
+            /*ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType adaptiveCardHeightType;
+            RETURN_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));*/
+
+            // TODO: why is it called height if it's height type?
+            rtom::HeightType adaptiveCardHeightType = adaptiveCard.Height();
+
+            XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
+            /*RETURN_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));*/
+            // TODO: I should be able to cast here directly, right? *bodyElementHostImpl?
+            bodyElementContainer = bodyElementHost;
+
+            if (xamlBuilder && xamlBuilder->m_fixedDimensions)
+            {
+                rootElement.Width(xamlBuilder->m_fixedWidth);
+                rootElement.Height(xamlBuilder->m_fixedHeight);
+                rootElement.MaxHeight(xamlBuilder->m_fixedHeight);
+            }
+
+            if (adaptiveCardHeightType == rtom::HeightType::Stretch)
+            {
+                rootElement.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
+            }
+
+            // TODO: no need to do that, remove later;
+            rootElementResult = rootElement;
+
+            return {bodyElementContainer, rootElementResult};
+        }
+        catch(winrt::hresult_error& ex)
+        {
+            // TODO: what do we do here?
+            return {nullptr, nullptr};
+        }
+    }
+
     HRESULT XamlBuilder::CreateRootCardElement(_In_ IAdaptiveCard* adaptiveCard,
                                                _In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveRenderArgs* renderArgs,
@@ -275,14 +485,14 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
 
         // Configure WholeItemsPanel to not clip bleeding containers
-        WholeItemsPanel::SetBleedMargin(padding);
+        //WholeItemsPanel::SetBleedMargin(padding);
 
         // Now create the inner stack panel to serve as the root host for all the
         // body elements and apply padding from host configuration
         ComPtr<WholeItemsPanel> bodyElementHost;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
-        bodyElementHost->SetMainPanel(TRUE);
-        bodyElementHost->SetAdaptiveHeight(TRUE);
+        //bodyElementHost->SetMainPanel(TRUE);
+        //bodyElementHost->SetAdaptiveHeight(TRUE);
 
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));

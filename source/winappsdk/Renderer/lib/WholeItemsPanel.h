@@ -38,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         void SetMainPanel(bool value);
         void SetAdaptiveHeight(bool value);
-        static void SetBleedMargin(UINT bleedMargin);
+        static void SetBleedMargin(uint32_t bleedMargin);
 
         virtual bool IsAllContentClippedOut() { return ((m_measuredCount > 0) && (m_visibleCount == 0)); }
         virtual bool IsTruncated() { return m_isTruncated; }
@@ -51,7 +51,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
        /* void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }*/
 
     private:
-        static UINT s_bleedMargin;
+        static uint32_t s_bleedMargin;
 
         uint32_t m_visibleCount{};
         uint32_t m_measuredCount{};

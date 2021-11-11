@@ -1212,6 +1212,15 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
+    void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig const& hostConfig,
+                                  winrt::Windows::UI::Xaml::IFrameworkElement const& element)
+    {
+        auto spacingConfig = hostConfig.Spacing();
+        uint32_t padding = spacingConfig.Padding();
+
+        element.Margin({(double)padding, (double)padding, (double)padding, (double)padding});
+    }
+
     HRESULT ApplyMarginToXamlElement(_In_ IAdaptiveHostConfig* hostConfig, _In_ IFrameworkElement* element) noexcept
     {
         ComPtr<IFrameworkElement> localElement(element);

@@ -577,4 +577,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
     HRESULT ApplyMarginToXamlElement(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                      _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element) noexcept;
+
+    void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig const& hostConfig,
+                                  winrt::Windows::UI::Xaml::IFrameworkElement const& element);
 }
