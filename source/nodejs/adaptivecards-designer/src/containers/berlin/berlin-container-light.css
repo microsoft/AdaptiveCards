@@ -24,32 +24,32 @@
 
 .berlin-large-container {
     width: 304px;
-    height: 420px;
+    height: 466px;
 }
 
 .berlin-medium-container {
     width: 304px;
-    height: 312px;
+    height: 308px;
 }
 
 .berlin-small-container {
     width: 304px;
-    height: 204px;
+    height: 150px;
 }
 
 
 /* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
 
 .berlin-large-card {
-    height: 416px;
+    height: 462px;
 }
 
 .berlin-medium-card {
-    height: 308px;
+    height: 304px;
 }
 
 .berlin-small-card {
-    height: 200px;
+    height: 146px;
 }
 
 .ac-input {
