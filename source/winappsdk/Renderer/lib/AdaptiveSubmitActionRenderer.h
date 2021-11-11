@@ -2,24 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
+#include "AdaptiveSubmitActionRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveSubmitActionRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer>
+    struct AdaptiveSubmitActionRenderer : AdaptiveSubmitActionRendererT<AdaptiveSubmitActionRenderer>
     {
-        AdaptiveRuntime(AdaptiveSubmitActionRenderer);
+        AdaptiveSubmitActionRenderer() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
     };
-
-    ActivatableClass(AdaptiveSubmitActionRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveSubmitActionRenderer
+        : AdaptiveSubmitActionRendererT<AdaptiveSubmitActionRenderer, implementation::AdaptiveSubmitActionRenderer>
+    {
+    };
 }
