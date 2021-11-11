@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
-	const mode = argv.mode || 'development';
-	const devMode = mode === "development";
+    const mode = argv.mode || 'development';
+    const devMode = mode === 'development';
 
-	console.info('running webpack with mode:', mode);
+    console.info('running webpack with mode:', mode);
 
 	return {
 		mode: mode,

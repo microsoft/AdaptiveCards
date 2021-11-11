@@ -22,6 +22,8 @@ var simpleAssets = [
 	"node_modules/highlightjs/styles/default.css",
 	"node_modules/jquery/dist/jquery.min.js",
 	"node_modules/markdown-it/dist/markdown-it.min.js",
+	"node_modules/swiper/swiper-bundle.min.css",
+	"node_modules/swiper/swiper-bundle.min.js",
 ];
 
 // These are the other asset files that need to be copied into a specific location
