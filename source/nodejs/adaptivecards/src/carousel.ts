@@ -26,12 +26,12 @@ export class CarouselPage extends Container {
     //#endregion
 
     protected internalRender(): HTMLElement | undefined {
-        const swiperSlide: HTMLElement = document.createElement("div");
-        swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
+        const carouselSlide: HTMLElement = document.createElement("div");
+        carouselSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
 
         const renderedElement = super.internalRender();
-        Utils.appendChild(swiperSlide, renderedElement);
-        return swiperSlide;
+        Utils.appendChild(carouselSlide, renderedElement);
+        return carouselSlide;
     }
 
     getForbiddenActionTypes(): ActionType[] {
@@ -161,8 +161,8 @@ export class Carousel extends Container {
     }
 
     get currentPageId(): string | undefined {
-        if (this._swiper?.slides?.length) {
-            const activeSlide = this._swiper.slides[this._swiper.activeIndex] as HTMLElement;
+        if (this._carousel?.slides?.length) {
+            const activeSlide = this._carousel.slides[this._carousel.activeIndex] as HTMLElement;
             return activeSlide.id;
         }
         return undefined;
@@ -204,22 +204,22 @@ export class Carousel extends Container {
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
         cardLevelContainer.appendChild(containerForAdorners);
 
-        const swiperContainer: HTMLElement = document.createElement("div");
-        swiperContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
+        const carouselContainer: HTMLElement = document.createElement("div");
+        carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
 
-        const swiperWrapper: HTMLElement = document.createElement("div");
-        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
-        swiperWrapper.style.display = "flex";
+        const carouselWrapper: HTMLElement = document.createElement("div");
+        carouselWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
+        carouselWrapper.style.display = "flex";
 
         switch (this.getEffectiveVerticalContentAlignment()) {
             case Enums.VerticalAlignment.Top:
-                swiperWrapper.style.alignItems = 'flex-start';
+                carouselWrapper.style.alignItems = 'flex-start';
                 break;
             case Enums.VerticalAlignment.Bottom:
-                swiperWrapper.style.alignItems = 'flex-end';
+                carouselWrapper.style.alignItems = 'flex-end';
                 break;
             default:
-                swiperWrapper.style.alignItems = 'center';
+                carouselWrapper.style.alignItems = 'center';
                 break;
         }
 
@@ -235,7 +235,7 @@ export class Carousel extends Container {
             //
             // See the "Browser Rendering Notes" section of this answer:
             // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
-            swiperWrapper.style.minHeight = '-webkit-min-content';
+            carouselWrapper.style.minHeight = '-webkit-min-content';
         }
 
         const prevElementDiv: HTMLElement = document.createElement("div");
@@ -263,33 +263,33 @@ export class Carousel extends Container {
                 renderedItem?.children[0]?.classList.add("ac-carousel-page-container");
 
                 if (renderedItem) {
-                    Utils.appendChild(swiperWrapper, renderedItem);
+                    Utils.appendChild(carouselWrapper, renderedItem);
                     this._renderedPages.push(page);
                 }
             }
         }
 
-        swiperContainer.appendChild(swiperWrapper as HTMLElement);
+        carouselContainer.appendChild(carouselWrapper as HTMLElement);
 
-        containerForAdorners.appendChild(swiperContainer);
+        containerForAdorners.appendChild(carouselContainer);
 
-        this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination);
 
         cardLevelContainer.addEventListener("focusin", (event) => {
-            if (!this._isSwiperInitialized) {
-                this._isSwiperInitialized = true;
-                this._swiper?.destroy();
-                this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+            if (!this._isCarouselInitialized) {
+                this._isCarouselInitialized = true;
+                this._carousel?.destroy();
+                this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination);
             }
         });
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
-    private _swiper?: Swiper;
-    private _isSwiperInitialized = false;
+    private _carousel?: Swiper;
+    private _isCarouselInitialized = false;
 
-    private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement): void {
+    private initializeCarouselControl(carouselContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement): void {
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [
@@ -322,20 +322,20 @@ export class Carousel extends Container {
             swiperOptions.autoplay = { delay: this.timer, pauseOnMouseEnter: true };
         }
 
-        const swiper: Swiper = new Swiper(swiperContainer, swiperOptions);
+        const carousel: Swiper = new Swiper(carouselContainer, swiperOptions);
 
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
 
-        swiperContainer.addEventListener("mouseenter", function(event) {
-            swiper.autoplay?.stop();
+        carouselContainer.addEventListener("mouseenter", function(event) {
+            carousel.autoplay?.stop();
         });
 
-        swiperContainer.addEventListener("mouseleave", function(event) {
-            swiper.autoplay?.start();
+        carouselContainer.addEventListener("mouseleave", function(event) {
+            carousel.autoplay?.start();
         });
 
-        this._swiper = swiper;
+        this._carousel = carousel;
     }
 
     private createCarouselPageInstance(source: any, context: SerializationContext): CarouselPage | undefined {
