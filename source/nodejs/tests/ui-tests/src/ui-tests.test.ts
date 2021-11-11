@@ -14,6 +14,7 @@ describe("Mock function", function() {
     const delayForInputRetrieval: number = 500;
     const delayForCarouselArrows: number = 1000;
     const delayForCarouselTimer: number = 5500;
+    const timeOutValue: number = 9000;
 
     // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
     // usually takes between 1 to 2 minutes but we have no way to determine when the server
@@ -185,5 +186,19 @@ describe("Mock function", function() {
         firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
 
-    }), 9000);
+    }), timeOutValue);
+
+    test("Test rtl on carousel", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel.rtl");
+
+        let firstCarouselPageVisibility = await testUtils.getElementWithId("firstCarouselPage");
+        Assert.strictEqual(firstCarouselPageVisibility.getAttribute('dir'), 'rtl');
+
+        let secondCarouselPageVisibility = await testUtils.getElementWithId("secondCarouselPage");
+        Assert.strictEqual(secondCarouselPageVisibility.getAttribute('dir'), 'ltr');
+
+        let thirdCarouselPageVisibility = await testUtils.getElementWithId("thirdCarouselPage");
+        Assert.strictEqual(thirdCarouselPageVisibility.getAttribute('dir'), 'rtl');
+
+    }), timeOutValue);
 });

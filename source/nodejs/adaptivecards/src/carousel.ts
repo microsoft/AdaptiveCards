@@ -28,7 +28,8 @@ export class CarouselPage extends Container {
     protected internalRender(): HTMLElement | undefined {
         const swiperSlide: HTMLElement = document.createElement("div");
         swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
-
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
         const renderedElement = super.internalRender();
         Utils.appendChild(swiperSlide, renderedElement);
         return swiperSlide;
@@ -199,13 +200,13 @@ export class Carousel extends Container {
         }
 
         const cardLevelContainer: HTMLElement = document.createElement("div");
-
-        const containerForAdorners: HTMLElement = document.createElement("div");
-        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
-        cardLevelContainer.appendChild(containerForAdorners);
-
         const swiperContainer: HTMLElement = document.createElement("div");
         swiperContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
+        this.applyRTL(swiperContainer);
+        //swiperContainer.dir = 'rtl';
+        cardLevelContainer.appendChild(swiperContainer);
 
         const swiperWrapper: HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
@@ -240,15 +241,15 @@ export class Carousel extends Container {
 
         const prevElementDiv: HTMLElement = document.createElement("div");
         prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
-        containerForAdorners.appendChild(prevElementDiv);
+        swiperContainer.appendChild(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
         nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
-        containerForAdorners.appendChild(nextElementDiv);
+        swiperContainer.appendChild(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
         pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
-        containerForAdorners.appendChild(pagination);
+        swiperContainer.appendChild(pagination);
 
         const requestedNumberOfPages: number = Math.min(this._pages.length, this.hostConfig.carousel.maxCarouselPages);
         if (this._pages.length > this.hostConfig.carousel.maxCarouselPages) {
@@ -271,8 +272,6 @@ export class Carousel extends Container {
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
         swiperContainer.tabIndex = 0;
-
-        containerForAdorners.appendChild(swiperContainer);
 
         this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
 
