@@ -13,7 +13,7 @@
 				"items": [
 					{
 						"type": "TextBlock",
-						"text": "Expected: RTL: *true*"
+						"text": "1. Expected: RTL: *true*"
 					},
 					{
 						"type": "TextBlock",
@@ -28,7 +28,7 @@
 				"items": [
 					{
 						"type": "TextBlock",
-						"text": "Expected: RTL: *false*"
+						"text": "2. Expected: RTL: *false*"
 					},
 					{
 						"type": "TextBlock",
@@ -42,7 +42,7 @@
 				"items": [
 					{
 						"type": "TextBlock",
-						"text": "Expected: RTL: *true*"
+						"text": "3. Expected: RTL: *true*"
 					},
 					{
 						"type": "TextBlock",

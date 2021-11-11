@@ -205,7 +205,6 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(swiperContainer);
-        //swiperContainer.dir = 'rtl';
         cardLevelContainer.appendChild(swiperContainer);
 
         const swiperWrapper: HTMLElement = document.createElement("div");
