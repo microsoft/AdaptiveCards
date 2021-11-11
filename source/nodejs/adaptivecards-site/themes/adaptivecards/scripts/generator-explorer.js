@@ -6,7 +6,7 @@ var path = require("path");
 
 function getPreviewClassName(version)
 {
-	return `ac-schema-version-${version?.replace(/\./, '-')}`;
+    return `ac-schema-version-${version?.replace(/\./, '-')}`;
 };
 
 hexo.extend.generator.register("generator-explorer", function (locals) {
