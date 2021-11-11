@@ -13,6 +13,7 @@ describe("Mock function", function() {
     // the input value. Only use this if you see some test flakiness. Value is given in ms
     const delayForInputRetrieval: number = 500;
     const delayForCarouselArrows: number = 1000;
+    const delayForCarouselTimer: number = 5500;
 
     // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
     // usually takes between 1 to 2 minutes but we have no way to determine when the server
@@ -156,5 +157,33 @@ describe("Mock function", function() {
         const secondCarouselPageVisibility: string =
             await testUtils.getCssPropertyValueForElementWithId("theSecondCarouselPage", "visibility");
         Assert.strictEqual("visible", secondCarouselPageVisibility);
+    }), 9000);
+
+    test("Test click on navigation does not cause sudden jump", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel");
+
+        let firstCarouselPageVisibility: string = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
+
+        Assert.strictEqual("visible", firstCarouselPageVisibility);
+
+        // wait for 3 pages to turn
+        await testUtils.delay(delayForCarouselTimer * 3);
+
+        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
+        Assert.strictEqual("hidden", firstCarouselPageVisibility);
+
+        const thirdCarouselPageVisibility: string =
+            await testUtils.getCssPropertyValueForElementWithId("theThirdCarouselPage", "visibility");
+        Assert.strictEqual("visible", thirdCarouselPageVisibility);
+
+        // cause the page to go the 2nd page
+        const leftArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-left"));
+        await leftArrow.click();
+        await testUtils.delay(delayForCarouselArrows);
+
+        // make sure firstCarouselPage is hidden
+        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
+        Assert.strictEqual("hidden", firstCarouselPageVisibility);
+
     }), 9000);
 });
