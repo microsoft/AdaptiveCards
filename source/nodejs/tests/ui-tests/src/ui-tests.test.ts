@@ -8,12 +8,17 @@ describe("Mock function", function() {
     let driver: Webdriver.WebDriver;
     let testUtils: TestUtils.TestUtils;
 
+    // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
+    // usually takes between 1 to 2 minutes but we have no way to determine when the server
+    // is ready to run tests. This issues is being tracked in issue #6716
+    const timeoutForServerStartupInCIBuild: number = 600000;
+
     beforeAll(async() => {
         driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
         await driver.get("http://127.0.0.1:8080/");
 
         testUtils = new TestUtils.TestUtils(driver);
-    });
+    }, timeoutForServerStartupInCIBuild);
 
     afterAll(async() => {
         if (driver) {
