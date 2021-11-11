@@ -200,12 +200,14 @@ export class Carousel extends Container {
         }
 
         const cardLevelContainer: HTMLElement = document.createElement("div");
+
         const swiperContainer: HTMLElement = document.createElement("div");
         swiperContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
-        // `isRtl()` will set the correct value of rtl by reading the value from the parents
-        this.rtl = this.isRtl();
-        this.applyRTL(swiperContainer);
-        cardLevelContainer.appendChild(swiperContainer);
+
+	let containerForAdorners: HTMLElement = document.createElement("div");
+        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+
+        cardLevelContainer.appendChild(containerForAdorners);
 
         const swiperWrapper: HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
@@ -240,15 +242,15 @@ export class Carousel extends Container {
 
         const prevElementDiv: HTMLElement = document.createElement("div");
         prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
-        swiperContainer.appendChild(prevElementDiv);
+        containerForAdorners.appendChild(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
         nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
-        swiperContainer.appendChild(nextElementDiv);
+        containerForAdorners.appendChild(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
         pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
-        swiperContainer.appendChild(pagination);
+        containerForAdorners.appendChild(pagination);
 
         const requestedNumberOfPages: number = Math.min(this._pages.length, this.hostConfig.carousel.maxCarouselPages);
         if (this._pages.length > this.hostConfig.carousel.maxCarouselPages) {
@@ -272,12 +274,18 @@ export class Carousel extends Container {
 
         swiperContainer.tabIndex = 0;
 
-        this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        containerForAdorners.appendChild(swiperContainer);
+
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
+        this.applyRTL(swiperContainer);
+
+        this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
 
         cardLevelContainer.addEventListener("keydown", (event) => {
             // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
            let activeIndex = this._swiper?.activeIndex;
-           this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+           this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
            if (activeIndex) { 
                this._swiper?.slideTo(activeIndex);
            }
@@ -288,7 +296,7 @@ export class Carousel extends Container {
 
     private _swiper?: Swiper;
 
-    private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement): void {
+    private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, rtl: boolean | undefined): void {
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [
@@ -304,8 +312,8 @@ export class Carousel extends Container {
                 clickable: true
             },
             navigation: {
-                prevEl: prevElement,
-                nextEl: nextElement
+                prevEl: rtl == undefined || !rtl ? prevElement : nextElement,
+                nextEl: rtl == undefined || !rtl ? nextElement : prevElement
             },
             a11y: {
                 enabled: true
