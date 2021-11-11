@@ -18,70 +18,82 @@ using namespace Windows::Foundation;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveTableRenderer::RenderCell(
-        _In_ IAdaptiveTableCell* cell,
-        _In_ IAdaptiveRenderContext* renderContext,
-        _In_ IAdaptiveRenderArgs* renderArgs,
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalContentAlignment,
-        boolean showGridLines,
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle gridStyle,
-        UINT32 rowNumber,
-        UINT32 columnNumber,
-        _COM_Outptr_ IFrameworkElement** renderedCell)
+    rtxaml::FrameworkElement RenderCell(rtom::AdaptiveTableCell const& cell,
+                                        rtrender::AdaptiveRenderContext const& renderContext,
+                                        rtrender::AdaptiveRenderArgs const& renderArgs,
+                                        winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
+                                        boolean showGridLines,
+                                        rtom::ContainerStyle gridStyle,
+                                        uint32_t rowNumber,
+                                        uint32_t columnNumber)
     {
-        ComPtr<IAdaptiveTableCell> tableCell(cell);
-        ComPtr<IAdaptiveContainer> tableCellAsContainer;
-        RETURN_IF_FAILED(tableCell.As(&tableCellAsContainer));
+        /* ComPtr<IAdaptiveTableCell> tableCell(cell);
+         ComPtr<IAdaptiveContainer> tableCellAsContainer;
+         RETURN_IF_FAILED(tableCell.As(&tableCellAsContainer));*/
 
         // Get the vertical content alignemnt from the cell
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> cellVerticalAlignment;
-        RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
+        /*ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>
+        cellVerticalAlignment;
+        RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));*/
+        auto cellVerticalAlignment = cell.VerticalContentAlignment();
 
         // If the cell doesn't have a vertical content alignment, pass in the one from the parent
         if (cellVerticalAlignment == nullptr)
         {
-            RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(verticalContentAlignment));
+            // RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(verticalContentAlignment));
+            cell.VerticalContentAlignment(verticalContentAlignment);
         }
 
         if (showGridLines)
         {
             // If we're showing grid lines add padding so the content isn't against the grid lines
-            RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(true));
+            //RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(true));
+            renderArgs.AddContainerPadding(true);
         }
 
         // Render the cell as a container
-        ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
-        RETURN_IF_FAILED(renderContext->get_ElementRenderers(&rendererRegistration));
+      /*  ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
+        RETURN_IF_FAILED(renderContext->get_ElementRenderers(&rendererRegistration));*/
+        auto rendererRegistration = renderContext.ElementRenderers();
 
-        ComPtr<IAdaptiveElementRenderer> containerRenderer;
+       /* ComPtr<IAdaptiveElementRenderer> containerRenderer;
         HString containerTypeString;
         RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
-        RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));
+        RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));*/
+        //winrt::hstring containerTypeString{L"Container"};
+        // TODO: should be fine, right?
+        auto containerRenderer = rendererRegistration.Get(L"Container");
 
-        ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
-        RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));
+        /*ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
+        RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));*/
 
-        ComPtr<IUIElement> cellRenderedAsContainer;
-        RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &cellRenderedAsContainer));
-
+       /* ComPtr<IUIElement> cellRenderedAsContainer;
+        RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &cellRenderedAsContainer));*/
+        // TODO: no need to cast cell to IAdapativeCardElement, right?
+        auto cellRenderedAsContainer = containerRenderer.Render(cell, renderContext, renderArgs);
         // Handle Grid Lines or Cell Spacing
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        /*ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
+        auto hostConfig = renderContext.HostConfig();
 
-        ComPtr<IFrameworkElement> cellFrameworkElement;
+        //ComPtr<IFrameworkElement> cellFrameworkElement;
+        rtxaml::FrameworkElement cellFrameworkElement{nullptr};
         if (showGridLines)
         {
             // If we're showing grid lines put the cell in a border
-            ComPtr<IBorder> cellBorder =
+            /*ComPtr<IBorder> cellBorder =
                 XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
             ABI::Windows::UI::Color borderColor;
             RETURN_IF_FAILED(GetBorderColorFromStyle(gridStyle, hostConfig.Get(), &borderColor));
-            RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(borderColor).Get()));
+            RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(borderColor).Get()));*/
+
+            rtxaml::Controls::Border cellBorder{};
+            auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
 
             // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
             // cells respectively in order to avoid double-thickness borders
-            Thickness borderThickness = {0, 0, 1, 1};
+            rtxaml::Thickness borderThickness = {0, 0, 1, 1};
             if (columnNumber == 0)
             {
                 borderThickness.Left = 1;
@@ -91,30 +103,36 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 borderThickness.Top = 1;
             }
 
-            RETURN_IF_FAILED(cellBorder->put_BorderThickness(borderThickness));
+            /*RETURN_IF_FAILED(cellBorder->put_BorderThickness(borderThickness));
 
             RETURN_IF_FAILED(cellBorder->put_Child(cellRenderedAsContainer.Get()));
 
-            RETURN_IF_FAILED(cellBorder.As(&cellFrameworkElement));
-
+            RETURN_IF_FAILED(cellBorder.As(&cellFrameworkElement));*/
+            cellBorder.BorderThickness(borderThickness);
+            cellBorder.Child(cellRenderedAsContainer);
+            cellFrameworkElement = cellBorder;
             // Clear the container padding flag from the renderArgs
-            RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(false));
+            //RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(false));
+            // TODO: how do we know it wasn't true before? should we save and then reassign?
+            renderArgs.AddContainerPadding(false);
         }
         else
         {
             // If we're not showing gridlines, use the rendered cell as the frameworkElement, and add the cell spacing
-            RETURN_IF_FAILED(cellRenderedAsContainer.As(&cellFrameworkElement));
+           /* RETURN_IF_FAILED(cellRenderedAsContainer.As(&cellFrameworkElement));*/
+            cellFrameworkElement = cellRenderedAsContainer.as<rtxaml::FrameworkElement>();
 
-            ComPtr<IAdaptiveTableConfig> tableConfig;
-            RETURN_IF_FAILED(hostConfig->get_Table(&tableConfig));
+            /*ComPtr<IAdaptiveTableConfig> tableConfig;
+            RETURN_IF_FAILED(hostConfig->get_Table(&tableConfig));*/
+            auto tableConfig = hostConfig.Table();
 
-            UINT32 cellSpacing;
-            RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
-            DOUBLE cellSpacingDouble = static_cast<DOUBLE>(cellSpacing);
+            uint32_t cellSpacing = tableConfig.CellSpacing();
+            //RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
+            double cellSpacingDouble = static_cast<double>(cellSpacing);
 
             // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
             // or leftmost cells to avoid creating margin outside the table.
-            Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+            rtxaml::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
             if (columnNumber == 0)
             {
                 marginThickness.Left = 0;
@@ -124,24 +142,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 marginThickness.Top = 0;
             }
 
-            RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
+            //RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
+            cellFrameworkElement.Margin(marginThickness);
         }
 
         // If the cell didn't have a vertical content alignment when we started, set it back to null
         if (cellVerticalAlignment == nullptr)
         {
-            RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(nullptr));
+            //RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(nullptr));
+            cell.VerticalContentAlignment(nullptr);
+            
         }
 
-        RETURN_IF_FAILED(cellFrameworkElement.CopyTo(renderedCell));
+        /*RETURN_IF_FAILED(cellFrameworkElement.CopyTo(renderedCell));*/
+        return cellFrameworkElement;
 
-        return S_OK;
+        //return S_OK;
     }
 
-   void RenderRow(rtom::AdaptiveTableRow const& row,
-                   winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveTableColumnDefinition const&> const& columns,
-                  rtrender::AdaptiveRenderContext const& renderContext,
-                  rtrender::AdaptiveRenderArgs const& renderArgs,
+    void RenderRow(rtom::AdaptiveTableRow const& row,
+                   winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveTableColumnDefinition> const& columns,
+                   rtrender::AdaptiveRenderContext const& renderContext,
+                   rtrender::AdaptiveRenderArgs const& renderArgs,
                    winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
                    boolean firstRowAsHeaders,
                    boolean showGridLines,
@@ -152,7 +174,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // Create the row definition and add it to the grid
         /*ComPtr<IRowDefinition> xamlRowDefinition =
             XamlHelpers::CreateABIClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));*/
-       rtxaml::Controls::RowDefinition xamlRowDefinition{};
+        rtxaml::Controls::RowDefinition xamlRowDefinition{};
 
         /*ComPtr<IVector<RowDefinition*>> xamlRowDefinitions;
         RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&xamlRowDefinitions));
@@ -162,8 +184,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         xamlRowDefinitions.Append(xamlRowDefinition);
 
         // Save the current text style
-        /*ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>> contextTextStyle;
-        RETURN_IF_FAILED(renderContext->get_TextStyle(&contextTextStyle));*/
+        /*ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>>
+        contextTextStyle; RETURN_IF_FAILED(renderContext->get_TextStyle(&contextTextStyle));*/
         auto contextTextStyle = renderContext.TextStyle();
 
         // Set the column header style if this is the first row and firstRowAsHeaders is set
@@ -172,26 +194,27 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             // Set the text style to TextStyle::ColumnHeader
             // TODO: it will create IReference automatically, right?
             // TODO: fix firstRowAsHeader(s) variable name
-           renderContext.TextStyle(rtom::TextStyle::ColumnHeader);
-                /*winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinUI3::TextStyle::ColumnHeader)
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>>()
-                    .get()));*/
+            renderContext.TextStyle(rtom::TextStyle::ColumnHeader);
+            /*winrt::box_value(ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle::ColumnHeader)
+                .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>>()
+                .get()));*/
         }
 
         // Save the current horizontal alignment from the context
-       /* ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> contextHorizontalAlignment;
-        RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&contextHorizontalAlignment));*/
+        /* ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> contextHorizontalAlignment;
+         RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&contextHorizontalAlignment));*/
 
         auto contextHorizontalAlignment = renderContext.HorizontalContentAlignment();
 
         // Get the horizontal alignment for this row
-        //ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
-        //RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
+        // ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
+        // RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
         auto rowHorizontalAlignment = row.HorizontalCellContentAlignment();
 
         // Get the vertical alignemnt for this row
-       /* ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> rowVerticalContentAlignment;
-        RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalContentAlignment));*/
+        /* ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>
+         rowVerticalContentAlignment;
+         RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalContentAlignment));*/
         auto rowVerticalContentAlignment = row.VerticalCellContentAlignment();
 
         // If there's no row vertical alignment, use the passed in value
@@ -200,8 +223,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             rowVerticalContentAlignment = verticalContentAlignment;
         }
 
-       /* ComPtr<IGridStatics> gridStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));*/
+        /* ComPtr<IGridStatics> gridStatics;
+         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));*/
         rtxaml::Controls::Grid gridStatics{};
 
         // Create the cells
@@ -210,72 +233,73 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         auto cells = row.Cells();
 
         uint32_t columnNumber = 0;
-    /*    
-        IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(
-            cells.Get(),
-            true,
-            [&](IAdaptiveTableCell* cell)*/
+        /*
+            IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(
+                cells.Get(),
+                true,
+                [&](IAdaptiveTableCell* cell)*/
         // TODO: how do we handle errors here? do we wanna use IterOverVecWithFailure?
-        for (auto cell: cells)
+        for (auto cell : cells)
+        {
+            // Get the horizontal alignment from the column definition
+            /* ComPtr<IAdaptiveTableColumnDefinition> columnDefinition;
+             RETURN_IF_FAILED(columns->GetAt(columnNumber, &columnDefinition));*/
+            auto columnDefinition = columns.GetAt(columnNumber);
+
+            /*ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> columnHorizontalAlignment;
+            RETURN_IF_FAILED(columnDefinition->get_HorizontalCellContentAlignment(&columnHorizontalAlignment));*/
+            auto columnHorizontalAlignment = columnDefinition.HorizontalCellContentAlignment();
+
+            // Use row if present, then column, then table (which was passed in from the context)
+            if (rowHorizontalAlignment != nullptr)
             {
-                // Get the horizontal alignment from the column definition
-               /* ComPtr<IAdaptiveTableColumnDefinition> columnDefinition;
-                RETURN_IF_FAILED(columns->GetAt(columnNumber, &columnDefinition));*/
-                auto columnDefinition = columns.GetAt(columnNumber);
-
-                /*ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> columnHorizontalAlignment;
-                RETURN_IF_FAILED(columnDefinition->get_HorizontalCellContentAlignment(&columnHorizontalAlignment));*/
-                auto columnHorizontalAlignment = columnDefinition.HorizontalCellContentAlignment();
-
-                // Use row if present, then column, then table (which was passed in from the context)
-                if (rowHorizontalAlignment != nullptr)
-                {
-                   renderContext.HorizontalContentAlignment(rowHorizontalAlignment);
-                }
-                else
-                {
-                    renderContext.HorizontalContentAlignment(GetValueFromRef(columnHorizontalAlignment, contextHorizontalAlignment.Value()));
-                }
-               /* else if (columnHorizontalAlignment != nullptr)
-                {
-                    RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(columnHorizontalAlignment.Get()));
-                }
-                else
-                {
-                    RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(contextHorizontalAlignment.Get()));
-                }*/
-
-                // Render the cell
-               /* ComPtr<IFrameworkElement> cellFrameworkElement;
-                RETURN_IF_FAILED(RenderCell(
-                    cell, renderContext, renderArgs, rowVerticalContentAlignment.Get(), showGridLines, gridStyle, rowNumber, columnNumber, &cellFrameworkElement));*/
-                auto cellFrameworkElement = RenderCell(
-                    cell, renderContext, renderArgs, rowVerticalContentAlignment, showGridLines, gridStyle, rowNumber, columnNumber);
-
-                // Set the row and column numbers on the cell
-                /*RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), columnNumber));
-                RETURN_IF_FAILED(gridStatics->SetRow(cellFrameworkElement.Get(), rowNumber));*/
-                rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, columnNumber);
-                rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, rowNumber);
-
-                // Add the cell to the panel
-                /*ComPtr<IGrid> localXamlGrid(xamlGrid);
-                ComPtr<IPanel> xamlGridAsPanel;
-                RETURN_IF_FAILED(localXamlGrid.As(&xamlGridAsPanel));
-                XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement.Get(), xamlGridAsPanel.Get());*/
-                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
-
-                columnNumber++;
+                renderContext.HorizontalContentAlignment(rowHorizontalAlignment);
             }
+            else
+            {
+                // TODO: it's okay to pass the enum instead of ref, right? constructor will be invoked?
+                renderContext.HorizontalContentAlignment(
+                    GetValueFromRef(columnHorizontalAlignment, contextHorizontalAlignment.Value()));
+            }
+            /* else if (columnHorizontalAlignment != nullptr)
+             {
+                 RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(columnHorizontalAlignment.Get()));
+             }
+             else
+             {
+                 RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(contextHorizontalAlignment.Get()));
+             }*/
+
+            // Render the cell
+            /* ComPtr<IFrameworkElement> cellFrameworkElement;
+             RETURN_IF_FAILED(RenderCell(
+                 cell, renderContext, renderArgs, rowVerticalContentAlignment.Get(), showGridLines, gridStyle,
+             rowNumber, columnNumber, &cellFrameworkElement));*/
+            auto cellFrameworkElement =
+                RenderCell(cell, renderContext, renderArgs, rowVerticalContentAlignment, showGridLines, gridStyle, rowNumber, columnNumber);
+
+            // Set the row and column numbers on the cell
+            /*RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), columnNumber));
+            RETURN_IF_FAILED(gridStatics->SetRow(cellFrameworkElement.Get(), rowNumber));*/
+            rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, columnNumber);
+            rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, rowNumber);
+
+            // Add the cell to the panel
+            /*ComPtr<IGrid> localXamlGrid(xamlGrid);
+            ComPtr<IPanel> xamlGridAsPanel;
+            RETURN_IF_FAILED(localXamlGrid.As(&xamlGridAsPanel));
+            XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement.Get(), xamlGridAsPanel.Get());*/
+            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
+
+            columnNumber++;
+        }
 
         // Reset the render context to its original values
-       /* RETURN_IF_FAILED(renderContext->put_TextStyle(contextTextStyle.Get()));
-        RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(contextHorizontalAlignment.Get()));*/
-            renderContext.TextStyle(contextTextStyle);
-            renderContext.HorizontalContentAlignment(contextHorizontalAlignment); 
+        /* RETURN_IF_FAILED(renderContext->put_TextStyle(contextTextStyle.Get()));
+         RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(contextHorizontalAlignment.Get()));*/
+        renderContext.TextStyle(contextTextStyle);
+        renderContext.HorizontalContentAlignment(contextHorizontalAlignment);
     }
-
-
 
     rtxaml::UIElement AdaptiveTableRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
                                                     rtrender::AdaptiveRenderContext const& renderContext,

@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             uint32_t columnNumber);
 
         void RenderRow(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow const& row,
-                       winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition const&> const& columns,
+                       winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition> const& columns,
                        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
                        winrt::Windows::Foundation::IReference<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment> const& verticalContentAlignment,

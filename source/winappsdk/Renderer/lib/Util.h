@@ -348,11 +348,15 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::Con
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(rtom::ContainerStyle const& style, rtrender::AdaptiveHostConfig const& hostConfig);
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle const& style,
+                                                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig);
 
 HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 _Out_ ABI::Windows::UI::Color* borderColor) noexcept;
+
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
+                                                  winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig);
 
 HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,

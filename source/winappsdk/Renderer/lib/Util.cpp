@@ -534,6 +534,21 @@ try
 }
 CATCH_RETURN();
 
+winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style,
+                                rtrender::AdaptiveHostConfig const& hostConfig)
+
+{
+    // TODO: how do I handle error here?
+    /* ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> styleDefinition;
+     RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
+     RETURN_IF_FAILED(styleDefinition->get_BorderColor(borderColor));*/
+
+    // TODO: what if this styleDef nullptr? check for that, see above the method from WRL (try/catch)
+    auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
+    return styleDefinition.BorderColor();
+
+}
+
 // HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
