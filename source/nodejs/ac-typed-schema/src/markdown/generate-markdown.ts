@@ -51,7 +51,7 @@ const __ = markdownConfig.i18n.__;
 export { __ };
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
-	var md = "";
+	var md = '';
 
 	var properties: Map<string, SchemaProperty> = classDefinition.getAllProperties();
 	if (properties !== undefined && properties.size > 0) {
