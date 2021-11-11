@@ -533,6 +533,19 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    void HandleTableColumnWidth(rtom::AdaptiveTableColumnDefinition const& column, rtxaml::Controls::ColumnDefinition const& columnDefinition)
+    {
+        auto widthRef = column.Width();
+        auto pixelWidthRef = column.PixelWidth();
+
+        uint32_t width = GetValueFromRef(widthRef, (uint32_t)0);
+        uint32_t pixelWidth = GetValueFromRef(widthRef, (uint32_t)0);
+
+        bool isWidthUnset = (widthRef == nullptr) && (pixelWidthRef == nullptr);
+
+        columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
+    }
+
     void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImage,
                                _In_ IAdaptiveRenderContext* renderContext,
