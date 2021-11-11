@@ -45,6 +45,13 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
     CATCH_RETURN();
 
+    rtxaml::FrameworkElement BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
+                                                           rtrender::AdaptiveRenderContext renderContext,
+                                                           XamlBuilder* xamlBuilder,
+                                                           rtom::ContainerStyle defaultContainerStyle)
+    {
+    }
+
     HRESULT XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                        _In_ IAdaptiveRenderContext* renderContext,
@@ -72,7 +79,8 @@ namespace AdaptiveCards::Rendering::WinUI3
                     containerStyle = cardStyle;
                 }
             }
-            auto renderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, to_winrt(adaptiveCard), nullptr);
+            auto renderArgs =
+                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, to_winrt(adaptiveCard), nullptr);
 
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement;
@@ -105,8 +113,11 @@ namespace AdaptiveCards::Rendering::WinUI3
             // Enumerate the child items of the card and build xaml for them
             ComPtr<IVector<IAdaptiveCardElement*>> body;
             RETURN_IF_FAILED(adaptiveCard->get_Body(&body));
-            auto bodyRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, to_winrt(adaptiveCard), nullptr);
-            //RETURN_IF_FAILED(
+            auto bodyRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle,
+                                                                                            rootAsFrameworkElement,
+                                                                                            to_winrt(adaptiveCard),
+                                                                                            nullptr);
+            // RETURN_IF_FAILED(
             //    BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment;
@@ -323,16 +334,16 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
 
     void XamlBuilder::BuildPanelChildren(
-                            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
-                            rtxaml::Controls::Panel ParentPanel,
-                            rtrender::AdaptiveRenderContext context,
-                            rtrender::AdaptiveRenderArgs renderArgs,
-                            std::function<void(rtxaml::UIElement child)> childCreatedCallback)
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
+        rtxaml::Controls::Panel ParentPanel,
+        rtrender::AdaptiveRenderContext context,
+        rtrender::AdaptiveRenderArgs renderArgs,
+        std::function<void(rtxaml::UIElement child)> childCreatedCallback)
     {
         uint32_t childrenSize = children.Size();
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
         rtrender::AdaptiveFeatureRegistration featureRegistration = context.FeatureRegistration();
-        for (auto elem: children)
+        for (auto elem : children)
         {
             // Get fallback state
             rtom::FallbackType elementFallback = elem.FallbackType();
@@ -356,7 +367,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
             if (elementRenderer == nullptr || shouldFallback)
             {
-               XamlHelpers::RenderFallback(elem, context, renderArgs, newControl, renderedElement);
+                XamlHelpers::RenderFallback(elem, context, renderArgs, newControl, renderedElement);
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
@@ -377,9 +388,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
             // Revert the ancestorHasFallback value
             renderArgs->put_AncestorHasFallback(ancestorHasFallback);
-
         }
-
     }
 
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
@@ -397,66 +406,74 @@ namespace AdaptiveCards::Rendering::WinUI3
         ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
         RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
 
-        HRESULT hr = IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
-            HRESULT hr = S_OK;
-
-            // Get fallback state
-            ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
-            RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
-            const bool elementHasFallback = (elementFallback != FallbackType_None);
-            RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
-
-            // Check to see if element's requirements are being met
-            bool requirementsMet;
-            RETURN_IF_FAILED(MeetsRequirements(element, featureRegistration.Get(), &requirementsMet));
-            hr = requirementsMet ? S_OK : E_PERFORM_FALLBACK;
-
-            // Get element renderer
-            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-            RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-            ComPtr<IAdaptiveElementRenderer> elementRenderer;
-            HString elementType;
-            RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
-            RETURN_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
-
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-            // If we have a renderer, render the element
-            ComPtr<IUIElement> newControl;
-            ComPtr<IAdaptiveCardElement> renderedElement;
-            if (SUCCEEDED(hr) && elementRenderer != nullptr)
+        HRESULT hr = IterateOverVectorWithFailure<IAdaptiveCardElement>(
+            children,
+            ancestorHasFallback,
+            [&](IAdaptiveCardElement* element)
             {
-                hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
-                renderedElement = element;
-            }
+                HRESULT hr = S_OK;
 
-            // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
-            if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
-            {
-                RETURN_IF_FAILED(XamlHelpers::RenderFallback(element, renderContext, renderArgs, &newControl, &renderedElement));
-            }
+                // Get fallback state
+                ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
+                RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
+                const bool elementHasFallback = (elementFallback != FallbackType_None);
+                RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
 
-            // If we got a control, add a separator if needed and the control to the parent panel
-            if (newControl != nullptr)
-            {
-                ComPtr<IUIElement> separator;
-                XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
+                // Check to see if element's requirements are being met
+                bool requirementsMet;
+                RETURN_IF_FAILED(MeetsRequirements(element, featureRegistration.Get(), &requirementsMet));
+                hr = requirementsMet ? S_OK : E_PERFORM_FALLBACK;
 
-                // If the renderedElement was an input, render the label and error message
-                ComPtr<IAdaptiveInputElement> inputElement;
-                if (SUCCEEDED(renderedElement.As(&inputElement)))
+                // Get element renderer
+                ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+                RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+                ComPtr<IAdaptiveElementRenderer> elementRenderer;
+                HString elementType;
+                RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
+                RETURN_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
+
+                ComPtr<IAdaptiveHostConfig> hostConfig;
+                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+                // If we have a renderer, render the element
+                ComPtr<IUIElement> newControl;
+                ComPtr<IAdaptiveCardElement> renderedElement;
+                if (SUCCEEDED(hr) && elementRenderer != nullptr)
                 {
-                    XamlHelpers::HandleLabelAndErrorMessage(inputElement.Get(), renderContext, renderArgs, newControl.GetAddressOf());
+                    hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
+                    renderedElement = element;
                 }
 
-                RETURN_IF_FAILED(XamlHelpers::AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
-            }
+                // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
+                if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
+                {
+                    RETURN_IF_FAILED(XamlHelpers::RenderFallback(element, renderContext, renderArgs, &newControl, &renderedElement));
+                }
 
-            // Revert the ancestorHasFallback value
-            renderArgs->put_AncestorHasFallback(ancestorHasFallback);
-            return hr;
-        });
+                // If we got a control, add a separator if needed and the control to the parent panel
+                if (newControl != nullptr)
+                {
+                    ComPtr<IUIElement> separator;
+                    XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
+
+                    // If the renderedElement was an input, render the label and error message
+                    ComPtr<IAdaptiveInputElement> inputElement;
+                    if (SUCCEEDED(renderedElement.As(&inputElement)))
+                    {
+                        XamlHelpers::HandleLabelAndErrorMessage(inputElement.Get(),
+                                                                renderContext,
+                                                                renderArgs,
+                                                                newControl.GetAddressOf());
+                    }
+
+                    RETURN_IF_FAILED(
+                        XamlHelpers::AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
+                }
+
+                // Revert the ancestorHasFallback value
+                renderArgs->put_AncestorHasFallback(ancestorHasFallback);
+                return hr;
+            });
 
         RETURN_IF_FAILED(XamlHelpers::SetSeparatorVisibility(parentPanel));
         return hr;

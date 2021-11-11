@@ -2,29 +2,17 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
+#include "AdaptiveShowCardActionRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveShowCardActionRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer>
+    struct AdaptiveShowCardActionRenderer : AdaptiveShowCardActionRendererT<AdaptiveShowCardActionRenderer>
     {
-        AdaptiveRuntime(AdaptiveShowCardActionRenderer);
-
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
-
-        static HRESULT BuildShowCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* showCard,
-                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                     bool isBottomActionBar,
-                                     _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard) noexcept;
 
         static winrt::Windows::UI::Xaml::UIElement
         BuildShowCard(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& showCard,
@@ -32,6 +20,12 @@ namespace AdaptiveCards::Rendering::WinUI3
                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
                       bool isBottomActionBar);
     };
+}
 
-    ActivatableClass(AdaptiveShowCardActionRenderer);
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveShowCardActionRenderer
+        : AdaptiveShowCardActionRendererT<AdaptiveShowCardActionRenderer, implementation::AdaptiveShowCardActionRenderer>
+    {
+    };
 }
