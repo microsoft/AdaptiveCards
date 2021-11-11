@@ -5741,6 +5741,12 @@ export class Container extends ContainerBase {
         super.applyBackground();
     }
 
+    protected applyRTL(element : HTMLElement) {
+        if (this.rtl !== undefined) {
+            element.dir = this.rtl ? "rtl" : "ltr";
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._renderedItems = [];
 
@@ -5749,9 +5755,7 @@ export class Container extends ContainerBase {
 
         let element = document.createElement("div");
 
-        if (this.rtl !== undefined) {
-            element.dir = this.rtl ? "rtl" : "ltr";
-        }
+        this.applyRTL(element);
 
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.style.display = "flex";
