@@ -4270,15 +4270,6 @@ export abstract class SubmitActionBase extends Action {
         this._originalData = value;
         this._isPrepared = false;
     }
-
-    get currentCarouselPageId(): string | undefined {
-        const root = this.getRootObject() as Container;
-        if (root.getItemCount() === 1 && root.getItemAt(0).getJsonTypeName() === "Carousel") {
-            const carouselElement = root.getItemAt(0) as Carousel;
-            return carouselElement.currentPageId;
-        }
-        return undefined;
-    }
 }
 
 export class SubmitAction extends SubmitActionBase {
