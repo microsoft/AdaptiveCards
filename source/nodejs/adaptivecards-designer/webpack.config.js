@@ -94,7 +94,7 @@ module.exports = (env, argv) => {
 					from: 'src/adaptivecards-designer.css',
 					to: './[name][ext]'
 				},
-                {
+				{
 					from: 'node_modules/adaptivecards/dist/adaptivecards-carousel.css',
 					to: './[name][ext]'
 				},

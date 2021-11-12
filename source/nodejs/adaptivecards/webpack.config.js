@@ -41,15 +41,15 @@ module.exports = (env, argv) => {
 						{
 							from: 'src/scss/adaptivecards*',
 							to: '../dist/[name][ext]'
-                        },
-                        {
+						},
+						{
 							from: 'src/scss/adaptivecards*',
 							to: '../lib/[name][ext]'
 						},
-                        {
-                            from: 'lib/adaptivecards*.css*',
-                            to: '../dist/[name][ext]'
-                        }
+						{
+							from: 'lib/adaptivecards*.css*',
+							to: '../dist/[name][ext]'
+						}
 					]
 				}
 			),
