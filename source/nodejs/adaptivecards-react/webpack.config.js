@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
     const mode = argv.mode || 'development';
@@ -8,7 +9,7 @@ module.exports = (env, argv) => {
 
     return {
         mode: mode,
-        entry: {'adaptivecards-react': './src/adaptivecards-react.ts'},
+        entry: { 'adaptivecards-react': './src/adaptivecards-react.ts' },
         output: {
             path: path.resolve(__dirname, './dist'),
             filename: devMode ? '[name].js' : '[name].min.js',
@@ -17,20 +18,29 @@ module.exports = (env, argv) => {
             globalObject: 'this'
         },
         devtool: devMode ? 'inline-source-map' : 'source-map',
-        devServer: {contentBase: './dist'},
+        devServer: { contentBase: './dist' },
         externals: {
             'react': 'React',
         },
-        resolve: {extensions: ['.ts', '.tsx', '.js', '.json']},
+        resolve: { extensions: ['.ts', '.tsx', '.js'] },
         module: {
             rules: [
                 {
                     test: /\.tsx?$/,
                     loader: 'ts-loader',
                     exclude: /(node_modules|__tests__)/
-                },
-                {test: /\.css$/, use: ['style-loader', 'css-loader']}
+                }
             ]
-        }
+        },
+        plugins: [
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: 'node_modules/adaptivecards/dist/*.css',
+                        to: './[name][ext]'
+                    }
+                ]
+            })
+        ]
     };
 }
