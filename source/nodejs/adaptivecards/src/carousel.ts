@@ -28,7 +28,8 @@ export class CarouselPage extends Container {
     protected internalRender(): HTMLElement | undefined {
         const carouselSlide: HTMLElement = document.createElement("div");
         carouselSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
-
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
         const renderedElement = super.internalRender();
         Utils.appendChild(carouselSlide, renderedElement);
         return carouselSlide;
@@ -200,12 +201,13 @@ export class Carousel extends Container {
 
         const cardLevelContainer: HTMLElement = document.createElement("div");
 
-        const containerForAdorners: HTMLElement = document.createElement("div");
-        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
-        cardLevelContainer.appendChild(containerForAdorners);
-
         const carouselContainer: HTMLElement = document.createElement("div");
         carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
+
+	const containerForAdorners: HTMLElement = document.createElement("div");
+        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+
+        cardLevelContainer.appendChild(containerForAdorners);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
         carouselWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
@@ -271,25 +273,31 @@ export class Carousel extends Container {
 
         carouselContainer.appendChild(carouselWrapper as HTMLElement);
 
+        carouselContainer.tabIndex = 0;
+
         containerForAdorners.appendChild(carouselContainer);
 
-        this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination);
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
+        this.applyRTL(carouselContainer);
 
-        cardLevelContainer.addEventListener("focusin", (event) => {
-            if (!this._isCarouselInitialized) {
-                this._isCarouselInitialized = true;
-                this._carousel?.destroy();
-                this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination);
-            }
-        });
+        this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
+
+        cardLevelContainer.addEventListener("keydown", (event) => {
+            // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
+           let activeIndex = this._carousel?.activeIndex;
+           this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
+           if (activeIndex) { 
+               this._carousel?.slideTo(activeIndex);
+           }
+        }, {once : true});
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
-    private _carousel?: Swiper;
-    private _isCarouselInitialized = false;
+    private _carousel?: Swiper;    
 
-    private initializeCarouselControl(carouselContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement): void {
+    private initializeCarouselControl(carouselContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, rtl: boolean | undefined): void {
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [
@@ -305,8 +313,8 @@ export class Carousel extends Container {
                 clickable: true
             },
             navigation: {
-                prevEl: prevElement,
-                nextEl: nextElement
+                prevEl: rtl == undefined || !rtl ? prevElement : nextElement,
+                nextEl: rtl == undefined || !rtl ? nextElement : prevElement
             },
             a11y: {
                 enabled: true

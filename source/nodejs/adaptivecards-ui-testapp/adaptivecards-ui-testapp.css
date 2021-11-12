@@ -538,6 +538,10 @@ body {
     visibility: visible;
 }
 
+.ac-container.ac-carousel-page-container {
+    width: 100%;
+}
+
 .swiper-slide.ac-carousel-page {
     text-align: center;
     font-size: 18px;
@@ -560,10 +564,6 @@ body {
     width: 100%;
 
     visibility: hidden;
-}
-
-.ac-container.ac-carousel-page-container {
-    width: 100%;
 }
 
 .swiper-button-next.ac-carousel-right::after {
