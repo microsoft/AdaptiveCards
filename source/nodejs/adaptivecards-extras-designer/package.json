@@ -28,7 +28,7 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.11.0-alpha.0",
+		"adaptivecards": "^3.0.0-beta.1",
 		"adaptivecards-designer": "^2.4.0-alpha.0",
 		"adaptivecards-extras": "^0.2.0-alpha.0"
 	}
