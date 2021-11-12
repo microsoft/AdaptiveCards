@@ -21,9 +21,7 @@ var simpleAssets = [
 	"node_modules/highlightjs/highlight.pack.min.js",
 	"node_modules/highlightjs/styles/default.css",
 	"node_modules/jquery/dist/jquery.min.js",
-	"node_modules/markdown-it/dist/markdown-it.min.js",
-	"node_modules/swiper/swiper-bundle.min.css",
-	"node_modules/swiper/swiper-bundle.min.js",
+	"node_modules/markdown-it/dist/markdown-it.min.js"
 ];
 
 // These are the other asset files that need to be copied into a specific location
@@ -42,7 +40,7 @@ var customAssets = [
     {
 		// Unversioned JSON schema URL, set to the 1.3 (current) version as versioned schema paths are not in use.
 		// May be deprecated in the future in favor of versioned schema paths.
-        path: "../../../schemas/1.3.0/adaptive-card.json",
+        path: "../../../schemas/1.5.0/adaptive-card.json",
         dest: function (p) { return "schemas/adaptive-card.json"; }
     },
     {
@@ -64,8 +62,20 @@ var customAssets = [
 		noHash: true
 	},
 	{
+        // designer module (hashing not working for CSS files; the designer expects certain filenames)
+        path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.css",
+		dest: function (p) { return p; },
+		noHash: true
+	},
+	{
         // monaco-editor module
         path: "node_modules/monaco-editor/min/vs/**/*.*",
+		dest: function (p) { return p; },
+		noHash: true
+    },
+	{
+        // monaco-editor module maps, for science
+        path: "node_modules/monaco-editor/min-maps/vs/**/*.*",
 		dest: function (p) { return p; },
 		noHash: true
     },
@@ -80,8 +90,6 @@ var customAssets = [
 		dest: function (p) { return "js/" + path.basename(p) }
 	}
 ];
-
-
 
 hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 

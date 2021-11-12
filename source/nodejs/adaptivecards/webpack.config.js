@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ConcatPlugin = require('webpack-concat-files-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -26,45 +25,31 @@ module.exports = (env, argv) => {
 			contentBase: './dist'
 		},
 		resolve: {
-			extensions: [".ts", ".tsx", ".js"]
+			extensions: [".ts", ".tsx", ".js", ".scss"]
 		},
 		module: {
 			rules: [{
 				test: /\.ts$/,
 				loader: "ts-loader",
 				exclude: /(node_modules|__tests__)/
-			},
-			{
-				test: /\.css$/,
-				use: [
-					'style-loader',
-					'css-loader'
-				]
-			}
-			]
+			}]
 		},
 		plugins: [
-			new ConcatPlugin({
-				bundles: [
-					{
-						dest: 'lib/adaptivecards.css',
-						src: [
-							'node_modules/swiper/swiper.min.css',
-							'node_modules/swiper/modules/pagination/pagination.min.css',
-							'node_modules/swiper/modules/navigation/navigation.min.css',
-							'src/adaptivecards.css'
-						]
-					}
-				],
-			}),
 			new CopyWebpackPlugin(
 				{
 					patterns: [
 						{
-							from: 'lib/adaptivecards.css',
-							to: '../dist/adaptivecards.css',
-							noErrorOnMissing: true // doesn't exist when object constructed. don't error.
-						}
+							from: 'src/scss/adaptivecards*',
+							to: '../dist/[name][ext]'
+                        },
+                        {
+							from: 'src/scss/adaptivecards*',
+							to: '../lib/[name][ext]'
+						},
+                        {
+                            from: 'lib/adaptivecards*.css*',
+                            to: '../dist/[name][ext]'
+                        }
 					]
 				}
 			),
