@@ -204,7 +204,7 @@ export class Carousel extends Container {
         const carouselContainer: HTMLElement = document.createElement("div");
         carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
 
-	const containerForAdorners: HTMLElement = document.createElement("div");
+	    const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
 
         cardLevelContainer.appendChild(containerForAdorners);
@@ -295,7 +295,7 @@ export class Carousel extends Container {
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
-    private _carousel?: Swiper;    
+    private _carousel?: Swiper;
 
     private initializeCarouselControl(carouselContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, rtl: boolean | undefined): void {
         const swiperOptions: SwiperOptions = {
