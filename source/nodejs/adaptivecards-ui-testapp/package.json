@@ -5,6 +5,7 @@
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"homepage": "https://adaptivecards.io",
+	"private": true,
 	"keywords": [
 		"adaptivecards",
 		"adaptive",
@@ -15,20 +16,17 @@
 	"main": "lib/adaptivecards-ui-testapp.js",
 	"types": "lib/adaptivecards-ui-testapp.d.ts",
 	"files": [
-		"lib",
 		"dist",
 		"src"
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"dts": "dts-generator --prefix adaptivecards-ui-testapp --project . --out dist/adaptivecards-ui-testapp.d.ts",
 		"lint": "eslint src/**/*.ts",
-		"iterate": "webpack --cache --mode=production --progress && npm run dts",
-		"release": "npm run build && webpack --mode=production"
+		"iterate": "webpack --cache --mode=production --progress",
+		"release": "npm run clean && webpack --mode=production"
 	},
 	"dependencies": {
 		"adaptivecards-controls": "^0.10.0-alpha.0",
@@ -38,7 +36,6 @@
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^2.11.0-alpha.0",
 		"adaptivecards-controls": "^0.9.0",
-		"adaptivecards-templating": "^2.3.0-alpha.0",
-		"cpy-cli": "^3.1.1"
+		"adaptivecards-templating": "^2.3.0-alpha.0"
 	}
 }
