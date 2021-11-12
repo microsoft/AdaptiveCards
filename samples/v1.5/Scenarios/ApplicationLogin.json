@@ -7,7 +7,7 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": " ${ApplicationInfo.title}",
+            "text": "Application Login",
             "horizontalAlignment": "Center",
             "wrap": true,
             "style": "heading"
