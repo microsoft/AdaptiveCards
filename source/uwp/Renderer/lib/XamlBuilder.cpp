@@ -306,6 +306,18 @@ namespace AdaptiveCards::Rendering::Uwp
             rootAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Stretch);
         }
 
+        ComPtr<IReference<bool>> contextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&contextRtl));
+
+        if (contextRtl != nullptr)
+        {
+            boolean rtlValue;
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            RETURN_IF_FAILED(contextRtl->get_Value(&rtlValue));
+            rootAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft : FlowDirection_LeftToRight);
+        }
+
         ComPtr<IUIElement> rootUIElement;
         RETURN_IF_FAILED(rootElement.As(&rootUIElement));
         *rootElementResult = rootUIElement.Detach();
