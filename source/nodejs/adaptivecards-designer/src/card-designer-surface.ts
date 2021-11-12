@@ -351,6 +351,7 @@ export class CardDesignerSurface {
 
                         if (element instanceof Carousel) {
                             carouselPageId = element.currentPageId;
+                            break;
                         }
                     }
                 }
