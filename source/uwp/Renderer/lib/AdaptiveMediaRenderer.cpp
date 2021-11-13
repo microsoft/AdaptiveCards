@@ -41,7 +41,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
         // Get the poster image
         ComPtr<IImage> posterImage;
-        GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia.Get(), &posterImage);
+        //GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia.Get(), &posterImage);
+		GetMediaPosterAsImage(renderContext, adaptiveMedia.Get(), &posterImage);
 
         // If the host doesn't support interactivity we're done here, just return the poster image
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))

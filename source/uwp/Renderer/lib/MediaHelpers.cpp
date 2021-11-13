@@ -18,14 +18,55 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::Storage::Streams;
+using namespace ABI::Windows::UI::Xaml::Automation;
+using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 const DOUBLE c_playIconSize = 30;
 const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
 const DOUBLE c_audioHeight = 100;
 
+void CreateSimpleImage(_In_ IAdaptiveRenderContext* renderContext,
+                          _In_ HSTRING altText,
+                          _In_ HSTRING url,
+                          _Outptr_ IImage** posterImage)
+{
+
+    ComPtr<IImage> image = XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+
+    ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                          &automationPropertiesStatics));
+
+    // TODO: we can direct cast, right?
+    ComPtr<IDependencyObject> imageAsDependencyObject;
+    THROW_IF_FAILED(image.As(&imageAsDependencyObject));
+
+    THROW_IF_FAILED(automationPropertiesStatics->SetName(imageAsDependencyObject.Get(), altText));
+
+    ComPtr<IAdaptiveHostConfig> hostConfig;
+    THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+    ComPtr<IUriRuntimeClass> imageUrl;
+    GetUrlFromString(hostConfig.Get(), url, imageUrl.GetAddressOf());
+
+    ComPtr<IBitmapImage> bitmapImage =
+        XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+    THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl.Get()));
+
+    ComPtr<IImageSource> bitmapImageSource;
+    THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+
+    ComPtr<IUIElement> imageAsUIElement;
+    THROW_IF_FAILED(image.As(&imageAsUIElement));
+
+    THROW_IF_FAILED(image->put_Source(bitmapImageSource.Get()));
+
+    THROW_IF_FAILED(image.CopyTo(posterImage));
+}
+
 void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
-                           _In_ IAdaptiveRenderArgs* renderArgs,
+                          /* _In_ IAdaptiveRenderArgs* renderArgs,*/
                            _In_ IAdaptiveMedia* adaptiveMedia,
                            _Outptr_ IImage** posterImage)
 {
@@ -50,29 +91,36 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
         }
     }
 
-    ComPtr<IAdaptiveImage> adaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
-
-    THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
-
     HString altText;
     THROW_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
-    THROW_IF_FAILED(adaptiveImage->put_AltText(altText.Get()));
-
-    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-    THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-    ComPtr<IAdaptiveElementRenderer> imageRenderer;
-    THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
-
-    ComPtr<IAdaptiveCardElement> posterAdaptiveElement;
-    THROW_IF_FAILED(adaptiveImage.As(&posterAdaptiveElement));
-
-    ComPtr<IUIElement> posterUiElement;
-    THROW_IF_FAILED(imageRenderer->Render(posterAdaptiveElement.Get(), renderContext, renderArgs, &posterUiElement));
 
     ComPtr<IImage> posterAsImage;
-    THROW_IF_FAILED(posterUiElement.As(&posterAsImage));
+    CreateSimpleImage(renderContext, altText.Get(), posterString.Get(), &posterAsImage);
     THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
+
+    // ComPtr<IAdaptiveImage> adaptiveImage =
+    //    XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+
+    // THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
+
+    // HString altText;
+    // THROW_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
+    // THROW_IF_FAILED(adaptiveImage->put_AltText(altText.Get()));
+
+    // ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+    // THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+    // ComPtr<IAdaptiveElementRenderer> imageRenderer;
+    // THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
+
+    // ComPtr<IAdaptiveCardElement> posterAdaptiveElement;
+    // THROW_IF_FAILED(adaptiveImage.As(&posterAdaptiveElement));
+
+    // ComPtr<IUIElement> posterUiElement;
+    // THROW_IF_FAILED(imageRenderer->Render(posterAdaptiveElement.Get(), renderContext, renderArgs, &posterUiElement));
+
+    // ComPtr<IImage> posterAsImage;
+    // THROW_IF_FAILED(posterUiElement.As(&posterAsImage));
+    // THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
 }
 
 void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
@@ -355,7 +403,8 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
             RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                    [localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
+                    [localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+                    {
                         // Take ownership of the passed in HSTRING
                         HString localMimeType;
                         localMimeType.Attach(lambdaMimeType);
@@ -367,25 +416,28 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(
-            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
-                                              boolean audioOnly;
-                                              RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
-
-                                              ComPtr<IImageSource> posterSource;
-                                              RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
-
-                                              if (audioOnly && posterSource == nullptr)
+            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>(
+                                              [=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                                               {
-                                                  // If this is audio only and there's no poster, set the height so that
-                                                  // the controls are visible.
-                                                  ComPtr<IFrameworkElement> mediaAsFrameworkElement;
-                                                  RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
-                                                  RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
-                                              }
+                                                  boolean audioOnly;
+                                                  RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
 
-                                              RETURN_IF_FAILED(localMediaElement->Play());
-                                              return S_OK;
-                                          }).Get(),
+                                                  ComPtr<IImageSource> posterSource;
+                                                  RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
+
+                                                  if (audioOnly && posterSource == nullptr)
+                                                  {
+                                                      // If this is audio only and there's no poster, set the height so
+                                                      // that the controls are visible.
+                                                      ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+                                                      RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
+                                                      RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
+                                                  }
+
+                                                  RETURN_IF_FAILED(localMediaElement->Play());
+                                                  return S_OK;
+                                              })
+                                              .Get(),
                                           &mediaOpenedToken));
     }
     else

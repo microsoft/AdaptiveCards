@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
+// void GetMediaPosterAsImage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+//                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+//                            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* adaptiveMedia,
+//                            _Outptr_ ABI::Windows::UI::Xaml::Controls::IImage** posterImage);
 void GetMediaPosterAsImage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* adaptiveMedia,
                            _Outptr_ ABI::Windows::UI::Xaml::Controls::IImage** posterImage);
 

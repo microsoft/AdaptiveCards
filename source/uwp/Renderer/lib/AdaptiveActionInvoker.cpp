@@ -16,18 +16,22 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ IRenderedAdaptiveCard* renderResult) noexcept
     try
     {
-        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
+        //strongRenderResult
+            //.AsWeak()
         return strongRenderResult.AsWeak(&m_weakRenderResult);
+        //return strongRenderResult.As(&storedCard);
     }
     CATCH_RETURN;
 
     HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
         ComPtr<IRenderedAdaptiveCard> strongRenderResult;
-        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+       RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        //RETURN_IF_FAILED(storedCard.As(&strongRenderResult));
         if (strongRenderResult != nullptr)
         {
             ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
