@@ -36,8 +36,7 @@ module.exports = (env, argv) => {
 				{
 					test: /\.css$/,
 					use: [
-						'style-loader',
-						//MiniCssExtractPlugin.loader,
+						devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
 						'css-loader'
 					]
 				}
@@ -45,10 +44,18 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new CopyWebpackPlugin({
-				patterns: [{
-					from: 'node_modules/adaptivecards-designer/src/containers/*',
-					to: 'containers/[name][ext]'
-				}]
+				patterns: [
+					{
+						from: 'node_modules/adaptivecards-designer/src/containers/*',
+						to: 'containers/[name][ext]'
+					},
+					{
+						// the designer expects to find its CSS here. an alternative for a consumer would
+						// be to make sure they load it themselves.
+						from: 'node_modules/adaptivecards-designer/dist/adaptivecards-designer.css',
+						to: 'adaptivecards-designer.css'
+					}
+				]
 			}),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",

@@ -33,7 +33,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --prefix adaptivecards-react --project . --out dist/adaptivecards-react.d.ts",
 		"lint": "eslint src/*.ts src/*.tsx",
-		"release": "npm run build && webpack --mode=production && npm run dts"
+		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"peerDependencies": {
 		"react": "^17.0.2"

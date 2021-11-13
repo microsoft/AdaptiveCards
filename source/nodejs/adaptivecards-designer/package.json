@@ -31,7 +31,8 @@
 		"dts": "dts-generator --prefix adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "eslint src/**/*.ts",
 		"iterate": "webpack --cache --mode=production --progress && npm run dts",
-		"release": "npm run build && webpack --mode=production && npm run dts"
+		"release": "npm run build && webpack --mode=production && npm run dts",
+		"release-deps": "npx lerna run --scope adaptivecards-designer --include-dependencies release --stream"
 	},
 	"dependencies": {
 		"adaptivecards-controls": "^0.10.0-alpha.0",
