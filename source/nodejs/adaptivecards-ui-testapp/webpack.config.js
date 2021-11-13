@@ -1,15 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 const path = require('path');
-const fs = require("fs");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
-
-let adaptiveCardsPackageCss = fs.readFileSync('node_modules/adaptivecards/dist/adaptivecards.css',
-                                              { encoding: 'utf8' });
 
 module.exports = (env, argv) => {
     const mode = argv.mode || 'development';
@@ -50,8 +46,7 @@ module.exports = (env, argv) => {
 			{
 				test: /\.css$/,
 				use: [
-					'style-loader',
-					MiniCssExtractPlugin.loader,
+					devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
 					'css-loader'
 				]
 			}
@@ -68,31 +63,11 @@ module.exports = (env, argv) => {
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
 			}),
-			new ConcatPlugin({
-				bundles: [
-					{
-						dest: 'adaptivecards-ui-testapp.css',
-						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-ui-testapp.css']
-					}
-				],
-			}),
 			new CopyWebpackPlugin({
 				patterns: [
 				{
-					from: 'node_modules/adaptivecards/dist/adaptivecards.css',
-					to: './[name][ext]',
-					transform(content, absoluteFrom) {
-						// TODO: #6710 - use sass to have a more structured solution here
-						return adaptiveCardsPackageCss + '\n' + content.toString('utf8');
-					}
-				},
-				{
-					from: 'src/adaptivecards-ui-testapp.css',
-					to: './[name][ext]'
-				},
-				{
 					from: '../../../samples/',
-					to: './samples/[name][ext]',
+					to: './samples/[path]/[name][ext]',
 					context: '.'
 				}],
 				options: {

@@ -1,13 +1,9 @@
 const path = require("path");
-const fs = require("fs")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
-
-let adaptiveCardsPackageCss = fs.readFileSync('node_modules/adaptivecards/dist/adaptivecards.css',
-                                              { encoding: 'utf8' });
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -84,7 +80,11 @@ module.exports = (env, argv) => {
 				bundles: [
 					{
 						dest: 'dist/adaptivecards-designer.css',
-						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
+						src: [
+							'./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css',
+							'./node_modules/adaptivecards/dist/adaptivecards-carousel.css',
+							'./src/adaptivecards-designer.css'
+						]
 					}
 				]
 			}),
@@ -94,16 +94,8 @@ module.exports = (env, argv) => {
 					to: '.'
 				},
 				{
-					from: 'src/adaptivecards-designer.css',
-					to: './[name][ext]'
-				},
-				{
 					from: 'src/containers/**/*.css',
-					to: 'containers/[name][ext]',
-                    transform(content, absoluteFrom) {
-                        // TODO: #6710 - use sass to have a more structured solution here
-                        return adaptiveCardsPackageCss + '\n' + content.toString('utf8');
-                    }
+					to: 'containers/[name][ext]'
 				},
 				{
 					from: 'src/containers/**/*.png',

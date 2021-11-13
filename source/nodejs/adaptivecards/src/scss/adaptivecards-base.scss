@@ -1,3 +1,5 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 $font-family: 'Segoe UI', sans-serif;
 
 @mixin base-container (
@@ -118,7 +120,29 @@ $font-family: 'Segoe UI', sans-serif;
     $subdued-active-border: null,
     $hover-border: null,
     $expanded-border: null,
-    $expanded-active-border: null
+    $expanded-active-border: null,
+
+    $positive-background-color: null,
+    $positive-color: null,
+    $positive-border: null,
+    $positive-active-background-color: null,
+    $positive-active-border: null,
+    $positive-hover-background-color: null,
+    $positive-hover-border: null,
+
+    $destructive-background-color: null,
+    $destructive-color: null,
+    $destructive-border: null,
+    $destructive-active-background-color: null,
+    $destructive-active-border: null,
+    $destructive-hover-background-color: null,
+    $destructive-hover-border: null,
+
+    $expandable-font-family: 'FabricMDL2Icons',
+    $expandable-font-size: 10px,
+    $expandable-font-weight: 900,
+    $expandable-content: '\E70D',
+    $expanded-content: '\E70E'
 ) {
     .ac-pushButton {
         overflow: hidden;
@@ -153,24 +177,69 @@ $font-family: 'Segoe UI', sans-serif;
             background-color: $subdued-background-color;
             color: $subdued-color;
             border: $subdued-border;
-        }
 
-        &.subdued:hover {
-            background-color: $subdued-hover-background-color;
-            color: $subdued-hover-color;
-            border: $subdued-hover-border;
-        }
+            &:hover {
+                background-color: $subdued-hover-background-color;
+                color: $subdued-hover-color;
+                border: $subdued-hover-border;
+            }
 
-        &.subdued:active {
-            background-color: $subdued-active-background-color;
-            color: $subdued-active-color;
-            border: $subdued-active-border;
+            &:active {
+                background-color: $subdued-active-background-color;
+                color: $subdued-active-color;
+                border: $subdued-active-border;
+            }
         }
 
         &.expanded {
             background-color: $expanded-background-color;
             color: $expanded-color;
             border: $expanded-border;
+        }
+
+        &.expandable {
+            &:after {
+                font-family: $expandable-font-family;
+                font-size: $expandable-font-size;
+                font-weight: $expandable-font-weight;
+                content: $expandable-content;
+            }
+
+            &.expanded:after {
+                content: $expanded-content;
+            }
+        }
+
+        &.style-positive {
+            background-color: $positive-background-color;
+            color: $positive-color;
+            border: $positive-border;
+            
+            &:hover {
+                background-color: $positive-hover-background-color;
+                border: $positive-hover-border
+            }
+
+            &:active {
+                background-color: $positive-active-background-color;
+                border: $positive-active-border
+            }
+        }
+
+        &.style-destructive {
+            background-color: $destructive-background-color;
+            color: $destructive-color;
+            border: $destructive-border;
+            
+            &:hover {
+                background-color: $destructive-hover-background-color;
+                border: $destructive-hover-border
+            }
+
+            &:active {
+                background-color: $destructive-active-background-color;
+                border: $destructive-active-border
+            }
         }
     }
 }
@@ -182,7 +251,9 @@ $font-family: 'Segoe UI', sans-serif;
     $border: 1px solid #DDDDDD,
     $hover-border: null,
     $background-color: null,
-    $hover-background-color: null
+    $hover-background-color: null,
+    $validation-failed-border: 1px solid red !important,
+    $validation-failed-outline: 1px solid red
     ) {
 
     .ac-input {
@@ -212,5 +283,22 @@ $font-family: 'Segoe UI', sans-serif;
                 background-color: $hover-background-color;
             }
         }
+
+        &.ac-textInput,
+        &.ac-numberInput,
+        &.ac-dateInput,
+        &.ac-timeInput,
+        &.ac-multichoiceInput.ac-choiceSetInput-compact {
+            &.ac-input-validation-failed {
+                border: $validation-failed-border;
+            }
+        }
+
+        &.ac-toggleInput, &.ac-choiceSetInput-expanded, &.ac-choiceSetInput-multiSelect {
+            &.ac-input-validation-failed {
+                outline: $validation-failed-outline;
+            }
+        }
     }
 }
+

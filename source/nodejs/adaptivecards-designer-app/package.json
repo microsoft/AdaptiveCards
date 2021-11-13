@@ -7,10 +7,11 @@
 	"private": true,
 	"scripts": {
 		"build": "webpack",
+		"clean": "rimraf lib dist",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
 		"lint": "eslint src/*.ts",
-		"release": "npm run build"
+		"release": "npm run clean && webpack --mode=production"
 	},
 	"devDependencies": {
 		"file-loader": "^6.0.0",
