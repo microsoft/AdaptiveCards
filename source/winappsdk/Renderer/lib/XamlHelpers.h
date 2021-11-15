@@ -306,7 +306,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ContenControl");
+        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
         rtxaml::Controls::TextBlock content{};
         content.Text(contentString);
 
