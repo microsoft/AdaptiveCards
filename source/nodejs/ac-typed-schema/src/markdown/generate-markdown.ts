@@ -311,12 +311,14 @@ export function createPropertiesDetails(classDefinition: SchemaClass, headerLeve
 	return md + '\n';
 }
 
-export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
+export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string, includeHeader: boolean = true) {
 	var md = '';
 
 	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 
-	md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
+	if (includeHeader) {
+		md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
+	}
 
 	// TODO: Add plugin point for custom JSON schema properties like gltf_*
 	var detailedDescription = property.description;
@@ -349,6 +351,10 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	}
 
 	return md + '\n';
+}
+
+export function createPropertyDetailsHeader(property: SchemaProperty, headerLevel: number) {
+	return style.getHeaderMarkdown(property.name, headerLevel);
 }
 
 export function propertyHasComplexTypes(property: SchemaProperty) {

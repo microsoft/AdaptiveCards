@@ -709,6 +709,7 @@ h2.ac-schema-version-1-6::after {
   display: inline-flex;
   padding: 1px 12px 1px 12px;
   margin: 0px 0px 0px 12px;
+  align-self: center;
 }
 
 .ac-schema-version-1-6::after {
@@ -720,4 +721,5 @@ h2.ac-schema-version-1-6::after {
   margin: 0px 0px 0px 10px;
   border-radius: 12px;
   font-weight: 600;
+  align-self: center;
 }
