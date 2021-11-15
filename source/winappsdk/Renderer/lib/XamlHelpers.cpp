@@ -1201,6 +1201,29 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    rtxaml::UIElement AddSeparatorIfNeeded(int& currentElement,
+                                           rtom::IAdaptiveCardElement const& element,
+                                           rtrender::AdaptiveHostConfig const& hostConfig,
+                                           rtrender::AdaptiveRenderContext const& renderContext,
+                                           winrt::Windows::UI::Xaml::Controls::Panel const& parentPanel)
+    {
+        // First element does not need a separator added
+        if (currentElement++ > 0)
+        {
+            if (NeedsSeparator(element))
+            {
+                auto separatorConfig = hostConfig.Separator();
+                auto separatorColor = separatorConfig.LineColor();
+                auto separatorThickness = separatorConfig.LineThickness();
+                uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, element.Spacing());
+                auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
+                XamlHelpers::AppendXamlElementToPanel(separator, parentPanel);
+                return separator;
+            }
+        }
+        return nullptr;
+    }
+
     void AddSeparatorIfNeeded(int& currentElement,
                               _In_ IAdaptiveCardElement* element,
                               _In_ IAdaptiveHostConfig* hostConfig,
@@ -1248,6 +1271,25 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    void FormatLabelRunWithHostConfig(rtrender::AdaptiveHostConfig const& hostConfig,
+                                      rtrender::AdaptiveInputLabelConfig const& inputLabelConfig,
+                                      bool isHint,
+                                      rtxaml::Documents::Run const& labelRun)
+    {
+        // If we're formatting a hint then use attention color
+        rtom::ForegroundColor textColor = isHint ? rtom::ForegroundColor::Attention : inputLabelConfig.Color();
+
+        auto color = GetColorFromAdaptiveColor(hostConfig, textColor, rtom::ContainerStyle::Default, false, false);
+
+        labelRun.Foreground(XamlHelpers::GetSolidColorBrush(color));
+
+        rtom::TextSize textSize = inputLabelConfig.Size();
+
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, rtom::FontType::Default, textSize);
+
+        labelRun.FontSize(resultSize);
+    }
+
     HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputLabelConfig* inputLabelConfig,
                                          _In_ boolean isHint,
@@ -1287,6 +1329,29 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    void AddRequiredHintInline(rtrender::AdaptiveHostConfig const& hostConfig,
+                               rtrender::AdaptiveInputLabelConfig const& inputLabelConfig,
+                               winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines)
+    {
+        // Create an inline for the suffix
+        rtxaml::Documents::Run hintRun{};
+
+        winrt::hstring suffix = inputLabelConfig.Suffix();
+        // If no suffix was defined, use * as default
+
+        // TODO: is this correct?
+        if (suffix.empty())
+        {
+            suffix = UTF8ToHString(" *");
+        }
+
+        hintRun.Text(suffix);
+
+        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun);
+
+        inlines.Append(hintRun);
+    }
+
     HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputLabelConfig* inputLabelConfig,
                                   IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
@@ -1318,6 +1383,61 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(xamlInlines->Append(hintRunAsInline.Get()));
 
         return S_OK;
+    }
+
+    rtxaml::UIElement RenderInputLabel(rtom::IAdaptiveInputElement const& adaptiveInputElement,
+                                       rtrender::AdaptiveRenderContext const& renderContext,
+                                       rtrender::AdaptiveRenderArgs const& renderArgs)
+    {
+        winrt::hstring inputLabel = adaptiveInputElement.Label();
+        // Retrieve if the input is required so we can file a warning if the label is empty
+        bool isRequired = adaptiveInputElement.IsRequired();
+
+        // TOOD: is this correct way instead of != nullptr? should I check for data?
+        if (!inputLabel.empty())
+        {
+            // Create a rich text block for the label
+            rtxaml::Controls::RichTextBlock xamlRichTextBlock{};
+
+            // Add a paragraph for the inlines
+            auto xamlBlocks = xamlRichTextBlock.Blocks();
+
+            rtxaml::Documents::Paragraph xamlParagraph{};
+
+            xamlBlocks.Append(xamlParagraph);
+
+            // Add the inlines
+            auto xamlInlines = xamlParagraph.Inlines();
+
+            // First inline is the label from the card
+            rtxaml::Documents::Run labelRun{};
+            labelRun.Text(inputLabel);
+
+            xamlInlines.Append(labelRun);
+
+            // Get the label config depending if the input is required
+            auto hostConfig = renderContext.HostConfig();
+            auto inputsConfig = hostConfig.Inputs();
+            auto labelConfig = inputsConfig.Label();
+            rtrender::AdaptiveInputLabelConfig inputLabelConfig =
+                isRequired ? labelConfig.RequiredInputs() : labelConfig.OptionalInputs();
+
+            if (isRequired)
+            {
+                AddRequiredHintInline(hostConfig, inputLabelConfig, xamlInlines);
+            }
+            FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, false /*isHint*/, labelRun);
+
+            xamlRichTextBlock.TextWrapping(rtxaml::TextWrapping::Wrap);
+            return xamlRichTextBlock;
+        }
+        else if (isRequired)
+        {
+            renderContext.AddWarning(rtom::WarningStatusCode::EmptyLabelInRequiredInput,
+                                     L"Input is required but there's no label for required hint rendering");
+        }
+        // TODO: is this correct here?
+        return nullptr;
     }
 
     HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
@@ -1407,6 +1527,25 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
+    void FormatErrorMessageWithHostConfig(rtrender::AdaptiveRenderContext const& renderContext,
+                                          rtxaml::Controls::TextBlock const& errorMessage)
+    {
+        auto hostConfig = renderContext.HostConfig();
+        auto inputsConfig = hostConfig.Inputs();
+        auto errorMessageConfig = inputsConfig.ErrorMessage();
+
+        // Set size defined in host config
+        rtom::TextSize textSize = errorMessageConfig.Size();
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, rtom::FontType::Default, textSize);
+        errorMessage.FontSize(resultSize);
+
+        // Set weight defined in host config
+        rtom::TextWeight textWeight = errorMessageConfig.Weight();
+        auto resultWeight = GetFontWeightFromStyle(hostConfig, rtom::FontType::Default, textWeight);
+        errorMessage.FontWeight(resultWeight);
+    }
+
+    // Error messages are formatted for text size and weight
     HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                              ITextBlock* errorMessage)
     {
@@ -1442,6 +1581,37 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
 
         return S_OK;
+    }
+
+    rtxaml::UIElement RenderInputErrorMessage(rtom::IAdaptiveInputElement const& adaptiveInputElement,
+                                              rtrender::AdaptiveRenderContext const& renderContext)
+    {
+        // Add the error message if present
+        winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
+
+        // TODO: is this correct in this scenario instead of .IsValid()?
+        if (!errorMessage.empty())
+        {
+            rtxaml::Controls::TextBlock errorMessageTextBlock{};
+            errorMessageTextBlock.Text(errorMessage);
+
+            // Set the color to Attention color
+            auto hostConfig = renderContext.HostConfig();
+
+            auto attentionColor =
+                GetColorFromAdaptiveColor(hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
+
+            errorMessageTextBlock.Foreground(XamlHelpers::GetSolidColorBrush(attentionColor));
+
+            // Format the error message through host config
+            FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock);
+
+            // Error message should begin collapsed and only be show when validated
+            errorMessageTextBlock.Visibility(rtxaml::Visibility::Collapsed);
+            errorMessageTextBlock.TextWrapping(rtxaml::TextWrapping::Wrap);
+            return errorMessageTextBlock;
+        }
+        return nullptr;
     }
 
     HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
@@ -1521,6 +1691,114 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         validationBorder.Child(childElement);
 
         return validationBorder;
+    }
+
+    rtxaml::UIElement HandleLabelAndErrorMessage(rtom::IAdaptiveInputElement const& adaptiveInput,
+                                                 rtrender::AdaptiveRenderContext const& renderContext,
+                                                 rtrender::AdaptiveRenderArgs const& renderArgs,
+                                                 rtxaml::UIElement const& inputLayout)
+    {
+        // Create a new stack panel to add the label and error message
+        // The contents from the input panel will be copied to the new panel
+        rtxaml::Controls::StackPanel inputStackPanel{};
+
+        auto hostConfig = renderContext.HostConfig();
+        // TOOD: rename Inputs to something more meaningful
+        auto inputsConfig = hostConfig.Inputs();
+
+        // Render the label and add it to the stack panel
+        auto label = XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs);
+        XamlHelpers::AppendXamlElementToPanel(label, inputStackPanel);
+
+        if (label != nullptr)
+        {
+            auto labelConfig = inputsConfig.Label();
+            rtom::Spacing labelSpacing = labelConfig.InputSpacing();
+
+            uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, labelSpacing);
+
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, winrt::Windows::UI::Color{});
+            XamlHelpers::AppendXamlElementToPanel(separator, inputStackPanel);
+        }
+
+        rtxaml::UIElement actualUIElement{nullptr};
+
+        // Copy the contents into the new panel and get the rendered element to set acessibility properties
+        if (const auto inputPanel = inputLayout.try_as<rtxaml::Controls::Panel>())
+        {
+            auto panelChildren = inputPanel.Children();
+            uint32_t childrenCount = panelChildren.Size();
+
+            // We only copy one element into the input layout, if there's only one element, then we can assume it's our layout
+            if (childrenCount == 1)
+            {
+                auto onlyElement = panelChildren.GetAt(0);
+                // We enclose multiple items using a border, so we try to check for it
+                if (const auto inputBorder = onlyElement.try_as<rtxaml::Controls::Border>())
+                {
+                    actualUIElement = inputBorder.Child();
+                }
+                else
+                {
+                    actualUIElement = onlyElement;
+                }
+                panelChildren.RemoveAt(0);
+                XamlHelpers::AppendXamlElementToPanel(onlyElement, inputStackPanel);
+            }
+            else
+            {
+                for (auto child : panelChildren)
+                {
+                    XamlHelpers::AppendXamlElementToPanel(child, inputStackPanel);
+                }
+                panelChildren.Clear();
+            }
+        }
+        else
+        {
+            actualUIElement = inputLayout;
+            XamlHelpers::AppendXamlElementToPanel(inputLayout, inputStackPanel);
+        }
+
+        // Add the error message if there's validation and one exists
+        auto errorMessageControl = XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext);
+
+        if (errorMessageControl != nullptr)
+        {
+            // Render the spacing between the input and the error message
+            auto errorMessageConfig = inputsConfig.ErrorMessage();
+
+            rtom::Spacing errorSpacing = errorMessageConfig.Spacing();
+
+            uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, errorSpacing);
+
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, winrt::Windows::UI::Color{});
+            auto inputValue = renderContext.GetInputValue(adaptiveInput);
+
+            if (inputValue != nullptr)
+            {
+                inputValue.ErrorMessage(errorMessageControl);
+            }
+
+            XamlHelpers::AppendXamlElementToPanel(separator, inputStackPanel);
+
+            // Add the rendered error message
+            XamlHelpers::AppendXamlElementToPanel(errorMessageControl, inputStackPanel);
+        }
+
+        // TODO: do I need this?
+        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+
+        /*  ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+          RETURN_IF_FAILED(actualUIElement.As(&inputUIElementAsDependencyObject));*/
+
+        if (label != nullptr)
+        {
+            rtxaml::Automation::AutomationProperties::SetLabeledBy(actualUIElement, label);
+        }
+
+        return inputStackPanel;
     }
 
     HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,

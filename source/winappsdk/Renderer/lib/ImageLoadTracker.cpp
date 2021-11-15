@@ -11,7 +11,7 @@ using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace winrt::AdaptiveCards::Rendering::WinUI3
+namespace AdaptiveCards::Rendering::WinUI3
 {
     ImageLoadTracker::~ImageLoadTracker()
     {
@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         // Ensure we don't try and write the private data from multiple threads
         auto exclusiveLock = m_lock.LockExclusive();
 
-        /*ComPtr<IInspectable> inspectableBitmapImage;
+        /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage;
         THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));*/
         if (m_eventRevokers.find(bitmapImage) == m_eventRevokers.end())
         {
@@ -61,7 +61,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
         // And then notify this image is done
         /*ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
-        ComPtr<IInspectable> inspectableBitmapImage;
+        ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage;
         THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));
         ImageLoadResultReceived(inspectableBitmapImage.Get());*/
         ImageLoadResultReceived(bitmapImage);
@@ -77,7 +77,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         m_eventRevokers.clear();
     }
 
-    void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener const& listener)
+    void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener* listener)
     {
         try
         {
@@ -97,7 +97,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         }
     }
 
-    void ImageLoadTracker::RemoveListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener const& listener)
+    void ImageLoadTracker::RemoveListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener* listener)
     {
         try
         {
@@ -119,17 +119,17 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    void ImageLoadTracker::TrackedImage_ImageLoaded(IInspectable const& sender, rtxaml::RoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender, rtxaml::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_ImageFailed(IInspectable const& sender, rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender, rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::ImageLoadResultReceived(IInspectable const& sender)
+    void ImageLoadTracker::ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender)
     {
         auto exclusiveLock = m_lock.LockExclusive();
         m_trackedImageCount--;
@@ -144,9 +144,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         }
     }
 
-    void ImageLoadTracker::UnsubscribeFromEvents(IInspectable const& bitmapImage, winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage, winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
-        /*ComPtr<IInspectable> inspectableBitmapImage(bitmapImage);
+        /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;
         inspectableBitmapImage.As(&localBitmapImage);*/
 
@@ -168,7 +168,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         for (auto listener : m_listeners)
         {
             // TODO: solve these listeners
-            listener.AllImagesLoaded();
+            listener->AllImagesLoaded();
         }
     }
 
@@ -176,7 +176,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     {
         for (auto listener : m_listeners)
         {
-            listener.ImagesLoadingHadError();
+            listener->ImagesLoadingHadError();
         }
     }
 }

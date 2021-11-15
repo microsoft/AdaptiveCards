@@ -5,12 +5,12 @@
 namespace AdaptiveCards::Rendering::WinUI3
 {
     MIDL_INTERFACE("BF58F7BB-A330-4C75-AF7F-6E5FD8C0C070")
-    IXamlBuilderListener : public IUnknown
+    IXamlBuilderListener : public winrt::Windows::Foundation::IUnknown
     {
     public:
-        IFACEMETHOD(AllImagesLoaded)() = 0;
-        IFACEMETHOD(ImagesLoadingHadError)() = 0;
-        IFACEMETHOD(XamlBuilderHadError)() = 0;
+        virtual void AllImagesLoaded() = 0;
+        virtual void ImagesLoadingHadError() = 0;
+        virtual void XamlBuilderHadError() = 0;
     };
 
 }

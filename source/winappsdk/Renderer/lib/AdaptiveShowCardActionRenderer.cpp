@@ -15,8 +15,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveShowCardActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+                                                             rtrender::AdaptiveRenderContext const& renderContext,
+                                                             rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -29,10 +29,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    static winrt::Windows::UI::Xaml::UIElement BuildShowCard(rtom::AdaptiveCard const& showCard,
-                                                             rtrender::AdaptiveRenderContext const& renderContext,
-                                                             rtrender::AdaptiveRenderArgs const& renderArgs,
-                                                             bool isBottomActionBar)
+    winrt::Windows::UI::Xaml::UIElement
+    AdaptiveShowCardActionRenderer::BuildShowCard(rtom::AdaptiveCard const& showCard,
+                                                  rtrender::AdaptiveRenderContext const& renderContext,
+                                                  rtrender::AdaptiveRenderArgs const& renderArgs,
+                                                  bool isBottomActionBar)
     {
         try
         {
@@ -52,11 +53,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             auto showCardActionConfig = actionsConfig.ShowCard();
             auto showCardConfigStyle = showCardActionConfig.Style();
 
-         /*   boolean wasInShowCard;
-            RETURN_IF_FAILED(renderArgs->get_IsInShowCard(&wasInShowCard));
-            RETURN_IF_FAILED(renderArgs->put_IsInShowCard(true));
+            /*   boolean wasInShowCard;
+               RETURN_IF_FAILED(renderArgs->get_IsInShowCard(&wasInShowCard));
+               RETURN_IF_FAILED(renderArgs->put_IsInShowCard(true));
 
-            RETURN_IF_FAILED(renderContext->LinkCardToParent(showCard, renderArgs));*/
+               RETURN_IF_FAILED(renderContext->LinkCardToParent(showCard, renderArgs));*/
 
             bool wasInShowCard = renderArgs.IsInShowCard();
             renderArgs.IsInShowCard(true);
@@ -72,7 +73,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             RETURN_IF_FAILED(localUiShowCard.As(&showCardGrid));*/
 
             // TODO: implement BuildXamlTreeFromAdaptiveCard
-            auto localUiShowCard = ::AdaptiveCards::Rendering::WinUI3::XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, renderContext, nullptr, showCardConfigStyle);
+            auto localUiShowCard =
+                ::AdaptiveCards::Rendering::WinUI3::XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, renderContext, nullptr, showCardConfigStyle);
             renderArgs.IsInShowCard(wasInShowCard);
 
             // Set the padding
@@ -90,11 +92,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             rtrender::ActionMode showCardActionmode = showCardActionConfig.ActionMode();
 
             // Set the top margin
-           /* ComPtr<IFrameworkElement> showCardFrameworkElement;
-            RETURN_IF_FAILED(localUiShowCard.As(&showCardFrameworkElement));
+            /* ComPtr<IFrameworkElement> showCardFrameworkElement;
+             RETURN_IF_FAILED(localUiShowCard.As(&showCardFrameworkElement));
 
-            UINT32 inlineTopMargin;
-            RETURN_IF_FAILED(showCardActionConfig->get_InlineTopMargin(&inlineTopMargin));*/
+             UINT32 inlineTopMargin;
+             RETURN_IF_FAILED(showCardActionConfig->get_InlineTopMargin(&inlineTopMargin));*/
 
             uint32_t inlineTopMargin = showCardActionConfig.InlineTopMargin();
 
@@ -104,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             const double bottomMargin = negativePadding;
 
             rtxaml::Thickness margin = {sideMargin, topMargin, sideMargin, bottomMargin};
-           /* RETURN_IF_FAILED(showCardFrameworkElement->put_Margin(margin));*/
+            /* RETURN_IF_FAILED(showCardFrameworkElement->put_Margin(margin));*/
             localUiShowCard.Margin(margin);
 
             /*ComPtr<IUIElement> showCardUIElement;
@@ -115,7 +117,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             localUiShowCard.Visibility(rtxaml::Visibility::Collapsed);
 
             //*uiShowCard = showCardUIElement.Detach();
-            //return S_OK;
+            // return S_OK;
             return localUiShowCard;
         }
         catch (winrt::hresult_error const& ex)

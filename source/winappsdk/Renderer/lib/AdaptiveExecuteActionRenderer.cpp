@@ -25,6 +25,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
+            // TODO: restore treat warnings as errrors
             // TODO: what do we do here?
             return nullptr;
         }

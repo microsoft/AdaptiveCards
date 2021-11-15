@@ -27,27 +27,28 @@ namespace AdaptiveCards::Rendering::WinUI3
     XamlBuilder::XamlBuilder()
     {
         // TODO: work on this
-        m_imageLoadTracker->AddListener(static_cast<IImageLoadTrackerListener>(*this));
+        m_imageLoadTracker->AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
+        m_randomAccessStreamStatics = winrt::Windows::Storage::Streams::RandomAccessStream{};
 
         /*THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(),
                                              &m_randomAccessStreamStatics));*/
     }
 
-    HRESULT XamlBuilder::AllImagesLoaded() noexcept
-    try
-    {
-        FireAllImagesLoaded();
-        return S_OK;
-    }
-    CATCH_RETURN();
+    /* HRESULT XamlBuilder::AllImagesLoaded() noexcept
+     try
+     {
+         FireAllImagesLoaded();
+         return S_OK;
+     }
+     CATCH_RETURN();
 
-    HRESULT XamlBuilder::ImagesLoadingHadError() noexcept
-    try
-    {
-        FireImagesLoadingHadError();
-        return S_OK;
-    }
-    CATCH_RETURN();
+     HRESULT XamlBuilder::ImagesLoadingHadError() noexcept
+     try
+     {
+         FireImagesLoadingHadError();
+         return S_OK;
+     }
+     CATCH_RETURN();*/
 
     rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
                                                                         rtrender::AdaptiveRenderContext renderContext,
@@ -299,37 +300,55 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
     CATCH_RETURN();
 
-    HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept
-    try
-    {
-        if (m_listeners.find(listener) == m_listeners.end())
-        {
-            m_listeners.emplace(listener);
-        }
-        else
-        {
-            return E_INVALIDARG;
-        }
-        return S_OK;
-    }
-    CATCH_RETURN();
+    /* HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept
+     try
+     {
+         if (m_listeners.find(listener) == m_listeners.end())
+         {
+             m_listeners.emplace(listener);
+         }
+         else
+         {
+             return E_INVALIDARG;
+         }
+         return S_OK;
+     }
+     CATCH_RETURN();
 
-    HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept
-    try
+     HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept
+     try
+     {
+         if (m_listeners.find(listener) != m_listeners.end())
+         {
+             m_listeners.erase(listener);
+         }
+         else
+         {
+             return E_INVALIDARG;
+         }
+         return S_OK;
+     }
+     CATCH_RETURN();*/
+
+    void XamlBuilder::AddListener(IXamlBuilderListener* listener)
     {
-        if (m_listeners.find(listener) != m_listeners.end())
+        // TODO: figure out how to do this
+        /* if (m_listeners.find(listener) == m_listeners.end())
+         {
+             m_listeners.emplace(listener);
+         }*/
+    }
+
+    void XamlBuilder::RemoveListener(IXamlBuilderListener* listener)
+    {
+        // TODO: figure out how to do this
+        /*if (m_listeners.find(listener) != m_listeners.end())
         {
             m_listeners.erase(listener);
-        }
-        else
-        {
-            return E_INVALIDARG;
-        }
-        return S_OK;
+        }*/
     }
-    CATCH_RETURN();
 
-    void XamlBuilder::SetFixedDimensions(UINT width, UINT height) noexcept
+    void XamlBuilder::SetFixedDimensions(uint32_t width, uint32_t height) noexcept
     {
         m_fixedDimensions = true;
         m_fixedWidth = width;
@@ -429,7 +448,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
             return {bodyElementContainer, rootElementResult};
         }
-        catch(winrt::hresult_error& ex)
+        catch (winrt::hresult_error& ex)
         {
             // TODO: what do we do here?
             return {nullptr, nullptr};
@@ -485,14 +504,14 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
 
         // Configure WholeItemsPanel to not clip bleeding containers
-        //WholeItemsPanel::SetBleedMargin(padding);
+        // WholeItemsPanel::SetBleedMargin(padding);
 
         // Now create the inner stack panel to serve as the root host for all the
         // body elements and apply padding from host configuration
         ComPtr<WholeItemsPanel> bodyElementHost;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
-        //bodyElementHost->SetMainPanel(TRUE);
-        //bodyElementHost->SetAdaptiveHeight(TRUE);
+        // bodyElementHost->SetMainPanel(TRUE);
+        // bodyElementHost->SetAdaptiveHeight(TRUE);
 
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
@@ -545,60 +564,67 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     void XamlBuilder::BuildPanelChildren(
         winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
-        rtxaml::Controls::Panel ParentPanel,
-        rtrender::AdaptiveRenderContext context,
+        rtxaml::Controls::Panel parentPanel,
+        rtrender::AdaptiveRenderContext renderContext,
         rtrender::AdaptiveRenderArgs renderArgs,
         std::function<void(rtxaml::UIElement child)> childCreatedCallback)
     {
+        int iElement = 0;
         uint32_t childrenSize = children.Size();
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
-        rtrender::AdaptiveFeatureRegistration featureRegistration = context.FeatureRegistration();
-        for (auto elem : children)
+        rtrender::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
+        for (auto element : children)
         {
             // Get fallback state
-            rtom::FallbackType elementFallback = elem.FallbackType();
+            rtom::FallbackType elementFallback = element.FallbackType();
             renderArgs.AncestorHasFallback(elementFallback != rtom::FallbackType::None || ancestorHasFallback);
 
             // Check to see if element's requirements are being met
-            bool shouldFallback = !MeetsRequirements(elem, featureRegistration);
-            auto elementRenderers = context.ElementRenderers();
-            winrt::hstring elementType = elem.ElementTypeString();
+            bool shouldFallback = !MeetsRequirements(element, featureRegistration);
+            auto elementRenderers = renderContext.ElementRenderers();
+            winrt::hstring elementType = element.ElementTypeString();
             auto elementRenderer = elementRenderers.Get(elementType);
-            auto hostConfig = context.HostConfig();
+            auto hostConfig = renderContext.HostConfig();
 
-            rtxaml::IUIElement newControl;
+            rtxaml::UIElement newControl{nullptr};
             rtom::IAdaptiveCardElement renderedElement;
             if (!shouldFallback && elementRenderer != nullptr)
             {
-                newControl = elementRenderer.Render(elem, context, renderArgs);
-                renderedElement = elem;
+                newControl = elementRenderer.Render(element, renderContext, renderArgs);
+                renderedElement = element;
             }
 
             // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
             if (elementRenderer == nullptr || shouldFallback)
             {
-                XamlHelpers::RenderFallback(elem, context, renderArgs, newControl, renderedElement);
+                // TODO: figure out if we do it right
+                std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
             if (newControl != nullptr)
             {
-                ComPtr<IUIElement> separator;
-                XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
+                /*  ComPtr<IUIElement> separator;*/
+                auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 // If the renderedElement was an input, render the label and error message
-                ComPtr<IAdaptiveInputElement> inputElement;
-                if (SUCCEEDED(renderedElement.As(&inputElement)))
+                /* ComPtr<IAdaptiveInputElement> inputElement;
+                 if (SUCCEEDED(renderedElement.As(&inputElement)))
+                 {
+                     XamlHelpers::HandleLabelAndErrorMessage(inputElement.Get(), renderContext, renderArgs, newControl.GetAddressOf());
+                 }*/
+                if (auto const inputElement = renderedElement.try_as<rtom::IAdaptiveInputElement>())
                 {
-                    XamlHelpers::HandleLabelAndErrorMessage(inputElement.Get(), renderContext, renderArgs, newControl.GetAddressOf());
+                    newControl = XamlHelpers::HandleLabelAndErrorMessage(inputElement, renderContext, renderArgs, newControl);
                 }
 
-                RETURN_IF_FAILED(XamlHelpers::AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
+                XamlHelpers::AddRenderedControl(newControl, element, parentPanel, separator, nullptr, childCreatedCallback);
             }
 
             // Revert the ancestorHasFallback value
-            renderArgs->put_AncestorHasFallback(ancestorHasFallback);
+            renderArgs.AncestorHasFallback(ancestorHasFallback);
         }
+        XamlHelpers::SetSeparatorVisibility(parentPanel);
     }
 
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,

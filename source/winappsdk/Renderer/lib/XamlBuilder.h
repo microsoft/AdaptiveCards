@@ -11,14 +11,15 @@
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    struct XamlBuilder : winrt::implements<XamlBuilder, ::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>
+    /*struct XamlBuilder : winrt::implements<XamlBuilder, ::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>*/
+    struct XamlBuilder : IImageLoadTrackerListener
     {
     public:
         XamlBuilder();
 
         // IImageLoadTrackerListener
-        STDMETHODIMP AllImagesLoaded() noexcept;
-        STDMETHODIMP ImagesLoadingHadError() noexcept;
+        void AllImagesLoaded();
+        void ImagesLoadingHadError();
 
         static HRESULT BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                                      _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
@@ -34,9 +35,11 @@ namespace AdaptiveCards::Rendering::WinUI3
                                       winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle =
                                           winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::Default);
 
-        HRESULT AddListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
-        HRESULT RemoveListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
-        void SetFixedDimensions(UINT width, UINT height) noexcept;
+        /* HRESULT AddListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
+         HRESULT RemoveListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;*/
+        void AddListener(::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener);
+        void RemoveListener(::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener);
+        void SetFixedDimensions(uint32_t width, uint32_t height) noexcept;
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
         static HRESULT BuildPanelChildren(
@@ -59,18 +62,28 @@ namespace AdaptiveCards::Rendering::WinUI3
                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;
-        std::set<Microsoft::WRL::ComPtr<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener>> m_listeners;
-        winrt::Windows::Storage::Streams::IRandomAccessStreamStatics m_randomAccessStreamStatics{};
-        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
+        /* winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;*/
+        winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;
+        std::set<winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener>> m_listeners;
+        /*winrt::Windows::Storage::Streams::IRandomAccessStreamStatics m_randomAccessStreamStatics{};*/
+        winrt::Windows::Storage::Streams::RandomAccessStream m_randomAccessStreamStatics{};
+        /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*,
+         * ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
+        std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
-        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;
+        /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;*/
+        std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t>>> m_writeAsyncOperations;
 
-        UINT m_fixedWidth = 0;
-        UINT m_fixedHeight = 0;
+        /*  UINT m_fixedWidth = 0;
+          UINT m_fixedHeight = 0;*/
+        uint32_t m_fixedWidth = 0;
+        uint32_t m_fixedHeight = 0;
+
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;
+
+        /*Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;*/
+        winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers> m_resourceResolvers;
 
         static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
@@ -78,7 +91,6 @@ namespace AdaptiveCards::Rendering::WinUI3
                                              Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer,
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** rootUIElement) noexcept;
-
 
         // TODO: can we move word static to the function name?
         static std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>

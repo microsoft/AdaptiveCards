@@ -56,7 +56,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                       uint32_t spacing,
                                       uint32_t separatorThickness,
                                       winrt::Windows::UI::Color const& separatorColor,
-                                      bool isHorizontal);
+                                      bool isHorizontal = true);
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>
     CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
@@ -407,9 +407,17 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl);
 
+    winrt::Windows::UI::Xaml::UIElement
+    RenderInputLabel(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
+                     winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                     winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
+
     HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                     ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                     ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);
+
+    winrt::Windows::UI::Xaml::UIElement RenderInputErrorMessage(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
+                                                                winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext);
 
     HRESULT CreateValidationBorder(ABI::Windows::UI::Xaml::IUIElement* childElement,
                                    ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
@@ -423,6 +431,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                        _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
+
+    winrt::Windows::UI::Xaml::UIElement
+    HandleLabelAndErrorMessage(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
+                               winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                               winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                               winrt::Windows::UI::Xaml::UIElement const& inputLayout);
 
     HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
                                            ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
@@ -560,6 +574,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     {
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
+
+    winrt::Windows::UI::Xaml::UIElement
+    AddSeparatorIfNeeded(int& currentElement,
+                         winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& element,
+                         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+                         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                         winrt::Windows::UI::Xaml::Controls::Panel const& parentPanel);
 
     void AddSeparatorIfNeeded(int& currentElement,
                               _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
