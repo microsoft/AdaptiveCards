@@ -17,4 +17,3 @@ export class GlobalSettings {
         Adaptive.Versions.v1_6,
     ];
 }
-
