@@ -15,54 +15,52 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Input;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveTextInputRenderer::RuntimeClassInitialize() noexcept
-    {
-        try
-        {
-            return S_OK;
-        }
-        CATCH_RETURN();
-    }
-
-    HRESULT AdaptiveTextInputRenderer::HandleLayoutAndValidation(IAdaptiveTextInput* adaptiveTextInput,
-                                                                 IUIElement* inputUIElement,
-                                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                                 _In_ IAdaptiveRenderArgs* renderArgs,
-                                                                 IUIElement** textInputLayout,
-                                                                 IBorder** validationBorderOut)
+    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
+    HandleLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
+                              winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
         // The text box may need to go into a number of parent containers to handle validation and inline actions.
         // textBoxParentContainer represents the current parent container.
-        ComPtr<IUIElement> textBoxParentContainer = inputUIElement;
+        /* ComPtr<IUIElement> textBoxParentContainer = inputUIElement;*/
 
         // If there's any validation on this input, put the input inside a border. We don't use
         // XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
         // well as the text input, which is not the desired behavior.
-        ComPtr<IAdaptiveTextInput> localTextInput(adaptiveTextInput);
-        ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
-        RETURN_IF_FAILED(localTextInput.As(&textInputAsAdaptiveInput));
+        /* ComPtr<IAdaptiveTextInput> localTextInput(adaptiveTextInput);
+         ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
+         RETURN_IF_FAILED(localTextInput.As(&textInputAsAdaptiveInput));*/
 
-        HString regex;
-        RETURN_IF_FAILED(adaptiveTextInput->get_Regex(regex.GetAddressOf()));
-        boolean isRequired;
-        RETURN_IF_FAILED(textInputAsAdaptiveInput->get_IsRequired(&isRequired));
+        /* HString regex;
+         RETURN_IF_FAILED(adaptiveTextInput->get_Regex(regex.GetAddressOf()));
+         boolean isRequired;
+         RETURN_IF_FAILED(textInputAsAdaptiveInput->get_IsRequired(&isRequired));*/
+        winrt::hstring regex = adaptiveTextInput.Regex();
+        bool isRequired = adaptiveTextInput.IsRequired();
 
-        ComPtr<IBorder> validationBorder;
-        if (regex.IsValid() || isRequired)
+        /* ComPtr<IBorder> validationBorder;*/
+        rtxaml::Controls::Border validationBorder{};
+        /*if (regex.IsValid() || isRequired)*/
+        // TODO: not sure about hstring.isValid() here, what is the proper way to mimic behavior?
+        if (!regex.empty() || isRequired)
         {
-            RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
-            RETURN_IF_FAILED(validationBorder.As(&textBoxParentContainer));
+            /*RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
+            RETURN_IF_FAILED(validationBorder.As(&textBoxParentContainer));*/
+            validationBorder =
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
         }
 
         // If this input has an inline action, render it next to the input
-        ComPtr<IAdaptiveActionElement> inlineAction;
-        RETURN_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));
+        /* ComPtr<IAdaptiveActionElement> inlineAction;
+         RETURN_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));*/
+        auto inlineAction = adaptiveTextInput.InlineAction();
 
         if (inlineAction != nullptr)
         {
-            boolean isMultiline;
+            /*boolean isMultiline;
             RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));
 
             ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle style;
@@ -72,92 +70,126 @@ namespace AdaptiveCards::Rendering::WinUI3
 
             ComPtr<IUIElement> textBoxWithInlineAction;
             ActionHelpers::HandleInlineAction(
-                renderContext, renderArgs, inputUIElement, textBoxParentContainer.Get(), isMultiline, inlineAction.Get(), &textBoxWithInlineAction);
-            textBoxParentContainer = textBoxWithInlineAction;
+                renderContext, renderArgs, inputUIElement, textBoxParentContainer.Get(), isMultiline,
+            inlineAction.Get(), &textBoxWithInlineAction); textBoxParentContainer = textBoxWithInlineAction;*/
+            bool isMultiline = adaptiveTextInput.IsMultiline();
+            rtom::TextInputStyle style = adaptiveTextInput.TextInputStyle();
+            isMultiline &= style != rtom::TextInputStyle::Password;
+            auto textBoxWithInlineAction = ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::HandleInlineAction(
+                renderContext, renderArgs, inputUIElement, inputUIElement, isMultiline, inlineAction);
         }
 
-        boolean isMultiline;
-        RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));
+        /*boolean isMultiline;
+        RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));*/
 
-        if (!isMultiline)
+        if (!adaptiveTextInput.IsMultiline())
         {
-            ComPtr<IFrameworkElement> textBoxFrameworkElement;
-            RETURN_IF_FAILED(textBoxParentContainer.As(&textBoxFrameworkElement));
-            RETURN_IF_FAILED(textBoxFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+            /*  ComPtr<IFrameworkElement> textBoxFrameworkElement;
+              RETURN_IF_FAILED(textBoxParentContainer.As(&textBoxFrameworkElement));
+              RETURN_IF_FAILED(textBoxFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));*/
+            auto textBoxFrameworkElement = inputUIElement.as<rtxaml::FrameworkElement>();
+            textBoxFrameworkElement.VerticalAlignment(rtxaml::VerticalAlignment::Top);
         }
 
         // Call XamlHelpers::HandleInputLayoutAndValidation to handle accessibility properties. Pass nullptr for
         // validationBorder as we've already handled that above.
-        ComPtr<IUIElement> inputLayout;
+        /*ComPtr<IUIElement> inputLayout;
         ComPtr<IUIElement> validationError;
         RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, &inputLayout, nullptr));
+            textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, &inputLayout, nullptr));*/
+        rtxaml::UIElement inputLayout{nullptr};
+        std::tie(inputLayout, std::ignore) =
+            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveTextInput,
+                                                                                            inputUIElement,
+                                                                                            !regex.empty(), // TODO: not sure
+                                                                                                            // if it's correct way here with regex hstring
+                                                                                            renderContext);
 
-        RETURN_IF_FAILED(inputLayout.CopyTo(textInputLayout));
+        /*RETURN_IF_FAILED(inputLayout.CopyTo(textInputLayout));
         RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
-        return S_OK;
+        return S_OK;*/
+        // TODO: can I just return from XamlHelpers without using std::tie?
+        return {inputLayout, nullptr};
     }
 
-    HRESULT AdaptiveTextInputRenderer::RenderTextBox(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                                     _In_ IAdaptiveRenderContext* renderContext,
-                                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                                     _COM_Outptr_ IUIElement** textInputControl)
+    // TODO: should it be rtom::IAdaptiveTextInput for first arg?
+    rtxaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(rtom::AdaptiveTextInput const& adaptiveTextInput,
+                                                               rtrender::AdaptiveRenderContext const& renderContext,
+                                                               rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<ITextBox> textBox =
-            XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+        /*ComPtr<ITextBox> textBox =
+            XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));*/
+        rtxaml::Controls::TextBox textBox{};
 
-        boolean isMultiLine;
-        RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
-        if (isMultiLine)
+        // boolean isMultiLine;
+        // RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
+        if (adaptiveTextInput.IsMultiline())
         {
-            RETURN_IF_FAILED(textBox->put_AcceptsReturn(true));
-            RETURN_IF_FAILED(textBox->put_TextWrapping(TextWrapping_Wrap));
+            // RETURN_IF_FAILED(textBox->put_AcceptsReturn(true));
+            // RETURN_IF_FAILED(textBox->put_TextWrapping(TextWrapping_Wrap));
+            textBox.AcceptsReturn(true);
+            textBox.TextWrapping(rtxaml::TextWrapping::Wrap);
         }
 
-        HString textValue;
+        /*HString textValue;
         RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
-        RETURN_IF_FAILED(textBox->put_Text(textValue.Get()));
+        RETURN_IF_FAILED(textBox->put_Text(textValue.Get()));*/
+        /* winrt::hstring textValue = adaptiveTextInput.Value();*/
+        textBox.Text(adaptiveTextInput.Value());
 
-        UINT32 maxLength;
+        /*UINT32 maxLength;
         RETURN_IF_FAILED(adaptiveTextInput->get_MaxLength(&maxLength));
-        RETURN_IF_FAILED(textBox->put_MaxLength(maxLength));
+        RETURN_IF_FAILED(textBox->put_MaxLength(maxLength));*/
+        textBox.MaxLength(adaptiveTextInput.MaxLength());
 
-        ComPtr<ITextBox2> textBox2;
+        /*ComPtr<ITextBox2> textBox2;
         RETURN_IF_FAILED(textBox.As(&textBox2));
 
         HString placeHolderText;
         RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
-        RETURN_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+        RETURN_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));*/
+        textBox.PlaceholderText(adaptiveTextInput.Placeholder());
 
-        ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle;
-        RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
+        /* ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle;
+         RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));*/
+        rtom::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
 
-        ComPtr<IInputScopeName> inputScopeName =
-            XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+        /*ComPtr<IInputScopeName> inputScopeName =
+            XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));*/
+        rtxaml::Input::InputScopeName inputScopeName{};
+
         switch (textInputStyle)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Email:
-            RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
+        case rtom::TextInputStyle::Email:
+            /* RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));*/
+            // TODO: why smtp instead of name/email?
+            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::EmailSmtpAddress);
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Tel:
-            RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
+        case rtom::TextInputStyle::Tel:
+            /* RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));*/
+            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::TelephoneNumber);
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Url:
-            RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
+        case rtom::TextInputStyle::Url:
+            /* RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));*/
+            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::Url);
             break;
         }
 
-        ComPtr<IInputScope> inputScope =
-            XamlHelpers::CreateABIClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
-        ComPtr<IVector<InputScopeName*>> names;
-        RETURN_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
-        RETURN_IF_FAILED(names->Append(inputScopeName.Get()));
+        /*  ComPtr<IInputScope> inputScope =
+              XamlHelpers::CreateABIClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+          ComPtr<IVector<InputScopeName*>> names;
+          RETURN_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
+          RETURN_IF_FAILED(names->Append(inputScopeName.Get()));*/
+        rtxaml::Input::InputScope inputScope{};
+        auto names = inputScope.Names();
+        names.Append(inputScopeName);
 
-        RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
+        /*RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));*/
+        textBox.InputScope(inputScope);
 
-        ComPtr<IUIElement> textBoxAsUIElement;
+        /*ComPtr<IUIElement> textBoxAsUIElement;
         RETURN_IF_FAILED(textBox.As(&textBoxAsUIElement));
 
         ComPtr<IBorder> validationBorder;
@@ -172,85 +204,113 @@ namespace AdaptiveCards::Rendering::WinUI3
         ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
         RETURN_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
         RETURN_IF_FAILED(
-            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));*/
+        rtxaml::Controls::Border validationBorder{nullptr};
+        rtxaml::UIElement textInputControl{nullptr};
 
-        return S_OK;
+        std::tie(textInputControl, validationBorder) =
+            HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
+
+        // TODO: is everything correct here?
+        rtrender::TextInputValue inputValue{adaptiveTextInput, textBox, validationBorder};
+        renderContext.AddInputValue(inputValue, renderArgs);
+
+        ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
+        return textInputControl;
     }
 
-    HRESULT AdaptiveTextInputRenderer::RenderPasswordBox(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                                         _In_ IAdaptiveRenderContext* renderContext,
-                                                         _In_ IAdaptiveRenderArgs* renderArgs,
-                                                         _COM_Outptr_ IUIElement** textInputControl)
-    {
-        ComPtr<IPasswordBox> passwordBox =
-            XamlHelpers::CreateABIClass<IPasswordBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_PasswordBox));
+    rtxaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(rtom::AdaptiveTextInput const& adaptiveTextInput,
+                                                                   rtrender::AdaptiveRenderContext const& renderContext,
+                                                                   rtrender::AdaptiveRenderArgs const& renderArgs)
+    { /*
+         ComPtr<IPasswordBox> passwordBox =
+             XamlHelpers::CreateABIClass<IPasswordBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_PasswordBox));*/
+        rtxaml::Controls::PasswordBox passwordBox{};
 
-        HString textValue;
-        RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
-        RETURN_IF_FAILED(passwordBox->put_Password(textValue.Get()));
+        /*  HString textValue;
+          RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
+          RETURN_IF_FAILED(passwordBox->put_Password(textValue.Get()));
 
-        UINT32 maxLength;
-        RETURN_IF_FAILED(adaptiveTextInput->get_MaxLength(&maxLength));
-        RETURN_IF_FAILED(passwordBox->put_MaxLength(maxLength));
+          UINT32 maxLength;
+          RETURN_IF_FAILED(adaptiveTextInput->get_MaxLength(&maxLength));
+          RETURN_IF_FAILED(passwordBox->put_MaxLength(maxLength));*/
+        passwordBox.Password(adaptiveTextInput.Value());
+        passwordBox.MaxLength(adaptiveTextInput.MaxLength());
 
-        ComPtr<IPasswordBox2> passwordBox2;
-        RETURN_IF_FAILED(passwordBox.As(&passwordBox2));
+        /* ComPtr<IPasswordBox2> passwordBox2;
+         RETURN_IF_FAILED(passwordBox.As(&passwordBox2));
 
-        HString placeHolderText;
-        RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
-        RETURN_IF_FAILED(passwordBox2->put_PlaceholderText(placeHolderText.Get()));
+         HString placeHolderText;
+         RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
+         RETURN_IF_FAILED(passwordBox2->put_PlaceholderText(placeHolderText.Get()));*/
+        passwordBox.PlaceholderText(adaptiveTextInput.Placeholder());
 
-        ComPtr<IUIElement> textBoxAsUIElement;
+        /*ComPtr<IUIElement> textBoxAsUIElement;
         RETURN_IF_FAILED(passwordBox.As(&textBoxAsUIElement));
 
         ComPtr<IBorder> validationBorder;
         RETURN_IF_FAILED(HandleLayoutAndValidation(
-            adaptiveTextInput, textBoxAsUIElement.Get(), renderContext, renderArgs, textInputControl, &validationBorder));
+            adaptiveTextInput, textBoxAsUIElement.Get(), renderContext, renderArgs, textInputControl, &validationBorder));*/
 
-        ComPtr<PasswordInputValue> inputValue;
-        RETURN_IF_FAILED(
-            MakeAndInitialize<PasswordInputValue>(&inputValue, adaptiveTextInput, passwordBox.Get(), validationBorder.Get()));
-        RETURN_IF_FAILED(renderContext->AddInputValue(inputValue.Get(), renderArgs));
+        rtxaml::Controls::Border validationBorder{nullptr};
+        rtxaml::UIElement textInputControl{nullptr};
 
-        return S_OK;
+        std::tie(textInputControl, validationBorder) =
+            HandleLayoutAndValidation(adaptiveTextInput, passwordBox, renderContext, renderArgs);
+
+        /* ComPtr<PasswordInputValue> inputValue;
+         RETURN_IF_FAILED(
+             MakeAndInitialize<PasswordInputValue>(&inputValue, adaptiveTextInput, passwordBox.Get(),
+         validationBorder.Get())); RETURN_IF_FAILED(renderContext->AddInputValue(inputValue.Get(), renderArgs));*/
+        rtrender::PasswordInputValue inputValue{adaptiveTextInput, passwordBox, validationBorder};
+        renderContext.AddInputValue(inputValue, renderArgs);
+
+        return textInputControl;
     }
 
-    HRESULT AdaptiveTextInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** textInputControl) noexcept
-    try
+    rtxaml::UIElement AdaptiveTextInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                        rtrender::AdaptiveRenderContext const& renderContext,
+                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        try
         {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
-            return S_OK;
+            /*ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
+            auto hostConfig = renderContext.HostConfig();
+            if (::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                         L"Text Input was stripped from card because interactivity is not supported");
+                return nullptr;
+            }
+
+            /*  ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+              ComPtr<IAdaptiveTextInput> adaptiveTextInput;
+              RETURN_IF_FAILED(cardElement.As(&adaptiveTextInput));
+
+              ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle;
+              RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
+
+              ComPtr<IUIElement> renderedTextInputControl;*/
+            auto adaptiveTextInput = cardElement.as<rtom::AdaptiveTextInput>();
+            rtom::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
+            if (textInputStyle == rtom::TextInputStyle::Password)
+            {
+                return RenderPasswordBox(adaptiveTextInput, renderContext, renderArgs);
+            }
+            else
+            {
+                return RenderTextBox(adaptiveTextInput, renderContext, renderArgs);
+            }
+
+            /*RETURN_IF_FAILED(renderedTextInputControl.CopyTo(textInputControl));
+
+            return S_OK;*/
         }
-
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveTextInput> adaptiveTextInput;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveTextInput));
-
-        ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle;
-        RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
-
-        ComPtr<IUIElement> renderedTextInputControl;
-        if (textInputStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Password)
+        catch (winrt::hresult_error const& ex)
         {
-            RenderPasswordBox(adaptiveTextInput.Get(), renderContext, renderArgs, &renderedTextInputControl);
+            // TODO: what do we do here?
+            return nullptr;
         }
-        else
-        {
-            RenderTextBox(adaptiveTextInput.Get(), renderContext, renderArgs, &renderedTextInputControl);
-        }
-
-        RETURN_IF_FAILED(renderedTextInputControl.CopyTo(textInputControl));
-
-        return S_OK;
     }
-    CATCH_RETURN;
 }

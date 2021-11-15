@@ -4613,11 +4613,13 @@ namespace ABI {
                     Tel,
                     Url,
                     Email,
+                    Password,
                 };
                 const TextInputStyle TextInputStyle_Text = TextInputStyle::Text;
                 const TextInputStyle TextInputStyle_Tel = TextInputStyle::Tel;
                 const TextInputStyle TextInputStyle_Url = TextInputStyle::Url;
                 const TextInputStyle TextInputStyle_Email = TextInputStyle::Email;
+                const TextInputStyle TextInputStyle_Password = TextInputStyle::Password;
                 
             } /* WinUI3 */
         } /* ObjectModel */
@@ -20398,6 +20400,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextInputStyle
     TextInputStyle_Tel,
     TextInputStyle_Url,
     TextInputStyle_Email,
+    TextInputStyle_Password,
 };
 
 

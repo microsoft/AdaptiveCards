@@ -65,6 +65,14 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker const& actionInvoker,
                                       winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& inlineAction);
 
+    winrt::Windows::UI::Xaml::UIElement
+    HandleInlineAction(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                       winrt::Windows::UI::Xaml::UIElement const& textInputUIElement,
+                       winrt::Windows::UI::Xaml::UIElement const& textBoxParentContainer,
+                       bool isMultilineTextBox,
+                       winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& inlineAction);
+
     void HandleInlineAction(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                             _In_ ABI::Windows::UI::Xaml::IUIElement* textInputUIElement,

@@ -129,6 +129,7 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Tel,
         Url,
         Email,
+		Password
     };
 
     enum ContainerStyle {

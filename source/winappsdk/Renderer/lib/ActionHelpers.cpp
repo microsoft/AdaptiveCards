@@ -482,6 +482,137 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         }
     }
 
+    rtxaml::UIElement HandleInlineAction(rtrender::AdaptiveRenderContext const& renderContext,
+                                         rtrender::AdaptiveRenderArgs const& renderArgs,
+                                         rtxaml::UIElement const& textInputUIElement,
+                                         rtxaml::UIElement const& textBoxParentContainer,
+                                         bool isMultilineTextBox,
+                                         rtom::IAdaptiveActionElement const& inlineAction)
+    {
+        rtom::ActionType actionType = inlineAction.ActionType();
+        auto hostConfig = renderContext.HostConfig();
+
+        // Inline ShowCards are not supported for inline actions
+        if (WarnForInlineShowCard(renderContext, inlineAction, L"Inline ShowCard not supported for InlineAction"))
+        {
+            // TODO: is this correct?
+            return nullptr;
+        }
+        if ((actionType == rtom::ActionType::Submit) || (actionType == rtom::ActionType::Execute))
+        {
+            renderContext.LinkSubmitActionToCard(inlineAction, renderArgs);
+        }
+
+        // Create a grid to hold the text box and the action button
+        rtxaml::Controls::Grid xamlGrid{};
+        auto columnDefinitions = xamlGrid.ColumnDefinitions();
+
+        // Create the first column and add the text box to it
+        rtxaml::Controls::ColumnDefinition textBoxColumnDefinition{};
+        textBoxColumnDefinition.Width({1, rtxaml::GridUnitType::Star});
+        columnDefinitions.Append(textBoxColumnDefinition);
+
+        auto textBoxContainerAsFrameworkElement = textBoxParentContainer.as<rtxaml::FrameworkElement>();
+
+        rtxaml::Controls::Grid::SetColumn(textBoxContainerAsFrameworkElement, 0);
+        XamlHelpers::AppendXamlElementToPanel(textBoxContainerAsFrameworkElement, xamlGrid);
+
+        // Create a separator column
+        rtxaml::Controls::ColumnDefinition separatorColumnDefinition{};
+        separatorColumnDefinition.Width({1.0, rtxaml::GridUnitType::Auto});
+        columnDefinitions.Append(separatorColumnDefinition);
+
+        uint32_t spacingSize = GetSpacingSizeFromSpacing(hostConfig, rtom::Spacing::Default);
+
+        auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
+
+        auto separatorAsFrameworkElement = separator.as<rtxaml::FrameworkElement>();
+
+        rtxaml::Controls::Grid::SetColumn(separatorAsFrameworkElement, 1);
+        XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
+
+        // Create a column for the button
+
+        rtxaml::Controls::ColumnDefinition inlineActionColumnDefinition{};
+        inlineActionColumnDefinition.Width({0, rtxaml::GridUnitType::Auto});
+        columnDefinitions.Append(inlineActionColumnDefinition);
+
+        winrt::hstring iconUrl = inlineAction.IconUrl();
+
+        rtxaml::UIElement actionUIElement{nullptr};
+
+        // TODO: should I check for null here as well? hstring
+        if (!iconUrl.empty())
+        {
+            // TODO: same thing as with rendering Poster/BackgroundImage, should we resort to something else?
+            auto elementRenderers = renderContext.ElementRenderers();
+            auto imageRenderer = elementRenderers.Get(L"Image");
+
+            rtom::AdaptiveImage adaptiveImage{};
+
+            adaptiveImage.Url(iconUrl);
+            actionUIElement = imageRenderer.Render(adaptiveImage, renderContext, renderArgs);
+        }
+        else
+        {
+            // If there's no icon, just use the title text. Put it centered in a grid so it is
+            // centered relative to the text box.
+            winrt::hstring title = inlineAction.Title();
+            rtxaml::Controls::TextBlock titleTextBlock{};
+            titleTextBlock.Text(title);
+
+            // TOOD: what about text alignment?
+            titleTextBlock.VerticalAlignment(rtxaml::VerticalAlignment::Center);
+
+            rtxaml::Controls::Grid titleGrid{};
+            XamlHelpers::AppendXamlElementToPanel(titleTextBlock, titleGrid);
+
+            actionUIElement = titleGrid;
+        }
+        // Make the action the same size as the text box
+        textBoxContainerAsFrameworkElement.Loaded(
+            [actionUIElement, textBoxContainerAsFrameworkElement](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                                                                  rtxaml::RoutedEventArgs* const& /*args*/) -> void
+            {
+                auto actionFrameworkElement = actionUIElement.as<rtxaml::FrameworkElement>();
+                ActionHelpers::SetMatchingHeight(actionFrameworkElement, textBoxContainerAsFrameworkElement);
+            });
+
+        // Wrap the action in a button
+        auto touchTargetUIElement = WrapInTouchTarget(nullptr,
+                                                      actionUIElement,
+                                                      inlineAction,
+                                                      renderContext,
+                                                      false,
+                                                      L"Adaptive.Input.Text.InlineAction",
+                                                      L"", // TODO: not sure if it's correct to do here
+                                                      !iconUrl.empty());
+
+        auto touchTargetFrameworkElement = touchTargetUIElement.as<rtxaml::FrameworkElement>();
+
+        // Align to bottom so the icon stays with the bottom of the text box as it grows in the multiline case
+        touchTargetFrameworkElement.VerticalAlignment(rtxaml::VerticalAlignment::Bottom);
+
+        // Add the action to the column
+        // TODO: should I use gridStatics?
+        rtxaml::Controls::Grid::SetColumn(touchTargetFrameworkElement, 2);
+        XamlHelpers::AppendXamlElementToPanel(touchTargetFrameworkElement, xamlGrid);
+
+        // If this isn't a multiline input, enter should invoke the action
+        auto actionInvoker = renderContext.ActionInvoker();
+
+        if (!isMultilineTextBox)
+        {
+            textInputUIElement.KeyDown(
+                [actionInvoker, inlineAction](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                                              rtxaml::Input::KeyRoutedEventArgs const& args) -> void
+                // TODO: do I need ActionHelpers:: namespace here?
+                { ActionHelpers::HandleKeydownForInlineAction(args, actionInvoker, inlineAction); });
+        }
+
+        return xamlGrid;
+    }
+
     void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
                             _In_ IAdaptiveRenderArgs* renderArgs,
                             _In_ IUIElement* textInputUIElement,
@@ -776,6 +907,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             /* THROW_IF_FAILED(action->get_IsEnabled(&isEnabled));
              THROW_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));*/
         }
+        // TODO: is it correct? what else should I check for? should I check if it's empty?? to mimick HString.IsValid()?
         else if (altText.data())
         {
             // If we don't have an action but we've been passed altText, use that for name and tooltip
