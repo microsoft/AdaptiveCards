@@ -154,7 +154,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                    _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
 
     void HandleTableColumnWidth(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition const& column,
-                                   winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
+                                winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
 
     template<typename T>
     void AppendXamlElementToPanel(_In_ T* xamlElement,
