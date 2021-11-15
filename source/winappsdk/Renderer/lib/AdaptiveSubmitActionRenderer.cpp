@@ -11,7 +11,7 @@ using namespace Microsoft::WRL;
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveActionElement const& action,
+    rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
                              rtrender::AdaptiveRenderContext const& renderContext,
                              rtrender::AdaptiveRenderArgs const& renderArgs)
     {

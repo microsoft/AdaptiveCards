@@ -16,9 +16,9 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveToggleInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                          rtrender::AdaptiveRenderContext const& renderContext,
+                                                          rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

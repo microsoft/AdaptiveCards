@@ -14,7 +14,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveActionElement const& action,
+    rtxaml::UIElement AdaptiveShowCardActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
                              rtrender::AdaptiveRenderContext const& renderContext,
                              rtrender::AdaptiveRenderArgs const& renderArgs)
     {

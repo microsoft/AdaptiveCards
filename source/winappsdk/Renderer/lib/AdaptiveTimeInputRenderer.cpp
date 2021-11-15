@@ -15,9 +15,9 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveTimeInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                        rtrender::AdaptiveRenderContext const& renderContext,
+                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
