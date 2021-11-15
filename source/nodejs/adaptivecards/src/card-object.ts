@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import * as Utils from "./utils";
 import { Strings} from "./strings";
 import { Dictionary, GlobalSettings } from "./shared";
 import { HostConfig } from "./host-config";
