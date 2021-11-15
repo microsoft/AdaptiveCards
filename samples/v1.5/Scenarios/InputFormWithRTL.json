@@ -28,7 +28,7 @@
 			  "type": "Input.Text",
 			  "label": "Name",
 			  "style": "text",
-			  "id": "SimpleVal",
+			  "id": "SimpleValENG",
 			  "isRequired": true,
 			  "errorMessage": "Name is required"
 			},
@@ -36,20 +36,20 @@
 			  "type": "Input.Text",
 			  "label": "Email",
 			  "style": "email",
-			  "id": "EmailVal"
+			  "id": "EmailValENG"
 			},
 			{
 			  "type": "Input.Text",
 			  "label": "Phone",
 			  "style": "tel",
-			  "id": "TelVal"
+			  "id": "TelValENG"
 			},
 			{
 			  "type": "Input.Text",
 			  "label": "Comments",
 			  "style": "text",
 			  "isMultiline": true,
-			  "id": "MultiLineVal"
+			  "id": "MultiLineValENG"
 			}
 		  ],
 		  "actions": [
@@ -80,7 +80,7 @@
 			  "type": "Input.Text",
 			  "label": "اسم",
 			  "style": "text",
-			  "id": "SimpleVal",
+			  "id": "SimpleValARA",
 			  "isRequired": true,
 			  "errorMessage": "مطلوب اسم"
 			},
@@ -88,20 +88,20 @@
 			  "type": "Input.Text",
 			  "label": "بريد الالكتروني",
 			  "style": "email",
-			  "id": "EmailVal"
+			  "id": "EmailValARA"
 			},
 			{
 			  "type": "Input.Text",
 			  "label": "هاتف",
 			  "style": "tel",
-			  "id": "TelVal"
+			  "id": "TelValARA"
 			},
 			{
 			  "type": "Input.Text",
 			  "label": "تعليقات",
 			  "style": "text",
 			  "isMultiline": true,
-			  "id": "MultiLineVal"
+			  "id": "MultiLineValARA"
 			}
 		  ],
 		  "actions": [
