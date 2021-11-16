@@ -80,18 +80,18 @@ module.exports = (env, argv) => {
 				bundles: [
 					{
 						dest: 'dist/adaptivecards-designer.css',
-						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
+						src: [
+							'./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css',
+							'./node_modules/adaptivecards/dist/adaptivecards-carousel.css',
+							'./src/adaptivecards-designer.css'
+						]
 					}
-				],
+				]
 			}),
 			new CopyWebpackPlugin({
 				patterns: [{
 					from: 'src/containers/default/adaptivecards-defaulthost.css',
 					to: '.'
-				},
-				{
-					from: 'src/adaptivecards-designer.css',
-					to: './[name][ext]'
 				},
 				{
 					from: 'src/containers/**/*.css',

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
+import { AdaptiveCard, Carousel} from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint, Utils } from "./miscellaneous";
@@ -338,6 +339,25 @@ export class CardDesignerSurface {
                 const verb = (<Adaptive.ExecuteAction>action).verb;
                 if (verb) {
                     message += ` verb: "${verb}"`;
+                }
+
+                let carouselPageId: string | undefined = undefined;
+
+                const root = action.getRootObject() as AdaptiveCard;
+
+                if (root) {
+                    for (let i = 0; i < root.getItemCount(); i++) {
+                        let element = root.getItemAt(i);
+
+                        if (element instanceof Carousel) {
+                            carouselPageId = element.currentPageId;
+                            break;
+                        }
+                    }
+                }
+
+                if (carouselPageId) {
+                    message += `\ncarousel page id: "${carouselPageId}"`;
                 }
 
                 const url = (<Adaptive.OpenUrlAction>action).url;

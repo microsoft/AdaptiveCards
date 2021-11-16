@@ -1,18 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition, ISeparationDefinition,
-    Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
+import {
+    PaddingDefinition, GlobalSettings, SizeAndUnit, SpacingDefinition, ISeparationDefinition,
+    Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation
+} from "./shared";
 import * as Utils from "./utils";
 import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition, TextStyleDefinition } from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
-import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
+import {
+    Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
-import { CardObjectRegistry, GlobalRegistry } from "./registry";
+    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty
+} from "./serialization";
+import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+import { Carousel } from "./carousel";
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -158,19 +163,19 @@ export abstract class CardElement extends CardObject {
             },
             this.separatorOrientation);
 
-            if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
-                // Adjust separator's margins if the option to always bleed separators is turned on
-                let parentContainer = this.getParentContainer();
+        if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+            // Adjust separator's margins if the option to always bleed separators is turned on
+            let parentContainer = this.getParentContainer();
 
-                if (parentContainer && parentContainer.getEffectivePadding()) {
-                    let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+            if (parentContainer && parentContainer.getEffectivePadding()) {
+                let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
 
-                    renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
-                    renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
-                }
+                renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+                renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
             }
+        }
 
-            return renderedSeparator;
+        return renderedSeparator;
     }
 
     private updateRenderedElementVisibility() {
@@ -712,7 +717,7 @@ export abstract class BaseTextBlock extends CardElement {
     static readonly colorProperty = new EnumProperty(Versions.v1_0, "color", Enums.TextColor);
     static readonly isSubtleProperty = new BoolProperty(Versions.v1_0, "isSubtle");
     static readonly fontTypeProperty = new EnumProperty(Versions.v1_2, "fontType", Enums.FontType);
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", ["Action.ShowCard"]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1378,7 +1383,7 @@ export class RichTextBlock extends CardElement {
                 }
                 else {
                     // No fallback for inlines in 1.2
-                    inline = context.parseElement(this, jsonInline, false);
+                    inline = context.parseElement(this, jsonInline, [], false);
                 }
 
                 if (inline) {
@@ -1705,7 +1710,7 @@ export class Image extends CardElement {
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "width", "pixelWidth");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight", CardElement.heightProperty);
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", ["Action.ShowCard"]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1923,7 +1928,7 @@ export class Image extends CardElement {
 export abstract class CardElementContainer extends CardElement {
     //#region Schema
 
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", ["Action.ShowCard"]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1966,6 +1971,10 @@ export abstract class CardElementContainer extends CardElement {
 
     protected get isSelectable(): boolean {
         return false;
+    }
+
+    protected forbiddenChildElements(): string[] {
+        return [];
     }
 
     abstract getItemCount(): number;
@@ -2318,8 +2327,7 @@ export class Media extends CardElement {
         }
     }
 
-    private handlePlayButtonInvoke(event: UIEvent) : void
-    {
+    private handlePlayButtonInvoke(event: UIEvent): void {
         if (this.hostConfig.media.allowInlinePlayback) {
             event.preventDefault();
             event.cancelBubble = true;
@@ -2759,7 +2767,7 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     getAllInputs(processActions: boolean = true): Input[] {
-        return [ this ];
+        return [this];
     }
 
     abstract get value(): any;
@@ -2786,10 +2794,10 @@ export class TextInput extends Input {
             { value: Enums.InputTextStyle.Tel },
             { value: Enums.InputTextStyle.Url },
             { value: Enums.InputTextStyle.Email },
-            { value: Enums.InputTextStyle.Password, targetVersion: Versions.v1_5}
+            { value: Enums.InputTextStyle.Password, targetVersion: Versions.v1_5 }
         ]
     );
-    static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
+    static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", ["Action.ShowCard"]);
     static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
     @property(TextInput.valueProperty)
@@ -3331,7 +3339,7 @@ export class ChoiceSetInput extends Input {
                 return this.renderCompoundInput(
                     "ac-choiceSetInput-expanded",
                     "radio",
-                    this.defaultValue ? [ this.defaultValue ] : undefined);
+                    this.defaultValue ? [this.defaultValue] : undefined);
             }
             else if (this.style === "filtered") {
                 // Render as a text input coupled with a datalist
@@ -3495,10 +3503,8 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement.selectedIndex > 0 ? this._selectElement.value : undefined;
             }
             else if (this._textInput) {
-                for (let choice of this.choices)
-                {
-                    if (choice.title && this._textInput.value === choice.title)
-                    {
+                for (let choice of this.choices) {
+                    if (choice.title && this._textInput.value === choice.title) {
                         return choice.value;
                     }
                 }
@@ -4313,7 +4319,7 @@ export class OpenUrlAction extends Action {
         return OpenUrlAction.JsonTypeName;
     }
 
-    getAriaRole() : string {
+    getAriaRole(): string {
         return "link";
     }
 
@@ -4455,7 +4461,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-class StringWithSubstitutionProperty extends PropertyDefinition  {
+class StringWithSubstitutionProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
         result.set(Utils.parseString(source[this.name]));
@@ -4756,7 +4762,7 @@ class OverflowAction extends Action {
 
             contextMenu.popup(this.renderedElement);
         }
-	}
+    }
 }
 
 class ActionCollection {
@@ -5585,7 +5591,7 @@ export abstract class ContainerBase extends StylableCardElementContainer {
     }
 
     isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
+        return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 }
 
@@ -5673,7 +5679,6 @@ export class BackgroundImage extends SerializableObject {
 
 export class Container extends ContainerBase {
     //#region Schema
-
     static readonly backgroundImageProperty = new SerializableObjectProperty(
         Versions.v1_0,
         "backgroundImage",
@@ -5700,7 +5705,7 @@ export class Container extends ContainerBase {
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
 
-    private insertItemAt(
+    protected insertItemAt(
         item: CardElement,
         index: number,
         forceInsert: boolean) {
@@ -5736,6 +5741,12 @@ export class Container extends ContainerBase {
         super.applyBackground();
     }
 
+    protected applyRTL(element : HTMLElement) {
+        if (this.rtl !== undefined) {
+            element.dir = this.rtl ? "rtl" : "ltr";
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._renderedItems = [];
 
@@ -5744,9 +5755,7 @@ export class Container extends ContainerBase {
 
         let element = document.createElement("div");
 
-        if (this.rtl !== undefined) {
-            element.dir = this.rtl ? "rtl" : "ltr";
-        }
+        this.applyRTL(element);
 
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.style.display = "flex";
@@ -5858,6 +5867,10 @@ export class Container extends ContainerBase {
         return this.backgroundImage.isValid() || super.getHasBackground();
     }
 
+    protected canHostSingletons() {
+        return false;
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -5866,9 +5879,21 @@ export class Container extends ContainerBase {
 
         let jsonItems = source[this.getItemsCollectionPropertyName()];
 
+        let parsingSingletonObject = false;
+        if (!Array.isArray(jsonItems) && typeof jsonItems === "object" && this.canHostSingletons()) {
+            const typeName = Utils.parseString(jsonItems["type"]);
+            if (typeName) {
+                const registration = context.elementRegistry.findByName(typeName);
+                if (registration?.singletonBehavior !== ElementSingletonBehavior.NotAllowed) {
+                    jsonItems = [jsonItems];
+                    parsingSingletonObject = true;
+                }
+            }
+        }
+
         if (Array.isArray(jsonItems)) {
             for (let item of jsonItems) {
-                let element = context.parseElement(this, item, !this.isDesignMode());
+                let element = context.parseElement(this, item, this.forbiddenChildElements(), !this.isDesignMode(), parsingSingletonObject);
 
                 if (element) {
                     this.insertItemAt(element, -1, true);
@@ -6219,7 +6244,7 @@ export class ColumnSet extends ContainerBase {
         return context.parseCardObject<Column>(
             this,
             source,
-            [], // Forbidden types not supported for elements for now
+            [],
             !this.isDesignMode(),
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
@@ -6612,6 +6637,10 @@ export abstract class ContainerWithActions extends Container {
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
+        this.parseActions(source, context);
+    }
+
+    protected parseActions(source: any, context: SerializationContext) {
         this._actionCollection.parse(source["actions"], context);
     }
 
@@ -6939,6 +6968,7 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         },
         Versions.v1_0);
+
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
@@ -7035,10 +7065,14 @@ export class AdaptiveCard extends ContainerWithActions {
         return "body";
     }
 
+    protected canHostSingletons() {
+        return true;
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         this._fallbackCard = undefined;
 
-        let fallbackElement = context.parseElement(undefined, source["fallback"], !this.isDesignMode());
+        let fallbackElement = context.parseElement(undefined, source["fallback"], this.forbiddenChildElements(), !this.isDesignMode());
 
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
@@ -7055,7 +7089,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        let renderedElement = super.internalRender();
+        var renderedElement = super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7193,6 +7227,7 @@ export class AdaptiveCard extends ContainerWithActions {
     get hasVisibleSeparator(): boolean {
         return false;
     }
+
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
@@ -7251,19 +7286,23 @@ export class SerializationContext extends BaseSerializationContext {
     private _elementRegistry?: CardObjectRegistry<CardElement>;
     private _actionRegistry?: CardObjectRegistry<Action>;
 
+    private _forbiddenTypes: Set<string> = new Set<string>();
     private internalParseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
         source: any,
-        forbiddenTypeNames: string[],
+        forbiddenTypes: Set<string>,
         allowFallback: boolean,
         createInstanceCallback: (typeName: string | undefined) => T | undefined,
         logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void): T | undefined {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
-            let typeName = Utils.parseString(source["type"]);
+            const oldForbiddenTypes = this._forbiddenTypes;
+            forbiddenTypes.forEach((type) => { this._forbiddenTypes.add(type); });
 
-            if (typeName && forbiddenTypeNames.indexOf(typeName) >= 0) {
+            const typeName = Utils.parseString(source["type"]);
+
+            if (typeName && this._forbiddenTypes.has(typeName)) {
                 logParseEvent(typeName, Enums.TypeErrorType.ForbiddenType);
             }
             else {
@@ -7296,13 +7335,15 @@ export class SerializationContext extends BaseSerializationContext {
                         result = this.internalParseCardObject<T>(
                             parent,
                             fallback,
-                            forbiddenTypeNames,
+                            forbiddenTypes,
                             true,
                             createInstanceCallback,
                             logParseEvent);
                     }
                 }
             }
+
+            this._forbiddenTypes = oldForbiddenTypes;
         }
 
         return result;
@@ -7339,10 +7380,11 @@ export class SerializationContext extends BaseSerializationContext {
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
         logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void): T | undefined {
+        const forbiddenTypes = new Set<string>(forbiddenTypeNames);
         let result = this.internalParseCardObject(
             parent,
             source,
-            forbiddenTypeNames,
+            forbiddenTypes,
             allowFallback,
             createInstanceCallback,
             logParseEvent);
@@ -7354,11 +7396,17 @@ export class SerializationContext extends BaseSerializationContext {
         return result;
     }
 
-    parseElement(parent: CardElement | undefined, source: any, allowFallback: boolean): CardElement | undefined {
+    parseElement(
+        parent: CardElement | undefined,
+        source: any,
+        forbiddenTypes: string[],
+        allowFallback: boolean,
+        parsingSingletonObject: boolean = false): CardElement | undefined {
+
         return this.parseCardObject<CardElement>(
             parent,
             source,
-            [], // Forbidden types not supported for elements for now
+            forbiddenTypes,
             allowFallback,
             (typeName: string) => {
                 return this.elementRegistry.createInstance(typeName, this.targetVersion);
@@ -7384,6 +7432,7 @@ export class SerializationContext extends BaseSerializationContext {
         source: any,
         forbiddenActionTypes: string[],
         allowFallback: boolean): Action | undefined {
+
         return this.parseCardObject<Action>(
             parent,
             source,
@@ -7409,7 +7458,7 @@ export class SerializationContext extends BaseSerializationContext {
     }
 
     get elementRegistry(): CardObjectRegistry<CardElement> {
-        return this._elementRegistry ? this._elementRegistry : GlobalRegistry.elements;
+        return this._elementRegistry ?? GlobalRegistry.elements;
     }
 
     // Not using a property setter here because the setter should accept "undefined"
@@ -7419,7 +7468,7 @@ export class SerializationContext extends BaseSerializationContext {
     }
 
     get actionRegistry(): CardObjectRegistry<Action> {
-        return this._actionRegistry ? this._actionRegistry : GlobalRegistry.actions;
+        return this._actionRegistry ?? GlobalRegistry.actions;
     }
 
     // Not using a property setter here because the setter should accept "undefined"
