@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_PropertyDefinition_](serialization.propertydefinition.md)
+* [*PropertyDefinition*](serialization.propertydefinition.md)
 
   ↳ **ActionProperty**
 
@@ -36,17 +36,17 @@
 
 ### constructor
 
-\+ **new ActionProperty**(`targetVersion`: [_Version_](serialization.version.md), `name`: _string_, `forbiddenActionTypes?`: _string_[]): [_ActionProperty_](card_elements.actionproperty.md)
+\+ **new ActionProperty**(`targetVersion`: [*Version*](serialization.version.md), `name`: *string*, `forbiddenActionTypes?`: *string*[]): [*ActionProperty*](card_elements.actionproperty.md)
 
 #### Parameters:
 
-| Name                   | Type                                  |
-| :--------------------- | :------------------------------------ |
-| `targetVersion`        | [_Version_](serialization.version.md) |
-| `name`                 | _string_                              |
-| `forbiddenActionTypes` | _string_[]                            |
+Name | Type |
+:------ | :------ |
+`targetVersion` | [*Version*](serialization.version.md) |
+`name` | *string* |
+`forbiddenActionTypes` | *string*[] |
 
-**Returns:** [_ActionProperty_](card_elements.actionproperty.md)
+**Returns:** [*ActionProperty*](card_elements.actionproperty.md)
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
@@ -56,57 +56,57 @@ Defined in: [card-elements.ts:627](https://github.com/microsoft/AdaptiveCards/bl
 
 ### defaultValue
 
-• `Optional` `Readonly` **defaultValue**: _any_
+• `Optional` `Readonly` **defaultValue**: *any*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[defaultValue](serialization.propertydefinition.md#defaultvalue)
 
----
+___
 
 ### forbiddenActionTypes
 
-• `Readonly` **forbiddenActionTypes**: _string_[]
+• `Readonly` **forbiddenActionTypes**: *string*[]
 
----
+___
 
 ### isSerializationEnabled
 
-• **isSerializationEnabled**: _boolean_= true
+• **isSerializationEnabled**: *boolean*= true
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[isSerializationEnabled](serialization.propertydefinition.md#isserializationenabled)
 
 Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L276)
 
----
+___
 
 ### name
 
-• `Readonly` **name**: _string_
+• `Readonly` **name**: *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[name](serialization.propertydefinition.md#name)
 
----
+___
 
 ### onGetInitialValue
 
-• `Optional` `Readonly` **onGetInitialValue**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _any_
+• `Optional` `Readonly` **onGetInitialValue**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *any*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[onGetInitialValue](serialization.propertydefinition.md#ongetinitialvalue)
 
----
+___
 
 ### sequentialNumber
 
-• `Readonly` **sequentialNumber**: _number_
+• `Readonly` **sequentialNumber**: *number*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[sequentialNumber](serialization.propertydefinition.md#sequentialnumber)
 
 Defined in: [serialization.ts:274](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L274)
 
----
+___
 
 ### targetVersion
 
-• `Readonly` **targetVersion**: [_Version_](serialization.version.md)
+• `Readonly` **targetVersion**: [*Version*](serialization.version.md)
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[targetVersion](serialization.propertydefinition.md#targetversion)
 
@@ -114,50 +114,50 @@ Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[targe
 
 ### getInternalName
 
-▸ **getInternalName**(): _string_
+▸ **getInternalName**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:262](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L262)
 
----
+___
 
 ### parse
 
-▸ **parse**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `source`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_SerializationContext_](card_elements.serializationcontext.md)): _undefined_ \| [_Action_](card_elements.action.md)
+▸ **parse**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `source`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*SerializationContext*](card_elements.serializationcontext.md)): *undefined* \| [*Action*](card_elements.action.md)
 
 #### Parameters:
 
-| Name      | Type                                                            |
-| :-------- | :-------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)     |
-| `source`  | [_PropertyBag_](../modules/serialization.md#propertybag)        |
-| `context` | [_SerializationContext_](card_elements.serializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`source` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`context` | [*SerializationContext*](card_elements.serializationcontext.md) |
 
-**Returns:** _undefined_ \| [_Action_](card_elements.action.md)
+**Returns:** *undefined* \| [*Action*](card_elements.action.md)
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [card-elements.ts:615](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L615)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `target`: [_PropertyBag_](../modules/serialization.md#propertybag), `value`: _undefined_ \| [_Action_](card_elements.action.md), `context`: [_SerializationContext_](card_elements.serializationcontext.md)): _void_
+▸ **toJSON**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `target`: [*PropertyBag*](../modules/serialization.md#propertybag), `value`: *undefined* \| [*Action*](card_elements.action.md), `context`: [*SerializationContext*](card_elements.serializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                            |
-| :-------- | :-------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)     |
-| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)        |
-| `value`   | _undefined_ \| [_Action_](card_elements.action.md)              |
-| `context` | [_SerializationContext_](card_elements.serializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`value` | *undefined* \| [*Action*](card_elements.action.md) |
+`context` | [*SerializationContext*](card_elements.serializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 

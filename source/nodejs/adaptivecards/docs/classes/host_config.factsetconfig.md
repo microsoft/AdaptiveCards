@@ -20,15 +20,15 @@
 
 ### constructor
 
-\+ **new FactSetConfig**(`obj?`: _any_): [_FactSetConfig_](host_config.factsetconfig.md)
+\+ **new FactSetConfig**(`obj?`: *any*): [*FactSetConfig*](host_config.factsetconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_FactSetConfig_](host_config.factsetconfig.md)
+**Returns:** [*FactSetConfig*](host_config.factsetconfig.md)
 
 Defined in: [host-config.ts:221](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L221)
 
@@ -36,22 +36,22 @@ Defined in: [host-config.ts:221](https://github.com/microsoft/AdaptiveCards/blob
 
 ### spacing
 
-• **spacing**: _number_= 10
+• **spacing**: *number*= 10
 
 Defined in: [host-config.ts:221](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L221)
 
----
+___
 
 ### title
 
-• `Readonly` **title**: [_FactTitleDefinition_](host_config.facttitledefinition.md)
+• `Readonly` **title**: [*FactTitleDefinition*](host_config.facttitledefinition.md)
 
 Defined in: [host-config.ts:219](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L219)
 
----
+___
 
 ### value
 
-• `Readonly` **value**: [_FactTextDefinition_](host_config.facttextdefinition.md)
+• `Readonly` **value**: [*FactTextDefinition*](host_config.facttextdefinition.md)
 
 Defined in: [host-config.ts:220](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L220)

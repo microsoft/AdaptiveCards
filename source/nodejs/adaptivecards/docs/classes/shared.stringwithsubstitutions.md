@@ -22,76 +22,76 @@
 
 ### constructor
 
-\+ **new StringWithSubstitutions**(): [_StringWithSubstitutions_](shared.stringwithsubstitutions.md)
+\+ **new StringWithSubstitutions**(): [*StringWithSubstitutions*](shared.stringwithsubstitutions.md)
 
-**Returns:** [_StringWithSubstitutions_](shared.stringwithsubstitutions.md)
+**Returns:** [*StringWithSubstitutions*](shared.stringwithsubstitutions.md)
 
 ## Methods
 
 ### get
 
-▸ **get**(): _undefined_ \| _string_
+▸ **get**(): *undefined* \| *string*
 
-**Returns:** _undefined_ \| _string_
+**Returns:** *undefined* \| *string*
 
 Defined in: [shared.ts:98](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L98)
 
----
+___
 
 ### getOriginal
 
-▸ **getOriginal**(): _undefined_ \| _string_
+▸ **getOriginal**(): *undefined* \| *string*
 
-**Returns:** _undefined_ \| _string_
+**Returns:** *undefined* \| *string*
 
 Defined in: [shared.ts:94](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L94)
 
----
+___
 
 ### getReferencedInputs
 
-▸ **getReferencedInputs**(`inputs`: [_IInput_](../interfaces/shared.iinput.md)[], `referencedInputs`: [_Dictionary_](../modules/shared.md#dictionary)<[_IInput_](../interfaces/shared.iinput.md)\>): _void_
+▸ **getReferencedInputs**(`inputs`: [*IInput*](../interfaces/shared.iinput.md)[], `referencedInputs`: [*Dictionary*](../modules/shared.md#dictionary)<[*IInput*](../interfaces/shared.iinput.md)\>): *void*
 
 #### Parameters:
 
-| Name               | Type                                                                                         |
-| :----------------- | :------------------------------------------------------------------------------------------- |
-| `inputs`           | [_IInput_](../interfaces/shared.iinput.md)[]                                                 |
-| `referencedInputs` | [_Dictionary_](../modules/shared.md#dictionary)<[_IInput_](../interfaces/shared.iinput.md)\> |
+Name | Type |
+:------ | :------ |
+`inputs` | [*IInput*](../interfaces/shared.iinput.md)[] |
+`referencedInputs` | [*Dictionary*](../modules/shared.md#dictionary)<[*IInput*](../interfaces/shared.iinput.md)\> |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [shared.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L43)
 
----
+___
 
 ### set
 
-▸ **set**(`value`: _undefined_ \| _string_): _void_
+▸ **set**(`value`: *undefined* \| *string*): *void*
 
 #### Parameters:
 
-| Name    | Type                    |
-| :------ | :---------------------- |
-| `value` | _undefined_ \| _string_ |
+Name | Type |
+:------ | :------ |
+`value` | *undefined* \| *string* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [shared.ts:107](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L107)
 
----
+___
 
 ### substituteInputValues
 
-▸ **substituteInputValues**(`inputs`: [_Dictionary_](../modules/shared.md#dictionary)<[_IInput_](../interfaces/shared.iinput.md)\>, `contentType`: _string_): _void_
+▸ **substituteInputValues**(`inputs`: [*Dictionary*](../modules/shared.md#dictionary)<[*IInput*](../interfaces/shared.iinput.md)\>, `contentType`: *string*): *void*
 
 #### Parameters:
 
-| Name          | Type                                                                                         |
-| :------------ | :------------------------------------------------------------------------------------------- |
-| `inputs`      | [_Dictionary_](../modules/shared.md#dictionary)<[_IInput_](../interfaces/shared.iinput.md)\> |
-| `contentType` | _string_                                                                                     |
+Name | Type |
+:------ | :------ |
+`inputs` | [*Dictionary*](../modules/shared.md#dictionary)<[*IInput*](../interfaces/shared.iinput.md)\> |
+`contentType` | *string* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [shared.ts:57](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L57)

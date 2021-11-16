@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_ColorDefinition_](host_config.colordefinition.md)
+* [*ColorDefinition*](host_config.colordefinition.md)
 
   ↳ **TextColorDefinition**
 
@@ -30,16 +30,16 @@
 
 ### constructor
 
-\+ **new TextColorDefinition**(`defaultColor?`: _string_, `subtleColor?`: _string_): [_TextColorDefinition_](host_config.textcolordefinition.md)
+\+ **new TextColorDefinition**(`defaultColor?`: *string*, `subtleColor?`: *string*): [*TextColorDefinition*](host_config.textcolordefinition.md)
 
 #### Parameters:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `defaultColor?` | _string_ |
-| `subtleColor?`  | _string_ |
+Name | Type |
+:------ | :------ |
+`defaultColor?` | *string* |
+`subtleColor?` | *string* |
 
-**Returns:** [_TextColorDefinition_](host_config.textcolordefinition.md)
+**Returns:** [*TextColorDefinition*](host_config.textcolordefinition.md)
 
 Inherited from: [ColorDefinition](host_config.colordefinition.md)
 
@@ -49,25 +49,25 @@ Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### default
 
-• **default**: _string_= "#000000"
+• **default**: *string*= "#000000"
 
 Inherited from: [ColorDefinition](host_config.colordefinition.md).[default](host_config.colordefinition.md#default)
 
 Defined in: [host-config.ts:23](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L23)
 
----
+___
 
 ### highlightColors
 
-• `Readonly` **highlightColors**: [_ColorDefinition_](host_config.colordefinition.md)
+• `Readonly` **highlightColors**: [*ColorDefinition*](host_config.colordefinition.md)
 
 Defined in: [host-config.ts:45](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L45)
 
----
+___
 
 ### subtle
 
-• **subtle**: _string_= "#666666"
+• **subtle**: *string*= "#666666"
 
 Inherited from: [ColorDefinition](host_config.colordefinition.md).[subtle](host_config.colordefinition.md#subtle)
 
@@ -77,15 +77,15 @@ Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### parse
 
-▸ **parse**(`obj?`: _any_): _void_
+▸ **parse**(`obj?`: *any*): *void*
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Overrides: [ColorDefinition](host_config.colordefinition.md)
 

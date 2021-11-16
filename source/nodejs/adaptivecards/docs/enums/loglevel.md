@@ -6,24 +6,24 @@
 
 ### Enumeration members
 
-- [Error](loglevel.md#error)
-- [Info](loglevel.md#info)
-- [Warning](loglevel.md#warning)
+* [Error](loglevel.md#error)
+* [Info](loglevel.md#info)
+* [Warning](loglevel.md#warning)
 
 ## Enumeration members
 
-### Error
+###  Error
 
 • **Error**:
 
----
+___
 
-### Info
+###  Info
 
 • **Info**:
 
----
+___
 
-### Warning
+###  Warning
 
 • **Warning**:

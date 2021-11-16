@@ -23,15 +23,15 @@
 
 ### constructor
 
-\+ **new MediaConfig**(`obj?`: _any_): [_MediaConfig_](host_config.mediaconfig.md)
+\+ **new MediaConfig**(`obj?`: *any*): [*MediaConfig*](host_config.mediaconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_MediaConfig_](host_config.mediaconfig.md)
+**Returns:** [*MediaConfig*](host_config.mediaconfig.md)
 
 Defined in: [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L87)
 
@@ -39,15 +39,15 @@ Defined in: [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### allowInlinePlayback
 
-• **allowInlinePlayback**: _boolean_= true
+• **allowInlinePlayback**: *boolean*= true
 
 Defined in: [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L87)
 
----
+___
 
 ### defaultPoster
 
-• `Optional` **defaultPoster**: _undefined_ \| _string_
+• `Optional` **defaultPoster**: *undefined* \| *string*
 
 Defined in: [host-config.ts:86](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L86)
 
@@ -55,13 +55,13 @@ Defined in: [host-config.ts:86](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### toJSON
 
-▸ **toJSON**(): _object_
+▸ **toJSON**(): *object*
 
-**Returns:** _object_
+**Returns:** *object*
 
-| Name                  | Type                    |
-| :-------------------- | :---------------------- |
-| `allowInlinePlayback` | _boolean_               |
-| `defaultPoster`       | _undefined_ \| _string_ |
+Name | Type |
+:------ | :------ |
+`allowInlinePlayback` | *boolean* |
+`defaultPoster` | *undefined* \| *string* |
 
 Defined in: [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L96)

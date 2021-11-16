@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_FactTextDefinition_](host_config.facttextdefinition.md)
+* [*FactTextDefinition*](host_config.facttextdefinition.md)
 
   ↳ **FactTitleDefinition**
 
@@ -34,15 +34,15 @@
 
 ### constructor
 
-\+ **new FactTitleDefinition**(`obj?`: _any_): [_FactTitleDefinition_](host_config.facttitledefinition.md)
+\+ **new FactTitleDefinition**(`obj?`: *any*): [*FactTitleDefinition*](host_config.facttitledefinition.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_FactTitleDefinition_](host_config.facttitledefinition.md)
+**Returns:** [*FactTitleDefinition*](host_config.facttitledefinition.md)
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md)
 
@@ -52,55 +52,55 @@ Defined in: [host-config.ts:202](https://github.com/microsoft/AdaptiveCards/blob
 
 ### color
 
-• **color**: [_TextColor_](../enums/enums.textcolor.md)
+• **color**: [*TextColor*](../enums/enums.textcolor.md)
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md).[color](host_config.facttextdefinition.md#color)
 
 Defined in: [host-config.ts:106](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L106)
 
----
+___
 
 ### isSubtle
 
-• **isSubtle**: _boolean_= false
+• **isSubtle**: *boolean*= false
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md).[isSubtle](host_config.facttextdefinition.md#issubtle)
 
 Defined in: [host-config.ts:107](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L107)
 
----
+___
 
 ### maxWidth
 
-• `Optional` **maxWidth**: _undefined_ \| _number_= 150
+• `Optional` **maxWidth**: *undefined* \| *number*= 150
 
 Defined in: [host-config.ts:201](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L201)
 
----
+___
 
 ### size
 
-• **size**: [_TextSize_](../enums/enums.textsize.md)
+• **size**: [*TextSize*](../enums/enums.textsize.md)
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md).[size](host_config.facttextdefinition.md#size)
 
 Defined in: [host-config.ts:105](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L105)
 
----
+___
 
 ### weight
 
-• **weight**: [_TextWeight_](../enums/enums.textweight.md)
+• **weight**: [*TextWeight*](../enums/enums.textweight.md)
 
 Overrides: [FactTextDefinition](host_config.facttextdefinition.md).[weight](host_config.facttextdefinition.md#weight)
 
 Defined in: [host-config.ts:202](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L202)
 
----
+___
 
 ### wrap
 
-• **wrap**: _boolean_= true
+• **wrap**: *boolean*= true
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md).[wrap](host_config.facttextdefinition.md#wrap)
 
@@ -110,21 +110,21 @@ Defined in: [host-config.ts:182](https://github.com/microsoft/AdaptiveCards/blob
 
 ### getDefaultWeight
 
-▸ **getDefaultWeight**(): [_TextWeight_](../enums/enums.textweight.md)
+▸ **getDefaultWeight**(): [*TextWeight*](../enums/enums.textweight.md)
 
-**Returns:** [_TextWeight_](../enums/enums.textweight.md)
+**Returns:** [*TextWeight*](../enums/enums.textweight.md)
 
 Overrides: [FactTextDefinition](host_config.facttextdefinition.md)
 
 Defined in: [host-config.ts:213](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L213)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(): _any_
+▸ **toJSON**(): *any*
 
-**Returns:** _any_
+**Returns:** *any*
 
 Inherited from: [FactTextDefinition](host_config.facttextdefinition.md)
 

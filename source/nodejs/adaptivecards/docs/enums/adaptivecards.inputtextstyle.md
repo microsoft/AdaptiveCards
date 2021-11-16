@@ -21,7 +21,7 @@
 
 Defined in: [enums.ts:121](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L121)
 
----
+___
 
 ### Tel
 
@@ -29,7 +29,7 @@ Defined in: [enums.ts:121](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 Defined in: [enums.ts:119](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L119)
 
----
+___
 
 ### Text
 
@@ -37,7 +37,7 @@ Defined in: [enums.ts:119](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 Defined in: [enums.ts:118](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L118)
 
----
+___
 
 ### Url
 

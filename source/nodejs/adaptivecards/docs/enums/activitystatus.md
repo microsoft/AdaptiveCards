@@ -6,17 +6,17 @@
 
 ### Enumeration members
 
-- [Failure](activitystatus.md#failure)
-- [Success](activitystatus.md#success)
+* [Failure](activitystatus.md#failure)
+* [Success](activitystatus.md#success)
 
 ## Enumeration members
 
-### Failure
+###  Failure
 
 • **Failure**:
 
----
+___
 
-### Success
+###  Success
 
 • **Success**:

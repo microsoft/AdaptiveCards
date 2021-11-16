@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:73](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L73)
 
----
+___
 
 ### Left
 
@@ -28,7 +28,7 @@ Defined in: [enums.ts:73](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:72](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L72)
 
----
+___
 
 ### Right
 

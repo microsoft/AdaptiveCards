@@ -47,70 +47,70 @@
 
 ### ContainerStyle
 
-Ƭ **ContainerStyle**: _default_ \| _emphasis_
+Ƭ **ContainerStyle**: *default* \| *emphasis*
 
 Defined in: [schema.ts:10](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L10)
 
----
+___
 
 ### HorizontalAlignment
 
-Ƭ **HorizontalAlignment**: _left_ \| _center_ \| _right_
+Ƭ **HorizontalAlignment**: *left* \| *center* \| *right*
 
 Defined in: [schema.ts:5](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L5)
 
----
+___
 
 ### ImageStyle
 
-Ƭ **ImageStyle**: _default_ \| _person_
+Ƭ **ImageStyle**: *default* \| *person*
 
 Defined in: [schema.ts:11](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L11)
 
----
+___
 
 ### Size
 
-Ƭ **Size**: _auto_ \| _stretch_ \| _small_ \| _medium_ \| _large_
+Ƭ **Size**: *auto* \| *stretch* \| *small* \| *medium* \| *large*
 
 Defined in: [schema.ts:3](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L3)
 
----
+___
 
 ### Spacing
 
-Ƭ **Spacing**: _none_ \| _small_ \| _default_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
+Ƭ **Spacing**: *none* \| *small* \| *default* \| *medium* \| *large* \| *extraLarge* \| *padding*
 
 Defined in: [schema.ts:7](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L7)
 
----
+___
 
 ### TextColor
 
-Ƭ **TextColor**: _default_ \| _dark_ \| _light_ \| _accent_ \| _good_ \| _warning_ \| _attention_
+Ƭ **TextColor**: *default* \| *dark* \| *light* \| *accent* \| *good* \| *warning* \| *attention*
 
 Defined in: [schema.ts:9](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L9)
 
----
+___
 
 ### TextSize
 
-Ƭ **TextSize**: _small_ \| _default_ \| _medium_ \| _large_ \| _extraLarge_
+Ƭ **TextSize**: *small* \| *default* \| *medium* \| *large* \| *extraLarge*
 
 Defined in: [schema.ts:4](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L4)
 
----
+___
 
 ### TextWeight
 
-Ƭ **TextWeight**: _lighter_ \| _default_ \| _bolder_
+Ƭ **TextWeight**: *lighter* \| *default* \| *bolder*
 
 Defined in: [schema.ts:8](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L8)
 
----
+___
 
 ### VerticalAlignment
 
-Ƭ **VerticalAlignment**: _top_ \| _center_ \| _bottom_
+Ƭ **VerticalAlignment**: *top* \| *center* \| *bottom*
 
 Defined in: [schema.ts:6](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L6)

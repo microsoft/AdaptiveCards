@@ -6,11 +6,11 @@
 
 ## Hierarchy
 
-- **ColorDefinition**
+* **ColorDefinition**
 
-  ↳ [_TextColorDefinition_](host_config.textcolordefinition.md)
+  ↳ [*TextColorDefinition*](host_config.textcolordefinition.md)
 
-  ↳ [_TextColorDefinition_](adaptivecards.textcolordefinition.md)
+  ↳ [*TextColorDefinition*](adaptivecards.textcolordefinition.md)
 
 ## Table of contents
 
@@ -31,16 +31,16 @@
 
 ### constructor
 
-\+ **new ColorDefinition**(`defaultColor?`: _string_, `subtleColor?`: _string_): [_ColorDefinition_](host_config.colordefinition.md)
+\+ **new ColorDefinition**(`defaultColor?`: *string*, `subtleColor?`: *string*): [*ColorDefinition*](host_config.colordefinition.md)
 
 #### Parameters:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `defaultColor?` | _string_ |
-| `subtleColor?`  | _string_ |
+Name | Type |
+:------ | :------ |
+`defaultColor?` | *string* |
+`subtleColor?` | *string* |
 
-**Returns:** [_ColorDefinition_](host_config.colordefinition.md)
+**Returns:** [*ColorDefinition*](host_config.colordefinition.md)
 
 Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L24)
 
@@ -48,15 +48,15 @@ Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### default
 
-• **default**: _string_= "#000000"
+• **default**: *string*= "#000000"
 
 Defined in: [host-config.ts:23](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L23)
 
----
+___
 
 ### subtle
 
-• **subtle**: _string_= "#666666"
+• **subtle**: *string*= "#666666"
 
 Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L24)
 
@@ -64,14 +64,14 @@ Defined in: [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### parse
 
-▸ **parse**(`obj?`: _any_): _void_
+▸ **parse**(`obj?`: *any*): *void*
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-config.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L36)

@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- **SerializableObject**
+* **SerializableObject**
 
   ↳ [HostCapabilities](hostcapabilities.md)
 
@@ -26,247 +26,247 @@
 
 ### Constructors
 
-- [constructor](serializableobject.md#constructor)
+* [constructor](serializableobject.md#constructor)
 
 ### Properties
 
-- [maxVersion](serializableobject.md#maxversion)
-- [onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)
+* [maxVersion](serializableobject.md#maxversion)
+* [onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)
 
 ### Methods
 
-- [getCustomProperty](serializableobject.md#getcustomproperty)
-- [getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)
-- [getSchema](serializableobject.md#getschema)
-- [getSchemaKey](serializableobject.md#protected-abstract-getschemakey)
-- [getValue](serializableobject.md#protected-getvalue)
-- [hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)
-- [hasDefaultValue](serializableobject.md#hasdefaultvalue)
-- [internalParse](serializableobject.md#protected-internalparse)
-- [internalToJSON](serializableobject.md#protected-internaltojson)
-- [parse](serializableobject.md#parse)
-- [populateSchema](serializableobject.md#protected-populateschema)
-- [resetDefaultValues](serializableobject.md#resetdefaultvalues)
-- [setCustomProperty](serializableobject.md#setcustomproperty)
-- [setValue](serializableobject.md#protected-setvalue)
-- [shouldSerialize](serializableobject.md#protected-shouldserialize)
-- [toJSON](serializableobject.md#tojson)
+* [getCustomProperty](serializableobject.md#getcustomproperty)
+* [getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)
+* [getSchema](serializableobject.md#getschema)
+* [getSchemaKey](serializableobject.md#protected-abstract-getschemakey)
+* [getValue](serializableobject.md#protected-getvalue)
+* [hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)
+* [hasDefaultValue](serializableobject.md#hasdefaultvalue)
+* [internalParse](serializableobject.md#protected-internalparse)
+* [internalToJSON](serializableobject.md#protected-internaltojson)
+* [parse](serializableobject.md#parse)
+* [populateSchema](serializableobject.md#protected-populateschema)
+* [resetDefaultValues](serializableobject.md#resetdefaultvalues)
+* [setCustomProperty](serializableobject.md#setcustomproperty)
+* [setValue](serializableobject.md#protected-setvalue)
+* [shouldSerialize](serializableobject.md#protected-shouldserialize)
+* [toJSON](serializableobject.md#tojson)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new SerializableObject**(): _[SerializableObject](serializableobject.md)_
+\+ **new SerializableObject**(): *[SerializableObject](serializableobject.md)*
 
-**Returns:** _[SerializableObject](serializableobject.md)_
+**Returns:** *[SerializableObject](serializableobject.md)*
 
 ## Properties
 
-### maxVersion
+###  maxVersion
 
-• **maxVersion**: _[Version](version.md)_ = Versions.v1_3
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
----
+___
 
 ### `Static` `Optional` onRegisterCustomProperties
 
-▪ **onRegisterCustomProperties**? : _undefined | function_
+▪ **onRegisterCustomProperties**? : *undefined | function*
 
 ## Methods
 
-### getCustomProperty
+###  getCustomProperty
 
-▸ **getCustomProperty**(`name`: string): _any_
+▸ **getCustomProperty**(`name`: string): *any*
 
 **Parameters:**
 
-| Name   | Type   |
-| ------ | ------ |
-| `name` | string |
+Name | Type |
+------ | ------ |
+`name` | string |
 
-**Returns:** _any_
+**Returns:** *any*
 
----
+___
 
 ### `Protected` getDefaultSerializationContext
 
-▸ **getDefaultSerializationContext**(): _[BaseSerializationContext](baseserializationcontext.md)_
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
 
-**Returns:** _[BaseSerializationContext](baseserializationcontext.md)_
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
----
+___
 
-### getSchema
+###  getSchema
 
-▸ **getSchema**(): _[SerializableObjectSchema](serializableobjectschema.md)_
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
 
-**Returns:** _[SerializableObjectSchema](serializableobjectschema.md)_
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
 
----
+___
 
 ### `Protected` `Abstract` getSchemaKey
 
-▸ **getSchemaKey**(): _string_
+▸ **getSchemaKey**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
----
+___
 
 ### `Protected` getValue
 
-▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): _any_
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
 **Parameters:**
 
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** _any_
+**Returns:** *any*
 
----
+___
 
-### hasAllDefaultValues
+###  hasAllDefaultValues
 
-▸ **hasAllDefaultValues**(): _boolean_
+▸ **hasAllDefaultValues**(): *boolean*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
----
+___
 
-### hasDefaultValue
+###  hasDefaultValue
 
-▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): _boolean_
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
 
 **Parameters:**
 
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
----
+___
 
 ### `Protected` internalParse
 
-▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
 **Parameters:**
 
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `source`  | [PropertyBag](../README.md#propertybag)                 |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` internalToJSON
 
-▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
 **Parameters:**
 
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `target`  | [PropertyBag](../README.md#propertybag)                 |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### parse
+###  parse
 
-▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
 **Parameters:**
 
-| Name       | Type                                                    |
-| ---------- | ------------------------------------------------------- |
-| `source`   | [PropertyBag](../README.md#propertybag)                 |
-| `context?` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` populateSchema
 
-▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): _void_
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
 **Parameters:**
 
-| Name     | Type                                                    |
-| -------- | ------------------------------------------------------- |
-| `schema` | [SerializableObjectSchema](serializableobjectschema.md) |
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### resetDefaultValues
+###  resetDefaultValues
 
-▸ **resetDefaultValues**(): _void_
+▸ **resetDefaultValues**(): *void*
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### setCustomProperty
+###  setCustomProperty
 
-▸ **setCustomProperty**(`name`: string, `value`: any): _void_
+▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
 **Parameters:**
 
-| Name    | Type   |
-| ------- | ------ |
-| `name`  | string |
-| `value` | any    |
+Name | Type |
+------ | ------ |
+`name` | string |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` setValue
 
-▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): _void_
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
 
 **Parameters:**
 
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
-| `value`    | any                                         |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): _boolean_
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
 
 **Parameters:**
 
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
----
+___
 
-### toJSON
+###  toJSON
 
-▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): _[PropertyBag](../README.md#propertybag) | undefined_
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
 **Parameters:**
 
-| Name       | Type                                                    |
-| ---------- | ------------------------------------------------------- |
-| `context?` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _[PropertyBag](../README.md#propertybag) | undefined_
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*

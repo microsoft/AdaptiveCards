@@ -20,15 +20,15 @@
 
 ### constructor
 
-\+ **new InputLabelConfig**(`obj?`: _any_): [_InputLabelConfig_](host_config.inputlabelconfig.md)
+\+ **new InputLabelConfig**(`obj?`: *any*): [*InputLabelConfig*](host_config.inputlabelconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_InputLabelConfig_](host_config.inputlabelconfig.md)
+**Returns:** [*InputLabelConfig*](host_config.inputlabelconfig.md)
 
 Defined in: [host-config.ts:158](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L158)
 
@@ -36,22 +36,22 @@ Defined in: [host-config.ts:158](https://github.com/microsoft/AdaptiveCards/blob
 
 ### inputSpacing
 
-• **inputSpacing**: [_Spacing_](../enums/enums.spacing.md)
+• **inputSpacing**: [*Spacing*](../enums/enums.spacing.md)
 
 Defined in: [host-config.ts:156](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L156)
 
----
+___
 
 ### optionalInputs
 
-• `Readonly` **optionalInputs**: [_BaseTextDefinition_](host_config.basetextdefinition.md)
+• `Readonly` **optionalInputs**: [*BaseTextDefinition*](host_config.basetextdefinition.md)
 
 Defined in: [host-config.ts:158](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L158)
 
----
+___
 
 ### requiredInputs
 
-• `Readonly` **requiredInputs**: [_RequiredInputLabelTextDefinition_](host_config.requiredinputlabeltextdefinition.md)
+• `Readonly` **requiredInputs**: [*RequiredInputLabelTextDefinition*](host_config.requiredinputlabeltextdefinition.md)
 
 Defined in: [host-config.ts:157](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L157)

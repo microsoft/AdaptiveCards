@@ -19,7 +19,7 @@
 
 Defined in: [enums.ts:29](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L29)
 
----
+___
 
 ### Weight
 

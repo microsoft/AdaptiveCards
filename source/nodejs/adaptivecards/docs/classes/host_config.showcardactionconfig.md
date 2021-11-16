@@ -24,15 +24,15 @@
 
 ### constructor
 
-\+ **new ShowCardActionConfig**(`obj?`: _any_): [_ShowCardActionConfig_](host_config.showcardactionconfig.md)
+\+ **new ShowCardActionConfig**(`obj?`: *any*): [*ShowCardActionConfig*](host_config.showcardactionconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_ShowCardActionConfig_](host_config.showcardactionconfig.md)
+**Returns:** [*ShowCardActionConfig*](host_config.showcardactionconfig.md)
 
 Defined in: [host-config.ts:235](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L235)
 
@@ -40,23 +40,23 @@ Defined in: [host-config.ts:235](https://github.com/microsoft/AdaptiveCards/blob
 
 ### actionMode
 
-• **actionMode**: [_ShowCardActionMode_](../enums/enums.showcardactionmode.md)
+• **actionMode**: [*ShowCardActionMode*](../enums/enums.showcardactionmode.md)
 
 Defined in: [host-config.ts:233](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L233)
 
----
+___
 
 ### inlineTopMargin
 
-• **inlineTopMargin**: _number_= 16
+• **inlineTopMargin**: *number*= 16
 
 Defined in: [host-config.ts:234](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L234)
 
----
+___
 
 ### style
 
-• `Optional` **style**: _undefined_ \| _string_
+• `Optional` **style**: *undefined* \| *string*
 
 Defined in: [host-config.ts:235](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L235)
 
@@ -64,14 +64,14 @@ Defined in: [host-config.ts:235](https://github.com/microsoft/AdaptiveCards/blob
 
 ### toJSON
 
-▸ **toJSON**(): _object_
+▸ **toJSON**(): *object*
 
-**Returns:** _object_
+**Returns:** *object*
 
-| Name              | Type                    |
-| :---------------- | :---------------------- |
-| `actionMode`      | _string_                |
-| `inlineTopMargin` | _number_                |
-| `style`           | _undefined_ \| _string_ |
+Name | Type |
+:------ | :------ |
+`actionMode` | *string* |
+`inlineTopMargin` | *number* |
+`style` | *undefined* \| *string* |
 
 Defined in: [host-config.ts:245](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L245)

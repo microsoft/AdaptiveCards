@@ -42,27 +42,27 @@
 
 ### PropertyBag
 
-Ƭ **PropertyBag**: _object_
+Ƭ **PropertyBag**: *object*
 
 #### Type declaration:
 
 Defined in: [serialization.ts:771](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L771)
 
----
+___
 
 ### SerializableObjectType
 
-Ƭ **SerializableObjectType**: _object_
+Ƭ **SerializableObjectType**: *object*
 
 #### Type declaration:
 
 Defined in: [serialization.ts:605](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L605)
 
----
+___
 
 ### TargetVersion
 
-Ƭ **TargetVersion**: [_Version_](../classes/serialization.version.md) \| \*\*\*
+Ƭ **TargetVersion**: [*Version*](../classes/serialization.version.md) \| ***
 
 Defined in: [serialization.ts:103](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L103)
 
@@ -70,31 +70,31 @@ Defined in: [serialization.ts:103](https://github.com/microsoft/AdaptiveCards/bl
 
 ### isVersionLessOrEqual
 
-▸ **isVersionLessOrEqual**(`version`: [_TargetVersion_](serialization.md#targetversion), `targetVersion`: [_TargetVersion_](serialization.md#targetversion)): _boolean_
+▸ **isVersionLessOrEqual**(`version`: [*TargetVersion*](serialization.md#targetversion), `targetVersion`: [*TargetVersion*](serialization.md#targetversion)): *boolean*
 
 #### Parameters:
 
-| Name            | Type                                              |
-| :-------------- | :------------------------------------------------ |
-| `version`       | [_TargetVersion_](serialization.md#targetversion) |
-| `targetVersion` | [_TargetVersion_](serialization.md#targetversion) |
+Name | Type |
+:------ | :------ |
+`version` | [*TargetVersion*](serialization.md#targetversion) |
+`targetVersion` | [*TargetVersion*](serialization.md#targetversion) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [serialization.ts:113](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L113)
 
----
+___
 
 ### property
 
-▸ **property**(`property`: [_PropertyDefinition_](../classes/serialization.propertydefinition.md)): (`target`: _any_, `propertyKey`: _string_) => _void_
+▸ **property**(`property`: [*PropertyDefinition*](../classes/serialization.propertydefinition.md)): (`target`: *any*, `propertyKey`: *string*) => *void*
 
 #### Parameters:
 
-| Name       | Type                                                                   |
-| :--------- | :--------------------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](../classes/serialization.propertydefinition.md) |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](../classes/serialization.propertydefinition.md) |
 
-**Returns:** _function_
+**Returns:** *function*
 
 Defined in: [serialization.ts:758](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L758)

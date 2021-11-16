@@ -12,15 +12,15 @@
 
 ### formatText
 
-▸ **formatText**(`lang`: _string_ \| _undefined_, `text`: _string_ \| _undefined_): _string_ \| _undefined_
+▸ **formatText**(`lang`: *string* \| *undefined*, `text`: *string* \| *undefined*): *string* \| *undefined*
 
 #### Parameters:
 
-| Name   | Type                    |
-| :----- | :---------------------- |
-| `lang` | _string_ \| _undefined_ |
-| `text` | _string_ \| _undefined_ |
+Name | Type |
+:------ | :------ |
+`lang` | *string* \| *undefined* |
+`text` | *string* \| *undefined* |
 
-**Returns:** _string_ \| _undefined_
+**Returns:** *string* \| *undefined*
 
 Defined in: [text-formatters.ts:52](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/text-formatters.ts#L52)

@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- [BaseSerializationContext](baseserializationcontext.md)
+* [BaseSerializationContext](baseserializationcontext.md)
 
   ↳ **SerializationContext**
 
@@ -12,379 +12,379 @@
 
 ### Constructors
 
-- [constructor](serializationcontext.md#constructor)
+* [constructor](serializationcontext.md#constructor)
 
 ### Properties
 
-- [onParseAction](serializationcontext.md#optional-onparseaction)
-- [onParseElement](serializationcontext.md#optional-onparseelement)
-- [targetVersion](serializationcontext.md#targetversion)
-- [toJSONOriginalParam](serializationcontext.md#tojsonoriginalparam)
+* [onParseAction](serializationcontext.md#optional-onparseaction)
+* [onParseElement](serializationcontext.md#optional-onparseelement)
+* [targetVersion](serializationcontext.md#targetversion)
+* [toJSONOriginalParam](serializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
-- [actionRegistry](serializationcontext.md#actionregistry)
-- [elementRegistry](serializationcontext.md#elementregistry)
-- [eventCount](serializationcontext.md#eventcount)
+* [actionRegistry](serializationcontext.md#actionregistry)
+* [elementRegistry](serializationcontext.md#elementregistry)
+* [eventCount](serializationcontext.md#eventcount)
 
 ### Methods
 
-- [cardObjectParsed](serializationcontext.md#protected-cardobjectparsed)
-- [clearEvents](serializationcontext.md#clearevents)
-- [getEventAt](serializationcontext.md#geteventat)
-- [logEvent](serializationcontext.md#logevent)
-- [logParseEvent](serializationcontext.md#logparseevent)
-- [parseAction](serializationcontext.md#parseaction)
-- [parseCardObject](serializationcontext.md#parsecardobject)
-- [parseElement](serializationcontext.md#parseelement)
-- [serializeArray](serializationcontext.md#serializearray)
-- [serializeEnum](serializationcontext.md#serializeenum)
-- [serializeNumber](serializationcontext.md#serializenumber)
-- [serializeValue](serializationcontext.md#serializevalue)
-- [setActionRegistry](serializationcontext.md#setactionregistry)
-- [setElementRegistry](serializationcontext.md#setelementregistry)
-- [shouldSerialize](serializationcontext.md#shouldserialize)
+* [cardObjectParsed](serializationcontext.md#protected-cardobjectparsed)
+* [clearEvents](serializationcontext.md#clearevents)
+* [getEventAt](serializationcontext.md#geteventat)
+* [logEvent](serializationcontext.md#logevent)
+* [logParseEvent](serializationcontext.md#logparseevent)
+* [parseAction](serializationcontext.md#parseaction)
+* [parseCardObject](serializationcontext.md#parsecardobject)
+* [parseElement](serializationcontext.md#parseelement)
+* [serializeArray](serializationcontext.md#serializearray)
+* [serializeEnum](serializationcontext.md#serializeenum)
+* [serializeNumber](serializationcontext.md#serializenumber)
+* [serializeValue](serializationcontext.md#serializevalue)
+* [setActionRegistry](serializationcontext.md#setactionregistry)
+* [setElementRegistry](serializationcontext.md#setelementregistry)
+* [shouldSerialize](serializationcontext.md#shouldserialize)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new SerializationContext**(`targetVersion`: [Version](version.md)): _[SerializationContext](serializationcontext.md)_
+\+ **new SerializationContext**(`targetVersion`: [Version](version.md)): *[SerializationContext](serializationcontext.md)*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[constructor](baseserializationcontext.md#constructor)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[constructor](baseserializationcontext.md#constructor)*
 
 **Parameters:**
 
-| Name            | Type                  | Default         |
-| --------------- | --------------------- | --------------- |
-| `targetVersion` | [Version](version.md) | Versions.latest |
+Name | Type | Default |
+------ | ------ | ------ |
+`targetVersion` | [Version](version.md) | Versions.latest |
 
-**Returns:** _[SerializationContext](serializationcontext.md)_
+**Returns:** *[SerializationContext](serializationcontext.md)*
 
 ## Properties
 
 ### `Optional` onParseAction
 
-• **onParseAction**? : _undefined | function_
+• **onParseAction**? : *undefined | function*
 
----
+___
 
 ### `Optional` onParseElement
 
-• **onParseElement**? : _undefined | function_
+• **onParseElement**? : *undefined | function*
 
----
+___
 
-### targetVersion
+###  targetVersion
 
-• **targetVersion**: _[Version](version.md)_
+• **targetVersion**: *[Version](version.md)*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)*
 
----
+___
 
-### toJSONOriginalParam
+###  toJSONOriginalParam
 
-• **toJSONOriginalParam**: _any_
+• **toJSONOriginalParam**: *any*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)*
 
 ## Accessors
 
-### actionRegistry
+###  actionRegistry
 
-• **get actionRegistry**(): _[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›_
+• **get actionRegistry**(): *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›*
 
-**Returns:** _[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›_
+**Returns:** *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›*
 
----
+___
 
-### elementRegistry
+###  elementRegistry
 
-• **get elementRegistry**(): _[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›_
+• **get elementRegistry**(): *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›*
 
-**Returns:** _[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›_
+**Returns:** *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›*
 
----
+___
 
-### eventCount
+###  eventCount
 
-• **get eventCount**(): _number_
+• **get eventCount**(): *number*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[eventCount](baseserializationcontext.md#eventcount)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[eventCount](baseserializationcontext.md#eventcount)*
 
-**Returns:** _number_
+**Returns:** *number*
 
 ## Methods
 
 ### `Protected` cardObjectParsed
 
-▸ **cardObjectParsed**(`o`: [SerializableObject](serializableobject.md), `source`: any): _void_
+▸ **cardObjectParsed**(`o`: [SerializableObject](serializableobject.md), `source`: any): *void*
 
 **Parameters:**
 
-| Name     | Type                                        |
-| -------- | ------------------------------------------- |
-| `o`      | [SerializableObject](serializableobject.md) |
-| `source` | any                                         |
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+`source` | any |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### clearEvents
+###  clearEvents
 
-▸ **clearEvents**(): _void_
+▸ **clearEvents**(): *void*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[clearEvents](baseserializationcontext.md#clearevents)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[clearEvents](baseserializationcontext.md#clearevents)*
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### getEventAt
+###  getEventAt
 
-▸ **getEventAt**(`index`: number): _[IValidationEvent](../interfaces/ivalidationevent.md)_
+▸ **getEventAt**(`index`: number): *[IValidationEvent](../interfaces/ivalidationevent.md)*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[getEventAt](baseserializationcontext.md#geteventat)_
-
-**Parameters:**
-
-| Name    | Type   |
-| ------- | ------ |
-| `index` | number |
-
-**Returns:** _[IValidationEvent](../interfaces/ivalidationevent.md)_
-
----
-
-### logEvent
-
-▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): _void_
-
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[logEvent](baseserializationcontext.md#logevent)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[getEventAt](baseserializationcontext.md#geteventat)*
 
 **Parameters:**
 
-| Name      | Type                                                         |
-| --------- | ------------------------------------------------------------ |
-| `source`  | [SerializableObject](serializableobject.md) &#124; undefined |
-| `phase`   | [ValidationPhase](../enums/validationphase.md)               |
-| `event`   | [ValidationEvent](../enums/validationevent.md)               |
-| `message` | string                                                       |
+Name | Type |
+------ | ------ |
+`index` | number |
 
-**Returns:** _void_
+**Returns:** *[IValidationEvent](../interfaces/ivalidationevent.md)*
 
----
+___
 
-### logParseEvent
+###  logEvent
 
-▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): _void_
+▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[logParseEvent](baseserializationcontext.md#logparseevent)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[logEvent](baseserializationcontext.md#logevent)*
 
 **Parameters:**
 
-| Name      | Type                                                         |
-| --------- | ------------------------------------------------------------ |
-| `source`  | [SerializableObject](serializableobject.md) &#124; undefined |
-| `event`   | [ValidationEvent](../enums/validationevent.md)               |
-| `message` | string                                                       |
+Name | Type |
+------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
+`phase` | [ValidationPhase](../enums/validationphase.md) |
+`event` | [ValidationEvent](../enums/validationevent.md) |
+`message` | string |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### parseAction
+###  logParseEvent
 
-▸ **parseAction**(`parent`: [CardElement](cardelement.md), `source`: any, `forbiddenActionTypes`: string[], `allowFallback`: boolean): _[Action](action.md) | undefined_
+▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
+
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[logParseEvent](baseserializationcontext.md#logparseevent)*
 
 **Parameters:**
 
-| Name                   | Type                          |
-| ---------------------- | ----------------------------- |
-| `parent`               | [CardElement](cardelement.md) |
-| `source`               | any                           |
-| `forbiddenActionTypes` | string[]                      |
-| `allowFallback`        | boolean                       |
+Name | Type |
+------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
+`event` | [ValidationEvent](../enums/validationevent.md) |
+`message` | string |
 
-**Returns:** _[Action](action.md) | undefined_
+**Returns:** *void*
 
----
+___
 
-### parseCardObject
+###  parseAction
 
-▸ **parseCardObject**‹**T**›(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `forbiddenTypeNames`: string[], `allowFallback`: boolean, `createInstanceCallback`: function, `logParseEvent`: function): _T | undefined_
+▸ **parseAction**(`parent`: [CardElement](cardelement.md), `source`: any, `forbiddenActionTypes`: string[], `allowFallback`: boolean): *[Action](action.md) | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`parent` | [CardElement](cardelement.md) |
+`source` | any |
+`forbiddenActionTypes` | string[] |
+`allowFallback` | boolean |
+
+**Returns:** *[Action](action.md) | undefined*
+
+___
+
+###  parseCardObject
+
+▸ **parseCardObject**‹**T**›(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `forbiddenTypeNames`: string[], `allowFallback`: boolean, `createInstanceCallback`: function, `logParseEvent`: function): *T | undefined*
 
 **Type parameters:**
 
-▪ **T**: _[CardObject](cardobject.md)_
+▪ **T**: *[CardObject](cardobject.md)*
 
 **Parameters:**
 
-▪ **parent**: _[CardElement](cardelement.md) | undefined_
+▪ **parent**: *[CardElement](cardelement.md) | undefined*
 
-▪ **source**: _any_
+▪ **source**: *any*
 
-▪ **forbiddenTypeNames**: _string[]_
+▪ **forbiddenTypeNames**: *string[]*
 
-▪ **allowFallback**: _boolean_
+▪ **allowFallback**: *boolean*
 
-▪ **createInstanceCallback**: _function_
+▪ **createInstanceCallback**: *function*
 
-▸ (`typeName`: string): _T | undefined_
-
-**Parameters:**
-
-| Name       | Type   |
-| ---------- | ------ |
-| `typeName` | string |
-
-▪ **logParseEvent**: _function_
-
-▸ (`typeName`: string, `errorType`: [TypeErrorType](../enums/typeerrortype.md)): _void_
+▸ (`typeName`: string): *T | undefined*
 
 **Parameters:**
 
-| Name        | Type                                       |
-| ----------- | ------------------------------------------ |
-| `typeName`  | string                                     |
-| `errorType` | [TypeErrorType](../enums/typeerrortype.md) |
+Name | Type |
+------ | ------ |
+`typeName` | string |
 
-**Returns:** _T | undefined_
+▪ **logParseEvent**: *function*
 
----
-
-### parseElement
-
-▸ **parseElement**(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `allowFallback`: boolean): _[CardElement](cardelement.md) | undefined_
+▸ (`typeName`: string, `errorType`: [TypeErrorType](../enums/typeerrortype.md)): *void*
 
 **Parameters:**
 
-| Name            | Type                                           |
-| --------------- | ---------------------------------------------- |
-| `parent`        | [CardElement](cardelement.md) &#124; undefined |
-| `source`        | any                                            |
-| `allowFallback` | boolean                                        |
+Name | Type |
+------ | ------ |
+`typeName` | string |
+`errorType` | [TypeErrorType](../enums/typeerrortype.md) |
 
-**Returns:** _[CardElement](cardelement.md) | undefined_
+**Returns:** *T | undefined*
 
----
+___
 
-### serializeArray
+###  parseElement
 
-▸ **serializeArray**(`target`: object, `propertyName`: string, `propertyValue`: any[] | undefined): _void_
-
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeArray](baseserializationcontext.md#serializearray)_
+▸ **parseElement**(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `allowFallback`: boolean): *[CardElement](cardelement.md) | undefined*
 
 **Parameters:**
 
-| Name            | Type                   |
-| --------------- | ---------------------- |
-| `target`        | object                 |
-| `propertyName`  | string                 |
-| `propertyValue` | any[] &#124; undefined |
+Name | Type |
+------ | ------ |
+`parent` | [CardElement](cardelement.md) &#124; undefined |
+`source` | any |
+`allowFallback` | boolean |
 
-**Returns:** _void_
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
----
+___
 
-### serializeEnum
+###  serializeArray
 
-▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): _void_
+▸ **serializeArray**(`target`: object, `propertyName`: string, `propertyValue`: any[] | undefined): *void*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeEnum](baseserializationcontext.md#serializeenum)_
-
-**Parameters:**
-
-| Name            | Type                    | Default   |
-| --------------- | ----------------------- | --------- |
-| `enumType`      | object                  | -         |
-| `target`        | object                  | -         |
-| `propertyName`  | string                  | -         |
-| `propertyValue` | number &#124; undefined | -         |
-| `defaultValue`  | number &#124; undefined | undefined |
-
-**Returns:** _void_
-
----
-
-### serializeNumber
-
-▸ **serializeNumber**(`target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): _void_
-
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeNumber](baseserializationcontext.md#serializenumber)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeArray](baseserializationcontext.md#serializearray)*
 
 **Parameters:**
 
-| Name            | Type                    | Default   |
-| --------------- | ----------------------- | --------- |
-| `target`        | object                  | -         |
-| `propertyName`  | string                  | -         |
-| `propertyValue` | number &#124; undefined | -         |
-| `defaultValue`  | number &#124; undefined | undefined |
+Name | Type |
+------ | ------ |
+`target` | object |
+`propertyName` | string |
+`propertyValue` | any[] &#124; undefined |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### serializeValue
+###  serializeEnum
 
-▸ **serializeValue**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): _void_
+▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
 
-_Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeValue](baseserializationcontext.md#serializevalue)_
-
-**Parameters:**
-
-| Name            | Type   | Default   |
-| --------------- | ------ | --------- |
-| `target`        | object | -         |
-| `propertyName`  | string | -         |
-| `propertyValue` | any    | -         |
-| `defaultValue`  | any    | undefined |
-
-**Returns:** _void_
-
----
-
-### setActionRegistry
-
-▸ **setActionRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)› | undefined): _void_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeEnum](baseserializationcontext.md#serializeenum)*
 
 **Parameters:**
 
-| Name    | Type                                                                              |
-| ------- | --------------------------------------------------------------------------------- |
-| `value` | [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)› &#124; undefined |
+Name | Type | Default |
+------ | ------ | ------ |
+`enumType` | object | - |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | number &#124; undefined | - |
+`defaultValue` | number &#124; undefined | undefined |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### setElementRegistry
+###  serializeNumber
 
-▸ **setElementRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› | undefined): _void_
+▸ **serializeNumber**(`target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
 
-**Parameters:**
-
-| Name    | Type                                                                                        |
-| ------- | ------------------------------------------------------------------------------------------- |
-| `value` | [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› &#124; undefined |
-
-**Returns:** _void_
-
----
-
-### shouldSerialize
-
-▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): _boolean_
-
-_Overrides [BaseSerializationContext](baseserializationcontext.md).[shouldSerialize](baseserializationcontext.md#shouldserialize)_
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeNumber](baseserializationcontext.md#serializenumber)*
 
 **Parameters:**
 
-| Name | Type                                        |
-| ---- | ------------------------------------------- |
-| `o`  | [SerializableObject](serializableobject.md) |
+Name | Type | Default |
+------ | ------ | ------ |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | number &#124; undefined | - |
+`defaultValue` | number &#124; undefined | undefined |
 
-**Returns:** _boolean_
+**Returns:** *void*
+
+___
+
+###  serializeValue
+
+▸ **serializeValue**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): *void*
+
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeValue](baseserializationcontext.md#serializevalue)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | any | - |
+`defaultValue` | any | undefined |
+
+**Returns:** *void*
+
+___
+
+###  setActionRegistry
+
+▸ **setActionRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)› | undefined): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)› &#124; undefined |
+
+**Returns:** *void*
+
+___
+
+###  setElementRegistry
+
+▸ **setElementRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› | undefined): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› &#124; undefined |
+
+**Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+*Overrides [BaseSerializationContext](baseserializationcontext.md).[shouldSerialize](baseserializationcontext.md#shouldserialize)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

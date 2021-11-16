@@ -23,16 +23,16 @@
 
 ### constructor
 
-\+ **new SizeAndUnit**(`physicalSize`: _number_, `unit`: [_SizeUnit_](../enums/enums.sizeunit.md)): [_SizeAndUnit_](shared.sizeandunit.md)
+\+ **new SizeAndUnit**(`physicalSize`: *number*, `unit`: [*SizeUnit*](../enums/enums.sizeunit.md)): [*SizeAndUnit*](shared.sizeandunit.md)
 
 #### Parameters:
 
-| Name           | Type                                     |
-| :------------- | :--------------------------------------- |
-| `physicalSize` | _number_                                 |
-| `unit`         | [_SizeUnit_](../enums/enums.sizeunit.md) |
+Name | Type |
+:------ | :------ |
+`physicalSize` | *number* |
+`unit` | [*SizeUnit*](../enums/enums.sizeunit.md) |
 
-**Returns:** [_SizeAndUnit_](shared.sizeandunit.md)
+**Returns:** [*SizeAndUnit*](shared.sizeandunit.md)
 
 Defined in: [shared.ts:178](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L178)
 
@@ -40,15 +40,15 @@ Defined in: [shared.ts:178](https://github.com/microsoft/AdaptiveCards/blob/0938
 
 ### physicalSize
 
-• **physicalSize**: _number_
+• **physicalSize**: *number*
 
 Defined in: [shared.ts:148](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L148)
 
----
+___
 
 ### unit
 
-• **unit**: [_SizeUnit_](../enums/enums.sizeunit.md)
+• **unit**: [*SizeUnit*](../enums/enums.sizeunit.md)
 
 Defined in: [shared.ts:149](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L149)
 
@@ -56,15 +56,15 @@ Defined in: [shared.ts:149](https://github.com/microsoft/AdaptiveCards/blob/0938
 
 ### parse
 
-▸ `Static`**parse**(`input`: _string_, `requireUnitSpecifier?`: _boolean_): [_SizeAndUnit_](shared.sizeandunit.md)
+▸ `Static`**parse**(`input`: *string*, `requireUnitSpecifier?`: *boolean*): [*SizeAndUnit*](shared.sizeandunit.md)
 
 #### Parameters:
 
-| Name                   | Type      | Default value |
-| :--------------------- | :-------- | :------------ |
-| `input`                | _string_  | -             |
-| `requireUnitSpecifier` | _boolean_ | false         |
+Name | Type | Default value |
+:------ | :------ | :------ |
+`input` | *string* | - |
+`requireUnitSpecifier` | *boolean* | false |
 
-**Returns:** [_SizeAndUnit_](shared.sizeandunit.md)
+**Returns:** [*SizeAndUnit*](shared.sizeandunit.md)
 
 Defined in: [shared.ts:151](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L151)

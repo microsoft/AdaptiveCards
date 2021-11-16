@@ -24,7 +24,7 @@
 
 Defined in: [enums.ts:65](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L65)
 
----
+___
 
 ### Attention
 
@@ -32,7 +32,7 @@ Defined in: [enums.ts:65](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:68](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L68)
 
----
+___
 
 ### Dark
 
@@ -40,7 +40,7 @@ Defined in: [enums.ts:68](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:63](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L63)
 
----
+___
 
 ### Default
 
@@ -48,7 +48,7 @@ Defined in: [enums.ts:63](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:62](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L62)
 
----
+___
 
 ### Good
 
@@ -56,7 +56,7 @@ Defined in: [enums.ts:62](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:66](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L66)
 
----
+___
 
 ### Light
 
@@ -64,7 +64,7 @@ Defined in: [enums.ts:66](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:64](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L64)
 
----
+___
 
 ### Warning
 

@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_SerializableObject_](serialization.serializableobject.md)
+* [*SerializableObject*](serialization.serializableobject.md)
 
   ↳ **HostCapabilities**
 
@@ -50,9 +50,9 @@
 
 ### constructor
 
-\+ **new HostCapabilities**(): [_HostCapabilities_](host_capabilities.hostcapabilities.md)
+\+ **new HostCapabilities**(): [*HostCapabilities*](host_capabilities.hostcapabilities.md)
 
-**Returns:** [_HostCapabilities_](host_capabilities.hostcapabilities.md)
+**Returns:** [*HostCapabilities*](host_capabilities.hostcapabilities.md)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
@@ -62,27 +62,27 @@ Defined in: [serialization.ts:898](https://github.com/microsoft/AdaptiveCards/bl
 
 ### maxVersion
 
-• **maxVersion**: [_Version_](serialization.version.md)
+• **maxVersion**: [*Version*](serialization.version.md)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md).[maxVersion](serialization.serializableobject.md#maxversion)
 
 Defined in: [serialization.ts:898](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L898)
 
----
+___
 
 ### defaultMaxVersion
 
-▪ `Static` **defaultMaxVersion**: [_Version_](serialization.version.md)
+▪ `Static` **defaultMaxVersion**: [*Version*](serialization.version.md)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md).[defaultMaxVersion](serialization.serializableobject.md#defaultmaxversion)
 
 Defined in: [serialization.ts:775](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L775)
 
----
+___
 
 ### onRegisterCustomProperties
 
-▪ `Optional` `Static` **onRegisterCustomProperties**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md), `schema`: [_SerializableObjectSchema_](serialization.serializableobjectschema.md)) => _void_
+▪ `Optional` `Static` **onRegisterCustomProperties**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md), `schema`: [*SerializableObjectSchema*](serialization.serializableobjectschema.md)) => *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md).[onRegisterCustomProperties](serialization.serializableobject.md#onregistercustomproperties)
 
@@ -92,336 +92,336 @@ Defined in: [serialization.ts:774](https://github.com/microsoft/AdaptiveCards/bl
 
 ### addCapability
 
-▸ **addCapability**(`name`: _string_, `version`: [_TargetVersion_](../modules/serialization.md#targetversion)): _void_
+▸ **addCapability**(`name`: *string*, `version`: [*TargetVersion*](../modules/serialization.md#targetversion)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                         |
-| :-------- | :----------------------------------------------------------- |
-| `name`    | _string_                                                     |
-| `version` | [_TargetVersion_](../modules/serialization.md#targetversion) |
+Name | Type |
+:------ | :------ |
+`name` | *string* |
+`version` | [*TargetVersion*](../modules/serialization.md#targetversion) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-capabilities.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L43)
 
----
+___
 
 ### areAllMet
 
-▸ **areAllMet**(`hostCapabilities`: [_HostCapabilities_](host_capabilities.hostcapabilities.md)): _boolean_
+▸ **areAllMet**(`hostCapabilities`: [*HostCapabilities*](host_capabilities.hostcapabilities.md)): *boolean*
 
 #### Parameters:
 
-| Name               | Type                                                        |
-| :----------------- | :---------------------------------------------------------- |
-| `hostCapabilities` | [_HostCapabilities_](host_capabilities.hostcapabilities.md) |
+Name | Type |
+:------ | :------ |
+`hostCapabilities` | [*HostCapabilities*](host_capabilities.hostcapabilities.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [host-capabilities.ts:67](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L67)
 
----
+___
 
 ### clear
 
-▸ **clear**(): _void_
+▸ **clear**(): *void*
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-capabilities.ts:51](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L51)
 
----
+___
 
 ### getCustomProperty
 
-▸ **getCustomProperty**(`name`: _string_): _any_
+▸ **getCustomProperty**(`name`: *string*): *any*
 
 #### Parameters:
 
-| Name   | Type     |
-| :----- | :------- |
-| `name` | _string_ |
+Name | Type |
+:------ | :------ |
+`name` | *string* |
 
-**Returns:** _any_
+**Returns:** *any*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:985](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L985)
 
----
+___
 
 ### getDefaultSerializationContext
 
-▸ `Protected`**getDefaultSerializationContext**(): [_BaseSerializationContext_](serialization.baseserializationcontext.md)
+▸ `Protected`**getDefaultSerializationContext**(): [*BaseSerializationContext*](serialization.baseserializationcontext.md)
 
-**Returns:** [_BaseSerializationContext_](serialization.baseserializationcontext.md)
+**Returns:** [*BaseSerializationContext*](serialization.baseserializationcontext.md)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:784](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L784)
 
----
+___
 
 ### getSchema
 
-▸ **getSchema**(): [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
+▸ **getSchema**(): [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
 
-**Returns:** [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
+**Returns:** [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:989](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L989)
 
----
+___
 
 ### getSchemaKey
 
-▸ `Protected`**getSchemaKey**(): _string_
+▸ `Protected`**getSchemaKey**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
 Overrides: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [host-capabilities.ts:8](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L8)
 
----
+___
 
 ### getValue
 
-▸ `Protected`**getValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md)): _any_
+▸ `Protected`**getValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md)): *any*
 
 #### Parameters:
 
-| Name       | Type                                                        |
-| :--------- | :---------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
 
-**Returns:** _any_
+**Returns:** *any*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:826](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L826)
 
----
+___
 
 ### hasAllDefaultValues
 
-▸ **hasAllDefaultValues**(): _boolean_
+▸ **hasAllDefaultValues**(): *boolean*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:950](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L950)
 
----
+___
 
 ### hasCapability
 
-▸ **hasCapability**(`name`: _string_, `version`: [_TargetVersion_](../modules/serialization.md#targetversion)): _boolean_
+▸ **hasCapability**(`name`: *string*, `version`: [*TargetVersion*](../modules/serialization.md#targetversion)): *boolean*
 
 #### Parameters:
 
-| Name      | Type                                                         |
-| :-------- | :----------------------------------------------------------- |
-| `name`    | _string_                                                     |
-| `version` | [_TargetVersion_](../modules/serialization.md#targetversion) |
+Name | Type |
+:------ | :------ |
+`name` | *string* |
+`version` | [*TargetVersion*](../modules/serialization.md#targetversion) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [host-capabilities.ts:55](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L55)
 
----
+___
 
 ### hasDefaultValue
 
-▸ **hasDefaultValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md)): _boolean_
+▸ **hasDefaultValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md)): *boolean*
 
 #### Parameters:
 
-| Name       | Type                                                        |
-| :--------- | :---------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:946](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L946)
 
----
+___
 
 ### internalParse
 
-▸ `Protected`**internalParse**(`source`: _any_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
+▸ `Protected`**internalParse**(`source`: *any*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `source`  | _any_                                                                   |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`source` | *any* |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Overrides: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [host-capabilities.ts:12](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L12)
 
----
+___
 
 ### internalToJSON
 
-▸ `Protected`**internalToJSON**(`target`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
+▸ `Protected`**internalToJSON**(`target`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Overrides: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [host-capabilities.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L35)
 
----
+___
 
 ### parse
 
-▸ **parse**(`source`: [_PropertyBag_](../modules/serialization.md#propertybag), `context?`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
+▸ **parse**(`source`: [*PropertyBag*](../modules/serialization.md#propertybag), `context?`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name       | Type                                                                    |
-| :--------- | :---------------------------------------------------------------------- |
-| `source`   | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `context?` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`source` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`context?` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:912](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L912)
 
----
+___
 
 ### populateSchema
 
-▸ `Protected`**populateSchema**(`schema`: [_SerializableObjectSchema_](serialization.serializableobjectschema.md)): _void_
+▸ `Protected`**populateSchema**(`schema`: [*SerializableObjectSchema*](serialization.serializableobjectschema.md)): *void*
 
 #### Parameters:
 
-| Name     | Type                                                                    |
-| :------- | :---------------------------------------------------------------------- |
-| `schema` | [_SerializableObjectSchema_](serialization.serializableobjectschema.md) |
+Name | Type |
+:------ | :------ |
+`schema` | [*SerializableObjectSchema*](serialization.serializableobjectschema.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:788](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L788)
 
----
+___
 
 ### removeCapability
 
-▸ **removeCapability**(`name`: _string_): _void_
+▸ **removeCapability**(`name`: *string*): *void*
 
 #### Parameters:
 
-| Name   | Type     |
-| :----- | :------- |
-| `name` | _string_ |
+Name | Type |
+:------ | :------ |
+`name` | *string* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-capabilities.ts:47](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-capabilities.ts#L47)
 
----
+___
 
 ### resetDefaultValues
 
-▸ **resetDefaultValues**(): _void_
+▸ **resetDefaultValues**(): *void*
 
-**Returns:** _void_
+**Returns:** *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:964](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L964)
 
----
+___
 
 ### setCustomProperty
 
-▸ **setCustomProperty**(`name`: _string_, `value`: _any_): _void_
+▸ **setCustomProperty**(`name`: *string*, `value`: *any*): *void*
 
 #### Parameters:
 
-| Name    | Type     |
-| :------ | :------- |
-| `name`  | _string_ |
-| `value` | _any_    |
+Name | Type |
+:------ | :------ |
+`name` | *string* |
+`value` | *any* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:974](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L974)
 
----
+___
 
 ### setValue
 
-▸ `Protected`**setValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md), `value`: _any_): _void_
+▸ `Protected`**setValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md), `value`: *any*): *void*
 
 #### Parameters:
 
-| Name       | Type                                                        |
-| :--------- | :---------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
-| `value`    | _any_                                                       |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
+`value` | *any* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:830](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L830)
 
----
+___
 
 ### shouldSerialize
 
-▸ `Protected`**shouldSerialize**(`context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _boolean_
+▸ `Protected`**shouldSerialize**(`context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *boolean*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 
 Defined in: [serialization.ts:894](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L894)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(`context?`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _undefined_ \| [_PropertyBag_](../modules/serialization.md#propertybag)
+▸ **toJSON**(`context?`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *undefined* \| [*PropertyBag*](../modules/serialization.md#propertybag)
 
 #### Parameters:
 
-| Name       | Type                                                                    |
-| :--------- | :---------------------------------------------------------------------- |
-| `context?` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`context?` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _undefined_ \| [_PropertyBag_](../modules/serialization.md#propertybag)
+**Returns:** *undefined* \| [*PropertyBag*](../modules/serialization.md#propertybag)
 
 Inherited from: [SerializableObject](serialization.serializableobject.md)
 

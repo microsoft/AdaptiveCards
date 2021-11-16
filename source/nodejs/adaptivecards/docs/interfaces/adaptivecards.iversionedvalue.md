@@ -6,9 +6,9 @@
 
 ## Type parameters
 
-| Name     |
-| :------- |
-| `TValue` |
+Name |
+:------ |
+`TValue` |
 
 ## Table of contents
 
@@ -21,11 +21,11 @@
 
 ### targetVersion
 
-• `Optional` **targetVersion**: _undefined_ \| [_Version_](../classes/serialization.version.md)
+• `Optional` **targetVersion**: *undefined* \| [*Version*](../classes/serialization.version.md)
 
 Defined in: [serialization.ts:399](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L399)
 
----
+___
 
 ### value
 

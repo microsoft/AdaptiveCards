@@ -27,26 +27,26 @@ Fast UUID generator, RFC4122 version 4 compliant.
 
 ### constructor
 
-\+ **new UUID**(): [_UUID_](shared.uuid.md)
+\+ **new UUID**(): [*UUID*](shared.uuid.md)
 
-**Returns:** [_UUID_](shared.uuid.md)
+**Returns:** [*UUID*](shared.uuid.md)
 
 ## Methods
 
 ### generate
 
-▸ `Static`**generate**(): _string_
+▸ `Static`**generate**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
 Defined in: [shared.ts:200](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L200)
 
----
+___
 
 ### initialize
 
-▸ `Static`**initialize**(): _void_
+▸ `Static`**initialize**(): *void*
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [shared.ts:212](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L212)

@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L24)
 
----
+___
 
 ### Medium
 
@@ -28,7 +28,7 @@ Defined in: [enums.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:23](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L23)
 
----
+___
 
 ### Small
 

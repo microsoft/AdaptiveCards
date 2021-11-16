@@ -21,7 +21,7 @@
 
 Defined in: [enums.ts:106](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L106)
 
----
+___
 
 ### Repeat
 
@@ -29,7 +29,7 @@ Defined in: [enums.ts:106](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 Defined in: [enums.ts:109](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L109)
 
----
+___
 
 ### RepeatHorizontally
 
@@ -37,7 +37,7 @@ Defined in: [enums.ts:109](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 Defined in: [enums.ts:107](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L107)
 
----
+___
 
 ### RepeatVertically
 

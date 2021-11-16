@@ -174,7 +174,7 @@
 
 Re-exports: [IAdaptiveCard](../interfaces/schema.iadaptivecard.md)
 
----
+___
 
 ### ICardElement
 
@@ -184,79 +184,79 @@ Re-exports: [ICardElement](../interfaces/schema.icardelement.md)
 
 ### ActionType
 
-Ƭ **ActionType**: _object_
+Ƭ **ActionType**: *object*
 
 #### Type declaration:
 
 Defined in: [card-elements.ts:3715](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L3715)
 
----
+___
 
 ### CardElementHeight
 
-Ƭ **CardElementHeight**: _auto_ \| _stretch_
+Ƭ **CardElementHeight**: *auto* \| *stretch*
 
 Defined in: [card-elements.ts:16](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L16)
 
----
+___
 
 ### CardObjectType
 
-Ƭ **CardObjectType**: _object_
+Ƭ **CardObjectType**: *object*
 
 #### Type declaration:
 
 Defined in: [card-object.ts:27](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L27)
 
----
+___
 
 ### ColumnWidth
 
-Ƭ **ColumnWidth**: [_SizeAndUnit_](../classes/shared.sizeandunit.md) \| _auto_ \| _stretch_
+Ƭ **ColumnWidth**: [*SizeAndUnit*](../classes/shared.sizeandunit.md) \| *auto* \| *stretch*
 
 Defined in: [card-elements.ts:5714](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5714)
 
----
+___
 
 ### Dictionary
 
-Ƭ **Dictionary**<T\>: _object_
+Ƭ **Dictionary**<T\>: *object*
 
 #### Type parameters:
 
-| Name |
-| :--- |
-| `T`  |
+Name |
+:------ |
+`T` |
 
 #### Type declaration:
 
 Defined in: [shared.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L36)
 
----
+___
 
 ### PropertyBag
 
-Ƭ **PropertyBag**: _object_
+Ƭ **PropertyBag**: *object*
 
 #### Type declaration:
 
 Defined in: [serialization.ts:771](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L771)
 
----
+___
 
 ### SerializableObjectType
 
-Ƭ **SerializableObjectType**: _object_
+Ƭ **SerializableObjectType**: *object*
 
 #### Type declaration:
 
 Defined in: [serialization.ts:605](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L605)
 
----
+___
 
 ### TargetVersion
 
-Ƭ **TargetVersion**: [_Version_](../classes/serialization.version.md) \| \*\*\*
+Ƭ **TargetVersion**: [*Version*](../classes/serialization.version.md) \| ***
 
 Defined in: [serialization.ts:103](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L103)
 
@@ -264,22 +264,22 @@ Defined in: [serialization.ts:103](https://github.com/microsoft/AdaptiveCards/bl
 
 ### ContentTypes
 
-• `Const` **ContentTypes**: _object_
+• `Const` **ContentTypes**: *object*
 
 #### Type declaration:
 
-| Name                            | Type     |
-| :------------------------------ | :------- |
-| `applicationJson`               | _string_ |
-| `applicationXWwwFormUrlencoded` | _string_ |
+Name | Type |
+:------ | :------ |
+`applicationJson` | *string* |
+`applicationXWwwFormUrlencoded` | *string* |
 
 Defined in: [shared.ts:19](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L19)
 
----
+___
 
 ### defaultHostConfig
 
-• `Const` **defaultHostConfig**: [_HostConfig_](../classes/host_config.hostconfig.md)
+• `Const` **defaultHostConfig**: [*HostConfig*](../classes/host_config.hostconfig.md)
 
 Defined in: [host-config.ts:717](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L717)
 
@@ -287,235 +287,235 @@ Defined in: [host-config.ts:717](https://github.com/microsoft/AdaptiveCards/blob
 
 ### appendChild
 
-▸ **appendChild**(`node`: Node, `child`: Node \| _undefined_): _void_
+▸ **appendChild**(`node`: Node, `child`: Node \| *undefined*): *void*
 
 #### Parameters:
 
-| Name    | Type                |
-| :------ | :------------------ |
-| `node`  | Node                |
-| `child` | Node \| _undefined_ |
+Name | Type |
+:------ | :------ |
+`node` | Node |
+`child` | Node \| *undefined* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [utils.ts:33](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L33)
 
----
+___
 
 ### generateUniqueId
 
-▸ **generateUniqueId**(): _string_
+▸ **generateUniqueId**(): *string*
 
-Generate a UUID prepended with "\_\_ac-"
+Generate a UUID prepended with "__ac-"
 
-**Returns:** _string_
+**Returns:** *string*
 
 Defined in: [utils.ts:29](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L29)
 
----
+___
 
 ### getEnumValueByName
 
-▸ **getEnumValueByName**(`enumType`: { [s: number]: _string_; }, `name`: _string_): _number_ \| _undefined_
+▸ **getEnumValueByName**(`enumType`: { [s: number]: *string*;  }, `name`: *string*): *number* \| *undefined*
 
 #### Parameters:
 
-| Name       | Type     |
-| :--------- | :------- |
-| `enumType` | _object_ |
-| `name`     | _string_ |
+Name | Type |
+:------ | :------ |
+`enumType` | *object* |
+`name` | *string* |
 
-**Returns:** _number_ \| _undefined_
+**Returns:** *number* \| *undefined*
 
 Defined in: [utils.ts:65](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L65)
 
----
+___
 
 ### getFitStatus
 
-▸ **getFitStatus**(`element`: HTMLElement, `containerEnd`: _number_): [_ContainerFitStatus_](../enums/enums.containerfitstatus.md)
+▸ **getFitStatus**(`element`: HTMLElement, `containerEnd`: *number*): [*ContainerFitStatus*](../enums/enums.containerfitstatus.md)
 
 #### Parameters:
 
-| Name           | Type        |
-| :------------- | :---------- |
-| `element`      | HTMLElement |
-| `containerEnd` | _number_    |
+Name | Type |
+:------ | :------ |
+`element` | HTMLElement |
+`containerEnd` | *number* |
 
-**Returns:** [_ContainerFitStatus_](../enums/enums.containerfitstatus.md)
+**Returns:** [*ContainerFitStatus*](../enums/enums.containerfitstatus.md)
 
 Defined in: [utils.ts:233](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L233)
 
----
+___
 
 ### isInternetExplorer
 
-▸ **isInternetExplorer**(): _boolean_
+▸ **isInternetExplorer**(): *boolean*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [utils.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L15)
 
----
+___
 
 ### isMobileOS
 
-▸ **isMobileOS**(): _boolean_
+▸ **isMobileOS**(): *boolean*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [utils.ts:20](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L20)
 
----
+___
 
 ### isVersionLessOrEqual
 
-▸ **isVersionLessOrEqual**(`version`: [_TargetVersion_](serialization.md#targetversion), `targetVersion`: [_TargetVersion_](serialization.md#targetversion)): _boolean_
+▸ **isVersionLessOrEqual**(`version`: [*TargetVersion*](serialization.md#targetversion), `targetVersion`: [*TargetVersion*](serialization.md#targetversion)): *boolean*
 
 #### Parameters:
 
-| Name            | Type                                              |
-| :-------------- | :------------------------------------------------ |
-| `version`       | [_TargetVersion_](serialization.md#targetversion) |
-| `targetVersion` | [_TargetVersion_](serialization.md#targetversion) |
+Name | Type |
+:------ | :------ |
+`version` | [*TargetVersion*](serialization.md#targetversion) |
+`targetVersion` | [*TargetVersion*](serialization.md#targetversion) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [serialization.ts:113](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L113)
 
----
+___
 
 ### parseBool
 
-▸ **parseBool**(`value`: _any_, `defaultValue?`: _boolean_): _boolean_ \| _undefined_
+▸ **parseBool**(`value`: *any*, `defaultValue?`: *boolean*): *boolean* \| *undefined*
 
 #### Parameters:
 
-| Name            | Type      |
-| :-------------- | :-------- |
-| `value`         | _any_     |
-| `defaultValue?` | _boolean_ |
+Name | Type |
+:------ | :------ |
+`value` | *any* |
+`defaultValue?` | *boolean* |
 
-**Returns:** _boolean_ \| _undefined_
+**Returns:** *boolean* \| *undefined*
 
 Defined in: [utils.ts:47](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L47)
 
----
+___
 
 ### parseEnum
 
-▸ **parseEnum**(`enumType`: { [s: number]: _string_; }, `name`: _string_, `defaultValue?`: _number_): _number_ \| _undefined_
+▸ **parseEnum**(`enumType`: { [s: number]: *string*;  }, `name`: *string*, `defaultValue?`: *number*): *number* \| *undefined*
 
 #### Parameters:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `enumType`      | _object_ |
-| `name`          | _string_ |
-| `defaultValue?` | _number_ |
+Name | Type |
+:------ | :------ |
+`enumType` | *object* |
+`name` | *string* |
+`defaultValue?` | *number* |
 
-**Returns:** _number_ \| _undefined_
+**Returns:** *number* \| *undefined*
 
 Defined in: [utils.ts:81](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L81)
 
----
+___
 
 ### parseNumber
 
-▸ **parseNumber**(`obj`: _any_, `defaultValue?`: _number_): _number_ \| _undefined_
+▸ **parseNumber**(`obj`: *any*, `defaultValue?`: *number*): *number* \| *undefined*
 
 #### Parameters:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `obj`           | _any_    |
-| `defaultValue?` | _number_ |
+Name | Type |
+:------ | :------ |
+`obj` | *any* |
+`defaultValue?` | *number* |
 
-**Returns:** _number_ \| _undefined_
+**Returns:** *number* \| *undefined*
 
 Defined in: [utils.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L43)
 
----
+___
 
 ### parseString
 
-▸ **parseString**(`obj`: _any_, `defaultValue?`: _string_): _string_ \| _undefined_
+▸ **parseString**(`obj`: *any*, `defaultValue?`: *string*): *string* \| *undefined*
 
 #### Parameters:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `obj`           | _any_    |
-| `defaultValue?` | _string_ |
+Name | Type |
+:------ | :------ |
+`obj` | *any* |
+`defaultValue?` | *string* |
 
-**Returns:** _string_ \| _undefined_
+**Returns:** *string* \| *undefined*
 
 Defined in: [utils.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L39)
 
----
+___
 
 ### property
 
-▸ **property**(`property`: [_PropertyDefinition_](../classes/serialization.propertydefinition.md)): (`target`: _any_, `propertyKey`: _string_) => _void_
+▸ **property**(`property`: [*PropertyDefinition*](../classes/serialization.propertydefinition.md)): (`target`: *any*, `propertyKey`: *string*) => *void*
 
 #### Parameters:
 
-| Name       | Type                                                                   |
-| :--------- | :--------------------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](../classes/serialization.propertydefinition.md) |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](../classes/serialization.propertydefinition.md) |
 
-**Returns:** _function_
+**Returns:** *function*
 
 Defined in: [serialization.ts:758](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L758)
 
----
+___
 
 ### renderSeparation
 
-▸ **renderSeparation**(`hostConfig`: [_HostConfig_](../classes/host_config.hostconfig.md), `separationDefinition`: [_ISeparationDefinition_](../interfaces/shared.iseparationdefinition.md), `orientation`: [_Orientation_](../enums/enums.orientation.md)): HTMLElement \| _undefined_
+▸ **renderSeparation**(`hostConfig`: [*HostConfig*](../classes/host_config.hostconfig.md), `separationDefinition`: [*ISeparationDefinition*](../interfaces/shared.iseparationdefinition.md), `orientation`: [*Orientation*](../enums/enums.orientation.md)): HTMLElement \| *undefined*
 
 #### Parameters:
 
-| Name                   | Type                                                                     |
-| :--------------------- | :----------------------------------------------------------------------- |
-| `hostConfig`           | [_HostConfig_](../classes/host_config.hostconfig.md)                     |
-| `separationDefinition` | [_ISeparationDefinition_](../interfaces/shared.iseparationdefinition.md) |
-| `orientation`          | [_Orientation_](../enums/enums.orientation.md)                           |
+Name | Type |
+:------ | :------ |
+`hostConfig` | [*HostConfig*](../classes/host_config.hostconfig.md) |
+`separationDefinition` | [*ISeparationDefinition*](../interfaces/shared.iseparationdefinition.md) |
+`orientation` | [*Orientation*](../enums/enums.orientation.md) |
 
-**Returns:** HTMLElement \| _undefined_
+**Returns:** HTMLElement \| *undefined*
 
 Defined in: [utils.ts:91](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L91)
 
----
+___
 
 ### stringToCssColor
 
-▸ **stringToCssColor**(`color`: _string_ \| _undefined_): _string_ \| _undefined_
+▸ **stringToCssColor**(`color`: *string* \| *undefined*): *string* \| *undefined*
 
 #### Parameters:
 
-| Name    | Type                    |
-| :------ | :---------------------- |
-| `color` | _string_ \| _undefined_ |
+Name | Type |
+:------ | :------ |
+`color` | *string* \| *undefined* |
 
-**Returns:** _string_ \| _undefined_
+**Returns:** *string* \| *undefined*
 
 Defined in: [utils.ts:130](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L130)
 
----
+___
 
 ### truncate
 
-▸ **truncate**(`element`: HTMLElement, `maxHeight`: _number_, `lineHeight?`: _number_): _void_
+▸ **truncate**(`element`: HTMLElement, `maxHeight`: *number*, `lineHeight?`: *number*): *void*
 
 #### Parameters:
 
-| Name          | Type        |
-| :------------ | :---------- |
-| `element`     | HTMLElement |
-| `maxHeight`   | _number_    |
-| `lineHeight?` | _number_    |
+Name | Type |
+:------ | :------ |
+`element` | HTMLElement |
+`maxHeight` | *number* |
+`lineHeight?` | *number* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [utils.ts:148](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/utils.ts#L148)

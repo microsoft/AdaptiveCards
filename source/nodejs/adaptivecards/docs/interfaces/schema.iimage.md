@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_ICardElement_](schema.icardelement.md)
+* [*ICardElement*](schema.icardelement.md)
 
   ↳ **IImage**
 
@@ -31,106 +31,106 @@
 
 ### altText
 
-• `Optional` **altText**: _undefined_ \| _string_
+• `Optional` **altText**: *undefined* \| *string*
 
 Defined in: [schema.ts:94](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L94)
 
----
+___
 
 ### height
 
-• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
+• `Optional` **height**: *undefined* \| *auto* \| *stretch*
 
 Inherited from: [ICardElement](schema.icardelement.md).[height](schema.icardelement.md#height)
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
----
+___
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
+• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
 
 Inherited from: [ICardElement](schema.icardelement.md).[horizontalAlignment](schema.icardelement.md#horizontalalignment)
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
----
+___
 
 ### id
 
-• `Optional` **id**: _undefined_ \| _string_
+• `Optional` **id**: *undefined* \| *string*
 
 Inherited from: [ICardElement](schema.icardelement.md).[id](schema.icardelement.md#id)
 
 Defined in: [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L34)
 
----
+___
 
 ### selectAction
 
-• `Optional` **selectAction**: _undefined_ \| [_IAction_](schema.iaction.md)
+• `Optional` **selectAction**: *undefined* \| [*IAction*](schema.iaction.md)
 
 Defined in: [schema.ts:95](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L95)
 
----
+___
 
 ### separator
 
-• `Optional` **separator**: _undefined_ \| _boolean_
+• `Optional` **separator**: *undefined* \| *boolean*
 
 Inherited from: [ICardElement](schema.icardelement.md).[separator](schema.icardelement.md#separator)
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
----
+___
 
 ### size
 
-• `Optional` **size**: _undefined_ \| _auto_ \| _stretch_ \| _small_ \| _medium_ \| _large_
+• `Optional` **size**: *undefined* \| *auto* \| *stretch* \| *small* \| *medium* \| *large*
 
 Defined in: [schema.ts:96](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L96)
 
----
+___
 
 ### spacing
 
-• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
+• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
 
 Inherited from: [ICardElement](schema.icardelement.md).[spacing](schema.icardelement.md#spacing)
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
----
+___
 
 ### speak
 
-• `Optional` **speak**: _undefined_ \| _string_
+• `Optional` **speak**: *undefined* \| *string*
 
 Inherited from: [ICardElement](schema.icardelement.md).[speak](schema.icardelement.md#speak)
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)
 
----
+___
 
 ### style
 
-• `Optional` **style**: _undefined_ \| _default_ \| _person_
+• `Optional` **style**: *undefined* \| *default* \| *person*
 
 Defined in: [schema.ts:97](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L97)
 
----
+___
 
 ### type
 
-• **type**: _Image_
+• **type**: *Image*
 
 Defined in: [schema.ts:93](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L93)
 
----
+___
 
 ### url
 
-• **url**: _string_
+• **url**: *string*
 
 Defined in: [schema.ts:98](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L98)

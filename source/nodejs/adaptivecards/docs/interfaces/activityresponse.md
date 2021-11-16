@@ -4,30 +4,30 @@
 
 ## Hierarchy
 
-- **ActivityResponse**
+* **ActivityResponse**
 
 ## Index
 
 ### Properties
 
-- [content](activityresponse.md#content)
-- [request](activityresponse.md#request)
-- [status](activityresponse.md#status)
+* [content](activityresponse.md#content)
+* [request](activityresponse.md#request)
+* [status](activityresponse.md#status)
 
 ## Properties
 
-### content
+###  content
 
-• **content**: _any_
+• **content**: *any*
 
----
+___
 
-### request
+###  request
 
-• **request**: _[ActivityRequest](activityrequest.md)_
+• **request**: *[ActivityRequest](activityrequest.md)*
 
----
+___
 
-### status
+###  status
 
-• **status**: _[ActivityStatus](../enums/activitystatus.md)_
+• **status**: *[ActivityStatus](../enums/activitystatus.md)*

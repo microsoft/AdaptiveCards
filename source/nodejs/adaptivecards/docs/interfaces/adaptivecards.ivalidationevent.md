@@ -17,30 +17,30 @@
 
 ### event
 
-• **event**: [_ValidationEvent_](../enums/enums.validationevent.md)
+• **event**: [*ValidationEvent*](../enums/enums.validationevent.md)
 
 Defined in: [serialization.ts:11](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L11)
 
----
+___
 
 ### message
 
-• **message**: _string_
+• **message**: *string*
 
 Defined in: [serialization.ts:12](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L12)
 
----
+___
 
 ### phase
 
-• **phase**: [_ValidationPhase_](../enums/enums.validationphase.md)
+• **phase**: [*ValidationPhase*](../enums/enums.validationphase.md)
 
 Defined in: [serialization.ts:10](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L10)
 
----
+___
 
 ### source
 
-• `Optional` **source**: _undefined_ \| [_SerializableObject_](../classes/serialization.serializableobject.md)
+• `Optional` **source**: *undefined* \| [*SerializableObject*](../classes/serialization.serializableobject.md)
 
 Defined in: [serialization.ts:9](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L9)

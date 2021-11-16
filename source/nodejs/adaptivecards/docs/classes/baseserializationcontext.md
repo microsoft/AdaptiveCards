@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- **BaseSerializationContext**
+* **BaseSerializationContext**
 
   ↳ [SimpleSerializationContext](simpleserializationcontext.md)
 
@@ -14,196 +14,196 @@
 
 ### Constructors
 
-- [constructor](baseserializationcontext.md#constructor)
+* [constructor](baseserializationcontext.md#constructor)
 
 ### Properties
 
-- [targetVersion](baseserializationcontext.md#targetversion)
-- [toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)
+* [targetVersion](baseserializationcontext.md#targetversion)
+* [toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
-- [eventCount](baseserializationcontext.md#eventcount)
+* [eventCount](baseserializationcontext.md#eventcount)
 
 ### Methods
 
-- [clearEvents](baseserializationcontext.md#clearevents)
-- [getEventAt](baseserializationcontext.md#geteventat)
-- [logEvent](baseserializationcontext.md#logevent)
-- [logParseEvent](baseserializationcontext.md#logparseevent)
-- [serializeArray](baseserializationcontext.md#serializearray)
-- [serializeEnum](baseserializationcontext.md#serializeenum)
-- [serializeNumber](baseserializationcontext.md#serializenumber)
-- [serializeValue](baseserializationcontext.md#serializevalue)
-- [shouldSerialize](baseserializationcontext.md#shouldserialize)
+* [clearEvents](baseserializationcontext.md#clearevents)
+* [getEventAt](baseserializationcontext.md#geteventat)
+* [logEvent](baseserializationcontext.md#logevent)
+* [logParseEvent](baseserializationcontext.md#logparseevent)
+* [serializeArray](baseserializationcontext.md#serializearray)
+* [serializeEnum](baseserializationcontext.md#serializeenum)
+* [serializeNumber](baseserializationcontext.md#serializenumber)
+* [serializeValue](baseserializationcontext.md#serializevalue)
+* [shouldSerialize](baseserializationcontext.md#shouldserialize)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new BaseSerializationContext**(`targetVersion`: [Version](version.md)): _[BaseSerializationContext](baseserializationcontext.md)_
+\+ **new BaseSerializationContext**(`targetVersion`: [Version](version.md)): *[BaseSerializationContext](baseserializationcontext.md)*
 
 **Parameters:**
 
-| Name            | Type                  | Default         |
-| --------------- | --------------------- | --------------- |
-| `targetVersion` | [Version](version.md) | Versions.latest |
+Name | Type | Default |
+------ | ------ | ------ |
+`targetVersion` | [Version](version.md) | Versions.latest |
 
-**Returns:** _[BaseSerializationContext](baseserializationcontext.md)_
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ## Properties
 
-### targetVersion
+###  targetVersion
 
-• **targetVersion**: _[Version](version.md)_
+• **targetVersion**: *[Version](version.md)*
 
----
+___
 
-### toJSONOriginalParam
+###  toJSONOriginalParam
 
-• **toJSONOriginalParam**: _any_
+• **toJSONOriginalParam**: *any*
 
 ## Accessors
 
-### eventCount
+###  eventCount
 
-• **get eventCount**(): _number_
+• **get eventCount**(): *number*
 
-**Returns:** _number_
+**Returns:** *number*
 
 ## Methods
 
-### clearEvents
+###  clearEvents
 
-▸ **clearEvents**(): _void_
+▸ **clearEvents**(): *void*
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### getEventAt
+###  getEventAt
 
-▸ **getEventAt**(`index`: number): _[IValidationEvent](../interfaces/ivalidationevent.md)_
-
-**Parameters:**
-
-| Name    | Type   |
-| ------- | ------ |
-| `index` | number |
-
-**Returns:** _[IValidationEvent](../interfaces/ivalidationevent.md)_
-
----
-
-### logEvent
-
-▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): _void_
+▸ **getEventAt**(`index`: number): *[IValidationEvent](../interfaces/ivalidationevent.md)*
 
 **Parameters:**
 
-| Name      | Type                                                         |
-| --------- | ------------------------------------------------------------ |
-| `source`  | [SerializableObject](serializableobject.md) &#124; undefined |
-| `phase`   | [ValidationPhase](../enums/validationphase.md)               |
-| `event`   | [ValidationEvent](../enums/validationevent.md)               |
-| `message` | string                                                       |
+Name | Type |
+------ | ------ |
+`index` | number |
 
-**Returns:** _void_
+**Returns:** *[IValidationEvent](../interfaces/ivalidationevent.md)*
 
----
+___
 
-### logParseEvent
+###  logEvent
 
-▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): _void_
+▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 **Parameters:**
 
-| Name      | Type                                                         |
-| --------- | ------------------------------------------------------------ |
-| `source`  | [SerializableObject](serializableobject.md) &#124; undefined |
-| `event`   | [ValidationEvent](../enums/validationevent.md)               |
-| `message` | string                                                       |
+Name | Type |
+------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
+`phase` | [ValidationPhase](../enums/validationphase.md) |
+`event` | [ValidationEvent](../enums/validationevent.md) |
+`message` | string |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### serializeArray
+###  logParseEvent
 
-▸ **serializeArray**(`target`: object, `propertyName`: string, `propertyValue`: any[] | undefined): _void_
-
-**Parameters:**
-
-| Name            | Type                   |
-| --------------- | ---------------------- |
-| `target`        | object                 |
-| `propertyName`  | string                 |
-| `propertyValue` | any[] &#124; undefined |
-
-**Returns:** _void_
-
----
-
-### serializeEnum
-
-▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): _void_
+▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 **Parameters:**
 
-| Name            | Type                    | Default   |
-| --------------- | ----------------------- | --------- |
-| `enumType`      | object                  | -         |
-| `target`        | object                  | -         |
-| `propertyName`  | string                  | -         |
-| `propertyValue` | number &#124; undefined | -         |
-| `defaultValue`  | number &#124; undefined | undefined |
+Name | Type |
+------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
+`event` | [ValidationEvent](../enums/validationevent.md) |
+`message` | string |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### serializeNumber
+###  serializeArray
 
-▸ **serializeNumber**(`target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): _void_
+▸ **serializeArray**(`target`: object, `propertyName`: string, `propertyValue`: any[] | undefined): *void*
 
 **Parameters:**
 
-| Name            | Type                    | Default   |
-| --------------- | ----------------------- | --------- |
-| `target`        | object                  | -         |
-| `propertyName`  | string                  | -         |
-| `propertyValue` | number &#124; undefined | -         |
-| `defaultValue`  | number &#124; undefined | undefined |
+Name | Type |
+------ | ------ |
+`target` | object |
+`propertyName` | string |
+`propertyValue` | any[] &#124; undefined |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### serializeValue
+###  serializeEnum
 
-▸ **serializeValue**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): _void_
-
-**Parameters:**
-
-| Name            | Type   | Default   |
-| --------------- | ------ | --------- |
-| `target`        | object | -         |
-| `propertyName`  | string | -         |
-| `propertyValue` | any    | -         |
-| `defaultValue`  | any    | undefined |
-
-**Returns:** _void_
-
----
-
-### shouldSerialize
-
-▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): _boolean_
+▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
 
 **Parameters:**
 
-| Name | Type                                        |
-| ---- | ------------------------------------------- |
-| `o`  | [SerializableObject](serializableobject.md) |
+Name | Type | Default |
+------ | ------ | ------ |
+`enumType` | object | - |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | number &#124; undefined | - |
+`defaultValue` | number &#124; undefined | undefined |
 
-**Returns:** _boolean_
+**Returns:** *void*
+
+___
+
+###  serializeNumber
+
+▸ **serializeNumber**(`target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | number &#124; undefined | - |
+`defaultValue` | number &#124; undefined | undefined |
+
+**Returns:** *void*
+
+___
+
+###  serializeValue
+
+▸ **serializeValue**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): *void*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`target` | object | - |
+`propertyName` | string | - |
+`propertyValue` | any | - |
+`defaultValue` | any | undefined |
+
+**Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

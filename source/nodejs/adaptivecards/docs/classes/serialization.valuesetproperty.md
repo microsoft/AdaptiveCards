@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_PropertyDefinition_](serialization.propertydefinition.md)
+* [*PropertyDefinition*](serialization.propertydefinition.md)
 
   ↳ **ValueSetProperty**
 
@@ -37,19 +37,19 @@
 
 ### constructor
 
-\+ **new ValueSetProperty**(`targetVersion`: [_Version_](serialization.version.md), `name`: _string_, `values`: [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<string\>[], `defaultValue?`: _string_, `onGetInitialValue?`: (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _string_): [_ValueSetProperty_](serialization.valuesetproperty.md)
+\+ **new ValueSetProperty**(`targetVersion`: [*Version*](serialization.version.md), `name`: *string*, `values`: [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<string\>[], `defaultValue?`: *string*, `onGetInitialValue?`: (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *string*): [*ValueSetProperty*](serialization.valuesetproperty.md)
 
 #### Parameters:
 
-| Name                 | Type                                                                                |
-| :------------------- | :---------------------------------------------------------------------------------- |
-| `targetVersion`      | [_Version_](serialization.version.md)                                               |
-| `name`               | _string_                                                                            |
-| `values`             | [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<string\>[]      |
-| `defaultValue?`      | _string_                                                                            |
-| `onGetInitialValue?` | (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _string_ |
+Name | Type |
+:------ | :------ |
+`targetVersion` | [*Version*](serialization.version.md) |
+`name` | *string* |
+`values` | [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<string\>[] |
+`defaultValue?` | *string* |
+`onGetInitialValue?` | (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *string* |
 
-**Returns:** [_ValueSetProperty_](serialization.valuesetproperty.md)
+**Returns:** [*ValueSetProperty*](serialization.valuesetproperty.md)
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
@@ -59,125 +59,125 @@ Defined in: [serialization.ts:487](https://github.com/microsoft/AdaptiveCards/bl
 
 ### defaultValue
 
-• `Optional` `Readonly` **defaultValue**: _undefined_ \| _string_
+• `Optional` `Readonly` **defaultValue**: *undefined* \| *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[defaultValue](serialization.propertydefinition.md#defaultvalue)
 
----
+___
 
 ### isSerializationEnabled
 
-• **isSerializationEnabled**: _boolean_= true
+• **isSerializationEnabled**: *boolean*= true
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[isSerializationEnabled](serialization.propertydefinition.md#isserializationenabled)
 
 Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L276)
 
----
+___
 
 ### name
 
-• `Readonly` **name**: _string_
+• `Readonly` **name**: *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[name](serialization.propertydefinition.md#name)
 
----
+___
 
 ### onGetInitialValue
 
-• `Optional` `Readonly` **onGetInitialValue**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _string_
+• `Optional` `Readonly` **onGetInitialValue**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[onGetInitialValue](serialization.propertydefinition.md#ongetinitialvalue)
 
----
+___
 
 ### sequentialNumber
 
-• `Readonly` **sequentialNumber**: _number_
+• `Readonly` **sequentialNumber**: *number*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[sequentialNumber](serialization.propertydefinition.md#sequentialnumber)
 
 Defined in: [serialization.ts:274](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L274)
 
----
+___
 
 ### targetVersion
 
-• `Readonly` **targetVersion**: [_Version_](serialization.version.md)
+• `Readonly` **targetVersion**: [*Version*](serialization.version.md)
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[targetVersion](serialization.propertydefinition.md#targetversion)
 
----
+___
 
 ### values
 
-• `Readonly` **values**: [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<string\>[]
+• `Readonly` **values**: [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<string\>[]
 
 ## Methods
 
 ### getInternalName
 
-▸ **getInternalName**(): _string_
+▸ **getInternalName**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:262](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L262)
 
----
+___
 
 ### isValidValue
 
-▸ **isValidValue**(`value`: _string_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _boolean_
+▸ **isValidValue**(`value`: *string*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *boolean*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `value`   | _string_                                                                |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`value` | *string* |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [serialization.ts:403](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L403)
 
----
+___
 
 ### parse
 
-▸ **parse**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `source`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _undefined_ \| _string_
+▸ **parse**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `source`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *undefined* \| *string*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
-| `source`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`source` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _undefined_ \| _string_
+**Returns:** *undefined* \| *string*
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:415](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L415)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `target`: [_PropertyBag_](../modules/serialization.md#propertybag), `value`: _undefined_ \| _string_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
+▸ **toJSON**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `target`: [*PropertyBag*](../modules/serialization.md#propertybag), `value`: *undefined* \| *string*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
-| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `value`   | _undefined_ \| _string_                                                 |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`value` | *undefined* \| *string* |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 

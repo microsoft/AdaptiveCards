@@ -6,29 +6,29 @@
 
 ## Hierarchy
 
-- **ICardElement**
+* **ICardElement**
 
-  ↳ [_ITextBlock_](schema.itextblock.md)
+  ↳ [*ITextBlock*](schema.itextblock.md)
 
-  ↳ [_IContainer_](schema.icontainer.md)
+  ↳ [*IContainer*](schema.icontainer.md)
 
-  ↳ [_IColumn_](schema.icolumn.md)
+  ↳ [*IColumn*](schema.icolumn.md)
 
-  ↳ [_IColumnSet_](schema.icolumnset.md)
+  ↳ [*IColumnSet*](schema.icolumnset.md)
 
-  ↳ [_IFactSet_](schema.ifactset.md)
+  ↳ [*IFactSet*](schema.ifactset.md)
 
-  ↳ [_IImage_](schema.iimage.md)
+  ↳ [*IImage*](schema.iimage.md)
 
-  ↳ [_IImageSet_](schema.iimageset.md)
+  ↳ [*IImageSet*](schema.iimageset.md)
 
-  ↳ [_IInput_](schema.iinput.md)
+  ↳ [*IInput*](schema.iinput.md)
 
-  ↳ [_IAdaptiveCard_](schema.iadaptivecard.md)
+  ↳ [*IAdaptiveCard*](schema.iadaptivecard.md)
 
 ## Indexable
 
-▪ [propName: *string*]: _any_
+▪ [propName: *string*]: *any*
 
 ## Table of contents
 
@@ -45,46 +45,46 @@
 
 ### height
 
-• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
+• `Optional` **height**: *undefined* \| *auto* \| *stretch*
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
----
+___
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
+• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
----
+___
 
 ### id
 
-• `Optional` **id**: _undefined_ \| _string_
+• `Optional` **id**: *undefined* \| *string*
 
 Defined in: [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L34)
 
----
+___
 
 ### separator
 
-• `Optional` **separator**: _undefined_ \| _boolean_
+• `Optional` **separator**: *undefined* \| *boolean*
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
----
+___
 
 ### spacing
 
-• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
+• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
----
+___
 
 ### speak
 
-• `Optional` **speak**: _undefined_ \| _string_
+• `Optional` **speak**: *undefined* \| *string*
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)

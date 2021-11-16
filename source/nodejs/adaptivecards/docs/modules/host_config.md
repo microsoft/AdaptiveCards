@@ -41,6 +41,6 @@
 
 ### defaultHostConfig
 
-• `Const` **defaultHostConfig**: [_HostConfig_](../classes/host_config.hostconfig.md)
+• `Const` **defaultHostConfig**: [*HostConfig*](../classes/host_config.hostconfig.md)
 
 Defined in: [host-config.ts:717](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L717)

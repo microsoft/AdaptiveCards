@@ -22,80 +22,80 @@
 
 ### constructor
 
-\+ **new SerializableObjectSchema**(): [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
+\+ **new SerializableObjectSchema**(): [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
 
-**Returns:** [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
+**Returns:** [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
 
 ## Methods
 
 ### add
 
-▸ **add**(...`properties`: [_PropertyDefinition_](serialization.propertydefinition.md)[]): _void_
+▸ **add**(...`properties`: [*PropertyDefinition*](serialization.propertydefinition.md)[]): *void*
 
 #### Parameters:
 
-| Name            | Type                                                          |
-| :-------------- | :------------------------------------------------------------ |
-| `...properties` | [_PropertyDefinition_](serialization.propertydefinition.md)[] |
+Name | Type |
+:------ | :------ |
+`...properties` | [*PropertyDefinition*](serialization.propertydefinition.md)[] |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [serialization.ts:724](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L724)
 
----
+___
 
 ### getCount
 
-▸ **getCount**(): _number_
+▸ **getCount**(): *number*
 
-**Returns:** _number_
+**Returns:** *number*
 
 Defined in: [serialization.ts:751](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L751)
 
----
+___
 
 ### getItemAt
 
-▸ **getItemAt**(`index`: _number_): [_PropertyDefinition_](serialization.propertydefinition.md)
+▸ **getItemAt**(`index`: *number*): [*PropertyDefinition*](serialization.propertydefinition.md)
 
 #### Parameters:
 
-| Name    | Type     |
-| :------ | :------- |
-| `index` | _number_ |
+Name | Type |
+:------ | :------ |
+`index` | *number* |
 
-**Returns:** [_PropertyDefinition_](serialization.propertydefinition.md)
+**Returns:** [*PropertyDefinition*](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:747](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L747)
 
----
+___
 
 ### indexOf
 
-▸ **indexOf**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md)): _number_
+▸ **indexOf**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md)): *number*
 
 #### Parameters:
 
-| Name       | Type                                                        |
-| :--------- | :---------------------------------------------------------- |
-| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
+Name | Type |
+:------ | :------ |
+`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
 
-**Returns:** _number_
+**Returns:** *number*
 
 Defined in: [serialization.ts:714](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L714)
 
----
+___
 
 ### remove
 
-▸ **remove**(...`properties`: [_PropertyDefinition_](serialization.propertydefinition.md)[]): _void_
+▸ **remove**(...`properties`: [*PropertyDefinition*](serialization.propertydefinition.md)[]): *void*
 
 #### Parameters:
 
-| Name            | Type                                                          |
-| :-------------- | :------------------------------------------------------------ |
-| `...properties` | [_PropertyDefinition_](serialization.propertydefinition.md)[] |
+Name | Type |
+:------ | :------ |
+`...properties` | [*PropertyDefinition*](serialization.propertydefinition.md)[] |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [serialization.ts:732](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L732)

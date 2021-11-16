@@ -4,950 +4,950 @@
 
 ## Hierarchy
 
-↳ [SubmitAction](submitaction.md)
+  ↳ [SubmitAction](submitaction.md)
 
-↳ **ExecuteAction**
+  ↳ **ExecuteAction**
 
 ## Index
 
 ### Constructors
 
-- [constructor](executeaction.md#constructor)
+* [constructor](executeaction.md#constructor)
 
 ### Properties
 
-- [\_parent](executeaction.md#protected-optional-_parent)
-- [\_renderedElement](executeaction.md#protected-optional-_renderedelement)
-- [iconUrl](executeaction.md#optional-iconurl)
-- [id](executeaction.md#optional-id)
-- [maxVersion](executeaction.md#maxversion)
-- [onExecute](executeaction.md#onexecute)
-- [onPreProcessPropertyValue](executeaction.md#optional-onpreprocesspropertyvalue)
-- [style](executeaction.md#style)
-- [title](executeaction.md#optional-title)
-- [verb](executeaction.md#verb)
-- [JsonTypeName](executeaction.md#static-jsontypename)
-- [dataProperty](executeaction.md#static-dataproperty)
-- [iconUrlProperty](executeaction.md#static-iconurlproperty)
-- [idProperty](executeaction.md#static-idproperty)
-- [ignoreInputValidationProperty](executeaction.md#static-ignoreinputvalidationproperty)
-- [onRegisterCustomProperties](executeaction.md#static-optional-onregistercustomproperties)
-- [requiresProperty](executeaction.md#static-requiresproperty)
-- [styleProperty](executeaction.md#static-styleproperty)
-- [titleProperty](executeaction.md#static-titleproperty)
-- [typeNameProperty](executeaction.md#static-typenameproperty)
-- [verbProperty](executeaction.md#static-verbproperty)
+* [_parent](executeaction.md#protected-optional-_parent)
+* [_renderedElement](executeaction.md#protected-optional-_renderedelement)
+* [iconUrl](executeaction.md#optional-iconurl)
+* [id](executeaction.md#optional-id)
+* [maxVersion](executeaction.md#maxversion)
+* [onExecute](executeaction.md#onexecute)
+* [onPreProcessPropertyValue](executeaction.md#optional-onpreprocesspropertyvalue)
+* [style](executeaction.md#style)
+* [title](executeaction.md#optional-title)
+* [verb](executeaction.md#verb)
+* [JsonTypeName](executeaction.md#static-jsontypename)
+* [dataProperty](executeaction.md#static-dataproperty)
+* [iconUrlProperty](executeaction.md#static-iconurlproperty)
+* [idProperty](executeaction.md#static-idproperty)
+* [ignoreInputValidationProperty](executeaction.md#static-ignoreinputvalidationproperty)
+* [onRegisterCustomProperties](executeaction.md#static-optional-onregistercustomproperties)
+* [requiresProperty](executeaction.md#static-requiresproperty)
+* [styleProperty](executeaction.md#static-styleproperty)
+* [titleProperty](executeaction.md#static-titleproperty)
+* [typeNameProperty](executeaction.md#static-typenameproperty)
+* [verbProperty](executeaction.md#static-verbproperty)
 
 ### Accessors
 
-- [data](executeaction.md#data)
-- [hostConfig](executeaction.md#hostconfig)
-- [ignoreInputValidation](executeaction.md#ignoreinputvalidation)
-- [isPrimary](executeaction.md#isprimary)
-- [parent](executeaction.md#parent)
-- [renderedElement](executeaction.md#renderedelement)
-- [requires](executeaction.md#requires)
+* [data](executeaction.md#data)
+* [hostConfig](executeaction.md#hostconfig)
+* [ignoreInputValidation](executeaction.md#ignoreinputvalidation)
+* [isPrimary](executeaction.md#isprimary)
+* [parent](executeaction.md#parent)
+* [renderedElement](executeaction.md#renderedelement)
+* [requires](executeaction.md#requires)
 
 ### Methods
 
-- [addCssClasses](executeaction.md#protected-addcssclasses)
-- [execute](executeaction.md#execute)
-- [getActionById](executeaction.md#getactionbyid)
-- [getAllInputs](executeaction.md#getallinputs)
-- [getAriaRole](executeaction.md#getariarole)
-- [getCustomProperty](executeaction.md#getcustomproperty)
-- [getHref](executeaction.md#gethref)
-- [getJsonTypeName](executeaction.md#getjsontypename)
-- [getReferencedInputs](executeaction.md#getreferencedinputs)
-- [getResourceInformation](executeaction.md#getresourceinformation)
-- [getRootObject](executeaction.md#getrootobject)
-- [getSchema](executeaction.md#getschema)
-- [getSchemaKey](executeaction.md#protected-getschemakey)
-- [getValue](executeaction.md#protected-getvalue)
-- [hasAllDefaultValues](executeaction.md#hasalldefaultvalues)
-- [hasDefaultValue](executeaction.md#hasdefaultvalue)
-- [internalGetReferencedInputs](executeaction.md#protected-internalgetreferencedinputs)
-- [internalParse](executeaction.md#protected-internalparse)
-- [internalPrepareForExecution](executeaction.md#protected-internalprepareforexecution)
-- [internalToJSON](executeaction.md#protected-internaltojson)
-- [internalValidateInputs](executeaction.md#protected-internalvalidateinputs)
-- [internalValidateProperties](executeaction.md#internalvalidateproperties)
-- [parse](executeaction.md#parse)
-- [populateSchema](executeaction.md#protected-populateschema)
-- [preProcessPropertyValue](executeaction.md#preprocesspropertyvalue)
-- [prepareForExecution](executeaction.md#prepareforexecution)
-- [remove](executeaction.md#remove)
-- [render](executeaction.md#render)
-- [resetDefaultValues](executeaction.md#resetdefaultvalues)
-- [setCustomProperty](executeaction.md#setcustomproperty)
-- [setParent](executeaction.md#setparent)
-- [setShouldFallback](executeaction.md#setshouldfallback)
-- [setValue](executeaction.md#protected-setvalue)
-- [shouldFallback](executeaction.md#shouldfallback)
-- [shouldSerialize](executeaction.md#protected-shouldserialize)
-- [toJSON](executeaction.md#tojson)
-- [updateActionButtonCssStyle](executeaction.md#updateactionbuttoncssstyle)
-- [validateInputs](executeaction.md#validateinputs)
-- [validateProperties](executeaction.md#validateproperties)
+* [addCssClasses](executeaction.md#protected-addcssclasses)
+* [execute](executeaction.md#execute)
+* [getActionById](executeaction.md#getactionbyid)
+* [getAllInputs](executeaction.md#getallinputs)
+* [getAriaRole](executeaction.md#getariarole)
+* [getCustomProperty](executeaction.md#getcustomproperty)
+* [getHref](executeaction.md#gethref)
+* [getJsonTypeName](executeaction.md#getjsontypename)
+* [getReferencedInputs](executeaction.md#getreferencedinputs)
+* [getResourceInformation](executeaction.md#getresourceinformation)
+* [getRootObject](executeaction.md#getrootobject)
+* [getSchema](executeaction.md#getschema)
+* [getSchemaKey](executeaction.md#protected-getschemakey)
+* [getValue](executeaction.md#protected-getvalue)
+* [hasAllDefaultValues](executeaction.md#hasalldefaultvalues)
+* [hasDefaultValue](executeaction.md#hasdefaultvalue)
+* [internalGetReferencedInputs](executeaction.md#protected-internalgetreferencedinputs)
+* [internalParse](executeaction.md#protected-internalparse)
+* [internalPrepareForExecution](executeaction.md#protected-internalprepareforexecution)
+* [internalToJSON](executeaction.md#protected-internaltojson)
+* [internalValidateInputs](executeaction.md#protected-internalvalidateinputs)
+* [internalValidateProperties](executeaction.md#internalvalidateproperties)
+* [parse](executeaction.md#parse)
+* [populateSchema](executeaction.md#protected-populateschema)
+* [preProcessPropertyValue](executeaction.md#preprocesspropertyvalue)
+* [prepareForExecution](executeaction.md#prepareforexecution)
+* [remove](executeaction.md#remove)
+* [render](executeaction.md#render)
+* [resetDefaultValues](executeaction.md#resetdefaultvalues)
+* [setCustomProperty](executeaction.md#setcustomproperty)
+* [setParent](executeaction.md#setparent)
+* [setShouldFallback](executeaction.md#setshouldfallback)
+* [setValue](executeaction.md#protected-setvalue)
+* [shouldFallback](executeaction.md#shouldfallback)
+* [shouldSerialize](executeaction.md#protected-shouldserialize)
+* [toJSON](executeaction.md#tojson)
+* [updateActionButtonCssStyle](executeaction.md#updateactionbuttoncssstyle)
+* [validateInputs](executeaction.md#validateinputs)
+* [validateProperties](executeaction.md#validateproperties)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new ExecuteAction**(): _[ExecuteAction](executeaction.md)_
+\+ **new ExecuteAction**(): *[ExecuteAction](executeaction.md)*
 
-_Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)_
+*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
 
-**Returns:** _[ExecuteAction](executeaction.md)_
+**Returns:** *[ExecuteAction](executeaction.md)*
 
 ## Properties
 
-### `Protected` `Optional` \_parent
+### `Protected` `Optional` _parent
 
-• **\_parent**? : _[CardObject](cardobject.md)_
+• **_parent**? : *[CardObject](cardobject.md)*
 
-_Inherited from [CardObject](cardobject.md).[\_parent](cardobject.md#protected-optional-_parent)_
+*Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
 
----
+___
 
-### `Protected` `Optional` \_renderedElement
+### `Protected` `Optional` _renderedElement
 
-• **\_renderedElement**? : _HTMLElement_
+• **_renderedElement**? : *HTMLElement*
 
-_Inherited from [CardObject](cardobject.md).[\_renderedElement](cardobject.md#protected-optional-_renderedelement)_
+*Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
 
----
+___
 
 ### `Optional` iconUrl
 
-• **iconUrl**? : _undefined | string_
+• **iconUrl**? : *undefined | string*
 
-_Inherited from [Action](action.md).[iconUrl](action.md#optional-iconurl)_
+*Inherited from [Action](action.md).[iconUrl](action.md#optional-iconurl)*
 
----
+___
 
 ### `Optional` id
 
-• **id**? : _undefined | string_
+• **id**? : *undefined | string*
 
-_Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)_
+*Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
 
----
+___
 
-### maxVersion
+###  maxVersion
 
-• **maxVersion**: _[Version](version.md)_ = Versions.v1_3
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
-_Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)_
+*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
----
+___
 
-### onExecute
+###  onExecute
 
-• **onExecute**: _function_
+• **onExecute**: *function*
 
-_Inherited from [Action](action.md).[onExecute](action.md#onexecute)_
+*Inherited from [Action](action.md).[onExecute](action.md#onexecute)*
 
 #### Type declaration:
 
-▸ (`sender`: [Action](action.md)): _void_
+▸ (`sender`: [Action](action.md)): *void*
 
 **Parameters:**
 
-| Name     | Type                |
-| -------- | ------------------- |
-| `sender` | [Action](action.md) |
+Name | Type |
+------ | ------ |
+`sender` | [Action](action.md) |
 
----
+___
 
 ### `Optional` onPreProcessPropertyValue
 
-• **onPreProcessPropertyValue**? : _undefined | function_
+• **onPreProcessPropertyValue**? : *undefined | function*
 
-_Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)_
+*Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
 
----
+___
 
-### style
+###  style
 
-• **style**: _string_ = Enums.ActionStyle.Default
+• **style**: *string* = Enums.ActionStyle.Default
 
-_Inherited from [Action](action.md).[style](action.md#style)_
+*Inherited from [Action](action.md).[style](action.md#style)*
 
----
+___
 
 ### `Optional` title
 
-• **title**? : _undefined | string_
+• **title**? : *undefined | string*
 
-_Inherited from [Action](action.md).[title](action.md#optional-title)_
+*Inherited from [Action](action.md).[title](action.md#optional-title)*
 
----
+___
 
-### verb
+###  verb
 
-• **verb**: _string_
+• **verb**: *string*
 
----
+___
 
 ### `Static` JsonTypeName
 
-▪ **JsonTypeName**: _"Action.Submit"_ = "Action.Submit"
+▪ **JsonTypeName**: *"Action.Submit"* = "Action.Submit"
 
-_Inherited from [SubmitAction](submitaction.md).[JsonTypeName](submitaction.md#static-jsontypename)_
+*Inherited from [SubmitAction](submitaction.md).[JsonTypeName](submitaction.md#static-jsontypename)*
 
----
+___
 
 ### `Static` dataProperty
 
-▪ **dataProperty**: _[PropertyDefinition](propertydefinition.md)‹›_ = new PropertyDefinition(Versions.v1_0, "data")
+▪ **dataProperty**: *[PropertyDefinition](propertydefinition.md)‹›* = new PropertyDefinition(Versions.v1_0, "data")
 
-_Inherited from [SubmitAction](submitaction.md).[dataProperty](submitaction.md#static-dataproperty)_
+*Inherited from [SubmitAction](submitaction.md).[dataProperty](submitaction.md#static-dataproperty)*
 
----
+___
 
 ### `Static` iconUrlProperty
 
-▪ **iconUrlProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_1, "iconUrl")
+▪ **iconUrlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "iconUrl")
 
-_Inherited from [Action](action.md).[iconUrlProperty](action.md#static-iconurlproperty)_
+*Inherited from [Action](action.md).[iconUrlProperty](action.md#static-iconurlproperty)*
 
----
+___
 
 ### `Static` idProperty
 
-▪ **idProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "id")
+▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
-_Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)_
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
 
----
+___
 
 ### `Static` ignoreInputValidationProperty
 
-▪ **ignoreInputValidationProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false)
+▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false)
 
-_Inherited from [Action](action.md).[ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)_
+*Inherited from [Action](action.md).[ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)*
 
----
+___
 
 ### `Static` `Optional` onRegisterCustomProperties
 
-▪ **onRegisterCustomProperties**? : _undefined | function_
+▪ **onRegisterCustomProperties**? : *undefined | function*
 
-_Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)_
+*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
 
----
+___
 
 ### `Static` requiresProperty
 
-▪ **requiresProperty**: _[SerializableObjectProperty](serializableobjectproperty.md)‹›_ = new SerializableObjectProperty(
-Versions.v1_2,
-"requires",
-HostCapabilities,
-false,
-new HostCapabilities())
+▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
+        Versions.v1_2,
+        "requires",
+        HostCapabilities,
+        false,
+        new HostCapabilities())
 
-_Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)_
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
----
+___
 
 ### `Static` styleProperty
 
-▪ **styleProperty**: _[ValueSetProperty](valuesetproperty.md)‹›_ = new ValueSetProperty(
-Versions.v1_2,
-"style",
-[
-{ value: Enums.ActionStyle.Default },
-{ value: Enums.ActionStyle.Positive },
-{ value: Enums.ActionStyle.Destructive }
-],
-Enums.ActionStyle.Default)
+▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
+        Versions.v1_2,
+        "style",
+        [
+            { value: Enums.ActionStyle.Default },
+            { value: Enums.ActionStyle.Positive },
+            { value: Enums.ActionStyle.Destructive }
+        ],
+        Enums.ActionStyle.Default)
 
-_Inherited from [Action](action.md).[styleProperty](action.md#static-styleproperty)_
+*Inherited from [Action](action.md).[styleProperty](action.md#static-styleproperty)*
 
----
+___
 
 ### `Static` titleProperty
 
-▪ **titleProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "title")
+▪ **titleProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "title")
 
-_Inherited from [Action](action.md).[titleProperty](action.md#static-titleproperty)_
+*Inherited from [Action](action.md).[titleProperty](action.md#static-titleproperty)*
 
----
+___
 
 ### `Static` typeNameProperty
 
-▪ **typeNameProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(
-Versions.v1_0,
-"type",
-undefined,
-undefined,
-undefined,
-(sender: object) => {
-return (<CardObject>sender).getJsonTypeName()
-})
+▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
+        Versions.v1_0,
+        "type",
+        undefined,
+        undefined,
+        undefined,
+        (sender: object) => {
+            return (<CardObject>sender).getJsonTypeName()
+        })
 
-_Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)_
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
 
----
+___
 
 ### `Static` verbProperty
 
-▪ **verbProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_2, "verb")
+▪ **verbProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_2, "verb")
 
 ## Accessors
 
-### data
+###  data
 
-• **get data**(): _object | undefined_
+• **get data**(): *object | undefined*
 
-_Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)_
+*Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)*
 
-**Returns:** _object | undefined_
+**Returns:** *object | undefined*
 
-• **set data**(`value`: object | undefined): _void_
+• **set data**(`value`: object | undefined): *void*
 
-_Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)_
-
-**Parameters:**
-
-| Name    | Type                    |
-| ------- | ----------------------- |
-| `value` | object &#124; undefined |
-
-**Returns:** _void_
-
----
-
-### hostConfig
-
-• **get hostConfig**(): _[HostConfig](hostconfig.md)_
-
-_Inherited from [Action](action.md).[hostConfig](action.md#hostconfig)_
-
-_Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)_
-
-**Returns:** _[HostConfig](hostconfig.md)_
-
----
-
-### ignoreInputValidation
-
-• **get ignoreInputValidation**(): _boolean_
-
-_Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)_
-
-_Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)_
-
-**Returns:** _boolean_
-
-• **set ignoreInputValidation**(`value`: boolean): _void_
-
-_Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)_
-
-_Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)_
+*Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)*
 
 **Parameters:**
 
-| Name    | Type    |
-| ------- | ------- |
-| `value` | boolean |
+Name | Type |
+------ | ------ |
+`value` | object &#124; undefined |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### isPrimary
+###  hostConfig
 
-• **get isPrimary**(): _boolean_
+• **get hostConfig**(): *[HostConfig](hostconfig.md)*
 
-_Inherited from [Action](action.md).[isPrimary](action.md#isprimary)_
+*Inherited from [Action](action.md).[hostConfig](action.md#hostconfig)*
 
-**Returns:** _boolean_
+*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
 
-• **set isPrimary**(`value`: boolean): _void_
+**Returns:** *[HostConfig](hostconfig.md)*
 
-_Inherited from [Action](action.md).[isPrimary](action.md#isprimary)_
+___
+
+###  ignoreInputValidation
+
+• **get ignoreInputValidation**(): *boolean*
+
+*Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)*
+
+*Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
+
+**Returns:** *boolean*
+
+• **set ignoreInputValidation**(`value`: boolean): *void*
+
+*Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)*
+
+*Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
 
 **Parameters:**
 
-| Name    | Type    |
-| ------- | ------- |
-| `value` | boolean |
+Name | Type |
+------ | ------ |
+`value` | boolean |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### parent
+###  isPrimary
 
-• **get parent**(): _[CardElement](cardelement.md) | undefined_
+• **get isPrimary**(): *boolean*
 
-_Inherited from [Action](action.md).[parent](action.md#parent)_
+*Inherited from [Action](action.md).[isPrimary](action.md#isprimary)*
 
-_Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)_
+**Returns:** *boolean*
 
-**Returns:** _[CardElement](cardelement.md) | undefined_
+• **set isPrimary**(`value`: boolean): *void*
 
----
+*Inherited from [Action](action.md).[isPrimary](action.md#isprimary)*
 
-### renderedElement
+**Parameters:**
 
-• **get renderedElement**(): _HTMLElement | undefined_
+Name | Type |
+------ | ------ |
+`value` | boolean |
 
-_Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)_
+**Returns:** *void*
 
-**Returns:** _HTMLElement | undefined_
+___
 
----
+###  parent
 
-### requires
+• **get parent**(): *[CardElement](cardelement.md) | undefined*
 
-• **get requires**(): _HostCapabilities_
+*Inherited from [Action](action.md).[parent](action.md#parent)*
 
-_Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)_
+*Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)*
 
-**Returns:** _HostCapabilities_
+**Returns:** *[CardElement](cardelement.md) | undefined*
+
+___
+
+###  renderedElement
+
+• **get renderedElement**(): *HTMLElement | undefined*
+
+*Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
+
+**Returns:** *HTMLElement | undefined*
+
+___
+
+###  requires
+
+• **get requires**(): *HostCapabilities*
+
+*Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+
+**Returns:** *HostCapabilities*
 
 ## Methods
 
 ### `Protected` addCssClasses
 
-▸ **addCssClasses**(`element`: HTMLElement): _void_
+▸ **addCssClasses**(`element`: HTMLElement): *void*
 
-_Inherited from [Action](action.md).[addCssClasses](action.md#protected-addcssclasses)_
-
-**Parameters:**
-
-| Name      | Type        |
-| --------- | ----------- |
-| `element` | HTMLElement |
-
-**Returns:** _void_
-
----
-
-### execute
-
-▸ **execute**(): _void_
-
-_Inherited from [Action](action.md).[execute](action.md#execute)_
-
-**Returns:** _void_
-
----
-
-### getActionById
-
-▸ **getActionById**(`id`: string): _[Action](action.md) | undefined_
-
-_Inherited from [Action](action.md).[getActionById](action.md#getactionbyid)_
+*Inherited from [Action](action.md).[addCssClasses](action.md#protected-addcssclasses)*
 
 **Parameters:**
 
-| Name | Type   |
-| ---- | ------ |
-| `id` | string |
+Name | Type |
+------ | ------ |
+`element` | HTMLElement |
 
-**Returns:** _[Action](action.md) | undefined_
+**Returns:** *void*
 
----
+___
 
-### getAllInputs
+###  execute
 
-▸ **getAllInputs**(`processActions`: boolean): _[Input](input.md)[]_
+▸ **execute**(): *void*
 
-_Inherited from [Action](action.md).[getAllInputs](action.md#getallinputs)_
+*Inherited from [Action](action.md).[execute](action.md#execute)*
 
-**Parameters:**
+**Returns:** *void*
 
-| Name             | Type    | Default |
-| ---------------- | ------- | ------- |
-| `processActions` | boolean | true    |
+___
 
-**Returns:** _[Input](input.md)[]_
+###  getActionById
 
----
+▸ **getActionById**(`id`: string): *[Action](action.md) | undefined*
 
-### getAriaRole
-
-▸ **getAriaRole**(): _string_
-
-_Inherited from [Action](action.md).[getAriaRole](action.md#getariarole)_
-
-**Returns:** _string_
-
----
-
-### getCustomProperty
-
-▸ **getCustomProperty**(`name`: string): _any_
-
-_Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)_
+*Inherited from [Action](action.md).[getActionById](action.md#getactionbyid)*
 
 **Parameters:**
 
-| Name   | Type   |
-| ------ | ------ |
-| `name` | string |
+Name | Type |
+------ | ------ |
+`id` | string |
 
-**Returns:** _any_
+**Returns:** *[Action](action.md) | undefined*
 
----
+___
 
-### getHref
+###  getAllInputs
 
-▸ **getHref**(): _string | undefined_
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
-_Inherited from [Action](action.md).[getHref](action.md#gethref)_
+*Inherited from [Action](action.md).[getAllInputs](action.md#getallinputs)*
 
-**Returns:** _string | undefined_
+**Parameters:**
 
----
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
-### getJsonTypeName
+**Returns:** *[Input](input.md)[]*
 
-▸ **getJsonTypeName**(): _string_
+___
 
-_Overrides [SubmitAction](submitaction.md).[getJsonTypeName](submitaction.md#getjsontypename)_
+###  getAriaRole
 
-**Returns:** _string_
+▸ **getAriaRole**(): *string*
 
----
+*Inherited from [Action](action.md).[getAriaRole](action.md#getariarole)*
 
-### getReferencedInputs
+**Returns:** *string*
 
-▸ **getReferencedInputs**(): _[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined_
+___
 
-_Inherited from [Action](action.md).[getReferencedInputs](action.md#getreferencedinputs)_
+###  getCustomProperty
 
-**Returns:** _[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined_
+▸ **getCustomProperty**(`name`: string): *any*
 
----
+*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
 
-### getResourceInformation
+**Parameters:**
 
-▸ **getResourceInformation**(): _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
+Name | Type |
+------ | ------ |
+`name` | string |
 
-_Inherited from [Action](action.md).[getResourceInformation](action.md#getresourceinformation)_
+**Returns:** *any*
 
-**Returns:** _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
+___
 
----
+###  getHref
 
-### getRootObject
+▸ **getHref**(): *string | undefined*
 
-▸ **getRootObject**(): _[CardObject](cardobject.md)_
+*Inherited from [Action](action.md).[getHref](action.md#gethref)*
 
-_Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)_
+**Returns:** *string | undefined*
 
-**Returns:** _[CardObject](cardobject.md)_
+___
 
----
+###  getJsonTypeName
 
-### getSchema
+▸ **getJsonTypeName**(): *string*
 
-▸ **getSchema**(): _[SerializableObjectSchema](serializableobjectschema.md)_
+*Overrides [SubmitAction](submitaction.md).[getJsonTypeName](submitaction.md#getjsontypename)*
 
-_Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)_
+**Returns:** *string*
 
-**Returns:** _[SerializableObjectSchema](serializableobjectschema.md)_
+___
 
----
+###  getReferencedInputs
+
+▸ **getReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined*
+
+*Inherited from [Action](action.md).[getReferencedInputs](action.md#getreferencedinputs)*
+
+**Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined*
+
+___
+
+###  getResourceInformation
+
+▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+
+*Inherited from [Action](action.md).[getResourceInformation](action.md#getresourceinformation)*
+
+**Returns:** *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+
+___
+
+###  getRootObject
+
+▸ **getRootObject**(): *[CardObject](cardobject.md)*
+
+*Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
+
+**Returns:** *[CardObject](cardobject.md)*
+
+___
+
+###  getSchema
+
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+___
 
 ### `Protected` getSchemaKey
 
-▸ **getSchemaKey**(): _string_
+▸ **getSchemaKey**(): *string*
 
-_Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)_
+*Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)*
 
-_Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)_
+*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
 
-**Returns:** _string_
+**Returns:** *string*
 
----
+___
 
 ### `Protected` getValue
 
-▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): _any_
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
-_Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)_
-
-**Parameters:**
-
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
-
-**Returns:** _any_
-
----
-
-### hasAllDefaultValues
-
-▸ **hasAllDefaultValues**(): _boolean_
-
-_Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)_
-
-**Returns:** _boolean_
-
----
-
-### hasDefaultValue
-
-▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): _boolean_
-
-_Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)_
+*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
 
 **Parameters:**
 
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** _boolean_
+**Returns:** *any*
 
----
+___
+
+###  hasAllDefaultValues
+
+▸ **hasAllDefaultValues**(): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+
+**Returns:** *boolean*
+
+___
+
+###  hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *boolean*
+
+___
 
 ### `Protected` internalGetReferencedInputs
 
-▸ **internalGetReferencedInputs**(): _[Dictionary](../README.md#dictionary)‹[Input](input.md)›_
+▸ **internalGetReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
-_Inherited from [SubmitAction](submitaction.md).[internalGetReferencedInputs](submitaction.md#protected-internalgetreferencedinputs)_
+*Inherited from [SubmitAction](submitaction.md).[internalGetReferencedInputs](submitaction.md#protected-internalgetreferencedinputs)*
 
-_Overrides [Action](action.md).[internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)_
+*Overrides [Action](action.md).[internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)*
 
-**Returns:** _[Dictionary](../README.md#dictionary)‹[Input](input.md)›_
+**Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
----
+___
 
 ### `Protected` internalParse
 
-▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
-_Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)_
+*Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)*
 
 **Parameters:**
 
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `source`  | [PropertyBag](../README.md#propertybag)                 |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` internalPrepareForExecution
 
-▸ **internalPrepareForExecution**(`inputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): _void_
+▸ **internalPrepareForExecution**(`inputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): *void*
 
-_Inherited from [SubmitAction](submitaction.md).[internalPrepareForExecution](submitaction.md#protected-internalprepareforexecution)_
+*Inherited from [SubmitAction](submitaction.md).[internalPrepareForExecution](submitaction.md#protected-internalprepareforexecution)*
 
-_Overrides [Action](action.md).[internalPrepareForExecution](action.md#protected-internalprepareforexecution)_
+*Overrides [Action](action.md).[internalPrepareForExecution](action.md#protected-internalprepareforexecution)*
 
 **Parameters:**
 
-| Name     | Type                                                                      |
-| -------- | ------------------------------------------------------------------------- |
-| `inputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
+Name | Type |
+------ | ------ |
+`inputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` internalToJSON
 
-▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
-_Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)_
+*Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)*
 
 **Parameters:**
 
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `target`  | [PropertyBag](../README.md#propertybag)                 |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
 ### `Protected` internalValidateInputs
 
-▸ **internalValidateInputs**(`referencedInputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): _[Input](input.md)[]_
+▸ **internalValidateInputs**(`referencedInputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): *[Input](input.md)[]*
 
-_Inherited from [Action](action.md).[internalValidateInputs](action.md#protected-internalvalidateinputs)_
-
-**Parameters:**
-
-| Name               | Type                                                                      |
-| ------------------ | ------------------------------------------------------------------------- |
-| `referencedInputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
-
-**Returns:** _[Input](input.md)[]_
-
----
-
-### internalValidateProperties
-
-▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): _void_
-
-_Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)_
+*Inherited from [Action](action.md).[internalValidateInputs](action.md#protected-internalvalidateinputs)*
 
 **Parameters:**
 
-| Name      | Type                                      |
-| --------- | ----------------------------------------- |
-| `context` | [ValidationResults](validationresults.md) |
+Name | Type |
+------ | ------ |
+`referencedInputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
 
-**Returns:** _void_
+**Returns:** *[Input](input.md)[]*
 
----
+___
 
-### parse
+###  internalValidateProperties
 
-▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): _void_
+▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
 
-_Inherited from [Action](action.md).[parse](action.md#parse)_
-
-_Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)_
+*Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)*
 
 **Parameters:**
 
-| Name       | Type                                            |
-| ---------- | ----------------------------------------------- |
-| `source`   | any                                             |
-| `context?` | [SerializationContext](serializationcontext.md) |
+Name | Type |
+------ | ------ |
+`context` | [ValidationResults](validationresults.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
+
+###  parse
+
+▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
+
+*Inherited from [Action](action.md).[parse](action.md#parse)*
+
+*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | any |
+`context?` | [SerializationContext](serializationcontext.md) |
+
+**Returns:** *void*
+
+___
 
 ### `Protected` populateSchema
 
-▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): _void_
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-_Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)_
-
-**Parameters:**
-
-| Name     | Type                                                    |
-| -------- | ------------------------------------------------------- |
-| `schema` | [SerializableObjectSchema](serializableobjectschema.md) |
-
-**Returns:** _void_
-
----
-
-### preProcessPropertyValue
-
-▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): _any_
-
-_Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)_
+*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
 
 **Parameters:**
 
-| Name             | Type                                        |
-| ---------------- | ------------------------------------------- |
-| `property`       | [PropertyDefinition](propertydefinition.md) |
-| `propertyValue?` | any                                         |
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
 
-**Returns:** _any_
+**Returns:** *void*
 
----
+___
 
-### prepareForExecution
+###  preProcessPropertyValue
 
-▸ **prepareForExecution**(): _boolean_
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
 
-_Inherited from [Action](action.md).[prepareForExecution](action.md#prepareforexecution)_
-
-**Returns:** _boolean_
-
----
-
-### remove
-
-▸ **remove**(): _boolean_
-
-_Inherited from [Action](action.md).[remove](action.md#remove)_
-
-**Returns:** _boolean_
-
----
-
-### render
-
-▸ **render**(`baseCssClass`: string): _void_
-
-_Inherited from [Action](action.md).[render](action.md#render)_
+*Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
 
 **Parameters:**
 
-| Name           | Type   | Default         |
-| -------------- | ------ | --------------- |
-| `baseCssClass` | string | "ac-pushButton" |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`propertyValue?` | any |
 
-**Returns:** _void_
+**Returns:** *any*
 
----
+___
 
-### resetDefaultValues
+###  prepareForExecution
 
-▸ **resetDefaultValues**(): _void_
+▸ **prepareForExecution**(): *boolean*
 
-_Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)_
+*Inherited from [Action](action.md).[prepareForExecution](action.md#prepareforexecution)*
 
-**Returns:** _void_
+**Returns:** *boolean*
 
----
+___
 
-### setCustomProperty
+###  remove
 
-▸ **setCustomProperty**(`name`: string, `value`: any): _void_
+▸ **remove**(): *boolean*
 
-_Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)_
+*Inherited from [Action](action.md).[remove](action.md#remove)*
 
-**Parameters:**
+**Returns:** *boolean*
 
-| Name    | Type   |
-| ------- | ------ |
-| `name`  | string |
-| `value` | any    |
+___
 
-**Returns:** _void_
+###  render
 
----
+▸ **render**(`baseCssClass`: string): *void*
 
-### setParent
-
-▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): _void_
-
-_Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)_
+*Inherited from [Action](action.md).[render](action.md#render)*
 
 **Parameters:**
 
-| Name    | Type                                         |
-| ------- | -------------------------------------------- |
-| `value` | [CardObject](cardobject.md) &#124; undefined |
+Name | Type | Default |
+------ | ------ | ------ |
+`baseCssClass` | string | "ac-pushButton" |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### setShouldFallback
+###  resetDefaultValues
 
-▸ **setShouldFallback**(`value`: boolean): _void_
+▸ **resetDefaultValues**(): *void*
 
-_Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)_
+*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+
+**Returns:** *void*
+
+___
+
+###  setCustomProperty
+
+▸ **setCustomProperty**(`name`: string, `value`: any): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
 
 **Parameters:**
 
-| Name    | Type    |
-| ------- | ------- |
-| `value` | boolean |
+Name | Type |
+------ | ------ |
+`name` | string |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
+
+###  setParent
+
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
+
+*Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | [CardObject](cardobject.md) &#124; undefined |
+
+**Returns:** *void*
+
+___
+
+###  setShouldFallback
+
+▸ **setShouldFallback**(`value`: boolean): *void*
+
+*Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | boolean |
+
+**Returns:** *void*
+
+___
 
 ### `Protected` setValue
 
-▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): _void_
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
 
-_Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)_
+*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
 
 **Parameters:**
 
-| Name       | Type                                        |
-| ---------- | ------------------------------------------- |
-| `property` | [PropertyDefinition](propertydefinition.md) |
-| `value`    | any                                         |
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
 
-**Returns:** _void_
+**Returns:** *void*
 
----
+___
 
-### shouldFallback
+###  shouldFallback
 
-▸ **shouldFallback**(): _boolean_
+▸ **shouldFallback**(): *boolean*
 
-_Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)_
+*Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
----
+___
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): _boolean_
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
 
-_Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)_
-
-**Parameters:**
-
-| Name      | Type                                                    |
-| --------- | ------------------------------------------------------- |
-| `context` | [BaseSerializationContext](baseserializationcontext.md) |
-
-**Returns:** _boolean_
-
----
-
-### toJSON
-
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): _[PropertyBag](../README.md#propertybag) | undefined_
-
-_Inherited from [Action](action.md).[toJSON](action.md#tojson)_
-
-_Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)_
+*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
 
 **Parameters:**
 
-| Name       | Type                                            |
-| ---------- | ----------------------------------------------- |
-| `context?` | [SerializationContext](serializationcontext.md) |
+Name | Type |
+------ | ------ |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** _[PropertyBag](../README.md#propertybag) | undefined_
+**Returns:** *boolean*
 
----
+___
 
-### updateActionButtonCssStyle
+###  toJSON
 
-▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: ActionButtonState): _void_
+▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-_Inherited from [Action](action.md).[updateActionButtonCssStyle](action.md#updateactionbuttoncssstyle)_
+*Inherited from [Action](action.md).[toJSON](action.md#tojson)*
+
+*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
-| Name                  | Type              | Default                  |
-| --------------------- | ----------------- | ------------------------ |
-| `actionButtonElement` | HTMLElement       | -                        |
-| `buttonState`         | ActionButtonState | ActionButtonState.Normal |
+Name | Type |
+------ | ------ |
+`context?` | [SerializationContext](serializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 
----
+___
 
-### validateInputs
+###  updateActionButtonCssStyle
 
-▸ **validateInputs**(): _[Input](input.md)[]_
+▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: ActionButtonState): *void*
 
-_Inherited from [Action](action.md).[validateInputs](action.md#validateinputs)_
+*Inherited from [Action](action.md).[updateActionButtonCssStyle](action.md#updateactionbuttoncssstyle)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`actionButtonElement` | HTMLElement | - |
+`buttonState` | ActionButtonState | ActionButtonState.Normal |
+
+**Returns:** *void*
+
+___
+
+###  validateInputs
+
+▸ **validateInputs**(): *[Input](input.md)[]*
+
+*Inherited from [Action](action.md).[validateInputs](action.md#validateinputs)*
 
 Validates the inputs associated with this action.
 
-**Returns:** _[Input](input.md)[]_
+**Returns:** *[Input](input.md)[]*
 
 A list of inputs that failed validation, or an empty array if no input failed validation.
 
----
+___
 
-### validateProperties
+###  validateProperties
 
-▸ **validateProperties**(): _[ValidationResults](validationresults.md)_
+▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
 
-_Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)_
+*Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
 
-**Returns:** _[ValidationResults](validationresults.md)_
+**Returns:** *[ValidationResults](validationresults.md)*

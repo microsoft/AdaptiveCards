@@ -6,47 +6,47 @@
 
 ## Hierarchy
 
-- **PropertyDefinition**
+* **PropertyDefinition**
 
-  ↳ [_ActionProperty_](card_elements.actionproperty.md)
+  ↳ [*ActionProperty*](card_elements.actionproperty.md)
 
-  ↳ [_StringProperty_](serialization.stringproperty.md)
+  ↳ [*StringProperty*](serialization.stringproperty.md)
 
-  ↳ [_BoolProperty_](serialization.boolproperty.md)
+  ↳ [*BoolProperty*](serialization.boolproperty.md)
 
-  ↳ [_NumProperty_](serialization.numproperty.md)
+  ↳ [*NumProperty*](serialization.numproperty.md)
 
-  ↳ [_PixelSizeProperty_](serialization.pixelsizeproperty.md)
+  ↳ [*PixelSizeProperty*](serialization.pixelsizeproperty.md)
 
-  ↳ [_ValueSetProperty_](serialization.valuesetproperty.md)
+  ↳ [*ValueSetProperty*](serialization.valuesetproperty.md)
 
-  ↳ [_EnumProperty_](serialization.enumproperty.md)
+  ↳ [*EnumProperty*](serialization.enumproperty.md)
 
-  ↳ [_SerializableObjectProperty_](serialization.serializableobjectproperty.md)
+  ↳ [*SerializableObjectProperty*](serialization.serializableobjectproperty.md)
 
-  ↳ [_SerializableObjectCollectionProperty_](serialization.serializableobjectcollectionproperty.md)
+  ↳ [*SerializableObjectCollectionProperty*](serialization.serializableobjectcollectionproperty.md)
 
-  ↳ [_CustomProperty_](serialization.customproperty.md)
+  ↳ [*CustomProperty*](serialization.customproperty.md)
 
-  ↳ [_StringProperty_](adaptivecards.stringproperty.md)
+  ↳ [*StringProperty*](adaptivecards.stringproperty.md)
 
-  ↳ [_BoolProperty_](adaptivecards.boolproperty.md)
+  ↳ [*BoolProperty*](adaptivecards.boolproperty.md)
 
-  ↳ [_NumProperty_](adaptivecards.numproperty.md)
+  ↳ [*NumProperty*](adaptivecards.numproperty.md)
 
-  ↳ [_PixelSizeProperty_](adaptivecards.pixelsizeproperty.md)
+  ↳ [*PixelSizeProperty*](adaptivecards.pixelsizeproperty.md)
 
-  ↳ [_ValueSetProperty_](adaptivecards.valuesetproperty.md)
+  ↳ [*ValueSetProperty*](adaptivecards.valuesetproperty.md)
 
-  ↳ [_EnumProperty_](adaptivecards.enumproperty.md)
+  ↳ [*EnumProperty*](adaptivecards.enumproperty.md)
 
-  ↳ [_SerializableObjectProperty_](adaptivecards.serializableobjectproperty.md)
+  ↳ [*SerializableObjectProperty*](adaptivecards.serializableobjectproperty.md)
 
-  ↳ [_SerializableObjectCollectionProperty_](adaptivecards.serializableobjectcollectionproperty.md)
+  ↳ [*SerializableObjectCollectionProperty*](adaptivecards.serializableobjectcollectionproperty.md)
 
-  ↳ [_CustomProperty_](adaptivecards.customproperty.md)
+  ↳ [*CustomProperty*](adaptivecards.customproperty.md)
 
-  ↳ [_ActionProperty_](adaptivecards.actionproperty.md)
+  ↳ [*ActionProperty*](adaptivecards.actionproperty.md)
 
 ## Table of contents
 
@@ -73,18 +73,18 @@
 
 ### constructor
 
-\+ **new PropertyDefinition**(`targetVersion`: [_Version_](serialization.version.md), `name`: _string_, `defaultValue?`: _any_, `onGetInitialValue?`: (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _any_): [_PropertyDefinition_](serialization.propertydefinition.md)
+\+ **new PropertyDefinition**(`targetVersion`: [*Version*](serialization.version.md), `name`: *string*, `defaultValue?`: *any*, `onGetInitialValue?`: (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *any*): [*PropertyDefinition*](serialization.propertydefinition.md)
 
 #### Parameters:
 
-| Name                 | Type                                                                             |
-| :------------------- | :------------------------------------------------------------------------------- |
-| `targetVersion`      | [_Version_](serialization.version.md)                                            |
-| `name`               | _string_                                                                         |
-| `defaultValue?`      | _any_                                                                            |
-| `onGetInitialValue?` | (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _any_ |
+Name | Type |
+:------ | :------ |
+`targetVersion` | [*Version*](serialization.version.md) |
+`name` | *string* |
+`defaultValue?` | *any* |
+`onGetInitialValue?` | (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *any* |
 
-**Returns:** [_PropertyDefinition_](serialization.propertydefinition.md)
+**Returns:** [*PropertyDefinition*](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L276)
 
@@ -92,85 +92,85 @@ Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/bl
 
 ### defaultValue
 
-• `Optional` `Readonly` **defaultValue**: _any_
+• `Optional` `Readonly` **defaultValue**: *any*
 
----
+___
 
 ### isSerializationEnabled
 
-• **isSerializationEnabled**: _boolean_= true
+• **isSerializationEnabled**: *boolean*= true
 
 Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L276)
 
----
+___
 
 ### name
 
-• `Readonly` **name**: _string_
+• `Readonly` **name**: *string*
 
----
+___
 
 ### onGetInitialValue
 
-• `Optional` `Readonly` **onGetInitialValue**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _any_
+• `Optional` `Readonly` **onGetInitialValue**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *any*
 
----
+___
 
 ### sequentialNumber
 
-• `Readonly` **sequentialNumber**: _number_
+• `Readonly` **sequentialNumber**: *number*
 
 Defined in: [serialization.ts:274](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L274)
 
----
+___
 
 ### targetVersion
 
-• `Readonly` **targetVersion**: [_Version_](serialization.version.md)
+• `Readonly` **targetVersion**: [*Version*](serialization.version.md)
 
 ## Methods
 
 ### getInternalName
 
-▸ **getInternalName**(): _string_
+▸ **getInternalName**(): *string*
 
-**Returns:** _string_
+**Returns:** *string*
 
 Defined in: [serialization.ts:262](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L262)
 
----
+___
 
 ### parse
 
-▸ **parse**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `source`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _any_
+▸ **parse**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `source`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *any*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
-| `source`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`source` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _any_
+**Returns:** *any*
 
 Defined in: [serialization.ts:266](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L266)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `target`: [_PropertyBag_](../modules/serialization.md#propertybag), `value`: _any_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
+▸ **toJSON**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `target`: [*PropertyBag*](../modules/serialization.md#propertybag), `value`: *any*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
 
 #### Parameters:
 
-| Name      | Type                                                                    |
-| :-------- | :---------------------------------------------------------------------- |
-| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
-| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
-| `value`   | _any_                                                                   |
-| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
+Name | Type |
+:------ | :------ |
+`sender` | [*SerializableObject*](serialization.serializableobject.md) |
+`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
+`value` | *any* |
+`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [serialization.ts:270](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L270)

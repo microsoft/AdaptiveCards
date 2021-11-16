@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- [ChannelAdapter](channeladapter.md)
+* [ChannelAdapter](channeladapter.md)
 
   ↳ **HttpChannelAdapter**
 
@@ -12,48 +12,48 @@
 
 ### Constructors
 
-- [constructor](httpchanneladapter.md#constructor)
+* [constructor](httpchanneladapter.md#constructor)
 
 ### Properties
 
-- [url](httpchanneladapter.md#url)
+* [url](httpchanneladapter.md#url)
 
 ### Methods
 
-- [sendRequestAsync](httpchanneladapter.md#sendrequestasync)
+* [sendRequestAsync](httpchanneladapter.md#sendrequestasync)
 
 ## Constructors
 
-### constructor
+###  constructor
 
-\+ **new HttpChannelAdapter**(`url`: string): _[HttpChannelAdapter](httpchanneladapter.md)_
+\+ **new HttpChannelAdapter**(`url`: string): *[HttpChannelAdapter](httpchanneladapter.md)*
 
 **Parameters:**
 
-| Name  | Type   |
-| ----- | ------ |
-| `url` | string |
+Name | Type |
+------ | ------ |
+`url` | string |
 
-**Returns:** _[HttpChannelAdapter](httpchanneladapter.md)_
+**Returns:** *[HttpChannelAdapter](httpchanneladapter.md)*
 
 ## Properties
 
-### url
+###  url
 
-• **url**: _string_
+• **url**: *string*
 
 ## Methods
 
-### sendRequestAsync
+###  sendRequestAsync
 
-▸ **sendRequestAsync**(`request`: [ActivityRequest](../interfaces/activityrequest.md)): _Promise‹[ActivityResponse](../interfaces/activityresponse.md)›_
+▸ **sendRequestAsync**(`request`: [ActivityRequest](../interfaces/activityrequest.md)): *Promise‹[ActivityResponse](../interfaces/activityresponse.md)›*
 
-_Overrides [ChannelAdapter](channeladapter.md).[sendRequestAsync](channeladapter.md#abstract-sendrequestasync)_
+*Overrides [ChannelAdapter](channeladapter.md).[sendRequestAsync](channeladapter.md#abstract-sendrequestasync)*
 
 **Parameters:**
 
-| Name      | Type                                                |
-| --------- | --------------------------------------------------- |
-| `request` | [ActivityRequest](../interfaces/activityrequest.md) |
+Name | Type |
+------ | ------ |
+`request` | [ActivityRequest](../interfaces/activityrequest.md) |
 
-**Returns:** _Promise‹[ActivityResponse](../interfaces/activityresponse.md)›_
+**Returns:** *Promise‹[ActivityResponse](../interfaces/activityresponse.md)›*

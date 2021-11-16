@@ -26,15 +26,15 @@
 
 ### constructor
 
-\+ **new BaseTextDefinition**(`obj?`: _any_): [_BaseTextDefinition_](host_config.basetextdefinition.md)
+\+ **new BaseTextDefinition**(`obj?`: *any*): [*BaseTextDefinition*](host_config.basetextdefinition.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_BaseTextDefinition_](host_config.basetextdefinition.md)
+**Returns:** [*BaseTextDefinition*](host_config.basetextdefinition.md)
 
 Defined in: [host-config.ts:108](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L108)
 
@@ -42,31 +42,31 @@ Defined in: [host-config.ts:108](https://github.com/microsoft/AdaptiveCards/blob
 
 ### color
 
-• **color**: [_TextColor_](../enums/enums.textcolor.md)
+• **color**: [*TextColor*](../enums/enums.textcolor.md)
 
 Defined in: [host-config.ts:106](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L106)
 
----
+___
 
 ### isSubtle
 
-• **isSubtle**: _boolean_= false
+• **isSubtle**: *boolean*= false
 
 Defined in: [host-config.ts:107](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L107)
 
----
+___
 
 ### size
 
-• **size**: [_TextSize_](../enums/enums.textsize.md)
+• **size**: [*TextSize*](../enums/enums.textsize.md)
 
 Defined in: [host-config.ts:105](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L105)
 
----
+___
 
 ### weight
 
-• **weight**: [_TextWeight_](../enums/enums.textweight.md)
+• **weight**: [*TextWeight*](../enums/enums.textweight.md)
 
 Defined in: [host-config.ts:108](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L108)
 
@@ -74,18 +74,18 @@ Defined in: [host-config.ts:108](https://github.com/microsoft/AdaptiveCards/blob
 
 ### getDefaultWeight
 
-▸ **getDefaultWeight**(): [_TextWeight_](../enums/enums.textweight.md)
+▸ **getDefaultWeight**(): [*TextWeight*](../enums/enums.textweight.md)
 
-**Returns:** [_TextWeight_](../enums/enums.textweight.md)
+**Returns:** [*TextWeight*](../enums/enums.textweight.md)
 
 Defined in: [host-config.ts:119](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L119)
 
----
+___
 
 ### toJSON
 
-▸ **toJSON**(): _any_
+▸ **toJSON**(): *any*
 
-**Returns:** _any_
+**Returns:** *any*
 
 Defined in: [host-config.ts:123](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L123)

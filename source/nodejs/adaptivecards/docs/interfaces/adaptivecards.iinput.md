@@ -19,15 +19,15 @@
 
 ### id
 
-• `Optional` **id**: _undefined_ \| _string_
+• `Optional` **id**: *undefined* \| *string*
 
 Defined in: [shared.ts:31](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L31)
 
----
+___
 
 ### value
 
-• `Optional` **value**: _undefined_ \| _string_
+• `Optional` **value**: *undefined* \| *string*
 
 Defined in: [shared.ts:32](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L32)
 
@@ -35,8 +35,8 @@ Defined in: [shared.ts:32](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 ### validateValue
 
-▸ **validateValue**(): _boolean_
+▸ **validateValue**(): *boolean*
 
-**Returns:** _boolean_
+**Returns:** *boolean*
 
 Defined in: [shared.ts:33](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L33)

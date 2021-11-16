@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-- [_ICardElement_](schema.icardelement.md)
+* [*ICardElement*](schema.icardelement.md)
 
   ↳ **IFactSet**
 
@@ -27,74 +27,74 @@
 
 ### facts
 
-• **facts**: [_IFact_](schema.ifact.md)[]
+• **facts**: [*IFact*](schema.ifact.md)[]
 
 Defined in: [schema.ts:89](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L89)
 
----
+___
 
 ### height
 
-• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
+• `Optional` **height**: *undefined* \| *auto* \| *stretch*
 
 Inherited from: [ICardElement](schema.icardelement.md).[height](schema.icardelement.md#height)
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
----
+___
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
+• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
 
 Inherited from: [ICardElement](schema.icardelement.md).[horizontalAlignment](schema.icardelement.md#horizontalalignment)
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
----
+___
 
 ### id
 
-• `Optional` **id**: _undefined_ \| _string_
+• `Optional` **id**: *undefined* \| *string*
 
 Inherited from: [ICardElement](schema.icardelement.md).[id](schema.icardelement.md#id)
 
 Defined in: [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L34)
 
----
+___
 
 ### separator
 
-• `Optional` **separator**: _undefined_ \| _boolean_
+• `Optional` **separator**: *undefined* \| *boolean*
 
 Inherited from: [ICardElement](schema.icardelement.md).[separator](schema.icardelement.md#separator)
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
----
+___
 
 ### spacing
 
-• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
+• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
 
 Inherited from: [ICardElement](schema.icardelement.md).[spacing](schema.icardelement.md#spacing)
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
----
+___
 
 ### speak
 
-• `Optional` **speak**: _undefined_ \| _string_
+• `Optional` **speak**: *undefined* \| *string*
 
 Inherited from: [ICardElement](schema.icardelement.md).[speak](schema.icardelement.md#speak)
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)
 
----
+___
 
 ### type
 
-• **type**: _FactSet_
+• **type**: *FactSet*
 
 Defined in: [schema.ts:88](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L88)

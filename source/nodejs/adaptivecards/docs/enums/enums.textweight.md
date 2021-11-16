@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L43)
 
----
+___
 
 ### Default
 
@@ -28,7 +28,7 @@ Defined in: [enums.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:42](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L42)
 
----
+___
 
 ### Lighter
 

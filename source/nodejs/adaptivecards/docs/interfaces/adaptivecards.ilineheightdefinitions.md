@@ -18,38 +18,38 @@
 
 ### default
 
-• **default**: _number_
+• **default**: *number*
 
 Defined in: [host-config.ts:383](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L383)
 
----
+___
 
 ### extraLarge
 
-• **extraLarge**: _number_
+• **extraLarge**: *number*
 
 Defined in: [host-config.ts:385](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L385)
 
----
+___
 
 ### large
 
-• **large**: _number_
+• **large**: *number*
 
 Defined in: [host-config.ts:384](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L384)
 
----
+___
 
 ### medium
 
-• **medium**: _number_
+• **medium**: *number*
 
 Defined in: [host-config.ts:382](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L382)
 
----
+___
 
 ### small
 
-• **small**: _number_
+• **small**: *number*
 
 Defined in: [host-config.ts:381](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L381)

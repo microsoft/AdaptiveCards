@@ -25,15 +25,15 @@
 
 ### constructor
 
-\+ **new FontTypeDefinition**(`fontFamily?`: _string_): [_FontTypeDefinition_](host_config.fonttypedefinition.md)
+\+ **new FontTypeDefinition**(`fontFamily?`: *string*): [*FontTypeDefinition*](host_config.fonttypedefinition.md)
 
 #### Parameters:
 
-| Name          | Type     |
-| :------------ | :------- |
-| `fontFamily?` | _string_ |
+Name | Type |
+:------ | :------ |
+`fontFamily?` | *string* |
 
-**Returns:** [_FontTypeDefinition_](host_config.fonttypedefinition.md)
+**Returns:** [*FontTypeDefinition*](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:502](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L502)
 
@@ -41,31 +41,31 @@ Defined in: [host-config.ts:502](https://github.com/microsoft/AdaptiveCards/blob
 
 ### fontFamily
 
-• `Optional` **fontFamily**: _undefined_ \| _string_= "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif"
+• `Optional` **fontFamily**: *undefined* \| *string*= "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif"
 
 Defined in: [host-config.ts:488](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L488)
 
----
+___
 
 ### fontSizes
 
-• **fontSizes**: [_IFontSizeDefinitions_](../interfaces/host_config.ifontsizedefinitions.md)
+• **fontSizes**: [*IFontSizeDefinitions*](../interfaces/host_config.ifontsizedefinitions.md)
 
 Defined in: [host-config.ts:490](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L490)
 
----
+___
 
 ### fontWeights
 
-• **fontWeights**: [_IFontWeightDefinitions_](../interfaces/host_config.ifontweightdefinitions.md)
+• **fontWeights**: [*IFontWeightDefinitions*](../interfaces/host_config.ifontweightdefinitions.md)
 
 Defined in: [host-config.ts:498](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L498)
 
----
+___
 
 ### monospace
 
-▪ `Readonly` `Static` **monospace**: [_FontTypeDefinition_](host_config.fonttypedefinition.md)
+▪ `Readonly` `Static` **monospace**: [*FontTypeDefinition*](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:486](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L486)
 
@@ -73,14 +73,14 @@ Defined in: [host-config.ts:486](https://github.com/microsoft/AdaptiveCards/blob
 
 ### parse
 
-▸ **parse**(`obj?`: _any_): _void_
+▸ **parse**(`obj?`: *any*): *void*
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-config.ts:510](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L510)

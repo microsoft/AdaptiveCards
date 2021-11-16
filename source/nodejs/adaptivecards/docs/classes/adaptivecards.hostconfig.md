@@ -48,15 +48,15 @@
 
 ### constructor
 
-\+ **new HostConfig**(`obj?`: _any_): [_HostConfig_](host_config.hostconfig.md)
+\+ **new HostConfig**(`obj?`: *any*): [*HostConfig*](host_config.hostconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_HostConfig_](host_config.hostconfig.md)
+**Returns:** [*HostConfig*](host_config.hostconfig.md)
 
 Defined in: [host-config.ts:591](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L591)
 
@@ -64,161 +64,161 @@ Defined in: [host-config.ts:591](https://github.com/microsoft/AdaptiveCards/blob
 
 ### actions
 
-• `Readonly` **actions**: [_ActionsConfig_](host_config.actionsconfig.md)
+• `Readonly` **actions**: [*ActionsConfig*](host_config.actionsconfig.md)
 
 Defined in: [host-config.ts:584](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L584)
 
----
+___
 
 ### adaptiveCard
 
-• `Readonly` **adaptiveCard**: [_AdaptiveCardConfig_](host_config.adaptivecardconfig.md)
+• `Readonly` **adaptiveCard**: [*AdaptiveCardConfig*](host_config.adaptivecardconfig.md)
 
 Defined in: [host-config.ts:585](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L585)
 
----
+___
 
 ### alwaysAllowBleed
 
-• **alwaysAllowBleed**: _boolean_= false
+• **alwaysAllowBleed**: *boolean*= false
 
 Defined in: [host-config.ts:591](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L591)
 
----
+___
 
 ### choiceSetInputValueSeparator
 
-• **choiceSetInputValueSeparator**: _string_= ","
+• **choiceSetInputValueSeparator**: *string*= ","
 
 Defined in: [host-config.ts:557](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L557)
 
----
+___
 
 ### containerStyles
 
-• `Readonly` **containerStyles**: [_ContainerStyleSet_](host_config.containerstyleset.md)
+• `Readonly` **containerStyles**: [*ContainerStyleSet*](host_config.containerstyleset.md)
 
 Defined in: [host-config.ts:582](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L582)
 
----
+___
 
 ### cssClassNamePrefix
 
-• `Optional` **cssClassNamePrefix**: _undefined_ \| _string_
+• `Optional` **cssClassNamePrefix**: *undefined* \| *string*
 
 Defined in: [host-config.ts:590](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L590)
 
----
+___
 
 ### factSet
 
-• `Readonly` **factSet**: [_FactSetConfig_](host_config.factsetconfig.md)
+• `Readonly` **factSet**: [*FactSetConfig*](host_config.factsetconfig.md)
 
 Defined in: [host-config.ts:588](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L588)
 
----
+___
 
 ### fontTypes
 
-• `Optional` **fontTypes**: _undefined_ \| [_FontTypeSet_](host_config.fonttypeset.md)
+• `Optional` **fontTypes**: *undefined* \| [*FontTypeSet*](host_config.fonttypeset.md)
 
 Defined in: [host-config.ts:560](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L560)
 
----
+___
 
 ### hostCapabilities
 
-• `Readonly` **hostCapabilities**: [_HostCapabilities_](host_capabilities.hostcapabilities.md)
+• `Readonly` **hostCapabilities**: [*HostCapabilities*](host_capabilities.hostcapabilities.md)
 
 Defined in: [host-config.ts:553](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L553)
 
----
+___
 
 ### imageSet
 
-• `Readonly` **imageSet**: [_ImageSetConfig_](host_config.imagesetconfig.md)
+• `Readonly` **imageSet**: [*ImageSetConfig*](host_config.imagesetconfig.md)
 
 Defined in: [host-config.ts:586](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L586)
 
----
+___
 
 ### imageSizes
 
-• `Readonly` **imageSizes**: _object_
+• `Readonly` **imageSizes**: *object*
 
 #### Type declaration:
 
-| Name     | Type     |
-| :------- | :------- |
-| `large`  | _number_ |
-| `medium` | _number_ |
-| `small`  | _number_ |
+Name | Type |
+:------ | :------ |
+`large` | *number* |
+`medium` | *number* |
+`small` | *number* |
 
 Defined in: [host-config.ts:576](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L576)
 
----
+___
 
 ### inputs
 
-• `Readonly` **inputs**: [_InputConfig_](host_config.inputconfig.md)
+• `Readonly` **inputs**: [*InputConfig*](host_config.inputconfig.md)
 
 Defined in: [host-config.ts:583](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L583)
 
----
+___
 
 ### lineHeights
 
-• `Optional` **lineHeights**: _undefined_ \| [_ILineHeightDefinitions_](../interfaces/host_config.ilineheightdefinitions.md)
+• `Optional` **lineHeights**: *undefined* \| [*ILineHeightDefinitions*](../interfaces/host_config.ilineheightdefinitions.md)
 
 Defined in: [host-config.ts:559](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L559)
 
----
+___
 
 ### media
 
-• `Readonly` **media**: [_MediaConfig_](host_config.mediaconfig.md)
+• `Readonly` **media**: [*MediaConfig*](host_config.mediaconfig.md)
 
 Defined in: [host-config.ts:587](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L587)
 
----
+___
 
 ### separator
 
-• `Readonly` **separator**: _object_
+• `Readonly` **separator**: *object*
 
 #### Type declaration:
 
-| Name            | Type     |
-| :-------------- | :------- |
-| `lineColor`     | _string_ |
-| `lineThickness` | _number_ |
+Name | Type |
+:------ | :------ |
+`lineColor` | *string* |
+`lineThickness` | *number* |
 
 Defined in: [host-config.ts:571](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L571)
 
----
+___
 
 ### spacing
 
-• `Readonly` **spacing**: _object_
+• `Readonly` **spacing**: *object*
 
 #### Type declaration:
 
-| Name         | Type     |
-| :----------- | :------- |
-| `default`    | _number_ |
-| `extraLarge` | _number_ |
-| `large`      | _number_ |
-| `medium`     | _number_ |
-| `padding`    | _number_ |
-| `small`      | _number_ |
+Name | Type |
+:------ | :------ |
+`default` | *number* |
+`extraLarge` | *number* |
+`large` | *number* |
+`medium` | *number* |
+`padding` | *number* |
+`small` | *number* |
 
 Defined in: [host-config.ts:562](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L562)
 
----
+___
 
 ### supportsInteractivity
 
-• **supportsInteractivity**: _boolean_= true
+• **supportsInteractivity**: *boolean*= true
 
 Defined in: [host-config.ts:558](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L558)
 
@@ -226,41 +226,41 @@ Defined in: [host-config.ts:558](https://github.com/microsoft/AdaptiveCards/blob
 
 ### fontFamily
 
-• get **fontFamily**(): _undefined_ \| _string_
+• get **fontFamily**(): *undefined* \| *string*
 
-**Returns:** _undefined_ \| _string_
+**Returns:** *undefined* \| *string*
 
 Defined in: [host-config.ts:700](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L700)
 
-• set **fontFamily**(`value`: _undefined_ \| _string_): _void_
+• set **fontFamily**(`value`: *undefined* \| *string*): *void*
 
 #### Parameters:
 
-| Name    | Type                    |
-| :------ | :---------------------- |
-| `value` | _undefined_ \| _string_ |
+Name | Type |
+:------ | :------ |
+`value` | *undefined* \| *string* |
 
-**Returns:** _void_
+**Returns:** *void*
 
 Defined in: [host-config.ts:704](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L704)
 
----
+___
 
 ### fontSizes
 
-• get **fontSizes**(): [_IFontSizeDefinitions_](../interfaces/host_config.ifontsizedefinitions.md)
+• get **fontSizes**(): [*IFontSizeDefinitions*](../interfaces/host_config.ifontsizedefinitions.md)
 
-**Returns:** [_IFontSizeDefinitions_](../interfaces/host_config.ifontsizedefinitions.md)
+**Returns:** [*IFontSizeDefinitions*](../interfaces/host_config.ifontsizedefinitions.md)
 
 Defined in: [host-config.ts:708](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L708)
 
----
+___
 
 ### fontWeights
 
-• get **fontWeights**(): [_IFontWeightDefinitions_](../interfaces/host_config.ifontweightdefinitions.md)
+• get **fontWeights**(): [*IFontWeightDefinitions*](../interfaces/host_config.ifontweightdefinitions.md)
 
-**Returns:** [_IFontWeightDefinitions_](../interfaces/host_config.ifontweightdefinitions.md)
+**Returns:** [*IFontWeightDefinitions*](../interfaces/host_config.ifontweightdefinitions.md)
 
 Defined in: [host-config.ts:712](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L712)
 
@@ -268,78 +268,78 @@ Defined in: [host-config.ts:712](https://github.com/microsoft/AdaptiveCards/blob
 
 ### getEffectiveSpacing
 
-▸ **getEffectiveSpacing**(`spacing`: [_Spacing_](../enums/enums.spacing.md)): _number_
+▸ **getEffectiveSpacing**(`spacing`: [*Spacing*](../enums/enums.spacing.md)): *number*
 
 #### Parameters:
 
-| Name      | Type                                   |
-| :-------- | :------------------------------------- |
-| `spacing` | [_Spacing_](../enums/enums.spacing.md) |
+Name | Type |
+:------ | :------ |
+`spacing` | [*Spacing*](../enums/enums.spacing.md) |
 
-**Returns:** _number_
+**Returns:** *number*
 
 Defined in: [host-config.ts:657](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L657)
 
----
+___
 
 ### getFontTypeDefinition
 
-▸ **getFontTypeDefinition**(`style?`: [_Default_](../enums/enums.fonttype.md#default) \| [_Monospace_](../enums/enums.fonttype.md#monospace)): [_FontTypeDefinition_](host_config.fonttypedefinition.md)
+▸ **getFontTypeDefinition**(`style?`: [*Default*](../enums/enums.fonttype.md#default) \| [*Monospace*](../enums/enums.fonttype.md#monospace)): [*FontTypeDefinition*](host_config.fonttypedefinition.md)
 
 #### Parameters:
 
-| Name     | Type                                                                                                   |
-| :------- | :----------------------------------------------------------------------------------------------------- |
-| `style?` | [_Default_](../enums/enums.fonttype.md#default) \| [_Monospace_](../enums/enums.fonttype.md#monospace) |
+Name | Type |
+:------ | :------ |
+`style?` | [*Default*](../enums/enums.fonttype.md#default) \| [*Monospace*](../enums/enums.fonttype.md#monospace) |
 
-**Returns:** [_FontTypeDefinition_](host_config.fonttypedefinition.md)
+**Returns:** [*FontTypeDefinition*](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:648](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L648)
 
----
+___
 
 ### makeCssClassName
 
-▸ **makeCssClassName**(...`classNames`: _string_[]): _string_
+▸ **makeCssClassName**(...`classNames`: *string*[]): *string*
 
 #### Parameters:
 
-| Name            | Type       |
-| :-------------- | :--------- |
-| `...classNames` | _string_[] |
+Name | Type |
+:------ | :------ |
+`...classNames` | *string*[] |
 
-**Returns:** _string_
+**Returns:** *string*
 
 Defined in: [host-config.ts:694](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L694)
 
----
+___
 
 ### makeCssClassNames
 
-▸ **makeCssClassNames**(...`classNames`: _string_[]): _string_[]
+▸ **makeCssClassNames**(...`classNames`: *string*[]): *string*[]
 
 #### Parameters:
 
-| Name            | Type       |
-| :-------------- | :--------- |
-| `...classNames` | _string_[] |
+Name | Type |
+:------ | :------ |
+`...classNames` | *string*[] |
 
-**Returns:** _string_[]
+**Returns:** *string*[]
 
 Defined in: [host-config.ts:684](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L684)
 
----
+___
 
 ### paddingDefinitionToSpacingDefinition
 
-▸ **paddingDefinitionToSpacingDefinition**(`paddingDefinition`: [_PaddingDefinition_](shared.paddingdefinition.md)): [_SpacingDefinition_](shared.spacingdefinition.md)
+▸ **paddingDefinitionToSpacingDefinition**(`paddingDefinition`: [*PaddingDefinition*](shared.paddingdefinition.md)): [*SpacingDefinition*](shared.spacingdefinition.md)
 
 #### Parameters:
 
-| Name                | Type                                               |
-| :------------------ | :------------------------------------------------- |
-| `paddingDefinition` | [_PaddingDefinition_](shared.paddingdefinition.md) |
+Name | Type |
+:------ | :------ |
+`paddingDefinition` | [*PaddingDefinition*](shared.paddingdefinition.md) |
 
-**Returns:** [_SpacingDefinition_](shared.spacingdefinition.md)
+**Returns:** [*SpacingDefinition*](shared.spacingdefinition.md)
 
 Defined in: [host-config.ts:676](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L676)

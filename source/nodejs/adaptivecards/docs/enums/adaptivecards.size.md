@@ -22,7 +22,7 @@
 
 Defined in: [enums.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L14)
 
----
+___
 
 ### Large
 
@@ -30,7 +30,7 @@ Defined in: [enums.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:18](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L18)
 
----
+___
 
 ### Medium
 
@@ -38,7 +38,7 @@ Defined in: [enums.ts:18](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:17](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L17)
 
----
+___
 
 ### Small
 
@@ -46,7 +46,7 @@ Defined in: [enums.ts:17](https://github.com/microsoft/AdaptiveCards/blob/0938a1
 
 Defined in: [enums.ts:16](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L16)
 
----
+___
 
 ### Stretch
 

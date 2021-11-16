@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- **ChannelAdapter**
+* **ChannelAdapter**
 
   ↳ [HttpChannelAdapter](httpchanneladapter.md)
 
@@ -12,18 +12,18 @@
 
 ### Methods
 
-- [sendRequestAsync](channeladapter.md#abstract-sendrequestasync)
+* [sendRequestAsync](channeladapter.md#abstract-sendrequestasync)
 
 ## Methods
 
 ### `Abstract` sendRequestAsync
 
-▸ **sendRequestAsync**(`request`: [ActivityRequest](../interfaces/activityrequest.md)): _Promise‹[ActivityResponse](../interfaces/activityresponse.md)›_
+▸ **sendRequestAsync**(`request`: [ActivityRequest](../interfaces/activityrequest.md)): *Promise‹[ActivityResponse](../interfaces/activityresponse.md)›*
 
 **Parameters:**
 
-| Name      | Type                                                |
-| --------- | --------------------------------------------------- |
-| `request` | [ActivityRequest](../interfaces/activityrequest.md) |
+Name | Type |
+------ | ------ |
+`request` | [ActivityRequest](../interfaces/activityrequest.md) |
 
-**Returns:** _Promise‹[ActivityResponse](../interfaces/activityresponse.md)›_
+**Returns:** *Promise‹[ActivityResponse](../interfaces/activityresponse.md)›*

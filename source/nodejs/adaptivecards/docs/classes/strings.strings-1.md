@@ -20,77 +20,77 @@
 
 ### constructor
 
-\+ **new Strings**(): [_Strings_](strings.strings-1.md)
+\+ **new Strings**(): [*Strings*](strings.strings-1.md)
 
-**Returns:** [_Strings_](strings.strings-1.md)
+**Returns:** [*Strings*](strings.strings-1.md)
 
 ## Properties
 
 ### defaults
 
-▪ `Readonly` `Static` **defaults**: _object_
+▪ `Readonly` `Static` **defaults**: *object*
 
 #### Type declaration:
 
-| Name                | Type           |
-| :------------------ | :------------- |
-| `inlineActionTitle` | () => _string_ |
+Name | Type |
+:------ | :------ |
+`inlineActionTitle` | () => *string* |
 
 Defined in: [strings.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/strings.ts#L37)
 
----
+___
 
 ### errors
 
-▪ `Readonly` `Static` **errors**: _object_
+▪ `Readonly` `Static` **errors**: *object*
 
 #### Type declaration:
 
-| Name                                    | Type                                                                                                            |
-| :-------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| `actionAlreadyParented`                 | () => _string_                                                                                                  |
-| `actionHttpHeadersMustHaveNameAndValue` | () => _string_                                                                                                  |
-| `actionTypeNotAllowed`                  | (`typeName`: _string_) => _string_                                                                              |
-| `choiceSetChoicesMustHaveTitleAndValue` | () => _string_                                                                                                  |
-| `choiceSetMustHaveAtLeastOneChoice`     | () => _string_                                                                                                  |
-| `columnAlreadyBelongsToAnotherSet`      | () => _string_                                                                                                  |
-| `duplicateId`                           | (`id`: _string_) => _string_                                                                                    |
-| `elementAlreadyParented`                | () => _string_                                                                                                  |
-| `elementCannotBeUsedAsInline`           | () => _string_                                                                                                  |
-| `elementTypeNotAllowed`                 | (`typeName`: _string_) => _string_                                                                              |
-| `elementTypeNotStandalone`              | (`typeName`: _string_) => _string_                                                                              |
-| `indexOutOfRange`                       | (`index`: _number_) => _string_                                                                                 |
-| `inlineAlreadyParented`                 | () => _string_                                                                                                  |
-| `inputsMustHaveUniqueId`                | () => _string_                                                                                                  |
-| `interactivityNotAllowed`               | () => _string_                                                                                                  |
-| `invalidCardType`                       | () => _string_                                                                                                  |
-| `invalidCardVersion`                    | (`defaultingToVersion`: _string_) => _string_                                                                   |
-| `invalidColumnWidth`                    | (`invalidWidth`: _string_) => _string_                                                                          |
-| `invalidPropertyValue`                  | (`value`: _any_, `propertyName`: _string_) => _string_                                                          |
-| `invalidVersionString`                  | (`versionString`: _string_) => _string_                                                                         |
-| `markdownProcessingNotEnabled`          | () => _string_                                                                                                  |
-| `processMarkdownEventRemoved`           | () => _string_                                                                                                  |
-| `propertyMustBeSet`                     | (`propertyName`: _string_) => _string_                                                                          |
-| `propertyNotSupported`                  | (`propertyName`: _string_, `supportedInVersion`: _string_, `versionUsed`: _string_) => _string_                 |
-| `propertyValueNotSupported`             | (`value`: _any_, `propertyName`: _string_, `supportedInVersion`: _string_, `versionUsed`: _string_) => _string_ |
-| `showCardMustHaveCard`                  | () => _string_                                                                                                  |
-| `tooManyActions`                        | (`maximumActions`: _number_) => _string_                                                                        |
-| `unknownActionType`                     | (`typeName`: _string_) => _string_                                                                              |
-| `unknownElementType`                    | (`typeName`: _string_) => _string_                                                                              |
-| `unsupportedCardVersion`                | (`version`: _string_, `maxSupportedVersion`: _string_) => _string_                                              |
+Name | Type |
+:------ | :------ |
+`actionAlreadyParented` | () => *string* |
+`actionHttpHeadersMustHaveNameAndValue` | () => *string* |
+`actionTypeNotAllowed` | (`typeName`: *string*) => *string* |
+`choiceSetChoicesMustHaveTitleAndValue` | () => *string* |
+`choiceSetMustHaveAtLeastOneChoice` | () => *string* |
+`columnAlreadyBelongsToAnotherSet` | () => *string* |
+`duplicateId` | (`id`: *string*) => *string* |
+`elementAlreadyParented` | () => *string* |
+`elementCannotBeUsedAsInline` | () => *string* |
+`elementTypeNotAllowed` | (`typeName`: *string*) => *string* |
+`elementTypeNotStandalone` | (`typeName`: *string*) => *string* |
+`indexOutOfRange` | (`index`: *number*) => *string* |
+`inlineAlreadyParented` | () => *string* |
+`inputsMustHaveUniqueId` | () => *string* |
+`interactivityNotAllowed` | () => *string* |
+`invalidCardType` | () => *string* |
+`invalidCardVersion` | (`defaultingToVersion`: *string*) => *string* |
+`invalidColumnWidth` | (`invalidWidth`: *string*) => *string* |
+`invalidPropertyValue` | (`value`: *any*, `propertyName`: *string*) => *string* |
+`invalidVersionString` | (`versionString`: *string*) => *string* |
+`markdownProcessingNotEnabled` | () => *string* |
+`processMarkdownEventRemoved` | () => *string* |
+`propertyMustBeSet` | (`propertyName`: *string*) => *string* |
+`propertyNotSupported` | (`propertyName`: *string*, `supportedInVersion`: *string*, `versionUsed`: *string*) => *string* |
+`propertyValueNotSupported` | (`value`: *any*, `propertyName`: *string*, `supportedInVersion`: *string*, `versionUsed`: *string*) => *string* |
+`showCardMustHaveCard` | () => *string* |
+`tooManyActions` | (`maximumActions`: *number*) => *string* |
+`unknownActionType` | (`typeName`: *string*) => *string* |
+`unknownElementType` | (`typeName`: *string*) => *string* |
+`unsupportedCardVersion` | (`version`: *string*, `maxSupportedVersion`: *string*) => *string* |
 
 Defined in: [strings.ts:2](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/strings.ts#L2)
 
----
+___
 
 ### hints
 
-▪ `Readonly` `Static` **hints**: _object_
+▪ `Readonly` `Static` **hints**: *object*
 
 #### Type declaration:
 
-| Name                                          | Type           |
-| :-------------------------------------------- | :------------- |
-| `dontUseWeightedAndStrecthedColumnsInSameSet` | () => _string_ |
+Name | Type |
+:------ | :------ |
+`dontUseWeightedAndStrecthedColumnsInSameSet` | () => *string* |
 
 Defined in: [strings.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/strings.ts#L34)

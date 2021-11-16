@@ -23,15 +23,15 @@
 
 ### constructor
 
-\+ **new ImageSetConfig**(`obj?`: _any_): [_ImageSetConfig_](host_config.imagesetconfig.md)
+\+ **new ImageSetConfig**(`obj?`: *any*): [*ImageSetConfig*](host_config.imagesetconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_ImageSetConfig_](host_config.imagesetconfig.md)
+**Returns:** [*ImageSetConfig*](host_config.imagesetconfig.md)
 
 Defined in: [host-config.ts:68](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L68)
 
@@ -39,15 +39,15 @@ Defined in: [host-config.ts:68](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### imageSize
 
-• **imageSize**: [_Size_](../enums/enums.size.md)
+• **imageSize**: [*Size*](../enums/enums.size.md)
 
 Defined in: [host-config.ts:67](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L67)
 
----
+___
 
 ### maxImageHeight
 
-• **maxImageHeight**: _number_= 100
+• **maxImageHeight**: *number*= 100
 
 Defined in: [host-config.ts:68](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L68)
 
@@ -55,13 +55,13 @@ Defined in: [host-config.ts:68](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### toJSON
 
-▸ **toJSON**(): _object_
+▸ **toJSON**(): *object*
 
-**Returns:** _object_
+**Returns:** *object*
 
-| Name             | Type     |
-| :--------------- | :------- |
-| `imageSize`      | _string_ |
-| `maxImageHeight` | _number_ |
+Name | Type |
+:------ | :------ |
+`imageSize` | *string* |
+`maxImageHeight` | *number* |
 
 Defined in: [host-config.ts:77](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L77)

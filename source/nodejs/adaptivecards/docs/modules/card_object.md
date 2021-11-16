@@ -17,7 +17,7 @@
 
 ### CardObjectType
 
-Ƭ **CardObjectType**: _object_
+Ƭ **CardObjectType**: *object*
 
 #### Type declaration:
 

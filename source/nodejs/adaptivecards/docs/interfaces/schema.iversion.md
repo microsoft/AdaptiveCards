@@ -15,14 +15,14 @@
 
 ### major
 
-• **major**: _number_
+• **major**: *number*
 
 Defined in: [schema.ts:161](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L161)
 
----
+___
 
 ### minor
 
-• **minor**: _number_
+• **minor**: *number*
 
 Defined in: [schema.ts:162](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L162)

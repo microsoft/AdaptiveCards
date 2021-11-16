@@ -19,15 +19,15 @@
 
 ### constructor
 
-\+ **new InputConfig**(`obj?`: _any_): [_InputConfig_](host_config.inputconfig.md)
+\+ **new InputConfig**(`obj?`: *any*): [*InputConfig*](host_config.inputconfig.md)
 
 #### Parameters:
 
-| Name   | Type  |
-| :----- | :---- |
-| `obj?` | _any_ |
+Name | Type |
+:------ | :------ |
+`obj?` | *any* |
 
-**Returns:** [_InputConfig_](host_config.inputconfig.md)
+**Returns:** [*InputConfig*](host_config.inputconfig.md)
 
 Defined in: [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L171)
 
@@ -35,14 +35,14 @@ Defined in: [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob
 
 ### errorMessage
 
-• `Readonly` **errorMessage**: [_BaseTextDefinition_](host_config.basetextdefinition.md)
+• `Readonly` **errorMessage**: [*BaseTextDefinition*](host_config.basetextdefinition.md)
 
 Defined in: [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L171)
 
----
+___
 
 ### label
 
-• `Readonly` **label**: [_InputLabelConfig_](host_config.inputlabelconfig.md)
+• `Readonly` **label**: [*InputLabelConfig*](host_config.inputlabelconfig.md)
 
 Defined in: [host-config.ts:170](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L170)

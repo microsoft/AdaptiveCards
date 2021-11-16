@@ -6,13 +6,13 @@
 
 ## Hierarchy
 
-- **IAction**
+* **IAction**
 
-  ↳ [_ISubmitAction_](schema.isubmitaction.md)
+  ↳ [*ISubmitAction*](schema.isubmitaction.md)
 
-  ↳ [_IOpenUrlAction_](schema.iopenurlaction.md)
+  ↳ [*IOpenUrlAction*](schema.iopenurlaction.md)
 
-  ↳ [_IShowCardAction_](schema.ishowcardaction.md)
+  ↳ [*IShowCardAction*](schema.ishowcardaction.md)
 
 ## Table of contents
 
@@ -25,14 +25,14 @@
 
 ### id
 
-• **id**: _string_
+• **id**: *string*
 
 Defined in: [schema.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L14)
 
----
+___
 
 ### title
 
-• `Optional` **title**: _undefined_ \| _string_
+• `Optional` **title**: *undefined* \| *string*
 
 Defined in: [schema.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L15)
