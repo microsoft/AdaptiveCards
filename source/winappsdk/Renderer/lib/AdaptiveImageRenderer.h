@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     struct AdaptiveImageRenderer : AdaptiveImageRendererT<AdaptiveImageRenderer>
     {
     public:
-        AdaptiveImageRenderer() = default;
+        AdaptiveImageRenderer();
         AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> xamlBuilder);
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,

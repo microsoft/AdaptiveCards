@@ -415,8 +415,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     {
         if (const auto dependencyObject = element.try_as<rtxaml::DependencyObject>())
         {
-            auto automationStatics = *winrt::make_self<rtxaml::Automation::IAutomationPropertiesStatics>();
-            return automationStatics.GetName(dependencyObject);
+           /* auto automationStatics = *winrt::make_self<rtxaml::Automation::IAutomationPropertiesStatics>();*/
+            return rtxaml::Automation::AutomationProperties::GetName(dependencyObject);
         }
 
         // We shouldn't reach here

@@ -60,6 +60,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         auto k = 5;
     }
 
+    InputValue::InputValue() :  m_uiInputElement(nullptr), m_validationError(nullptr){};
+
     // HRESULT InputValue::Validate(_Out_ boolean* isInputValid)
     //{
     //    boolean isValid;
@@ -316,7 +318,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     PasswordInputValue::PasswordInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
                                            rtxaml::Controls::PasswordBox const& uiPasswordElement,
-                                           rtxaml::Controls::Border const& validationBorder)
+                                           rtxaml::Controls::Border const& validationBorder)  // TODO: this is kinda madness? HOW TO AVOID THIS?
     // TODO: is this the right way? Do we need to chain call constructors?
     {
         m_passwordElement = uiPasswordElement;
@@ -553,7 +555,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
             {
                 std::string minTimeStdString = HStringToUTF8(minTimeString);
                 unsigned int minHours, minMinutes;
-                if (DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
+                if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
                 {
                     /*TimeSpan minTime{(INT64)(minHours * 60 + minMinutes) * 10000000 * 60};*/
                     // TODO: Can we make it look nicer? this is rather ugly
@@ -569,7 +571,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
             {
                 std::string maxTimeStdString = HStringToUTF8(maxTimeString);
                 unsigned int maxHours, maxMinutes;
-                if (DateTimePreparser::TryParseSimpleTime(maxTimeStdString, maxHours, maxMinutes))
+                if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(maxTimeStdString, maxHours, maxMinutes))
                 {
                     winrt::Windows::Foundation::TimeSpan maxTime{(int64_t)(maxHours * 60 + maxMinutes) * 10000000 * 60};
                     isMaxMinValid &= currentTime.count() <= maxTime.count();
@@ -939,7 +941,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
             std::string title = HStringToUTF8(titleHString);
 
-            if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
+            if (!::AdaptiveCards::ParseUtil::ToLowercase(text).compare(::AdaptiveCards::ParseUtil::ToLowercase(title)))
             {
                 selectedChoice = choice;
                 // TODO: do we need to break here?

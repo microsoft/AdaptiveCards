@@ -103,14 +103,14 @@ namespace AdaptiveCards::Rendering::WinUI3
         void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
         template<typename T>
         void SetAutoSize(T const& destination,
-                         IInspectable const& parentElement,
-                         IInspectable const&, /* imageContainer */
-                         bool isVisible,
-                         bool imageFiresOpenEvent);
+                        winrt::Windows::Foundation::IInspectable const& parentElement,
+                        winrt::Windows::Foundation::IInspectable const&, /* imageContainer */
+                        bool isVisible,
+                        bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,
-                            ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
+                        	ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
                             ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
 
         template<typename T>

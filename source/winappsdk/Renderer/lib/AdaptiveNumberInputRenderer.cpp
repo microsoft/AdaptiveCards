@@ -153,3 +153,4 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             return nullptr;
         }
     }
+}

@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             {
                 if (const auto bitmapSource = imageSource.try_as<rtxaml::Media::Imaging::BitmapSource>())
                 {
-                    m_imageSize = {bitmapSource.PixelWidth(), bitmapSource.PixelHeight()};
+                    m_imageSize = {(float)bitmapSource.PixelWidth(), (float)bitmapSource.PixelHeight()};
                     RefreshContainerTile();
                 }
             }

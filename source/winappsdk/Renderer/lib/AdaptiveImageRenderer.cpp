@@ -447,8 +447,8 @@ namespace AdaptiveCards::Rendering::WinUI3
                                           T const& uiElement,
                                           rtrender::AdaptiveCardResourceResolvers const& resolvers,
                                           bool isAutoSize,
-                                          IInspectable const& parentElement,
-                                          IInspectable const& imageContainer,
+                                          winrt::Windows::Foundation::IInspectable const& parentElement,
+                                          winrt::Windows::Foundation::IInspectable const& imageContainer,
                                           bool isVisible,
                                           winrt::Windows::UI::Xaml::Media::Stretch stretch)
     {
@@ -593,6 +593,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                 // return;
             }
+
         }
 
         /* INT32 isDataUriImage{};
@@ -874,8 +875,8 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     template<>
     void XamlBuilder::SetAutoSize<rtxaml::Shapes::Ellipse>(rtxaml::Shapes::Ellipse const& destination,
-                                                           IInspectable const& parentElement,
-                                                           IInspectable const& imageContainer,
+                                                           winrt::Windows::Foundation::IInspectable const& parentElement,
+                                                           winrt::Windows::Foundation::IInspectable const& imageContainer,
                                                            bool isVisible,
                                                            bool imageFiresOpenEvent)
     {
@@ -961,7 +962,6 @@ namespace AdaptiveCards::Rendering::WinUI3
                             if (ellipseAsShape && lambdaParentElement)
                             {
                                 rtxaml::FrameworkElement k{nullptr};
-                                IInspectable whatever{};
                                 rtxaml::Media::Imaging::BitmapSource as{nullptr};
 
 
@@ -982,8 +982,8 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     template<typename T>
     void XamlBuilder::SetAutoSize(T const& destination,
-                                  IInspectable const& parentElement,
-                                  IInspectable const&, /* imageContainer */
+                                  winrt::Windows::Foundation::IInspectable const& parentElement,
+                                  winrt::Windows::Foundation::IInspectable const&, /* imageContainer */
                                   bool isVisible,
                                   bool imageFiresOpenEvent)
     {
@@ -1042,7 +1042,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                         {
                             XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
                                                                            lambdaParentElement,
-                                                                           imageSource),
+                                                                           imageSource,
                                                                            isVisible);
                         }
                     });

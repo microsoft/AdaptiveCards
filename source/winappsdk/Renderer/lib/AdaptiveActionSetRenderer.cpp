@@ -20,8 +20,8 @@ using namespace winrt::Windows::UI::Xaml::Controls::Primitives;
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     winrt::Windows::UI::Xaml::UIElement AdaptiveActionSetRenderer::Render(ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
-                                               WinUI3::AdaptiveRenderContext const& renderContext,
-                                               WinUI3::AdaptiveRenderArgs const& renderArgs)
+                                                                          WinUI3::AdaptiveRenderContext const& renderContext,
+                                                                          WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
             }
         }
-        catch(winrt::hresult_error const& ex)
+        catch (winrt::hresult_error const& ex)
         {
             // TODO: what do we do here?
             return nullptr;

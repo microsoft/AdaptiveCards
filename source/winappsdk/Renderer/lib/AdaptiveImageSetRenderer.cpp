@@ -143,18 +143,17 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 return nullptr;
             }
 
-           /* ComPtr<IFrameworkElement> imageSetAsFrameworkElement;
-            RETURN_IF_FAILED(xamlGrid.As(&imageSetAsFrameworkElement));
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                         L"Adaptive.ImageSet",
-                                                                         imageSetAsFrameworkElement.Get()));
+            /* ComPtr<IFrameworkElement> imageSetAsFrameworkElement;
+             RETURN_IF_FAILED(xamlGrid.As(&imageSetAsFrameworkElement));
+             RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                          L"Adaptive.ImageSet",
+                                                                          imageSetAsFrameworkElement.Get()));
 
-            return xamlGrid.CopyTo(imageSetControl);*/
+             return xamlGrid.CopyTo(imageSetControl);*/
 
             // TODO: Do I need to cast xamlGrid to FrameworkElement?
             ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
             return xamlGrid;
-            
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -162,3 +161,4 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             return nullptr;
         }
     }
+}

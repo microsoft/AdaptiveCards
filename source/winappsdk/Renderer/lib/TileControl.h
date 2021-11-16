@@ -15,9 +15,15 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         //HRESULT RuntimeClassInitialize() noexcept;
 
         void BackgroundImage(rtom::AdaptiveBackgroundImage const& adaptiveBackgroundImage) { m_adaptiveBackgroundImage = adaptiveBackgroundImage; }
+		rtom::AdaptiveBackgroundImage BackgroundImage() {return m_adaptiveBackgroundImage;}
+
         void RootElement(rtxaml::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
+		rtxaml::FrameworkElement RootElement() { return m_rootElement;}
+
         rtxaml::UIElement ResolvedImage() { return m_resolvedImage; }
+        // TODO: we don't really need getter; convert to property<...::Size>??
         void ImageSize(winrt::Windows::Foundation::Size const& imageSize) { m_imageSize = imageSize; }
+        winrt::Windows::Foundation::Size ImageSize() { return m_imageSize; }
 
         void LoadImageBrush(rtxaml::UIElement const& image);
 

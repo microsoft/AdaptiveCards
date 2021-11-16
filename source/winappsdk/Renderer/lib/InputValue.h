@@ -26,6 +26,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         InputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
                    winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
                    winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
+        InputValue();
 
         winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement InputElement()
         {
@@ -80,6 +81,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         TextInputBase(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
                       winrt::Windows::UI::Xaml::UIElement const& uiTextInputElement,
                       winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
+        TextInputBase() { ; };
 
         /*winrt::hstring CurrentValue();*/
 
@@ -104,6 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         TextInputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
                        winrt::Windows::UI::Xaml::Controls::TextBox const& uiTextBoxElement,
                        winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
+        TextInputValue() { ; };
 
     private:
         winrt::hstring CurrentValue() { return m_textBoxElement.Text(); };

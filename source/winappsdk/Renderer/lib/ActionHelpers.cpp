@@ -193,12 +193,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                 // TODO: We're p
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, {0}, false);
             }
-            
-
         }
     }
 
-    //void ArrangeButtonContent(_In_ HSTRING actionTitle,
+    // void ArrangeButtonContent(_In_ HSTRING actionTitle,
     //                          _In_ HSTRING actionIconUrl,
     //                          _In_ HSTRING actionTooltip,
     //                          _In_ HSTRING actionAccessibilityText,
@@ -287,8 +285,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     //        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
     //        if (elementRenderer != nullptr)
     //        {
-    //            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, to_wrl(childRenderArgs).Get(), &buttonIcon);
-    //            if (buttonIcon == nullptr)
+    //            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, to_wrl(childRenderArgs).Get(),
+    //            &buttonIcon); if (buttonIcon == nullptr)
     //            {
     //                XamlHelpers::SetContent(localButton.Get(), title.Get());
     //                return;
@@ -359,98 +357,104 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     void HandleActionStyling(rtom::IAdaptiveActionElement const& adaptiveActionElement,
                              rtxaml::FrameworkElement const& buttonFrameworkElement,
                              bool isOverflowActionButton,
-                             rtrender::AdaptiveRenderContext const& renderContext);
-
-    HRESULT HandleActionStyling(_In_ IAdaptiveActionElement* adaptiveActionElement,
-                                _In_ IFrameworkElement* buttonFrameworkElement,
-                                bool isOverflowActionButton,
-                                _In_ IAdaptiveRenderContext* renderContext)
+                             rtrender::AdaptiveRenderContext const& renderContext)
     {
-        HString actionSentiment;
-        if (adaptiveActionElement != nullptr)
-        {
-            RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
-        }
-
-        INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
-
-        ComPtr<IResourceDictionary> resourceDictionary;
-        RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
-        ComPtr<IStyle> styleToApply;
-
-        auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
-
-        // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
-        if (isOverflowActionButton)
-        {
-            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-                                                                                      L"Adaptive.Action.Overflow",
-                                                                                      &styleToApply)))
-            {
-                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-            }
-        }
-
-        if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault)) &&
-             (isSentimentDefault == 0)) ||
-            WindowsIsStringEmpty(actionSentiment.Get()))
-        {
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement));
-        }
-        else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive)) &&
-                 (isSentimentPositive == 0))
-        {
-            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-                                                                                      L"Adaptive.Action.Positive",
-                                                                                      &styleToApply)))
-            {
-                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-            }
-            else
-            {
-                // By default, set the action background color to accent color
-                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
-
-                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
-                                                                                  L"PositiveActionDefaultStyle",
-                                                                                  styleToApply.GetAddressOf())))
-                {
-                    RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-                }
-            }
-        }
-        else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive)) &&
-                 (isSentimentDestructive == 0))
-        {
-            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-                                                                                      L"Adaptive.Action.Destructive",
-                                                                                      &styleToApply)))
-            {
-                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-            }
-            else
-            {
-                // By default, set the action text color to attention color
-                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
-
-                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
-                                                                                  L"DestructiveActionDefaultStyle",
-                                                                                  styleToApply.GetAddressOf())))
-                {
-                    RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-                }
-            }
-        }
-        else
-        {
-            HString actionSentimentStyle;
-            RETURN_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
-                                                 actionSentiment.Get(),
-                                                 actionSentimentStyle.GetAddressOf()));
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
-        }
-        return S_OK;
+        // TODO: implement this function?
     }
+
+    // HRESULT HandleActionStyling(_In_ IAdaptiveActionElement* adaptiveActionElement,
+    //                            _In_ IFrameworkElement* buttonFrameworkElement,
+    //                            bool isOverflowActionButton,
+    //                            _In_ IAdaptiveRenderContext* renderContext)
+    //{
+    //    HString actionSentiment;
+    //    if (adaptiveActionElement != nullptr)
+    //    {
+    //        RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
+    //    }
+
+    //    INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
+
+    //    ComPtr<IResourceDictionary> resourceDictionary;
+    //    RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+    //    ComPtr<IStyle> styleToApply;
+
+    //    auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
+
+    //    // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
+    //    if (isOverflowActionButton)
+    //    {
+    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
+    //                                                                                  L"Adaptive.Action.Overflow",
+    //                                                                                  &styleToApply)))
+    //        {
+    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+    //        }
+    //    }
+
+    //    if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(),
+    //    &isSentimentDefault)) &&
+    //         (isSentimentDefault == 0)) ||
+    //        WindowsIsStringEmpty(actionSentiment.Get()))
+    //    {
+    //        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action",
+    //        buttonFrameworkElement));
+    //    }
+    //    else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(),
+    //    &isSentimentPositive)) &&
+    //             (isSentimentPositive == 0))
+    //    {
+    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
+    //                                                                                  L"Adaptive.Action.Positive",
+    //                                                                                  &styleToApply)))
+    //        {
+    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+    //        }
+    //        else
+    //        {
+    //            // By default, set the action background color to accent color
+    //            auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+
+    //            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
+    //                                                                              L"PositiveActionDefaultStyle",
+    //                                                                              styleToApply.GetAddressOf())))
+    //            {
+    //                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+    //            }
+    //        }
+    //    }
+    //    else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive)) &&
+    //             (isSentimentDestructive == 0))
+    //    {
+    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
+    //                                                                                  L"Adaptive.Action.Destructive",
+    //                                                                                  &styleToApply)))
+    //        {
+    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+    //        }
+    //        else
+    //        {
+    //            // By default, set the action text color to attention color
+    //            auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+
+    //            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
+    //                                                                              L"DestructiveActionDefaultStyle",
+    //                                                                              styleToApply.GetAddressOf())))
+    //            {
+    //                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        HString actionSentimentStyle;
+    //        RETURN_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
+    //                                             actionSentiment.Get(),
+    //                                             actionSentimentStyle.GetAddressOf()));
+    //        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
+    //    }
+    //    return S_OK;
+    //}
 
     HRESULT SetMatchingHeight(_In_ IFrameworkElement* elementToChange, _In_ IFrameworkElement* elementToMatch)
     {
@@ -714,7 +718,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return xamlGrid;
     }
 
-    //void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
+    // void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
     //                        _In_ IAdaptiveRenderArgs* renderArgs,
     //                        _In_ IUIElement* textInputUIElement,
     //                        _In_ IUIElement* textBoxParentContainer,
@@ -748,11 +752,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     //    ComPtr<IGridStatics> gridStatics;
     //    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
-    //    ComPtr<IGrid> xamlGrid = XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-    //    ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-    //    THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
-    //    ComPtr<IPanel> gridAsPanel;
-    //    THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+    //    ComPtr<IGrid> xamlGrid =
+    //    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid)); ComPtr<IVector<ColumnDefinition*>>
+    //    columnDefinitions; THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions)); ComPtr<IPanel>
+    //    gridAsPanel; THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
     //    // Create the first column and add the text box to it
     //    ComPtr<IColumnDefinition> textBoxColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
@@ -1042,9 +1045,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
          THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
          ComPtr<IAdaptiveActionElement> strongAction(action);*/
 
-        // is this a valid way to do it?
+        // TODO: is this a valid way to do it?
         auto actionInvoker = renderContext.ActionInvoker();
-        auto strongAction = *winrt::make_self<rtom::IAdaptiveActionElement>(actionInvoker);
+        /* auto strongAction = *winrt::make_self<rtom::IAdaptiveActionElement>(actionInvoker);*/
+        rtom::IAdaptiveActionElement strongAction{action};
 
         auto eventToken = button.Click([strongAction, actionInvoker](IInspectable const&, RoutedEventArgs const&)
                                        { actionInvoker.SendActionEvent(strongAction); });
@@ -1326,8 +1330,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         {
             auto actionAsShowCardAction = action.as<rtom::AdaptiveShowCardAction>();
             auto showCard = actionAsShowCardAction.Card();
-            auto uiShowCard =
-                winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveShowCardActionRenderer::BuildShowCard(showCard, renderContext, renderArgs, (adaptiveActionSet == nullptr));
+            auto uiShowCard = winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveShowCardActionRenderer::BuildShowCard(
+                showCard, renderContext, renderArgs, (adaptiveActionSet == nullptr));
             XamlHelpers::AppendXamlElementToPanel(uiShowCard, showCardsPanel);
 
             auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
@@ -1442,7 +1446,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         rtrender::ActionsOrientation actionsOrientation = actionsConfig.ActionsOrientation();
 
         // Declare the panel that will host the buttons
-        winrt::com_ptr<rtxaml::Controls::Panel> actionsPanel;
+        /* winrt::com_ptr<rtxaml::Controls::Panel> actionsPanel;*/
+        rtxaml::Controls::Panel actionsPanel{nullptr};
         winrt::Windows::Foundation::Collections::IVector<rtxaml::Controls::ColumnDefinition> columnDefinitions;
 
         if (actionAlignment == rtrender::ActionAlignment::Stretch && actionsOrientation == rtrender::ActionsOrientation::Horizontal)
@@ -1456,7 +1461,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             rtxaml::Controls::Grid actionsGrid;
             columnDefinitions = actionsGrid.ColumnDefinitions();
             // TODO: Am I doing this right?
-            actionsPanel = winrt::make_self<rtxaml::Controls::Panel>(actionsGrid);
+            /* actionsPanel = winrt::make_self<rtxaml::Controls::Panel>(actionsGrid);*/
+            actionsPanel = actionsGrid.as<rtxaml::Controls::Panel>();
             /*  RETURN_IF_FAILED(actionsGrid->get_ColumnDefinitions(&columnDefinitions));
               RETURN_IF_FAILED(actionsGrid.As(&actionsPanel));*/
         }
@@ -1500,7 +1506,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // RETURN_IF_FAILED(actionStackPanel.As(&actionsPanel));
             // TODO: Can I just call as?
             // actionStackPanel.as(actionsPanel);
-            actionsPanel = winrt::make_self<rtxaml::Controls::StackPanel>(actionStackPanel);
+            /*actionsPanel = winrt::make_self<rtxaml::Controls::StackPanel>(actionStackPanel);*/
+            // TODO: is this correct?
+            actionsPanel = actionStackPanel.as<rtxaml::Controls::Panel>();
         }
 
         /*Thickness buttonMargin = reinterpret_cast<Thickness&>(GetButtonMargin(to_winrt(actionsConfig)));*/
@@ -1514,7 +1522,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
             RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
             RETURN_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0}));*/
-            actionsPanel->Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0});
+            actionsPanel.Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0});
         }
         else
         {
@@ -1522,7 +1530,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
             RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
             RETURN_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1}));*/
-            actionsPanel->Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1});
+            actionsPanel.Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1});
         }
 
         // Get the max number of actions and check the host config to confirm whether we render actions beyond the max in the overflow menu
@@ -1594,7 +1602,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                 rtom::ActionType actionType = action.ActionType();
                 // TODO: can I just construct rtxaml::IUIElement instead?
                 // ComPtr<IUIElement> actionControl;
-                winrt::com_ptr<rtxaml::UIElement> actionControl;
+                /*  winrt::com_ptr<rtxaml::UIElement> actionControl;*/
+                rtxaml::UIElement actionControl{nullptr};
 
                 if (!pastLastPrimaryAction && mode == rtom::ActionMode::Primary)
                 {
@@ -1603,18 +1612,17 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                     {
                         // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
                         // TODO: Can we do this? How to properly assign UIElement to COM_PTR, use peek_innards? can I use .as(&comPtr)?
-                        auto actionButton = CreateActionButtonInActionSet(adaptiveCard,
-                                                                          adaptiveActionSet,
-                                                                          action,
-                                                                          true,
-                                                                          currentButtonIndex,
-                                                                          *actionsPanel,
-                                                                          showCardsPanel,
-                                                                          columnDefinitions,
-                                                                          nullptr,
-                                                                          renderContext,
-                                                                          renderArgs);
-                        actionControl.copy_from(&actionButton);
+                        actionControl = CreateActionButtonInActionSet(adaptiveCard,
+                                                                      adaptiveActionSet,
+                                                                      action,
+                                                                      true,
+                                                                      currentButtonIndex,
+                                                                      actionsPanel,
+                                                                      showCardsPanel,
+                                                                      columnDefinitions,
+                                                                      nullptr,
+                                                                      renderContext,
+                                                                      renderArgs);
 
                         currentButtonIndex++;
                     }
@@ -1659,7 +1667,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                 }
             });
 
-        winrt::com_ptr<rtxaml::UIElement> lastActionOverflowItem;
+        /*  winrt::com_ptr<rtxaml::UIElement> lastActionOverflowItem;*/
+        rtxaml::UIElement lastActionOverflowItem{nullptr};
         if (overflowButton != nullptr && showCardOverflowButtons.size() != 0)
         {
             // Show card actions from the overflow menu switch places with the last primary action when invoked.
@@ -1668,9 +1677,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
             if (lastPrimaryAction != nullptr)
             {
-                auto flyoutItem = AddOverflowFlyoutItem(lastPrimaryAction, overflowButton, renderContext);
-                lastActionOverflowItem.copy_from(&flyoutItem);
-                lastActionOverflowItem->Visibility(rtxaml::Visibility::Collapsed);
+                lastActionOverflowItem = AddOverflowFlyoutItem(lastPrimaryAction, overflowButton, renderContext);
+                lastActionOverflowItem.Visibility(rtxaml::Visibility::Collapsed);
             }
 
             // Create non-visible primary buttons for all overflow show card actions so they can be moved to the action bar when invoked
@@ -1681,7 +1689,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                                                    overflowShowCard.first,
                                                                    false,
                                                                    currentButtonIndex,
-                                                                   *actionsPanel,
+                                                                   actionsPanel,
                                                                    showCardsPanel,
                                                                    columnDefinitions,
                                                                    overflowShowCard.second,
@@ -1699,10 +1707,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                                                lastPrimaryAction,
                                                                true,
                                                                currentButtonIndex,
-                                                               *actionsPanel,
+                                                               actionsPanel,
                                                                showCardsPanel,
                                                                columnDefinitions,
-                                                               *lastActionOverflowItem,
+                                                               lastActionOverflowItem,
                                                                renderContext,
                                                                renderArgs);
             currentButtonIndex++;
@@ -1730,7 +1738,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             }
 
             // Add the overflow button to the panel
-            XamlHelpers::AppendXamlElementToPanel(overflowButton, *actionsPanel);
+            XamlHelpers::AppendXamlElementToPanel(overflowButton, actionsPanel);
 
             // Register the overflow button with the render context
             /* ComPtr<IUIElement> overflowButtonAsUIElement;
@@ -1758,7 +1766,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
                                                                      L"Adaptive.Actions",
                                                                      actionsPanelAsFrameworkElement.Get()));*/
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, *actionsPanel);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, actionsPanel);
 
         /*  ComPtr<IStackPanel> actionSet =
               XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));

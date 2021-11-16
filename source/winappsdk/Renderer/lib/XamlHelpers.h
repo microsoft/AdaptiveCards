@@ -135,7 +135,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     template<typename T>
     T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
     {
-        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName), style);
+        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName));
     }
 
     HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
@@ -156,7 +156,16 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     void HandleTableColumnWidth(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition const& column,
                                 winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
 
+
     template<typename T>
+    void AppendXamlElementToPanel(_In_ T* xamlElement,
+                                  _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
+                                  ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType =
+                                      ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Auto)
+    {
+    }
+
+   /* template<typename T>
     void AppendXamlElementToPanel(_In_ T* xamlElement,
                                   _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType =
@@ -187,7 +196,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 wholeItemsPanelObj->AddElementToStretchablesList(elementToAppend.Get());
             }
         }
-    }
+    }*/
 
     template<typename T>
     void AppendXamlElementToPanel(T const& xamlElement,
@@ -204,10 +213,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         if (heightType == rtom::HeightType::Stretch)
         {
-            if (auto wholeItemsPanel = PeekInnards<WholeItemsPanel>(panel))
+            // TODO: is this the right way?
+            // TODO: COME BACK TO THIS ASAP!
+           /* if (auto wholeItemsPanel = peek_innards<rtrender::implementation::WholeItemsPanel>(panel))
             {
                 wholeItemsPanel->AddElementToStretchablesList(elementToAppend);
-            }
+            }*/
         }
     }
 
@@ -272,26 +283,28 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
-    template<typename T> bool GetToggleValue(T item)
+    template<typename T> bool GetToggleValue(T const& item)
     {
         /* ComPtr<T> localItem(item);
          ComPtr<IToggleButton> toggleButton;
          THROW_IF_FAILED(localItem.As(&toggleButton));*/
-        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
+        // TODO: InputValue613 failes to compile, why?
+        /*static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
         auto toggleButton =
-            item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all
+            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
                                                                          // toggleButton have isChecked() exposed, right?
 
         auto isCheckedRef = toggleButton.IsChecked();
 
-        if (isCheckedRef != nullptr)
+        return GetValueFromRef(isCheckedRef, false);
+        /*if (isCheckedRef != nullptr)
         {
             return isCheckedRef.Value();
         }
         else
         {
             return false;
-        }
+        }*/
 
         /*ComPtr<IReference<bool>> isCheckedReference;
         THROW_IF_FAILED(toggleButton->get_IsChecked(&isCheckedReference));*/
@@ -300,13 +313,15 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
         // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
-        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ContenControl");
+       /* static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ContenControl");*/
         SetContent(item, contentString, false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
+
+        // TODO: compiling failing as ToggleInputRenderer(52)
+      /*  static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
         rtxaml::Controls::TextBlock content{};
         content.Text(contentString);
 
@@ -390,12 +405,14 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     template<typename T>
-    void SetVerticalContentAlignmentToChildren(T container, rtom::VerticalContentAlignment verticalContentAlignment)
+    void SetVerticalContentAlignmentToChildren(T const& container, rtom::VerticalContentAlignment verticalContentAlignment)
     {
-        winrt::com_ptr<T> localContainer = winrt::make_self<T>(container);
+        /*winrt::com_ptr<T> localContainer = winrt::make_self<T>(container);*/
 
-        if (const winrt::com_ptr<rtrender::implementation::WholeItemsPanel> containerAsPanel =
-                localContainer.try_as<rtrender::implementation::WholeItemsPanel>())
+        // TODO: not sure how do it properly here
+        // TODO: need to use peek innards? how to do it properly?
+        if (const auto containerAsPanel =
+                container.try_as<rtrender::implementation::WholeItemsPanel>())
         {
             auto panel = *containerAsPanel;
             panel.VerticalAlignment(verticalContentAlignment);

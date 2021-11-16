@@ -9,7 +9,7 @@ using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
                              rtrender::AdaptiveRenderContext const& renderContext,
@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         try
         {
             renderContext.LinkSubmitActionToCard(action, renderArgs);
-            return ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+            return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch(winrt::hresult_error const& ex)
         {

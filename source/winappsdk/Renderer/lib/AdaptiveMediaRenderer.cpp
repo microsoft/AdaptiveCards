@@ -20,8 +20,8 @@ using namespace ABI::Windows::UI::Xaml::Media;
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveMediaRenderer::Render(rtom::IAdaptiveCardElement const& adaptiveCardElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+                                                    rtrender::AdaptiveRenderContext const& renderContext,
+                                                    rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -48,7 +48,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
 
-                //if (posterImage != nullptr)
+                // if (posterImage != nullptr)
                 //{
                 //    /* RETURN_IF_FAILED(posterImage.CopyTo(mediaControl));*/
                 //    return posterImage;
@@ -188,10 +188,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
                 Callback<IRoutedEventHandler>(*/
             /*   HSTRING lambdaMimeType = winrt::detach_abi(mimeType);*/
-        /*    winrt::hstring lambdaMimeType{mimeType};*/
+            /*    winrt::hstring lambdaMimeType{mimeType};*/
+            // TODO: can we do this? or do we need to return event token???? I'm afraid it will revoke momentarily
             touchTargetAsButtonBase.Click(
                 [touchTargetUIElement, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker](
-                    winrt::Windows::Foundation::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> HRESULT
+                    winrt::Windows::Foundation::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
                 {
                     // Turn off the button to prevent extra clicks
                     if (const auto buttonAsControl = touchTargetUIElement.try_as<rtxaml::Controls::Control>())

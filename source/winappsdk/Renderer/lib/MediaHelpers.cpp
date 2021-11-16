@@ -158,72 +158,72 @@ void AddDefaultPlayIcon(rtxaml::Controls::Panel const& posterPanel,
     relativePanelStatics.SetAlignVerticalCenterWithPanel(playIcon, true);
 }
 
-void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
-{
-    // Create a rectangle
-    ComPtr<IRectangle> rectangle =
-        XamlHelpers::CreateABIClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
-
-    // Set the size
-    ComPtr<IFrameworkElement> rectangleAsFrameworkElement;
-    THROW_IF_FAILED(rectangle.As(&rectangleAsFrameworkElement));
-    THROW_IF_FAILED(rectangleAsFrameworkElement->put_Height(c_playIconSize));
-    THROW_IF_FAILED(rectangleAsFrameworkElement->put_Width(c_playIconSize));
-
-    // Round the corners
-    THROW_IF_FAILED(rectangle->put_RadiusX(c_playIconCornerRadius));
-    THROW_IF_FAILED(rectangle->put_RadiusY(c_playIconCornerRadius));
-
-    // Set it's fill and opacity
-    ComPtr<IShape> rectangleAsShape;
-    THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
-
-    ABI::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
-    ComPtr<IBrush> rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
-    THROW_IF_FAILED(rectangleAsShape->put_Fill(rectangleBrush.Get()));
-
-    ComPtr<IUIElement> rectangleAsUIElement;
-    THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
-    THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
-
-    // Outline it in the Dark color
-    ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
-    THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
-
-    ComPtr<IColorsStatics> colorsStatics;
-    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Colors).Get(), &colorsStatics));
-
-    ABI::Windows::UI::Color darkBrushColor;
-    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, false, &darkBrushColor));
-
-    ComPtr<IBrush> darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
-    rectangleAsShape->put_Stroke(darkBrush.Get());
-
-    // Create a play symbol icon
-    ComPtr<ISymbolIcon> playIcon =
-        XamlHelpers::CreateABIClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
-    THROW_IF_FAILED(playIcon->put_Symbol(Symbol::Symbol_Play));
-
-    // Set it's color
-    ComPtr<IIconElement> playIconAsIconElement;
-    THROW_IF_FAILED(playIcon.As(&playIconAsIconElement));
-    THROW_IF_FAILED(playIconAsIconElement->put_Foreground(darkBrush.Get()));
-
-    // Put the rectangle and the play icon on the panel and center them
-    ComPtr<IRelativePanelStatics> relativePanelStatics;
-    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
-                                         &relativePanelStatics));
-
-    XamlHelpers::AppendXamlElementToPanel(rectangle.Get(), posterPanel);
-    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(rectangleAsUIElement.Get(), true));
-    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(rectangleAsUIElement.Get(), true));
-
-    ComPtr<IUIElement> playIconAsUIElement;
-    THROW_IF_FAILED(playIcon.As(&playIconAsUIElement));
-    XamlHelpers::AppendXamlElementToPanel(playIcon.Get(), posterPanel);
-    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconAsUIElement.Get(), true));
-    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
-}
+//void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
+//{
+//    // Create a rectangle
+//    ComPtr<IRectangle> rectangle =
+//        XamlHelpers::CreateABIClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+//
+//    // Set the size
+//    ComPtr<IFrameworkElement> rectangleAsFrameworkElement;
+//    THROW_IF_FAILED(rectangle.As(&rectangleAsFrameworkElement));
+//    THROW_IF_FAILED(rectangleAsFrameworkElement->put_Height(c_playIconSize));
+//    THROW_IF_FAILED(rectangleAsFrameworkElement->put_Width(c_playIconSize));
+//
+//    // Round the corners
+//    THROW_IF_FAILED(rectangle->put_RadiusX(c_playIconCornerRadius));
+//    THROW_IF_FAILED(rectangle->put_RadiusY(c_playIconCornerRadius));
+//
+//    // Set it's fill and opacity
+//    ComPtr<IShape> rectangleAsShape;
+//    THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
+//
+//    ABI::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
+//    ComPtr<IBrush> rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
+//    THROW_IF_FAILED(rectangleAsShape->put_Fill(rectangleBrush.Get()));
+//
+//    ComPtr<IUIElement> rectangleAsUIElement;
+//    THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
+//    THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
+//
+//    // Outline it in the Dark color
+//    ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
+//    THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
+//
+//    ComPtr<IColorsStatics> colorsStatics;
+//    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Colors).Get(), &colorsStatics));
+//
+//    ABI::Windows::UI::Color darkBrushColor;
+//    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, false, &darkBrushColor));
+//
+//    ComPtr<IBrush> darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
+//    rectangleAsShape->put_Stroke(darkBrush.Get());
+//
+//    // Create a play symbol icon
+//    ComPtr<ISymbolIcon> playIcon =
+//        XamlHelpers::CreateABIClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
+//    THROW_IF_FAILED(playIcon->put_Symbol(Symbol::Symbol_Play));
+//
+//    // Set it's color
+//    ComPtr<IIconElement> playIconAsIconElement;
+//    THROW_IF_FAILED(playIcon.As(&playIconAsIconElement));
+//    THROW_IF_FAILED(playIconAsIconElement->put_Foreground(darkBrush.Get()));
+//
+//    // Put the rectangle and the play icon on the panel and center them
+//    ComPtr<IRelativePanelStatics> relativePanelStatics;
+//    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
+//                                         &relativePanelStatics));
+//
+//    XamlHelpers::AppendXamlElementToPanel(rectangle.Get(), posterPanel);
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(rectangleAsUIElement.Get(), true));
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(rectangleAsUIElement.Get(), true));
+//
+//    ComPtr<IUIElement> playIconAsUIElement;
+//    THROW_IF_FAILED(playIcon.As(&playIconAsUIElement));
+//    XamlHelpers::AppendXamlElementToPanel(playIcon.Get(), posterPanel);
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconAsUIElement.Get(), true));
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
+//}
 
 void AddCustomPlayIcon(rtxaml::Controls::Panel const& posterPanel,
                        winrt::hstring const& playIconString,
@@ -265,38 +265,38 @@ void AddCustomPlayIcon(rtxaml::Controls::Panel const& posterPanel,
     }
 }
 
-void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
-{
-    // Render the custom play icon using the image renderer
-    ComPtr<IAdaptiveImage> playIconAdaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
-
-    THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
-
-    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-    THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-    ComPtr<IAdaptiveElementRenderer> imageRenderer;
-    THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
-
-    ComPtr<IAdaptiveCardElement> playIconImageAsAdaptiveElement;
-    THROW_IF_FAILED(playIconAdaptiveImage.As(&playIconImageAsAdaptiveElement));
-
-    ComPtr<IUIElement> playIconUIElement;
-    THROW_IF_FAILED(imageRenderer->Render(playIconImageAsAdaptiveElement.Get(), renderContext, renderArgs, &playIconUIElement));
-
-    ComPtr<IFrameworkElement> playIconAsFrameworkElement;
-    THROW_IF_FAILED(playIconUIElement.As(&playIconAsFrameworkElement));
-    THROW_IF_FAILED(playIconAsFrameworkElement->put_Height(c_playIconSize));
-
-    // Add it to the panel and center it
-    ComPtr<IRelativePanelStatics> relativePanelStatics;
-    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
-                                         &relativePanelStatics));
-
-    XamlHelpers::AppendXamlElementToPanel(playIconUIElement.Get(), posterPanel);
-    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconUIElement.Get(), true));
-    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconUIElement.Get(), true));
-}
+//void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
+//{
+//    // Render the custom play icon using the image renderer
+//    ComPtr<IAdaptiveImage> playIconAdaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+//        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
+//
+//    THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
+//
+//    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+//    THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+//    ComPtr<IAdaptiveElementRenderer> imageRenderer;
+//    THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
+//
+//    ComPtr<IAdaptiveCardElement> playIconImageAsAdaptiveElement;
+//    THROW_IF_FAILED(playIconAdaptiveImage.As(&playIconImageAsAdaptiveElement));
+//
+//    ComPtr<IUIElement> playIconUIElement;
+//    THROW_IF_FAILED(imageRenderer->Render(playIconImageAsAdaptiveElement.Get(), renderContext, renderArgs, &playIconUIElement));
+//
+//    ComPtr<IFrameworkElement> playIconAsFrameworkElement;
+//    THROW_IF_FAILED(playIconUIElement.As(&playIconAsFrameworkElement));
+//    THROW_IF_FAILED(playIconAsFrameworkElement->put_Height(c_playIconSize));
+//
+//    // Add it to the panel and center it
+//    ComPtr<IRelativePanelStatics> relativePanelStatics;
+//    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
+//                                         &relativePanelStatics));
+//
+//    XamlHelpers::AppendXamlElementToPanel(playIconUIElement.Get(), posterPanel);
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconUIElement.Get(), true));
+//    THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconUIElement.Get(), true));
+//}
 
 void AddPlayIcon(rtxaml::Controls::Panel const& posterPanel,
                  rtrender::AdaptiveRenderContext const& renderContext,
@@ -318,54 +318,54 @@ void AddPlayIcon(rtxaml::Controls::Panel const& posterPanel,
     }
 }
 
-void AddPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
-{
-    ComPtr<IAdaptiveHostConfig> hostConfig;
-    THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+//void AddPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
+//{
+//    ComPtr<IAdaptiveHostConfig> hostConfig;
+//    THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+//
+//    ComPtr<IAdaptiveMediaConfig> mediaConfig;
+//    THROW_IF_FAILED(hostConfig->get_Media(&mediaConfig));
+//
+//    HString customPlayIconString;
+//    THROW_IF_FAILED(mediaConfig->get_PlayButton(customPlayIconString.GetAddressOf()));
+//
+//    if (customPlayIconString == nullptr)
+//    {
+//        AddDefaultPlayIcon(posterPanel, hostConfig.Get(), renderArgs);
+//    }
+//    else
+//    {
+//        AddCustomPlayIcon(posterPanel, customPlayIconString.Get(), renderContext, renderArgs);
+//    }
+//}
 
-    ComPtr<IAdaptiveMediaConfig> mediaConfig;
-    THROW_IF_FAILED(hostConfig->get_Media(&mediaConfig));
-
-    HString customPlayIconString;
-    THROW_IF_FAILED(mediaConfig->get_PlayButton(customPlayIconString.GetAddressOf()));
-
-    if (customPlayIconString == nullptr)
-    {
-        AddDefaultPlayIcon(posterPanel, hostConfig.Get(), renderArgs);
-    }
-    else
-    {
-        AddCustomPlayIcon(posterPanel, customPlayIconString.Get(), renderContext, renderArgs);
-    }
-}
-
-void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
-                                         _In_ IAdaptiveRenderContext* renderContext,
-                                         _In_ IAdaptiveRenderArgs* renderArgs,
-                                         _Outptr_ IUIElement** posterContainer)
-{
-    ComPtr<IRelativePanel> posterRelativePanel =
-        XamlHelpers::CreateABIClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
-
-    ComPtr<IPanel> posterPanel;
-    THROW_IF_FAILED(posterRelativePanel.As(&posterPanel));
-
-    ComPtr<IFrameworkElement> posterImageAsFrameworkElement;
-    if (posterImage != nullptr)
-    {
-        // Append the poster image to the panel
-        XamlHelpers::AppendXamlElementToPanel(posterImage, posterPanel.Get());
-
-        ComPtr<IImage> localPosterImage{posterImage};
-        localPosterImage.As(&posterImageAsFrameworkElement);
-    }
-
-    AddPlayIcon(posterPanel.Get(), renderContext, renderArgs);
-
-    ComPtr<IUIElement> posterRelativePanelAsUIElement;
-    THROW_IF_FAILED(posterRelativePanel.As(&posterRelativePanelAsUIElement));
-    THROW_IF_FAILED(posterRelativePanelAsUIElement.CopyTo(posterContainer));
-}
+//void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
+//                                         _In_ IAdaptiveRenderContext* renderContext,
+//                                         _In_ IAdaptiveRenderArgs* renderArgs,
+//                                         _Outptr_ IUIElement** posterContainer)
+//{
+//    ComPtr<IRelativePanel> posterRelativePanel =
+//        XamlHelpers::CreateABIClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
+//
+//    ComPtr<IPanel> posterPanel;
+//    THROW_IF_FAILED(posterRelativePanel.As(&posterPanel));
+//
+//    ComPtr<IFrameworkElement> posterImageAsFrameworkElement;
+//    if (posterImage != nullptr)
+//    {
+//        // Append the poster image to the panel
+//        XamlHelpers::AppendXamlElementToPanel(posterImage, posterPanel.Get());
+//
+//        ComPtr<IImage> localPosterImage{posterImage};
+//        localPosterImage.As(&posterImageAsFrameworkElement);
+//    }
+//
+//    AddPlayIcon(posterPanel.Get(), renderContext, renderArgs);
+//
+//    ComPtr<IUIElement> posterRelativePanelAsUIElement;
+//    THROW_IF_FAILED(posterRelativePanel.As(&posterRelativePanelAsUIElement));
+//    THROW_IF_FAILED(posterRelativePanelAsUIElement.CopyTo(posterContainer));
+//}
 
 rtxaml::UIElement CreatePosterContainerWithPlayButton(rtxaml::Controls::Image const& posterImage,
                                                       rtrender::AdaptiveRenderContext const& renderContext,

@@ -609,7 +609,7 @@ namespace AdaptiveCards
                 AdaptiveMediaRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveActionRenderer
+            [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveActionSetRenderer();
             };
@@ -645,7 +645,7 @@ namespace AdaptiveCards
 
                 AdaptiveCards.ObjectModel.WinUI3.AdaptiveBackgroundImage BackgroundImage;
                 Windows.UI.Xaml.FrameworkElement RootElement;
-                Windows.UI.Xaml.UIElement ResolvedImage;
+                Windows.UI.Xaml.UIElement ResolvedImage { get; };
                 Windows.Foundation.Size ImageSize;
 
                 void LoadImageBrush(Windows.UI.Xaml.UIElement uielement);
