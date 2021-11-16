@@ -1,12 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
-export type TextSize  = "small" | "default" | "medium" | "large" | "extraLarge";
+export type TextSize = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
 export type VerticalAlignment = "top" | "center" | "bottom";
-export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge" | "padding";
+export type Spacing =
+    | "none"
+    | "small"
+    | "default"
+    | "medium"
+    | "large"
+    | "extraLarge"
+    | "padding";
 export type TextWeight = "lighter" | "default" | "bolder";
-export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warning" | "attention";
+export type TextColor =
+    | "default"
+    | "dark"
+    | "light"
+    | "accent"
+    | "good"
+    | "warning"
+    | "attention";
 export type ContainerStyle = "default" | "emphasis";
 export type ImageStyle = "default" | "person";
 
@@ -166,7 +180,14 @@ export interface IAdaptiveCard extends ICardElement {
     type: "AdaptiveCard";
     version?: IVersion | string;
     backgroundImage?: IBackgroundImage | string;
-    body?: (ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer)[];
+    body?: (
+        | ITextBlock
+        | IImage
+        | IImageSet
+        | IFactSet
+        | IColumnSet
+        | IContainer
+    )[];
     actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];
     speak?: string;
 }

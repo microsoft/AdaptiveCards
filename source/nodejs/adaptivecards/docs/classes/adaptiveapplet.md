@@ -4,139 +4,139 @@
 
 ## Hierarchy
 
-* **AdaptiveApplet**
+- **AdaptiveApplet**
 
 ## Index
 
 ### Constructors
 
-* [constructor](adaptiveapplet.md#constructor)
+- [constructor](adaptiveapplet.md#constructor)
 
 ### Properties
 
-* [channelAdapter](adaptiveapplet.md#channeladapter)
-* [onActivityRequestFailed](adaptiveapplet.md#optional-onactivityrequestfailed)
-* [onActivityRequestSucceeded](adaptiveapplet.md#optional-onactivityrequestsucceeded)
-* [onCardChanged](adaptiveapplet.md#optional-oncardchanged)
-* [onCardChanging](adaptiveapplet.md#optional-oncardchanging)
-* [onCreateProgressOverlay](adaptiveapplet.md#optional-oncreateprogressoverlay)
-* [onPrepareActivityRequest](adaptiveapplet.md#optional-onprepareactivityrequest)
-* [onRenderRefreshButton](adaptiveapplet.md#optional-onrenderrefreshbutton)
-* [renderedElement](adaptiveapplet.md#renderedelement)
-* [userId](adaptiveapplet.md#optional-userid)
+- [channelAdapter](adaptiveapplet.md#channeladapter)
+- [onActivityRequestFailed](adaptiveapplet.md#optional-onactivityrequestfailed)
+- [onActivityRequestSucceeded](adaptiveapplet.md#optional-onactivityrequestsucceeded)
+- [onCardChanged](adaptiveapplet.md#optional-oncardchanged)
+- [onCardChanging](adaptiveapplet.md#optional-oncardchanging)
+- [onCreateProgressOverlay](adaptiveapplet.md#optional-oncreateprogressoverlay)
+- [onPrepareActivityRequest](adaptiveapplet.md#optional-onprepareactivityrequest)
+- [onRenderRefreshButton](adaptiveapplet.md#optional-onrenderrefreshbutton)
+- [renderedElement](adaptiveapplet.md#renderedelement)
+- [userId](adaptiveapplet.md#optional-userid)
 
 ### Accessors
 
-* [card](adaptiveapplet.md#card)
+- [card](adaptiveapplet.md#card)
 
 ### Methods
 
-* [refreshCard](adaptiveapplet.md#refreshcard)
-* [setCard](adaptiveapplet.md#setcard)
-* [initialize](adaptiveapplet.md#static-initialize)
+- [refreshCard](adaptiveapplet.md#refreshcard)
+- [setCard](adaptiveapplet.md#setcard)
+- [initialize](adaptiveapplet.md#static-initialize)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new AdaptiveApplet**(): *[AdaptiveApplet](adaptiveapplet.md)*
+\+ **new AdaptiveApplet**(): _[AdaptiveApplet](adaptiveapplet.md)_
 
-**Returns:** *[AdaptiveApplet](adaptiveapplet.md)*
+**Returns:** _[AdaptiveApplet](adaptiveapplet.md)_
 
 ## Properties
 
-###  channelAdapter
+### channelAdapter
 
-• **channelAdapter**: *[ChannelAdapter](channeladapter.md) | undefined* = undefined
+• **channelAdapter**: _[ChannelAdapter](channeladapter.md) | undefined_ = undefined
 
-___
+---
 
 ### `Optional` onActivityRequestFailed
 
-• **onActivityRequestFailed**? : *undefined | function*
+• **onActivityRequestFailed**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onActivityRequestSucceeded
 
-• **onActivityRequestSucceeded**? : *undefined | function*
+• **onActivityRequestSucceeded**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onCardChanged
 
-• **onCardChanged**? : *undefined | function*
+• **onCardChanged**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onCardChanging
 
-• **onCardChanging**? : *undefined | function*
+• **onCardChanging**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onCreateProgressOverlay
 
-• **onCreateProgressOverlay**? : *undefined | function*
+• **onCreateProgressOverlay**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onPrepareActivityRequest
 
-• **onPrepareActivityRequest**? : *undefined | function*
+• **onPrepareActivityRequest**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onRenderRefreshButton
 
-• **onRenderRefreshButton**? : *undefined | function*
+• **onRenderRefreshButton**? : _undefined | function_
 
-___
+---
 
-###  renderedElement
+### renderedElement
 
-• **renderedElement**: *HTMLElement*
+• **renderedElement**: _HTMLElement_
 
-___
+---
 
 ### `Optional` userId
 
-• **userId**? : *undefined | string*
+• **userId**? : _undefined | string_
 
 ## Accessors
 
-###  card
+### card
 
-• **get card**(): *[AdaptiveAppletCard](adaptiveappletcard.md) | undefined*
+• **get card**(): _[AdaptiveAppletCard](adaptiveappletcard.md) | undefined_
 
-**Returns:** *[AdaptiveAppletCard](adaptiveappletcard.md) | undefined*
+**Returns:** _[AdaptiveAppletCard](adaptiveappletcard.md) | undefined_
 
 ## Methods
 
-###  refreshCard
+### refreshCard
 
-▸ **refreshCard**(): *void*
+▸ **refreshCard**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  setCard
+### setCard
 
-▸ **setCard**(`payload`: any): *void*
+▸ **setCard**(`payload`: any): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`payload` | any |
+| Name      | Type |
+| --------- | ---- |
+| `payload` | any  |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Static` initialize
 
-▸ **initialize**(): *void*
+▸ **initialize**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_

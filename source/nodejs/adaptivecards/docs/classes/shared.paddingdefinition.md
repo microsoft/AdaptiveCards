@@ -21,18 +21,18 @@
 
 ### constructor
 
-\+ **new PaddingDefinition**(`top?`: [*Spacing*](../enums/enums.spacing.md), `right?`: [*Spacing*](../enums/enums.spacing.md), `bottom?`: [*Spacing*](../enums/enums.spacing.md), `left?`: [*Spacing*](../enums/enums.spacing.md)): [*PaddingDefinition*](shared.paddingdefinition.md)
+\+ **new PaddingDefinition**(`top?`: [_Spacing_](../enums/enums.spacing.md), `right?`: [_Spacing_](../enums/enums.spacing.md), `bottom?`: [_Spacing_](../enums/enums.spacing.md), `left?`: [_Spacing_](../enums/enums.spacing.md)): [_PaddingDefinition_](shared.paddingdefinition.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`top` | [*Spacing*](../enums/enums.spacing.md) |
-`right` | [*Spacing*](../enums/enums.spacing.md) |
-`bottom` | [*Spacing*](../enums/enums.spacing.md) |
-`left` | [*Spacing*](../enums/enums.spacing.md) |
+| Name     | Type                                   |
+| :------- | :------------------------------------- |
+| `top`    | [_Spacing_](../enums/enums.spacing.md) |
+| `right`  | [_Spacing_](../enums/enums.spacing.md) |
+| `bottom` | [_Spacing_](../enums/enums.spacing.md) |
+| `left`   | [_Spacing_](../enums/enums.spacing.md) |
 
-**Returns:** [*PaddingDefinition*](shared.paddingdefinition.md)
+**Returns:** [_PaddingDefinition_](shared.paddingdefinition.md)
 
 Defined in: [shared.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L134)
 
@@ -40,30 +40,30 @@ Defined in: [shared.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938
 
 ### bottom
 
-• **bottom**: [*Spacing*](../enums/enums.spacing.md)
+• **bottom**: [_Spacing_](../enums/enums.spacing.md)
 
 Defined in: [shared.ts:133](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L133)
 
-___
+---
 
 ### left
 
-• **left**: [*Spacing*](../enums/enums.spacing.md)
+• **left**: [_Spacing_](../enums/enums.spacing.md)
 
 Defined in: [shared.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L134)
 
-___
+---
 
 ### right
 
-• **right**: [*Spacing*](../enums/enums.spacing.md)
+• **right**: [_Spacing_](../enums/enums.spacing.md)
 
 Defined in: [shared.ts:132](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L132)
 
-___
+---
 
 ### top
 
-• **top**: [*Spacing*](../enums/enums.spacing.md)
+• **top**: [_Spacing_](../enums/enums.spacing.md)
 
 Defined in: [shared.ts:131](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L131)

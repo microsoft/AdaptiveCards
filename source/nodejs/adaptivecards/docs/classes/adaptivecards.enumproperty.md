@@ -6,13 +6,13 @@
 
 ## Type parameters
 
-Name | Type |
-:------ | :------ |
-`TEnum` | *object* |
+| Name    | Type     |
+| :------ | :------- |
+| `TEnum` | _object_ |
 
 ## Hierarchy
 
-* [*PropertyDefinition*](serialization.propertydefinition.md)
+- [_PropertyDefinition_](serialization.propertydefinition.md)
 
   ↳ **EnumProperty**
 
@@ -46,26 +46,26 @@ Name | Type |
 
 ### constructor
 
-\+ **new EnumProperty**<TEnum\>(`targetVersion`: [*Version*](serialization.version.md), `name`: *string*, `enumType`: TEnum, `defaultValue?`: *number*, `values?`: [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<number\>[], `onGetInitialValue?`: (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *number*): [*EnumProperty*](serialization.enumproperty.md)<TEnum\>
+\+ **new EnumProperty**<TEnum\>(`targetVersion`: [_Version_](serialization.version.md), `name`: _string_, `enumType`: TEnum, `defaultValue?`: _number_, `values?`: [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<number\>[], `onGetInitialValue?`: (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _number_): [_EnumProperty_](serialization.enumproperty.md)<TEnum\>
 
 #### Type parameters:
 
-Name | Type |
-:------ | :------ |
-`TEnum` | *object* |
+| Name    | Type     |
+| :------ | :------- |
+| `TEnum` | _object_ |
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`targetVersion` | [*Version*](serialization.version.md) |
-`name` | *string* |
-`enumType` | TEnum |
-`defaultValue?` | *number* |
-`values?` | [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<number\>[] |
-`onGetInitialValue?` | (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *number* |
+| Name                 | Type                                                                                |
+| :------------------- | :---------------------------------------------------------------------------------- |
+| `targetVersion`      | [_Version_](serialization.version.md)                                               |
+| `name`               | _string_                                                                            |
+| `enumType`           | TEnum                                                                               |
+| `defaultValue?`      | _number_                                                                            |
+| `values?`            | [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<number\>[]      |
+| `onGetInitialValue?` | (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _number_ |
 
-**Returns:** [*EnumProperty*](serialization.enumproperty.md)<TEnum\>
+**Returns:** [_EnumProperty_](serialization.enumproperty.md)<TEnum\>
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
@@ -75,57 +75,57 @@ Defined in: [serialization.ts:575](https://github.com/microsoft/AdaptiveCards/bl
 
 ### defaultValue
 
-• `Optional` `Readonly` **defaultValue**: *undefined* \| *number*
+• `Optional` `Readonly` **defaultValue**: _undefined_ \| _number_
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[defaultValue](serialization.propertydefinition.md#defaultvalue)
 
-___
+---
 
 ### enumType
 
 • `Readonly` **enumType**: TEnum
 
-___
+---
 
 ### isSerializationEnabled
 
-• **isSerializationEnabled**: *boolean*= true
+• **isSerializationEnabled**: _boolean_= true
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[isSerializationEnabled](serialization.propertydefinition.md#isserializationenabled)
 
 Defined in: [serialization.ts:276](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L276)
 
-___
+---
 
 ### name
 
-• `Readonly` **name**: *string*
+• `Readonly` **name**: _string_
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[name](serialization.propertydefinition.md#name)
 
-___
+---
 
 ### onGetInitialValue
 
-• `Optional` `Readonly` **onGetInitialValue**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md)) => *number*
+• `Optional` `Readonly` **onGetInitialValue**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md)) => _number_
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[onGetInitialValue](serialization.propertydefinition.md#ongetinitialvalue)
 
-___
+---
 
 ### sequentialNumber
 
-• `Readonly` **sequentialNumber**: *number*
+• `Readonly` **sequentialNumber**: _number_
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[sequentialNumber](serialization.propertydefinition.md#sequentialnumber)
 
 Defined in: [serialization.ts:274](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L274)
 
-___
+---
 
 ### targetVersion
 
-• `Readonly` **targetVersion**: [*Version*](serialization.version.md)
+• `Readonly` **targetVersion**: [_Version_](serialization.version.md)
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[targetVersion](serialization.propertydefinition.md#targetversion)
 
@@ -133,9 +133,9 @@ Inherited from: [PropertyDefinition](serialization.propertydefinition.md).[targe
 
 ### values
 
-• get **values**(): [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<number\>[]
+• get **values**(): [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<number\>[]
 
-**Returns:** [*IVersionedValue*](../interfaces/serialization.iversionedvalue.md)<number\>[]
+**Returns:** [_IVersionedValue_](../interfaces/serialization.iversionedvalue.md)<number\>[]
 
 Defined in: [serialization.ts:600](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L600)
 
@@ -143,50 +143,50 @@ Defined in: [serialization.ts:600](https://github.com/microsoft/AdaptiveCards/bl
 
 ### getInternalName
 
-▸ **getInternalName**(): *string*
+▸ **getInternalName**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Inherited from: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:262](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L262)
 
-___
+---
 
 ### parse
 
-▸ **parse**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `source`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *undefined* \| *number*
+▸ **parse**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `source`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _undefined_ \| _number_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`sender` | [*SerializableObject*](serialization.serializableobject.md) |
-`source` | [*PropertyBag*](../modules/serialization.md#propertybag) |
-`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
+| Name      | Type                                                                    |
+| :-------- | :---------------------------------------------------------------------- |
+| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
+| `source`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
+| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
 
-**Returns:** *undefined* \| *number*
+**Returns:** _undefined_ \| _number_
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 
 Defined in: [serialization.ts:502](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L502)
 
-___
+---
 
 ### toJSON
 
-▸ **toJSON**(`sender`: [*SerializableObject*](serialization.serializableobject.md), `target`: [*PropertyBag*](../modules/serialization.md#propertybag), `value`: *undefined* \| *number*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *void*
+▸ **toJSON**(`sender`: [_SerializableObject_](serialization.serializableobject.md), `target`: [_PropertyBag_](../modules/serialization.md#propertybag), `value`: _undefined_ \| _number_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`sender` | [*SerializableObject*](serialization.serializableobject.md) |
-`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
-`value` | *undefined* \| *number* |
-`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
+| Name      | Type                                                                    |
+| :-------- | :---------------------------------------------------------------------- |
+| `sender`  | [_SerializableObject_](serialization.serializableobject.md)             |
+| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)                |
+| `value`   | _undefined_ \| _number_                                                 |
+| `context` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Overrides: [PropertyDefinition](serialization.propertydefinition.md)
 

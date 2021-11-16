@@ -14,6 +14,6 @@
 
 ### url
 
-• **url**: *string*
+• **url**: _string_
 
 Defined in: [schema.ts:44](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L44)

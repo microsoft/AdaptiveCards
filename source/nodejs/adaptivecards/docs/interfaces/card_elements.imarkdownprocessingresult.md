@@ -15,14 +15,14 @@
 
 ### didProcess
 
-• **didProcess**: *boolean*
+• **didProcess**: _boolean_
 
 Defined in: [card-elements.ts:6367](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6367)
 
-___
+---
 
 ### outputHtml
 
-• `Optional` **outputHtml**: *any*
+• `Optional` **outputHtml**: _any_
 
 Defined in: [card-elements.ts:6368](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6368)

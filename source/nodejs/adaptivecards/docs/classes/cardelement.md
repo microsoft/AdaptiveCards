@@ -4,1284 +4,1284 @@
 
 ## Hierarchy
 
-  ↳ [CardObject](cardobject.md)
+↳ [CardObject](cardobject.md)
 
-  ↳ **CardElement**
+↳ **CardElement**
 
-  ↳ [BaseTextBlock](basetextblock.md)
+↳ [BaseTextBlock](basetextblock.md)
 
-  ↳ [RichTextBlock](richtextblock.md)
+↳ [RichTextBlock](richtextblock.md)
 
-  ↳ [FactSet](factset.md)
+↳ [FactSet](factset.md)
 
-  ↳ [Image](image.md)
+↳ [Image](image.md)
 
-  ↳ [CardElementContainer](cardelementcontainer.md)
+↳ [CardElementContainer](cardelementcontainer.md)
 
-  ↳ [Media](media.md)
+↳ [Media](media.md)
 
-  ↳ [Input](input.md)
+↳ [Input](input.md)
 
-  ↳ [ActionSet](actionset.md)
+↳ [ActionSet](actionset.md)
 
 ## Index
 
 ### Constructors
 
-* [constructor](cardelement.md#constructor)
+- [constructor](cardelement.md#constructor)
 
 ### Properties
 
-* [_parent](cardelement.md#protected-optional-_parent)
-* [_renderedElement](cardelement.md#protected-optional-_renderedelement)
-* [customCssSelector](cardelement.md#optional-customcssselector)
-* [height](cardelement.md#height)
-* [horizontalAlignment](cardelement.md#horizontalalignment)
-* [id](cardelement.md#optional-id)
-* [maxVersion](cardelement.md#maxversion)
-* [onPreProcessPropertyValue](cardelement.md#optional-onpreprocesspropertyvalue)
-* [separator](cardelement.md#separator)
-* [spacing](cardelement.md#spacing)
-* [heightProperty](cardelement.md#static-readonly-heightproperty)
-* [horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)
-* [idProperty](cardelement.md#static-readonly-idproperty)
-* [isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)
-* [langProperty](cardelement.md#static-readonly-langproperty)
-* [onRegisterCustomProperties](cardelement.md#static-optional-onregistercustomproperties)
-* [requiresProperty](cardelement.md#static-readonly-requiresproperty)
-* [separatorProperty](cardelement.md#static-readonly-separatorproperty)
-* [spacingProperty](cardelement.md#static-readonly-spacingproperty)
-* [typeNameProperty](cardelement.md#static-readonly-typenameproperty)
+- [\_parent](cardelement.md#protected-optional-_parent)
+- [\_renderedElement](cardelement.md#protected-optional-_renderedelement)
+- [customCssSelector](cardelement.md#optional-customcssselector)
+- [height](cardelement.md#height)
+- [horizontalAlignment](cardelement.md#horizontalalignment)
+- [id](cardelement.md#optional-id)
+- [maxVersion](cardelement.md#maxversion)
+- [onPreProcessPropertyValue](cardelement.md#optional-onpreprocesspropertyvalue)
+- [separator](cardelement.md#separator)
+- [spacing](cardelement.md#spacing)
+- [heightProperty](cardelement.md#static-readonly-heightproperty)
+- [horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)
+- [idProperty](cardelement.md#static-readonly-idproperty)
+- [isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)
+- [langProperty](cardelement.md#static-readonly-langproperty)
+- [onRegisterCustomProperties](cardelement.md#static-optional-onregistercustomproperties)
+- [requiresProperty](cardelement.md#static-readonly-requiresproperty)
+- [separatorProperty](cardelement.md#static-readonly-separatorproperty)
+- [spacingProperty](cardelement.md#static-readonly-spacingproperty)
+- [typeNameProperty](cardelement.md#static-readonly-typenameproperty)
 
 ### Accessors
 
-* [allowCustomPadding](cardelement.md#protected-allowcustompadding)
-* [defaultStyle](cardelement.md#protected-defaultstyle)
-* [hasVisibleSeparator](cardelement.md#hasvisibleseparator)
-* [hostConfig](cardelement.md#hostconfig)
-* [index](cardelement.md#index)
-* [isInline](cardelement.md#isinline)
-* [isInteractive](cardelement.md#isinteractive)
-* [isStandalone](cardelement.md#isstandalone)
-* [isVisible](cardelement.md#isvisible)
-* [lang](cardelement.md#lang)
-* [parent](cardelement.md#parent)
-* [renderedElement](cardelement.md#renderedelement)
-* [requires](cardelement.md#requires)
-* [separatorElement](cardelement.md#separatorelement)
-* [separatorOrientation](cardelement.md#protected-separatororientation)
-* [useDefaultSizing](cardelement.md#protected-usedefaultsizing)
+- [allowCustomPadding](cardelement.md#protected-allowcustompadding)
+- [defaultStyle](cardelement.md#protected-defaultstyle)
+- [hasVisibleSeparator](cardelement.md#hasvisibleseparator)
+- [hostConfig](cardelement.md#hostconfig)
+- [index](cardelement.md#index)
+- [isInline](cardelement.md#isinline)
+- [isInteractive](cardelement.md#isinteractive)
+- [isStandalone](cardelement.md#isstandalone)
+- [isVisible](cardelement.md#isvisible)
+- [lang](cardelement.md#lang)
+- [parent](cardelement.md#parent)
+- [renderedElement](cardelement.md#renderedelement)
+- [requires](cardelement.md#requires)
+- [separatorElement](cardelement.md#separatorelement)
+- [separatorOrientation](cardelement.md#protected-separatororientation)
+- [useDefaultSizing](cardelement.md#protected-usedefaultsizing)
 
 ### Methods
 
-* [adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)
-* [applyPadding](cardelement.md#protected-applypadding)
-* [asString](cardelement.md#asstring)
-* [createPlaceholderElement](cardelement.md#protected-createplaceholderelement)
-* [getActionAt](cardelement.md#getactionat)
-* [getActionById](cardelement.md#getactionbyid)
-* [getActionCount](cardelement.md#getactioncount)
-* [getAllInputs](cardelement.md#getallinputs)
-* [getCustomProperty](cardelement.md#getcustomproperty)
-* [getDefaultPadding](cardelement.md#protected-getdefaultpadding)
-* [getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)
-* [getEffectivePadding](cardelement.md#geteffectivepadding)
-* [getEffectiveStyle](cardelement.md#geteffectivestyle)
-* [getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)
-* [getElementById](cardelement.md#getelementbyid)
-* [getForbiddenActionTypes](cardelement.md#getforbiddenactiontypes)
-* [getHasBackground](cardelement.md#protected-gethasbackground)
-* [getImmediateSurroundingPadding](cardelement.md#getimmediatesurroundingpadding)
-* [getJsonTypeName](cardelement.md#abstract-getjsontypename)
-* [getPadding](cardelement.md#protected-getpadding)
-* [getParentContainer](cardelement.md#getparentcontainer)
-* [getResourceInformation](cardelement.md#getresourceinformation)
-* [getRootElement](cardelement.md#getrootelement)
-* [getRootObject](cardelement.md#getrootobject)
-* [getSchema](cardelement.md#getschema)
-* [getSchemaKey](cardelement.md#protected-getschemakey)
-* [getValue](cardelement.md#protected-getvalue)
-* [hasAllDefaultValues](cardelement.md#hasalldefaultvalues)
-* [hasDefaultValue](cardelement.md#hasdefaultvalue)
-* [indexOf](cardelement.md#indexof)
-* [internalParse](cardelement.md#protected-internalparse)
-* [internalRender](cardelement.md#protected-abstract-internalrender)
-* [internalToJSON](cardelement.md#protected-internaltojson)
-* [internalValidateProperties](cardelement.md#internalvalidateproperties)
-* [isAtTheVeryBottom](cardelement.md#isattheverybottom)
-* [isAtTheVeryLeft](cardelement.md#isattheveryleft)
-* [isAtTheVeryRight](cardelement.md#isattheveryright)
-* [isAtTheVeryTop](cardelement.md#isattheverytop)
-* [isBleeding](cardelement.md#isbleeding)
-* [isBleedingAtBottom](cardelement.md#isbleedingatbottom)
-* [isBleedingAtTop](cardelement.md#isbleedingattop)
-* [isBottomElement](cardelement.md#isbottomelement)
-* [isDesignMode](cardelement.md#isdesignmode)
-* [isDisplayed](cardelement.md#protected-isdisplayed)
-* [isFirstElement](cardelement.md#isfirstelement)
-* [isHiddenDueToOverflow](cardelement.md#ishiddenduetooverflow)
-* [isLastElement](cardelement.md#islastelement)
-* [isLeftMostElement](cardelement.md#isleftmostelement)
-* [isRightMostElement](cardelement.md#isrightmostelement)
-* [isTopElement](cardelement.md#istopelement)
-* [overrideInternalRender](cardelement.md#protected-overrideinternalrender)
-* [parse](cardelement.md#parse)
-* [populateSchema](cardelement.md#protected-populateschema)
-* [preProcessPropertyValue](cardelement.md#preprocesspropertyvalue)
-* [remove](cardelement.md#remove)
-* [render](cardelement.md#render)
-* [resetDefaultValues](cardelement.md#resetdefaultvalues)
-* [setCustomProperty](cardelement.md#setcustomproperty)
-* [setPadding](cardelement.md#protected-setpadding)
-* [setParent](cardelement.md#setparent)
-* [setShouldFallback](cardelement.md#setshouldfallback)
-* [setValue](cardelement.md#protected-setvalue)
-* [shouldFallback](cardelement.md#shouldfallback)
-* [shouldSerialize](cardelement.md#protected-shouldserialize)
-* [toJSON](cardelement.md#tojson)
-* [truncateOverflow](cardelement.md#protected-truncateoverflow)
-* [undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)
-* [updateLayout](cardelement.md#updatelayout)
-* [validateProperties](cardelement.md#validateproperties)
+- [adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)
+- [applyPadding](cardelement.md#protected-applypadding)
+- [asString](cardelement.md#asstring)
+- [createPlaceholderElement](cardelement.md#protected-createplaceholderelement)
+- [getActionAt](cardelement.md#getactionat)
+- [getActionById](cardelement.md#getactionbyid)
+- [getActionCount](cardelement.md#getactioncount)
+- [getAllInputs](cardelement.md#getallinputs)
+- [getCustomProperty](cardelement.md#getcustomproperty)
+- [getDefaultPadding](cardelement.md#protected-getdefaultpadding)
+- [getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)
+- [getEffectivePadding](cardelement.md#geteffectivepadding)
+- [getEffectiveStyle](cardelement.md#geteffectivestyle)
+- [getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)
+- [getElementById](cardelement.md#getelementbyid)
+- [getForbiddenActionTypes](cardelement.md#getforbiddenactiontypes)
+- [getHasBackground](cardelement.md#protected-gethasbackground)
+- [getImmediateSurroundingPadding](cardelement.md#getimmediatesurroundingpadding)
+- [getJsonTypeName](cardelement.md#abstract-getjsontypename)
+- [getPadding](cardelement.md#protected-getpadding)
+- [getParentContainer](cardelement.md#getparentcontainer)
+- [getResourceInformation](cardelement.md#getresourceinformation)
+- [getRootElement](cardelement.md#getrootelement)
+- [getRootObject](cardelement.md#getrootobject)
+- [getSchema](cardelement.md#getschema)
+- [getSchemaKey](cardelement.md#protected-getschemakey)
+- [getValue](cardelement.md#protected-getvalue)
+- [hasAllDefaultValues](cardelement.md#hasalldefaultvalues)
+- [hasDefaultValue](cardelement.md#hasdefaultvalue)
+- [indexOf](cardelement.md#indexof)
+- [internalParse](cardelement.md#protected-internalparse)
+- [internalRender](cardelement.md#protected-abstract-internalrender)
+- [internalToJSON](cardelement.md#protected-internaltojson)
+- [internalValidateProperties](cardelement.md#internalvalidateproperties)
+- [isAtTheVeryBottom](cardelement.md#isattheverybottom)
+- [isAtTheVeryLeft](cardelement.md#isattheveryleft)
+- [isAtTheVeryRight](cardelement.md#isattheveryright)
+- [isAtTheVeryTop](cardelement.md#isattheverytop)
+- [isBleeding](cardelement.md#isbleeding)
+- [isBleedingAtBottom](cardelement.md#isbleedingatbottom)
+- [isBleedingAtTop](cardelement.md#isbleedingattop)
+- [isBottomElement](cardelement.md#isbottomelement)
+- [isDesignMode](cardelement.md#isdesignmode)
+- [isDisplayed](cardelement.md#protected-isdisplayed)
+- [isFirstElement](cardelement.md#isfirstelement)
+- [isHiddenDueToOverflow](cardelement.md#ishiddenduetooverflow)
+- [isLastElement](cardelement.md#islastelement)
+- [isLeftMostElement](cardelement.md#isleftmostelement)
+- [isRightMostElement](cardelement.md#isrightmostelement)
+- [isTopElement](cardelement.md#istopelement)
+- [overrideInternalRender](cardelement.md#protected-overrideinternalrender)
+- [parse](cardelement.md#parse)
+- [populateSchema](cardelement.md#protected-populateschema)
+- [preProcessPropertyValue](cardelement.md#preprocesspropertyvalue)
+- [remove](cardelement.md#remove)
+- [render](cardelement.md#render)
+- [resetDefaultValues](cardelement.md#resetdefaultvalues)
+- [setCustomProperty](cardelement.md#setcustomproperty)
+- [setPadding](cardelement.md#protected-setpadding)
+- [setParent](cardelement.md#setparent)
+- [setShouldFallback](cardelement.md#setshouldfallback)
+- [setValue](cardelement.md#protected-setvalue)
+- [shouldFallback](cardelement.md#shouldfallback)
+- [shouldSerialize](cardelement.md#protected-shouldserialize)
+- [toJSON](cardelement.md#tojson)
+- [truncateOverflow](cardelement.md#protected-truncateoverflow)
+- [undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)
+- [updateLayout](cardelement.md#updatelayout)
+- [validateProperties](cardelement.md#validateproperties)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new CardElement**(): *[CardElement](cardelement.md)*
+\+ **new CardElement**(): _[CardElement](cardelement.md)_
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+_Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)_
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** _[CardElement](cardelement.md)_
 
 ## Properties
 
-### `Protected` `Optional` _parent
+### `Protected` `Optional` \_parent
 
-• **_parent**? : *[CardObject](cardobject.md)*
+• **\_parent**? : _[CardObject](cardobject.md)_
 
-*Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
+_Inherited from [CardObject](cardobject.md).[\_parent](cardobject.md#protected-optional-_parent)_
 
-___
+---
 
-### `Protected` `Optional` _renderedElement
+### `Protected` `Optional` \_renderedElement
 
-• **_renderedElement**? : *HTMLElement*
+• **\_renderedElement**? : _HTMLElement_
 
-*Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+_Inherited from [CardObject](cardobject.md).[\_renderedElement](cardobject.md#protected-optional-_renderedelement)_
 
-___
+---
 
 ### `Optional` customCssSelector
 
-• **customCssSelector**? : *undefined | string*
+• **customCssSelector**? : _undefined | string_
 
-___
+---
 
-###  height
+### height
 
-• **height**: *[CardElementHeight](../README.md#cardelementheight)*
+• **height**: _[CardElementHeight](../README.md#cardelementheight)_
 
-___
+---
 
-###  horizontalAlignment
+### horizontalAlignment
 
-• **horizontalAlignment**: *[HorizontalAlignment](../enums/horizontalalignment.md)*
+• **horizontalAlignment**: _[HorizontalAlignment](../enums/horizontalalignment.md)_
 
-___
+---
 
 ### `Optional` id
 
-• **id**? : *undefined | string*
+• **id**? : _undefined | string_
 
-*Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
+_Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)_
 
-___
+---
 
-###  maxVersion
+### maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.v1_3
+• **maxVersion**: _[Version](version.md)_ = Versions.v1_3
 
-*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+_Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)_
 
-___
+---
 
 ### `Optional` onPreProcessPropertyValue
 
-• **onPreProcessPropertyValue**? : *undefined | function*
+• **onPreProcessPropertyValue**? : _undefined | function_
 
-*Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
+_Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)_
 
-___
+---
 
-###  separator
+### separator
 
-• **separator**: *boolean*
+• **separator**: _boolean_
 
-___
+---
 
-###  spacing
+### spacing
 
-• **spacing**: *[Spacing](../enums/spacing.md)*
+• **spacing**: _[Spacing](../enums/spacing.md)_
 
-___
+---
 
 ### `Static` `Readonly` heightProperty
 
-▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
-        Versions.v1_1,
-        "height",
-        [
-            { value: "auto" },
-            { value: "stretch" }
-        ],
-        "auto")
+▪ **heightProperty**: _[ValueSetProperty](valuesetproperty.md)‹›_ = new ValueSetProperty(
+Versions.v1_1,
+"height",
+[
+{ value: "auto" },
+{ value: "stretch" }
+],
+"auto")
 
-___
+---
 
 ### `Static` `Readonly` horizontalAlignmentProperty
 
-▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(
-        Versions.v1_0,
-        "horizontalAlignment",
-        Enums.HorizontalAlignment,
-        Enums.HorizontalAlignment.Left)
+▪ **horizontalAlignmentProperty**: _[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›_ = new EnumProperty(
+Versions.v1_0,
+"horizontalAlignment",
+Enums.HorizontalAlignment,
+Enums.HorizontalAlignment.Left)
 
-___
+---
 
 ### `Static` `Readonly` idProperty
 
-▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+▪ **idProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
+_Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)_
 
-___
+---
 
 ### `Static` `Readonly` isVisibleProperty
 
-▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
+▪ **isVisibleProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_2, "isVisible", true)
 
-___
+---
 
 ### `Static` `Readonly` langProperty
 
-▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
+▪ **langProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
 
-___
+---
 
 ### `Static` `Optional` onRegisterCustomProperties
 
-▪ **onRegisterCustomProperties**? : *undefined | function*
+▪ **onRegisterCustomProperties**? : _undefined | function_
 
-*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+_Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)_
 
-___
+---
 
 ### `Static` `Readonly` requiresProperty
 
-▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.v1_2,
-        "requires",
-        HostCapabilities,
-        false,
-        new HostCapabilities())
+▪ **requiresProperty**: _[SerializableObjectProperty](serializableobjectproperty.md)‹›_ = new SerializableObjectProperty(
+Versions.v1_2,
+"requires",
+HostCapabilities,
+false,
+new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
+_Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)_
 
-___
+---
 
 ### `Static` `Readonly` separatorProperty
 
-▪ **separatorProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "separator", false)
+▪ **separatorProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_0, "separator", false)
 
-___
+---
 
 ### `Static` `Readonly` spacingProperty
 
-▪ **spacingProperty**: *[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›* = new EnumProperty(
-        Versions.v1_0,
-        "spacing",
-        Enums.Spacing,
-        Enums.Spacing.Default)
+▪ **spacingProperty**: _[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›_ = new EnumProperty(
+Versions.v1_0,
+"spacing",
+Enums.Spacing,
+Enums.Spacing.Default)
 
-___
+---
 
 ### `Static` `Readonly` typeNameProperty
 
-▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
-        Versions.v1_0,
-        "type",
-        undefined,
-        undefined,
-        undefined,
-        (sender: object) => {
-            return (<CardObject>sender).getJsonTypeName()
-        })
+▪ **typeNameProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(
+Versions.v1_0,
+"type",
+undefined,
+undefined,
+undefined,
+(sender: object) => {
+return (<CardObject>sender).getJsonTypeName()
+})
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
+_Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)_
 
 ## Accessors
 
 ### `Protected` allowCustomPadding
 
-• **get allowCustomPadding**(): *boolean*
+• **get allowCustomPadding**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` defaultStyle
 
-• **get defaultStyle**(): *string*
+• **get defaultStyle**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  hasVisibleSeparator
+### hasVisibleSeparator
 
-• **get hasVisibleSeparator**(): *boolean*
+• **get hasVisibleSeparator**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  hostConfig
+### hostConfig
 
-• **get hostConfig**(): *[HostConfig](hostconfig.md)*
+• **get hostConfig**(): _[HostConfig](hostconfig.md)_
 
-*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
+_Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)_
 
-**Returns:** *[HostConfig](hostconfig.md)*
+**Returns:** _[HostConfig](hostconfig.md)_
 
-• **set hostConfig**(`value`: [HostConfig](hostconfig.md)): *void*
+• **set hostConfig**(`value`: [HostConfig](hostconfig.md)): _void_
 
-*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | [HostConfig](hostconfig.md) |
-
-**Returns:** *void*
-
-___
-
-###  index
-
-• **get index**(): *number*
-
-**Returns:** *number*
-
-___
-
-###  isInline
-
-• **get isInline**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isInteractive
-
-• **get isInteractive**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isStandalone
-
-• **get isStandalone**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isVisible
-
-• **get isVisible**(): *boolean*
-
-**Returns:** *boolean*
-
-• **set isVisible**(`value`: boolean): *void*
+_Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | boolean |
+| Name    | Type                        |
+| ------- | --------------------------- |
+| `value` | [HostConfig](hostconfig.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  lang
+### index
 
-• **get lang**(): *string | undefined*
+• **get index**(): _number_
 
-**Returns:** *string | undefined*
+**Returns:** _number_
 
-• **set lang**(`value`: string | undefined): *void*
+---
+
+### isInline
+
+• **get isInline**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isInteractive
+
+• **get isInteractive**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isStandalone
+
+• **get isStandalone**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isVisible
+
+• **get isVisible**(): _boolean_
+
+**Returns:** _boolean_
+
+• **set isVisible**(`value`: boolean): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | string &#124; undefined |
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  parent
+### lang
 
-• **get parent**(): *[CardElement](cardelement.md) | undefined*
+• **get lang**(): _string | undefined_
 
-*Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)*
+**Returns:** _string | undefined_
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+• **set lang**(`value`: string | undefined): _void_
 
-___
+**Parameters:**
 
-###  renderedElement
+| Name    | Type                    |
+| ------- | ----------------------- |
+| `value` | string &#124; undefined |
 
-• **get renderedElement**(): *HTMLElement | undefined*
+**Returns:** _void_
 
-*Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
+---
 
-**Returns:** *HTMLElement | undefined*
+### parent
 
-___
+• **get parent**(): _[CardElement](cardelement.md) | undefined_
 
-###  requires
+_Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)_
 
-• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
+**Returns:** _[CardElement](cardelement.md) | undefined_
 
-*Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+---
 
-**Returns:** *[HostCapabilities](hostcapabilities.md)*
+### renderedElement
 
-___
+• **get renderedElement**(): _HTMLElement | undefined_
 
-###  separatorElement
+_Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)_
 
-• **get separatorElement**(): *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-**Returns:** *HTMLElement | undefined*
+---
 
-___
+### requires
+
+• **get requires**(): _[HostCapabilities](hostcapabilities.md)_
+
+_Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)_
+
+**Returns:** _[HostCapabilities](hostcapabilities.md)_
+
+---
+
+### separatorElement
+
+• **get separatorElement**(): _HTMLElement | undefined_
+
+**Returns:** _HTMLElement | undefined_
+
+---
 
 ### `Protected` separatorOrientation
 
-• **get separatorOrientation**(): *[Orientation](../enums/orientation.md)*
+• **get separatorOrientation**(): _[Orientation](../enums/orientation.md)_
 
-**Returns:** *[Orientation](../enums/orientation.md)*
+**Returns:** _[Orientation](../enums/orientation.md)_
 
-___
+---
 
 ### `Protected` useDefaultSizing
 
-• **get useDefaultSizing**(): *boolean*
+• **get useDefaultSizing**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 ## Methods
 
 ### `Protected` adjustRenderedElementSize
 
-▸ **adjustRenderedElementSize**(`renderedElement`: HTMLElement): *void*
+▸ **adjustRenderedElementSize**(`renderedElement`: HTMLElement): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`renderedElement` | HTMLElement |
+| Name              | Type        |
+| ----------------- | ----------- |
+| `renderedElement` | HTMLElement |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` applyPadding
 
-▸ **applyPadding**(): *void*
+▸ **applyPadding**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  asString
+### asString
 
-▸ **asString**(): *string | undefined*
+▸ **asString**(): _string | undefined_
 
-**Returns:** *string | undefined*
+**Returns:** _string | undefined_
 
-___
+---
 
 ### `Protected` createPlaceholderElement
 
-▸ **createPlaceholderElement**(): *HTMLElement*
+▸ **createPlaceholderElement**(): _HTMLElement_
 
-**Returns:** *HTMLElement*
+**Returns:** _HTMLElement_
 
-___
+---
 
-###  getActionAt
+### getActionAt
 
-▸ **getActionAt**(`index`: number): *[Action](action.md) | undefined*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`index` | number |
-
-**Returns:** *[Action](action.md) | undefined*
-
-___
-
-###  getActionById
-
-▸ **getActionById**(`id`: string): *[Action](action.md) | undefined*
+▸ **getActionAt**(`index`: number): _[Action](action.md) | undefined_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `index` | number |
 
-**Returns:** *[Action](action.md) | undefined*
+**Returns:** _[Action](action.md) | undefined_
 
-___
+---
 
-###  getActionCount
+### getActionById
 
-▸ **getActionCount**(): *number*
-
-**Returns:** *number*
-
-___
-
-###  getAllInputs
-
-▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
+▸ **getActionById**(`id`: string): _[Action](action.md) | undefined_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`processActions` | boolean | true |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *[Input](input.md)[]*
+**Returns:** _[Action](action.md) | undefined_
 
-___
+---
 
-###  getCustomProperty
+### getActionCount
 
-▸ **getCustomProperty**(`name`: string): *any*
+▸ **getActionCount**(): _number_
 
-*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
+**Returns:** _number_
+
+---
+
+### getAllInputs
+
+▸ **getAllInputs**(`processActions`: boolean): _[Input](input.md)[]_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
+| Name             | Type    | Default |
+| ---------------- | ------- | ------- |
+| `processActions` | boolean | true    |
 
-**Returns:** *any*
+**Returns:** _[Input](input.md)[]_
 
-___
+---
+
+### getCustomProperty
+
+▸ **getCustomProperty**(`name`: string): _any_
+
+_Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)_
+
+**Parameters:**
+
+| Name   | Type   |
+| ------ | ------ |
+| `name` | string |
+
+**Returns:** _any_
+
+---
 
 ### `Protected` getDefaultPadding
 
-▸ **getDefaultPadding**(): *[PaddingDefinition](paddingdefinition.md)*
+▸ **getDefaultPadding**(): _[PaddingDefinition](paddingdefinition.md)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
+**Returns:** _[PaddingDefinition](paddingdefinition.md)_
 
-___
+---
 
 ### `Protected` getDefaultSerializationContext
 
-▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+▸ **getDefaultSerializationContext**(): _[BaseSerializationContext](baseserializationcontext.md)_
 
-*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+_Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)_
 
-**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
+**Returns:** _[BaseSerializationContext](baseserializationcontext.md)_
 
-___
+---
 
-###  getEffectivePadding
+### getEffectivePadding
 
-▸ **getEffectivePadding**(): *[PaddingDefinition](paddingdefinition.md)*
+▸ **getEffectivePadding**(): _[PaddingDefinition](paddingdefinition.md)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
+**Returns:** _[PaddingDefinition](paddingdefinition.md)_
 
-___
+---
 
-###  getEffectiveStyle
+### getEffectiveStyle
 
-▸ **getEffectiveStyle**(): *string*
+▸ **getEffectiveStyle**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  getEffectiveStyleDefinition
+### getEffectiveStyleDefinition
 
-▸ **getEffectiveStyleDefinition**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
+▸ **getEffectiveStyleDefinition**(): _[ContainerStyleDefinition](containerstyledefinition.md)_
 
-**Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
+**Returns:** _[ContainerStyleDefinition](containerstyledefinition.md)_
 
-___
+---
 
-###  getElementById
+### getElementById
 
-▸ **getElementById**(`id`: string): *[CardElement](cardelement.md) | undefined*
+▸ **getElementById**(`id`: string): _[CardElement](cardelement.md) | undefined_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+**Returns:** _[CardElement](cardelement.md) | undefined_
 
-___
+---
 
-###  getForbiddenActionTypes
+### getForbiddenActionTypes
 
-▸ **getForbiddenActionTypes**(): *[ActionType](../README.md#actiontype)[]*
+▸ **getForbiddenActionTypes**(): _[ActionType](../README.md#actiontype)[]_
 
-**Returns:** *[ActionType](../README.md#actiontype)[]*
+**Returns:** _[ActionType](../README.md#actiontype)[]_
 
-___
+---
 
 ### `Protected` getHasBackground
 
-▸ **getHasBackground**(): *boolean*
+▸ **getHasBackground**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  getImmediateSurroundingPadding
+### getImmediateSurroundingPadding
 
-▸ **getImmediateSurroundingPadding**(`result`: [PaddingDefinition](paddingdefinition.md), `processTop`: boolean, `processRight`: boolean, `processBottom`: boolean, `processLeft`: boolean): *void*
+▸ **getImmediateSurroundingPadding**(`result`: [PaddingDefinition](paddingdefinition.md), `processTop`: boolean, `processRight`: boolean, `processBottom`: boolean, `processLeft`: boolean): _void_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`result` | [PaddingDefinition](paddingdefinition.md) | - |
-`processTop` | boolean | true |
-`processRight` | boolean | true |
-`processBottom` | boolean | true |
-`processLeft` | boolean | true |
+| Name            | Type                                      | Default |
+| --------------- | ----------------------------------------- | ------- |
+| `result`        | [PaddingDefinition](paddingdefinition.md) | -       |
+| `processTop`    | boolean                                   | true    |
+| `processRight`  | boolean                                   | true    |
+| `processBottom` | boolean                                   | true    |
+| `processLeft`   | boolean                                   | true    |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Abstract` getJsonTypeName
 
-▸ **getJsonTypeName**(): *string*
+▸ **getJsonTypeName**(): _string_
 
-*Inherited from [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)*
+_Inherited from [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Protected` getPadding
 
-▸ **getPadding**(): *[PaddingDefinition](paddingdefinition.md) | undefined*
+▸ **getPadding**(): _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md) | undefined*
+**Returns:** _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-___
+---
 
-###  getParentContainer
+### getParentContainer
 
-▸ **getParentContainer**(): *[Container](container.md) | undefined*
+▸ **getParentContainer**(): _[Container](container.md) | undefined_
 
-**Returns:** *[Container](container.md) | undefined*
+**Returns:** _[Container](container.md) | undefined_
 
-___
+---
 
-###  getResourceInformation
+### getResourceInformation
 
-▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+▸ **getResourceInformation**(): _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
 
-**Returns:** *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+**Returns:** _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
 
-___
+---
 
-###  getRootElement
+### getRootElement
 
-▸ **getRootElement**(): *[CardElement](cardelement.md)*
+▸ **getRootElement**(): _[CardElement](cardelement.md)_
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** _[CardElement](cardelement.md)_
 
-___
+---
 
-###  getRootObject
+### getRootObject
 
-▸ **getRootObject**(): *[CardObject](cardobject.md)*
+▸ **getRootObject**(): _[CardObject](cardobject.md)_
 
-*Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
+_Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)_
 
-**Returns:** *[CardObject](cardobject.md)*
+**Returns:** _[CardObject](cardobject.md)_
 
-___
+---
 
-###  getSchema
+### getSchema
 
-▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+▸ **getSchema**(): _[SerializableObjectSchema](serializableobjectschema.md)_
 
-*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+_Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)_
 
-**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+**Returns:** _[SerializableObjectSchema](serializableobjectschema.md)_
 
-___
+---
 
 ### `Protected` getSchemaKey
 
-▸ **getSchemaKey**(): *string*
+▸ **getSchemaKey**(): _string_
 
-*Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)*
+_Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)_
 
-*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
+_Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Protected` getValue
 
-▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): _any_
 
-*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-
-**Returns:** *any*
-
-___
-
-###  hasAllDefaultValues
-
-▸ **hasAllDefaultValues**(): *boolean*
-
-*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
-
-**Returns:** *boolean*
-
-___
-
-###  hasDefaultValue
-
-▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
-
-*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+_Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** *boolean*
+**Returns:** _any_
 
-___
+---
 
-###  indexOf
+### hasAllDefaultValues
 
-▸ **indexOf**(`cardElement`: [CardElement](cardelement.md)): *number*
+▸ **hasAllDefaultValues**(): _boolean_
+
+_Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)_
+
+**Returns:** _boolean_
+
+---
+
+### hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): _boolean_
+
+_Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`cardElement` | [CardElement](cardelement.md) |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** *number*
+**Returns:** _boolean_
 
-___
+---
+
+### indexOf
+
+▸ **indexOf**(`cardElement`: [CardElement](cardelement.md)): _number_
+
+**Parameters:**
+
+| Name          | Type                          |
+| ------------- | ----------------------------- |
+| `cardElement` | [CardElement](cardelement.md) |
+
+**Returns:** _number_
+
+---
 
 ### `Protected` internalParse
 
-▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
 
-*Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)*
+_Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`source` | [PropertyBag](../README.md#propertybag) |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
+| Name      | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `source`  | [PropertyBag](../README.md#propertybag)                 |
+| `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` `Abstract` internalRender
 
-▸ **internalRender**(): *HTMLElement | undefined*
+▸ **internalRender**(): _HTMLElement | undefined_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
 ### `Protected` internalToJSON
 
-▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
 
-*Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`target` | [PropertyBag](../README.md#propertybag) |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
-
-**Returns:** *void*
-
-___
-
-###  internalValidateProperties
-
-▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
-
-*Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)*
+_Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`context` | [ValidationResults](validationresults.md) |
+| Name      | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `target`  | [PropertyBag](../README.md#propertybag)                 |
+| `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  isAtTheVeryBottom
+### internalValidateProperties
 
-▸ **isAtTheVeryBottom**(): *boolean*
+▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): _void_
 
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryLeft
-
-▸ **isAtTheVeryLeft**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryRight
-
-▸ **isAtTheVeryRight**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryTop
-
-▸ **isAtTheVeryTop**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleeding
-
-▸ **isBleeding**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleedingAtBottom
-
-▸ **isBleedingAtBottom**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleedingAtTop
-
-▸ **isBleedingAtTop**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isBottomElement
-
-▸ **isBottomElement**(`element`: [CardElement](cardelement.md)): *boolean*
+_Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                                      |
+| --------- | ----------------------------------------- |
+| `context` | [ValidationResults](validationresults.md) |
 
-**Returns:** *boolean*
+**Returns:** _void_
 
-___
+---
 
-###  isDesignMode
+### isAtTheVeryBottom
 
-▸ **isDesignMode**(): *boolean*
+▸ **isAtTheVeryBottom**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
+
+### isAtTheVeryLeft
+
+▸ **isAtTheVeryLeft**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isAtTheVeryRight
+
+▸ **isAtTheVeryRight**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isAtTheVeryTop
+
+▸ **isAtTheVeryTop**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isBleeding
+
+▸ **isBleeding**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isBleedingAtBottom
+
+▸ **isBleedingAtBottom**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isBleedingAtTop
+
+▸ **isBleedingAtTop**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### isBottomElement
+
+▸ **isBottomElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
+
+### isDesignMode
+
+▸ **isDesignMode**(): _boolean_
+
+**Returns:** _boolean_
+
+---
 
 ### `Protected` isDisplayed
 
-▸ **isDisplayed**(): *boolean*
+▸ **isDisplayed**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isFirstElement
+### isFirstElement
 
-▸ **isFirstElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
-
-**Returns:** *boolean*
-
-___
-
-###  isHiddenDueToOverflow
-
-▸ **isHiddenDueToOverflow**(): *boolean*
-
-**Returns:** *boolean*
-
-___
-
-###  isLastElement
-
-▸ **isLastElement**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isFirstElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isLeftMostElement
+### isHiddenDueToOverflow
 
-▸ **isLeftMostElement**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isHiddenDueToOverflow**(): _boolean_
 
-**Parameters:**
+**Returns:** _boolean_
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+---
 
-**Returns:** *boolean*
+### isLastElement
 
-___
-
-###  isRightMostElement
-
-▸ **isRightMostElement**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isLastElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isTopElement
+### isLeftMostElement
 
-▸ **isTopElement**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isLeftMostElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
+
+### isRightMostElement
+
+▸ **isRightMostElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
+
+### isTopElement
+
+▸ **isTopElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
 
 ### `Protected` overrideInternalRender
 
-▸ **overrideInternalRender**(): *HTMLElement | undefined*
+▸ **overrideInternalRender**(): _HTMLElement | undefined_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
-###  parse
+### parse
 
-▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
+▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): _void_
 
-*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+_Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`source` | any |
-`context?` | [SerializationContext](serializationcontext.md) |
+| Name       | Type                                            |
+| ---------- | ----------------------------------------------- |
+| `source`   | any                                             |
+| `context?` | [SerializationContext](serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` populateSchema
 
-▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): _void_
 
-*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
-
-**Returns:** *void*
-
-___
-
-###  preProcessPropertyValue
-
-▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
-
-*Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
+_Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`propertyValue?` | any |
+| Name     | Type                                                    |
+| -------- | ------------------------------------------------------- |
+| `schema` | [SerializableObjectSchema](serializableobjectschema.md) |
 
-**Returns:** *any*
+**Returns:** _void_
 
-___
+---
 
-###  remove
+### preProcessPropertyValue
 
-▸ **remove**(): *boolean*
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): _any_
 
-**Returns:** *boolean*
-
-___
-
-###  render
-
-▸ **render**(): *HTMLElement | undefined*
-
-**Returns:** *HTMLElement | undefined*
-
-___
-
-###  resetDefaultValues
-
-▸ **resetDefaultValues**(): *void*
-
-*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
-
-**Returns:** *void*
-
-___
-
-###  setCustomProperty
-
-▸ **setCustomProperty**(`name`: string, `value`: any): *void*
-
-*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
+_Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
-`value` | any |
+| Name             | Type                                        |
+| ---------------- | ------------------------------------------- |
+| `property`       | [PropertyDefinition](propertydefinition.md) |
+| `propertyValue?` | any                                         |
 
-**Returns:** *void*
+**Returns:** _any_
 
-___
+---
+
+### remove
+
+▸ **remove**(): _boolean_
+
+**Returns:** _boolean_
+
+---
+
+### render
+
+▸ **render**(): _HTMLElement | undefined_
+
+**Returns:** _HTMLElement | undefined_
+
+---
+
+### resetDefaultValues
+
+▸ **resetDefaultValues**(): _void_
+
+_Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)_
+
+**Returns:** _void_
+
+---
+
+### setCustomProperty
+
+▸ **setCustomProperty**(`name`: string, `value`: any): _void_
+
+_Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)_
+
+**Parameters:**
+
+| Name    | Type   |
+| ------- | ------ |
+| `name`  | string |
+| `value` | any    |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` setPadding
 
-▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): *void*
+▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
+| Name    | Type                                                       |
+| ------- | ---------------------------------------------------------- |
+| `value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  setParent
+### setParent
 
-▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): _void_
 
-*Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | [CardObject](cardobject.md) &#124; undefined |
-
-**Returns:** *void*
-
-___
-
-###  setShouldFallback
-
-▸ **setShouldFallback**(`value`: boolean): *void*
-
-*Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
+_Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | boolean |
+| Name    | Type                                         |
+| ------- | -------------------------------------------- |
+| `value` | [CardObject](cardobject.md) &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
+
+### setShouldFallback
+
+▸ **setShouldFallback**(`value`: boolean): _void_
+
+_Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)_
+
+**Parameters:**
+
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` setValue
 
-▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): _void_
 
-*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+_Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`value` | any |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
+| `value`    | any                                         |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  shouldFallback
+### shouldFallback
 
-▸ **shouldFallback**(): *boolean*
+▸ **shouldFallback**(): _boolean_
 
-*Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
+_Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): _boolean_
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
-
-**Returns:** *boolean*
-
-___
-
-###  toJSON
-
-▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
-
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+_Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+| Name      | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
+**Returns:** _boolean_
 
-___
+---
+
+### toJSON
+
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): _[PropertyBag](../README.md#propertybag) | undefined_
+
+_Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)_
+
+**Parameters:**
+
+| Name       | Type                                                    |
+| ---------- | ------------------------------------------------------- |
+| `context?` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** _[PropertyBag](../README.md#propertybag) | undefined_
+
+---
 
 ### `Protected` truncateOverflow
 
-▸ **truncateOverflow**(`maxHeight`: number): *boolean*
+▸ **truncateOverflow**(`maxHeight`: number): _boolean_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`maxHeight` | number |
+| Name        | Type   |
+| ----------- | ------ |
+| `maxHeight` | number |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` undoOverflowTruncation
 
-▸ **undoOverflowTruncation**(): *void*
+▸ **undoOverflowTruncation**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  updateLayout
+### updateLayout
 
-▸ **updateLayout**(`processChildren`: boolean): *void*
+▸ **updateLayout**(`processChildren`: boolean): _void_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`processChildren` | boolean | true |
+| Name              | Type    | Default |
+| ----------------- | ------- | ------- |
+| `processChildren` | boolean | true    |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  validateProperties
+### validateProperties
 
-▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
+▸ **validateProperties**(): _[ValidationResults](validationresults.md)_
 
-*Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
+_Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)_
 
-**Returns:** *[ValidationResults](validationresults.md)*
+**Returns:** _[ValidationResults](validationresults.md)_

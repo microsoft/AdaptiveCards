@@ -19,6 +19,8 @@ export abstract class InputControl {
         this.validateRootElement(rootElement);
 
         this._rootElement = rootElement;
-        this._rootElement.onkeydown = (e) => { this.keyDown(e); };
+        this._rootElement.onkeydown = (e) => {
+            this.keyDown(e);
+        };
     }
 }

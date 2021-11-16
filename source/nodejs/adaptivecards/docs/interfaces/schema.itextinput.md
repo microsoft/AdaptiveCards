@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*IInput*](schema.iinput.md)
+- [_IInput_](schema.iinput.md)
 
   ↳ **ITextInput**
 
@@ -30,99 +30,99 @@
 
 ### height
 
-• `Optional` **height**: *undefined* \| *auto* \| *stretch*
+• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
 
 Inherited from: [IInput](schema.iinput.md).[height](schema.iinput.md#height)
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
-___
+---
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
+• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
 
 Inherited from: [IInput](schema.iinput.md).[horizontalAlignment](schema.iinput.md#horizontalalignment)
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
-___
+---
 
 ### id
 
-• **id**: *string*
+• **id**: _string_
 
 Inherited from: [IInput](schema.iinput.md).[id](schema.iinput.md#id)
 
 Defined in: [schema.ts:108](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L108)
 
-___
+---
 
 ### isMultiline
 
-• `Optional` **isMultiline**: *undefined* \| *boolean*
+• `Optional` **isMultiline**: _undefined_ \| _boolean_
 
 Defined in: [schema.ts:135](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L135)
 
-___
+---
 
 ### maxLength
 
-• `Optional` **maxLength**: *undefined* \| *number*
+• `Optional` **maxLength**: _undefined_ \| _number_
 
 Defined in: [schema.ts:136](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L136)
 
-___
+---
 
 ### placeholder
 
-• `Optional` **placeholder**: *undefined* \| *string*
+• `Optional` **placeholder**: _undefined_ \| _string_
 
 Defined in: [schema.ts:137](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L137)
 
-___
+---
 
 ### separator
 
-• `Optional` **separator**: *undefined* \| *boolean*
+• `Optional` **separator**: _undefined_ \| _boolean_
 
 Inherited from: [IInput](schema.iinput.md).[separator](schema.iinput.md#separator)
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
-___
+---
 
 ### spacing
 
-• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
+• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
 
 Inherited from: [IInput](schema.iinput.md).[spacing](schema.iinput.md#spacing)
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
-___
+---
 
 ### speak
 
-• `Optional` **speak**: *undefined* \| *string*
+• `Optional` **speak**: _undefined_ \| _string_
 
 Inherited from: [IInput](schema.iinput.md).[speak](schema.iinput.md#speak)
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)
 
-___
+---
 
 ### type
 
-• **type**: *Input.Text*
+• **type**: _Input.Text_
 
 Defined in: [schema.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L134)
 
-___
+---
 
 ### value
 
-• `Optional` **value**: *undefined* \| *string*
+• `Optional` **value**: _undefined_ \| _string_
 
 Inherited from: [IInput](schema.iinput.md).[value](schema.iinput.md#value)
 

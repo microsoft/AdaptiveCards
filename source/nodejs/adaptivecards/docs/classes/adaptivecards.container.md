@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*StylableCardElementContainer*](card_elements.stylablecardelementcontainer.md)
+- [_StylableCardElementContainer_](card_elements.stylablecardelementcontainer.md)
 
   ↳ **Container**
 
@@ -173,9 +173,9 @@
 
 ### constructor
 
-\+ **new Container**(): [*Container*](card_elements.container.md)
+\+ **new Container**(): [_Container_](card_elements.container.md)
 
-**Returns:** [*Container*](card_elements.container.md)
+**Returns:** [_Container_](card_elements.container.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
@@ -185,319 +185,319 @@ Defined in: [serialization.ts:898](https://github.com/microsoft/AdaptiveCards/bl
 
 ### \_parent
 
-• `Protected` `Optional` **\_parent**: *undefined* \| [*CardObject*](card_object.cardobject.md)
+• `Protected` `Optional` **\_parent**: _undefined_ \| [_CardObject_](card_object.cardobject.md)
 
-Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[_parent](card_elements.stylablecardelementcontainer.md#_parent)
+Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[\_parent](card_elements.stylablecardelementcontainer.md#_parent)
 
 Defined in: [card-object.ts:64](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L64)
 
-___
+---
 
 ### \_renderedElement
 
-• `Protected` `Optional` **\_renderedElement**: *undefined* \| HTMLElement
+• `Protected` `Optional` **\_renderedElement**: _undefined_ \| HTMLElement
 
-Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[_renderedElement](card_elements.stylablecardelementcontainer.md#_renderedelement)
+Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[\_renderedElement](card_elements.stylablecardelementcontainer.md#_renderedelement)
 
 Defined in: [card-object.ts:65](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L65)
 
-___
+---
 
 ### \_selectAction
 
-• `Protected` `Optional` **\_selectAction**: *undefined* \| [*Action*](card_elements.action.md)
+• `Protected` `Optional` **\_selectAction**: _undefined_ \| [_Action_](card_elements.action.md)
 
-Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[_selectAction](card_elements.stylablecardelementcontainer.md#_selectaction)
+Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[\_selectAction](card_elements.stylablecardelementcontainer.md#_selectaction)
 
 Defined in: [card-elements.ts:1851](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1851)
 
-___
+---
 
 ### allowVerticalOverflow
 
-• **allowVerticalOverflow**: *boolean*= false
+• **allowVerticalOverflow**: _boolean_= false
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[allowVerticalOverflow](card_elements.stylablecardelementcontainer.md#allowverticaloverflow)
 
 Defined in: [card-elements.ts:1891](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1891)
 
-___
+---
 
 ### customCssSelector
 
-• `Optional` **customCssSelector**: *undefined* \| *string*
+• `Optional` **customCssSelector**: _undefined_ \| _string_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[customCssSelector](card_elements.stylablecardelementcontainer.md#customcssselector)
 
 Defined in: [card-elements.ts:327](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L327)
 
-___
+---
 
 ### height
 
-• **height**: [*CardElementHeight*](../modules/card_elements.md#cardelementheight)
+• **height**: [_CardElementHeight_](../modules/card_elements.md#cardelementheight)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[height](card_elements.stylablecardelementcontainer.md#height)
 
 Defined in: [card-elements.ts:53](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L53)
 
-___
+---
 
 ### horizontalAlignment
 
-• **horizontalAlignment**: [*HorizontalAlignment*](../enums/enums.horizontalalignment.md)
+• **horizontalAlignment**: [_HorizontalAlignment_](../enums/enums.horizontalalignment.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[horizontalAlignment](card_elements.stylablecardelementcontainer.md#horizontalalignment)
 
 Defined in: [card-elements.ts:44](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L44)
 
-___
+---
 
 ### id
 
-• `Optional` **id**: *undefined* \| *string*
+• `Optional` **id**: _undefined_ \| _string_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[id](card_elements.stylablecardelementcontainer.md#id)
 
 Defined in: [card-object.ts:53](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L53)
 
-___
+---
 
 ### maxVersion
 
-• **maxVersion**: [*Version*](serialization.version.md)
+• **maxVersion**: [_Version_](serialization.version.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[maxVersion](card_elements.stylablecardelementcontainer.md#maxversion)
 
 Defined in: [serialization.ts:898](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L898)
 
-___
+---
 
 ### minPixelHeight
 
-• `Optional` **minPixelHeight**: *undefined* \| *number*
+• `Optional` **minPixelHeight**: _undefined_ \| _number_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[minPixelHeight](card_elements.stylablecardelementcontainer.md#minpixelheight)
 
 Defined in: [card-elements.ts:5068](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5068)
 
-___
+---
 
 ### onPreProcessPropertyValue
 
-• `Optional` **onPreProcessPropertyValue**: *undefined* \| (`sender`: [*CardObject*](card_object.cardobject.md), `property`: [*PropertyDefinition*](serialization.propertydefinition.md), `value`: *any*) => *any*
+• `Optional` **onPreProcessPropertyValue**: _undefined_ \| (`sender`: [_CardObject_](card_object.cardobject.md), `property`: [_PropertyDefinition_](serialization.propertydefinition.md), `value`: _any_) => _any_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[onPreProcessPropertyValue](card_elements.stylablecardelementcontainer.md#onpreprocesspropertyvalue)
 
 Defined in: [card-object.ts:67](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L67)
 
-___
+---
 
 ### rtl
 
-• `Optional` **rtl**: *undefined* \| *boolean*
+• `Optional` **rtl**: _undefined_ \| _boolean_
 
 Defined in: [card-elements.ts:5334](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5334)
 
-___
+---
 
 ### separator
 
-• **separator**: *boolean*
+• **separator**: _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[separator](card_elements.stylablecardelementcontainer.md#separator)
 
 Defined in: [card-elements.ts:50](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L50)
 
-___
+---
 
 ### spacing
 
-• **spacing**: [*Spacing*](../enums/enums.spacing.md)
+• **spacing**: [_Spacing_](../enums/enums.spacing.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[spacing](card_elements.stylablecardelementcontainer.md#spacing)
 
 Defined in: [card-elements.ts:47](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L47)
 
-___
+---
 
 ### verticalContentAlignment
 
-• **verticalContentAlignment**: [*VerticalAlignment*](../enums/enums.verticalalignment.md)
+• **verticalContentAlignment**: [_VerticalAlignment_](../enums/enums.verticalalignment.md)
 
 Defined in: [card-elements.ts:5331](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5331)
 
-___
+---
 
 ### backgroundImageProperty
 
-▪ `Readonly` `Static` **backgroundImageProperty**: [*SerializableObjectProperty*](serialization.serializableobjectproperty.md)
+▪ `Readonly` `Static` **backgroundImageProperty**: [_SerializableObjectProperty_](serialization.serializableobjectproperty.md)
 
 Defined in: [card-elements.ts:5318](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5318)
 
-___
+---
 
 ### bleedProperty
 
-▪ `Readonly` `Static` **bleedProperty**: [*BoolProperty*](serialization.boolproperty.md)
+▪ `Readonly` `Static` **bleedProperty**: [_BoolProperty_](serialization.boolproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[bleedProperty](card_elements.stylablecardelementcontainer.md#bleedproperty)
 
 Defined in: [card-elements.ts:5044](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5044)
 
-___
+---
 
 ### defaultMaxVersion
 
-▪ `Static` **defaultMaxVersion**: [*Version*](serialization.version.md)
+▪ `Static` **defaultMaxVersion**: [_Version_](serialization.version.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[defaultMaxVersion](card_elements.stylablecardelementcontainer.md#defaultmaxversion)
 
 Defined in: [serialization.ts:775](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L775)
 
-___
+---
 
 ### heightProperty
 
-▪ `Readonly` `Static` **heightProperty**: [*ValueSetProperty*](serialization.valuesetproperty.md)
+▪ `Readonly` `Static` **heightProperty**: [_ValueSetProperty_](serialization.valuesetproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[heightProperty](card_elements.stylablecardelementcontainer.md#heightproperty)
 
 Defined in: [card-elements.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L24)
 
-___
+---
 
 ### horizontalAlignmentProperty
 
-▪ `Readonly` `Static` **horizontalAlignmentProperty**: [*EnumProperty*](serialization.enumproperty.md)<*typeof* [*HorizontalAlignment*](../enums/enums.horizontalalignment.md)\>
+▪ `Readonly` `Static` **horizontalAlignmentProperty**: [_EnumProperty_](serialization.enumproperty.md)<_typeof_ [_HorizontalAlignment_](../enums/enums.horizontalalignment.md)\>
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[horizontalAlignmentProperty](card_elements.stylablecardelementcontainer.md#horizontalalignmentproperty)
 
 Defined in: [card-elements.ts:32](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L32)
 
-___
+---
 
 ### idProperty
 
-▪ `Readonly` `Static` **idProperty**: [*StringProperty*](serialization.stringproperty.md)
+▪ `Readonly` `Static` **idProperty**: [_StringProperty_](serialization.stringproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[idProperty](card_elements.stylablecardelementcontainer.md#idproperty)
 
 Defined in: [card-object.ts:41](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L41)
 
-___
+---
 
 ### isVisibleProperty
 
-▪ `Readonly` `Static` **isVisibleProperty**: [*BoolProperty*](serialization.boolproperty.md)
+▪ `Readonly` `Static` **isVisibleProperty**: [_BoolProperty_](serialization.boolproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[isVisibleProperty](card_elements.stylablecardelementcontainer.md#isvisibleproperty)
 
 Defined in: [card-elements.ts:22](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L22)
 
-___
+---
 
 ### langProperty
 
-▪ `Readonly` `Static` **langProperty**: [*StringProperty*](serialization.stringproperty.md)
+▪ `Readonly` `Static` **langProperty**: [_StringProperty_](serialization.stringproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[langProperty](card_elements.stylablecardelementcontainer.md#langproperty)
 
 Defined in: [card-elements.ts:21](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L21)
 
-___
+---
 
 ### minHeightProperty
 
-▪ `Readonly` `Static` **minHeightProperty**: [*PixelSizeProperty*](serialization.pixelsizeproperty.md)
+▪ `Readonly` `Static` **minHeightProperty**: [_PixelSizeProperty_](serialization.pixelsizeproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[minHeightProperty](card_elements.stylablecardelementcontainer.md#minheightproperty)
 
 Defined in: [card-elements.ts:5045](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5045)
 
-___
+---
 
 ### onRegisterCustomProperties
 
-▪ `Optional` `Static` **onRegisterCustomProperties**: *undefined* \| (`sender`: [*SerializableObject*](serialization.serializableobject.md), `schema`: [*SerializableObjectSchema*](serialization.serializableobjectschema.md)) => *void*
+▪ `Optional` `Static` **onRegisterCustomProperties**: _undefined_ \| (`sender`: [_SerializableObject_](serialization.serializableobject.md), `schema`: [_SerializableObjectSchema_](serialization.serializableobjectschema.md)) => _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[onRegisterCustomProperties](card_elements.stylablecardelementcontainer.md#onregistercustomproperties)
 
 Defined in: [serialization.ts:774](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L774)
 
-___
+---
 
 ### requiresProperty
 
-▪ `Readonly` `Static` **requiresProperty**: [*SerializableObjectProperty*](serialization.serializableobjectproperty.md)
+▪ `Readonly` `Static` **requiresProperty**: [_SerializableObjectProperty_](serialization.serializableobjectproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[requiresProperty](card_elements.stylablecardelementcontainer.md#requiresproperty)
 
 Defined in: [card-object.ts:42](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L42)
 
-___
+---
 
 ### rtlProperty
 
-▪ `Readonly` `Static` **rtlProperty**: [*BoolProperty*](serialization.boolproperty.md)
+▪ `Readonly` `Static` **rtlProperty**: [_BoolProperty_](serialization.boolproperty.md)
 
 Defined in: [card-elements.ts:5323](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5323)
 
-___
+---
 
 ### selectActionProperty
 
-▪ `Readonly` `Static` **selectActionProperty**: [*ActionProperty*](card_elements.actionproperty.md)
+▪ `Readonly` `Static` **selectActionProperty**: [_ActionProperty_](card_elements.actionproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[selectActionProperty](card_elements.stylablecardelementcontainer.md#selectactionproperty)
 
 Defined in: [card-elements.ts:1840](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1840)
 
-___
+---
 
 ### separatorProperty
 
-▪ `Readonly` `Static` **separatorProperty**: [*BoolProperty*](serialization.boolproperty.md)
+▪ `Readonly` `Static` **separatorProperty**: [_BoolProperty_](serialization.boolproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[separatorProperty](card_elements.stylablecardelementcontainer.md#separatorproperty)
 
 Defined in: [card-elements.ts:23](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L23)
 
-___
+---
 
 ### spacingProperty
 
-▪ `Readonly` `Static` **spacingProperty**: [*EnumProperty*](serialization.enumproperty.md)<*typeof* [*Spacing*](../enums/enums.spacing.md)\>
+▪ `Readonly` `Static` **spacingProperty**: [_EnumProperty_](serialization.enumproperty.md)<_typeof_ [_Spacing_](../enums/enums.spacing.md)\>
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[spacingProperty](card_elements.stylablecardelementcontainer.md#spacingproperty)
 
 Defined in: [card-elements.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L37)
 
-___
+---
 
 ### styleProperty
 
-▪ `Readonly` `Static` **styleProperty**: [*ValueSetProperty*](serialization.valuesetproperty.md)
+▪ `Readonly` `Static` **styleProperty**: [_ValueSetProperty_](serialization.valuesetproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[styleProperty](card_elements.stylablecardelementcontainer.md#styleproperty)
 
 Defined in: [card-elements.ts:5033](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5033)
 
-___
+---
 
 ### typeNameProperty
 
-▪ `Readonly` `Static` **typeNameProperty**: [*StringProperty*](serialization.stringproperty.md)
+▪ `Readonly` `Static` **typeNameProperty**: [_StringProperty_](serialization.stringproperty.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md).[typeNameProperty](card_elements.stylablecardelementcontainer.md#typenameproperty)
 
 Defined in: [card-object.ts:32](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L32)
 
-___
+---
 
 ### verticalContentAlignmentProperty
 
-▪ `Readonly` `Static` **verticalContentAlignmentProperty**: [*EnumProperty*](serialization.enumproperty.md)<*typeof* [*VerticalAlignment*](../enums/enums.verticalalignment.md)\>
+▪ `Readonly` `Static` **verticalContentAlignmentProperty**: [_EnumProperty_](serialization.enumproperty.md)<_typeof_ [_VerticalAlignment_](../enums/enums.verticalalignment.md)\>
 
 Defined in: [card-elements.ts:5322](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5322)
 
@@ -505,333 +505,333 @@ Defined in: [card-elements.ts:5322](https://github.com/microsoft/AdaptiveCards/b
 
 ### allowCustomPadding
 
-• `Protected`get **allowCustomPadding**(): *boolean*
+• `Protected`get **allowCustomPadding**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:315](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L315)
 
-___
+---
 
 ### allowCustomStyle
 
-• `Protected`get **allowCustomStyle**(): *boolean*
+• `Protected`get **allowCustomStyle**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5191](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5191)
 
-___
+---
 
 ### backgroundImage
 
-• get **backgroundImage**(): [*BackgroundImage*](card_elements.backgroundimage.md)
+• get **backgroundImage**(): [_BackgroundImage_](card_elements.backgroundimage.md)
 
-**Returns:** [*BackgroundImage*](card_elements.backgroundimage.md)
+**Returns:** [_BackgroundImage_](card_elements.backgroundimage.md)
 
 Defined in: [card-elements.ts:5326](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5326)
 
-___
+---
 
 ### bleed
 
-• get **bleed**(): *boolean*
+• get **bleed**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5705](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5705)
 
-• set **bleed**(`value`: *boolean*): *void*
+• set **bleed**(`value`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *boolean* |
+| Name    | Type      |
+| :------ | :-------- |
+| `value` | _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5709](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5709)
 
-___
+---
 
 ### defaultStyle
 
-• `Protected`get **defaultStyle**(): *string*
+• `Protected`get **defaultStyle**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Defined in: [card-elements.ts:323](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L323)
 
-___
+---
 
 ### hasExplicitStyle
 
-• `Protected`get **hasExplicitStyle**(): *boolean*
+• `Protected`get **hasExplicitStyle**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5187](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5187)
 
-___
+---
 
 ### hasVisibleSeparator
 
-• get **hasVisibleSeparator**(): *boolean*
+• get **hasVisibleSeparator**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:596](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L596)
 
-___
+---
 
 ### hostConfig
 
-• get **hostConfig**(): [*HostConfig*](host_config.hostconfig.md)
+• get **hostConfig**(): [_HostConfig_](host_config.hostconfig.md)
 
-**Returns:** [*HostConfig*](host_config.hostconfig.md)
+**Returns:** [_HostConfig_](host_config.hostconfig.md)
 
 Defined in: [card-elements.ts:557](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L557)
 
-• set **hostConfig**(`value`: [*HostConfig*](host_config.hostconfig.md)): *void*
+• set **hostConfig**(`value`: [_HostConfig_](host_config.hostconfig.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | [*HostConfig*](host_config.hostconfig.md) |
+| Name    | Type                                      |
+| :------ | :---------------------------------------- |
+| `value` | [_HostConfig_](host_config.hostconfig.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:571](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L571)
 
-___
+---
 
 ### index
 
-• get **index**(): *number*
+• get **index**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [card-elements.ts:575](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L575)
 
-___
+---
 
 ### isInline
 
-• get **isInline**(): *boolean*
+• get **isInline**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:592](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L592)
 
-___
+---
 
 ### isInteractive
 
-• get **isInteractive**(): *boolean*
+• get **isInteractive**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:584](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L584)
 
-___
+---
 
 ### isSelectable
 
-• `Protected`get **isSelectable**(): *boolean*
+• `Protected`get **isSelectable**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5528](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5528)
 
-___
+---
 
 ### isStandalone
 
-• get **isStandalone**(): *boolean*
+• get **isStandalone**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:588](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L588)
 
-___
+---
 
 ### isVisible
 
-• get **isVisible**(): *boolean*
+• get **isVisible**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:77](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L77)
 
-• set **isVisible**(`value`: *boolean*): *void*
+• set **isVisible**(`value`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *boolean* |
+| Name    | Type      |
+| :------ | :-------- |
+| `value` | _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:81](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L81)
 
-___
+---
 
 ### lang
 
-• get **lang**(): *undefined* \| *string*
+• get **lang**(): _undefined_ \| _string_
 
-**Returns:** *undefined* \| *string*
+**Returns:** _undefined_ \| _string_
 
 Defined in: [card-elements.ts:56](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L56)
 
-• set **lang**(`value`: *undefined* \| *string*): *void*
+• set **lang**(`value`: _undefined_ \| _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| *string* |
+| Name    | Type                    |
+| :------ | :---------------------- |
+| `value` | _undefined_ \| _string_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:72](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L72)
 
-___
+---
 
 ### padding
 
-• get **padding**(): *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)
+• get **padding**(): _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)
 
-**Returns:** *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)
+**Returns:** _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)
 
 Defined in: [card-elements.ts:5689](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5689)
 
-• set **padding**(`value`: *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)): *void*
+• set **padding**(`value`: _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md) |
+| Name    | Type                                                              |
+| :------ | :---------------------------------------------------------------- |
+| `value` | _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5693](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5693)
 
-___
+---
 
 ### parent
 
-• get **parent**(): *undefined* \| [*CardElement*](card_elements.cardelement.md)
+• get **parent**(): _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
-**Returns:** *undefined* \| [*CardElement*](card_elements.cardelement.md)
+**Returns:** _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 Defined in: [card-elements.ts:609](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L609)
 
-___
+---
 
 ### renderedActionCount
 
-• `Protected`get **renderedActionCount**(): *number*
+• `Protected`get **renderedActionCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [card-elements.ts:5183](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5183)
 
-___
+---
 
 ### renderedElement
 
-• get **renderedElement**(): *undefined* \| HTMLElement
+• get **renderedElement**(): _undefined_ \| HTMLElement
 
-**Returns:** *undefined* \| HTMLElement
+**Returns:** _undefined_ \| HTMLElement
 
 Defined in: [card-object.ts:143](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L143)
 
-___
+---
 
 ### requires
 
-• get **requires**(): [*HostCapabilities*](host_capabilities.hostcapabilities.md)
+• get **requires**(): [_HostCapabilities_](host_capabilities.hostcapabilities.md)
 
-**Returns:** [*HostCapabilities*](host_capabilities.hostcapabilities.md)
+**Returns:** [_HostCapabilities_](host_capabilities.hostcapabilities.md)
 
 Defined in: [card-object.ts:56](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L56)
 
-___
+---
 
 ### selectAction
 
-• get **selectAction**(): *undefined* \| [*Action*](card_elements.action.md)
+• get **selectAction**(): _undefined_ \| [_Action_](card_elements.action.md)
 
-**Returns:** *undefined* \| [*Action*](card_elements.action.md)
+**Returns:** _undefined_ \| [_Action_](card_elements.action.md)
 
 Defined in: [card-elements.ts:5697](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5697)
 
-• set **selectAction**(`value`: *undefined* \| [*Action*](card_elements.action.md)): *void*
+• set **selectAction**(`value`: _undefined_ \| [_Action_](card_elements.action.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*Action*](card_elements.action.md) |
+| Name    | Type                                               |
+| :------ | :------------------------------------------------- |
+| `value` | _undefined_ \| [_Action_](card_elements.action.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5701](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5701)
 
-___
+---
 
 ### separatorElement
 
-• get **separatorElement**(): *undefined* \| HTMLElement
+• get **separatorElement**(): _undefined_ \| HTMLElement
 
-**Returns:** *undefined* \| HTMLElement
+**Returns:** _undefined_ \| HTMLElement
 
 Defined in: [card-elements.ts:605](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L605)
 
-___
+---
 
 ### separatorOrientation
 
-• `Protected`get **separatorOrientation**(): [*Orientation*](../enums/enums.orientation.md)
+• `Protected`get **separatorOrientation**(): [_Orientation_](../enums/enums.orientation.md)
 
-**Returns:** [*Orientation*](../enums/enums.orientation.md)
+**Returns:** [_Orientation_](../enums/enums.orientation.md)
 
 Defined in: [card-elements.ts:319](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L319)
 
-___
+---
 
 ### style
 
-• get **style**(): *undefined* \| *string*
+• get **style**(): _undefined_ \| _string_
 
-**Returns:** *undefined* \| *string*
+**Returns:** _undefined_ \| _string_
 
 Defined in: [card-elements.ts:5048](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5048)
 
-• set **style**(`value`: *undefined* \| *string*): *void*
+• set **style**(`value`: _undefined_ \| _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| *string* |
+| Name    | Type                    |
+| :------ | :---------------------- |
+| `value` | _undefined_ \| _string_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5060](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5060)
 
-___
+---
 
 ### useDefaultSizing
 
-• `Protected`get **useDefaultSizing**(): *boolean*
+• `Protected`get **useDefaultSizing**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:311](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L311)
 
@@ -839,83 +839,83 @@ Defined in: [card-elements.ts:311](https://github.com/microsoft/AdaptiveCards/bl
 
 ### addItem
 
-▸ **addItem**(`item`: [*CardElement*](card_elements.cardelement.md)): *void*
+▸ **addItem**(`item`: [_CardElement_](card_elements.cardelement.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`item` | [*CardElement*](card_elements.cardelement.md) |
+| Name   | Type                                          |
+| :----- | :-------------------------------------------- |
+| `item` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5619](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5619)
 
-___
+---
 
 ### adjustRenderedElementSize
 
-▸ `Protected`**adjustRenderedElementSize**(`renderedElement`: HTMLElement): *void*
+▸ `Protected`**adjustRenderedElementSize**(`renderedElement`: HTMLElement): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`renderedElement` | HTMLElement |
+| Name              | Type        |
+| :---------------- | :---------- |
+| `renderedElement` | HTMLElement |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5072](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5072)
 
-___
+---
 
 ### applyBackground
 
-▸ `Protected`**applyBackground**(): *void*
+▸ `Protected`**applyBackground**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5373](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5373)
 
-___
+---
 
 ### applyPadding
 
-▸ `Protected`**applyPadding**(): *void*
+▸ `Protected`**applyPadding**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5092](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5092)
 
-___
+---
 
 ### asString
 
-▸ **asString**(): *undefined* \| *string*
+▸ **asString**(): _undefined_ \| _string_
 
-**Returns:** *undefined* \| *string*
+**Returns:** _undefined_ \| _string_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:333](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L333)
 
-___
+---
 
 ### clear
 
-▸ **clear**(): *void*
+▸ **clear**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5647](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5647)
 
-___
+---
 
 ### createPlaceholderElement
 
@@ -927,1167 +927,1167 @@ Inherited from: [StylableCardElementContainer](card_elements.stylablecardelement
 
 Defined in: [card-elements.ts:221](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L221)
 
-___
+---
 
 ### getActionAt
 
-▸ **getActionAt**(`index`: *number*): *undefined* \| [*Action*](card_elements.action.md)
+▸ **getActionAt**(`index`: _number_): _undefined_ \| [_Action_](card_elements.action.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`index` | *number* |
+| Name    | Type     |
+| :------ | :------- |
+| `index` | _number_ |
 
-**Returns:** *undefined* \| [*Action*](card_elements.action.md)
+**Returns:** _undefined_ \| [_Action_](card_elements.action.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:412](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L412)
 
-___
+---
 
 ### getActionById
 
-▸ **getActionById**(`id`: *string*): *undefined* \| [*Action*](card_elements.action.md)
+▸ **getActionById**(`id`: _string_): _undefined_ \| [_Action_](card_elements.action.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`id` | *string* |
+| Name | Type     |
+| :--- | :------- |
+| `id` | _string_ |
 
-**Returns:** *undefined* \| [*Action*](card_elements.action.md)
+**Returns:** _undefined_ \| [_Action_](card_elements.action.md)
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5667](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5667)
 
-___
+---
 
 ### getActionCount
 
-▸ **getActionCount**(): *number*
+▸ **getActionCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:408](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L408)
 
-___
+---
 
 ### getAllInputs
 
-▸ **getAllInputs**(`processActions?`: *boolean*): [*Input*](card_elements.input.md)[]
+▸ **getAllInputs**(`processActions?`: _boolean_): [_Input_](card_elements.input.md)[]
 
 #### Parameters:
 
-Name | Type | Default value |
-:------ | :------ | :------ |
-`processActions` | *boolean* | true |
+| Name             | Type      | Default value |
+| :--------------- | :-------- | :------------ |
+| `processActions` | _boolean_ | true          |
 
-**Returns:** [*Input*](card_elements.input.md)[]
+**Returns:** [_Input_](card_elements.input.md)[]
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:1976](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1976)
 
-___
+---
 
 ### getBleed
 
-▸ `Protected`**getBleed**(): *boolean*
+▸ `Protected`**getBleed**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5175](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5175)
 
-___
+---
 
 ### getCustomProperty
 
-▸ **getCustomProperty**(`name`: *string*): *any*
+▸ **getCustomProperty**(`name`: _string_): _any_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`name` | *string* |
+| Name   | Type     |
+| :----- | :------- |
+| `name` | _string_ |
 
-**Returns:** *any*
+**Returns:** _any_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:985](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L985)
 
-___
+---
 
 ### getDefaultPadding
 
-▸ `Protected`**getDefaultPadding**(): [*PaddingDefinition*](shared.paddingdefinition.md)
+▸ `Protected`**getDefaultPadding**(): [_PaddingDefinition_](shared.paddingdefinition.md)
 
-**Returns:** [*PaddingDefinition*](shared.paddingdefinition.md)
+**Returns:** [_PaddingDefinition_](shared.paddingdefinition.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5162](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5162)
 
-___
+---
 
 ### getDefaultSerializationContext
 
-▸ `Protected`**getDefaultSerializationContext**(): [*BaseSerializationContext*](serialization.baseserializationcontext.md)
+▸ `Protected`**getDefaultSerializationContext**(): [_BaseSerializationContext_](serialization.baseserializationcontext.md)
 
-**Returns:** [*BaseSerializationContext*](serialization.baseserializationcontext.md)
+**Returns:** [_BaseSerializationContext_](serialization.baseserializationcontext.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:217](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L217)
 
-___
+---
 
 ### getEffectivePadding
 
-▸ **getEffectivePadding**(): [*PaddingDefinition*](shared.paddingdefinition.md)
+▸ **getEffectivePadding**(): [_PaddingDefinition_](shared.paddingdefinition.md)
 
-**Returns:** [*PaddingDefinition*](shared.paddingdefinition.md)
+**Returns:** [_PaddingDefinition_](shared.paddingdefinition.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:551](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L551)
 
-___
+---
 
 ### getEffectiveStyle
 
-▸ **getEffectiveStyle**(): *string*
+▸ **getEffectiveStyle**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5226](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5226)
 
-___
+---
 
 ### getEffectiveStyleDefinition
 
-▸ **getEffectiveStyleDefinition**(): [*ContainerStyleDefinition*](host_config.containerstyledefinition.md)
+▸ **getEffectiveStyleDefinition**(): [_ContainerStyleDefinition_](host_config.containerstyledefinition.md)
 
-**Returns:** [*ContainerStyleDefinition*](host_config.containerstyledefinition.md)
+**Returns:** [_ContainerStyleDefinition_](host_config.containerstyledefinition.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:349](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L349)
 
-___
+---
 
 ### getElementById
 
-▸ **getElementById**(`id`: *string*): *undefined* \| [*CardElement*](card_elements.cardelement.md)
+▸ **getElementById**(`id`: _string_): _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`id` | *string* |
+| Name | Type     |
+| :--- | :------- |
+| `id` | _string_ |
 
-**Returns:** *undefined* \| [*CardElement*](card_elements.cardelement.md)
+**Returns:** _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:1996](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1996)
 
-___
+---
 
 ### getFirstVisibleRenderedItem
 
-▸ **getFirstVisibleRenderedItem**(): *undefined* \| [*CardElement*](card_elements.cardelement.md)
+▸ **getFirstVisibleRenderedItem**(): _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
-**Returns:** *undefined* \| [*CardElement*](card_elements.cardelement.md)
+**Returns:** _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5540](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5540)
 
-___
+---
 
 ### getForbiddenActionTypes
 
-▸ **getForbiddenActionTypes**(): [*ActionType*](../modules/card_elements.md#actiontype)[]
+▸ **getForbiddenActionTypes**(): [_ActionType_](../modules/card_elements.md#actiontype)[]
 
-**Returns:** [*ActionType*](../modules/card_elements.md#actiontype)[]
+**Returns:** [_ActionType_](../modules/card_elements.md#actiontype)[]
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:353](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L353)
 
-___
+---
 
 ### getHasBackground
 
-▸ `Protected`**getHasBackground**(): *boolean*
+▸ `Protected`**getHasBackground**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5499](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5499)
 
-___
+---
 
 ### getHasExpandedAction
 
-▸ `Protected`**getHasExpandedAction**(): *boolean*
+▸ `Protected`**getHasExpandedAction**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5171](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5171)
 
-___
+---
 
 ### getImmediateSurroundingPadding
 
-▸ **getImmediateSurroundingPadding**(`result`: [*PaddingDefinition*](shared.paddingdefinition.md), `processTop?`: *boolean*, `processRight?`: *boolean*, `processBottom?`: *boolean*, `processLeft?`: *boolean*): *void*
+▸ **getImmediateSurroundingPadding**(`result`: [_PaddingDefinition_](shared.paddingdefinition.md), `processTop?`: _boolean_, `processRight?`: _boolean_, `processBottom?`: _boolean_, `processLeft?`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type | Default value |
-:------ | :------ | :------ |
-`result` | [*PaddingDefinition*](shared.paddingdefinition.md) | - |
-`processTop` | *boolean* | true |
-`processRight` | *boolean* | true |
-`processBottom` | *boolean* | true |
-`processLeft` | *boolean* | true |
+| Name            | Type                                               | Default value |
+| :-------------- | :------------------------------------------------- | :------------ |
+| `result`        | [_PaddingDefinition_](shared.paddingdefinition.md) | -             |
+| `processTop`    | _boolean_                                          | true          |
+| `processRight`  | _boolean_                                          | true          |
+| `processBottom` | _boolean_                                          | true          |
+| `processLeft`   | _boolean_                                          | true          |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:357](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L357)
 
-___
+---
 
 ### getItemAt
 
-▸ **getItemAt**(`index`: *number*): [*CardElement*](card_elements.cardelement.md)
+▸ **getItemAt**(`index`: _number_): [_CardElement_](card_elements.cardelement.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`index` | *number* |
+| Name    | Type     |
+| :------ | :------- |
+| `index` | _number_ |
 
-**Returns:** [*CardElement*](card_elements.cardelement.md)
+**Returns:** [_CardElement_](card_elements.cardelement.md)
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5536](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5536)
 
-___
+---
 
 ### getItemCount
 
-▸ **getItemCount**(): *number*
+▸ **getItemCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5532](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5532)
 
-___
+---
 
 ### getItemsCollectionPropertyName
 
-▸ `Protected`**getItemsCollectionPropertyName**(): *string*
+▸ `Protected`**getItemsCollectionPropertyName**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Defined in: [card-elements.ts:5369](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5369)
 
-___
+---
 
 ### getJsonTypeName
 
-▸ **getJsonTypeName**(): *string*
+▸ **getJsonTypeName**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5564](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5564)
 
-___
+---
 
 ### getLastVisibleRenderedItem
 
-▸ **getLastVisibleRenderedItem**(): *undefined* \| [*CardElement*](card_elements.cardelement.md)
+▸ **getLastVisibleRenderedItem**(): _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
-**Returns:** *undefined* \| [*CardElement*](card_elements.cardelement.md)
+**Returns:** _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5552](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5552)
 
-___
+---
 
 ### getPadding
 
-▸ `Protected`**getPadding**(): *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)
+▸ `Protected`**getPadding**(): _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)
 
-**Returns:** *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)
+**Returns:** _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:299](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L299)
 
-___
+---
 
 ### getParentContainer
 
-▸ **getParentContainer**(): *undefined* \| [*Container*](card_elements.container.md)
+▸ **getParentContainer**(): _undefined_ \| [_Container_](card_elements.container.md)
 
-**Returns:** *undefined* \| [*Container*](card_elements.container.md)
+**Returns:** _undefined_ \| [_Container_](card_elements.container.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:521](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L521)
 
-___
+---
 
 ### getResourceInformation
 
-▸ **getResourceInformation**(): [*IResourceInformation*](../interfaces/shared.iresourceinformation.md)[]
+▸ **getResourceInformation**(): [_IResourceInformation_](../interfaces/shared.iresourceinformation.md)[]
 
-**Returns:** [*IResourceInformation*](../interfaces/shared.iresourceinformation.md)[]
+**Returns:** [_IResourceInformation_](../interfaces/shared.iresourceinformation.md)[]
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5652](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5652)
 
-___
+---
 
 ### getRootElement
 
-▸ **getRootElement**(): [*CardElement*](card_elements.cardelement.md)
+▸ **getRootElement**(): [_CardElement_](card_elements.cardelement.md)
 
-**Returns:** [*CardElement*](card_elements.cardelement.md)
+**Returns:** [_CardElement_](card_elements.cardelement.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:517](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L517)
 
-___
+---
 
 ### getRootObject
 
-▸ **getRootObject**(): [*CardObject*](card_object.cardobject.md)
+▸ **getRootObject**(): [_CardObject_](card_object.cardobject.md)
 
-**Returns:** [*CardObject*](card_object.cardobject.md)
+**Returns:** [_CardObject_](card_object.cardobject.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:103](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L103)
 
-___
+---
 
 ### getSchema
 
-▸ **getSchema**(): [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
+▸ **getSchema**(): [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
 
-**Returns:** [*SerializableObjectSchema*](serialization.serializableobjectschema.md)
+**Returns:** [_SerializableObjectSchema_](serialization.serializableobjectschema.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:989](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L989)
 
-___
+---
 
 ### getSchemaKey
 
-▸ `Protected`**getSchemaKey**(): *string*
+▸ `Protected`**getSchemaKey**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:48](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L48)
 
-___
+---
 
 ### getValue
 
-▸ `Protected`**getValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md)): *any*
+▸ `Protected`**getValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md)): _any_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
+| Name       | Type                                                        |
+| :--------- | :---------------------------------------------------------- |
+| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
 
-**Returns:** *any*
+**Returns:** _any_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:826](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L826)
 
-___
+---
 
 ### hasAllDefaultValues
 
-▸ **hasAllDefaultValues**(): *boolean*
+▸ **hasAllDefaultValues**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:950](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L950)
 
-___
+---
 
 ### hasDefaultValue
 
-▸ **hasDefaultValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md)): *boolean*
+▸ **hasDefaultValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
+| Name       | Type                                                        |
+| :--------- | :---------------------------------------------------------- |
+| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:946](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L946)
 
-___
+---
 
 ### indexOf
 
-▸ **indexOf**(`cardElement`: [*CardElement*](card_elements.cardelement.md)): *number*
+▸ **indexOf**(`cardElement`: [_CardElement_](card_elements.cardelement.md)): _number_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`cardElement` | [*CardElement*](card_elements.cardelement.md) |
+| Name          | Type                                          |
+| :------------ | :-------------------------------------------- |
+| `cardElement` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *number*
+**Returns:** _number_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5615](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5615)
 
-___
+---
 
 ### insertItemAfter
 
-▸ **insertItemAfter**(`item`: [*CardElement*](card_elements.cardelement.md), `insertAfter`: [*CardElement*](card_elements.cardelement.md)): *void*
+▸ **insertItemAfter**(`item`: [_CardElement_](card_elements.cardelement.md), `insertAfter`: [_CardElement_](card_elements.cardelement.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`item` | [*CardElement*](card_elements.cardelement.md) |
-`insertAfter` | [*CardElement*](card_elements.cardelement.md) |
+| Name          | Type                                          |
+| :------------ | :-------------------------------------------- |
+| `item`        | [_CardElement_](card_elements.cardelement.md) |
+| `insertAfter` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5627](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5627)
 
-___
+---
 
 ### insertItemBefore
 
-▸ **insertItemBefore**(`item`: [*CardElement*](card_elements.cardelement.md), `insertBefore`: [*CardElement*](card_elements.cardelement.md)): *void*
+▸ **insertItemBefore**(`item`: [_CardElement_](card_elements.cardelement.md), `insertBefore`: [_CardElement_](card_elements.cardelement.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`item` | [*CardElement*](card_elements.cardelement.md) |
-`insertBefore` | [*CardElement*](card_elements.cardelement.md) |
+| Name           | Type                                          |
+| :------------- | :-------------------------------------------- |
+| `item`         | [_CardElement_](card_elements.cardelement.md) |
+| `insertBefore` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:5623](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5623)
 
-___
+---
 
 ### internalParse
 
-▸ `Protected`**internalParse**(`source`: *any*, `context`: [*SerializationContext*](card_elements.serializationcontext.md)): *void*
+▸ `Protected`**internalParse**(`source`: _any_, `context`: [_SerializationContext_](card_elements.serializationcontext.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *any* |
-`context` | [*SerializationContext*](card_elements.serializationcontext.md) |
+| Name      | Type                                                            |
+| :-------- | :-------------------------------------------------------------- |
+| `source`  | _any_                                                           |
+| `context` | [_SerializationContext_](card_elements.serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5503](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5503)
 
-___
+---
 
 ### internalRender
 
-▸ `Protected`**internalRender**(): *undefined* \| HTMLElement
+▸ `Protected`**internalRender**(): _undefined_ \| HTMLElement
 
-**Returns:** *undefined* \| HTMLElement
+**Returns:** _undefined_ \| HTMLElement
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5381](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5381)
 
-___
+---
 
 ### internalToJSON
 
-▸ `Protected`**internalToJSON**(`target`: [*PropertyBag*](../modules/serialization.md#propertybag), `context`: [*SerializationContext*](card_elements.serializationcontext.md)): *void*
+▸ `Protected`**internalToJSON**(`target`: [_PropertyBag_](../modules/serialization.md#propertybag), `context`: [_SerializationContext_](card_elements.serializationcontext.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | [*PropertyBag*](../modules/serialization.md#propertybag) |
-`context` | [*SerializationContext*](card_elements.serializationcontext.md) |
+| Name      | Type                                                            |
+| :-------- | :-------------------------------------------------------------- |
+| `target`  | [_PropertyBag_](../modules/serialization.md#propertybag)        |
+| `context` | [_SerializationContext_](card_elements.serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5522](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5522)
 
-___
+---
 
 ### internalValidateProperties
 
-▸ **internalValidateProperties**(`context`: [*ValidationResults*](card_object.validationresults.md)): *void*
+▸ **internalValidateProperties**(`context`: [_ValidationResults_](card_object.validationresults.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`context` | [*ValidationResults*](card_object.validationresults.md) |
+| Name      | Type                                                    |
+| :-------- | :------------------------------------------------------ |
+| `context` | [_ValidationResults_](card_object.validationresults.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5199](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5199)
 
-___
+---
 
 ### isAtTheVeryBottom
 
-▸ **isAtTheVeryBottom**(): *boolean*
+▸ **isAtTheVeryBottom**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:485](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L485)
 
-___
+---
 
 ### isAtTheVeryLeft
 
-▸ **isAtTheVeryLeft**(): *boolean*
+▸ **isAtTheVeryLeft**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:473](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L473)
 
-___
+---
 
 ### isAtTheVeryRight
 
-▸ **isAtTheVeryRight**(): *boolean*
+▸ **isAtTheVeryRight**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:477](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L477)
 
-___
+---
 
 ### isAtTheVeryTop
 
-▸ **isAtTheVeryTop**(): *boolean*
+▸ **isAtTheVeryTop**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:481](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L481)
 
-___
+---
 
 ### isBleeding
 
-▸ **isBleeding**(): *boolean*
+▸ **isBleeding**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5195](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5195)
 
-___
+---
 
 ### isBleedingAtBottom
 
-▸ **isBleedingAtBottom**(): *boolean*
+▸ **isBleedingAtBottom**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5609](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5609)
 
-___
+---
 
 ### isBleedingAtTop
 
-▸ **isBleedingAtTop**(): *boolean*
+▸ **isBleedingAtTop**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5603](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5603)
 
-___
+---
 
 ### isBottomElement
 
-▸ **isBottomElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isBottomElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:509](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L509)
 
-___
+---
 
 ### isDesignMode
 
-▸ **isDesignMode**(): *boolean*
+▸ **isDesignMode**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:459](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L459)
 
-___
+---
 
 ### isDisplayed
 
-▸ `Protected`**isDisplayed**(): *boolean*
+▸ `Protected`**isDisplayed**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:245](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L245)
 
-___
+---
 
 ### isElementAllowed
 
-▸ `Protected`**isElementAllowed**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ `Protected`**isElementAllowed**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:1855](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1855)
 
-___
+---
 
 ### isFirstElement
 
-▸ **isFirstElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isFirstElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5568](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5568)
 
-___
+---
 
 ### isHiddenDueToOverflow
 
-▸ **isHiddenDueToOverflow**(): *boolean*
+▸ **isHiddenDueToOverflow**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:513](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L513)
 
-___
+---
 
 ### isLastElement
 
-▸ **isLastElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isLastElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5580](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5580)
 
-___
+---
 
 ### isLeftMostElement
 
-▸ **isLeftMostElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isLeftMostElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:497](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L497)
 
-___
+---
 
 ### isRightMostElement
 
-▸ **isRightMostElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isRightMostElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:501](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L501)
 
-___
+---
 
 ### isRtl
 
-▸ **isRtl**(): *boolean*
+▸ **isRtl**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5592](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5592)
 
-___
+---
 
 ### isTopElement
 
-▸ **isTopElement**(`element`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **isTopElement**(`element`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`element` | [*CardElement*](card_elements.cardelement.md) |
+| Name      | Type                                          |
+| :-------- | :-------------------------------------------- |
+| `element` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:505](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L505)
 
-___
+---
 
 ### overrideInternalRender
 
-▸ `Protected`**overrideInternalRender**(): *undefined* \| HTMLElement
+▸ `Protected`**overrideInternalRender**(): _undefined_ \| HTMLElement
 
-**Returns:** *undefined* \| HTMLElement
+**Returns:** _undefined_ \| HTMLElement
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:251](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L251)
 
-___
+---
 
 ### parse
 
-▸ **parse**(`source`: *any*, `context?`: [*SerializationContext*](card_elements.serializationcontext.md)): *void*
+▸ **parse**(`source`: _any_, `context?`: [_SerializationContext_](card_elements.serializationcontext.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *any* |
-`context?` | [*SerializationContext*](card_elements.serializationcontext.md) |
+| Name       | Type                                                            |
+| :--------- | :-------------------------------------------------------------- |
+| `source`   | _any_                                                           |
+| `context?` | [_SerializationContext_](card_elements.serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:329](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L329)
 
-___
+---
 
 ### populateSchema
 
-▸ `Protected`**populateSchema**(`schema`: [*SerializableObjectSchema*](serialization.serializableobjectschema.md)): *void*
+▸ `Protected`**populateSchema**(`schema`: [_SerializableObjectSchema_](serialization.serializableobjectschema.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`schema` | [*SerializableObjectSchema*](serialization.serializableobjectschema.md) |
+| Name     | Type                                                                    |
+| :------- | :---------------------------------------------------------------------- |
+| `schema` | [_SerializableObjectSchema_](serialization.serializableobjectschema.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:1842](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1842)
 
-___
+---
 
 ### preProcessPropertyValue
 
-▸ **preProcessPropertyValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md), `propertyValue?`: *any*): *any*
+▸ **preProcessPropertyValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md), `propertyValue?`: _any_): _any_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
-`propertyValue?` | *any* |
+| Name             | Type                                                        |
+| :--------------- | :---------------------------------------------------------- |
+| `property`       | [_PropertyDefinition_](serialization.propertydefinition.md) |
+| `propertyValue?` | _any_                                                       |
 
-**Returns:** *any*
+**Returns:** _any_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:73](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L73)
 
-___
+---
 
 ### remove
 
-▸ **remove**(): *boolean*
+▸ **remove**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:416](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L416)
 
-___
+---
 
 ### removeItem
 
-▸ **removeItem**(`item`: [*CardElement*](card_elements.cardelement.md)): *boolean*
+▸ **removeItem**(`item`: [_CardElement_](card_elements.cardelement.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`item` | [*CardElement*](card_elements.cardelement.md) |
+| Name   | Type                                          |
+| :----- | :-------------------------------------------- |
+| `item` | [_CardElement_](card_elements.cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5631](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5631)
 
-___
+---
 
 ### render
 
-▸ **render**(): *undefined* \| HTMLElement
+▸ **render**(): _undefined_ \| HTMLElement
 
-**Returns:** *undefined* \| HTMLElement
+**Returns:** _undefined_ \| HTMLElement
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5216](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5216)
 
-___
+---
 
 ### resetDefaultValues
 
-▸ **resetDefaultValues**(): *void*
+▸ **resetDefaultValues**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:964](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L964)
 
-___
+---
 
 ### setBleed
 
-▸ `Protected`**setBleed**(`value`: *boolean*): *void*
+▸ `Protected`**setBleed**(`value`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *boolean* |
+| Name    | Type      |
+| :------ | :-------- |
+| `value` | _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5179](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5179)
 
-___
+---
 
 ### setCustomProperty
 
-▸ **setCustomProperty**(`name`: *string*, `value`: *any*): *void*
+▸ **setCustomProperty**(`name`: _string_, `value`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`name` | *string* |
-`value` | *any* |
+| Name    | Type     |
+| :------ | :------- |
+| `name`  | _string_ |
+| `value` | _any_    |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:974](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L974)
 
-___
+---
 
 ### setPadding
 
-▸ `Protected`**setPadding**(`value`: *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md)): *void*
+▸ `Protected`**setPadding**(`value`: _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*PaddingDefinition*](shared.paddingdefinition.md) |
+| Name    | Type                                                              |
+| :------ | :---------------------------------------------------------------- |
+| `value` | _undefined_ \| [_PaddingDefinition_](shared.paddingdefinition.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:303](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L303)
 
-___
+---
 
 ### setParent
 
-▸ **setParent**(`value`: *undefined* \| [*CardObject*](card_object.cardobject.md)): *void*
+▸ **setParent**(`value`: _undefined_ \| [_CardObject_](card_object.cardobject.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*CardObject*](card_object.cardobject.md) |
+| Name    | Type                                                     |
+| :------ | :------------------------------------------------------- |
+| `value` | _undefined_ \| [_CardObject_](card_object.cardobject.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:91](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L91)
 
-___
+---
 
 ### setShouldFallback
 
-▸ **setShouldFallback**(`value`: *boolean*): *void*
+▸ **setShouldFallback**(`value`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *boolean* |
+| Name    | Type      |
+| :------ | :-------- |
+| `value` | _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:95](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L95)
 
-___
+---
 
 ### setValue
 
-▸ `Protected`**setValue**(`property`: [*PropertyDefinition*](serialization.propertydefinition.md), `value`: *any*): *void*
+▸ `Protected`**setValue**(`property`: [_PropertyDefinition_](serialization.propertydefinition.md), `value`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`property` | [*PropertyDefinition*](serialization.propertydefinition.md) |
-`value` | *any* |
+| Name       | Type                                                        |
+| :--------- | :---------------------------------------------------------- |
+| `property` | [_PropertyDefinition_](serialization.propertydefinition.md) |
+| `value`    | _any_                                                       |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:830](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L830)
 
-___
+---
 
 ### shouldFallback
 
-▸ **shouldFallback**(): *boolean*
+▸ **shouldFallback**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-object.ts:99](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L99)
 
-___
+---
 
 ### shouldSerialize
 
-▸ `Protected`**shouldSerialize**(`context`: [*SerializationContext*](card_elements.serializationcontext.md)): *boolean*
+▸ `Protected`**shouldSerialize**(`context`: [_SerializationContext_](card_elements.serializationcontext.md)): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`context` | [*SerializationContext*](card_elements.serializationcontext.md) |
+| Name      | Type                                                            |
+| :-------- | :-------------------------------------------------------------- |
+| `context` | [_SerializationContext_](card_elements.serializationcontext.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:307](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L307)
 
-___
+---
 
 ### supportsExcplitiHeight
 
-▸ `Protected`**supportsExcplitiHeight**(): *boolean*
+▸ `Protected`**supportsExcplitiHeight**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [card-elements.ts:5365](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5365)
 
-___
+---
 
 ### toJSON
 
-▸ **toJSON**(`context?`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *undefined* \| [*PropertyBag*](../modules/serialization.md#propertybag)
+▸ **toJSON**(`context?`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _undefined_ \| [_PropertyBag_](../modules/serialization.md#propertybag)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`context?` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
+| Name       | Type                                                                    |
+| :--------- | :---------------------------------------------------------------------- |
+| `context?` | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
 
-**Returns:** *undefined* \| [*PropertyBag*](../modules/serialization.md#propertybag)
+**Returns:** _undefined_ \| [_PropertyBag_](../modules/serialization.md#propertybag)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [serialization.ts:916](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L916)
 
-___
+---
 
 ### truncateOverflow
 
-▸ `Protected`**truncateOverflow**(`maxHeight`: *number*): *boolean*
+▸ `Protected`**truncateOverflow**(`maxHeight`: _number_): _boolean_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`maxHeight` | *number* |
+| Name        | Type     |
+| :---------- | :------- |
+| `maxHeight` | _number_ |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5454](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5454)
 
-___
+---
 
 ### undoOverflowTruncation
 
-▸ `Protected`**undoOverflowTruncation**(): *void*
+▸ `Protected`**undoOverflowTruncation**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Overrides: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:5493](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5493)
 
-___
+---
 
 ### updateLayout
 
-▸ **updateLayout**(`processChildren?`: *boolean*): *void*
+▸ **updateLayout**(`processChildren?`: _boolean_): _void_
 
 #### Parameters:
 
-Name | Type | Default value |
-:------ | :------ | :------ |
-`processChildren` | *boolean* | true |
+| Name              | Type      | Default value |
+| :---------------- | :-------- | :------------ |
+| `processChildren` | _boolean_ | true          |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 
 Defined in: [card-elements.ts:1966](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L1966)
 
-___
+---
 
 ### validateProperties
 
-▸ **validateProperties**(): [*ValidationResults*](card_object.validationresults.md)
+▸ **validateProperties**(): [_ValidationResults_](card_object.validationresults.md)
 
-**Returns:** [*ValidationResults*](card_object.validationresults.md)
+**Returns:** [_ValidationResults_](card_object.validationresults.md)
 
 Inherited from: [StylableCardElementContainer](card_elements.stylablecardelementcontainer.md)
 

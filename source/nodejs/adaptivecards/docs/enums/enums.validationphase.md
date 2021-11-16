@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:151](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L151)
 
-___
+---
 
 ### ToJSON
 
@@ -28,7 +28,7 @@ ___
 
 Defined in: [enums.ts:152](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L152)
 
-___
+---
 
 ### Validation
 

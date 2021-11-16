@@ -6,9 +6,9 @@
 
 ## Type parameters
 
-Name | Type |
-:------ | :------ |
-`T` | [*SerializableObject*](../classes/serialization.serializableobject.md) |
+| Name | Type                                                                   |
+| :--- | :--------------------------------------------------------------------- |
+| `T`  | [_SerializableObject_](../classes/serialization.serializableobject.md) |
 
 ## Table of contents
 
@@ -34,18 +34,18 @@ Defined in: [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/0938
 
 Defined in: [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L7)
 
-___
+---
 
 ### schemaVersion
 
-• **schemaVersion**: [*Version*](../classes/serialization.version.md)
+• **schemaVersion**: [_Version_](../classes/serialization.version.md)
 
 Defined in: [registry.ts:8](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L8)
 
-___
+---
 
 ### typeName
 
-• **typeName**: *string*
+• **typeName**: _string_
 
 Defined in: [registry.ts:6](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L6)

@@ -28,94 +28,94 @@
 
 ### constructor
 
-\+ **new GlobalSettings**(): [*GlobalSettings*](shared.globalsettings.md)
+\+ **new GlobalSettings**(): [_GlobalSettings_](shared.globalsettings.md)
 
-**Returns:** [*GlobalSettings*](shared.globalsettings.md)
+**Returns:** [_GlobalSettings_](shared.globalsettings.md)
 
 ## Properties
 
 ### allowMarkForTextHighlighting
 
-▪ `Static` **allowMarkForTextHighlighting**: *boolean*= false
+▪ `Static` **allowMarkForTextHighlighting**: _boolean_= false
 
 Defined in: [shared.ts:9](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L9)
 
-___
+---
 
 ### allowPreProcessingPropertyValues
 
-▪ `Static` **allowPreProcessingPropertyValues**: *boolean*= false
+▪ `Static` **allowPreProcessingPropertyValues**: _boolean_= false
 
 Defined in: [shared.ts:13](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L13)
 
-___
+---
 
 ### alwaysBleedSeparators
 
-▪ `Static` **alwaysBleedSeparators**: *boolean*= false
+▪ `Static` **alwaysBleedSeparators**: _boolean_= false
 
 Defined in: [shared.ts:10](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L10)
 
-___
+---
 
 ### displayInputValidationErrors
 
-▪ `Static` **displayInputValidationErrors**: *boolean*= true
+▪ `Static` **displayInputValidationErrors**: _boolean_= true
 
 Defined in: [shared.ts:12](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L12)
 
-___
+---
 
 ### enableFallback
 
-▪ `Static` **enableFallback**: *boolean*= true
+▪ `Static` **enableFallback**: _boolean_= true
 
 Defined in: [shared.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L15)
 
-___
+---
 
 ### enableFullJsonRoundTrip
 
-▪ `Static` **enableFullJsonRoundTrip**: *boolean*= false
+▪ `Static` **enableFullJsonRoundTrip**: _boolean_= false
 
 Defined in: [shared.ts:11](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L11)
 
-___
+---
 
 ### setTabIndexAtCardRoot
 
-▪ `Static` **setTabIndexAtCardRoot**: *boolean*= true
+▪ `Static` **setTabIndexAtCardRoot**: _boolean_= true
 
 Defined in: [shared.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L14)
 
-___
+---
 
 ### useAdvancedCardBottomTruncation
 
-▪ `Static` **useAdvancedCardBottomTruncation**: *boolean*= false
+▪ `Static` **useAdvancedCardBottomTruncation**: _boolean_= false
 
 Defined in: [shared.ts:7](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L7)
 
-___
+---
 
 ### useAdvancedTextBlockTruncation
 
-▪ `Static` **useAdvancedTextBlockTruncation**: *boolean*= true
+▪ `Static` **useAdvancedTextBlockTruncation**: _boolean_= true
 
 Defined in: [shared.ts:6](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L6)
 
-___
+---
 
 ### useMarkdownInRadioButtonAndCheckbox
 
-▪ `Static` **useMarkdownInRadioButtonAndCheckbox**: *boolean*= true
+▪ `Static` **useMarkdownInRadioButtonAndCheckbox**: _boolean_= true
 
 Defined in: [shared.ts:8](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L8)
 
-___
+---
 
 ### useWebkitLineClamp
 
-▪ `Static` **useWebkitLineClamp**: *boolean*= true
+▪ `Static` **useWebkitLineClamp**: _boolean_= true
 
 Defined in: [shared.ts:16](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L16)

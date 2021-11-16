@@ -35,7 +35,7 @@
 
 Defined in: [enums.ts:158](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L158)
 
-___
+---
 
 ### CollectionCantBeEmpty
 
@@ -43,7 +43,7 @@ ___
 
 Defined in: [enums.ts:159](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L159)
 
-___
+---
 
 ### Deprecated
 
@@ -51,7 +51,7 @@ ___
 
 Defined in: [enums.ts:160](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L160)
 
-___
+---
 
 ### DuplicateId
 
@@ -59,7 +59,7 @@ ___
 
 Defined in: [enums.ts:170](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L170)
 
-___
+---
 
 ### ElementTypeNotAllowed
 
@@ -67,7 +67,7 @@ ___
 
 Defined in: [enums.ts:161](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L161)
 
-___
+---
 
 ### Hint
 
@@ -75,7 +75,7 @@ ___
 
 Defined in: [enums.ts:157](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L157)
 
-___
+---
 
 ### InteractivityNotAllowed
 
@@ -83,7 +83,7 @@ ___
 
 Defined in: [enums.ts:162](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L162)
 
-___
+---
 
 ### InvalidPropertyValue
 
@@ -91,7 +91,7 @@ ___
 
 Defined in: [enums.ts:163](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L163)
 
-___
+---
 
 ### MissingCardType
 
@@ -99,7 +99,7 @@ ___
 
 Defined in: [enums.ts:164](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L164)
 
-___
+---
 
 ### Other
 
@@ -107,7 +107,7 @@ ___
 
 Defined in: [enums.ts:174](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L174)
 
-___
+---
 
 ### PropertyCantBeNull
 
@@ -115,7 +115,7 @@ ___
 
 Defined in: [enums.ts:165](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L165)
 
-___
+---
 
 ### RequiredInputsShouldHaveErrorMessage
 
@@ -123,7 +123,7 @@ ___
 
 Defined in: [enums.ts:173](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L173)
 
-___
+---
 
 ### RequiredInputsShouldHaveLabel
 
@@ -131,7 +131,7 @@ ___
 
 Defined in: [enums.ts:172](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L172)
 
-___
+---
 
 ### TooManyActions
 
@@ -139,7 +139,7 @@ ___
 
 Defined in: [enums.ts:166](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L166)
 
-___
+---
 
 ### UnknownActionType
 
@@ -147,7 +147,7 @@ ___
 
 Defined in: [enums.ts:167](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L167)
 
-___
+---
 
 ### UnknownElementType
 
@@ -155,7 +155,7 @@ ___
 
 Defined in: [enums.ts:168](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L168)
 
-___
+---
 
 ### UnsupportedCardVersion
 
@@ -163,7 +163,7 @@ ___
 
 Defined in: [enums.ts:169](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L169)
 
-___
+---
 
 ### UnsupportedProperty
 

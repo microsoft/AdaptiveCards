@@ -4,116 +4,116 @@
 
 ## Hierarchy
 
-* **InvokeActivity**
+- **InvokeActivity**
 
 ## Index
 
 ### Properties
 
-* [channelData](invokeactivity.md#optional-channeldata)
-* [channelId](invokeactivity.md#optional-channelid)
-* [conversation](invokeactivity.md#optional-conversation)
-* [entities](invokeactivity.md#optional-entities)
-* [from](invokeactivity.md#optional-from)
-* [localTimestamp](invokeactivity.md#localtimestamp)
-* [localTimezone](invokeactivity.md#localtimezone)
-* [name](invokeactivity.md#name)
-* [relatesTo](invokeactivity.md#optional-relatesto)
-* [replyToId](invokeactivity.md#optional-replytoid)
-* [serviceUrl](invokeactivity.md#optional-serviceurl)
-* [type](invokeactivity.md#type)
-* [value](invokeactivity.md#value)
+- [channelData](invokeactivity.md#optional-channeldata)
+- [channelId](invokeactivity.md#optional-channelid)
+- [conversation](invokeactivity.md#optional-conversation)
+- [entities](invokeactivity.md#optional-entities)
+- [from](invokeactivity.md#optional-from)
+- [localTimestamp](invokeactivity.md#localtimestamp)
+- [localTimezone](invokeactivity.md#localtimezone)
+- [name](invokeactivity.md#name)
+- [relatesTo](invokeactivity.md#optional-relatesto)
+- [replyToId](invokeactivity.md#optional-replytoid)
+- [serviceUrl](invokeactivity.md#optional-serviceurl)
+- [type](invokeactivity.md#type)
+- [value](invokeactivity.md#value)
 
 ## Properties
 
 ### `Optional` channelData
 
-• **channelData**? : *undefined | object*
+• **channelData**? : _undefined | object_
 
-___
+---
 
 ### `Optional` channelId
 
-• **channelId**? : *undefined | string*
+• **channelId**? : _undefined | string_
 
-___
+---
 
 ### `Optional` conversation
 
-• **conversation**? : *undefined | object*
+• **conversation**? : _undefined | object_
 
-___
+---
 
 ### `Optional` entities
 
-• **entities**? : *object[]*
+• **entities**? : _object[]_
 
-___
+---
 
 ### `Optional` from
 
-• **from**? : *undefined | object*
+• **from**? : _undefined | object_
 
-___
+---
 
-###  localTimestamp
+### localTimestamp
 
-• **localTimestamp**: *string*
+• **localTimestamp**: _string_
 
-___
+---
 
-###  localTimezone
+### localTimezone
 
-• **localTimezone**: *string*
+• **localTimezone**: _string_
 
-___
+---
 
-###  name
+### name
 
-• **name**: *"adaptiveCard/action"*
+• **name**: _"adaptiveCard/action"_
 
-___
+---
 
 ### `Optional` relatesTo
 
-• **relatesTo**? : *undefined | string*
+• **relatesTo**? : _undefined | string_
 
-___
+---
 
 ### `Optional` replyToId
 
-• **replyToId**? : *undefined | string*
+• **replyToId**? : _undefined | string_
 
-___
+---
 
 ### `Optional` serviceUrl
 
-• **serviceUrl**? : *undefined | string*
+• **serviceUrl**? : _undefined | string_
 
-___
+---
 
-###  type
+### type
 
-• **type**: *"invoke"*
+• **type**: _"invoke"_
 
-___
+---
 
-###  value
+### value
 
-• **value**: *object*
+• **value**: _object_
 
 #### Type declaration:
 
-* **action**(): *object*
+- **action**(): _object_
 
-  * **data**? : *undefined | object*
+  - **data**? : _undefined | object_
 
-  * **id**? : *undefined | string*
+  - **id**? : _undefined | string_
 
-  * **type**: *"Action.Execute"*
+  - **type**: _"Action.Execute"_
 
-  * **verb**: *string*
+  - **verb**: _string_
 
-* **magicCode**? : *undefined | string*
+- **magicCode**? : _undefined | string_
 
-* **trigger**: *[ActivityInvocationTrigger](../enums/activityinvocationtrigger.md)*
+- **trigger**: _[ActivityInvocationTrigger](../enums/activityinvocationtrigger.md)_

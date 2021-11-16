@@ -8,6 +8,6 @@ export class Constants {
         space: " ",
         up: "ArrowUp",
         down: "ArrowDown",
-        delete: "Delete"
+        delete: "Delete",
     } as const;
 }

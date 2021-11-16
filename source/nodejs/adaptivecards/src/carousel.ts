@@ -1,12 +1,36 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { ActionType, CardElement, Container, ContainerBase, SerializationContext, ShowCardAction, ToggleVisibilityAction } from "./card-elements";
+import {
+    ActionType,
+    CardElement,
+    Container,
+    ContainerBase,
+    SerializationContext,
+    ShowCardAction,
+    ToggleVisibilityAction,
+} from "./card-elements";
 import * as Enums from "./enums";
-import { NumProperty, property, PropertyBag, SerializableObjectSchema, Versions } from "./serialization";
+import {
+    NumProperty,
+    property,
+    PropertyBag,
+    SerializableObjectSchema,
+    Versions,
+} from "./serialization";
 import { GlobalRegistry, ElementSingletonBehavior } from "./registry";
 import { TypeErrorType, ValidationEvent } from "./enums";
 import { Strings } from "./strings";
-import { Swiper, A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions } from "swiper";
+import {
+    Swiper,
+    A11y,
+    Autoplay,
+    History,
+    Keyboard,
+    Navigation,
+    Pagination,
+    Scrollbar,
+    SwiperOptions,
+} from "swiper";
 import * as Utils from "./utils";
 import { GlobalSettings } from "./shared";
 
@@ -27,7 +51,8 @@ export class CarouselPage extends Container {
 
     protected internalRender(): HTMLElement | undefined {
         const carouselSlide: HTMLElement = document.createElement("div");
-        carouselSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
+        carouselSlide.className =
+            this.hostConfig.makeCssClassName("swiper-slide");
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         const renderedElement = super.internalRender();
@@ -36,7 +61,7 @@ export class CarouselPage extends Container {
     }
 
     getForbiddenActionTypes(): ActionType[] {
-        return [ShowCardAction, ToggleVisibilityAction]
+        return [ShowCardAction, ToggleVisibilityAction];
     }
 
     protected internalParse(source: any, context: SerializationContext) {
@@ -69,7 +94,11 @@ export class Carousel extends Container {
         schema.remove(Container.isVisibleProperty);
     }
 
-    static readonly timerProperty = new NumProperty(Versions.v1_6, "timer", undefined);
+    static readonly timerProperty = new NumProperty(
+        Versions.v1_6,
+        "timer",
+        undefined
+    );
     @property(Carousel.timerProperty)
     get timer(): number | undefined {
         let timer = this.getValue(Carousel.timerProperty);
@@ -86,8 +115,7 @@ export class Carousel extends Container {
         if (value && value < this.hostConfig.carousel.minAutoplayDelay) {
             console.warn(Strings.errors.tooLittleTimeDelay);
             this.timer = this.hostConfig.carousel.minAutoplayDelay;
-        }
-        else {
+        } else {
             this.timer = value;
         }
     }
@@ -109,7 +137,7 @@ export class Carousel extends Container {
             "Input.Number",
             "Input.ChoiceSet",
             "Input.Toggle",
-            ...super.forbiddenChildElements()
+            ...super.forbiddenChildElements(),
         ];
     }
 
@@ -146,8 +174,7 @@ export class Carousel extends Container {
     getFirstVisibleRenderedItem(): CardElement | undefined {
         if (this.renderedElement && this._renderedPages?.length > 0) {
             return this._renderedPages[0];
-        }
-        else {
+        } else {
             return undefined;
         }
     }
@@ -155,15 +182,16 @@ export class Carousel extends Container {
     getLastVisibleRenderedItem(): CardElement | undefined {
         if (this.renderedElement && this._renderedPages?.length > 0) {
             return this._renderedPages[this._renderedPages.length - 1];
-        }
-        else {
+        } else {
             return undefined;
         }
     }
 
     get currentPageId(): string | undefined {
         if (this._carousel?.slides?.length) {
-            const activeSlide = this._carousel.slides[this._carousel.activeIndex] as HTMLElement;
+            const activeSlide = this._carousel.slides[
+                this._carousel.activeIndex
+            ] as HTMLElement;
             return activeSlide.id;
         }
         return undefined;
@@ -186,7 +214,10 @@ export class Carousel extends Container {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+    protected internalToJSON(
+        target: PropertyBag,
+        context: SerializationContext
+    ) {
         super.internalToJSON(target, context);
 
         context.serializeArray(target, "pages", this._pages);
@@ -202,26 +233,34 @@ export class Carousel extends Container {
         const cardLevelContainer: HTMLElement = document.createElement("div");
 
         const carouselContainer: HTMLElement = document.createElement("div");
-        carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
+        carouselContainer.className = this.hostConfig.makeCssClassName(
+            "swiper",
+            "ac-carousel"
+        );
 
-	    const containerForAdorners: HTMLElement = document.createElement("div");
-        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+        const containerForAdorners: HTMLElement = document.createElement("div");
+        containerForAdorners.className = this.hostConfig.makeCssClassName(
+            "ac-carousel-container"
+        );
 
         cardLevelContainer.appendChild(containerForAdorners);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
-        carouselWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
+        carouselWrapper.className = this.hostConfig.makeCssClassName(
+            "swiper-wrapper",
+            "ac-carousel-card-container"
+        );
         carouselWrapper.style.display = "flex";
 
         switch (this.getEffectiveVerticalContentAlignment()) {
             case Enums.VerticalAlignment.Top:
-                carouselWrapper.style.alignItems = 'flex-start';
+                carouselWrapper.style.alignItems = "flex-start";
                 break;
             case Enums.VerticalAlignment.Bottom:
-                carouselWrapper.style.alignItems = 'flex-end';
+                carouselWrapper.style.alignItems = "flex-end";
                 break;
             default:
-                carouselWrapper.style.alignItems = 'center';
+                carouselWrapper.style.alignItems = "center";
                 break;
         }
 
@@ -237,22 +276,34 @@ export class Carousel extends Container {
             //
             // See the "Browser Rendering Notes" section of this answer:
             // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
-            carouselWrapper.style.minHeight = '-webkit-min-content';
+            carouselWrapper.style.minHeight = "-webkit-min-content";
         }
 
         const prevElementDiv: HTMLElement = document.createElement("div");
-        prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
+        prevElementDiv.className = this.hostConfig.makeCssClassName(
+            "swiper-button-prev",
+            "ac-carousel-left"
+        );
         containerForAdorners.appendChild(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
+        nextElementDiv.className = this.hostConfig.makeCssClassName(
+            "swiper-button-next",
+            "ac-carousel-right"
+        );
         containerForAdorners.appendChild(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
-        pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
+        pagination.className = this.hostConfig.makeCssClassName(
+            "swiper-pagination",
+            "ac-carousel-pagination"
+        );
         containerForAdorners.appendChild(pagination);
 
-        const requestedNumberOfPages: number = Math.min(this._pages.length, this.hostConfig.carousel.maxCarouselPages);
+        const requestedNumberOfPages: number = Math.min(
+            this._pages.length,
+            this.hostConfig.carousel.maxCarouselPages
+        );
         if (this._pages.length > this.hostConfig.carousel.maxCarouselPages) {
             console.warn(Strings.errors.tooManyCarouselPages);
         }
@@ -260,9 +311,13 @@ export class Carousel extends Container {
         if (this._pages.length > 0) {
             for (let i = 0; i < requestedNumberOfPages; i++) {
                 const page = this._pages[i];
-                const renderedItem = this.isElementAllowed(page) ? page.render() : undefined;
+                const renderedItem = this.isElementAllowed(page)
+                    ? page.render()
+                    : undefined;
                 renderedItem?.classList.add("ac-carousel-page");
-                renderedItem?.children[0]?.classList.add("ac-carousel-page-container");
+                renderedItem?.children[0]?.classList.add(
+                    "ac-carousel-page-container"
+                );
 
                 if (renderedItem) {
                     Utils.appendChild(carouselWrapper, renderedItem);
@@ -281,23 +336,45 @@ export class Carousel extends Container {
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
 
-        this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
+        this.initializeCarouselControl(
+            carouselContainer,
+            nextElementDiv,
+            prevElementDiv,
+            pagination,
+            this.rtl
+        );
 
-        cardLevelContainer.addEventListener("keydown", (event) => {
-            // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
-           let activeIndex = this._carousel?.activeIndex;
-           this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
-           if (activeIndex) { 
-               this._carousel?.slideTo(activeIndex);
-           }
-        }, {once : true});
+        cardLevelContainer.addEventListener(
+            "keydown",
+            (event) => {
+                // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
+                let activeIndex = this._carousel?.activeIndex;
+                this.initializeCarouselControl(
+                    carouselContainer,
+                    nextElementDiv,
+                    prevElementDiv,
+                    pagination,
+                    this.rtl
+                );
+                if (activeIndex) {
+                    this._carousel?.slideTo(activeIndex);
+                }
+            },
+            { once: true }
+        );
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
     private _carousel?: Swiper;
 
-    private initializeCarouselControl(carouselContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, rtl: boolean | undefined): void {
+    private initializeCarouselControl(
+        carouselContainer: HTMLElement,
+        nextElement: HTMLElement,
+        prevElement: HTMLElement,
+        paginationElement: HTMLElement,
+        rtl: boolean | undefined
+    ): void {
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [
@@ -306,28 +383,31 @@ export class Carousel extends Container {
                 Scrollbar,
                 A11y,
                 History,
-                Keyboard
+                Keyboard,
             ],
             pagination: {
                 el: paginationElement,
-                clickable: true
+                clickable: true,
             },
             navigation: {
                 prevEl: rtl == undefined || !rtl ? prevElement : nextElement,
-                nextEl: rtl == undefined || !rtl ? nextElement : prevElement
+                nextEl: rtl == undefined || !rtl ? nextElement : prevElement,
             },
             a11y: {
-                enabled: true
+                enabled: true,
             },
             keyboard: {
                 enabled: true,
-                onlyInViewport: true
-            }
+                onlyInViewport: true,
+            },
         };
 
         if (this.timer && !this.isDesignMode()) {
             swiperOptions.modules?.push(Autoplay);
-            swiperOptions.autoplay = { delay: this.timer, pauseOnMouseEnter: true };
+            swiperOptions.autoplay = {
+                delay: this.timer,
+                pauseOnMouseEnter: true,
+            };
         }
 
         const carousel: Swiper = new Swiper(carouselContainer, swiperOptions);
@@ -335,34 +415,45 @@ export class Carousel extends Container {
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
 
-        carouselContainer.addEventListener("mouseenter", function(event) {
+        carouselContainer.addEventListener("mouseenter", function (event) {
             carousel.autoplay?.stop();
         });
 
-        carouselContainer.addEventListener("mouseleave", function(event) {
+        carouselContainer.addEventListener("mouseleave", function (event) {
             carousel.autoplay?.start();
         });
 
         this._carousel = carousel;
     }
 
-    private createCarouselPageInstance(source: any, context: SerializationContext): CarouselPage | undefined {
+    private createCarouselPageInstance(
+        source: any,
+        context: SerializationContext
+    ): CarouselPage | undefined {
         return context.parseCardObject<CarouselPage>(
             this,
             source,
             this.forbiddenChildElements(),
             !this.isDesignMode(),
             (typeName: string) => {
-                return !typeName || typeName === "CarouselPage" ? new CarouselPage() : undefined;
+                return !typeName || typeName === "CarouselPage"
+                    ? new CarouselPage()
+                    : undefined;
             },
             (typeName: string, errorType: TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     ValidationEvent.ElementTypeNotAllowed,
-                    Strings.errors.elementTypeNotAllowed(typeName));
+                    Strings.errors.elementTypeNotAllowed(typeName)
+                );
             }
         );
     }
 }
 
-GlobalRegistry.defaultElements.register("Carousel", Carousel, Versions.v1_6, ElementSingletonBehavior.Only);
+GlobalRegistry.defaultElements.register(
+    "Carousel",
+    Carousel,
+    Versions.v1_6,
+    ElementSingletonBehavior.Only
+);

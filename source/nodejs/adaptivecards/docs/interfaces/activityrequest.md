@@ -4,30 +4,30 @@
 
 ## Hierarchy
 
-* **ActivityRequest**
+- **ActivityRequest**
 
 ## Index
 
 ### Properties
 
-* [activity](activityrequest.md#activity)
-* [attemptNumber](activityrequest.md#attemptnumber)
-* [consecutiveRefreshes](activityrequest.md#consecutiverefreshes)
+- [activity](activityrequest.md#activity)
+- [attemptNumber](activityrequest.md#attemptnumber)
+- [consecutiveRefreshes](activityrequest.md#consecutiverefreshes)
 
 ## Properties
 
-###  activity
+### activity
 
-• **activity**: *[InvokeActivity](invokeactivity.md)*
+• **activity**: _[InvokeActivity](invokeactivity.md)_
 
-___
+---
 
-###  attemptNumber
+### attemptNumber
 
-• **attemptNumber**: *number*
+• **attemptNumber**: _number_
 
-___
+---
 
-###  consecutiveRefreshes
+### consecutiveRefreshes
 
-• **consecutiveRefreshes**: *number*
+• **consecutiveRefreshes**: _number_

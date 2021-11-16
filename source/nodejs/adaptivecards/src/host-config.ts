@@ -5,16 +5,18 @@ import * as Utils from "./utils";
 import * as Shared from "./shared";
 import { HostCapabilities } from "./host-capabilities";
 
-function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
+function parseHostConfigEnum(
+    targetEnum: { [s: number]: string },
+    value: string | number,
+    defaultValue: number
+): number {
     if (typeof value === "string") {
         let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
 
         return parsedValue !== undefined ? parsedValue : defaultValue;
-    }
-    else if (typeof value === "number") {
+    } else if (typeof value === "number") {
         return value;
-    }
-    else {
+    } else {
         return defaultValue;
     }
 }
@@ -58,7 +60,8 @@ export class AdaptiveCardConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.allowCustomStyle = obj["allowCustomStyle"] || this.allowCustomStyle;
+            this.allowCustomStyle =
+                obj["allowCustomStyle"] || this.allowCustomStyle;
         }
     }
 }
@@ -69,16 +72,19 @@ export class ImageSetConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = <number>Utils.parseNumber(obj["maxImageHeight"], 100);
+            this.imageSize =
+                obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
+            this.maxImageHeight = <number>(
+                Utils.parseNumber(obj["maxImageHeight"], 100)
+            );
         }
     }
 
     toJSON() {
         return {
             imageSize: Enums.Size[this.imageSize],
-            maxImageHeight: this.maxImageHeight
-        }
+            maxImageHeight: this.maxImageHeight,
+        };
     }
 }
 
@@ -89,15 +95,16 @@ export class MediaConfig {
     constructor(obj?: any) {
         if (obj) {
             this.defaultPoster = obj["defaultPoster"];
-            this.allowInlinePlayback = obj["allowInlinePlayback"] || this.allowInlinePlayback;
+            this.allowInlinePlayback =
+                obj["allowInlinePlayback"] || this.allowInlinePlayback;
         }
     }
 
     toJSON() {
         return {
             defaultPoster: this.defaultPoster,
-            allowInlinePlayback: this.allowInlinePlayback
-        }
+            allowInlinePlayback: this.allowInlinePlayback,
+        };
     }
 }
 
@@ -106,20 +113,23 @@ export class TableConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.cellSpacing = obj.cellSpacing && typeof obj.cellSpacing === "number" ? obj.cellSpacing : this.cellSpacing;
+            this.cellSpacing =
+                obj.cellSpacing && typeof obj.cellSpacing === "number"
+                    ? obj.cellSpacing
+                    : this.cellSpacing;
         }
     }
 
     toJSON() {
         return {
-            cellSpacing: this.cellSpacing
-        }
+            cellSpacing: this.cellSpacing,
+        };
     }
 }
 
 export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
-    color: Enums.TextColor = Enums.TextColor.Default;;
+    color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
@@ -129,10 +139,25 @@ export class BaseTextDefinition {
 
     parse(obj: any) {
         if (obj) {
-            this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
-            this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
-            this.isSubtle = obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean" ? obj.isSubtle : this.isSubtle;
-            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
+            this.size = parseHostConfigEnum(
+                Enums.TextSize,
+                obj["size"],
+                this.size
+            );
+            this.color = parseHostConfigEnum(
+                Enums.TextColor,
+                obj["color"],
+                this.color
+            );
+            this.isSubtle =
+                obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean"
+                    ? obj.isSubtle
+                    : this.isSubtle;
+            this.weight = parseHostConfigEnum(
+                Enums.TextWeight,
+                obj["weight"],
+                this.getDefaultWeight()
+            );
         }
     }
 
@@ -145,8 +170,8 @@ export class BaseTextDefinition {
             size: Enums.TextSize[this.size],
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
-            weight: Enums.TextWeight[this.weight]
-        }
+            weight: Enums.TextWeight[this.weight],
+        };
     }
 }
 
@@ -157,23 +182,25 @@ export class TextStyleDefinition extends BaseTextDefinition {
         super.parse(obj);
 
         if (obj) {
-            this.fontType = parseHostConfigEnum(Enums.FontType, obj.fontType, this.fontType);
+            this.fontType = parseHostConfigEnum(
+                Enums.FontType,
+                obj.fontType,
+                this.fontType
+            );
         }
     }
 }
 
 export class TextStyleSet {
     readonly default: TextStyleDefinition = new TextStyleDefinition();
-    readonly heading: TextStyleDefinition = new TextStyleDefinition(
-        {
-            size: "Large",
-            weight: "Bolder"
-        });
-    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition(
-        {
-            weight: "Bolder"
-        });
-    
+    readonly heading: TextStyleDefinition = new TextStyleDefinition({
+        size: "Large",
+        weight: "Bolder",
+    });
+    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition({
+        weight: "Bolder",
+    });
+
     constructor(obj?: any) {
         if (obj) {
             this.heading.parse(obj.heading);
@@ -212,7 +239,11 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
         if (obj) {
             this.suffix = obj["suffix"] || this.suffix;
-            this.suffixColor = parseHostConfigEnum(Enums.TextColor, obj["suffixColor"], this.suffixColor);
+            this.suffixColor = parseHostConfigEnum(
+                Enums.TextColor,
+                obj["suffixColor"],
+                this.suffixColor
+            );
         }
     }
 
@@ -227,13 +258,20 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
 export class InputLabelConfig {
     inputSpacing: Enums.Spacing = Enums.Spacing.Small;
-    readonly requiredInputs: RequiredInputLabelTextDefinition = new RequiredInputLabelTextDefinition();
+    readonly requiredInputs: RequiredInputLabelTextDefinition =
+        new RequiredInputLabelTextDefinition();
     readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
 
     constructor(obj?: any) {
         if (obj) {
-            this.inputSpacing = parseHostConfigEnum(Enums.Spacing, obj["inputSpacing"], this.inputSpacing);
-            this.requiredInputs = new RequiredInputLabelTextDefinition(obj["requiredInputs"]);
+            this.inputSpacing = parseHostConfigEnum(
+                Enums.Spacing,
+                obj["inputSpacing"],
+                this.inputSpacing
+            );
+            this.requiredInputs = new RequiredInputLabelTextDefinition(
+                obj["requiredInputs"]
+            );
             this.optionalInputs = new BaseTextDefinition(obj["optionalInputs"]);
         }
     }
@@ -241,7 +279,9 @@ export class InputLabelConfig {
 
 export class InputConfig {
     readonly label: InputLabelConfig = new InputLabelConfig();
-    readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({ color: Enums.TextColor.Attention });
+    readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({
+        color: Enums.TextColor.Attention,
+    });
 
     constructor(obj?: any) {
         if (obj) {
@@ -278,8 +318,13 @@ export class FactTitleDefinition extends FactTextDefinition {
         super(obj);
 
         if (obj) {
-            this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
-            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
+            this.maxWidth =
+                obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
+            this.weight = parseHostConfigEnum(
+                Enums.TextWeight,
+                obj["weight"],
+                Enums.TextWeight.Bolder
+            );
         }
     }
 
@@ -297,7 +342,10 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
+            this.spacing =
+                obj.spacing && obj.spacing != null
+                    ? obj.spacing && obj.spacing
+                    : this.spacing;
         }
     }
 }
@@ -309,9 +357,19 @@ export class ShowCardActionConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.actionMode = parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
-            this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
-            this.style = obj["style"] && typeof obj["style"] === "string" ? obj["style"] : Enums.ContainerStyle.Emphasis;
+            this.actionMode = parseHostConfigEnum(
+                Enums.ShowCardActionMode,
+                obj["actionMode"],
+                Enums.ShowCardActionMode.Inline
+            );
+            this.inlineTopMargin =
+                obj["inlineTopMargin"] != null
+                    ? obj["inlineTopMargin"]
+                    : this.inlineTopMargin;
+            this.style =
+                obj["style"] && typeof obj["style"] === "string"
+                    ? obj["style"]
+                    : Enums.ContainerStyle.Emphasis;
         }
     }
 
@@ -319,8 +377,8 @@ export class ShowCardActionConfig {
         return {
             actionMode: Enums.ShowCardActionMode[this.actionMode],
             inlineTopMargin: this.inlineTopMargin,
-            style: this.style
-        }
+            style: this.style,
+        };
     }
 }
 
@@ -332,21 +390,48 @@ export class ActionsConfig {
     preExpandSingleShowCardAction?: boolean = false;
     actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
-    iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
+    iconPlacement: Enums.ActionIconPlacement =
+        Enums.ActionIconPlacement.LeftOfTitle;
     allowTitleToWrap: boolean = false;
     iconSize: number = 16;
 
     constructor(obj?: any) {
         if (obj) {
-            this.maxActions = obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
-            this.spacing = parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
-            this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
+            this.maxActions =
+                obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
+            this.spacing = parseHostConfigEnum(
+                Enums.Spacing,
+                obj.spacing && obj.spacing,
+                Enums.Spacing.Default
+            );
+            this.buttonSpacing =
+                obj["buttonSpacing"] != null
+                    ? obj["buttonSpacing"]
+                    : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
-            this.preExpandSingleShowCardAction = Utils.parseBool(obj["preExpandSingleShowCardAction"], false);
-            this.actionsOrientation = parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
-            this.actionAlignment = parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
-            this.iconPlacement = parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
-            this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.preExpandSingleShowCardAction = Utils.parseBool(
+                obj["preExpandSingleShowCardAction"],
+                false
+            );
+            this.actionsOrientation = parseHostConfigEnum(
+                Enums.Orientation,
+                obj["actionsOrientation"],
+                Enums.Orientation.Horizontal
+            );
+            this.actionAlignment = parseHostConfigEnum(
+                Enums.ActionAlignment,
+                obj["actionAlignment"],
+                Enums.ActionAlignment.Left
+            );
+            this.iconPlacement = parseHostConfigEnum(
+                Enums.ActionIconPlacement,
+                obj["iconPlacement"],
+                Enums.ActionIconPlacement.LeftOfTitle
+            );
+            this.allowTitleToWrap =
+                obj["allowTitleToWrap"] != null
+                    ? obj["allowTitleToWrap"]
+                    : this.allowTitleToWrap;
 
             try {
                 let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
@@ -354,8 +439,7 @@ export class ActionsConfig {
                 if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 // Swallow this, keep default icon size
             }
         }
@@ -369,15 +453,17 @@ export class ActionsConfig {
             showCard: this.showCard,
             preExpandSingleShowCardAction: this.preExpandSingleShowCardAction,
             actionsOrientation: Enums.Orientation[this.actionsOrientation],
-            actionAlignment: Enums.ActionAlignment[this.actionAlignment]
-        }
+            actionAlignment: Enums.ActionAlignment[this.actionAlignment],
+        };
     }
 }
 
 export class ColorSetDefinition {
     private parseSingleColor(obj: any, propertyName: string) {
         if (obj) {
-            ((<any>this)[propertyName] as TextColorDefinition).parse(obj[propertyName]);
+            ((<any>this)[propertyName] as TextColorDefinition).parse(
+                obj[propertyName]
+            );
         }
     }
 
@@ -409,17 +495,15 @@ export class ColorSetDefinition {
 export class ContainerStyleDefinition {
     backgroundColor?: string;
 
-    readonly foregroundColors: ColorSetDefinition = new ColorSetDefinition(
-        {
-            "default": { default: "#333333", subtle: "#EE333333" },
-            "dark": { default: "#000000", subtle: "#66000000" },
-            "light": { default: "#FFFFFF", subtle: "#33000000" },
-            "accent": { default: "#2E89FC", subtle: "#882E89FC" },
-            "good": { default: "#028A02", subtle: "#DD027502" },
-            "warning": { default: "#E69500", subtle: "#DDE69500" },
-            "attention": { default: "#CC3300", subtle: "#DDCC3300" }
-        }
-    );
+    readonly foregroundColors: ColorSetDefinition = new ColorSetDefinition({
+        default: { default: "#333333", subtle: "#EE333333" },
+        dark: { default: "#000000", subtle: "#66000000" },
+        light: { default: "#FFFFFF", subtle: "#33000000" },
+        accent: { default: "#2E89FC", subtle: "#882E89FC" },
+        good: { default: "#028A02", subtle: "#DD027502" },
+        warning: { default: "#E69500", subtle: "#DDE69500" },
+        attention: { default: "#CC3300", subtle: "#DDCC3300" },
+    });
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
@@ -465,20 +549,38 @@ export class ContainerStyleSet {
     private _allStyles: { [key: string]: ContainerStyleDefinition } = {};
 
     constructor(obj?: any) {
-        this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
-        this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
-        this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
-        this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
-        this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
-        this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Default] =
+            new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Emphasis] =
+            new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Accent] =
+            new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Good] =
+            new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Attention] =
+            new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Warning] =
+            new BuiltInContainerStyleDefinition();
 
         if (obj) {
-            this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
-            this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
-            this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
-            this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
-            this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
-            this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
+            this._allStyles[Enums.ContainerStyle.Default].parse(
+                obj[Enums.ContainerStyle.Default]
+            );
+            this._allStyles[Enums.ContainerStyle.Emphasis].parse(
+                obj[Enums.ContainerStyle.Emphasis]
+            );
+            this._allStyles[Enums.ContainerStyle.Accent].parse(
+                obj[Enums.ContainerStyle.Accent]
+            );
+            this._allStyles[Enums.ContainerStyle.Good].parse(
+                obj[Enums.ContainerStyle.Good]
+            );
+            this._allStyles[Enums.ContainerStyle.Attention].parse(
+                obj[Enums.ContainerStyle.Attention]
+            );
+            this._allStyles[Enums.ContainerStyle.Warning].parse(
+                obj[Enums.ContainerStyle.Warning]
+            );
 
             const customStyleArray = obj["customStyles"];
 
@@ -489,10 +591,14 @@ export class ContainerStyleSet {
 
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
-                                this._allStyles[styleName].parse(customStyle["style"]);
-                            }
-                            else {
-                                this._allStyles[styleName] = new ContainerStyleDefinition(customStyle["style"]);
+                                this._allStyles[styleName].parse(
+                                    customStyle["style"]
+                                );
+                            } else {
+                                this._allStyles[styleName] =
+                                    new ContainerStyleDefinition(
+                                        customStyle["style"]
+                                    );
                             }
                         }
                     }
@@ -504,20 +610,19 @@ export class ContainerStyleSet {
     toJSON() {
         let customStyleArray: any[] = [];
 
-        Object.keys(this._allStyles).forEach(
-            (key) => {
-                if (!this._allStyles[key].isBuiltIn) {
-                    customStyleArray.push({
-                        name: key,
-                        style: this._allStyles[key]
-                    });
-                }
-            });
+        Object.keys(this._allStyles).forEach((key) => {
+            if (!this._allStyles[key].isBuiltIn) {
+                customStyleArray.push({
+                    name: key,
+                    style: this._allStyles[key],
+                });
+            }
+        });
 
         let result: any = {
             default: this.default,
-            emphasis: this.emphasis
-        }
+            emphasis: this.emphasis,
+        };
 
         if (customStyleArray.length > 0) {
             result.customStyles = customStyleArray;
@@ -526,12 +631,16 @@ export class ContainerStyleSet {
         return result;
     }
 
-    getStyleByName(name: string | undefined, defaultValue?: ContainerStyleDefinition): ContainerStyleDefinition {
+    getStyleByName(
+        name: string | undefined,
+        defaultValue?: ContainerStyleDefinition
+    ): ContainerStyleDefinition {
         if (name && this._allStyles.hasOwnProperty(name)) {
             return this._allStyles[name];
-        }
-        else {
-            return defaultValue ? defaultValue : this._allStyles[Enums.ContainerStyle.Default];
+        } else {
+            return defaultValue
+                ? defaultValue
+                : this._allStyles[Enums.ContainerStyle.Default];
         }
     }
 
@@ -559,22 +668,25 @@ export interface IFontWeightDefinitions {
 }
 
 export class FontTypeDefinition {
-    static readonly monospace = new FontTypeDefinition("'Courier New', Courier, monospace");
+    static readonly monospace = new FontTypeDefinition(
+        "'Courier New', Courier, monospace"
+    );
 
-    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+    fontFamily?: string =
+        "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
 
     fontSizes: IFontSizeDefinitions = {
         small: 12,
         default: 14,
         medium: 17,
         large: 21,
-        extraLarge: 26
+        extraLarge: 26,
     };
 
     fontWeights: IFontWeightDefinitions = {
         lighter: 200,
         default: 400,
-        bolder: 600
+        bolder: 600,
     };
 
     constructor(fontFamily?: string) {
@@ -586,16 +698,32 @@ export class FontTypeDefinition {
     parse(obj?: any) {
         this.fontFamily = obj["fontFamily"] || this.fontFamily;
         this.fontSizes = {
-            small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-            default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-            medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-            large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-            extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+            small:
+                (obj.fontSizes && obj.fontSizes["small"]) ||
+                this.fontSizes.small,
+            default:
+                (obj.fontSizes && obj.fontSizes["default"]) ||
+                this.fontSizes.default,
+            medium:
+                (obj.fontSizes && obj.fontSizes["medium"]) ||
+                this.fontSizes.medium,
+            large:
+                (obj.fontSizes && obj.fontSizes["large"]) ||
+                this.fontSizes.large,
+            extraLarge:
+                (obj.fontSizes && obj.fontSizes["extraLarge"]) ||
+                this.fontSizes.extraLarge,
         };
         this.fontWeights = {
-            lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-            default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-            bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
+            lighter:
+                (obj.fontWeights && obj.fontWeights["lighter"]) ||
+                this.fontWeights.lighter,
+            default:
+                (obj.fontWeights && obj.fontWeights["default"]) ||
+                this.fontWeights.default,
+            bolder:
+                (obj.fontWeights && obj.fontWeights["bolder"]) ||
+                this.fontWeights.bolder,
         };
     }
 }
@@ -606,7 +734,9 @@ export class FontTypeSet {
 
     constructor(obj?: any) {
         this.default = new FontTypeDefinition();
-        this.monospace = new FontTypeDefinition("'Courier New', Courier, monospace");
+        this.monospace = new FontTypeDefinition(
+            "'Courier New', Courier, monospace"
+        );
 
         if (obj) {
             this.default.parse(obj["default"]);
@@ -631,16 +761,22 @@ export class CarouselConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.maxCarouselPages = obj["maxCarouselPages"] != null ? obj["maxCarouselPages"] : this.maxCarouselPages;
-            this.minAutoplayDelay = obj["minAutoplayDelay"] != null ? obj["minAutoplayDelay"] : this.minAutoplayDelay;
+            this.maxCarouselPages =
+                obj["maxCarouselPages"] != null
+                    ? obj["maxCarouselPages"]
+                    : this.maxCarouselPages;
+            this.minAutoplayDelay =
+                obj["minAutoplayDelay"] != null
+                    ? obj["minAutoplayDelay"]
+                    : this.minAutoplayDelay;
         }
     }
 
     toJSON() {
         return {
             maxCarouselPages: this.maxCarouselPages,
-            minAutoplayDelay: this.minAutoplayDelay 
-        }
+            minAutoplayDelay: this.minAutoplayDelay,
+        };
     }
 }
 
@@ -660,18 +796,18 @@ export class HostConfig {
         medium: 20,
         large: 30,
         extraLarge: 40,
-        padding: 15
+        padding: 15,
     };
 
     readonly separator = {
         lineThickness: 1,
-        lineColor: "#EEEEEE"
+        lineColor: "#EEEEEE",
     };
 
     readonly imageSizes = {
         small: 40,
         medium: 80,
-        large: 160
+        large: 160,
     };
 
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
@@ -695,8 +831,14 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
-            this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
-            this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
+            this.choiceSetInputValueSeparator =
+                obj && typeof obj["choiceSetInputValueSeparator"] === "string"
+                    ? obj["choiceSetInputValueSeparator"]
+                    : this.choiceSetInputValueSeparator;
+            this.supportsInteractivity =
+                obj && typeof obj["supportsInteractivity"] === "boolean"
+                    ? obj["supportsInteractivity"]
+                    : this.supportsInteractivity;
 
             this._legacyFontType = new FontTypeDefinition();
             this._legacyFontType.parse(obj);
@@ -711,34 +853,58 @@ export class HostConfig {
                     default: obj.lineHeights["default"],
                     medium: obj.lineHeights["medium"],
                     large: obj.lineHeights["large"],
-                    extraLarge: obj.lineHeights["extraLarge"]
+                    extraLarge: obj.lineHeights["extraLarge"],
                 };
-            };
+            }
 
             this.imageSizes = {
-                small: obj.imageSizes && obj.imageSizes["small"] || this.imageSizes.small,
-                medium: obj.imageSizes && obj.imageSizes["medium"] || this.imageSizes.medium,
-                large: obj.imageSizes && obj.imageSizes["large"] || this.imageSizes.large,
+                small:
+                    (obj.imageSizes && obj.imageSizes["small"]) ||
+                    this.imageSizes.small,
+                medium:
+                    (obj.imageSizes && obj.imageSizes["medium"]) ||
+                    this.imageSizes.medium,
+                large:
+                    (obj.imageSizes && obj.imageSizes["large"]) ||
+                    this.imageSizes.large,
             };
 
-            this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
+            this.containerStyles = new ContainerStyleSet(
+                obj["containerStyles"]
+            );
             this.spacing = {
-                small: obj.spacing && obj.spacing["small"] || this.spacing.small,
-                default: obj.spacing && obj.spacing["default"] || this.spacing.default,
-                medium: obj.spacing && obj.spacing["medium"] || this.spacing.medium,
-                large: obj.spacing && obj.spacing["large"] || this.spacing.large,
-                extraLarge: obj.spacing && obj.spacing["extraLarge"] || this.spacing.extraLarge,
-                padding: obj.spacing && obj.spacing["padding"] || this.spacing.padding
+                small:
+                    (obj.spacing && obj.spacing["small"]) || this.spacing.small,
+                default:
+                    (obj.spacing && obj.spacing["default"]) ||
+                    this.spacing.default,
+                medium:
+                    (obj.spacing && obj.spacing["medium"]) ||
+                    this.spacing.medium,
+                large:
+                    (obj.spacing && obj.spacing["large"]) || this.spacing.large,
+                extraLarge:
+                    (obj.spacing && obj.spacing["extraLarge"]) ||
+                    this.spacing.extraLarge,
+                padding:
+                    (obj.spacing && obj.spacing["padding"]) ||
+                    this.spacing.padding,
             };
 
             this.separator = {
-                lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
-                lineColor: obj.separator && obj.separator["lineColor"] || this.separator.lineColor
-            }
+                lineThickness:
+                    (obj.separator && obj.separator["lineThickness"]) ||
+                    this.separator.lineThickness,
+                lineColor:
+                    (obj.separator && obj.separator["lineColor"]) ||
+                    this.separator.lineColor,
+            };
 
             this.inputs = new InputConfig(obj.inputs || this.inputs);
             this.actions = new ActionsConfig(obj.actions || this.actions);
-            this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
+            this.adaptiveCard = new AdaptiveCardConfig(
+                obj.adaptiveCard || this.adaptiveCard
+            );
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"]);
             this.textStyles = new TextStyleSet(obj["textStyles"]);
@@ -750,9 +916,10 @@ export class HostConfig {
     getFontTypeDefinition(style?: Enums.FontType): FontTypeDefinition {
         if (this.fontTypes) {
             return this.fontTypes.getStyleDefinition(style);
-        }
-        else {
-            return style == Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
+        } else {
+            return style == Enums.FontType.Monospace
+                ? FontTypeDefinition.monospace
+                : this._legacyFontType;
         }
     }
 
@@ -775,19 +942,25 @@ export class HostConfig {
         }
     }
 
-    paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
+    paddingDefinitionToSpacingDefinition(
+        paddingDefinition: Shared.PaddingDefinition
+    ): Shared.SpacingDefinition {
         return new Shared.SpacingDefinition(
             this.getEffectiveSpacing(paddingDefinition.top),
             this.getEffectiveSpacing(paddingDefinition.right),
             this.getEffectiveSpacing(paddingDefinition.bottom),
-            this.getEffectiveSpacing(paddingDefinition.left));
+            this.getEffectiveSpacing(paddingDefinition.left)
+        );
     }
 
     makeCssClassNames(...classNames: string[]): string[] {
         let result: string[] = [];
 
         for (let className of classNames) {
-            result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
+            result.push(
+                (this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") +
+                    className
+            );
         }
 
         return result;
@@ -816,312 +989,311 @@ export class HostConfig {
     }
 }
 
-export const defaultHostConfig: HostConfig = new HostConfig(
-    {
-        supportsInteractivity: true,
-        spacing: {
-            small: 10,
-            default: 20,
-            medium: 30,
-            large: 40,
-            extraLarge: 50,
-            padding: 20
+export const defaultHostConfig: HostConfig = new HostConfig({
+    supportsInteractivity: true,
+    spacing: {
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20,
+    },
+    separator: {
+        lineThickness: 1,
+        lineColor: "#EEEEEE",
+    },
+    fontTypes: {
+        default: {
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            fontSizes: {
+                small: 12,
+                default: 14,
+                medium: 17,
+                large: 21,
+                extraLarge: 26,
+            },
+            fontWeights: {
+                lighter: 200,
+                default: 400,
+                bolder: 600,
+            },
         },
-        separator: {
-            lineThickness: 1,
-            lineColor: "#EEEEEE"
+        monospace: {
+            fontFamily: "'Courier New', Courier, monospace",
+            fontSizes: {
+                small: 12,
+                default: 14,
+                medium: 17,
+                large: 21,
+                extraLarge: 26,
+            },
+            fontWeights: {
+                lighter: 200,
+                default: 400,
+                bolder: 600,
+            },
         },
-        fontTypes: {
-            default: {
-                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160,
+    },
+    containerStyles: {
+        default: {
+            backgroundColor: "#FFFFFF",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
                 },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                }
-            },
-            monospace: {
-                fontFamily: "'Courier New', Courier, monospace",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
                 },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                }
-            }
-        },
-        imageSizes: {
-            small: 40,
-            medium: 80,
-            large: 160
-        },
-        containerStyles: {
-            default: {
-                backgroundColor: "#FFFFFF",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            emphasis: {
-                backgroundColor: "#08000000",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            accent: {
-                backgroundColor: "#C7DEF9",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            good: {
-                backgroundColor: "#CCFFCC",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            attention: {
-                backgroundColor: "#FFC5B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            warning: {
-                backgroundColor: "#FFE2B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            }
-        },
-        inputs: {
-            label: {
-                requiredInputs: {
-                    weight: Enums.TextWeight.Bolder,
-                    suffix: " *",
-                    suffixColor: Enums.TextColor.Attention
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
                 },
-                optionalInputs: {
-                    weight: Enums.TextWeight.Bolder
-                }
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
             },
-            errorMessage: {
-                color: Enums.TextColor.Attention,
-                weight: Enums.TextWeight.Bolder
-            }
         },
-        actions: {
-            maxActions: 5,
-            spacing: Enums.Spacing.Default,
-            buttonSpacing: 10,
-            showCard: {
-                actionMode: Enums.ShowCardActionMode.Inline,
-                inlineTopMargin: 16
+        emphasis: {
+            backgroundColor: "#08000000",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
             },
-            actionsOrientation: Enums.Orientation.Horizontal,
-            actionAlignment: Enums.ActionAlignment.Left
         },
-        adaptiveCard: {
-            allowCustomStyle: false
+        accent: {
+            backgroundColor: "#C7DEF9",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
+            },
         },
-        imageSet: {
-            imageSize: Enums.Size.Medium,
-            maxImageHeight: 100
+        good: {
+            backgroundColor: "#CCFFCC",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
+            },
         },
-        factSet: {
-            title: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
+        attention: {
+            backgroundColor: "#FFC5B2",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
+            },
+        },
+        warning: {
+            backgroundColor: "#FFE2B2",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333",
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000",
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000",
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC",
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300",
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502",
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500",
+                },
+            },
+        },
+    },
+    inputs: {
+        label: {
+            requiredInputs: {
                 weight: Enums.TextWeight.Bolder,
-                wrap: true,
-                maxWidth: 150,
+                suffix: " *",
+                suffixColor: Enums.TextColor.Attention,
             },
-            value: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Default,
-                wrap: true,
+            optionalInputs: {
+                weight: Enums.TextWeight.Bolder,
             },
-            spacing: 10
         },
-        carousel: {
-            maxCarouselPages : 10,
-            minAutoplayDuration : 5000
-        }
-    });
+        errorMessage: {
+            color: Enums.TextColor.Attention,
+            weight: Enums.TextWeight.Bolder,
+        },
+    },
+    actions: {
+        maxActions: 5,
+        spacing: Enums.Spacing.Default,
+        buttonSpacing: 10,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.Inline,
+            inlineTopMargin: 16,
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.ActionAlignment.Left,
+    },
+    adaptiveCard: {
+        allowCustomStyle: false,
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        maxImageHeight: 100,
+    },
+    factSet: {
+        title: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder,
+            wrap: true,
+            maxWidth: 150,
+        },
+        value: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Default,
+            wrap: true,
+        },
+        spacing: 10,
+    },
+    carousel: {
+        maxCarouselPages: 10,
+        minAutoplayDuration: 5000,
+    },
+});

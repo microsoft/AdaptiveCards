@@ -4,121 +4,121 @@
 
 ## Hierarchy
 
-* **GlobalSettings**
+- **GlobalSettings**
 
 ## Index
 
 ### Properties
 
-* [allowMarkForTextHighlighting](globalsettings.md#static-allowmarkfortexthighlighting)
-* [allowPreProcessingPropertyValues](globalsettings.md#static-allowpreprocessingpropertyvalues)
-* [alwaysBleedSeparators](globalsettings.md#static-alwaysbleedseparators)
-* [displayInputValidationErrors](globalsettings.md#static-displayinputvalidationerrors)
-* [enableFallback](globalsettings.md#static-enablefallback)
-* [enableFullJsonRoundTrip](globalsettings.md#static-enablefulljsonroundtrip)
-* [setTabIndexAtCardRoot](globalsettings.md#static-settabindexatcardroot)
-* [useAdvancedCardBottomTruncation](globalsettings.md#static-useadvancedcardbottomtruncation)
-* [useAdvancedTextBlockTruncation](globalsettings.md#static-useadvancedtextblocktruncation)
-* [useMarkdownInRadioButtonAndCheckbox](globalsettings.md#static-usemarkdowninradiobuttonandcheckbox)
+- [allowMarkForTextHighlighting](globalsettings.md#static-allowmarkfortexthighlighting)
+- [allowPreProcessingPropertyValues](globalsettings.md#static-allowpreprocessingpropertyvalues)
+- [alwaysBleedSeparators](globalsettings.md#static-alwaysbleedseparators)
+- [displayInputValidationErrors](globalsettings.md#static-displayinputvalidationerrors)
+- [enableFallback](globalsettings.md#static-enablefallback)
+- [enableFullJsonRoundTrip](globalsettings.md#static-enablefulljsonroundtrip)
+- [setTabIndexAtCardRoot](globalsettings.md#static-settabindexatcardroot)
+- [useAdvancedCardBottomTruncation](globalsettings.md#static-useadvancedcardbottomtruncation)
+- [useAdvancedTextBlockTruncation](globalsettings.md#static-useadvancedtextblocktruncation)
+- [useMarkdownInRadioButtonAndCheckbox](globalsettings.md#static-usemarkdowninradiobuttonandcheckbox)
 
 ### Object literals
 
-* [applets](globalsettings.md#static-applets)
+- [applets](globalsettings.md#static-applets)
 
 ## Properties
 
 ### `Static` allowMarkForTextHighlighting
 
-▪ **allowMarkForTextHighlighting**: *boolean* = false
+▪ **allowMarkForTextHighlighting**: _boolean_ = false
 
-___
+---
 
 ### `Static` allowPreProcessingPropertyValues
 
-▪ **allowPreProcessingPropertyValues**: *boolean* = false
+▪ **allowPreProcessingPropertyValues**: _boolean_ = false
 
-___
+---
 
 ### `Static` alwaysBleedSeparators
 
-▪ **alwaysBleedSeparators**: *boolean* = false
+▪ **alwaysBleedSeparators**: _boolean_ = false
 
-___
+---
 
 ### `Static` displayInputValidationErrors
 
-▪ **displayInputValidationErrors**: *boolean* = true
+▪ **displayInputValidationErrors**: _boolean_ = true
 
-___
+---
 
 ### `Static` enableFallback
 
-▪ **enableFallback**: *boolean* = true
+▪ **enableFallback**: _boolean_ = true
 
-___
+---
 
 ### `Static` enableFullJsonRoundTrip
 
-▪ **enableFullJsonRoundTrip**: *boolean* = false
+▪ **enableFullJsonRoundTrip**: _boolean_ = false
 
-___
+---
 
 ### `Static` setTabIndexAtCardRoot
 
-▪ **setTabIndexAtCardRoot**: *boolean* = true
+▪ **setTabIndexAtCardRoot**: _boolean_ = true
 
-___
+---
 
 ### `Static` useAdvancedCardBottomTruncation
 
-▪ **useAdvancedCardBottomTruncation**: *boolean* = false
+▪ **useAdvancedCardBottomTruncation**: _boolean_ = false
 
-___
+---
 
 ### `Static` useAdvancedTextBlockTruncation
 
-▪ **useAdvancedTextBlockTruncation**: *boolean* = true
+▪ **useAdvancedTextBlockTruncation**: _boolean_ = true
 
-___
+---
 
 ### `Static` useMarkdownInRadioButtonAndCheckbox
 
-▪ **useMarkdownInRadioButtonAndCheckbox**: *boolean* = true
+▪ **useMarkdownInRadioButtonAndCheckbox**: _boolean_ = true
 
 ## Object literals
 
 ### `Static` applets
 
-### ▪ **applets**: *object*
+### ▪ **applets**: _object_
 
-###  authPromptHeight
+### authPromptHeight
 
-• **authPromptHeight**: *number* = 600
+• **authPromptHeight**: _number_ = 600
 
-###  authPromptWidth
+### authPromptWidth
 
-• **authPromptWidth**: *number* = 400
+• **authPromptWidth**: _number_ = 400
 
-###  defaultTimeBetweenRetryAttempts
+### defaultTimeBetweenRetryAttempts
 
-• **defaultTimeBetweenRetryAttempts**: *number* = 3000
+• **defaultTimeBetweenRetryAttempts**: _number_ = 3000
 
-###  logEnabled
+### logEnabled
 
-• **logEnabled**: *true* = true
+• **logEnabled**: _true_ = true
 
-###  logLevel
+### logLevel
 
-• **logLevel**: *[Error](../enums/loglevel.md#error)* = Enums.LogLevel.Error
+• **logLevel**: _[Error](../enums/loglevel.md#error)_ = Enums.LogLevel.Error
 
-###  maximumRetryAttempts
+### maximumRetryAttempts
 
-• **maximumRetryAttempts**: *number* = 3
+• **maximumRetryAttempts**: _number_ = 3
 
-▪ **refresh**: *object*
+▪ **refresh**: _object_
 
-* **maximumConsecutiveRefreshes**: *number* = 3
+- **maximumConsecutiveRefreshes**: _number_ = 3
 
-* **mode**: *[Manual](../enums/refreshmode.md#manual)* = Enums.RefreshMode.Manual
+- **mode**: _[Manual](../enums/refreshmode.md#manual)_ = Enums.RefreshMode.Manual
 
-* **timeBetweenAutomaticRefreshes**: *number* = 3000
+- **timeBetweenAutomaticRefreshes**: _number_ = 3000

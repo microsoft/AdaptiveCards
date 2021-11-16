@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*IAction*](schema.iaction.md)
+- [_IAction_](schema.iaction.md)
 
   ↳ **ISubmitAction**
 
@@ -23,34 +23,34 @@
 
 ### data
 
-• `Optional` **data**: *any*
+• `Optional` **data**: _any_
 
 Defined in: [schema.ts:20](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L20)
 
-___
+---
 
 ### id
 
-• **id**: *string*
+• **id**: _string_
 
 Inherited from: [IAction](schema.iaction.md).[id](schema.iaction.md#id)
 
 Defined in: [schema.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L14)
 
-___
+---
 
 ### title
 
-• `Optional` **title**: *undefined* \| *string*
+• `Optional` **title**: _undefined_ \| _string_
 
 Inherited from: [IAction](schema.iaction.md).[title](schema.iaction.md#title)
 
 Defined in: [schema.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L15)
 
-___
+---
 
 ### type
 
-• **type**: *Action.Submit*
+• **type**: _Action.Submit_
 
 Defined in: [schema.ts:19](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L19)

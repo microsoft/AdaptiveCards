@@ -16,22 +16,22 @@
 
 ### lineColor
 
-• `Optional` **lineColor**: *undefined* \| *string*
+• `Optional` **lineColor**: _undefined_ \| _string_
 
 Defined in: [shared.ts:27](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L27)
 
-___
+---
 
 ### lineThickness
 
-• `Optional` **lineThickness**: *undefined* \| *number*
+• `Optional` **lineThickness**: _undefined_ \| _number_
 
 Defined in: [shared.ts:26](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L26)
 
-___
+---
 
 ### spacing
 
-• **spacing**: *number*
+• **spacing**: _number_
 
 Defined in: [shared.ts:25](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L25)

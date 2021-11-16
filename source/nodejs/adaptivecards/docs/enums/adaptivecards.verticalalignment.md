@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:80](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L80)
 
-___
+---
 
 ### Center
 
@@ -28,7 +28,7 @@ ___
 
 Defined in: [enums.ts:79](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L79)
 
-___
+---
 
 ### Top
 

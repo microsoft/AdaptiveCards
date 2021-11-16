@@ -16,22 +16,22 @@
 
 ### bolder
 
-• **bolder**: *number*
+• **bolder**: _number_
 
 Defined in: [host-config.ts:482](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L482)
 
-___
+---
 
 ### default
 
-• **default**: *number*
+• **default**: _number_
 
 Defined in: [host-config.ts:481](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L481)
 
-___
+---
 
 ### lighter
 
-• **lighter**: *number*
+• **lighter**: _number_
 
 Defined in: [host-config.ts:480](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L480)

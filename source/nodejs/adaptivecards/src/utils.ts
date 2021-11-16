@@ -19,7 +19,11 @@ export function isInternetExplorer(): boolean {
 export function isMobileOS(): boolean {
     let userAgent = window.navigator.userAgent;
 
-    return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
+    return (
+        !!userAgent.match(/Android/i) ||
+        !!userAgent.match(/iPad/i) ||
+        !!userAgent.match(/iPhone/i)
+    );
 }
 
 /**
@@ -35,19 +39,27 @@ export function appendChild(node: Node, child: Node | undefined) {
     }
 }
 
-export function parseString(obj: any, defaultValue?: string): string | undefined {
+export function parseString(
+    obj: any,
+    defaultValue?: string
+): string | undefined {
     return typeof obj === "string" ? obj : defaultValue;
 }
 
-export function parseNumber(obj: any, defaultValue?: number): number | undefined {
+export function parseNumber(
+    obj: any,
+    defaultValue?: number
+): number | undefined {
     return typeof obj === "number" ? obj : defaultValue;
 }
 
-export function parseBool(value: any, defaultValue?: boolean): boolean | undefined {
+export function parseBool(
+    value: any,
+    defaultValue?: boolean
+): boolean | undefined {
     if (typeof value === "boolean") {
         return value;
-    }
-    else if (typeof value === "string") {
+    } else if (typeof value === "string") {
         switch (value.toLowerCase()) {
             case "true":
                 return true;
@@ -61,14 +73,21 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
     return defaultValue;
 }
 
-export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
+export function getEnumValueByName(
+    enumType: { [s: number]: string },
+    name: string
+): number | undefined {
     for (let key in enumType) {
         let keyAsNumber = parseInt(key, 10);
 
         if (keyAsNumber >= 0) {
             let value = enumType[key];
 
-            if (value && typeof value === "string" && value.toLowerCase() === name.toLowerCase()) {
+            if (
+                value &&
+                typeof value === "string" &&
+                value.toLowerCase() === name.toLowerCase()
+            ) {
                 return keyAsNumber;
             }
         }
@@ -77,7 +96,11 @@ export function getEnumValueByName(enumType: { [s: number]: string }, name: stri
     return undefined;
 }
 
-export function parseEnum(enumType: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
+export function parseEnum(
+    enumType: { [s: number]: string },
+    name: string,
+    defaultValue?: number
+): number | undefined {
     if (!name) {
         return defaultValue;
     }
@@ -87,7 +110,9 @@ export function parseEnum(enumType: { [s: number]: string }, name: string, defau
     return enumValue !== undefined ? enumValue : defaultValue;
 }
 
-export function stringToCssColor(color: string | undefined): string | undefined {
+export function stringToCssColor(
+    color: string | undefined
+): string | undefined {
     if (color) {
         let regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
         let matches = regEx.exec(color);
@@ -105,9 +130,11 @@ export function stringToCssColor(color: string | undefined): string | undefined 
     return color;
 }
 
-export function truncate(element: HTMLElement,
+export function truncate(
+    element: HTMLElement,
     maxHeight: number,
-    lineHeight?: number) {
+    lineHeight?: number
+) {
     let fits = () => {
         // Allow a one pixel overflow to account for rounding differences
         // between browsers
@@ -118,8 +145,8 @@ export function truncate(element: HTMLElement,
 
     let fullText = element.innerHTML;
     let truncateAt = (idx: any) => {
-        element.innerHTML = fullText.substring(0, idx) + '...';
-    }
+        element.innerHTML = fullText.substring(0, idx) + "...";
+    };
 
     let breakableIndices = findBreakableIndices(fullText);
     let lo = 0;
@@ -134,8 +161,7 @@ export function truncate(element: HTMLElement,
         if (fits()) {
             bestBreakIdx = breakableIndices[mid];
             lo = mid + 1;
-        }
-        else {
+        } else {
             hi = mid;
         }
     }
@@ -153,8 +179,7 @@ export function truncate(element: HTMLElement,
             if (fits()) {
                 bestBreakIdx = idx;
                 idx = findNextCharacter(fullText, idx);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -168,7 +193,7 @@ function findBreakableIndices(html: string): number[] {
     let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {
-        if (html[idx] == ' ') {
+        if (html[idx] == " ") {
             results.push(idx);
         }
 
@@ -183,24 +208,25 @@ function findNextCharacter(html: string, currIdx: number): number {
 
     // If we found the start of an HTML tag, keep advancing until we get
     // past it, so we don't end up truncating in the middle of the tag
-    while (currIdx < html.length && html[currIdx] == '<') {
-        while (currIdx < html.length && html[currIdx++] != '>');
+    while (currIdx < html.length && html[currIdx] == "<") {
+        while (currIdx < html.length && html[currIdx++] != ">");
     }
 
     return currIdx;
 }
 
-export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
+export function getFitStatus(
+    element: HTMLElement,
+    containerEnd: number
+): Enums.ContainerFitStatus {
     let start = element.offsetTop;
     let end = start + element.clientHeight;
 
     if (end <= containerEnd) {
         return Enums.ContainerFitStatus.FullyInContainer;
-    }
-    else if (start < containerEnd) {
+    } else if (start < containerEnd) {
         return Enums.ContainerFitStatus.Overflowing;
-    }
-    else {
+    } else {
         return Enums.ContainerFitStatus.FullyOutOfContainer;
     }
 }

@@ -15,14 +15,14 @@
 
 ### title
 
-• **title**: *string*
+• **title**: _string_
 
 Defined in: [schema.ts:148](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L148)
 
-___
+---
 
 ### value
 
-• **value**: *string*
+• **value**: _string_
 
 Defined in: [schema.ts:149](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L149)

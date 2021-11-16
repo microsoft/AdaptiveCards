@@ -16,7 +16,8 @@ export class PopupMenu extends PopupControl {
 
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
-        element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
+        element.className =
+            this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
         element.setAttribute("role", "listbox");
 
         for (let i = 0; i < this._items.length; i++) {
@@ -58,8 +59,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.up:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
-                }
-                else {
+                } else {
                     selectedItemIndex--;
 
                     if (selectedItemIndex < 0) {
@@ -75,8 +75,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.down:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
-                }
-                else {
+                } else {
                     selectedItemIndex++;
 
                     if (selectedItemIndex >= this._renderedItems.length) {

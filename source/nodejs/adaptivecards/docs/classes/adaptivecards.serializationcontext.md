@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*BaseSerializationContext*](serialization.baseserializationcontext.md)
+- [_BaseSerializationContext_](serialization.baseserializationcontext.md)
 
   ↳ **SerializationContext**
 
@@ -51,15 +51,15 @@
 
 ### constructor
 
-\+ **new SerializationContext**(`targetVersion?`: [*Version*](serialization.version.md)): [*SerializationContext*](card_elements.serializationcontext.md)
+\+ **new SerializationContext**(`targetVersion?`: [_Version_](serialization.version.md)): [_SerializationContext_](card_elements.serializationcontext.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`targetVersion` | [*Version*](serialization.version.md) |
+| Name            | Type                                  |
+| :-------------- | :------------------------------------ |
+| `targetVersion` | [_Version_](serialization.version.md) |
 
-**Returns:** [*SerializationContext*](card_elements.serializationcontext.md)
+**Returns:** [_SerializationContext_](card_elements.serializationcontext.md)
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
@@ -69,31 +69,31 @@ Defined in: [serialization.ts:248](https://github.com/microsoft/AdaptiveCards/bl
 
 ### onParseAction
 
-• `Optional` **onParseAction**: *undefined* \| (`action`: [*Action*](card_elements.action.md), `source`: *any*, `context`: [*SerializationContext*](card_elements.serializationcontext.md)) => *void*
+• `Optional` **onParseAction**: _undefined_ \| (`action`: [_Action_](card_elements.action.md), `source`: _any_, `context`: [_SerializationContext_](card_elements.serializationcontext.md)) => _void_
 
 Defined in: [card-elements.ts:6815](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6815)
 
-___
+---
 
 ### onParseElement
 
-• `Optional` **onParseElement**: *undefined* \| (`element`: [*CardElement*](card_elements.cardelement.md), `source`: *any*, `context`: [*SerializationContext*](card_elements.serializationcontext.md)) => *void*
+• `Optional` **onParseElement**: _undefined_ \| (`element`: [_CardElement_](card_elements.cardelement.md), `source`: _any_, `context`: [_SerializationContext_](card_elements.serializationcontext.md)) => _void_
 
 Defined in: [card-elements.ts:6816](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6816)
 
-___
+---
 
 ### targetVersion
 
-• **targetVersion**: [*Version*](serialization.version.md)
+• **targetVersion**: [_Version_](serialization.version.md)
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md).[targetVersion](serialization.baseserializationcontext.md#targetversion)
 
-___
+---
 
 ### toJSONOriginalParam
 
-• **toJSONOriginalParam**: *any*
+• **toJSONOriginalParam**: _any_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md).[toJSONOriginalParam](serialization.baseserializationcontext.md#tojsonoriginalparam)
 
@@ -103,29 +103,29 @@ Defined in: [serialization.ts:132](https://github.com/microsoft/AdaptiveCards/bl
 
 ### actionRegistry
 
-• get **actionRegistry**(): [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*Action*](card_elements.action.md)\>
+• get **actionRegistry**(): [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_Action_](card_elements.action.md)\>
 
-**Returns:** [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*Action*](card_elements.action.md)\>
+**Returns:** [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_Action_](card_elements.action.md)\>
 
 Defined in: [card-elements.ts:6904](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6904)
 
-___
+---
 
 ### elementRegistry
 
-• get **elementRegistry**(): [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*CardElement*](card_elements.cardelement.md)\>
+• get **elementRegistry**(): [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_CardElement_](card_elements.cardelement.md)\>
 
-**Returns:** [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*CardElement*](card_elements.cardelement.md)\>
+**Returns:** [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_CardElement_](card_elements.cardelement.md)\>
 
 Defined in: [card-elements.ts:6894](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6894)
 
-___
+---
 
 ### eventCount
 
-• get **eventCount**(): *number*
+• get **eventCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [serialization.ts:252](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L252)
 
@@ -133,287 +133,287 @@ Defined in: [serialization.ts:252](https://github.com/microsoft/AdaptiveCards/bl
 
 ### cardObjectParsed
 
-▸ `Protected`**cardObjectParsed**(`o`: [*SerializableObject*](serialization.serializableobject.md), `source`: *any*): *void*
+▸ `Protected`**cardObjectParsed**(`o`: [_SerializableObject_](serialization.serializableobject.md), `source`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`o` | [*SerializableObject*](serialization.serializableobject.md) |
-`source` | *any* |
+| Name     | Type                                                        |
+| :------- | :---------------------------------------------------------- |
+| `o`      | [_SerializableObject_](serialization.serializableobject.md) |
+| `source` | _any_                                                       |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:6806](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6806)
 
-___
+---
 
 ### clearEvents
 
-▸ **clearEvents**(): *void*
+▸ **clearEvents**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:223](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L223)
 
-___
+---
 
 ### getEventAt
 
-▸ **getEventAt**(`index`: *number*): [*IValidationEvent*](../interfaces/serialization.ivalidationevent.md)
+▸ **getEventAt**(`index`: _number_): [_IValidationEvent_](../interfaces/serialization.ivalidationevent.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`index` | *number* |
+| Name    | Type     |
+| :------ | :------- |
+| `index` | _number_ |
 
-**Returns:** [*IValidationEvent*](../interfaces/serialization.ivalidationevent.md)
+**Returns:** [_IValidationEvent_](../interfaces/serialization.ivalidationevent.md)
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:246](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L246)
 
-___
+---
 
 ### logEvent
 
-▸ **logEvent**(`source`: *undefined* \| [*SerializableObject*](serialization.serializableobject.md), `phase`: [*ValidationPhase*](../enums/enums.validationphase.md), `event`: [*ValidationEvent*](../enums/enums.validationevent.md), `message`: *string*): *void*
+▸ **logEvent**(`source`: _undefined_ \| [_SerializableObject_](serialization.serializableobject.md), `phase`: [_ValidationPhase_](../enums/enums.validationphase.md), `event`: [_ValidationEvent_](../enums/enums.validationevent.md), `message`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *undefined* \| [*SerializableObject*](serialization.serializableobject.md) |
-`phase` | [*ValidationPhase*](../enums/enums.validationphase.md) |
-`event` | [*ValidationEvent*](../enums/enums.validationevent.md) |
-`message` | *string* |
+| Name      | Type                                                                       |
+| :-------- | :------------------------------------------------------------------------- |
+| `source`  | _undefined_ \| [_SerializableObject_](serialization.serializableobject.md) |
+| `phase`   | [_ValidationPhase_](../enums/enums.validationphase.md)                     |
+| `event`   | [_ValidationEvent_](../enums/enums.validationevent.md)                     |
+| `message` | _string_                                                                   |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:227](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L227)
 
-___
+---
 
 ### logParseEvent
 
-▸ **logParseEvent**(`source`: *undefined* \| [*SerializableObject*](serialization.serializableobject.md), `event`: [*ValidationEvent*](../enums/enums.validationevent.md), `message`: *string*): *void*
+▸ **logParseEvent**(`source`: _undefined_ \| [_SerializableObject_](serialization.serializableobject.md), `event`: [_ValidationEvent_](../enums/enums.validationevent.md), `message`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *undefined* \| [*SerializableObject*](serialization.serializableobject.md) |
-`event` | [*ValidationEvent*](../enums/enums.validationevent.md) |
-`message` | *string* |
+| Name      | Type                                                                       |
+| :-------- | :------------------------------------------------------------------------- |
+| `source`  | _undefined_ \| [_SerializableObject_](serialization.serializableobject.md) |
+| `event`   | [_ValidationEvent_](../enums/enums.validationevent.md)                     |
+| `message` | _string_                                                                   |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:242](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L242)
 
-___
+---
 
 ### parseAction
 
-▸ **parseAction**(`parent`: [*CardElement*](card_elements.cardelement.md), `source`: *any*, `forbiddenActionTypes`: *string*[], `allowFallback`: *boolean*): *undefined* \| [*Action*](card_elements.action.md)
+▸ **parseAction**(`parent`: [_CardElement_](card_elements.cardelement.md), `source`: _any_, `forbiddenActionTypes`: _string_[], `allowFallback`: _boolean_): _undefined_ \| [_Action_](card_elements.action.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`parent` | [*CardElement*](card_elements.cardelement.md) |
-`source` | *any* |
-`forbiddenActionTypes` | *string*[] |
-`allowFallback` | *boolean* |
+| Name                   | Type                                          |
+| :--------------------- | :-------------------------------------------- |
+| `parent`               | [_CardElement_](card_elements.cardelement.md) |
+| `source`               | _any_                                         |
+| `forbiddenActionTypes` | _string_[]                                    |
+| `allowFallback`        | _boolean_                                     |
 
-**Returns:** *undefined* \| [*Action*](card_elements.action.md)
+**Returns:** _undefined_ \| [_Action_](card_elements.action.md)
 
 Defined in: [card-elements.ts:6865](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6865)
 
-___
+---
 
 ### parseCardObject
 
-▸ **parseCardObject**<T\>(`parent`: *undefined* \| [*CardElement*](card_elements.cardelement.md), `source`: *any*, `forbiddenTypeNames`: *string*[], `allowFallback`: *boolean*, `createInstanceCallback`: (`typeName`: *string*) => *undefined* \| T, `logParseEvent`: (`typeName`: *string*, `errorType`: TypeErrorType) => *void*): *undefined* \| T
+▸ **parseCardObject**<T\>(`parent`: _undefined_ \| [_CardElement_](card_elements.cardelement.md), `source`: _any_, `forbiddenTypeNames`: _string_[], `allowFallback`: _boolean_, `createInstanceCallback`: (`typeName`: _string_) => _undefined_ \| T, `logParseEvent`: (`typeName`: _string_, `errorType`: TypeErrorType) => _void_): _undefined_ \| T
 
 #### Type parameters:
 
-Name | Type |
-:------ | :------ |
-`T` | [*CardObject*](card_object.cardobject.md)<T\> |
+| Name | Type                                          |
+| :--- | :-------------------------------------------- |
+| `T`  | [_CardObject_](card_object.cardobject.md)<T\> |
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`parent` | *undefined* \| [*CardElement*](card_elements.cardelement.md) |
-`source` | *any* |
-`forbiddenTypeNames` | *string*[] |
-`allowFallback` | *boolean* |
-`createInstanceCallback` | (`typeName`: *string*) => *undefined* \| T |
-`logParseEvent` | (`typeName`: *string*, `errorType`: TypeErrorType) => *void* |
+| Name                     | Type                                                         |
+| :----------------------- | :----------------------------------------------------------- |
+| `parent`                 | _undefined_ \| [_CardElement_](card_elements.cardelement.md) |
+| `source`                 | _any_                                                        |
+| `forbiddenTypeNames`     | _string_[]                                                   |
+| `allowFallback`          | _boolean_                                                    |
+| `createInstanceCallback` | (`typeName`: _string_) => _undefined_ \| T                   |
+| `logParseEvent`          | (`typeName`: _string_, `errorType`: TypeErrorType) => _void_ |
 
-**Returns:** *undefined* \| T
+**Returns:** _undefined_ \| T
 
 Defined in: [card-elements.ts:6818](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6818)
 
-___
+---
 
 ### parseElement
 
-▸ **parseElement**(`parent`: *undefined* \| [*CardElement*](card_elements.cardelement.md), `source`: *any*, `allowFallback`: *boolean*): *undefined* \| [*CardElement*](card_elements.cardelement.md)
+▸ **parseElement**(`parent`: _undefined_ \| [_CardElement_](card_elements.cardelement.md), `source`: _any_, `allowFallback`: _boolean_): _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`parent` | *undefined* \| [*CardElement*](card_elements.cardelement.md) |
-`source` | *any* |
-`allowFallback` | *boolean* |
+| Name            | Type                                                         |
+| :-------------- | :----------------------------------------------------------- |
+| `parent`        | _undefined_ \| [_CardElement_](card_elements.cardelement.md) |
+| `source`        | _any_                                                        |
+| `allowFallback` | _boolean_                                                    |
 
-**Returns:** *undefined* \| [*CardElement*](card_elements.cardelement.md)
+**Returns:** _undefined_ \| [_CardElement_](card_elements.cardelement.md)
 
 Defined in: [card-elements.ts:6840](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6840)
 
-___
+---
 
 ### serializeArray
 
-▸ **serializeArray**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *any*[]): *void*
+▸ **serializeArray**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _any_[]): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *any*[] |
+| Name            | Type                   |
+| :-------------- | :--------------------- |
+| `target`        | _object_               |
+| `propertyName`  | _string_               |
+| `propertyValue` | _undefined_ \| _any_[] |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:190](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L190)
 
-___
+---
 
 ### serializeBool
 
-▸ **serializeBool**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *boolean*, `defaultValue?`: *undefined* \| *boolean*): *void*
+▸ **serializeBool**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _boolean_, `defaultValue?`: _undefined_ \| _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *boolean* |
-`defaultValue` | *undefined* \| *boolean* |
+| Name            | Type                     |
+| :-------------- | :----------------------- |
+| `target`        | _object_                 |
+| `propertyName`  | _string_                 |
+| `propertyValue` | _undefined_ \| _boolean_ |
+| `defaultValue`  | _undefined_ \| _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:145](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L145)
 
-___
+---
 
 ### serializeEnum
 
-▸ **serializeEnum**(`enumType`: { [s: number]: *string*;  }, `target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *number*, `defaultValue?`: *undefined* \| *number*): *void*
+▸ **serializeEnum**(`enumType`: { [s: number]: _string_; }, `target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _number_, `defaultValue?`: _undefined_ \| _number_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`enumType` | *object* |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *number* |
-`defaultValue` | *undefined* \| *number* |
+| Name            | Type                    |
+| :-------------- | :---------------------- |
+| `enumType`      | _object_                |
+| `target`        | _object_                |
+| `propertyName`  | _string_                |
+| `propertyValue` | _undefined_ \| _number_ |
+| `defaultValue`  | _undefined_ \| _number_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:163](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L163)
 
-___
+---
 
 ### serializeNumber
 
-▸ **serializeNumber**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *number*, `defaultValue?`: *undefined* \| *number*): *void*
+▸ **serializeNumber**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _number_, `defaultValue?`: _undefined_ \| _number_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *number* |
-`defaultValue` | *undefined* \| *number* |
+| Name            | Type                    |
+| :-------------- | :---------------------- |
+| `target`        | _object_                |
+| `propertyName`  | _string_                |
+| `propertyValue` | _undefined_ \| _number_ |
+| `defaultValue`  | _undefined_ \| _number_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:154](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L154)
 
-___
+---
 
 ### serializeValue
 
-▸ **serializeValue**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *any*, `defaultValue?`: *any*): *void*
+▸ **serializeValue**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _any_, `defaultValue?`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *any* |
-`defaultValue` | *any* |
+| Name            | Type     |
+| :-------------- | :------- |
+| `target`        | _object_ |
+| `propertyName`  | _string_ |
+| `propertyValue` | _any_    |
+| `defaultValue`  | _any_    |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Inherited from: [BaseSerializationContext](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L134)
 
-___
+---
 
 ### setActionRegistry
 
-▸ **setActionRegistry**(`value`: *undefined* \| [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*Action*](card_elements.action.md)\>): *void*
+▸ **setActionRegistry**(`value`: _undefined_ \| [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_Action_](card_elements.action.md)\>): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*Action*](card_elements.action.md)\> |
+| Name    | Type                                                                                                        |
+| :------ | :---------------------------------------------------------------------------------------------------------- |
+| `value` | _undefined_ \| [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_Action_](card_elements.action.md)\> |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:6910](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6910)
 
-___
+---
 
 ### setElementRegistry
 
-▸ **setElementRegistry**(`value`: *undefined* \| [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*CardElement*](card_elements.cardelement.md)\>): *void*
+▸ **setElementRegistry**(`value`: _undefined_ \| [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_CardElement_](card_elements.cardelement.md)\>): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`value` | *undefined* \| [*CardObjectRegistry*](registry.cardobjectregistry.md)<[*CardElement*](card_elements.cardelement.md)\> |
+| Name    | Type                                                                                                                  |
+| :------ | :-------------------------------------------------------------------------------------------------------------------- |
+| `value` | _undefined_ \| [_CardObjectRegistry_](registry.cardobjectregistry.md)<[_CardElement_](card_elements.cardelement.md)\> |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-elements.ts:6900](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L6900)

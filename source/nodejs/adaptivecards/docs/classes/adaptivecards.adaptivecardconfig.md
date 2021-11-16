@@ -18,15 +18,15 @@
 
 ### constructor
 
-\+ **new AdaptiveCardConfig**(`obj?`: *any*): [*AdaptiveCardConfig*](host_config.adaptivecardconfig.md)
+\+ **new AdaptiveCardConfig**(`obj?`: _any_): [_AdaptiveCardConfig_](host_config.adaptivecardconfig.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`obj?` | *any* |
+| Name   | Type  |
+| :----- | :---- |
+| `obj?` | _any_ |
 
-**Returns:** [*AdaptiveCardConfig*](host_config.adaptivecardconfig.md)
+**Returns:** [_AdaptiveCardConfig_](host_config.adaptivecardconfig.md)
 
 Defined in: [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L57)
 
@@ -34,6 +34,6 @@ Defined in: [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### allowCustomStyle
 
-• **allowCustomStyle**: *boolean*= false
+• **allowCustomStyle**: _boolean_= false
 
 Defined in: [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L57)

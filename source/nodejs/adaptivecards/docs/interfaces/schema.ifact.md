@@ -16,22 +16,22 @@
 
 ### speak
 
-• `Optional` **speak**: *undefined* \| *string*
+• `Optional` **speak**: _undefined_ \| _string_
 
 Defined in: [schema.ts:84](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L84)
 
-___
+---
 
 ### title
 
-• **title**: *string*
+• **title**: _string_
 
 Defined in: [schema.ts:82](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L82)
 
-___
+---
 
 ### value
 
-• **value**: *string*
+• **value**: _string_
 
 Defined in: [schema.ts:83](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L83)

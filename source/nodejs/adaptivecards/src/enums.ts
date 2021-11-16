@@ -20,18 +20,18 @@ export enum Size {
     Stretch,
     Small,
     Medium,
-    Large
+    Large,
 }
 
 export enum ImageSize {
     Small,
     Medium,
-    Large
+    Large,
 }
 
 export enum SizeUnit {
     Weight,
-    Pixel
+    Pixel,
 }
 
 export enum TextSize {
@@ -39,18 +39,18 @@ export enum TextSize {
     Default,
     Medium,
     Large,
-    ExtraLarge
+    ExtraLarge,
 }
 
 export enum TextWeight {
     Lighter,
     Default,
-    Bolder
+    Bolder,
 }
 
 export enum FontType {
     Default,
-    Monospace
+    Monospace,
 }
 
 export enum Spacing {
@@ -60,7 +60,7 @@ export enum Spacing {
     Medium,
     Large,
     ExtraLarge,
-    Padding
+    Padding,
 }
 
 export enum TextColor {
@@ -70,53 +70,53 @@ export enum TextColor {
     Accent,
     Good,
     Warning,
-    Attention
+    Attention,
 }
 
 export enum HorizontalAlignment {
     Left,
     Center,
-    Right
+    Right,
 }
 
 export enum VerticalAlignment {
     Top,
     Center,
-    Bottom
+    Bottom,
 }
 
 export enum ActionAlignment {
     Left,
     Center,
     Right,
-    Stretch
+    Stretch,
 }
 
 export enum ImageStyle {
     Default,
-    Person
+    Person,
 }
 
 export enum ShowCardActionMode {
     Inline,
-    Popup
+    Popup,
 }
 
 export enum Orientation {
     Horizontal,
-    Vertical
+    Vertical,
 }
 
 export enum FillMode {
     Cover,
     RepeatHorizontally,
     RepeatVertically,
-    Repeat
+    Repeat,
 }
 
 export enum ActionIconPlacement {
     LeftOfTitle,
-    AboveTitle
+    AboveTitle,
 }
 
 export enum InputTextStyle {
@@ -124,7 +124,7 @@ export enum InputTextStyle {
     Tel,
     Url,
     Email,
-    Password
+    Password,
 }
 
 /*
@@ -156,7 +156,7 @@ export class ContainerStyle {
 export enum ValidationPhase {
     Parse,
     ToJSON,
-    Validation
+    Validation,
 }
 
 export enum ValidationEvent {
@@ -177,28 +177,28 @@ export enum ValidationEvent {
     UnsupportedProperty,
     RequiredInputsShouldHaveLabel,
     RequiredInputsShouldHaveErrorMessage,
-    Other
+    Other,
 }
 
 export enum ContainerFitStatus {
     FullyInContainer,
     Overflowing,
-    FullyOutOfContainer
+    FullyOutOfContainer,
 }
 
 export enum TypeErrorType {
     UnknownType,
-    ForbiddenType
+    ForbiddenType,
 }
 
 export enum RefreshMode {
     Disabled,
     Manual,
-    Automatic
+    Automatic,
 }
 
 export enum LogLevel {
     Info,
     Warning,
-    Error
+    Error,
 }

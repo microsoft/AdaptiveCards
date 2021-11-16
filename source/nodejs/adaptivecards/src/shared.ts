@@ -7,7 +7,7 @@ export type Refresh = {
     timeBetweenAutomaticRefreshes: number;
     maximumConsecutiveAutomaticRefreshes: number;
     allowManualRefreshesAfterAutomaticRefreshes: boolean;
-}
+};
 
 export type AppletsSettings = {
     logEnabled: boolean;
@@ -17,8 +17,12 @@ export type AppletsSettings = {
     authPromptWidth: number;
     authPromptHeight: number;
     readonly refresh: Refresh;
-    onLogEvent?: (level: Enums.LogLevel, message?: any, ...optionalParams: any[]) => void;
-}
+    onLogEvent?: (
+        level: Enums.LogLevel,
+        message?: any,
+        ...optionalParams: any[]
+    ) => void;
+};
 
 export class GlobalSettings {
     static useAdvancedTextBlockTruncation: boolean = true;
@@ -45,20 +49,20 @@ export class GlobalSettings {
             mode: Enums.RefreshMode.Manual,
             timeBetweenAutomaticRefreshes: 3000, // 3 seconds
             maximumConsecutiveAutomaticRefreshes: 3,
-            allowManualRefreshesAfterAutomaticRefreshes: true
-        }
-    }
+            allowManualRefreshesAfterAutomaticRefreshes: true,
+        },
+    };
 }
 
 export const ContentTypes = {
     applicationJson: "application/json",
-    applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
-}
+    applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded",
+};
 
 export interface ISeparationDefinition {
-    spacing: number,
-    lineThickness?: number,
-    lineColor?: string
+    spacing: number;
+    lineThickness?: number;
+    lineColor?: string;
 }
 
 export interface IInput {
@@ -74,13 +78,19 @@ export class StringWithSubstitutions {
     private _original?: string;
     private _processed?: string;
 
-    getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
+    getReferencedInputs(
+        inputs: IInput[],
+        referencedInputs: Dictionary<IInput>
+    ) {
         if (!referencedInputs) {
-            throw new Error("The referencedInputs parameter cannot be null.")
+            throw new Error("The referencedInputs parameter cannot be null.");
         }
 
         for (let input of inputs) {
-            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(<string>this._original);
+            let matches = new RegExp(
+                "\\{{2}(" + input.id + ").value\\}{2}",
+                "gi"
+            ).exec(<string>this._original);
 
             if (matches != null && input.id) {
                 referencedInputs[input.id] = input;
@@ -109,12 +119,18 @@ export class StringWithSubstitutions {
                         if (contentType === ContentTypes.applicationJson) {
                             valueForReplace = JSON.stringify(valueForReplace);
                             valueForReplace = valueForReplace.slice(1, -1);
-                        }
-                        else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
-                            valueForReplace = encodeURIComponent(valueForReplace);
+                        } else if (
+                            contentType ===
+                            ContentTypes.applicationXWwwFormUrlencoded
+                        ) {
+                            valueForReplace =
+                                encodeURIComponent(valueForReplace);
                         }
 
-                        this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
+                        this._processed = (<string>this._processed).replace(
+                            matches[0],
+                            valueForReplace
+                        );
 
                         break;
                     }
@@ -132,8 +148,7 @@ export class StringWithSubstitutions {
     get(): string | undefined {
         if (!this._isProcessed) {
             return this._original;
-        }
-        else {
+        } else {
             return this._processed;
         }
     }
@@ -150,10 +165,12 @@ export class SpacingDefinition {
     right: number = 0;
     bottom: number = 0;
 
-    constructor(top: number = 0,
+    constructor(
+        top: number = 0,
         right: number = 0,
         bottom: number = 0,
-        left: number = 0) {
+        left: number = 0
+    ) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -167,10 +184,12 @@ export class PaddingDefinition {
     bottom: Enums.Spacing = Enums.Spacing.None;
     left: Enums.Spacing = Enums.Spacing.None;
 
-    constructor(top: Enums.Spacing = Enums.Spacing.None,
+    constructor(
+        top: Enums.Spacing = Enums.Spacing.None,
         right: Enums.Spacing = Enums.Spacing.None,
         bottom: Enums.Spacing = Enums.Spacing.None,
-        left: Enums.Spacing = Enums.Spacing.None) {
+        left: Enums.Spacing = Enums.Spacing.None
+    ) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -182,15 +201,17 @@ export class SizeAndUnit {
     physicalSize: number;
     unit: Enums.SizeUnit;
 
-    static parse(input: string, requireUnitSpecifier: boolean = false): SizeAndUnit {
+    static parse(
+        input: string,
+        requireUnitSpecifier: boolean = false
+    ): SizeAndUnit {
         let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
         if (typeof input === "number") {
             result.physicalSize = input;
 
             return result;
-        }
-        else if (typeof input === "string") {
+        } else if (typeof input === "string") {
             let regExp = /^([0-9]+)(px|\*)?$/g;
             let matches = regExp.exec(input);
             let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
@@ -232,20 +253,38 @@ export class UUID {
     private static lut: string[] = [];
 
     static generate(): string {
-        let d0 = Math.random() * 0xffffffff | 0;
-        let d1 = Math.random() * 0xffffffff | 0;
-        let d2 = Math.random() * 0xffffffff | 0;
-        let d3 = Math.random() * 0xffffffff | 0;
+        let d0 = (Math.random() * 0xffffffff) | 0;
+        let d1 = (Math.random() * 0xffffffff) | 0;
+        let d2 = (Math.random() * 0xffffffff) | 0;
+        let d3 = (Math.random() * 0xffffffff) | 0;
 
-        return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
-            UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
-            UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
-            UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
+        return (
+            UUID.lut[d0 & 0xff] +
+            UUID.lut[(d0 >> 8) & 0xff] +
+            UUID.lut[(d0 >> 16) & 0xff] +
+            UUID.lut[(d0 >> 24) & 0xff] +
+            "-" +
+            UUID.lut[d1 & 0xff] +
+            UUID.lut[(d1 >> 8) & 0xff] +
+            "-" +
+            UUID.lut[((d1 >> 16) & 0x0f) | 0x40] +
+            UUID.lut[(d1 >> 24) & 0xff] +
+            "-" +
+            UUID.lut[(d2 & 0x3f) | 0x80] +
+            UUID.lut[(d2 >> 8) & 0xff] +
+            "-" +
+            UUID.lut[(d2 >> 16) & 0xff] +
+            UUID.lut[(d2 >> 24) & 0xff] +
+            UUID.lut[d3 & 0xff] +
+            UUID.lut[(d3 >> 8) & 0xff] +
+            UUID.lut[(d3 >> 16) & 0xff] +
+            UUID.lut[(d3 >> 24) & 0xff]
+        );
     }
 
     static initialize() {
         for (let i = 0; i < 256; i++) {
-            UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
+            UUID.lut[i] = (i < 16 ? "0" : "") + i.toString(16);
         }
     }
 }

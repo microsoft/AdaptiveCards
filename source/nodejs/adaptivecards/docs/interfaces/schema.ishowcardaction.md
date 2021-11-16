@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*IAction*](schema.iaction.md)
+- [_IAction_](schema.iaction.md)
 
   ↳ **IShowCardAction**
 
@@ -23,34 +23,34 @@
 
 ### card
 
-• **card**: [*IAdaptiveCard*](schema.iadaptivecard.md)
+• **card**: [_IAdaptiveCard_](schema.iadaptivecard.md)
 
 Defined in: [schema.ts:30](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L30)
 
-___
+---
 
 ### id
 
-• **id**: *string*
+• **id**: _string_
 
 Inherited from: [IAction](schema.iaction.md).[id](schema.iaction.md#id)
 
 Defined in: [schema.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L14)
 
-___
+---
 
 ### title
 
-• `Optional` **title**: *undefined* \| *string*
+• `Optional` **title**: _undefined_ \| _string_
 
 Inherited from: [IAction](schema.iaction.md).[title](schema.iaction.md#title)
 
 Defined in: [schema.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L15)
 
-___
+---
 
 ### type
 
-• **type**: *Action.ShowCard*
+• **type**: _Action.ShowCard_
 
 Defined in: [schema.ts:29](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L29)

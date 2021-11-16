@@ -20,7 +20,7 @@
 
 Defined in: [enums.ts:178](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L178)
 
-___
+---
 
 ### FullyOutOfContainer
 
@@ -28,7 +28,7 @@ ___
 
 Defined in: [enums.ts:180](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L180)
 
-___
+---
 
 ### Overflowing
 

@@ -23,23 +23,23 @@
 
 ### constructor
 
-\+ **new ValidationResults**(): [*ValidationResults*](card_object.validationresults.md)
+\+ **new ValidationResults**(): [_ValidationResults_](card_object.validationresults.md)
 
-**Returns:** [*ValidationResults*](card_object.validationresults.md)
+**Returns:** [_ValidationResults_](card_object.validationresults.md)
 
 ## Properties
 
 ### allIds
 
-• `Readonly` **allIds**: [*Dictionary*](../modules/shared.md#dictionary)<number\>
+• `Readonly` **allIds**: [_Dictionary_](../modules/shared.md#dictionary)<number\>
 
 Defined in: [card-object.ts:12](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L12)
 
-___
+---
 
 ### validationEvents
 
-• `Readonly` **validationEvents**: [*IValidationEvent*](../interfaces/serialization.ivalidationevent.md)[]
+• `Readonly` **validationEvents**: [_IValidationEvent_](../interfaces/serialization.ivalidationevent.md)[]
 
 Defined in: [card-object.ts:13](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L13)
 
@@ -47,16 +47,16 @@ Defined in: [card-object.ts:13](https://github.com/microsoft/AdaptiveCards/blob/
 
 ### addFailure
 
-▸ **addFailure**(`cardObject`: [*CardObject*](card_object.cardobject.md), `event`: [*ValidationEvent*](../enums/enums.validationevent.md), `message`: *string*): *void*
+▸ **addFailure**(`cardObject`: [_CardObject_](card_object.cardobject.md), `event`: [_ValidationEvent_](../enums/enums.validationevent.md), `message`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`cardObject` | [*CardObject*](card_object.cardobject.md) |
-`event` | [*ValidationEvent*](../enums/enums.validationevent.md) |
-`message` | *string* |
+| Name         | Type                                                   |
+| :----------- | :----------------------------------------------------- |
+| `cardObject` | [_CardObject_](card_object.cardobject.md)              |
+| `event`      | [_ValidationEvent_](../enums/enums.validationevent.md) |
+| `message`    | _string_                                               |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [card-object.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-object.ts#L15)

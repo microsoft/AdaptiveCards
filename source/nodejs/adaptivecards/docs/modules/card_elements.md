@@ -60,24 +60,24 @@
 
 ### ActionType
 
-Ƭ **ActionType**: *object*
+Ƭ **ActionType**: _object_
 
 #### Type declaration:
 
 Defined in: [card-elements.ts:3715](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L3715)
 
-___
+---
 
 ### CardElementHeight
 
-Ƭ **CardElementHeight**: *auto* \| *stretch*
+Ƭ **CardElementHeight**: _auto_ \| _stretch_
 
 Defined in: [card-elements.ts:16](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L16)
 
-___
+---
 
 ### ColumnWidth
 
-Ƭ **ColumnWidth**: [*SizeAndUnit*](../classes/shared.sizeandunit.md) \| *auto* \| *stretch*
+Ƭ **ColumnWidth**: [_SizeAndUnit_](../classes/shared.sizeandunit.md) \| _auto_ \| _stretch_
 
 Defined in: [card-elements.ts:5714](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/card-elements.ts#L5714)

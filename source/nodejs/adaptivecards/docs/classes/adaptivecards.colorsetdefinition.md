@@ -28,15 +28,15 @@
 
 ### constructor
 
-\+ **new ColorSetDefinition**(`obj?`: *any*): [*ColorSetDefinition*](host_config.colorsetdefinition.md)
+\+ **new ColorSetDefinition**(`obj?`: _any_): [_ColorSetDefinition_](host_config.colorsetdefinition.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`obj?` | *any* |
+| Name   | Type  |
+| :----- | :---- |
+| `obj?` | _any_ |
 
-**Returns:** [*ColorSetDefinition*](host_config.colorsetdefinition.md)
+**Returns:** [_ColorSetDefinition_](host_config.colorsetdefinition.md)
 
 Defined in: [host-config.ts:317](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L317)
 
@@ -44,55 +44,55 @@ Defined in: [host-config.ts:317](https://github.com/microsoft/AdaptiveCards/blob
 
 ### accent
 
-• **accent**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **accent**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:314](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L314)
 
-___
+---
 
 ### attention
 
-• **attention**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **attention**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:317](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L317)
 
-___
+---
 
 ### dark
 
-• **dark**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **dark**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:312](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L312)
 
-___
+---
 
 ### default
 
-• **default**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **default**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:311](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L311)
 
-___
+---
 
 ### good
 
-• **good**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **good**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:315](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L315)
 
-___
+---
 
 ### light
 
-• **light**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **light**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:313](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L313)
 
-___
+---
 
 ### warning
 
-• **warning**: [*TextColorDefinition*](host_config.textcolordefinition.md)
+• **warning**: [_TextColorDefinition_](host_config.textcolordefinition.md)
 
 Defined in: [host-config.ts:316](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L316)
 
@@ -100,14 +100,14 @@ Defined in: [host-config.ts:316](https://github.com/microsoft/AdaptiveCards/blob
 
 ### parse
 
-▸ **parse**(`obj`: *any*): *void*
+▸ **parse**(`obj`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`obj` | *any* |
+| Name  | Type  |
+| :---- | :---- |
+| `obj` | _any_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [host-config.ts:323](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L323)

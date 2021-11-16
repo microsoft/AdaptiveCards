@@ -6,24 +6,24 @@
 
 ### Enumeration members
 
-* [Automatic](refreshmode.md#automatic)
-* [Disabled](refreshmode.md#disabled)
-* [Manual](refreshmode.md#manual)
+- [Automatic](refreshmode.md#automatic)
+- [Disabled](refreshmode.md#disabled)
+- [Manual](refreshmode.md#manual)
 
 ## Enumeration members
 
-###  Automatic
+### Automatic
 
 • **Automatic**:
 
-___
+---
 
-###  Disabled
+### Disabled
 
 • **Disabled**:
 
-___
+---
 
-###  Manual
+### Manual
 
 • **Manual**:

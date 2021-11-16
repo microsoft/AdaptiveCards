@@ -1,4 +1,9 @@
-import { Authentication, AuthCardButton, ExecuteAction, TokenExchangeResource } from "./card-elements";
+import {
+    Authentication,
+    AuthCardButton,
+    ExecuteAction,
+    TokenExchangeResource,
+} from "./card-elements";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
@@ -18,21 +23,27 @@ export interface IActivityRequest {
 }
 
 export class ActivityRequestError {
-    constructor(readonly code?: string, readonly message?: string) { }
+    constructor(readonly code?: string, readonly message?: string) {}
 }
 
 export abstract class ActivityResponse {
-    constructor(readonly request: IActivityRequest) { }
+    constructor(readonly request: IActivityRequest) {}
 }
 
 export class SuccessResponse extends ActivityResponse {
-    constructor(readonly request: IActivityRequest, readonly rawContent?: string) {
+    constructor(
+        readonly request: IActivityRequest,
+        readonly rawContent?: string
+    ) {
         super(request);
     }
 }
 
 export class ErrorResponse extends ActivityResponse {
-    constructor(readonly request: IActivityRequest, readonly error: ActivityRequestError) {
+    constructor(
+        readonly request: IActivityRequest,
+        readonly error: ActivityRequestError
+    ) {
         super(request);
     }
 }
@@ -40,7 +51,10 @@ export class ErrorResponse extends ActivityResponse {
 export class LoginRequestResponse extends ActivityResponse {
     readonly signinButton?: AuthCardButton;
 
-    constructor(readonly request: IActivityRequest, private _auth: Authentication) {
+    constructor(
+        readonly request: IActivityRequest,
+        private _auth: Authentication
+    ) {
         super(request);
 
         for (let button of this._auth.buttons) {
@@ -51,8 +65,7 @@ export class LoginRequestResponse extends ActivityResponse {
                     this.signinButton = button;
 
                     break;
-                }
-                catch (e) {
+                } catch (e) {
                     // Ignore parsing error
                 }
             }

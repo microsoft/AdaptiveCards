@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { AdaptiveCard, TextInput, SerializationContext } from "../../card-elements";
+import {
+    AdaptiveCard,
+    TextInput,
+    SerializationContext,
+} from "../../card-elements";
 import { Versions } from "../../serialization";
 
-test('TextInput should be instantiated', ()=>{
+test("TextInput should be instantiated", () => {
     const textInput = new TextInput();
     expect(textInput).toEqual(expect.anything());
-})
+});
 
 // TODO: Fix failing test
 // test('TextInput should be able to roundtrip', ()=>{

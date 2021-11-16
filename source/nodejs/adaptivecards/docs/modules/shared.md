@@ -31,13 +31,13 @@
 
 ### Dictionary
 
-Ƭ **Dictionary**<T\>: *object*
+Ƭ **Dictionary**<T\>: _object_
 
 #### Type parameters:
 
-Name |
-:------ |
-`T` |
+| Name |
+| :--- |
+| `T`  |
 
 #### Type declaration:
 
@@ -47,13 +47,13 @@ Defined in: [shared.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a
 
 ### ContentTypes
 
-• `Const` **ContentTypes**: *object*
+• `Const` **ContentTypes**: _object_
 
 #### Type declaration:
 
-Name | Type |
-:------ | :------ |
-`applicationJson` | *string* |
-`applicationXWwwFormUrlencoded` | *string* |
+| Name                            | Type     |
+| :------------------------------ | :------- |
+| `applicationJson`               | _string_ |
+| `applicationXWwwFormUrlencoded` | _string_ |
 
 Defined in: [shared.ts:19](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/shared.ts#L19)

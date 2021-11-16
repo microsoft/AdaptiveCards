@@ -24,7 +24,7 @@
 
 Defined in: [enums.ts:54](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L54)
 
-___
+---
 
 ### ExtraLarge
 
@@ -32,7 +32,7 @@ ___
 
 Defined in: [enums.ts:57](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L57)
 
-___
+---
 
 ### Large
 
@@ -40,7 +40,7 @@ ___
 
 Defined in: [enums.ts:56](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L56)
 
-___
+---
 
 ### Medium
 
@@ -48,7 +48,7 @@ ___
 
 Defined in: [enums.ts:55](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L55)
 
-___
+---
 
 ### None
 
@@ -56,7 +56,7 @@ ___
 
 Defined in: [enums.ts:52](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L52)
 
-___
+---
 
 ### Padding
 
@@ -64,7 +64,7 @@ ___
 
 Defined in: [enums.ts:58](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L58)
 
-___
+---
 
 ### Small
 

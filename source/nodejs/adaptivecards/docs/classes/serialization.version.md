@@ -28,17 +28,17 @@
 
 ### constructor
 
-\+ **new Version**(`major?`: *number*, `minor?`: *number*, `label?`: *string*): [*Version*](serialization.version.md)
+\+ **new Version**(`major?`: _number_, `minor?`: _number_, `label?`: _string_): [_Version_](serialization.version.md)
 
 #### Parameters:
 
-Name | Type | Default value |
-:------ | :------ | :------ |
-`major` | *number* | 1 |
-`minor` | *number* | 1 |
-`label?` | *string* | - |
+| Name     | Type     | Default value |
+| :------- | :------- | :------------ |
+| `major`  | _number_ | 1             |
+| `minor`  | _number_ | 1             |
+| `label?` | _string_ | -             |
 
-**Returns:** [*Version*](serialization.version.md)
+**Returns:** [_Version_](serialization.version.md)
 
 Defined in: [serialization.ts:20](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L20)
 
@@ -46,39 +46,39 @@ Defined in: [serialization.ts:20](https://github.com/microsoft/AdaptiveCards/blo
 
 ### isValid
 
-• get **isValid**(): *boolean*
+• get **isValid**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
 Defined in: [serialization.ts:98](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L98)
 
-___
+---
 
 ### label
 
-• get **label**(): *string*
+• get **label**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Defined in: [serialization.ts:86](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L86)
 
-___
+---
 
 ### major
 
-• get **major**(): *number*
+• get **major**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [serialization.ts:90](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L90)
 
-___
+---
 
 ### minor
 
-• get **minor**(): *number*
+• get **minor**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [serialization.ts:94](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L94)
 
@@ -86,51 +86,51 @@ Defined in: [serialization.ts:94](https://github.com/microsoft/AdaptiveCards/blo
 
 ### compareTo
 
-▸ **compareTo**(`otherVersion`: [*Version*](serialization.version.md)): *number*
+▸ **compareTo**(`otherVersion`: [_Version_](serialization.version.md)): _number_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`otherVersion` | [*Version*](serialization.version.md) |
+| Name           | Type                                  |
+| :------------- | :------------------------------------ |
+| `otherVersion` | [_Version_](serialization.version.md) |
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [serialization.ts:65](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L65)
 
-___
+---
 
 ### toJSON
 
-▸ **toJSON**(): *any*
+▸ **toJSON**(): _any_
 
-**Returns:** *any*
+**Returns:** _any_
 
 Defined in: [serialization.ts:61](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L61)
 
-___
+---
 
 ### toString
 
-▸ **toString**(): *string*
+▸ **toString**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
 Defined in: [serialization.ts:57](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L57)
 
-___
+---
 
 ### parse
 
-▸ `Static`**parse**(`versionString`: *string*, `context`: [*BaseSerializationContext*](serialization.baseserializationcontext.md)): *undefined* \| [*Version*](serialization.version.md)
+▸ `Static`**parse**(`versionString`: _string_, `context`: [_BaseSerializationContext_](serialization.baseserializationcontext.md)): _undefined_ \| [_Version_](serialization.version.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`versionString` | *string* |
-`context` | [*BaseSerializationContext*](serialization.baseserializationcontext.md) |
+| Name            | Type                                                                    |
+| :-------------- | :---------------------------------------------------------------------- |
+| `versionString` | _string_                                                                |
+| `context`       | [_BaseSerializationContext_](serialization.baseserializationcontext.md) |
 
-**Returns:** *undefined* \| [*Version*](serialization.version.md)
+**Returns:** _undefined_ \| [_Version_](serialization.version.md)
 
 Defined in: [serialization.ts:28](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L28)

@@ -23,15 +23,15 @@
 
 ### constructor
 
-\+ **new FontTypeSet**(`obj?`: *any*): [*FontTypeSet*](host_config.fonttypeset.md)
+\+ **new FontTypeSet**(`obj?`: _any_): [_FontTypeSet_](host_config.fonttypeset.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`obj?` | *any* |
+| Name   | Type  |
+| :----- | :---- |
+| `obj?` | _any_ |
 
-**Returns:** [*FontTypeSet*](host_config.fonttypeset.md)
+**Returns:** [_FontTypeSet_](host_config.fonttypeset.md)
 
 Defined in: [host-config.ts:529](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L529)
 
@@ -39,15 +39,15 @@ Defined in: [host-config.ts:529](https://github.com/microsoft/AdaptiveCards/blob
 
 ### default
 
-• **default**: [*FontTypeDefinition*](host_config.fonttypedefinition.md)
+• **default**: [_FontTypeDefinition_](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:528](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L528)
 
-___
+---
 
 ### monospace
 
-• **monospace**: [*FontTypeDefinition*](host_config.fonttypedefinition.md)
+• **monospace**: [_FontTypeDefinition_](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:529](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L529)
 
@@ -55,14 +55,14 @@ Defined in: [host-config.ts:529](https://github.com/microsoft/AdaptiveCards/blob
 
 ### getStyleDefinition
 
-▸ **getStyleDefinition**(`style`: *undefined* \| [*Default*](../enums/enums.fonttype.md#default) \| [*Monospace*](../enums/enums.fonttype.md#monospace)): [*FontTypeDefinition*](host_config.fonttypedefinition.md)
+▸ **getStyleDefinition**(`style`: _undefined_ \| [_Default_](../enums/enums.fonttype.md#default) \| [_Monospace_](../enums/enums.fonttype.md#monospace)): [_FontTypeDefinition_](host_config.fonttypedefinition.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`style` | *undefined* \| [*Default*](../enums/enums.fonttype.md#default) \| [*Monospace*](../enums/enums.fonttype.md#monospace) |
+| Name    | Type                                                                                                                  |
+| :------ | :-------------------------------------------------------------------------------------------------------------------- |
+| `style` | _undefined_ \| [_Default_](../enums/enums.fonttype.md#default) \| [_Monospace_](../enums/enums.fonttype.md#monospace) |
 
-**Returns:** [*FontTypeDefinition*](host_config.fonttypedefinition.md)
+**Returns:** [_FontTypeDefinition_](host_config.fonttypedefinition.md)
 
 Defined in: [host-config.ts:541](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/host-config.ts#L541)

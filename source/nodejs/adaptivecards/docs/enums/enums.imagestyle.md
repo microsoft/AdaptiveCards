@@ -19,7 +19,7 @@
 
 Defined in: [enums.ts:91](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L91)
 
-___
+---
 
 ### Person
 

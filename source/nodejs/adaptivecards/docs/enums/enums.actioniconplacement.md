@@ -19,7 +19,7 @@
 
 Defined in: [enums.ts:114](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L114)
 
-___
+---
 
 ### LeftOfTitle
 

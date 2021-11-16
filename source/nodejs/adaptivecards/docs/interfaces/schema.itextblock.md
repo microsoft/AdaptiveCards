@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*ICardElement*](schema.icardelement.md)
+- [_ICardElement_](schema.icardelement.md)
 
   ↳ **ITextBlock**
 
@@ -33,122 +33,122 @@
 
 ### color
 
-• `Optional` **color**: *undefined* \| *default* \| *accent* \| *good* \| *attention* \| *warning* \| *dark* \| *light*
+• `Optional` **color**: _undefined_ \| _default_ \| _accent_ \| _good_ \| _attention_ \| _warning_ \| _dark_ \| _light_
 
 Defined in: [schema.ts:51](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L51)
 
-___
+---
 
 ### height
 
-• `Optional` **height**: *undefined* \| *auto* \| *stretch*
+• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
 
 Inherited from: [ICardElement](schema.icardelement.md).[height](schema.icardelement.md#height)
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
-___
+---
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
+• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
 
 Inherited from: [ICardElement](schema.icardelement.md).[horizontalAlignment](schema.icardelement.md#horizontalalignment)
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
-___
+---
 
 ### id
 
-• `Optional` **id**: *undefined* \| *string*
+• `Optional` **id**: _undefined_ \| _string_
 
 Inherited from: [ICardElement](schema.icardelement.md).[id](schema.icardelement.md#id)
 
 Defined in: [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L34)
 
-___
+---
 
 ### isSubtle
 
-• `Optional` **isSubtle**: *undefined* \| *boolean*
+• `Optional` **isSubtle**: _undefined_ \| _boolean_
 
 Defined in: [schema.ts:53](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L53)
 
-___
+---
 
 ### maxLines
 
-• `Optional` **maxLines**: *undefined* \| *number*
+• `Optional` **maxLines**: _undefined_ \| _number_
 
 Defined in: [schema.ts:55](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L55)
 
-___
+---
 
 ### separator
 
-• `Optional` **separator**: *undefined* \| *boolean*
+• `Optional` **separator**: _undefined_ \| _boolean_
 
 Inherited from: [ICardElement](schema.icardelement.md).[separator](schema.icardelement.md#separator)
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
-___
+---
 
 ### size
 
-• `Optional` **size**: *undefined* \| *default* \| *small* \| *medium* \| *large* \| *extraLarge*
+• `Optional` **size**: _undefined_ \| _default_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_
 
 Defined in: [schema.ts:49](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L49)
 
-___
+---
 
 ### spacing
 
-• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
+• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
 
 Inherited from: [ICardElement](schema.icardelement.md).[spacing](schema.icardelement.md#spacing)
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
-___
+---
 
 ### speak
 
-• `Optional` **speak**: *undefined* \| *string*
+• `Optional` **speak**: _undefined_ \| _string_
 
 Inherited from: [ICardElement](schema.icardelement.md).[speak](schema.icardelement.md#speak)
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)
 
-___
+---
 
 ### text
 
-• **text**: *string*
+• **text**: _string_
 
 Defined in: [schema.ts:52](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L52)
 
-___
+---
 
 ### type
 
-• **type**: *TextBlock*
+• **type**: _TextBlock_
 
 Defined in: [schema.ts:48](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L48)
 
-___
+---
 
 ### weight
 
-• `Optional` **weight**: *undefined* \| *default* \| *lighter* \| *bolder*
+• `Optional` **weight**: _undefined_ \| _default_ \| _lighter_ \| _bolder_
 
 Defined in: [schema.ts:50](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L50)
 
-___
+---
 
 ### wrap
 
-• `Optional` **wrap**: *undefined* \| *boolean*
+• `Optional` **wrap**: _undefined_ \| _boolean_
 
 Defined in: [schema.ts:54](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L54)

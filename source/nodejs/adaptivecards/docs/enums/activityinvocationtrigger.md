@@ -6,17 +6,17 @@
 
 ### Enumeration members
 
-* [Automatic](activityinvocationtrigger.md#automatic)
-* [Manual](activityinvocationtrigger.md#manual)
+- [Automatic](activityinvocationtrigger.md#automatic)
+- [Manual](activityinvocationtrigger.md#manual)
 
 ## Enumeration members
 
-###  Automatic
+### Automatic
 
 • **Automatic**: = "automatic"
 
-___
+---
 
-###  Manual
+### Manual
 
 • **Manual**: = "manual"

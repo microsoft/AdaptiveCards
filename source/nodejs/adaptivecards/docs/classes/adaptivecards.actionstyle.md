@@ -20,30 +20,30 @@
 
 ### constructor
 
-\+ **new ActionStyle**(): [*ActionStyle*](enums.actionstyle.md)
+\+ **new ActionStyle**(): [_ActionStyle_](enums.actionstyle.md)
 
-**Returns:** [*ActionStyle*](enums.actionstyle.md)
+**Returns:** [_ActionStyle_](enums.actionstyle.md)
 
 ## Properties
 
 ### Default
 
-▪ `Readonly` `Static` **Default**: *default*= "default"
+▪ `Readonly` `Static` **Default**: _default_= "default"
 
 Defined in: [enums.ts:8](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L8)
 
-___
+---
 
 ### Destructive
 
-▪ `Readonly` `Static` **Destructive**: *destructive*= "destructive"
+▪ `Readonly` `Static` **Destructive**: _destructive_= "destructive"
 
 Defined in: [enums.ts:10](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L10)
 
-___
+---
 
 ### Positive
 
-▪ `Readonly` `Static` **Positive**: *positive*= "positive"
+▪ `Readonly` `Static` **Positive**: _positive_= "positive"
 
 Defined in: [enums.ts:9](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/enums.ts#L9)

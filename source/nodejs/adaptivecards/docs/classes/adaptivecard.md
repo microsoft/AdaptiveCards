@@ -4,642 +4,642 @@
 
 ## Hierarchy
 
-  ↳ [ContainerWithActions](containerwithactions.md)
+↳ [ContainerWithActions](containerwithactions.md)
 
-  ↳ **AdaptiveCard**
+↳ **AdaptiveCard**
 
-  ↳ [InlineAdaptiveCard](inlineadaptivecard.md)
+↳ [InlineAdaptiveCard](inlineadaptivecard.md)
 
 ## Index
 
 ### Constructors
 
-* [constructor](adaptivecard.md#constructor)
+- [constructor](adaptivecard.md#constructor)
 
 ### Properties
 
-* [_parent](adaptivecard.md#protected-optional-_parent)
-* [_renderedElement](adaptivecard.md#protected-optional-_renderedelement)
-* [_selectAction](adaptivecard.md#protected-optional-_selectaction)
-* [allowVerticalOverflow](adaptivecard.md#allowverticaloverflow)
-* [customCssSelector](adaptivecard.md#optional-customcssselector)
-* [designMode](adaptivecard.md#designmode)
-* [fallbackText](adaptivecard.md#optional-fallbacktext)
-* [height](adaptivecard.md#height)
-* [horizontalAlignment](adaptivecard.md#horizontalalignment)
-* [id](adaptivecard.md#optional-id)
-* [maxVersion](adaptivecard.md#maxversion)
-* [minPixelHeight](adaptivecard.md#optional-minpixelheight)
-* [onAnchorClicked](adaptivecard.md#optional-onanchorclicked)
-* [onElementVisibilityChanged](adaptivecard.md#optional-onelementvisibilitychanged)
-* [onExecuteAction](adaptivecard.md#optional-onexecuteaction)
-* [onImageLoaded](adaptivecard.md#optional-onimageloaded)
-* [onInlineCardExpanded](adaptivecard.md#optional-oninlinecardexpanded)
-* [onInputValueChanged](adaptivecard.md#optional-oninputvaluechanged)
-* [onPreProcessPropertyValue](adaptivecard.md#optional-onpreprocesspropertyvalue)
-* [rtl](adaptivecard.md#optional-rtl)
-* [separator](adaptivecard.md#separator)
-* [spacing](adaptivecard.md#spacing)
-* [speak](adaptivecard.md#optional-speak)
-* [version](adaptivecard.md#version)
-* [verticalContentAlignment](adaptivecard.md#verticalcontentalignment)
-* [$schemaProperty](adaptivecard.md#static-protected-readonly-schemaproperty)
-* [backgroundImageProperty](adaptivecard.md#static-readonly-backgroundimageproperty)
-* [bleedProperty](adaptivecard.md#static-readonly-bleedproperty)
-* [fallbackTextProperty](adaptivecard.md#static-readonly-fallbacktextproperty)
-* [heightProperty](adaptivecard.md#static-readonly-heightproperty)
-* [horizontalAlignmentProperty](adaptivecard.md#static-readonly-horizontalalignmentproperty)
-* [idProperty](adaptivecard.md#static-readonly-idproperty)
-* [isVisibleProperty](adaptivecard.md#static-readonly-isvisibleproperty)
-* [langProperty](adaptivecard.md#static-readonly-langproperty)
-* [minHeightProperty](adaptivecard.md#static-readonly-minheightproperty)
-* [onAnchorClicked](adaptivecard.md#static-optional-onanchorclicked)
-* [onElementVisibilityChanged](adaptivecard.md#static-optional-onelementvisibilitychanged)
-* [onExecuteAction](adaptivecard.md#static-optional-onexecuteaction)
-* [onImageLoaded](adaptivecard.md#static-optional-onimageloaded)
-* [onInlineCardExpanded](adaptivecard.md#static-optional-oninlinecardexpanded)
-* [onInputValueChanged](adaptivecard.md#static-optional-oninputvaluechanged)
-* [onProcessMarkdown](adaptivecard.md#static-optional-onprocessmarkdown)
-* [onRegisterCustomProperties](adaptivecard.md#static-optional-onregistercustomproperties)
-* [requiresProperty](adaptivecard.md#static-readonly-requiresproperty)
-* [rtlProperty](adaptivecard.md#static-readonly-rtlproperty)
-* [schemaUrl](adaptivecard.md#static-readonly-schemaurl)
-* [selectActionProperty](adaptivecard.md#static-readonly-selectactionproperty)
-* [separatorProperty](adaptivecard.md#static-readonly-separatorproperty)
-* [spacingProperty](adaptivecard.md#static-readonly-spacingproperty)
-* [speakProperty](adaptivecard.md#static-readonly-speakproperty)
-* [styleProperty](adaptivecard.md#static-readonly-styleproperty)
-* [typeNameProperty](adaptivecard.md#static-readonly-typenameproperty)
-* [versionProperty](adaptivecard.md#static-readonly-versionproperty)
-* [verticalContentAlignmentProperty](adaptivecard.md#static-readonly-verticalcontentalignmentproperty)
+- [\_parent](adaptivecard.md#protected-optional-_parent)
+- [\_renderedElement](adaptivecard.md#protected-optional-_renderedelement)
+- [\_selectAction](adaptivecard.md#protected-optional-_selectaction)
+- [allowVerticalOverflow](adaptivecard.md#allowverticaloverflow)
+- [customCssSelector](adaptivecard.md#optional-customcssselector)
+- [designMode](adaptivecard.md#designmode)
+- [fallbackText](adaptivecard.md#optional-fallbacktext)
+- [height](adaptivecard.md#height)
+- [horizontalAlignment](adaptivecard.md#horizontalalignment)
+- [id](adaptivecard.md#optional-id)
+- [maxVersion](adaptivecard.md#maxversion)
+- [minPixelHeight](adaptivecard.md#optional-minpixelheight)
+- [onAnchorClicked](adaptivecard.md#optional-onanchorclicked)
+- [onElementVisibilityChanged](adaptivecard.md#optional-onelementvisibilitychanged)
+- [onExecuteAction](adaptivecard.md#optional-onexecuteaction)
+- [onImageLoaded](adaptivecard.md#optional-onimageloaded)
+- [onInlineCardExpanded](adaptivecard.md#optional-oninlinecardexpanded)
+- [onInputValueChanged](adaptivecard.md#optional-oninputvaluechanged)
+- [onPreProcessPropertyValue](adaptivecard.md#optional-onpreprocesspropertyvalue)
+- [rtl](adaptivecard.md#optional-rtl)
+- [separator](adaptivecard.md#separator)
+- [spacing](adaptivecard.md#spacing)
+- [speak](adaptivecard.md#optional-speak)
+- [version](adaptivecard.md#version)
+- [verticalContentAlignment](adaptivecard.md#verticalcontentalignment)
+- [$schemaProperty](adaptivecard.md#static-protected-readonly-schemaproperty)
+- [backgroundImageProperty](adaptivecard.md#static-readonly-backgroundimageproperty)
+- [bleedProperty](adaptivecard.md#static-readonly-bleedproperty)
+- [fallbackTextProperty](adaptivecard.md#static-readonly-fallbacktextproperty)
+- [heightProperty](adaptivecard.md#static-readonly-heightproperty)
+- [horizontalAlignmentProperty](adaptivecard.md#static-readonly-horizontalalignmentproperty)
+- [idProperty](adaptivecard.md#static-readonly-idproperty)
+- [isVisibleProperty](adaptivecard.md#static-readonly-isvisibleproperty)
+- [langProperty](adaptivecard.md#static-readonly-langproperty)
+- [minHeightProperty](adaptivecard.md#static-readonly-minheightproperty)
+- [onAnchorClicked](adaptivecard.md#static-optional-onanchorclicked)
+- [onElementVisibilityChanged](adaptivecard.md#static-optional-onelementvisibilitychanged)
+- [onExecuteAction](adaptivecard.md#static-optional-onexecuteaction)
+- [onImageLoaded](adaptivecard.md#static-optional-onimageloaded)
+- [onInlineCardExpanded](adaptivecard.md#static-optional-oninlinecardexpanded)
+- [onInputValueChanged](adaptivecard.md#static-optional-oninputvaluechanged)
+- [onProcessMarkdown](adaptivecard.md#static-optional-onprocessmarkdown)
+- [onRegisterCustomProperties](adaptivecard.md#static-optional-onregistercustomproperties)
+- [requiresProperty](adaptivecard.md#static-readonly-requiresproperty)
+- [rtlProperty](adaptivecard.md#static-readonly-rtlproperty)
+- [schemaUrl](adaptivecard.md#static-readonly-schemaurl)
+- [selectActionProperty](adaptivecard.md#static-readonly-selectactionproperty)
+- [separatorProperty](adaptivecard.md#static-readonly-separatorproperty)
+- [spacingProperty](adaptivecard.md#static-readonly-spacingproperty)
+- [speakProperty](adaptivecard.md#static-readonly-speakproperty)
+- [styleProperty](adaptivecard.md#static-readonly-styleproperty)
+- [typeNameProperty](adaptivecard.md#static-readonly-typenameproperty)
+- [versionProperty](adaptivecard.md#static-readonly-versionproperty)
+- [verticalContentAlignmentProperty](adaptivecard.md#static-readonly-verticalcontentalignmentproperty)
 
 ### Accessors
 
-* [allowCustomPadding](adaptivecard.md#protected-allowcustompadding)
-* [allowCustomStyle](adaptivecard.md#protected-allowcustomstyle)
-* [backgroundImage](adaptivecard.md#backgroundimage)
-* [bleed](adaptivecard.md#bleed)
-* [bypassVersionCheck](adaptivecard.md#protected-bypassversioncheck)
-* [defaultStyle](adaptivecard.md#protected-defaultstyle)
-* [hasBackground](adaptivecard.md#protected-hasbackground)
-* [hasExplicitStyle](adaptivecard.md#protected-hasexplicitstyle)
-* [hasVisibleSeparator](adaptivecard.md#hasvisibleseparator)
-* [hostConfig](adaptivecard.md#hostconfig)
-* [index](adaptivecard.md#index)
-* [isInline](adaptivecard.md#isinline)
-* [isInteractive](adaptivecard.md#isinteractive)
-* [isSelectable](adaptivecard.md#protected-isselectable)
-* [isStandalone](adaptivecard.md#isstandalone)
-* [isVisible](adaptivecard.md#isvisible)
-* [lang](adaptivecard.md#lang)
-* [padding](adaptivecard.md#padding)
-* [parent](adaptivecard.md#parent)
-* [renderIfEmpty](adaptivecard.md#protected-renderifempty)
-* [renderedActionCount](adaptivecard.md#protected-renderedactioncount)
-* [renderedElement](adaptivecard.md#renderedelement)
-* [requires](adaptivecard.md#requires)
-* [selectAction](adaptivecard.md#selectaction)
-* [separatorElement](adaptivecard.md#separatorelement)
-* [separatorOrientation](adaptivecard.md#protected-separatororientation)
-* [style](adaptivecard.md#style)
-* [useDefaultSizing](adaptivecard.md#protected-usedefaultsizing)
-* [processMarkdown](adaptivecard.md#static-processmarkdown)
+- [allowCustomPadding](adaptivecard.md#protected-allowcustompadding)
+- [allowCustomStyle](adaptivecard.md#protected-allowcustomstyle)
+- [backgroundImage](adaptivecard.md#backgroundimage)
+- [bleed](adaptivecard.md#bleed)
+- [bypassVersionCheck](adaptivecard.md#protected-bypassversioncheck)
+- [defaultStyle](adaptivecard.md#protected-defaultstyle)
+- [hasBackground](adaptivecard.md#protected-hasbackground)
+- [hasExplicitStyle](adaptivecard.md#protected-hasexplicitstyle)
+- [hasVisibleSeparator](adaptivecard.md#hasvisibleseparator)
+- [hostConfig](adaptivecard.md#hostconfig)
+- [index](adaptivecard.md#index)
+- [isInline](adaptivecard.md#isinline)
+- [isInteractive](adaptivecard.md#isinteractive)
+- [isSelectable](adaptivecard.md#protected-isselectable)
+- [isStandalone](adaptivecard.md#isstandalone)
+- [isVisible](adaptivecard.md#isvisible)
+- [lang](adaptivecard.md#lang)
+- [padding](adaptivecard.md#padding)
+- [parent](adaptivecard.md#parent)
+- [renderIfEmpty](adaptivecard.md#protected-renderifempty)
+- [renderedActionCount](adaptivecard.md#protected-renderedactioncount)
+- [renderedElement](adaptivecard.md#renderedelement)
+- [requires](adaptivecard.md#requires)
+- [selectAction](adaptivecard.md#selectaction)
+- [separatorElement](adaptivecard.md#separatorelement)
+- [separatorOrientation](adaptivecard.md#protected-separatororientation)
+- [style](adaptivecard.md#style)
+- [useDefaultSizing](adaptivecard.md#protected-usedefaultsizing)
+- [processMarkdown](adaptivecard.md#static-processmarkdown)
 
 ### Methods
 
-* [addAction](adaptivecard.md#addaction)
-* [addItem](adaptivecard.md#additem)
-* [adjustRenderedElementSize](adaptivecard.md#protected-adjustrenderedelementsize)
-* [applyBackground](adaptivecard.md#protected-applybackground)
-* [applyPadding](adaptivecard.md#protected-applypadding)
-* [asString](adaptivecard.md#asstring)
-* [clear](adaptivecard.md#clear)
-* [createPlaceholderElement](adaptivecard.md#protected-createplaceholderelement)
-* [getActionAt](adaptivecard.md#getactionat)
-* [getActionById](adaptivecard.md#getactionbyid)
-* [getActionCount](adaptivecard.md#getactioncount)
-* [getAllInputs](adaptivecard.md#getallinputs)
-* [getBleed](adaptivecard.md#protected-getbleed)
-* [getCustomProperty](adaptivecard.md#getcustomproperty)
-* [getDefaultPadding](adaptivecard.md#protected-getdefaultpadding)
-* [getDefaultSerializationContext](adaptivecard.md#protected-getdefaultserializationcontext)
-* [getEffectivePadding](adaptivecard.md#geteffectivepadding)
-* [getEffectiveStyle](adaptivecard.md#geteffectivestyle)
-* [getEffectiveStyleDefinition](adaptivecard.md#geteffectivestyledefinition)
-* [getElementById](adaptivecard.md#getelementbyid)
-* [getFirstVisibleRenderedItem](adaptivecard.md#getfirstvisiblerendereditem)
-* [getForbiddenActionTypes](adaptivecard.md#getforbiddenactiontypes)
-* [getHasBackground](adaptivecard.md#protected-gethasbackground)
-* [getHasExpandedAction](adaptivecard.md#protected-gethasexpandedaction)
-* [getImmediateSurroundingPadding](adaptivecard.md#getimmediatesurroundingpadding)
-* [getItemAt](adaptivecard.md#getitemat)
-* [getItemCount](adaptivecard.md#getitemcount)
-* [getItemsCollectionPropertyName](adaptivecard.md#protected-getitemscollectionpropertyname)
-* [getJsonTypeName](adaptivecard.md#getjsontypename)
-* [getLastVisibleRenderedItem](adaptivecard.md#getlastvisiblerendereditem)
-* [getPadding](adaptivecard.md#protected-getpadding)
-* [getParentContainer](adaptivecard.md#getparentcontainer)
-* [getResourceInformation](adaptivecard.md#getresourceinformation)
-* [getRootElement](adaptivecard.md#getrootelement)
-* [getRootObject](adaptivecard.md#getrootobject)
-* [getSchema](adaptivecard.md#getschema)
-* [getSchemaKey](adaptivecard.md#protected-getschemakey)
-* [getValue](adaptivecard.md#protected-getvalue)
-* [hasAllDefaultValues](adaptivecard.md#hasalldefaultvalues)
-* [hasDefaultValue](adaptivecard.md#hasdefaultvalue)
-* [indexOf](adaptivecard.md#indexof)
-* [insertItemAfter](adaptivecard.md#insertitemafter)
-* [insertItemBefore](adaptivecard.md#insertitembefore)
-* [internalParse](adaptivecard.md#protected-internalparse)
-* [internalRender](adaptivecard.md#protected-internalrender)
-* [internalToJSON](adaptivecard.md#protected-internaltojson)
-* [internalValidateProperties](adaptivecard.md#internalvalidateproperties)
-* [isAtTheVeryBottom](adaptivecard.md#isattheverybottom)
-* [isAtTheVeryLeft](adaptivecard.md#isattheveryleft)
-* [isAtTheVeryRight](adaptivecard.md#isattheveryright)
-* [isAtTheVeryTop](adaptivecard.md#isattheverytop)
-* [isBleeding](adaptivecard.md#isbleeding)
-* [isBleedingAtBottom](adaptivecard.md#isbleedingatbottom)
-* [isBleedingAtTop](adaptivecard.md#isbleedingattop)
-* [isBottomElement](adaptivecard.md#isbottomelement)
-* [isDesignMode](adaptivecard.md#isdesignmode)
-* [isDisplayed](adaptivecard.md#protected-isdisplayed)
-* [isElementAllowed](adaptivecard.md#protected-iselementallowed)
-* [isFirstElement](adaptivecard.md#isfirstelement)
-* [isHiddenDueToOverflow](adaptivecard.md#ishiddenduetooverflow)
-* [isLastElement](adaptivecard.md#islastelement)
-* [isLeftMostElement](adaptivecard.md#isleftmostelement)
-* [isRightMostElement](adaptivecard.md#isrightmostelement)
-* [isRtl](adaptivecard.md#isrtl)
-* [isTopElement](adaptivecard.md#istopelement)
-* [overrideInternalRender](adaptivecard.md#protected-overrideinternalrender)
-* [parse](adaptivecard.md#parse)
-* [populateSchema](adaptivecard.md#protected-populateschema)
-* [preProcessPropertyValue](adaptivecard.md#preprocesspropertyvalue)
-* [remove](adaptivecard.md#remove)
-* [removeItem](adaptivecard.md#removeitem)
-* [render](adaptivecard.md#render)
-* [resetDefaultValues](adaptivecard.md#resetdefaultvalues)
-* [setBleed](adaptivecard.md#protected-setbleed)
-* [setCustomProperty](adaptivecard.md#setcustomproperty)
-* [setPadding](adaptivecard.md#protected-setpadding)
-* [setParent](adaptivecard.md#setparent)
-* [setShouldFallback](adaptivecard.md#setshouldfallback)
-* [setValue](adaptivecard.md#protected-setvalue)
-* [shouldFallback](adaptivecard.md#shouldfallback)
-* [shouldSerialize](adaptivecard.md#protected-shouldserialize)
-* [supportsExcplitiHeight](adaptivecard.md#protected-supportsexcplitiheight)
-* [toJSON](adaptivecard.md#tojson)
-* [truncateOverflow](adaptivecard.md#protected-truncateoverflow)
-* [undoOverflowTruncation](adaptivecard.md#protected-undooverflowtruncation)
-* [updateLayout](adaptivecard.md#updatelayout)
-* [validateProperties](adaptivecard.md#validateproperties)
-* [applyMarkdown](adaptivecard.md#static-applymarkdown)
+- [addAction](adaptivecard.md#addaction)
+- [addItem](adaptivecard.md#additem)
+- [adjustRenderedElementSize](adaptivecard.md#protected-adjustrenderedelementsize)
+- [applyBackground](adaptivecard.md#protected-applybackground)
+- [applyPadding](adaptivecard.md#protected-applypadding)
+- [asString](adaptivecard.md#asstring)
+- [clear](adaptivecard.md#clear)
+- [createPlaceholderElement](adaptivecard.md#protected-createplaceholderelement)
+- [getActionAt](adaptivecard.md#getactionat)
+- [getActionById](adaptivecard.md#getactionbyid)
+- [getActionCount](adaptivecard.md#getactioncount)
+- [getAllInputs](adaptivecard.md#getallinputs)
+- [getBleed](adaptivecard.md#protected-getbleed)
+- [getCustomProperty](adaptivecard.md#getcustomproperty)
+- [getDefaultPadding](adaptivecard.md#protected-getdefaultpadding)
+- [getDefaultSerializationContext](adaptivecard.md#protected-getdefaultserializationcontext)
+- [getEffectivePadding](adaptivecard.md#geteffectivepadding)
+- [getEffectiveStyle](adaptivecard.md#geteffectivestyle)
+- [getEffectiveStyleDefinition](adaptivecard.md#geteffectivestyledefinition)
+- [getElementById](adaptivecard.md#getelementbyid)
+- [getFirstVisibleRenderedItem](adaptivecard.md#getfirstvisiblerendereditem)
+- [getForbiddenActionTypes](adaptivecard.md#getforbiddenactiontypes)
+- [getHasBackground](adaptivecard.md#protected-gethasbackground)
+- [getHasExpandedAction](adaptivecard.md#protected-gethasexpandedaction)
+- [getImmediateSurroundingPadding](adaptivecard.md#getimmediatesurroundingpadding)
+- [getItemAt](adaptivecard.md#getitemat)
+- [getItemCount](adaptivecard.md#getitemcount)
+- [getItemsCollectionPropertyName](adaptivecard.md#protected-getitemscollectionpropertyname)
+- [getJsonTypeName](adaptivecard.md#getjsontypename)
+- [getLastVisibleRenderedItem](adaptivecard.md#getlastvisiblerendereditem)
+- [getPadding](adaptivecard.md#protected-getpadding)
+- [getParentContainer](adaptivecard.md#getparentcontainer)
+- [getResourceInformation](adaptivecard.md#getresourceinformation)
+- [getRootElement](adaptivecard.md#getrootelement)
+- [getRootObject](adaptivecard.md#getrootobject)
+- [getSchema](adaptivecard.md#getschema)
+- [getSchemaKey](adaptivecard.md#protected-getschemakey)
+- [getValue](adaptivecard.md#protected-getvalue)
+- [hasAllDefaultValues](adaptivecard.md#hasalldefaultvalues)
+- [hasDefaultValue](adaptivecard.md#hasdefaultvalue)
+- [indexOf](adaptivecard.md#indexof)
+- [insertItemAfter](adaptivecard.md#insertitemafter)
+- [insertItemBefore](adaptivecard.md#insertitembefore)
+- [internalParse](adaptivecard.md#protected-internalparse)
+- [internalRender](adaptivecard.md#protected-internalrender)
+- [internalToJSON](adaptivecard.md#protected-internaltojson)
+- [internalValidateProperties](adaptivecard.md#internalvalidateproperties)
+- [isAtTheVeryBottom](adaptivecard.md#isattheverybottom)
+- [isAtTheVeryLeft](adaptivecard.md#isattheveryleft)
+- [isAtTheVeryRight](adaptivecard.md#isattheveryright)
+- [isAtTheVeryTop](adaptivecard.md#isattheverytop)
+- [isBleeding](adaptivecard.md#isbleeding)
+- [isBleedingAtBottom](adaptivecard.md#isbleedingatbottom)
+- [isBleedingAtTop](adaptivecard.md#isbleedingattop)
+- [isBottomElement](adaptivecard.md#isbottomelement)
+- [isDesignMode](adaptivecard.md#isdesignmode)
+- [isDisplayed](adaptivecard.md#protected-isdisplayed)
+- [isElementAllowed](adaptivecard.md#protected-iselementallowed)
+- [isFirstElement](adaptivecard.md#isfirstelement)
+- [isHiddenDueToOverflow](adaptivecard.md#ishiddenduetooverflow)
+- [isLastElement](adaptivecard.md#islastelement)
+- [isLeftMostElement](adaptivecard.md#isleftmostelement)
+- [isRightMostElement](adaptivecard.md#isrightmostelement)
+- [isRtl](adaptivecard.md#isrtl)
+- [isTopElement](adaptivecard.md#istopelement)
+- [overrideInternalRender](adaptivecard.md#protected-overrideinternalrender)
+- [parse](adaptivecard.md#parse)
+- [populateSchema](adaptivecard.md#protected-populateschema)
+- [preProcessPropertyValue](adaptivecard.md#preprocesspropertyvalue)
+- [remove](adaptivecard.md#remove)
+- [removeItem](adaptivecard.md#removeitem)
+- [render](adaptivecard.md#render)
+- [resetDefaultValues](adaptivecard.md#resetdefaultvalues)
+- [setBleed](adaptivecard.md#protected-setbleed)
+- [setCustomProperty](adaptivecard.md#setcustomproperty)
+- [setPadding](adaptivecard.md#protected-setpadding)
+- [setParent](adaptivecard.md#setparent)
+- [setShouldFallback](adaptivecard.md#setshouldfallback)
+- [setValue](adaptivecard.md#protected-setvalue)
+- [shouldFallback](adaptivecard.md#shouldfallback)
+- [shouldSerialize](adaptivecard.md#protected-shouldserialize)
+- [supportsExcplitiHeight](adaptivecard.md#protected-supportsexcplitiheight)
+- [toJSON](adaptivecard.md#tojson)
+- [truncateOverflow](adaptivecard.md#protected-truncateoverflow)
+- [undoOverflowTruncation](adaptivecard.md#protected-undooverflowtruncation)
+- [updateLayout](adaptivecard.md#updatelayout)
+- [validateProperties](adaptivecard.md#validateproperties)
+- [applyMarkdown](adaptivecard.md#static-applymarkdown)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new AdaptiveCard**(): *[AdaptiveCard](adaptivecard.md)*
+\+ **new AdaptiveCard**(): _[AdaptiveCard](adaptivecard.md)_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[constructor](containerwithactions.md#constructor)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[constructor](containerwithactions.md#constructor)_
 
-*Overrides [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+_Overrides [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)_
 
-**Returns:** *[AdaptiveCard](adaptivecard.md)*
+**Returns:** _[AdaptiveCard](adaptivecard.md)_
 
 ## Properties
 
-### `Protected` `Optional` _parent
+### `Protected` `Optional` \_parent
 
-• **_parent**? : *[CardObject](cardobject.md)*
+• **\_parent**? : _[CardObject](cardobject.md)_
 
-*Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
+_Inherited from [CardObject](cardobject.md).[\_parent](cardobject.md#protected-optional-_parent)_
 
-___
+---
 
-### `Protected` `Optional` _renderedElement
+### `Protected` `Optional` \_renderedElement
 
-• **_renderedElement**? : *HTMLElement*
+• **\_renderedElement**? : _HTMLElement_
 
-*Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+_Inherited from [CardObject](cardobject.md).[\_renderedElement](cardobject.md#protected-optional-_renderedelement)_
 
-___
+---
 
-### `Protected` `Optional` _selectAction
+### `Protected` `Optional` \_selectAction
 
-• **_selectAction**? : *[Action](action.md)*
+• **\_selectAction**? : _[Action](action.md)_
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[_selectAction](cardelementcontainer.md#protected-optional-_selectaction)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[\_selectAction](cardelementcontainer.md#protected-optional-_selectaction)_
 
-___
+---
 
-###  allowVerticalOverflow
+### allowVerticalOverflow
 
-• **allowVerticalOverflow**: *boolean* = false
+• **allowVerticalOverflow**: _boolean_ = false
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[allowVerticalOverflow](cardelementcontainer.md#allowverticaloverflow)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[allowVerticalOverflow](cardelementcontainer.md#allowverticaloverflow)_
 
-___
+---
 
 ### `Optional` customCssSelector
 
-• **customCssSelector**? : *undefined | string*
+• **customCssSelector**? : _undefined | string_
 
-*Inherited from [CardElement](cardelement.md).[customCssSelector](cardelement.md#optional-customcssselector)*
+_Inherited from [CardElement](cardelement.md).[customCssSelector](cardelement.md#optional-customcssselector)_
 
-___
+---
 
-###  designMode
+### designMode
 
-• **designMode**: *boolean* = false
+• **designMode**: _boolean_ = false
 
-___
+---
 
 ### `Optional` fallbackText
 
-• **fallbackText**? : *undefined | string*
+• **fallbackText**? : _undefined | string_
 
-___
+---
 
-###  height
+### height
 
-• **height**: *[CardElementHeight](../README.md#cardelementheight)*
+• **height**: _[CardElementHeight](../README.md#cardelementheight)_
 
-*Inherited from [CardElement](cardelement.md).[height](cardelement.md#height)*
+_Inherited from [CardElement](cardelement.md).[height](cardelement.md#height)_
 
-___
+---
 
-###  horizontalAlignment
+### horizontalAlignment
 
-• **horizontalAlignment**: *[HorizontalAlignment](../enums/horizontalalignment.md)*
+• **horizontalAlignment**: _[HorizontalAlignment](../enums/horizontalalignment.md)_
 
-*Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#horizontalalignment)*
+_Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#horizontalalignment)_
 
-___
+---
 
 ### `Optional` id
 
-• **id**? : *undefined | string*
+• **id**? : _undefined | string_
 
-*Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
+_Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)_
 
-___
+---
 
-###  maxVersion
+### maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.v1_3
+• **maxVersion**: _[Version](version.md)_ = Versions.v1_3
 
-*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+_Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)_
 
-___
+---
 
 ### `Optional` minPixelHeight
 
-• **minPixelHeight**? : *undefined | number*
+• **minPixelHeight**? : _undefined | number_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minPixelHeight](stylablecardelementcontainer.md#optional-minpixelheight)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minPixelHeight](stylablecardelementcontainer.md#optional-minpixelheight)_
 
-___
+---
 
 ### `Optional` onAnchorClicked
 
-• **onAnchorClicked**? : *undefined | function*
+• **onAnchorClicked**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onElementVisibilityChanged
 
-• **onElementVisibilityChanged**? : *undefined | function*
+• **onElementVisibilityChanged**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onExecuteAction
 
-• **onExecuteAction**? : *undefined | function*
+• **onExecuteAction**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onImageLoaded
 
-• **onImageLoaded**? : *undefined | function*
+• **onImageLoaded**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onInlineCardExpanded
 
-• **onInlineCardExpanded**? : *undefined | function*
+• **onInlineCardExpanded**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onInputValueChanged
 
-• **onInputValueChanged**? : *undefined | function*
+• **onInputValueChanged**? : _undefined | function_
 
-___
+---
 
 ### `Optional` onPreProcessPropertyValue
 
-• **onPreProcessPropertyValue**? : *undefined | function*
+• **onPreProcessPropertyValue**? : _undefined | function_
 
-*Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
+_Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)_
 
-___
+---
 
 ### `Optional` rtl
 
-• **rtl**? : *undefined | false | true*
+• **rtl**? : _undefined | false | true_
 
-*Inherited from [Container](container.md).[rtl](container.md#optional-rtl)*
+_Inherited from [Container](container.md).[rtl](container.md#optional-rtl)_
 
-___
+---
 
-###  separator
+### separator
 
-• **separator**: *boolean*
+• **separator**: _boolean_
 
-*Inherited from [CardElement](cardelement.md).[separator](cardelement.md#separator)*
+_Inherited from [CardElement](cardelement.md).[separator](cardelement.md#separator)_
 
-___
+---
 
-###  spacing
+### spacing
 
-• **spacing**: *[Spacing](../enums/spacing.md)*
+• **spacing**: _[Spacing](../enums/spacing.md)_
 
-*Inherited from [CardElement](cardelement.md).[spacing](cardelement.md#spacing)*
+_Inherited from [CardElement](cardelement.md).[spacing](cardelement.md#spacing)_
 
-___
+---
 
 ### `Optional` speak
 
-• **speak**? : *undefined | string*
+• **speak**? : _undefined | string_
 
-___
+---
 
-###  version
+### version
 
-• **version**: *[Version](version.md)*
+• **version**: _[Version](version.md)_
 
-___
+---
 
-###  verticalContentAlignment
+### verticalContentAlignment
 
-• **verticalContentAlignment**: *[VerticalAlignment](../enums/verticalalignment.md)* = Enums.VerticalAlignment.Top
+• **verticalContentAlignment**: _[VerticalAlignment](../enums/verticalalignment.md)_ = Enums.VerticalAlignment.Top
 
-*Inherited from [Container](container.md).[verticalContentAlignment](container.md#verticalcontentalignment)*
+_Inherited from [Container](container.md).[verticalContentAlignment](container.md#verticalcontentalignment)_
 
-___
+---
 
 ### `Static` `Protected` `Readonly` $schemaProperty
 
-▪ **$schemaProperty**: *[CustomProperty](customproperty.md)‹string›* = new CustomProperty<string>(
-        Versions.v1_0,
-        "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            return AdaptiveCard.schemaUrl;
-        },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
-            context.serializeValue(target, property.name, AdaptiveCard.schemaUrl);
-        })
+▪ **$schemaProperty**: _[CustomProperty](customproperty.md)‹string›_ = new CustomProperty<string>(
+Versions.v1_0,
+"$schema",
+(sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+return AdaptiveCard.schemaUrl;
+},
+(sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
+context.serializeValue(target, property.name, AdaptiveCard.schemaUrl);
+})
 
-___
+---
 
 ### `Static` `Readonly` backgroundImageProperty
 
-▪ **backgroundImageProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.v1_0,
-        "backgroundImage",
-        BackgroundImage)
+▪ **backgroundImageProperty**: _[SerializableObjectProperty](serializableobjectproperty.md)‹›_ = new SerializableObjectProperty(
+Versions.v1_0,
+"backgroundImage",
+BackgroundImage)
 
-*Inherited from [Container](container.md).[backgroundImageProperty](container.md#static-readonly-backgroundimageproperty)*
+_Inherited from [Container](container.md).[backgroundImageProperty](container.md#static-readonly-backgroundimageproperty)_
 
-___
+---
 
 ### `Static` `Readonly` bleedProperty
 
-▪ **bleedProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "bleed", false)
+▪ **bleedProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_2, "bleed", false)
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[bleedProperty](stylablecardelementcontainer.md#static-readonly-bleedproperty)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[bleedProperty](stylablecardelementcontainer.md#static-readonly-bleedproperty)_
 
-___
+---
 
 ### `Static` `Readonly` fallbackTextProperty
 
-▪ **fallbackTextProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "fallbackText")
+▪ **fallbackTextProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "fallbackText")
 
-___
+---
 
 ### `Static` `Readonly` heightProperty
 
-▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
-        Versions.v1_1,
-        "height",
-        [
-            { value: "auto" },
-            { value: "stretch" }
-        ],
-        "auto")
+▪ **heightProperty**: _[ValueSetProperty](valuesetproperty.md)‹›_ = new ValueSetProperty(
+Versions.v1_1,
+"height",
+[
+{ value: "auto" },
+{ value: "stretch" }
+],
+"auto")
 
-*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-readonly-heightproperty)*
+_Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-readonly-heightproperty)_
 
-___
+---
 
 ### `Static` `Readonly` horizontalAlignmentProperty
 
-▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(
-        Versions.v1_0,
-        "horizontalAlignment",
-        Enums.HorizontalAlignment,
-        Enums.HorizontalAlignment.Left)
+▪ **horizontalAlignmentProperty**: _[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›_ = new EnumProperty(
+Versions.v1_0,
+"horizontalAlignment",
+Enums.HorizontalAlignment,
+Enums.HorizontalAlignment.Left)
 
-*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)*
+_Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)_
 
-___
+---
 
 ### `Static` `Readonly` idProperty
 
-▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+▪ **idProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
+_Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)_
 
-___
+---
 
 ### `Static` `Readonly` isVisibleProperty
 
-▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
+▪ **isVisibleProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_2, "isVisible", true)
 
-*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)*
+_Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)_
 
-___
+---
 
 ### `Static` `Readonly` langProperty
 
-▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
+▪ **langProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
 
-*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-readonly-langproperty)*
+_Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-readonly-langproperty)_
 
-___
+---
 
 ### `Static` `Readonly` minHeightProperty
 
-▪ **minHeightProperty**: *[PixelSizeProperty](pixelsizeproperty.md)‹›* = new PixelSizeProperty(Versions.v1_2, "minHeight")
+▪ **minHeightProperty**: _[PixelSizeProperty](pixelsizeproperty.md)‹›_ = new PixelSizeProperty(Versions.v1_2, "minHeight")
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minHeightProperty](stylablecardelementcontainer.md#static-readonly-minheightproperty)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minHeightProperty](stylablecardelementcontainer.md#static-readonly-minheightproperty)_
 
-___
+---
 
 ### `Static` `Optional` onAnchorClicked
 
-▪ **onAnchorClicked**? : *undefined | function*
+▪ **onAnchorClicked**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onElementVisibilityChanged
 
-▪ **onElementVisibilityChanged**? : *undefined | function*
+▪ **onElementVisibilityChanged**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onExecuteAction
 
-▪ **onExecuteAction**? : *undefined | function*
+▪ **onExecuteAction**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onImageLoaded
 
-▪ **onImageLoaded**? : *undefined | function*
+▪ **onImageLoaded**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onInlineCardExpanded
 
-▪ **onInlineCardExpanded**? : *undefined | function*
+▪ **onInlineCardExpanded**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onInputValueChanged
 
-▪ **onInputValueChanged**? : *undefined | function*
+▪ **onInputValueChanged**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onProcessMarkdown
 
-▪ **onProcessMarkdown**? : *undefined | function*
+▪ **onProcessMarkdown**? : _undefined | function_
 
-___
+---
 
 ### `Static` `Optional` onRegisterCustomProperties
 
-▪ **onRegisterCustomProperties**? : *undefined | function*
+▪ **onRegisterCustomProperties**? : _undefined | function_
 
-*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+_Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)_
 
-___
+---
 
 ### `Static` `Readonly` requiresProperty
 
-▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.v1_2,
-        "requires",
-        HostCapabilities,
-        false,
-        new HostCapabilities())
+▪ **requiresProperty**: _[SerializableObjectProperty](serializableobjectproperty.md)‹›_ = new SerializableObjectProperty(
+Versions.v1_2,
+"requires",
+HostCapabilities,
+false,
+new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
+_Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)_
 
-___
+---
 
 ### `Static` `Readonly` rtlProperty
 
-▪ **rtlProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "rtl")
+▪ **rtlProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_0, "rtl")
 
-*Inherited from [Container](container.md).[rtlProperty](container.md#static-readonly-rtlproperty)*
+_Inherited from [Container](container.md).[rtlProperty](container.md#static-readonly-rtlproperty)_
 
-___
+---
 
 ### `Static` `Readonly` schemaUrl
 
-▪ **schemaUrl**: *"http://adaptivecards.io/schemas/adaptive-card.json"* = "http://adaptivecards.io/schemas/adaptive-card.json"
+▪ **schemaUrl**: _"http://adaptivecards.io/schemas/adaptive-card.json"_ = "http://adaptivecards.io/schemas/adaptive-card.json"
 
-___
+---
 
 ### `Static` `Readonly` selectActionProperty
 
-▪ **selectActionProperty**: *[ActionProperty](actionproperty.md)‹›* = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ])
+▪ **selectActionProperty**: _[ActionProperty](actionproperty.md)‹›_ = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ])
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-readonly-selectactionproperty)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-readonly-selectactionproperty)_
 
-___
+---
 
 ### `Static` `Readonly` separatorProperty
 
-▪ **separatorProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "separator", false)
+▪ **separatorProperty**: _[BoolProperty](boolproperty.md)‹›_ = new BoolProperty(Versions.v1_0, "separator", false)
 
-*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-readonly-separatorproperty)*
+_Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-readonly-separatorproperty)_
 
-___
+---
 
 ### `Static` `Readonly` spacingProperty
 
-▪ **spacingProperty**: *[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›* = new EnumProperty(
-        Versions.v1_0,
-        "spacing",
-        Enums.Spacing,
-        Enums.Spacing.Default)
+▪ **spacingProperty**: _[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›_ = new EnumProperty(
+Versions.v1_0,
+"spacing",
+Enums.Spacing,
+Enums.Spacing.Default)
 
-*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-readonly-spacingproperty)*
+_Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-readonly-spacingproperty)_
 
-___
+---
 
 ### `Static` `Readonly` speakProperty
 
-▪ **speakProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "speak")
+▪ **speakProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(Versions.v1_0, "speak")
 
-___
+---
 
 ### `Static` `Readonly` styleProperty
 
-▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
-        Versions.v1_0,
-        "style",
-        [
-            { value: Enums.ContainerStyle.Default },
-            { value: Enums.ContainerStyle.Emphasis },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
-        ])
+▪ **styleProperty**: _[ValueSetProperty](valuesetproperty.md)‹›_ = new ValueSetProperty(
+Versions.v1_0,
+"style",
+[
+{ value: Enums.ContainerStyle.Default },
+{ value: Enums.ContainerStyle.Emphasis },
+{ targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
+{ targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
+{ targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
+{ targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
+])
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[styleProperty](stylablecardelementcontainer.md#static-readonly-styleproperty)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[styleProperty](stylablecardelementcontainer.md#static-readonly-styleproperty)_
 
-___
+---
 
 ### `Static` `Readonly` typeNameProperty
 
-▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
-        Versions.v1_0,
-        "type",
-        undefined,
-        undefined,
-        undefined,
-        (sender: object) => {
-            return (<CardObject>sender).getJsonTypeName()
-        })
+▪ **typeNameProperty**: _[StringProperty](stringproperty.md)‹›_ = new StringProperty(
+Versions.v1_0,
+"type",
+undefined,
+undefined,
+undefined,
+(sender: object) => {
+return (<CardObject>sender).getJsonTypeName()
+})
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
+_Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)_
 
-___
+---
 
 ### `Static` `Readonly` versionProperty
 
-▪ **versionProperty**: *[CustomProperty](customproperty.md)‹undefined | [Version](version.md)‹››* = new CustomProperty<Version | undefined>(
-        Versions.v1_0,
-        "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            let version = Version.parse(source[property.name], context);
+▪ **versionProperty**: _[CustomProperty](customproperty.md)‹undefined | [Version](version.md)‹››_ = new CustomProperty<Version | undefined>(
+Versions.v1_0,
+"version",
+(sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+let version = Version.parse(source[property.name], context);
 
             if (version === undefined) {
                 version = Versions.latest;
@@ -659,1606 +659,1606 @@ ___
         },
         Versions.v1_0)
 
-___
+---
 
 ### `Static` `Readonly` verticalContentAlignmentProperty
 
-▪ **verticalContentAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›* = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
+▪ **verticalContentAlignmentProperty**: _[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›_ = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
 
-*Inherited from [Container](container.md).[verticalContentAlignmentProperty](container.md#static-readonly-verticalcontentalignmentproperty)*
+_Inherited from [Container](container.md).[verticalContentAlignmentProperty](container.md#static-readonly-verticalcontentalignmentproperty)_
 
 ## Accessors
 
 ### `Protected` allowCustomPadding
 
-• **get allowCustomPadding**(): *boolean*
+• **get allowCustomPadding**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[allowCustomPadding](cardelement.md#protected-allowcustompadding)*
+_Inherited from [CardElement](cardelement.md).[allowCustomPadding](cardelement.md#protected-allowcustompadding)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` allowCustomStyle
 
-• **get allowCustomStyle**(): *boolean*
+• **get allowCustomStyle**(): _boolean_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[allowCustomStyle](stylablecardelementcontainer.md#protected-allowcustomstyle)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[allowCustomStyle](stylablecardelementcontainer.md#protected-allowcustomstyle)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  backgroundImage
+### backgroundImage
 
-• **get backgroundImage**(): *[BackgroundImage](backgroundimage.md)*
+• **get backgroundImage**(): _[BackgroundImage](backgroundimage.md)_
 
-*Inherited from [Container](container.md).[backgroundImage](container.md#backgroundimage)*
+_Inherited from [Container](container.md).[backgroundImage](container.md#backgroundimage)_
 
-**Returns:** *[BackgroundImage](backgroundimage.md)*
+**Returns:** _[BackgroundImage](backgroundimage.md)_
 
-___
+---
 
-###  bleed
+### bleed
 
-• **get bleed**(): *boolean*
+• **get bleed**(): _boolean_
 
-*Inherited from [Container](container.md).[bleed](container.md#bleed)*
+_Inherited from [Container](container.md).[bleed](container.md#bleed)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-• **set bleed**(`value`: boolean): *void*
+• **set bleed**(`value`: boolean): _void_
 
-*Inherited from [Container](container.md).[bleed](container.md#bleed)*
+_Inherited from [Container](container.md).[bleed](container.md#bleed)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | boolean |
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` bypassVersionCheck
 
-• **get bypassVersionCheck**(): *boolean*
+• **get bypassVersionCheck**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` defaultStyle
 
-• **get defaultStyle**(): *string*
+• **get defaultStyle**(): _string_
 
-*Inherited from [CardElement](cardelement.md).[defaultStyle](cardelement.md#protected-defaultstyle)*
+_Inherited from [CardElement](cardelement.md).[defaultStyle](cardelement.md#protected-defaultstyle)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Protected` hasBackground
 
-• **get hasBackground**(): *boolean*
+• **get hasBackground**(): _boolean_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` hasExplicitStyle
 
-• **get hasExplicitStyle**(): *boolean*
+• **get hasExplicitStyle**(): _boolean_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[hasExplicitStyle](stylablecardelementcontainer.md#protected-hasexplicitstyle)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[hasExplicitStyle](stylablecardelementcontainer.md#protected-hasexplicitstyle)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  hasVisibleSeparator
+### hasVisibleSeparator
 
-• **get hasVisibleSeparator**(): *boolean*
+• **get hasVisibleSeparator**(): _boolean_
 
-*Overrides [CardElement](cardelement.md).[hasVisibleSeparator](cardelement.md#hasvisibleseparator)*
+_Overrides [CardElement](cardelement.md).[hasVisibleSeparator](cardelement.md#hasvisibleseparator)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  hostConfig
+### hostConfig
 
-• **get hostConfig**(): *[HostConfig](hostconfig.md)*
+• **get hostConfig**(): _[HostConfig](hostconfig.md)_
 
-*Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)*
+_Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)_
 
-*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
+_Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)_
 
-**Returns:** *[HostConfig](hostconfig.md)*
+**Returns:** _[HostConfig](hostconfig.md)_
 
-• **set hostConfig**(`value`: [HostConfig](hostconfig.md)): *void*
+• **set hostConfig**(`value`: [HostConfig](hostconfig.md)): _void_
 
-*Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)*
+_Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)_
 
-*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
+_Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [HostConfig](hostconfig.md) |
+| Name    | Type                        |
+| ------- | --------------------------- |
+| `value` | [HostConfig](hostconfig.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  index
+### index
 
-• **get index**(): *number*
+• **get index**(): _number_
 
-*Inherited from [CardElement](cardelement.md).[index](cardelement.md#index)*
+_Inherited from [CardElement](cardelement.md).[index](cardelement.md#index)_
 
-**Returns:** *number*
+**Returns:** _number_
 
-___
+---
 
-###  isInline
+### isInline
 
-• **get isInline**(): *boolean*
+• **get isInline**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isInline](cardelement.md#isinline)*
+_Inherited from [CardElement](cardelement.md).[isInline](cardelement.md#isinline)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isInteractive
+### isInteractive
 
-• **get isInteractive**(): *boolean*
+• **get isInteractive**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isInteractive](cardelement.md#isinteractive)*
+_Inherited from [CardElement](cardelement.md).[isInteractive](cardelement.md#isinteractive)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` isSelectable
 
-• **get isSelectable**(): *boolean*
+• **get isSelectable**(): _boolean_
 
-*Inherited from [Container](container.md).[isSelectable](container.md#protected-isselectable)*
+_Inherited from [Container](container.md).[isSelectable](container.md#protected-isselectable)_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[isSelectable](cardelementcontainer.md#protected-isselectable)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[isSelectable](cardelementcontainer.md#protected-isselectable)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isStandalone
+### isStandalone
 
-• **get isStandalone**(): *boolean*
+• **get isStandalone**(): _boolean_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[isStandalone](containerwithactions.md#isstandalone)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[isStandalone](containerwithactions.md#isstandalone)_
 
-*Overrides [CardElement](cardelement.md).[isStandalone](cardelement.md#isstandalone)*
+_Overrides [CardElement](cardelement.md).[isStandalone](cardelement.md#isstandalone)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isVisible
+### isVisible
 
-• **get isVisible**(): *boolean*
+• **get isVisible**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
+_Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-• **set isVisible**(`value`: boolean): *void*
+• **set isVisible**(`value`: boolean): _void_
 
-*Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | boolean |
-
-**Returns:** *void*
-
-___
-
-###  lang
-
-• **get lang**(): *string | undefined*
-
-*Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
-
-**Returns:** *string | undefined*
-
-• **set lang**(`value`: string | undefined): *void*
-
-*Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
+_Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | string &#124; undefined |
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  padding
+### lang
 
-• **get padding**(): *[PaddingDefinition](paddingdefinition.md) | undefined*
+• **get lang**(): _string | undefined_
 
-*Inherited from [Container](container.md).[padding](container.md#padding)*
+_Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md) | undefined*
+**Returns:** _string | undefined_
 
-• **set padding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): *void*
+• **set lang**(`value`: string | undefined): _void_
 
-*Inherited from [Container](container.md).[padding](container.md#padding)*
+_Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
+| Name    | Type                    |
+| ------- | ----------------------- |
+| `value` | string &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  parent
+### padding
 
-• **get parent**(): *[CardElement](cardelement.md) | undefined*
+• **get padding**(): _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-*Inherited from [CardElement](cardelement.md).[parent](cardelement.md#parent)*
+_Inherited from [Container](container.md).[padding](container.md#padding)_
 
-*Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)*
+**Returns:** _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+• **set padding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): _void_
 
-___
+_Inherited from [Container](container.md).[padding](container.md#padding)_
+
+**Parameters:**
+
+| Name    | Type                                                       |
+| ------- | ---------------------------------------------------------- |
+| `value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
+
+**Returns:** _void_
+
+---
+
+### parent
+
+• **get parent**(): _[CardElement](cardelement.md) | undefined_
+
+_Inherited from [CardElement](cardelement.md).[parent](cardelement.md#parent)_
+
+_Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)_
+
+**Returns:** _[CardElement](cardelement.md) | undefined_
+
+---
 
 ### `Protected` renderIfEmpty
 
-• **get renderIfEmpty**(): *boolean*
+• **get renderIfEmpty**(): _boolean_
 
-*Overrides [ContainerWithActions](containerwithactions.md).[renderIfEmpty](containerwithactions.md#protected-renderifempty)*
+_Overrides [ContainerWithActions](containerwithactions.md).[renderIfEmpty](containerwithactions.md#protected-renderifempty)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` renderedActionCount
 
-• **get renderedActionCount**(): *number*
+• **get renderedActionCount**(): _number_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[renderedActionCount](containerwithactions.md#protected-renderedactioncount)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[renderedActionCount](containerwithactions.md#protected-renderedactioncount)_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[renderedActionCount](stylablecardelementcontainer.md#protected-renderedactioncount)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[renderedActionCount](stylablecardelementcontainer.md#protected-renderedactioncount)_
 
-**Returns:** *number*
+**Returns:** _number_
 
-___
+---
 
-###  renderedElement
+### renderedElement
 
-• **get renderedElement**(): *HTMLElement | undefined*
+• **get renderedElement**(): _HTMLElement | undefined_
 
-*Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
+_Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
-###  requires
+### requires
 
-• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
+• **get requires**(): _[HostCapabilities](hostcapabilities.md)_
 
-*Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+_Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)_
 
-**Returns:** *[HostCapabilities](hostcapabilities.md)*
+**Returns:** _[HostCapabilities](hostcapabilities.md)_
 
-___
+---
 
-###  selectAction
+### selectAction
 
-• **get selectAction**(): *[Action](action.md) | undefined*
+• **get selectAction**(): _[Action](action.md) | undefined_
 
-*Inherited from [Container](container.md).[selectAction](container.md#selectaction)*
+_Inherited from [Container](container.md).[selectAction](container.md#selectaction)_
 
-**Returns:** *[Action](action.md) | undefined*
+**Returns:** _[Action](action.md) | undefined_
 
-• **set selectAction**(`value`: [Action](action.md) | undefined): *void*
+• **set selectAction**(`value`: [Action](action.md) | undefined): _void_
 
-*Inherited from [Container](container.md).[selectAction](container.md#selectaction)*
+_Inherited from [Container](container.md).[selectAction](container.md#selectaction)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [Action](action.md) &#124; undefined |
+| Name    | Type                                 |
+| ------- | ------------------------------------ |
+| `value` | [Action](action.md) &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  separatorElement
+### separatorElement
 
-• **get separatorElement**(): *HTMLElement | undefined*
+• **get separatorElement**(): _HTMLElement | undefined_
 
-*Inherited from [CardElement](cardelement.md).[separatorElement](cardelement.md#separatorelement)*
+_Inherited from [CardElement](cardelement.md).[separatorElement](cardelement.md#separatorelement)_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
 ### `Protected` separatorOrientation
 
-• **get separatorOrientation**(): *[Orientation](../enums/orientation.md)*
+• **get separatorOrientation**(): _[Orientation](../enums/orientation.md)_
 
-*Inherited from [CardElement](cardelement.md).[separatorOrientation](cardelement.md#protected-separatororientation)*
+_Inherited from [CardElement](cardelement.md).[separatorOrientation](cardelement.md#protected-separatororientation)_
 
-**Returns:** *[Orientation](../enums/orientation.md)*
+**Returns:** _[Orientation](../enums/orientation.md)_
 
-___
+---
 
-###  style
+### style
 
-• **get style**(): *string | undefined*
+• **get style**(): _string | undefined_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)_
 
-**Returns:** *string | undefined*
+**Returns:** _string | undefined_
 
-• **set style**(`value`: string | undefined): *void*
+• **set style**(`value`: string | undefined): _void_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | string &#124; undefined |
+| Name    | Type                    |
+| ------- | ----------------------- |
+| `value` | string &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` useDefaultSizing
 
-• **get useDefaultSizing**(): *boolean*
+• **get useDefaultSizing**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[useDefaultSizing](cardelement.md#protected-usedefaultsizing)*
+_Inherited from [CardElement](cardelement.md).[useDefaultSizing](cardelement.md#protected-usedefaultsizing)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Static` processMarkdown
 
-• **get processMarkdown**(): *function*
+• **get processMarkdown**(): _function_
 
-**Returns:** *function*
+**Returns:** _function_
 
-▸ (`text`: string): *string*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`text` | string |
-
-• **set processMarkdown**(`value`: function): *void*
+▸ (`text`: string): _string_
 
 **Parameters:**
 
-▪ **value**: *function*
+| Name   | Type   |
+| ------ | ------ |
+| `text` | string |
 
-▸ (`text`: string): *string*
+• **set processMarkdown**(`value`: function): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`text` | string |
+▪ **value**: _function_
 
-**Returns:** *void*
+▸ (`text`: string): _string_
+
+**Parameters:**
+
+| Name   | Type   |
+| ------ | ------ |
+| `text` | string |
+
+**Returns:** _void_
 
 ## Methods
 
-###  addAction
+### addAction
 
-▸ **addAction**(`action`: [Action](action.md)): *void*
+▸ **addAction**(`action`: [Action](action.md)): _void_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[addAction](containerwithactions.md#addaction)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`action` | [Action](action.md) |
-
-**Returns:** *void*
-
-___
-
-###  addItem
-
-▸ **addItem**(`item`: [CardElement](cardelement.md)): *void*
-
-*Inherited from [Container](container.md).[addItem](container.md#additem)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[addAction](containerwithactions.md#addaction)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`item` | [CardElement](cardelement.md) |
+| Name     | Type                |
+| -------- | ------------------- |
+| `action` | [Action](action.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
+
+### addItem
+
+▸ **addItem**(`item`: [CardElement](cardelement.md)): _void_
+
+_Inherited from [Container](container.md).[addItem](container.md#additem)_
+
+**Parameters:**
+
+| Name   | Type                          |
+| ------ | ----------------------------- |
+| `item` | [CardElement](cardelement.md) |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` adjustRenderedElementSize
 
-▸ **adjustRenderedElementSize**(`renderedElement`: HTMLElement): *void*
+▸ **adjustRenderedElementSize**(`renderedElement`: HTMLElement): _void_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[adjustRenderedElementSize](stylablecardelementcontainer.md#protected-adjustrenderedelementsize)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[adjustRenderedElementSize](stylablecardelementcontainer.md#protected-adjustrenderedelementsize)_
 
-*Overrides [CardElement](cardelement.md).[adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)*
+_Overrides [CardElement](cardelement.md).[adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`renderedElement` | HTMLElement |
+| Name              | Type        |
+| ----------------- | ----------- |
+| `renderedElement` | HTMLElement |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` applyBackground
 
-▸ **applyBackground**(): *void*
+▸ **applyBackground**(): _void_
 
-*Inherited from [Container](container.md).[applyBackground](container.md#protected-applybackground)*
+_Inherited from [Container](container.md).[applyBackground](container.md#protected-applybackground)_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[applyBackground](stylablecardelementcontainer.md#protected-applybackground)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[applyBackground](stylablecardelementcontainer.md#protected-applybackground)_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` applyPadding
 
-▸ **applyPadding**(): *void*
+▸ **applyPadding**(): _void_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[applyPadding](stylablecardelementcontainer.md#protected-applypadding)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[applyPadding](stylablecardelementcontainer.md#protected-applypadding)_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[applyPadding](cardelementcontainer.md#protected-applypadding)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[applyPadding](cardelementcontainer.md#protected-applypadding)_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  asString
+### asString
 
-▸ **asString**(): *string | undefined*
+▸ **asString**(): _string | undefined_
 
-*Inherited from [CardElement](cardelement.md).[asString](cardelement.md#asstring)*
+_Inherited from [CardElement](cardelement.md).[asString](cardelement.md#asstring)_
 
-**Returns:** *string | undefined*
+**Returns:** _string | undefined_
 
-___
+---
 
-###  clear
+### clear
 
-▸ **clear**(): *void*
+▸ **clear**(): _void_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[clear](containerwithactions.md#clear)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[clear](containerwithactions.md#clear)_
 
-*Overrides [Container](container.md).[clear](container.md#clear)*
+_Overrides [Container](container.md).[clear](container.md#clear)_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` createPlaceholderElement
 
-▸ **createPlaceholderElement**(): *HTMLElement*
+▸ **createPlaceholderElement**(): _HTMLElement_
 
-*Inherited from [CardElement](cardelement.md).[createPlaceholderElement](cardelement.md#protected-createplaceholderelement)*
+_Inherited from [CardElement](cardelement.md).[createPlaceholderElement](cardelement.md#protected-createplaceholderelement)_
 
-**Returns:** *HTMLElement*
+**Returns:** _HTMLElement_
 
-___
+---
 
-###  getActionAt
+### getActionAt
 
-▸ **getActionAt**(`index`: number): *[Action](action.md) | undefined*
+▸ **getActionAt**(`index`: number): _[Action](action.md) | undefined_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[getActionAt](containerwithactions.md#getactionat)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[getActionAt](containerwithactions.md#getactionat)_
 
-*Overrides [CardElement](cardelement.md).[getActionAt](cardelement.md#getactionat)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`index` | number |
-
-**Returns:** *[Action](action.md) | undefined*
-
-___
-
-###  getActionById
-
-▸ **getActionById**(`id`: string): *[Action](action.md) | undefined*
-
-*Inherited from [ContainerWithActions](containerwithactions.md).[getActionById](containerwithactions.md#getactionbyid)*
-
-*Overrides [Container](container.md).[getActionById](container.md#getactionbyid)*
+_Overrides [CardElement](cardelement.md).[getActionAt](cardelement.md#getactionat)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `index` | number |
 
-**Returns:** *[Action](action.md) | undefined*
+**Returns:** _[Action](action.md) | undefined_
 
-___
+---
 
-###  getActionCount
+### getActionById
 
-▸ **getActionCount**(): *number*
+▸ **getActionById**(`id`: string): _[Action](action.md) | undefined_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[getActionCount](containerwithactions.md#getactioncount)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[getActionById](containerwithactions.md#getactionbyid)_
 
-*Overrides [CardElement](cardelement.md).[getActionCount](cardelement.md#getactioncount)*
-
-**Returns:** *number*
-
-___
-
-###  getAllInputs
-
-▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
-
-*Inherited from [ContainerWithActions](containerwithactions.md).[getAllInputs](containerwithactions.md#getallinputs)*
-
-*Overrides [CardElementContainer](cardelementcontainer.md).[getAllInputs](cardelementcontainer.md#getallinputs)*
+_Overrides [Container](container.md).[getActionById](container.md#getactionbyid)_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`processActions` | boolean | true |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *[Input](input.md)[]*
+**Returns:** _[Action](action.md) | undefined_
 
-___
+---
+
+### getActionCount
+
+▸ **getActionCount**(): _number_
+
+_Inherited from [ContainerWithActions](containerwithactions.md).[getActionCount](containerwithactions.md#getactioncount)_
+
+_Overrides [CardElement](cardelement.md).[getActionCount](cardelement.md#getactioncount)_
+
+**Returns:** _number_
+
+---
+
+### getAllInputs
+
+▸ **getAllInputs**(`processActions`: boolean): _[Input](input.md)[]_
+
+_Inherited from [ContainerWithActions](containerwithactions.md).[getAllInputs](containerwithactions.md#getallinputs)_
+
+_Overrides [CardElementContainer](cardelementcontainer.md).[getAllInputs](cardelementcontainer.md#getallinputs)_
+
+**Parameters:**
+
+| Name             | Type    | Default |
+| ---------------- | ------- | ------- |
+| `processActions` | boolean | true    |
+
+**Returns:** _[Input](input.md)[]_
+
+---
 
 ### `Protected` getBleed
 
-▸ **getBleed**(): *boolean*
+▸ **getBleed**(): _boolean_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getBleed](stylablecardelementcontainer.md#protected-getbleed)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getBleed](stylablecardelementcontainer.md#protected-getbleed)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  getCustomProperty
+### getCustomProperty
 
-▸ **getCustomProperty**(`name`: string): *any*
+▸ **getCustomProperty**(`name`: string): _any_
 
-*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
+_Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
+| Name   | Type   |
+| ------ | ------ |
+| `name` | string |
 
-**Returns:** *any*
+**Returns:** _any_
 
-___
+---
 
 ### `Protected` getDefaultPadding
 
-▸ **getDefaultPadding**(): *[PaddingDefinition](paddingdefinition.md)*
+▸ **getDefaultPadding**(): _[PaddingDefinition](paddingdefinition.md)_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getDefaultPadding](stylablecardelementcontainer.md#protected-getdefaultpadding)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getDefaultPadding](stylablecardelementcontainer.md#protected-getdefaultpadding)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
+**Returns:** _[PaddingDefinition](paddingdefinition.md)_
 
-___
+---
 
 ### `Protected` getDefaultSerializationContext
 
-▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+▸ **getDefaultSerializationContext**(): _[BaseSerializationContext](baseserializationcontext.md)_
 
-*Overrides [CardElement](cardelement.md).[getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)*
+_Overrides [CardElement](cardelement.md).[getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)_
 
-**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
+**Returns:** _[BaseSerializationContext](baseserializationcontext.md)_
 
-___
+---
 
-###  getEffectivePadding
+### getEffectivePadding
 
-▸ **getEffectivePadding**(): *[PaddingDefinition](paddingdefinition.md)*
+▸ **getEffectivePadding**(): _[PaddingDefinition](paddingdefinition.md)_
 
-*Inherited from [CardElement](cardelement.md).[getEffectivePadding](cardelement.md#geteffectivepadding)*
+_Inherited from [CardElement](cardelement.md).[getEffectivePadding](cardelement.md#geteffectivepadding)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
+**Returns:** _[PaddingDefinition](paddingdefinition.md)_
 
-___
+---
 
-###  getEffectiveStyle
+### getEffectiveStyle
 
-▸ **getEffectiveStyle**(): *string*
+▸ **getEffectiveStyle**(): _string_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getEffectiveStyle](stylablecardelementcontainer.md#geteffectivestyle)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getEffectiveStyle](stylablecardelementcontainer.md#geteffectivestyle)_
 
-*Overrides [CardElement](cardelement.md).[getEffectiveStyle](cardelement.md#geteffectivestyle)*
+_Overrides [CardElement](cardelement.md).[getEffectiveStyle](cardelement.md#geteffectivestyle)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  getEffectiveStyleDefinition
+### getEffectiveStyleDefinition
 
-▸ **getEffectiveStyleDefinition**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
+▸ **getEffectiveStyleDefinition**(): _[ContainerStyleDefinition](containerstyledefinition.md)_
 
-*Inherited from [CardElement](cardelement.md).[getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)*
+_Inherited from [CardElement](cardelement.md).[getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)_
 
-**Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
+**Returns:** _[ContainerStyleDefinition](containerstyledefinition.md)_
 
-___
+---
 
-###  getElementById
+### getElementById
 
-▸ **getElementById**(`id`: string): *[CardElement](cardelement.md) | undefined*
+▸ **getElementById**(`id`: string): _[CardElement](cardelement.md) | undefined_
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[getElementById](cardelementcontainer.md#getelementbyid)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[getElementById](cardelementcontainer.md#getelementbyid)_
 
-*Overrides [CardElement](cardelement.md).[getElementById](cardelement.md#getelementbyid)*
+_Overrides [CardElement](cardelement.md).[getElementById](cardelement.md#getelementbyid)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+**Returns:** _[CardElement](cardelement.md) | undefined_
 
-___
+---
 
-###  getFirstVisibleRenderedItem
+### getFirstVisibleRenderedItem
 
-▸ **getFirstVisibleRenderedItem**(): *[CardElement](cardelement.md) | undefined*
+▸ **getFirstVisibleRenderedItem**(): _[CardElement](cardelement.md) | undefined_
 
-*Inherited from [Container](container.md).[getFirstVisibleRenderedItem](container.md#getfirstvisiblerendereditem)*
+_Inherited from [Container](container.md).[getFirstVisibleRenderedItem](container.md#getfirstvisiblerendereditem)_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[getFirstVisibleRenderedItem](cardelementcontainer.md#abstract-getfirstvisiblerendereditem)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[getFirstVisibleRenderedItem](cardelementcontainer.md#abstract-getfirstvisiblerendereditem)_
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+**Returns:** _[CardElement](cardelement.md) | undefined_
 
-___
+---
 
-###  getForbiddenActionTypes
+### getForbiddenActionTypes
 
-▸ **getForbiddenActionTypes**(): *[ActionType](../README.md#actiontype)[]*
+▸ **getForbiddenActionTypes**(): _[ActionType](../README.md#actiontype)[]_
 
-*Inherited from [CardElement](cardelement.md).[getForbiddenActionTypes](cardelement.md#getforbiddenactiontypes)*
+_Inherited from [CardElement](cardelement.md).[getForbiddenActionTypes](cardelement.md#getforbiddenactiontypes)_
 
-**Returns:** *[ActionType](../README.md#actiontype)[]*
+**Returns:** _[ActionType](../README.md#actiontype)[]_
 
-___
+---
 
 ### `Protected` getHasBackground
 
-▸ **getHasBackground**(): *boolean*
+▸ **getHasBackground**(): _boolean_
 
-*Overrides [Container](container.md).[getHasBackground](container.md#protected-gethasbackground)*
+_Overrides [Container](container.md).[getHasBackground](container.md#protected-gethasbackground)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` getHasExpandedAction
 
-▸ **getHasExpandedAction**(): *boolean*
+▸ **getHasExpandedAction**(): _boolean_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[getHasExpandedAction](containerwithactions.md#protected-gethasexpandedaction)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[getHasExpandedAction](containerwithactions.md#protected-gethasexpandedaction)_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getHasExpandedAction](stylablecardelementcontainer.md#protected-gethasexpandedaction)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getHasExpandedAction](stylablecardelementcontainer.md#protected-gethasexpandedaction)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  getImmediateSurroundingPadding
+### getImmediateSurroundingPadding
 
-▸ **getImmediateSurroundingPadding**(`result`: [PaddingDefinition](paddingdefinition.md), `processTop`: boolean, `processRight`: boolean, `processBottom`: boolean, `processLeft`: boolean): *void*
+▸ **getImmediateSurroundingPadding**(`result`: [PaddingDefinition](paddingdefinition.md), `processTop`: boolean, `processRight`: boolean, `processBottom`: boolean, `processLeft`: boolean): _void_
 
-*Inherited from [CardElement](cardelement.md).[getImmediateSurroundingPadding](cardelement.md#getimmediatesurroundingpadding)*
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`result` | [PaddingDefinition](paddingdefinition.md) | - |
-`processTop` | boolean | true |
-`processRight` | boolean | true |
-`processBottom` | boolean | true |
-`processLeft` | boolean | true |
-
-**Returns:** *void*
-
-___
-
-###  getItemAt
-
-▸ **getItemAt**(`index`: number): *[CardElement](cardelement.md)*
-
-*Inherited from [Container](container.md).[getItemAt](container.md#getitemat)*
-
-*Overrides [CardElementContainer](cardelementcontainer.md).[getItemAt](cardelementcontainer.md#abstract-getitemat)*
+_Inherited from [CardElement](cardelement.md).[getImmediateSurroundingPadding](cardelement.md#getimmediatesurroundingpadding)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`index` | number |
+| Name            | Type                                      | Default |
+| --------------- | ----------------------------------------- | ------- |
+| `result`        | [PaddingDefinition](paddingdefinition.md) | -       |
+| `processTop`    | boolean                                   | true    |
+| `processRight`  | boolean                                   | true    |
+| `processBottom` | boolean                                   | true    |
+| `processLeft`   | boolean                                   | true    |
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** _void_
 
-___
+---
 
-###  getItemCount
+### getItemAt
 
-▸ **getItemCount**(): *number*
+▸ **getItemAt**(`index`: number): _[CardElement](cardelement.md)_
 
-*Inherited from [Container](container.md).[getItemCount](container.md#getitemcount)*
+_Inherited from [Container](container.md).[getItemAt](container.md#getitemat)_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[getItemCount](cardelementcontainer.md#abstract-getitemcount)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[getItemAt](cardelementcontainer.md#abstract-getitemat)_
 
-**Returns:** *number*
+**Parameters:**
 
-___
+| Name    | Type   |
+| ------- | ------ |
+| `index` | number |
+
+**Returns:** _[CardElement](cardelement.md)_
+
+---
+
+### getItemCount
+
+▸ **getItemCount**(): _number_
+
+_Inherited from [Container](container.md).[getItemCount](container.md#getitemcount)_
+
+_Overrides [CardElementContainer](cardelementcontainer.md).[getItemCount](cardelementcontainer.md#abstract-getitemcount)_
+
+**Returns:** _number_
+
+---
 
 ### `Protected` getItemsCollectionPropertyName
 
-▸ **getItemsCollectionPropertyName**(): *string*
+▸ **getItemsCollectionPropertyName**(): _string_
 
-*Overrides [Container](container.md).[getItemsCollectionPropertyName](container.md#protected-getitemscollectionpropertyname)*
+_Overrides [Container](container.md).[getItemsCollectionPropertyName](container.md#protected-getitemscollectionpropertyname)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  getJsonTypeName
+### getJsonTypeName
 
-▸ **getJsonTypeName**(): *string*
+▸ **getJsonTypeName**(): _string_
 
-*Overrides [Container](container.md).[getJsonTypeName](container.md#getjsontypename)*
+_Overrides [Container](container.md).[getJsonTypeName](container.md#getjsontypename)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  getLastVisibleRenderedItem
+### getLastVisibleRenderedItem
 
-▸ **getLastVisibleRenderedItem**(): *[CardElement](cardelement.md) | undefined*
+▸ **getLastVisibleRenderedItem**(): _[CardElement](cardelement.md) | undefined_
 
-*Inherited from [Container](container.md).[getLastVisibleRenderedItem](container.md#getlastvisiblerendereditem)*
+_Inherited from [Container](container.md).[getLastVisibleRenderedItem](container.md#getlastvisiblerendereditem)_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[getLastVisibleRenderedItem](cardelementcontainer.md#abstract-getlastvisiblerendereditem)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[getLastVisibleRenderedItem](cardelementcontainer.md#abstract-getlastvisiblerendereditem)_
 
-**Returns:** *[CardElement](cardelement.md) | undefined*
+**Returns:** _[CardElement](cardelement.md) | undefined_
 
-___
+---
 
 ### `Protected` getPadding
 
-▸ **getPadding**(): *[PaddingDefinition](paddingdefinition.md) | undefined*
+▸ **getPadding**(): _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-*Inherited from [CardElement](cardelement.md).[getPadding](cardelement.md#protected-getpadding)*
+_Inherited from [CardElement](cardelement.md).[getPadding](cardelement.md#protected-getpadding)_
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md) | undefined*
+**Returns:** _[PaddingDefinition](paddingdefinition.md) | undefined_
 
-___
+---
 
-###  getParentContainer
+### getParentContainer
 
-▸ **getParentContainer**(): *[Container](container.md) | undefined*
+▸ **getParentContainer**(): _[Container](container.md) | undefined_
 
-*Inherited from [CardElement](cardelement.md).[getParentContainer](cardelement.md#getparentcontainer)*
+_Inherited from [CardElement](cardelement.md).[getParentContainer](cardelement.md#getparentcontainer)_
 
-**Returns:** *[Container](container.md) | undefined*
+**Returns:** _[Container](container.md) | undefined_
 
-___
+---
 
-###  getResourceInformation
+### getResourceInformation
 
-▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+▸ **getResourceInformation**(): _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
 
-*Inherited from [ContainerWithActions](containerwithactions.md).[getResourceInformation](containerwithactions.md#getresourceinformation)*
+_Inherited from [ContainerWithActions](containerwithactions.md).[getResourceInformation](containerwithactions.md#getresourceinformation)_
 
-*Overrides [Container](container.md).[getResourceInformation](container.md#getresourceinformation)*
+_Overrides [Container](container.md).[getResourceInformation](container.md#getresourceinformation)_
 
-**Returns:** *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+**Returns:** _[IResourceInformation](../interfaces/iresourceinformation.md)[]_
 
-___
+---
 
-###  getRootElement
+### getRootElement
 
-▸ **getRootElement**(): *[CardElement](cardelement.md)*
+▸ **getRootElement**(): _[CardElement](cardelement.md)_
 
-*Inherited from [CardElement](cardelement.md).[getRootElement](cardelement.md#getrootelement)*
+_Inherited from [CardElement](cardelement.md).[getRootElement](cardelement.md#getrootelement)_
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** _[CardElement](cardelement.md)_
 
-___
+---
 
-###  getRootObject
+### getRootObject
 
-▸ **getRootObject**(): *[CardObject](cardobject.md)*
+▸ **getRootObject**(): _[CardObject](cardobject.md)_
 
-*Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
+_Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)_
 
-**Returns:** *[CardObject](cardobject.md)*
+**Returns:** _[CardObject](cardobject.md)_
 
-___
+---
 
-###  getSchema
+### getSchema
 
-▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+▸ **getSchema**(): _[SerializableObjectSchema](serializableobjectschema.md)_
 
-*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+_Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)_
 
-**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+**Returns:** _[SerializableObjectSchema](serializableobjectschema.md)_
 
-___
+---
 
 ### `Protected` getSchemaKey
 
-▸ **getSchemaKey**(): *string*
+▸ **getSchemaKey**(): _string_
 
-*Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)*
+_Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)_
 
-*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
+_Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Protected` getValue
 
-▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): _any_
 
-*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-
-**Returns:** *any*
-
-___
-
-###  hasAllDefaultValues
-
-▸ **hasAllDefaultValues**(): *boolean*
-
-*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
-
-**Returns:** *boolean*
-
-___
-
-###  hasDefaultValue
-
-▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
-
-*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+_Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** *boolean*
+**Returns:** _any_
 
-___
+---
 
-###  indexOf
+### hasAllDefaultValues
 
-▸ **indexOf**(`cardElement`: [CardElement](cardelement.md)): *number*
+▸ **hasAllDefaultValues**(): _boolean_
 
-*Inherited from [Container](container.md).[indexOf](container.md#indexof)*
+_Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)_
 
-*Overrides [CardElement](cardelement.md).[indexOf](cardelement.md#indexof)*
+**Returns:** _boolean_
 
-**Parameters:**
+---
 
-Name | Type |
------- | ------ |
-`cardElement` | [CardElement](cardelement.md) |
+### hasDefaultValue
 
-**Returns:** *number*
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): _boolean_
 
-___
-
-###  insertItemAfter
-
-▸ **insertItemAfter**(`item`: [CardElement](cardelement.md), `insertAfter`: [CardElement](cardelement.md)): *void*
-
-*Inherited from [Container](container.md).[insertItemAfter](container.md#insertitemafter)*
+_Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`item` | [CardElement](cardelement.md) |
-`insertAfter` | [CardElement](cardelement.md) |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
 
-**Returns:** *void*
+**Returns:** _boolean_
 
-___
+---
 
-###  insertItemBefore
+### indexOf
 
-▸ **insertItemBefore**(`item`: [CardElement](cardelement.md), `insertBefore`: [CardElement](cardelement.md)): *void*
+▸ **indexOf**(`cardElement`: [CardElement](cardelement.md)): _number_
 
-*Inherited from [Container](container.md).[insertItemBefore](container.md#insertitembefore)*
+_Inherited from [Container](container.md).[indexOf](container.md#indexof)_
+
+_Overrides [CardElement](cardelement.md).[indexOf](cardelement.md#indexof)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`item` | [CardElement](cardelement.md) |
-`insertBefore` | [CardElement](cardelement.md) |
+| Name          | Type                          |
+| ------------- | ----------------------------- |
+| `cardElement` | [CardElement](cardelement.md) |
 
-**Returns:** *void*
+**Returns:** _number_
 
-___
+---
+
+### insertItemAfter
+
+▸ **insertItemAfter**(`item`: [CardElement](cardelement.md), `insertAfter`: [CardElement](cardelement.md)): _void_
+
+_Inherited from [Container](container.md).[insertItemAfter](container.md#insertitemafter)_
+
+**Parameters:**
+
+| Name          | Type                          |
+| ------------- | ----------------------------- |
+| `item`        | [CardElement](cardelement.md) |
+| `insertAfter` | [CardElement](cardelement.md) |
+
+**Returns:** _void_
+
+---
+
+### insertItemBefore
+
+▸ **insertItemBefore**(`item`: [CardElement](cardelement.md), `insertBefore`: [CardElement](cardelement.md)): _void_
+
+_Inherited from [Container](container.md).[insertItemBefore](container.md#insertitembefore)_
+
+**Parameters:**
+
+| Name           | Type                          |
+| -------------- | ----------------------------- |
+| `item`         | [CardElement](cardelement.md) |
+| `insertBefore` | [CardElement](cardelement.md) |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` internalParse
 
-▸ **internalParse**(`source`: any, `context`: [SerializationContext](serializationcontext.md)): *void*
+▸ **internalParse**(`source`: any, `context`: [SerializationContext](serializationcontext.md)): _void_
 
-*Overrides [ContainerWithActions](containerwithactions.md).[internalParse](containerwithactions.md#protected-internalparse)*
+_Overrides [ContainerWithActions](containerwithactions.md).[internalParse](containerwithactions.md#protected-internalparse)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`source` | any |
-`context` | [SerializationContext](serializationcontext.md) |
+| Name      | Type                                            |
+| --------- | ----------------------------------------------- |
+| `source`  | any                                             |
+| `context` | [SerializationContext](serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` internalRender
 
-▸ **internalRender**(): *HTMLElement | undefined*
+▸ **internalRender**(): _HTMLElement | undefined_
 
-*Overrides [ContainerWithActions](containerwithactions.md).[internalRender](containerwithactions.md#protected-internalrender)*
+_Overrides [ContainerWithActions](containerwithactions.md).[internalRender](containerwithactions.md#protected-internalrender)_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
 ### `Protected` internalToJSON
 
-▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [SerializationContext](serializationcontext.md)): *void*
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [SerializationContext](serializationcontext.md)): _void_
 
-*Overrides [ContainerWithActions](containerwithactions.md).[internalToJSON](containerwithactions.md#protected-internaltojson)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`target` | [PropertyBag](../README.md#propertybag) |
-`context` | [SerializationContext](serializationcontext.md) |
-
-**Returns:** *void*
-
-___
-
-###  internalValidateProperties
-
-▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
-
-*Overrides [ContainerWithActions](containerwithactions.md).[internalValidateProperties](containerwithactions.md#internalvalidateproperties)*
+_Overrides [ContainerWithActions](containerwithactions.md).[internalToJSON](containerwithactions.md#protected-internaltojson)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`context` | [ValidationResults](validationresults.md) |
+| Name      | Type                                            |
+| --------- | ----------------------------------------------- |
+| `target`  | [PropertyBag](../README.md#propertybag)         |
+| `context` | [SerializationContext](serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  isAtTheVeryBottom
+### internalValidateProperties
 
-▸ **isAtTheVeryBottom**(): *boolean*
+▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): _void_
 
-*Inherited from [CardElement](cardelement.md).[isAtTheVeryBottom](cardelement.md#isattheverybottom)*
-
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryLeft
-
-▸ **isAtTheVeryLeft**(): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isAtTheVeryLeft](cardelement.md#isattheveryleft)*
-
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryRight
-
-▸ **isAtTheVeryRight**(): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isAtTheVeryRight](cardelement.md#isattheveryright)*
-
-**Returns:** *boolean*
-
-___
-
-###  isAtTheVeryTop
-
-▸ **isAtTheVeryTop**(): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isAtTheVeryTop](cardelement.md#isattheverytop)*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleeding
-
-▸ **isBleeding**(): *boolean*
-
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[isBleeding](stylablecardelementcontainer.md#isbleeding)*
-
-*Overrides [CardElement](cardelement.md).[isBleeding](cardelement.md#isbleeding)*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleedingAtBottom
-
-▸ **isBleedingAtBottom**(): *boolean*
-
-*Inherited from [ContainerWithActions](containerwithactions.md).[isBleedingAtBottom](containerwithactions.md#isbleedingatbottom)*
-
-*Overrides [Container](container.md).[isBleedingAtBottom](container.md#isbleedingatbottom)*
-
-**Returns:** *boolean*
-
-___
-
-###  isBleedingAtTop
-
-▸ **isBleedingAtTop**(): *boolean*
-
-*Inherited from [Container](container.md).[isBleedingAtTop](container.md#isbleedingattop)*
-
-*Overrides [CardElement](cardelement.md).[isBleedingAtTop](cardelement.md#isbleedingattop)*
-
-**Returns:** *boolean*
-
-___
-
-###  isBottomElement
-
-▸ **isBottomElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isBottomElement](cardelement.md#isbottomelement)*
+_Overrides [ContainerWithActions](containerwithactions.md).[internalValidateProperties](containerwithactions.md#internalvalidateproperties)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                                      |
+| --------- | ----------------------------------------- |
+| `context` | [ValidationResults](validationresults.md) |
 
-**Returns:** *boolean*
+**Returns:** _void_
 
-___
+---
 
-###  isDesignMode
+### isAtTheVeryBottom
 
-▸ **isDesignMode**(): *boolean*
+▸ **isAtTheVeryBottom**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isDesignMode](cardelement.md#isdesignmode)*
+_Inherited from [CardElement](cardelement.md).[isAtTheVeryBottom](cardelement.md#isattheverybottom)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
+
+### isAtTheVeryLeft
+
+▸ **isAtTheVeryLeft**(): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isAtTheVeryLeft](cardelement.md#isattheveryleft)_
+
+**Returns:** _boolean_
+
+---
+
+### isAtTheVeryRight
+
+▸ **isAtTheVeryRight**(): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isAtTheVeryRight](cardelement.md#isattheveryright)_
+
+**Returns:** _boolean_
+
+---
+
+### isAtTheVeryTop
+
+▸ **isAtTheVeryTop**(): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isAtTheVeryTop](cardelement.md#isattheverytop)_
+
+**Returns:** _boolean_
+
+---
+
+### isBleeding
+
+▸ **isBleeding**(): _boolean_
+
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[isBleeding](stylablecardelementcontainer.md#isbleeding)_
+
+_Overrides [CardElement](cardelement.md).[isBleeding](cardelement.md#isbleeding)_
+
+**Returns:** _boolean_
+
+---
+
+### isBleedingAtBottom
+
+▸ **isBleedingAtBottom**(): _boolean_
+
+_Inherited from [ContainerWithActions](containerwithactions.md).[isBleedingAtBottom](containerwithactions.md#isbleedingatbottom)_
+
+_Overrides [Container](container.md).[isBleedingAtBottom](container.md#isbleedingatbottom)_
+
+**Returns:** _boolean_
+
+---
+
+### isBleedingAtTop
+
+▸ **isBleedingAtTop**(): _boolean_
+
+_Inherited from [Container](container.md).[isBleedingAtTop](container.md#isbleedingattop)_
+
+_Overrides [CardElement](cardelement.md).[isBleedingAtTop](cardelement.md#isbleedingattop)_
+
+**Returns:** _boolean_
+
+---
+
+### isBottomElement
+
+▸ **isBottomElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isBottomElement](cardelement.md#isbottomelement)_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
+
+### isDesignMode
+
+▸ **isDesignMode**(): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isDesignMode](cardelement.md#isdesignmode)_
+
+**Returns:** _boolean_
+
+---
 
 ### `Protected` isDisplayed
 
-▸ **isDisplayed**(): *boolean*
+▸ **isDisplayed**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isDisplayed](cardelement.md#protected-isdisplayed)*
+_Inherited from [CardElement](cardelement.md).[isDisplayed](cardelement.md#protected-isdisplayed)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` isElementAllowed
 
-▸ **isElementAllowed**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isElementAllowed**(`element`: [CardElement](cardelement.md)): _boolean_
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[isElementAllowed](cardelementcontainer.md#protected-iselementallowed)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
-
-**Returns:** *boolean*
-
-___
-
-###  isFirstElement
-
-▸ **isFirstElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [Container](container.md).[isFirstElement](container.md#isfirstelement)*
-
-*Overrides [CardElement](cardelement.md).[isFirstElement](cardelement.md#isfirstelement)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[isElementAllowed](cardelementcontainer.md#protected-iselementallowed)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isHiddenDueToOverflow
+### isFirstElement
 
-▸ **isHiddenDueToOverflow**(): *boolean*
+▸ **isFirstElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isHiddenDueToOverflow](cardelement.md#ishiddenduetooverflow)*
+_Inherited from [Container](container.md).[isFirstElement](container.md#isfirstelement)_
 
-**Returns:** *boolean*
-
-___
-
-###  isLastElement
-
-▸ **isLastElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [ContainerWithActions](containerwithactions.md).[isLastElement](containerwithactions.md#islastelement)*
-
-*Overrides [Container](container.md).[isLastElement](container.md#islastelement)*
+_Overrides [CardElement](cardelement.md).[isFirstElement](cardelement.md#isfirstelement)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isLeftMostElement
+### isHiddenDueToOverflow
 
-▸ **isLeftMostElement**(`element`: [CardElement](cardelement.md)): *boolean*
+▸ **isHiddenDueToOverflow**(): _boolean_
 
-*Inherited from [CardElement](cardelement.md).[isLeftMostElement](cardelement.md#isleftmostelement)*
+_Inherited from [CardElement](cardelement.md).[isHiddenDueToOverflow](cardelement.md#ishiddenduetooverflow)_
 
-**Parameters:**
+**Returns:** _boolean_
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+---
 
-**Returns:** *boolean*
+### isLastElement
 
-___
+▸ **isLastElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
-###  isRightMostElement
+_Inherited from [ContainerWithActions](containerwithactions.md).[isLastElement](containerwithactions.md#islastelement)_
 
-▸ **isRightMostElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isRightMostElement](cardelement.md#isrightmostelement)*
+_Overrides [Container](container.md).[isLastElement](container.md#islastelement)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  isRtl
+### isLeftMostElement
 
-▸ **isRtl**(): *boolean*
+▸ **isLeftMostElement**(`element`: [CardElement](cardelement.md)): _boolean_
 
-*Inherited from [Container](container.md).[isRtl](container.md#isrtl)*
-
-**Returns:** *boolean*
-
-___
-
-###  isTopElement
-
-▸ **isTopElement**(`element`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isTopElement](cardelement.md#istopelement)*
+_Inherited from [CardElement](cardelement.md).[isLeftMostElement](cardelement.md#isleftmostelement)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`element` | [CardElement](cardelement.md) |
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
+
+### isRightMostElement
+
+▸ **isRightMostElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isRightMostElement](cardelement.md#isrightmostelement)_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
+
+### isRtl
+
+▸ **isRtl**(): _boolean_
+
+_Inherited from [Container](container.md).[isRtl](container.md#isrtl)_
+
+**Returns:** _boolean_
+
+---
+
+### isTopElement
+
+▸ **isTopElement**(`element`: [CardElement](cardelement.md)): _boolean_
+
+_Inherited from [CardElement](cardelement.md).[isTopElement](cardelement.md#istopelement)_
+
+**Parameters:**
+
+| Name      | Type                          |
+| --------- | ----------------------------- |
+| `element` | [CardElement](cardelement.md) |
+
+**Returns:** _boolean_
+
+---
 
 ### `Protected` overrideInternalRender
 
-▸ **overrideInternalRender**(): *HTMLElement | undefined*
+▸ **overrideInternalRender**(): _HTMLElement | undefined_
 
-*Inherited from [CardElement](cardelement.md).[overrideInternalRender](cardelement.md#protected-overrideinternalrender)*
+_Inherited from [CardElement](cardelement.md).[overrideInternalRender](cardelement.md#protected-overrideinternalrender)_
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _HTMLElement | undefined_
 
-___
+---
 
-###  parse
+### parse
 
-▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
+▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): _void_
 
-*Inherited from [CardElement](cardelement.md).[parse](cardelement.md#parse)*
+_Inherited from [CardElement](cardelement.md).[parse](cardelement.md#parse)_
 
-*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+_Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`source` | any |
-`context?` | [SerializationContext](serializationcontext.md) |
+| Name       | Type                                            |
+| ---------- | ----------------------------------------------- |
+| `source`   | any                                             |
+| `context?` | [SerializationContext](serializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Protected` populateSchema
 
-▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): _void_
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[populateSchema](cardelementcontainer.md#protected-populateschema)*
+_Inherited from [CardElementContainer](cardelementcontainer.md).[populateSchema](cardelementcontainer.md#protected-populateschema)_
 
-*Overrides [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
-
-**Returns:** *void*
-
-___
-
-###  preProcessPropertyValue
-
-▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
-
-*Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
+_Overrides [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`propertyValue?` | any |
+| Name     | Type                                                    |
+| -------- | ------------------------------------------------------- |
+| `schema` | [SerializableObjectSchema](serializableobjectschema.md) |
 
-**Returns:** *any*
+**Returns:** _void_
 
-___
+---
 
-###  remove
+### preProcessPropertyValue
 
-▸ **remove**(): *boolean*
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): _any_
 
-*Inherited from [CardElement](cardelement.md).[remove](cardelement.md#remove)*
-
-**Returns:** *boolean*
-
-___
-
-###  removeItem
-
-▸ **removeItem**(`item`: [CardElement](cardelement.md)): *boolean*
-
-*Inherited from [Container](container.md).[removeItem](container.md#removeitem)*
-
-*Overrides [CardElementContainer](cardelementcontainer.md).[removeItem](cardelementcontainer.md#abstract-removeitem)*
+_Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`item` | [CardElement](cardelement.md) |
+| Name             | Type                                        |
+| ---------------- | ------------------------------------------- |
+| `property`       | [PropertyDefinition](propertydefinition.md) |
+| `propertyValue?` | any                                         |
 
-**Returns:** *boolean*
+**Returns:** _any_
 
-___
+---
 
-###  render
+### remove
 
-▸ **render**(`target?`: HTMLElement): *HTMLElement | undefined*
+▸ **remove**(): _boolean_
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[render](stylablecardelementcontainer.md#render)*
+_Inherited from [CardElement](cardelement.md).[remove](cardelement.md#remove)_
+
+**Returns:** _boolean_
+
+---
+
+### removeItem
+
+▸ **removeItem**(`item`: [CardElement](cardelement.md)): _boolean_
+
+_Inherited from [Container](container.md).[removeItem](container.md#removeitem)_
+
+_Overrides [CardElementContainer](cardelementcontainer.md).[removeItem](cardelementcontainer.md#abstract-removeitem)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`target?` | HTMLElement |
+| Name   | Type                          |
+| ------ | ----------------------------- |
+| `item` | [CardElement](cardelement.md) |
 
-**Returns:** *HTMLElement | undefined*
+**Returns:** _boolean_
 
-___
+---
 
-###  resetDefaultValues
+### render
 
-▸ **resetDefaultValues**(): *void*
+▸ **render**(`target?`: HTMLElement): _HTMLElement | undefined_
 
-*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+_Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[render](stylablecardelementcontainer.md#render)_
 
-**Returns:** *void*
+**Parameters:**
 
-___
+| Name      | Type        |
+| --------- | ----------- |
+| `target?` | HTMLElement |
+
+**Returns:** _HTMLElement | undefined_
+
+---
+
+### resetDefaultValues
+
+▸ **resetDefaultValues**(): _void_
+
+_Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)_
+
+**Returns:** _void_
+
+---
 
 ### `Protected` setBleed
 
-▸ **setBleed**(`value`: boolean): *void*
+▸ **setBleed**(`value`: boolean): _void_
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[setBleed](stylablecardelementcontainer.md#protected-setbleed)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | boolean |
-
-**Returns:** *void*
-
-___
-
-###  setCustomProperty
-
-▸ **setCustomProperty**(`name`: string, `value`: any): *void*
-
-*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
+_Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[setBleed](stylablecardelementcontainer.md#protected-setbleed)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
-`value` | any |
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
+
+### setCustomProperty
+
+▸ **setCustomProperty**(`name`: string, `value`: any): _void_
+
+_Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)_
+
+**Parameters:**
+
+| Name    | Type   |
+| ------- | ------ |
+| `name`  | string |
+| `value` | any    |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` setPadding
 
-▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): *void*
+▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): _void_
 
-*Inherited from [CardElement](cardelement.md).[setPadding](cardelement.md#protected-setpadding)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
-
-**Returns:** *void*
-
-___
-
-###  setParent
-
-▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
-
-*Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
+_Inherited from [CardElement](cardelement.md).[setPadding](cardelement.md#protected-setpadding)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [CardObject](cardobject.md) &#124; undefined |
+| Name    | Type                                                       |
+| ------- | ---------------------------------------------------------- |
+| `value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  setShouldFallback
+### setParent
 
-▸ **setShouldFallback**(`value`: boolean): *void*
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): _void_
 
-*Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
+_Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | boolean |
+| Name    | Type                                         |
+| ------- | -------------------------------------------- |
+| `value` | [CardObject](cardobject.md) &#124; undefined |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
+
+### setShouldFallback
+
+▸ **setShouldFallback**(`value`: boolean): _void_
+
+_Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)_
+
+**Parameters:**
+
+| Name    | Type    |
+| ------- | ------- |
+| `value` | boolean |
+
+**Returns:** _void_
+
+---
 
 ### `Protected` setValue
 
-▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): _void_
 
-*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+_Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`value` | any |
+| Name       | Type                                        |
+| ---------- | ------------------------------------------- |
+| `property` | [PropertyDefinition](propertydefinition.md) |
+| `value`    | any                                         |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  shouldFallback
+### shouldFallback
 
-▸ **shouldFallback**(): *boolean*
+▸ **shouldFallback**(): _boolean_
 
-*Overrides [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
+_Overrides [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): _boolean_
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+_Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
+| Name      | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` supportsExcplitiHeight
 
-▸ **supportsExcplitiHeight**(): *boolean*
+▸ **supportsExcplitiHeight**(): _boolean_
 
-*Inherited from [Container](container.md).[supportsExcplitiHeight](container.md#protected-supportsexcplitiheight)*
+_Inherited from [Container](container.md).[supportsExcplitiHeight](container.md#protected-supportsexcplitiheight)_
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
-###  toJSON
+### toJSON
 
-▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): _[PropertyBag](../README.md#propertybag) | undefined_
 
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+_Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+| Name       | Type                                                    |
+| ---------- | ------------------------------------------------------- |
+| `context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
+**Returns:** _[PropertyBag](../README.md#propertybag) | undefined_
 
-___
+---
 
 ### `Protected` truncateOverflow
 
-▸ **truncateOverflow**(`maxHeight`: number): *boolean*
+▸ **truncateOverflow**(`maxHeight`: number): _boolean_
 
-*Inherited from [Container](container.md).[truncateOverflow](container.md#protected-truncateoverflow)*
+_Inherited from [Container](container.md).[truncateOverflow](container.md#protected-truncateoverflow)_
 
-*Overrides [CardElement](cardelement.md).[truncateOverflow](cardelement.md#protected-truncateoverflow)*
+_Overrides [CardElement](cardelement.md).[truncateOverflow](cardelement.md#protected-truncateoverflow)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`maxHeight` | number |
+| Name        | Type   |
+| ----------- | ------ |
+| `maxHeight` | number |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Protected` undoOverflowTruncation
 
-▸ **undoOverflowTruncation**(): *void*
+▸ **undoOverflowTruncation**(): _void_
 
-*Inherited from [Container](container.md).[undoOverflowTruncation](container.md#protected-undooverflowtruncation)*
+_Inherited from [Container](container.md).[undoOverflowTruncation](container.md#protected-undooverflowtruncation)_
 
-*Overrides [CardElement](cardelement.md).[undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)*
+_Overrides [CardElement](cardelement.md).[undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  updateLayout
+### updateLayout
 
-▸ **updateLayout**(`processChildren`: boolean): *void*
+▸ **updateLayout**(`processChildren`: boolean): _void_
 
-*Overrides [CardElementContainer](cardelementcontainer.md).[updateLayout](cardelementcontainer.md#updatelayout)*
+_Overrides [CardElementContainer](cardelementcontainer.md).[updateLayout](cardelementcontainer.md#updatelayout)_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`processChildren` | boolean | true |
+| Name              | Type    | Default |
+| ----------------- | ------- | ------- |
+| `processChildren` | boolean | true    |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  validateProperties
+### validateProperties
 
-▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
+▸ **validateProperties**(): _[ValidationResults](validationresults.md)_
 
-*Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
+_Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)_
 
-**Returns:** *[ValidationResults](validationresults.md)*
+**Returns:** _[ValidationResults](validationresults.md)_
 
-___
+---
 
 ### `Static` applyMarkdown
 
-▸ **applyMarkdown**(`text`: string): *[IMarkdownProcessingResult](../interfaces/imarkdownprocessingresult.md)*
+▸ **applyMarkdown**(`text`: string): _[IMarkdownProcessingResult](../interfaces/imarkdownprocessingresult.md)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`text` | string |
+| Name   | Type   |
+| ------ | ------ |
+| `text` | string |
 
-**Returns:** *[IMarkdownProcessingResult](../interfaces/imarkdownprocessingresult.md)*
+**Returns:** _[IMarkdownProcessingResult](../interfaces/imarkdownprocessingresult.md)_

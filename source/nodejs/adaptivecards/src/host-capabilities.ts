@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { TargetVersion, Version, SerializableObject, BaseSerializationContext, PropertyBag } from "./serialization";
+import {
+    TargetVersion,
+    Version,
+    SerializableObject,
+    BaseSerializationContext,
+    PropertyBag,
+} from "./serialization";
 
 export class HostCapabilities extends SerializableObject {
     private _capabilities: { [key: string]: TargetVersion } = {};
@@ -19,8 +25,7 @@ export class HostCapabilities extends SerializableObject {
                 if (typeof jsonVersion === "string") {
                     if (jsonVersion == "*") {
                         this.addCapability(name, "*");
-                    }
-                    else {
+                    } else {
                         let version = Version.parse(jsonVersion, context);
 
                         if (version && version.isValid) {
@@ -32,7 +37,10 @@ export class HostCapabilities extends SerializableObject {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
+    protected internalToJSON(
+        target: PropertyBag,
+        context: BaseSerializationContext
+    ) {
         super.internalToJSON(target, context);
 
         for (let key in this._capabilities) {
@@ -66,7 +74,12 @@ export class HostCapabilities extends SerializableObject {
 
     areAllMet(hostCapabilities: HostCapabilities): boolean {
         for (let capabilityName in this._capabilities) {
-            if (!hostCapabilities.hasCapability(capabilityName, this._capabilities[capabilityName])) {
+            if (
+                !hostCapabilities.hasCapability(
+                    capabilityName,
+                    this._capabilities[capabilityName]
+                )
+            ) {
                 return false;
             }
         }

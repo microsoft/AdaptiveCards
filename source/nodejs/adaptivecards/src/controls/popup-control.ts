@@ -26,7 +26,10 @@ export abstract class PopupControl {
     render(rootElementBounds: ClientRect): HTMLElement {
         let element = document.createElement("div");
         element.tabIndex = 0;
-        element.className = this.hostConfig.makeCssClassName("ac-ctrl", "ac-ctrl-popup-container");
+        element.className = this.hostConfig.makeCssClassName(
+            "ac-ctrl",
+            "ac-ctrl-popup-container"
+        );
         element.setAttribute("role", "dialog");
         element.setAttribute("aria-modal", "true");
         element.onkeydown = (e) => {
@@ -49,11 +52,16 @@ export abstract class PopupControl {
     popup(rootElement: HTMLElement) {
         if (!this._isOpen) {
             this._overlayElement = document.createElement("div");
-            this._overlayElement.className = this.hostConfig.makeCssClassName("ac-ctrl-overlay");
+            this._overlayElement.className =
+                this.hostConfig.makeCssClassName("ac-ctrl-overlay");
             this._overlayElement.tabIndex = 0;
-            this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
-            this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
-            this._overlayElement.onfocus = (e) => { this.closePopup(true); };
+            this._overlayElement.style.width =
+                document.documentElement.scrollWidth + "px";
+            this._overlayElement.style.height =
+                document.documentElement.scrollHeight + "px";
+            this._overlayElement.onfocus = (e) => {
+                this.closePopup(true);
+            };
 
             document.body.appendChild(this._overlayElement);
 
@@ -66,9 +74,13 @@ export abstract class PopupControl {
                     "ac-ctrl-slideLeftToRight",
                     "ac-ctrl-slideRightToLeft",
                     "ac-ctrl-slideTopToBottom",
-                    "ac-ctrl-slideRightToLeft"));
+                    "ac-ctrl-slideRightToLeft"
+                )
+            );
 
-            window.addEventListener("resize", (e) => { this.closePopup(true); });
+            window.addEventListener("resize", (e) => {
+                this.closePopup(true);
+            });
 
             const rootElementLabel = rootElement.getAttribute("aria-label");
             if (rootElementLabel) {
@@ -79,70 +91,114 @@ export abstract class PopupControl {
 
             var popupElementBounds = this._popupElement.getBoundingClientRect();
 
-            var availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
+            var availableSpaceBelow =
+                window.innerHeight - rootElementBounds.bottom;
             var availableSpaceAbove = rootElementBounds.top;
-            var availableSpaceRight = window.innerWidth - rootElementBounds.left;
-            var availableSpaceRight = window.innerWidth - rootElementBounds.right;
+            var availableSpaceRight =
+                window.innerWidth - rootElementBounds.left;
+            var availableSpaceRight =
+                window.innerWidth - rootElementBounds.right;
             var availableSpaceLeft = rootElementBounds.left;
 
             var left = rootElementBounds.left + Utils.getScrollX();
             var top;
 
-            if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
+            if (
+                availableSpaceAbove < popupElementBounds.height &&
+                availableSpaceBelow < popupElementBounds.height
+            ) {
                 // Not enough space above or below root element
-                var actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
+                var actualPopupHeight = Math.min(
+                    popupElementBounds.height,
+                    window.innerHeight
+                );
 
                 this._popupElement.style.maxHeight = actualPopupHeight + "px";
 
                 if (actualPopupHeight < popupElementBounds.height) {
                     top = Utils.getScrollY();
-                }
-                else {
-                    top = Utils.getScrollY() + rootElementBounds.top + (rootElementBounds.height - actualPopupHeight) /2;
+                } else {
+                    top =
+                        Utils.getScrollY() +
+                        rootElementBounds.top +
+                        (rootElementBounds.height - actualPopupHeight) / 2;
                 }
 
-                if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
+                if (
+                    availableSpaceLeft < popupElementBounds.width &&
+                    availableSpaceRight < popupElementBounds.width
+                ) {
                     // Not enough space left or right of root element
-                    var actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
+                    var actualPopupWidth = Math.min(
+                        popupElementBounds.width,
+                        window.innerWidth
+                    );
 
                     this._popupElement.style.maxWidth = actualPopupWidth + "px";
 
                     if (actualPopupWidth < popupElementBounds.width) {
                         left = Utils.getScrollX();
+                    } else {
+                        left =
+                            Utils.getScrollX() +
+                            rootElementBounds.left +
+                            (rootElementBounds.width - actualPopupWidth) / 2;
                     }
-                    else {
-                        left = Utils.getScrollX() + rootElementBounds.left + (rootElementBounds.width - actualPopupWidth) /2;
-                    }
-                }
-                else {
+                } else {
                     // Enough space on the left or right of the root element
                     if (availableSpaceRight >= popupElementBounds.width) {
                         left = Utils.getScrollX() + rootElementBounds.right;
 
-                        this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideLeftToRight"));
-                    }
-                    else {
-                        left = Utils.getScrollX() + rootElementBounds.left - popupElementBounds.width;
+                        this._popupElement.classList.add(
+                            ...this.hostConfig.makeCssClassNames(
+                                "ac-ctrl-slide",
+                                "ac-ctrl-slideLeftToRight"
+                            )
+                        );
+                    } else {
+                        left =
+                            Utils.getScrollX() +
+                            rootElementBounds.left -
+                            popupElementBounds.width;
 
-                        this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideRightToLeft"));
+                        this._popupElement.classList.add(
+                            ...this.hostConfig.makeCssClassNames(
+                                "ac-ctrl-slide",
+                                "ac-ctrl-slideRightToLeft"
+                            )
+                        );
                     }
                 }
-            }
-            else {
+            } else {
                 // Enough space above or below root element
                 if (availableSpaceBelow >= popupElementBounds.height) {
                     top = Utils.getScrollY() + rootElementBounds.bottom;
 
-                    this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideTopToBottom"));
-                }
-                else {
-                    top = Utils.getScrollY() + rootElementBounds.top - popupElementBounds.height
+                    this._popupElement.classList.add(
+                        ...this.hostConfig.makeCssClassNames(
+                            "ac-ctrl-slide",
+                            "ac-ctrl-slideTopToBottom"
+                        )
+                    );
+                } else {
+                    top =
+                        Utils.getScrollY() +
+                        rootElementBounds.top -
+                        popupElementBounds.height;
 
-                    this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideBottomToTop"));
+                    this._popupElement.classList.add(
+                        ...this.hostConfig.makeCssClassNames(
+                            "ac-ctrl-slide",
+                            "ac-ctrl-slideBottomToTop"
+                        )
+                    );
                 }
 
                 if (availableSpaceRight < popupElementBounds.width) {
-                    left = Utils.getScrollX() + rootElementBounds.right - popupElementBounds.width;
+                    left =
+                        Utils.getScrollX() +
+                        rootElementBounds.right -
+                        popupElementBounds.width;
                 }
             }
 

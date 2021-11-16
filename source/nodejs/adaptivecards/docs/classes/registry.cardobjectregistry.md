@@ -6,9 +6,9 @@
 
 ## Type parameters
 
-Name | Type |
-:------ | :------ |
-`T` | [*SerializableObject*](serialization.serializableobject.md) |
+| Name | Type                                                        |
+| :--- | :---------------------------------------------------------- |
+| `T`  | [_SerializableObject_](serialization.serializableobject.md) |
 
 ## Table of contents
 
@@ -30,115 +30,115 @@ Name | Type |
 
 ### constructor
 
-\+ **new CardObjectRegistry**<T\>(): [*CardObjectRegistry*](registry.cardobjectregistry.md)<T\>
+\+ **new CardObjectRegistry**<T\>(): [_CardObjectRegistry_](registry.cardobjectregistry.md)<T\>
 
 #### Type parameters:
 
-Name | Type |
-:------ | :------ |
-`T` | [*SerializableObject*](serialization.serializableobject.md)<T\> |
+| Name | Type                                                            |
+| :--- | :-------------------------------------------------------------- |
+| `T`  | [_SerializableObject_](serialization.serializableobject.md)<T\> |
 
-**Returns:** [*CardObjectRegistry*](registry.cardobjectregistry.md)<T\>
+**Returns:** [_CardObjectRegistry_](registry.cardobjectregistry.md)<T\>
 
 ## Methods
 
 ### clear
 
-▸ **clear**(): *void*
+▸ **clear**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [registry.ts:18](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L18)
 
-___
+---
 
 ### createInstance
 
-▸ **createInstance**(`typeName`: *string*, `targetVersion`: [*Version*](serialization.version.md)): *undefined* \| T
+▸ **createInstance**(`typeName`: _string_, `targetVersion`: [_Version_](serialization.version.md)): _undefined_ \| T
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`typeName` | *string* |
-`targetVersion` | [*Version*](serialization.version.md) |
+| Name            | Type                                  |
+| :-------------- | :------------------------------------ |
+| `typeName`      | _string_                              |
+| `targetVersion` | [_Version_](serialization.version.md) |
 
-**Returns:** *undefined* \| T
+**Returns:** _undefined_ \| T
 
 Defined in: [registry.ts:43](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L43)
 
-___
+---
 
 ### findByName
 
-▸ **findByName**(`typeName`: *string*): *undefined* \| [*ITypeRegistration*](../interfaces/registry.ityperegistration.md)<T\>
+▸ **findByName**(`typeName`: _string_): _undefined_ \| [_ITypeRegistration_](../interfaces/registry.ityperegistration.md)<T\>
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`typeName` | *string* |
+| Name       | Type     |
+| :--------- | :------- |
+| `typeName` | _string_ |
 
-**Returns:** *undefined* \| [*ITypeRegistration*](../interfaces/registry.ityperegistration.md)<T\>
+**Returns:** _undefined_ \| [_ITypeRegistration_](../interfaces/registry.ityperegistration.md)<T\>
 
 Defined in: [registry.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L14)
 
-___
+---
 
 ### getItemAt
 
-▸ **getItemAt**(`index`: *number*): [*ITypeRegistration*](../interfaces/registry.ityperegistration.md)<T\>
+▸ **getItemAt**(`index`: _number_): [_ITypeRegistration_](../interfaces/registry.ityperegistration.md)<T\>
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`index` | *number* |
+| Name    | Type     |
+| :------ | :------- |
+| `index` | _number_ |
 
-**Returns:** [*ITypeRegistration*](../interfaces/registry.ityperegistration.md)<T\>
+**Returns:** [_ITypeRegistration_](../interfaces/registry.ityperegistration.md)<T\>
 
 Defined in: [registry.ts:53](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L53)
 
-___
+---
 
 ### getItemCount
 
-▸ **getItemCount**(): *number*
+▸ **getItemCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [registry.ts:49](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L49)
 
-___
+---
 
 ### register
 
-▸ **register**(`typeName`: *string*, `objectType`: () => T, `schemaVersion?`: [*Version*](serialization.version.md)): *void*
+▸ **register**(`typeName`: _string_, `objectType`: () => T, `schemaVersion?`: [_Version_](serialization.version.md)): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`typeName` | *string* |
-`objectType` | () => T |
-`schemaVersion` | [*Version*](serialization.version.md) |
+| Name            | Type                                  |
+| :-------------- | :------------------------------------ |
+| `typeName`      | _string_                              |
+| `objectType`    | () => T                               |
+| `schemaVersion` | [_Version_](serialization.version.md) |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [registry.ts:22](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L22)
 
-___
+---
 
 ### unregister
 
-▸ **unregister**(`typeName`: *string*): *void*
+▸ **unregister**(`typeName`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`typeName` | *string* |
+| Name       | Type     |
+| :--------- | :------- |
+| `typeName` | _string_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [registry.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/registry.ts#L39)

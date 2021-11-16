@@ -6,11 +6,11 @@
 
 ## Hierarchy
 
-* **BaseSerializationContext**
+- **BaseSerializationContext**
 
-  ↳ [*SerializationContext*](card_elements.serializationcontext.md)
+  ↳ [_SerializationContext_](card_elements.serializationcontext.md)
 
-  ↳ [*SerializationContext*](adaptivecards.serializationcontext.md)
+  ↳ [_SerializationContext_](adaptivecards.serializationcontext.md)
 
 ## Table of contents
 
@@ -43,15 +43,15 @@
 
 ### constructor
 
-\+ **new BaseSerializationContext**(`targetVersion?`: [*Version*](serialization.version.md)): [*BaseSerializationContext*](serialization.baseserializationcontext.md)
+\+ **new BaseSerializationContext**(`targetVersion?`: [_Version_](serialization.version.md)): [_BaseSerializationContext_](serialization.baseserializationcontext.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`targetVersion` | [*Version*](serialization.version.md) |
+| Name            | Type                                  |
+| :-------------- | :------------------------------------ |
+| `targetVersion` | [_Version_](serialization.version.md) |
 
-**Returns:** [*BaseSerializationContext*](serialization.baseserializationcontext.md)
+**Returns:** [_BaseSerializationContext_](serialization.baseserializationcontext.md)
 
 Defined in: [serialization.ts:248](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L248)
 
@@ -59,13 +59,13 @@ Defined in: [serialization.ts:248](https://github.com/microsoft/AdaptiveCards/bl
 
 ### targetVersion
 
-• **targetVersion**: [*Version*](serialization.version.md)
+• **targetVersion**: [_Version_](serialization.version.md)
 
-___
+---
 
 ### toJSONOriginalParam
 
-• **toJSONOriginalParam**: *any*
+• **toJSONOriginalParam**: _any_
 
 Defined in: [serialization.ts:132](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L132)
 
@@ -73,9 +73,9 @@ Defined in: [serialization.ts:132](https://github.com/microsoft/AdaptiveCards/bl
 
 ### eventCount
 
-• get **eventCount**(): *number*
+• get **eventCount**(): _number_
 
-**Returns:** *number*
+**Returns:** _number_
 
 Defined in: [serialization.ts:252](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L252)
 
@@ -83,156 +83,156 @@ Defined in: [serialization.ts:252](https://github.com/microsoft/AdaptiveCards/bl
 
 ### clearEvents
 
-▸ **clearEvents**(): *void*
+▸ **clearEvents**(): _void_
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:223](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L223)
 
-___
+---
 
 ### getEventAt
 
-▸ **getEventAt**(`index`: *number*): [*IValidationEvent*](../interfaces/serialization.ivalidationevent.md)
+▸ **getEventAt**(`index`: _number_): [_IValidationEvent_](../interfaces/serialization.ivalidationevent.md)
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`index` | *number* |
+| Name    | Type     |
+| :------ | :------- |
+| `index` | _number_ |
 
-**Returns:** [*IValidationEvent*](../interfaces/serialization.ivalidationevent.md)
+**Returns:** [_IValidationEvent_](../interfaces/serialization.ivalidationevent.md)
 
 Defined in: [serialization.ts:246](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L246)
 
-___
+---
 
 ### logEvent
 
-▸ **logEvent**(`source`: *undefined* \| [*SerializableObject*](serialization.serializableobject.md), `phase`: [*ValidationPhase*](../enums/enums.validationphase.md), `event`: [*ValidationEvent*](../enums/enums.validationevent.md), `message`: *string*): *void*
+▸ **logEvent**(`source`: _undefined_ \| [_SerializableObject_](serialization.serializableobject.md), `phase`: [_ValidationPhase_](../enums/enums.validationphase.md), `event`: [_ValidationEvent_](../enums/enums.validationevent.md), `message`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *undefined* \| [*SerializableObject*](serialization.serializableobject.md) |
-`phase` | [*ValidationPhase*](../enums/enums.validationphase.md) |
-`event` | [*ValidationEvent*](../enums/enums.validationevent.md) |
-`message` | *string* |
+| Name      | Type                                                                       |
+| :-------- | :------------------------------------------------------------------------- |
+| `source`  | _undefined_ \| [_SerializableObject_](serialization.serializableobject.md) |
+| `phase`   | [_ValidationPhase_](../enums/enums.validationphase.md)                     |
+| `event`   | [_ValidationEvent_](../enums/enums.validationevent.md)                     |
+| `message` | _string_                                                                   |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:227](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L227)
 
-___
+---
 
 ### logParseEvent
 
-▸ **logParseEvent**(`source`: *undefined* \| [*SerializableObject*](serialization.serializableobject.md), `event`: [*ValidationEvent*](../enums/enums.validationevent.md), `message`: *string*): *void*
+▸ **logParseEvent**(`source`: _undefined_ \| [_SerializableObject_](serialization.serializableobject.md), `event`: [_ValidationEvent_](../enums/enums.validationevent.md), `message`: _string_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`source` | *undefined* \| [*SerializableObject*](serialization.serializableobject.md) |
-`event` | [*ValidationEvent*](../enums/enums.validationevent.md) |
-`message` | *string* |
+| Name      | Type                                                                       |
+| :-------- | :------------------------------------------------------------------------- |
+| `source`  | _undefined_ \| [_SerializableObject_](serialization.serializableobject.md) |
+| `event`   | [_ValidationEvent_](../enums/enums.validationevent.md)                     |
+| `message` | _string_                                                                   |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:242](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L242)
 
-___
+---
 
 ### serializeArray
 
-▸ **serializeArray**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *any*[]): *void*
+▸ **serializeArray**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _any_[]): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *any*[] |
+| Name            | Type                   |
+| :-------------- | :--------------------- |
+| `target`        | _object_               |
+| `propertyName`  | _string_               |
+| `propertyValue` | _undefined_ \| _any_[] |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:190](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L190)
 
-___
+---
 
 ### serializeBool
 
-▸ **serializeBool**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *boolean*, `defaultValue?`: *undefined* \| *boolean*): *void*
+▸ **serializeBool**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _boolean_, `defaultValue?`: _undefined_ \| _boolean_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *boolean* |
-`defaultValue` | *undefined* \| *boolean* |
+| Name            | Type                     |
+| :-------------- | :----------------------- |
+| `target`        | _object_                 |
+| `propertyName`  | _string_                 |
+| `propertyValue` | _undefined_ \| _boolean_ |
+| `defaultValue`  | _undefined_ \| _boolean_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:145](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L145)
 
-___
+---
 
 ### serializeEnum
 
-▸ **serializeEnum**(`enumType`: { [s: number]: *string*;  }, `target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *number*, `defaultValue?`: *undefined* \| *number*): *void*
+▸ **serializeEnum**(`enumType`: { [s: number]: _string_; }, `target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _number_, `defaultValue?`: _undefined_ \| _number_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`enumType` | *object* |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *number* |
-`defaultValue` | *undefined* \| *number* |
+| Name            | Type                    |
+| :-------------- | :---------------------- |
+| `enumType`      | _object_                |
+| `target`        | _object_                |
+| `propertyName`  | _string_                |
+| `propertyValue` | _undefined_ \| _number_ |
+| `defaultValue`  | _undefined_ \| _number_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:163](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L163)
 
-___
+---
 
 ### serializeNumber
 
-▸ **serializeNumber**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *undefined* \| *number*, `defaultValue?`: *undefined* \| *number*): *void*
+▸ **serializeNumber**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _undefined_ \| _number_, `defaultValue?`: _undefined_ \| _number_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *undefined* \| *number* |
-`defaultValue` | *undefined* \| *number* |
+| Name            | Type                    |
+| :-------------- | :---------------------- |
+| `target`        | _object_                |
+| `propertyName`  | _string_                |
+| `propertyValue` | _undefined_ \| _number_ |
+| `defaultValue`  | _undefined_ \| _number_ |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:154](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L154)
 
-___
+---
 
 ### serializeValue
 
-▸ **serializeValue**(`target`: { [key: string]: *any*;  }, `propertyName`: *string*, `propertyValue`: *any*, `defaultValue?`: *any*): *void*
+▸ **serializeValue**(`target`: { [key: string]: _any_; }, `propertyName`: _string_, `propertyValue`: _any_, `defaultValue?`: _any_): _void_
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`target` | *object* |
-`propertyName` | *string* |
-`propertyValue` | *any* |
-`defaultValue` | *any* |
+| Name            | Type     |
+| :-------------- | :------- |
+| `target`        | _object_ |
+| `propertyName`  | _string_ |
+| `propertyValue` | _any_    |
+| `defaultValue`  | _any_    |
 
-**Returns:** *void*
+**Returns:** _void_
 
 Defined in: [serialization.ts:134](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/serialization.ts#L134)

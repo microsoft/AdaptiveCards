@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-* [PropertyDefinition](propertydefinition.md)
+- [PropertyDefinition](propertydefinition.md)
 
   ↳ **SerializableObjectProperty**
 
@@ -12,148 +12,148 @@
 
 ### Constructors
 
-* [constructor](serializableobjectproperty.md#constructor)
+- [constructor](serializableobjectproperty.md#constructor)
 
 ### Properties
 
-* [defaultValue](serializableobjectproperty.md#optional-readonly-defaultvalue)
-* [isSerializationEnabled](serializableobjectproperty.md#isserializationenabled)
-* [name](serializableobjectproperty.md#readonly-name)
-* [nullable](serializableobjectproperty.md#nullable)
-* [objectType](serializableobjectproperty.md#readonly-objecttype)
-* [onGetInitialValue](serializableobjectproperty.md#optional-readonly-ongetinitialvalue)
-* [sequentialNumber](serializableobjectproperty.md#readonly-sequentialnumber)
-* [targetVersion](serializableobjectproperty.md#readonly-targetversion)
+- [defaultValue](serializableobjectproperty.md#optional-readonly-defaultvalue)
+- [isSerializationEnabled](serializableobjectproperty.md#isserializationenabled)
+- [name](serializableobjectproperty.md#readonly-name)
+- [nullable](serializableobjectproperty.md#nullable)
+- [objectType](serializableobjectproperty.md#readonly-objecttype)
+- [onGetInitialValue](serializableobjectproperty.md#optional-readonly-ongetinitialvalue)
+- [sequentialNumber](serializableobjectproperty.md#readonly-sequentialnumber)
+- [targetVersion](serializableobjectproperty.md#readonly-targetversion)
 
 ### Methods
 
-* [getInternalName](serializableobjectproperty.md#getinternalname)
-* [parse](serializableobjectproperty.md#parse)
-* [toJSON](serializableobjectproperty.md#tojson)
+- [getInternalName](serializableobjectproperty.md#getinternalname)
+- [parse](serializableobjectproperty.md#parse)
+- [toJSON](serializableobjectproperty.md#tojson)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `nullable`: boolean, `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
+\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `nullable`: boolean, `defaultValue?`: [SerializableObject](serializableobject.md)): _[SerializableObjectProperty](serializableobjectproperty.md)_
 
-*Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
+_Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`targetVersion` | [Version](version.md) | - |
-`name` | string | - |
-`objectType` | [SerializableObjectType](../README.md#serializableobjecttype) | - |
-`nullable` | boolean | false |
-`defaultValue?` | [SerializableObject](serializableobject.md) | - |
+| Name            | Type                                                          | Default |
+| --------------- | ------------------------------------------------------------- | ------- |
+| `targetVersion` | [Version](version.md)                                         | -       |
+| `name`          | string                                                        | -       |
+| `objectType`    | [SerializableObjectType](../README.md#serializableobjecttype) | -       |
+| `nullable`      | boolean                                                       | false   |
+| `defaultValue?` | [SerializableObject](serializableobject.md)                   | -       |
 
-**Returns:** *[SerializableObjectProperty](serializableobjectproperty.md)*
+**Returns:** _[SerializableObjectProperty](serializableobjectproperty.md)_
 
 ## Properties
 
 ### `Optional` `Readonly` defaultValue
 
-• **defaultValue**? : *any*
+• **defaultValue**? : _any_
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
+_Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)_
 
-___
+---
 
-###  isSerializationEnabled
+### isSerializationEnabled
 
-• **isSerializationEnabled**: *boolean* = true
+• **isSerializationEnabled**: _boolean_ = true
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
+_Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)_
 
-___
+---
 
 ### `Readonly` name
 
-• **name**: *string*
+• **name**: _string_
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
+_Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)_
 
-___
+---
 
-###  nullable
+### nullable
 
-• **nullable**: *boolean*
+• **nullable**: _boolean_
 
-___
+---
 
 ### `Readonly` objectType
 
-• **objectType**: *[SerializableObjectType](../README.md#serializableobjecttype)*
+• **objectType**: _[SerializableObjectType](../README.md#serializableobjecttype)_
 
-___
+---
 
 ### `Optional` `Readonly` onGetInitialValue
 
-• **onGetInitialValue**? : *undefined | function*
+• **onGetInitialValue**? : _undefined | function_
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
+_Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)_
 
-___
+---
 
 ### `Readonly` sequentialNumber
 
-• **sequentialNumber**: *number*
+• **sequentialNumber**: _number_
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
+_Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)_
 
-___
+---
 
 ### `Readonly` targetVersion
 
-• **targetVersion**: *[Version](version.md)*
+• **targetVersion**: _[Version](version.md)_
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
+_Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)_
 
 ## Methods
 
-###  getInternalName
+### getInternalName
 
-▸ **getInternalName**(): *string*
+▸ **getInternalName**(): _string_
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)*
+_Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  parse
+### parse
 
-▸ **parse**(`sender`: [SerializableObject](serializableobject.md), `source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *[SerializableObject](serializableobject.md) | undefined*
+▸ **parse**(`sender`: [SerializableObject](serializableobject.md), `source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): _[SerializableObject](serializableobject.md) | undefined_
 
-*Overrides [PropertyDefinition](propertydefinition.md).[parse](propertydefinition.md#parse)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`sender` | [SerializableObject](serializableobject.md) |
-`source` | [PropertyBag](../README.md#propertybag) |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
-
-**Returns:** *[SerializableObject](serializableobject.md) | undefined*
-
-___
-
-###  toJSON
-
-▸ **toJSON**(`sender`: [SerializableObject](serializableobject.md), `target`: [PropertyBag](../README.md#propertybag), `value`: [SerializableObject](serializableobject.md) | undefined, `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
-
-*Overrides [PropertyDefinition](propertydefinition.md).[toJSON](propertydefinition.md#tojson)*
+_Overrides [PropertyDefinition](propertydefinition.md).[parse](propertydefinition.md#parse)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`sender` | [SerializableObject](serializableobject.md) |
-`target` | [PropertyBag](../README.md#propertybag) |
-`value` | [SerializableObject](serializableobject.md) &#124; undefined |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
+| Name      | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `sender`  | [SerializableObject](serializableobject.md)             |
+| `source`  | [PropertyBag](../README.md#propertybag)                 |
+| `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *void*
+**Returns:** _[SerializableObject](serializableobject.md) | undefined_
+
+---
+
+### toJSON
+
+▸ **toJSON**(`sender`: [SerializableObject](serializableobject.md), `target`: [PropertyBag](../README.md#propertybag), `value`: [SerializableObject](serializableobject.md) | undefined, `context`: [BaseSerializationContext](baseserializationcontext.md)): _void_
+
+_Overrides [PropertyDefinition](propertydefinition.md).[toJSON](propertydefinition.md#tojson)_
+
+**Parameters:**
+
+| Name      | Type                                                         |
+| --------- | ------------------------------------------------------------ |
+| `sender`  | [SerializableObject](serializableobject.md)                  |
+| `target`  | [PropertyBag](../README.md#propertybag)                      |
+| `value`   | [SerializableObject](serializableobject.md) &#124; undefined |
+| `context` | [BaseSerializationContext](baseserializationcontext.md)      |
+
+**Returns:** _void_

@@ -4,349 +4,349 @@
 
 ## Hierarchy
 
-* **Strings**
+- **Strings**
 
 ## Index
 
 ### Object literals
 
-* [defaults](strings.md#static-readonly-defaults)
-* [errors](strings.md#static-readonly-errors)
-* [hints](strings.md#static-readonly-hints)
+- [defaults](strings.md#static-readonly-defaults)
+- [errors](strings.md#static-readonly-errors)
+- [hints](strings.md#static-readonly-hints)
 
 ## Object literals
 
 ### `Static` `Readonly` defaults
 
-### ▪ **defaults**: *object*
+### ▪ **defaults**: _object_
 
-###  inlineActionTitle
+### inlineActionTitle
 
-▸ **inlineActionTitle**(): *string*
+▸ **inlineActionTitle**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Static` `Readonly` errors
 
-### ▪ **errors**: *object*
+### ▪ **errors**: _object_
 
-###  actionAlreadyParented
+### actionAlreadyParented
 
-▸ **actionAlreadyParented**(): *string*
+▸ **actionAlreadyParented**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  actionHttpHeadersMustHaveNameAndValue
+### actionHttpHeadersMustHaveNameAndValue
 
-▸ **actionHttpHeadersMustHaveNameAndValue**(): *string*
+▸ **actionHttpHeadersMustHaveNameAndValue**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  actionTypeNotAllowed
+### actionTypeNotAllowed
 
-▸ **actionTypeNotAllowed**(`typeName`: string): *string*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`typeName` | string |
-
-**Returns:** *string*
-
-###  choiceSetChoicesMustHaveTitleAndValue
-
-▸ **choiceSetChoicesMustHaveTitleAndValue**(): *string*
-
-**Returns:** *string*
-
-###  choiceSetMustHaveAtLeastOneChoice
-
-▸ **choiceSetMustHaveAtLeastOneChoice**(): *string*
-
-**Returns:** *string*
-
-###  columnAlreadyBelongsToAnotherSet
-
-▸ **columnAlreadyBelongsToAnotherSet**(): *string*
-
-**Returns:** *string*
-
-###  duplicateId
-
-▸ **duplicateId**(`id`: string): *string*
+▸ **actionTypeNotAllowed**(`typeName`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name       | Type   |
+| ---------- | ------ |
+| `typeName` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  elementAlreadyParented
+### choiceSetChoicesMustHaveTitleAndValue
 
-▸ **elementAlreadyParented**(): *string*
+▸ **choiceSetChoicesMustHaveTitleAndValue**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  elementCannotBeUsedAsInline
+### choiceSetMustHaveAtLeastOneChoice
 
-▸ **elementCannotBeUsedAsInline**(): *string*
+▸ **choiceSetMustHaveAtLeastOneChoice**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  elementTypeNotAllowed
+### columnAlreadyBelongsToAnotherSet
 
-▸ **elementTypeNotAllowed**(`typeName`: string): *string*
+▸ **columnAlreadyBelongsToAnotherSet**(): _string_
 
-**Parameters:**
+**Returns:** _string_
 
-Name | Type |
------- | ------ |
-`typeName` | string |
+### duplicateId
 
-**Returns:** *string*
-
-###  elementTypeNotStandalone
-
-▸ **elementTypeNotStandalone**(`typeName`: string): *string*
+▸ **duplicateId**(`id`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`typeName` | string |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  indexOutOfRange
+### elementAlreadyParented
 
-▸ **indexOutOfRange**(`index`: number): *string*
+▸ **elementAlreadyParented**(): _string_
 
-**Parameters:**
+**Returns:** _string_
 
-Name | Type |
------- | ------ |
-`index` | number |
+### elementCannotBeUsedAsInline
 
-**Returns:** *string*
+▸ **elementCannotBeUsedAsInline**(): _string_
 
-###  inlineAlreadyParented
+**Returns:** _string_
 
-▸ **inlineAlreadyParented**(): *string*
+### elementTypeNotAllowed
 
-**Returns:** *string*
-
-###  inputsMustHaveUniqueId
-
-▸ **inputsMustHaveUniqueId**(): *string*
-
-**Returns:** *string*
-
-###  interactivityNotAllowed
-
-▸ **interactivityNotAllowed**(): *string*
-
-**Returns:** *string*
-
-###  invalidCardType
-
-▸ **invalidCardType**(): *string*
-
-**Returns:** *string*
-
-###  invalidCardVersion
-
-▸ **invalidCardVersion**(`defaultingToVersion`: string): *string*
+▸ **elementTypeNotAllowed**(`typeName`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`defaultingToVersion` | string |
+| Name       | Type   |
+| ---------- | ------ |
+| `typeName` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  invalidColumnWidth
+### elementTypeNotStandalone
 
-▸ **invalidColumnWidth**(`invalidWidth`: string): *string*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`invalidWidth` | string |
-
-**Returns:** *string*
-
-###  invalidPropertyValue
-
-▸ **invalidPropertyValue**(`value`: any, `propertyName`: string): *string*
+▸ **elementTypeNotStandalone**(`typeName`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | any |
-`propertyName` | string |
+| Name       | Type   |
+| ---------- | ------ |
+| `typeName` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  invalidVersionString
+### indexOutOfRange
 
-▸ **invalidVersionString**(`versionString`: string): *string*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`versionString` | string |
-
-**Returns:** *string*
-
-###  markdownProcessingNotEnabled
-
-▸ **markdownProcessingNotEnabled**(): *string*
-
-**Returns:** *string*
-
-###  processMarkdownEventRemoved
-
-▸ **processMarkdownEventRemoved**(): *string*
-
-**Returns:** *string*
-
-###  propertyMustBeSet
-
-▸ **propertyMustBeSet**(`propertyName`: string): *string*
+▸ **indexOutOfRange**(`index`: number): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`propertyName` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `index` | number |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  propertyNotSupported
+### inlineAlreadyParented
 
-▸ **propertyNotSupported**(`propertyName`: string, `supportedInVersion`: string, `versionUsed`: string): *string*
+▸ **inlineAlreadyParented**(): _string_
 
-**Parameters:**
+**Returns:** _string_
 
-Name | Type |
------- | ------ |
-`propertyName` | string |
-`supportedInVersion` | string |
-`versionUsed` | string |
+### inputsMustHaveUniqueId
 
-**Returns:** *string*
+▸ **inputsMustHaveUniqueId**(): _string_
 
-###  propertyValueNotSupported
+**Returns:** _string_
 
-▸ **propertyValueNotSupported**(`value`: any, `propertyName`: string, `supportedInVersion`: string, `versionUsed`: string): *string*
+### interactivityNotAllowed
 
-**Parameters:**
+▸ **interactivityNotAllowed**(): _string_
 
-Name | Type |
------- | ------ |
-`value` | any |
-`propertyName` | string |
-`supportedInVersion` | string |
-`versionUsed` | string |
+**Returns:** _string_
 
-**Returns:** *string*
+### invalidCardType
 
-###  showCardMustHaveCard
+▸ **invalidCardType**(): _string_
 
-▸ **showCardMustHaveCard**(): *string*
+**Returns:** _string_
 
-**Returns:** *string*
+### invalidCardVersion
 
-###  tooManyActions
-
-▸ **tooManyActions**(`maximumActions`: number): *string*
+▸ **invalidCardVersion**(`defaultingToVersion`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`maximumActions` | number |
+| Name                  | Type   |
+| --------------------- | ------ |
+| `defaultingToVersion` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  unknownActionType
+### invalidColumnWidth
 
-▸ **unknownActionType**(`typeName`: string): *string*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`typeName` | string |
-
-**Returns:** *string*
-
-###  unknownElementType
-
-▸ **unknownElementType**(`typeName`: string): *string*
+▸ **invalidColumnWidth**(`invalidWidth`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`typeName` | string |
+| Name           | Type   |
+| -------------- | ------ |
+| `invalidWidth` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  unsupportedCardVersion
+### invalidPropertyValue
 
-▸ **unsupportedCardVersion**(`version`: string, `maxSupportedVersion`: string): *string*
+▸ **invalidPropertyValue**(`value`: any, `propertyName`: string): _string_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`version` | string |
-`maxSupportedVersion` | string |
+| Name           | Type   |
+| -------------- | ------ |
+| `value`        | any    |
+| `propertyName` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+### invalidVersionString
+
+▸ **invalidVersionString**(`versionString`: string): _string_
+
+**Parameters:**
+
+| Name            | Type   |
+| --------------- | ------ |
+| `versionString` | string |
+
+**Returns:** _string_
+
+### markdownProcessingNotEnabled
+
+▸ **markdownProcessingNotEnabled**(): _string_
+
+**Returns:** _string_
+
+### processMarkdownEventRemoved
+
+▸ **processMarkdownEventRemoved**(): _string_
+
+**Returns:** _string_
+
+### propertyMustBeSet
+
+▸ **propertyMustBeSet**(`propertyName`: string): _string_
+
+**Parameters:**
+
+| Name           | Type   |
+| -------------- | ------ |
+| `propertyName` | string |
+
+**Returns:** _string_
+
+### propertyNotSupported
+
+▸ **propertyNotSupported**(`propertyName`: string, `supportedInVersion`: string, `versionUsed`: string): _string_
+
+**Parameters:**
+
+| Name                 | Type   |
+| -------------------- | ------ |
+| `propertyName`       | string |
+| `supportedInVersion` | string |
+| `versionUsed`        | string |
+
+**Returns:** _string_
+
+### propertyValueNotSupported
+
+▸ **propertyValueNotSupported**(`value`: any, `propertyName`: string, `supportedInVersion`: string, `versionUsed`: string): _string_
+
+**Parameters:**
+
+| Name                 | Type   |
+| -------------------- | ------ |
+| `value`              | any    |
+| `propertyName`       | string |
+| `supportedInVersion` | string |
+| `versionUsed`        | string |
+
+**Returns:** _string_
+
+### showCardMustHaveCard
+
+▸ **showCardMustHaveCard**(): _string_
+
+**Returns:** _string_
+
+### tooManyActions
+
+▸ **tooManyActions**(`maximumActions`: number): _string_
+
+**Parameters:**
+
+| Name             | Type   |
+| ---------------- | ------ |
+| `maximumActions` | number |
+
+**Returns:** _string_
+
+### unknownActionType
+
+▸ **unknownActionType**(`typeName`: string): _string_
+
+**Parameters:**
+
+| Name       | Type   |
+| ---------- | ------ |
+| `typeName` | string |
+
+**Returns:** _string_
+
+### unknownElementType
+
+▸ **unknownElementType**(`typeName`: string): _string_
+
+**Parameters:**
+
+| Name       | Type   |
+| ---------- | ------ |
+| `typeName` | string |
+
+**Returns:** _string_
+
+### unsupportedCardVersion
+
+▸ **unsupportedCardVersion**(`version`: string, `maxSupportedVersion`: string): _string_
+
+**Parameters:**
+
+| Name                  | Type   |
+| --------------------- | ------ |
+| `version`             | string |
+| `maxSupportedVersion` | string |
+
+**Returns:** _string_
+
+---
 
 ### `Static` `Readonly` hints
 
-### ▪ **hints**: *object*
+### ▪ **hints**: _object_
 
-###  dontUseWeightedAndStrecthedColumnsInSameSet
+### dontUseWeightedAndStrecthedColumnsInSameSet
 
-▸ **dontUseWeightedAndStrecthedColumnsInSameSet**(): *string*
+▸ **dontUseWeightedAndStrecthedColumnsInSameSet**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Static` runtime
 
-### ▪ **runtime**: *object*
+### ▪ **runtime**: _object_
 
-###  automaticRefreshPaused
+### automaticRefreshPaused
 
-▸ **automaticRefreshPaused**(): *string*
+▸ **automaticRefreshPaused**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  clckToRestartAutomaticRefresh
+### clckToRestartAutomaticRefresh
 
-▸ **clckToRestartAutomaticRefresh**(): *string*
+▸ **clckToRestartAutomaticRefresh**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_
 
-###  refreshThisCard
+### refreshThisCard
 
-▸ **refreshThisCard**(): *string*
+▸ **refreshThisCard**(): _string_
 
-**Returns:** *string*
+**Returns:** _string_

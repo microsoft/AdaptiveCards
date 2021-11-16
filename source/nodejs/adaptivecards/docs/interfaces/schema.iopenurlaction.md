@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*IAction*](schema.iaction.md)
+- [_IAction_](schema.iaction.md)
 
   ↳ **IOpenUrlAction**
 
@@ -23,34 +23,34 @@
 
 ### id
 
-• **id**: *string*
+• **id**: _string_
 
 Inherited from: [IAction](schema.iaction.md).[id](schema.iaction.md#id)
 
 Defined in: [schema.ts:14](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L14)
 
-___
+---
 
 ### title
 
-• `Optional` **title**: *undefined* \| *string*
+• `Optional` **title**: _undefined_ \| _string_
 
 Inherited from: [IAction](schema.iaction.md).[title](schema.iaction.md#title)
 
 Defined in: [schema.ts:15](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L15)
 
-___
+---
 
 ### type
 
-• **type**: *Action.OpenUrl*
+• **type**: _Action.OpenUrl_
 
 Defined in: [schema.ts:24](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L24)
 
-___
+---
 
 ### url
 
-• **url**: *string*
+• **url**: _string_
 
 Defined in: [schema.ts:25](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L25)

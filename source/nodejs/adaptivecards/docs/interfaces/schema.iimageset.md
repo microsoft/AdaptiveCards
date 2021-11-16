@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-* [*ICardElement*](schema.icardelement.md)
+- [_ICardElement_](schema.icardelement.md)
 
   ↳ **IImageSet**
 
@@ -28,82 +28,82 @@
 
 ### height
 
-• `Optional` **height**: *undefined* \| *auto* \| *stretch*
+• `Optional` **height**: _undefined_ \| _auto_ \| _stretch_
 
 Inherited from: [ICardElement](schema.icardelement.md).[height](schema.icardelement.md#height)
 
 Defined in: [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L39)
 
-___
+---
 
 ### horizontalAlignment
 
-• `Optional` **horizontalAlignment**: *undefined* \| *left* \| *center* \| *right*
+• `Optional` **horizontalAlignment**: _undefined_ \| _left_ \| _center_ \| _right_
 
 Inherited from: [ICardElement](schema.icardelement.md).[horizontalAlignment](schema.icardelement.md#horizontalalignment)
 
 Defined in: [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L36)
 
-___
+---
 
 ### id
 
-• `Optional` **id**: *undefined* \| *string*
+• `Optional` **id**: _undefined_ \| _string_
 
 Inherited from: [ICardElement](schema.icardelement.md).[id](schema.icardelement.md#id)
 
 Defined in: [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L34)
 
-___
+---
 
 ### images
 
-• **images**: [*IImage*](schema.iimage.md)[]
+• **images**: [_IImage_](schema.iimage.md)[]
 
 Defined in: [schema.ts:103](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L103)
 
-___
+---
 
 ### separator
 
-• `Optional` **separator**: *undefined* \| *boolean*
+• `Optional` **separator**: _undefined_ \| _boolean_
 
 Inherited from: [ICardElement](schema.icardelement.md).[separator](schema.icardelement.md#separator)
 
 Defined in: [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L38)
 
-___
+---
 
 ### size
 
-• `Optional` **size**: *undefined* \| *auto* \| *stretch* \| *small* \| *medium* \| *large*
+• `Optional` **size**: _undefined_ \| _auto_ \| _stretch_ \| _small_ \| _medium_ \| _large_
 
 Defined in: [schema.ts:104](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L104)
 
-___
+---
 
 ### spacing
 
-• `Optional` **spacing**: *undefined* \| *default* \| *none* \| *small* \| *medium* \| *large* \| *extraLarge* \| *padding*
+• `Optional` **spacing**: _undefined_ \| _default_ \| _none_ \| _small_ \| _medium_ \| _large_ \| _extraLarge_ \| _padding_
 
 Inherited from: [ICardElement](schema.icardelement.md).[spacing](schema.icardelement.md#spacing)
 
 Defined in: [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L37)
 
-___
+---
 
 ### speak
 
-• `Optional` **speak**: *undefined* \| *string*
+• `Optional` **speak**: _undefined_ \| _string_
 
 Inherited from: [ICardElement](schema.icardelement.md).[speak](schema.icardelement.md#speak)
 
 Defined in: [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L35)
 
-___
+---
 
 ### type
 
-• **type**: *ImageSet*
+• **type**: _ImageSet_
 
 Defined in: [schema.ts:102](https://github.com/microsoft/AdaptiveCards/blob/0938a1f10/source/nodejs/adaptivecards/src/schema.ts#L102)
