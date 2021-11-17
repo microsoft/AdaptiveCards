@@ -44,6 +44,7 @@ public:
 signals:
     void reloadCardOnThemeChange();
     void sendCardResponseToQml(const QString& output);
+    void enableAdaptiveCardSubmitButton();
 
 private:
     SampleCardList *mList;

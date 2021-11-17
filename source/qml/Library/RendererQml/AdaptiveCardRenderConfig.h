@@ -144,6 +144,7 @@ namespace RendererQml
     struct ActionButtonConfig
     {
         std::string buttonColorNormal{ "#F2FFFFFF" };
+        std::string buttonColorDisabled{ "33FFFFFF" };
         std::string buttonColorHovered{ "#CCFFFFFF" };
         std::string buttonColorPressed{ "#B3FFFFFF" };
         std::string borderColorNormal{ "#F2FFFFFF" };
@@ -153,6 +154,7 @@ namespace RendererQml
         std::string textColorNormal{ "#F2000000" };
         std::string textColorHovered{ "#F2000000" };
         std::string textColorPressed{ "#F2000000" };
+        std::string textColorDisabled{ "#66FFFFFF" };
         std::string fontWeight{ "Font.DemiBold" };
         int buttonRadius = 16;
         int horizotalPadding = 10;

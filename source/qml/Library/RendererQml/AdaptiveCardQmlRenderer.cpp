@@ -3012,6 +3012,8 @@ namespace RendererQml
             buttonElement->Property("height", Formatter() << buttonConfig.buttonHeight);
             buttonElement->Property("Keys.onPressed", "{if(event.key === Qt.Key_Return){down=true;event.accepted=true;}}");
             buttonElement->Property("Keys.onReleased", Formatter() << "{if(event.key === Qt.Key_Return){down=false;" << buttonId << ".onReleased();event.accepted=true;}}");
+            buttonElement->Property("property bool isButtonDisabled", "false");
+            buttonElement->Property("checkable", "!isButtonDisabled");          
 
             if (isShowCardButton)
             {
@@ -3094,11 +3096,27 @@ namespace RendererQml
 
             bgRectangle->Property("border.width", Formatter() << buttonId << ".activeFocus ? 2 : 1");
 
-            if (isShowCardButton)
+            auto connectionElement = std::make_shared<QmlTag>("Connections");
+            connectionElement->Property("id", Formatter() << buttonElement->GetId() << "_connection");
+            connectionElement->Property("target", "_aModel");
+            connectionElement->AddFunctions(Formatter() << "function onEnableAdaptiveCardSubmitButton()"
+                << "\n{"
+                << "\n if (" << buttonElement->GetId() << ".isButtonDisabled) {"
+                << "\n" << buttonElement->GetId() << ".isButtonDisabled = false;"
+                << "\n}"
+                << "\n}");
+
+            if(isShowCardButton)
             {
                 bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
                 bgRectangle->Property("color", Formatter() << "(" << buttonId << ".showCard || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal));
                 contentText->Property("color", Formatter() << "( " << buttonId << ".showCard || " << buttonId << ".hovered || " << buttonId << ".down) ? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal));
+            }
+            else if (action->GetElementTypeString() == "Action.Submit")
+            {
+                bgRectangle->Property("border.color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.buttonColorDisabled) << " : (" << buttonId << ".activeFocus && " << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal) << ")");
+                bgRectangle->Property("color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.buttonColorDisabled) << ": (" << buttonId << ".down ? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal) << ")");
+                contentText->Property("color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.textColorDisabled) << ": (" << "( " << buttonId << ".hovered || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal) << ")");
             }
             else
             {
@@ -3155,6 +3173,7 @@ namespace RendererQml
             else if (action->GetElementTypeString() == "Action.Submit")
             {
                 context->addToSubmitActionButtonList(buttonElement, std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(action));
+                buttonElement->AddChild(connectionElement);
             }
             else
             {
@@ -3279,6 +3298,8 @@ namespace RendererQml
 
         function << "var paramJson = {};\n";
 
+        function << "if (!isButtonDisabled) \n{\n";
+
         if (!submitDataJson.empty() && submitDataJson != "null")
         {
             if (submitDataJson.front() == '{' && submitDataJson.back() == '}')
@@ -3301,6 +3322,8 @@ namespace RendererQml
 
         function << "var paramslist = JSON.stringify(paramJson);\n";
         function << context->getCardRootId() << ".buttonClicked(\"" << action->GetTitle() << "\", \"" << action->GetElementTypeString() << "\", paramslist);\nconsole.log(paramslist);\n";
+        function << "isButtonDisabled = true;";
+        function << "}";
 
         return function.str();
     }
