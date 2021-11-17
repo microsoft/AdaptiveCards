@@ -115,7 +115,7 @@ export class Versions {
     static readonly v1_4 = new Version(1, 4);
     static readonly v1_5 = new Version(1, 5);
     static readonly v1_6 = new Version(1, 6);
-    static readonly latest = Versions.v1_6;
+    static readonly latest = Versions.v1_5;
     // version over latest is considered "vNext feature"
     // if latest or maxSupportedVersion is changed,
     // don't forget to update styles .ac-schema-version-1-?::after to add/remove Preview tag from adaptivecards-site\themes\adaptivecards\source\css\style.css
@@ -126,7 +126,7 @@ const LogEventIfVersionIsPreview = (sender: SerializableObject, name: string, va
     if (version.isPreviewFeature()) {
         context.logParseEvent(
             sender,
-            Enums.ValidationEvent.PreviewFeatureUsed,
+            Enums.ValidationEvent.PreviewFeatureInUse,
             Strings.errors.propertyIsPreviewFeature(
                 value,
                 name,
