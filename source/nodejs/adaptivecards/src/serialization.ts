@@ -83,11 +83,6 @@ export class Version {
         return 0;
     }
 
-    isPreviewFeature(): boolean
-    {
-        return isVersionLessOrEqual(Versions.latest, this);
-    }
-
     get label(): string {
         return this._label ? this._label : this.toString();
     }
@@ -118,6 +113,10 @@ export class Versions {
     // don't forget to update .ac-schema-version-1-?::after too in adaptivecards-site\themes\adaptivecards\source\css\style.css
     static readonly v1_6 = new Version(1, 6, "1.6 Preview");
     static readonly latest = Versions.v1_5;
+
+    // Versions in declaredVersions are sorted.
+    static readonly declaredVersions: Version[] = [Versions.v1_0, Versions.v1_1, Versions.v1_2, Versions.v1_3,
+        Versions.v1_4, Versions.v1_5, Versions.v1_6];
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -847,7 +846,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
-    static defaultMaxVersion: Version = Versions.latest;
+    static defaultMaxVersion: Version = Versions.declaredVersions[Versions.declaredVersions.length-1];
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
