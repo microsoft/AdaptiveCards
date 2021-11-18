@@ -32,7 +32,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         {
             return m_adaptiveInputElement;
         };
-        virtual winrt::hstring SerializedUserInput();
+        // TODO: do we need this at all?
+      /*  virtual winrt::hstring SerializedUserInput();*/
         // TODO: Convert to property
         /*property<winrt::Windows::UI::Xaml::UIElement> uiErrorMessage;*/
         winrt::Windows::UI::Xaml::UIElement ErrorMessage() { return m_validationError; };

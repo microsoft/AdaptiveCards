@@ -4,6 +4,7 @@
 #include "Util.h"
 #include "AdaptiveColorConfig.h"
 #include "AdaptiveHighlightColorConfig.h"
+#include "AdaptiveColorConfig.g.cpp"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

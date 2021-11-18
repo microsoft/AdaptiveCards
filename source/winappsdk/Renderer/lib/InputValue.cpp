@@ -302,7 +302,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
           return m_textBoxElement->get_Text(serializedUserInput);
       }*/
 
-    /*HRESULT PasswordInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput]
+  /*  HRESULT PasswordInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput]
                                                        _In_ IPasswordBox* uiPasswordElement,
                                                        _In_ IBorder* validationBorder)
     {

@@ -66,7 +66,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    struct ElementTagContent : public ElementTagContentT<ElementTagContent>
+    struct DECLSPEC_UUID("0331D653-957C-4385-A327-D326750C10B6") ElementTagContent : public ElementTagContentT<ElementTagContent>
     {
         ElementTagContent() = default;
         ElementTagContent(rtom::IAdaptiveCardElement const& cardElement,

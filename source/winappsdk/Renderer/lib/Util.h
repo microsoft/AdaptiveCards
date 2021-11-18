@@ -554,8 +554,13 @@ namespace AdaptiveCards::Rendering::WinUI3
 {
     struct XamlBuilder;
 
+
+   /* void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
+                                         XamlBuilder* xamlBuilder);*/
+    // TODO: is this the correct way to do it?
     void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
-                                         XamlBuilder* xamlBuilder);
+                                         winrt::com_ptr<XamlBuilder> xamlBuilder);
 
     void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration);
+   /* void RegisterDefaultActionRenderers(rtrender::AdaptiveActionRendererRegistration const& registration);*/
 }

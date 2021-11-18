@@ -8,6 +8,12 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
+    TileControl::TileControl()
+    {
+        m_containerElement = rtxaml::Controls::Canvas{};
+        m_brushXaml = rtxaml::Media::ImageBrush{};
+    }
+
     void TileControl::ImageOpened(const IInspectable& sender, const rtxaml::RoutedEventArgs& args)
     {
         auto uiElement = m_resolvedImage;
@@ -43,22 +49,22 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    void TileControl::OnApplyTemplate()
-    {
-        this->Content(m_containerElement);
-    }
+    void TileControl::OnApplyTemplate() { this->Content(m_containerElement); }
 
-    winrt::Windows::Foundation::Size TileControl::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize){
+    winrt::Windows::Foundation::Size TileControl::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
+    {
         /*ComPtr<IFrameworkElementOverrides> base;
         RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
                                                              reinterpret_cast<void**>(base.GetAddressOf())));
 
         return base->MeasureOverride(availableSize, pReturnValue);*/
+        // TODO: I don't think I need to do it at all, do I?
         return TileControl_base::MeasureOverride(availableSize);
     }
 
     winrt::Windows::Foundation::Size TileControl::ArrangeOverride(winrt::Windows::Foundation::Size const& arrangeBounds)
     {
+        // TODO: am I doing this right?
         m_containerSize = TileControl_base::MeasureOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
@@ -66,16 +72,18 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         rtxaml::Media::RectangleGeometry clip;
         clip.Rect(rect);
-       /* m_containerElement.Clip();
-        m_containerElement.as<rtxaml::UIElement>().Clip()
-        ComPtr<IUIElement> containerAsUIElement;
-        RETURN_IF_FAILED(m_containerElement.As(&containerAsUIElement));
-        RETURN_IF_FAILED(containerAsUIElement->put_Clip(clip.Get()));*/
+        /* m_containerElement.Clip();
+         m_containerElement.as<rtxaml::UIElement>().Clip()
+         ComPtr<IUIElement> containerAsUIElement;
+         RETURN_IF_FAILED(m_containerElement.As(&containerAsUIElement));
+         RETURN_IF_FAILED(containerAsUIElement->put_Clip(clip.Get()));*/
         if (const auto containerAsUIElement = m_containerElement.try_as<rtxaml::UIElement>())
         {
             containerAsUIElement.Clip(clip);
         }
         RefreshContainerTile();
+        // TODO: is this correct?
+        return m_containerSize;
     }
 
     void TileControl::RefreshContainerTile()
@@ -104,7 +112,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
                 switch (vAlignment)
                 {
-                case rtom::VAlignment::Bottom :
+                case rtom::VAlignment::Bottom:
                     offsetVerticalAlignment = m_containerSize.Height - m_imageSize.Height;
                     break;
                 case rtom::VAlignment::Center:
@@ -152,7 +160,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         int count = static_cast<int>(m_xamlChildren.size());
 
         // Get containerElement.Children
-        
+
         winrt::Windows::Foundation::Collections::IVector<rtxaml::UIElement> children{};
         // Not sure what is the need to convert to xaml::controls::Panel?
         if (const auto containerElementAsPanel = m_containerElement.try_as<rtxaml::Controls::Panel>())
@@ -191,7 +199,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // Convert ImageBrush to Brush
         /*ComPtr<IBrush> brushXamlAsBrush;
         THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsBrush));*/
-        
+
         if (const auto brushXamlAsBrush = m_brushXaml.try_as<rtxaml::Media::Brush>())
         {
             // Change positions+brush for all actives elements
@@ -204,9 +212,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
                     // For cover, the bitmapimage must be scaled to fill the container and then clipped to only the
                     // necessary section Set rectangle.Fill
-                   /* ComPtr<IShape> rectangleAsShape;
-                    THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
-                    THROW_IF_FAILED(rectangleAsShape->put_Fill(brushXamlAsBrush.Get()));*/
+                    /* ComPtr<IShape> rectangleAsShape;
+                     THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
+                     THROW_IF_FAILED(rectangleAsShape->put_Fill(brushXamlAsBrush.Get()));*/
                     auto rectangleAsShape = rectangle.as<rtxaml::Shapes::Shape>();
 
                     // Convert rectangle to UIElement
@@ -222,9 +230,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     rtxaml::Controls::ICanvasStatics canvasStatics;
 
                     // Set Left and Top for rectangle
-                   /* ComPtr<ICanvasStatics> canvasStatics;
-                    ABI::Windows::Foundation::GetActivationFactory(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);*/
+                    /* ComPtr<ICanvasStatics> canvasStatics;
+                     ABI::Windows::Foundation::GetActivationFactory(
+                         HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);*/
                     canvasStatics.SetLeft(rectangleAsUIElement, originPositionX);
                     canvasStatics.SetTop(rectangleAsUIElement, originPositionY);
 
@@ -260,7 +268,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    void TileControl::ExtractBackgroundImageData(rtom::BackgroundImageFillMode& fillMode, rtom::HAlignment& hAlignment, rtom::VAlignment& vAlignment)
+    void TileControl::ExtractBackgroundImageData(rtom::BackgroundImageFillMode& fillMode,
+                                                 rtom::HAlignment& hAlignment,
+                                                 rtom::VAlignment& vAlignment)
     {
         fillMode = m_adaptiveBackgroundImage.FillMode();
         hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();

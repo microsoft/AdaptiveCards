@@ -242,11 +242,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
     template<typename T> void SetToggleValue(T const& item, bool isChecked)
     {
-        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
+        // TODO: compiling fails at AdaptiveToggleInputRenderer.cpp(66)
+        //static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
         auto toggleButton =
-            item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all
+            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
                                                                          // toggleButton have isChecked() exposed, right?
-        toggleButton.IsChecked(isChecked());
+        toggleButton.IsChecked(isChecked);
 
         /*ComPtr<IPropertyValueStatics> propertyValueStatics;
         ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
@@ -327,9 +328,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         if (wrap)
         {
-            content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords) :
+            content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords);
         }
-        item.Content(content);
+
+        if (const auto contentControl = item.try_as<rtxaml::Controls::ContentControl>())
+        {
+            contentControl.Content(content);
+        }
     }
 
     // template<typename T> void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
@@ -411,12 +416,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         // TODO: not sure how do it properly here
         // TODO: need to use peek innards? how to do it properly?
-        if (const auto containerAsPanel =
-                container.try_as<rtrender::implementation::WholeItemsPanel>())
-        {
-            auto panel = *containerAsPanel;
-            panel.VerticalAlignment(verticalContentAlignment);
-        }
+        //if (const auto containerAsPanel =
+        //        container.try_as<rtrender::WholeItemsPanel>())
+        //{
+        //   /* auto panel = *containerAsPanel;*/
+        //    containerAsPanel.VerticalAlignment(verticalContentAlignment);
+        //}
     }
 
     HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
@@ -429,25 +434,25 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
-    HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
+    /*HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                     ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                    ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);
+                                    ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);*/
 
     winrt::Windows::UI::Xaml::UIElement RenderInputErrorMessage(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
                                                                 winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext);
 
-    HRESULT CreateValidationBorder(ABI::Windows::UI::Xaml::IUIElement* childElement,
+    /*HRESULT CreateValidationBorder(ABI::Windows::UI::Xaml::IUIElement* childElement,
                                    ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                   ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
+                                   ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);*/
 
     winrt::Windows::UI::Xaml::Controls::Border
     CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
                            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext);
 
-    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
+    /*HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                       _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
+                                       _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);*/
 
     winrt::Windows::UI::Xaml::UIElement
     HandleLabelAndErrorMessage(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
@@ -455,12 +460,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
                                winrt::Windows::UI::Xaml::UIElement const& inputLayout);
 
-    HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
+   /* HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
                                            ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
                                            boolean hasTypeSpecificValidation,
                                            ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
-                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
+                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);*/
 
     std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Windows::UI::Xaml::Controls::Border>
     HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
@@ -470,7 +475,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     // winrt::Windows::UI::Xaml::UIElement& inputLayout,
     // winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
 
-    template<typename TXamlControl>
+   /* template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
@@ -487,9 +492,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
 
         return S_OK;
-    }
+    }*/
 
-    HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+    //HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
     void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
@@ -502,12 +507,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                rtrender::AdaptiveRenderContext const& renderContext,
                                rtrender::AdaptiveRenderArgs const& renderArgs);
 
-    HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
+  /*  HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
                                _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
                                _In_ ABI::Windows::UI::Xaml::IUIElement* separator,
                                _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition,
-                               std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
+                               std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);*/
 
     void AddRenderedControl(rtxaml::UIElement const& newControl,
                             rtom::IAdaptiveCardElement const& element,
@@ -516,11 +521,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                             rtxaml::Controls::ColumnDefinition const& columnDefinition,
                             std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
 
-    HRESULT RenderFallback(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* currentElement,
+    /*HRESULT RenderFallback(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* currentElement,
                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
-                           _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);
+                           _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);*/
 
     std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
                                                                              rtrender::AdaptiveRenderContext const& renderContext,
@@ -535,7 +540,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
     bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement);
 
-    inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+    /*inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                       const std::string& warning)
     {
         HString warningMsg;
@@ -544,14 +549,14 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::PerformingFallback,
                                                    warningMsg.Get()));
         return S_OK;
-    }
+    }*/
 
     inline void WarnFallbackString(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
     {
         renderContext.AddWarning(rtom::WarningStatusCode::PerformingFallback, warning);
     }
 
-    inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+    /*inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                  _In_ HSTRING parentElementType,
                                                  _In_ HSTRING fallbackElementType)
     try
@@ -564,9 +569,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         return WarnFallbackString(renderContext, warning);
     }
-    CATCH_RETURN();
+    CATCH_RETURN();*/
 
-    inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+   /* inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                        _In_ HSTRING elementType)
     try
     {
@@ -576,7 +581,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         return WarnFallbackString(renderContext, warning);
     }
-    CATCH_RETURN();
+    CATCH_RETURN();*/
 
     inline void WarnForFallbackContentElement(rtrender::AdaptiveRenderContext const& renderContext,
                                               winrt::hstring const& parentElementType,
@@ -606,10 +611,10 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                               _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
                               _Outptr_ ABI::Windows::UI::Xaml::IUIElement** addedSeparator);
 
-    HRESULT SetAutoImageSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
+    /*HRESULT SetAutoImageSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
                              _In_ IInspectable* parentElement,
                              _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
-                             bool setVisible);
+                             bool setVisible);*/
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
                           winrt::Windows::Foundation::IInspectable const& parentElement,

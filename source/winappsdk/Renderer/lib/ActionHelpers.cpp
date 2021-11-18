@@ -677,7 +677,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         // Make the action the same size as the text box
         textBoxContainerAsFrameworkElement.Loaded(
             [actionUIElement, textBoxContainerAsFrameworkElement](winrt::Windows::Foundation::IInspectable const& /*sender*/,
-                                                                  rtxaml::RoutedEventArgs* const& /*args*/) -> void
+                                                                  rtxaml::RoutedEventArgs const& /*args*/) -> void
             {
                 auto actionFrameworkElement = actionUIElement.as<rtxaml::FrameworkElement>();
                 ActionHelpers::SetMatchingHeight(actionFrameworkElement, textBoxContainerAsFrameworkElement);
@@ -1050,7 +1050,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         /* auto strongAction = *winrt::make_self<rtom::IAdaptiveActionElement>(actionInvoker);*/
         rtom::IAdaptiveActionElement strongAction{action};
 
-        auto eventToken = button.Click([strongAction, actionInvoker](IInspectable const&, RoutedEventArgs const&)
+        auto eventToken = button.Click([strongAction, actionInvoker](winrt::Windows::Foundation::IInspectable const&, rtxaml::RoutedEventArgs const&)
                                        { actionInvoker.SendActionEvent(strongAction); });
     }
 
@@ -1236,7 +1236,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         rtrender::AdaptiveActionInvoker actionInvoker{};
         /*auto actionParam = *winrt::make_self<rtom::IAdaptiveActionElement>(action);*/
 
-        auto eventToken = flyoutItem.Click([actionParam, actionInvoker](IInspectable const&, rtxaml::RoutedEventArgs const)
+        auto eventToken = flyoutItem.Click([actionParam, actionInvoker](winrt::Windows::Foundation::IInspectable const&, rtxaml::RoutedEventArgs const)
                                            { return actionInvoker.SendActionEvent(actionParam); });
 
         // Add the new menu item to the vector

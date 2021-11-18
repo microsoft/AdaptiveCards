@@ -644,7 +644,7 @@ namespace AdaptiveCards
                 TileControl();
 
                 AdaptiveCards.ObjectModel.WinUI3.AdaptiveBackgroundImage BackgroundImage;
-                Windows.UI.Xaml.FrameworkElement RootElement;
+                // Windows.UI.Xaml.FrameworkElement RootElement;
                 Windows.UI.Xaml.UIElement ResolvedImage { get; };
                 Windows.Foundation.Size ImageSize;
 
@@ -668,8 +668,8 @@ namespace AdaptiveCards
                 Windows.UI.Xaml.Controls.Panel ParentPanel { get; };
 
 				ElementTagContent();
-                Boolean ExpectedVisibility();
-                Boolean IsStretchable();
+                Boolean ExpectedVisibility;
+                Boolean IsStretchable;
 			}
         }
     }

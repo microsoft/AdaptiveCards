@@ -27,7 +27,20 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    WinUI3::AdaptiveHostConfigParseResult FromJsonString(std::string const& adaptiveJson)
+
+    WinUI3::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJsonString(hstring const& hostConfigJson) {
+        std::string adaptiveJsonString = HStringToUTF8(hostConfigJson);
+        return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
+    }
+
+    WinUI3::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::Windows::Data::Json::JsonObject const& hostConfigJson)
+    {
+        // TODO: come back to it. There should not be a need for conversion
+        std::string adaptiveJsonString = JsonObjectToString(hostConfigJson.as<winrt::Windows::Data::Json::JsonObject>());
+        return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
+    }
+
+    WinUI3::AdaptiveHostConfigParseResult AdaptiveHostConfig::_FromJsonString(std::string const& adaptiveJson)
     {
         auto sharedHostConfig = ::AdaptiveCards::HostConfig::DeserializeFromString(adaptiveJson);
         auto parseResult = winrt::make<implementation::AdaptiveHostConfig>(sharedHostConfig);

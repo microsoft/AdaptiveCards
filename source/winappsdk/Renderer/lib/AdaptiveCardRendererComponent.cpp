@@ -48,7 +48,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
         m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::WinUI3::XamlBuilder>())
     {
-        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder.get());
+		// TODO: is this legal to detach implementaiton from comptr?
+        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
         ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();

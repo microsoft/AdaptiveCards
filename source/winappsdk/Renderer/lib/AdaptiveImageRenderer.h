@@ -12,6 +12,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     public:
         AdaptiveImageRenderer();
         AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> xamlBuilder);
+        //AdaptiveImageRenderer(::AdaptiveCards::Rendering::WinUI3::XamlBuilder* xamlBuilder);
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
                                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
@@ -19,6 +20,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     private:
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
+      /*  ::AdaptiveCards::Rendering::WinUI3::XamlBuilder* m_xamlBuilder;*/
     };
 }
 

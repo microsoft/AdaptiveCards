@@ -18,6 +18,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         WinUI3::AdaptiveHostConfig m_hostConfig;
         WinUI3::AdaptiveFeatureRegistration m_featureRegistration;
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
+        /*::AdaptiveCards::Rendering::WinUI3::XamlBuilder* m_xamlBuilder;*/
         bool m_explicitDimensions = false;
         uint32_t m_desiredWidth = 0;
         uint32_t m_desiredHeight = 0;
@@ -82,6 +83,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         rtxaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
+        /*::AdaptiveCards::Rendering::WinUI3::XamlBuilder* GetXamlBuilder() { return m_xamlBuilder; }*/
         rtxaml::ResourceDictionary GetActionSentimentResourceDictionary()
         {
             return m_actionSentimentResourceDictionary;
@@ -92,7 +94,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     private:
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
-        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName, winrt::Windows::Foundation::IInspectable const& value);
+        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
+                                                            winrt::Windows::Foundation::IInspectable const& value);
         void SetMergedDictionary();
 
         rtxaml::ResourceDictionary m_defaultResourceDictionary;

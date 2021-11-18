@@ -9,7 +9,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     /* struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public
      * rtxaml::Controls::PanelT<WholeItemsPanel, ITypePeek>*/
-    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel>
+    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
     /*  : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
                                             ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                             Microsoft::WRL::CloakedIid<ITypePeek>,
@@ -48,7 +48,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment);
 
         // ITypePeek method
-       /* void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }*/
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         static uint32_t s_bleedMargin;

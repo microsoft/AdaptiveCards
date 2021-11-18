@@ -38,11 +38,12 @@ typedef ::AdaptiveCards::Rendering::WinUI3::XamlBuilder XamlBuilder;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    AdaptiveImageRenderer::AdaptiveImageRenderer() : m_xamlBuilder(winrt::make_self<XamlBuilder>()) {}
+    /* AdaptiveImageRenderer::AdaptiveImageRenderer() : m_xamlBuilder(&XamlBuilder()) {}*/
 
     AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder)
     {
     }
+    /*AdaptiveImageRenderer::AdaptiveImageRenderer(XamlBuilder* xamlBuilder) : m_xamlBuilder(xamlBuilder){};*/
 
     rtxaml::UIElement AdaptiveImageRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
                                                     rtrender::AdaptiveRenderContext const& renderContext,
@@ -179,8 +180,9 @@ namespace AdaptiveCards::Rendering::WinUI3
                                  &mustHideElement,
                                  imageStretch);*/
 
-            auto mustHideElement = SetImageOnUIElement(
-                imageUrl, ellipse, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
+            // TODO: I don't see this mustHideElement being used for anything. Was it intended to be used when we can't set image so we collapse the visual?
+            /* auto mustHideElement = */
+            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
 
             /* ComPtr<IShape> backgroundEllipseAsShape;
              RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));*/
@@ -287,8 +289,10 @@ namespace AdaptiveCards::Rendering::WinUI3
                                 isVisible,
                                 &mustHideElement);*/
             auto parentElement = renderArgs.ParentElement();
-            bool mustHideElement =
-                SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, frameworkElement, isVisible);
+            // TODO: I don't see this mustHideElement being used anywhere. Was it inteended to be used when image was
+            // not set? so we don't waste lasyout space?
+            /*bool mustHideElement =*/
+            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, frameworkElement, isVisible);
 
             // SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto),
             // parentElement, frameworkElement, isVisible, &mustHideElement);
@@ -443,7 +447,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
 
     template<typename T>
-    bool XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+    void XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
                                           T const& uiElement,
                                           rtrender::AdaptiveCardResourceResolvers const& resolvers,
                                           bool isAutoSize,
@@ -593,7 +597,6 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                 // return;
             }
-
         }
 
         /* INT32 isDataUriImage{};
@@ -964,11 +967,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                                 rtxaml::FrameworkElement k{nullptr};
                                 rtxaml::Media::Imaging::BitmapSource as{nullptr};
 
-
-                                XamlHelpers::SetAutoImageSize(ellipseAsShape,
-                                                              lambdaParentElement,
-                                                              lamdaImageSourceAsBitmap,
-                                                              isVisible);
+                                XamlHelpers::SetAutoImageSize(ellipseAsShape, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
                             }
                         }
                     });
@@ -1001,6 +1000,7 @@ namespace AdaptiveCards::Rendering::WinUI3
              ComPtr<IUIElement> imageAsUIElement;
              THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));*/
             auto imageSource = xamlImage.Source();
+            auto imageSourceAsBitmapSource = imageSource.as<rtxaml::Media::Imaging::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
@@ -1025,7 +1025,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                  THROW_IF_FAILED(xamlImage->add_ImageOpened(
                      Callback<IRoutedEventHandler>(*/
                 xamlImage.ImageOpened(
-                    [weakImage, weakParent, imageSource, isVisible](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                    [weakImage, weakParent, imageSourceAsBitmapSource, isVisible](winrt::Windows::Foundation::IInspectable const& /*sender*/,
                                                                     rtxaml::RoutedEventArgs const&
                                                                     /*args*/) -> void
                     {
@@ -1040,16 +1040,13 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                         if (lambdaImageAsFrameworkElement && lambdaParentElement)
                         {
-                            XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
-                                                                           lambdaParentElement,
-                                                                           imageSource,
-                                                                           isVisible);
+                            XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement, lambdaParentElement, imageSourceAsBitmapSource, isVisible);
                         }
                     });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(imageAsFrameworkElement, parentElement, imageSource, isVisible);
+                XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
             }
         }
     }

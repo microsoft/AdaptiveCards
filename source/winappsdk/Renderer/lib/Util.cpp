@@ -8,6 +8,26 @@
 #include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
+#include "AdaptiveContainerRenderer.h"
+#include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageSetRenderer.h"
+#include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveDateInputRenderer.h"
+#include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveTextInputRenderer.h"
+#include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleInputRenderer.h"
+#include "AdaptiveMediaRenderer.h"
+#include "AdaptiveRichTextBlockRenderer.h"
+#include "AdaptiveTableRenderer.h"
+#include "AdaptiveTextBlockRenderer.h"
+
+#include "AdaptiveOpenUrlActionRenderer.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
+#include "AdaptiveExecuteActionRenderer.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -534,8 +554,7 @@ try
 }
 CATCH_RETURN();
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style,
-                                rtrender::AdaptiveHostConfig const& hostConfig)
+winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style, rtrender::AdaptiveHostConfig const& hostConfig)
 
 {
     // TODO: how do I handle error here?
@@ -546,7 +565,6 @@ winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style,
     // TODO: what if this styleDef nullptr? check for that, see above the method from WRL (try/catch)
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BorderColor();
-
 }
 
 // HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -1272,12 +1290,13 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAd
 
 bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImageElement)
 {
-    // TODO: what is the reason to create impl?
-    auto backgroundImage = winrt::make_self<rtom::AdaptiveBackgroundImage>(backgroundImageElement);
-    if (backgroundImage != NULL)
+    /* auto backgroundImage = winrt::make_self<rtom::AdaptiveBackgroundImage>(backgroundImageElement);*/
+    // TODO: is this correct here? the logic?
+    rtom::AdaptiveBackgroundImage backgroundImage{backgroundImageElement};
+    if (backgroundImage != nullptr)
     {
         // TODO: is this a proper check? instead of HString.isValid()?
-        return !backgroundImage->Url().empty();
+        return !backgroundImage.Url().empty();
     }
     return false;
 }
@@ -1493,38 +1512,41 @@ rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& tex
     return nullptr;
 }
 
-void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration, XamlBuilder* xamlBuilder)
+// TODO: Do I need const& for winrt::com_ptr?
+// TODO: Can I just pass com_ptr of implementation? Can I just pass projection here?
+namespace AdaptiveCards::Rendering::WinUI3
 {
-    registration->Set(L"ActionSet", winrt::make<rtrender::implementation::AdaptiveActionSetRenderer>());
-    registration->Set(L"Column", winrt::make<rtrender::implementation::AdaptiveColumnRenderer>());
-    registration->Set(L"ColumnSet", winrt::make<rtrender::implementation::AdaptiveColumnSetRenderer>());
-    registration->Set(L"Container", winrt::make<rtrender::implementation::AdaptiveContainerRenderer>());
-    registration->Set(L"FactSet", winrt::make<rtrender::implementation::AdaptiveFactSetRenderer>());
-    registration->Set(L"Image", winrt::make<rtrender::implementation::AdaptiveImageRenderer>(xamlBuilder));
-    registration->Set(L"ImageSet", winrt::make<rtrender::implementation::AdaptiveImageSetRenderer>());
-    registration->Set(L"Input.ChoiceSet", winrt::make<rtrender::implementation::AdaptiveChoiceSetInputRenderer>());
-    registration->Set(L"Input.Date", winrt::make<rtrender::implementation::AdaptiveDateInputRenderer>());
-    registration->Set(L"Input.Number", winrt::make<rtrender::implementation::AdaptiveNumberInputRenderer>());
-    registration->Set(L"Input.Text", winrt::make<rtrender::implementation::AdaptiveTextInputRenderer>());
-    registration->Set(L"Input.Time", winrt::make<rtrender::implementation::AdaptiveTimeInputRenderer>());
-    registration->Set(L"Input.Toggle", winrt::make<rtrender::implementation::AdaptiveToggleInputRenderer>());
-    registration->Set(L"Media", winrt::make<rtrender::implementation::AdaptiveMediaRenderer>());
-    registration->Set(L"RichTextBlock", winrt::make<rtrender::implementation::AdaptiveRichTextBlockRenderer>());
-    registration->Set(L"Table", winrt::make<rtrender::implementation::AdaptiveTableRenderer>());
-    registration->Set(L"TextBlock", winrt::make<rtrender::implementation::AdaptiveTextBlockRenderer>());
-}
+    void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
+                                         winrt::com_ptr<XamlBuilder> xamlBuilder)
+    {
+        // TODO: I don't need implementation of registration here, right? Or for safety reasons I do need it? (if
+        // somebody implements interface and passes it in)
+        registration->Set(L"ActionSet", winrt::make<rtrender::implementation::AdaptiveActionSetRenderer>());
+        registration->Set(L"Column", winrt::make<rtrender::implementation::AdaptiveColumnRenderer>());
+        registration->Set(L"ColumnSet", winrt::make<rtrender::implementation::AdaptiveColumnSetRenderer>());
+        registration->Set(L"Container", winrt::make<rtrender::implementation::AdaptiveContainerRenderer>());
+        registration->Set(L"FactSet", winrt::make<rtrender::implementation::AdaptiveFactSetRenderer>());
+        registration->Set(L"Image", winrt::make<rtrender::implementation::AdaptiveImageRenderer>(xamlBuilder));
+        registration->Set(L"ImageSet", winrt::make<rtrender::implementation::AdaptiveImageSetRenderer>());
+        registration->Set(L"Input.ChoiceSet", winrt::make<rtrender::implementation::AdaptiveChoiceSetInputRenderer>());
+        registration->Set(L"Input.Date", winrt::make<rtrender::implementation::AdaptiveDateInputRenderer>());
+        registration->Set(L"Input.Number", winrt::make<rtrender::implementation::AdaptiveNumberInputRenderer>());
+        registration->Set(L"Input.Text", winrt::make<rtrender::implementation::AdaptiveTextInputRenderer>());
+        registration->Set(L"Input.Time", winrt::make<rtrender::implementation::AdaptiveTimeInputRenderer>());
+        registration->Set(L"Input.Toggle", winrt::make<rtrender::implementation::AdaptiveToggleInputRenderer>());
+        registration->Set(L"Media", winrt::make<rtrender::implementation::AdaptiveMediaRenderer>());
+        registration->Set(L"RichTextBlock", winrt::make<rtrender::implementation::AdaptiveRichTextBlockRenderer>());
+        registration->Set(L"Table", winrt::make<rtrender::implementation::AdaptiveTableRenderer>());
+        registration->Set(L"TextBlock", winrt::make<rtrender::implementation::AdaptiveTextBlockRenderer>());
+    }
 
-void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration)
-{
-    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveOpenUrlActionRenderer>().Get()));
-    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveShowCardActionRenderer>().Get()));
-    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveSubmitActionRenderer>().Get()));
-    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleVisibilityActionRenderer>().Get()));
-    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
-                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveExecuteActionRenderer>().Get()));
-    return S_OK;
+    void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration)
+    {
+        registration->Set(L"Action.OpenUrl", winrt::make<rtrender::implementation::AdaptiveOpenUrlActionRenderer>());
+        registration->Set(L"Action.ShowCard", winrt::make<rtrender::implementation::AdaptiveShowCardActionRenderer>());
+        registration->Set(L"Action.Submit", winrt::make<rtrender::implementation::AdaptiveSubmitActionRenderer>());
+        registration->Set(L"Action.ToggleVisibility",
+                          winrt::make<rtrender::implementation::AdaptiveToggleVisibilityActionRenderer>());
+        registration->Set(L"Action.Execute", winrt::make<rtrender::implementation::AdaptiveExecuteActionRenderer>());
+    }
 }

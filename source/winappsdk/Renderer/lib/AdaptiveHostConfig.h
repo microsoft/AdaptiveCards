@@ -39,8 +39,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
+        // TODO: weird stuff here
         static WinUI3::AdaptiveHostConfigParseResult FromJsonString(hstring const& hostConfigJson);
-        static WinUI3::AdaptiveHostConfigParseResult FromJson(winrt::Windows::Data::Json::IJsonObject const& hostConfigJson);
+        static WinUI3::AdaptiveHostConfigParseResult FromJson(winrt::Windows::Data::Json::JsonObject const& hostConfigJson);
+
+    private:
+        static WinUI3::AdaptiveHostConfigParseResult _FromJsonString(const std::string& jsonString);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation

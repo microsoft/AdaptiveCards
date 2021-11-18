@@ -12,14 +12,14 @@
 namespace AdaptiveCards::Rendering::WinUI3
 {
     /*struct XamlBuilder : winrt::implements<XamlBuilder, ::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>*/
-    struct XamlBuilder : IImageLoadTrackerListener
+    struct XamlBuilder : winrt::implements<XamlBuilder, IImageLoadTrackerListener>
     {
     public:
         XamlBuilder();
 
         // IImageLoadTrackerListener
-        void AllImagesLoaded();
-        void ImagesLoadingHadError();
+        void AllImagesLoaded() override;
+        void ImagesLoadingHadError() override;
 
         static HRESULT BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                                      _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
@@ -69,11 +69,12 @@ namespace AdaptiveCards::Rendering::WinUI3
         winrt::Windows::Storage::Streams::RandomAccessStream m_randomAccessStreamStatics{};
         /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*,
          * ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
-        std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
+      /*  std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
+        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>> m_getStreamOperations;
         std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
         /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;*/
-        std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t>>> m_writeAsyncOperations;
-
+        /*std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t>>> m_writeAsyncOperations;*/
+        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t>> m_writeAsyncOperations;
         /*  UINT m_fixedWidth = 0;
           UINT m_fixedHeight = 0;*/
         uint32_t m_fixedWidth = 0;
@@ -83,7 +84,8 @@ namespace AdaptiveCards::Rendering::WinUI3
         bool m_enableXamlImageHandling = false;
 
         /*Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;*/
-        winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers> m_resourceResolvers;
+      /*  winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardResourceResolvers> m_resourceResolvers;*/
+        /*winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers m_resourceResolvers;*/
 
         static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
@@ -129,8 +131,9 @@ namespace AdaptiveCards::Rendering::WinUI3
                                  _Out_ bool* mustHideElement,
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
 
+        // TODO: do we want to return bool to indicate success/failure?
         template<typename T>
-        bool SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+        void SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
                                  T const& uiElement,
                                  winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers const& resolvers,
                                  bool isAutoSize,

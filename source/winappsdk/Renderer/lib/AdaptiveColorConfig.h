@@ -8,6 +8,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     struct AdaptiveColorConfig : AdaptiveColorConfigT<AdaptiveColorConfig>
     {
+    public:
         AdaptiveColorConfig(::AdaptiveCards::ColorConfig colorConfig = {});
 
         property<winrt::Windows::UI::Color> Default;

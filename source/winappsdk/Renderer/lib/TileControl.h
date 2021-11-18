@@ -17,8 +17,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         void BackgroundImage(rtom::AdaptiveBackgroundImage const& adaptiveBackgroundImage) { m_adaptiveBackgroundImage = adaptiveBackgroundImage; }
 		rtom::AdaptiveBackgroundImage BackgroundImage() {return m_adaptiveBackgroundImage;}
 
-        void RootElement(rtxaml::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
-		rtxaml::FrameworkElement RootElement() { return m_rootElement;}
+      /*  void RootElement(rtxaml::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
+		rtxaml::FrameworkElement RootElement() { return m_rootElement;}*/
 
         rtxaml::UIElement ResolvedImage() { return m_resolvedImage; }
         // TODO: we don't really need getter; convert to property<...::Size>??
@@ -57,8 +57,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         void ImageOpened(const IInspectable& sender, const rtxaml::RoutedEventArgs& args);
 
         // Fields
-        rtxaml::FrameworkElement m_rootElement;
-        rtxaml::UIElement m_resolvedImage;
+       /* rtxaml::FrameworkElement m_rootElement;*/
+        rtxaml::UIElement m_resolvedImage{nullptr};
         rtxaml::Controls::Canvas m_containerElement;
         rtxaml::Media::ImageBrush m_brushXaml;
 

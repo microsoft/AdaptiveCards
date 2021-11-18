@@ -18,14 +18,14 @@ using namespace Windows::Foundation;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::FrameworkElement RenderCell(rtom::AdaptiveTableCell const& cell,
-                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                                        winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
-                                        boolean showGridLines,
-                                        rtom::ContainerStyle gridStyle,
-                                        uint32_t rowNumber,
-                                        uint32_t columnNumber)
+    rtxaml::FrameworkElement AdaptiveTableRenderer::RenderCell(rtom::AdaptiveTableCell const& cell,
+                                                               rtrender::AdaptiveRenderContext const& renderContext,
+                                                               rtrender::AdaptiveRenderArgs const& renderArgs,
+                                                               winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
+                                                               boolean showGridLines,
+                                                               rtom::ContainerStyle gridStyle,
+                                                               uint32_t rowNumber,
+                                                               uint32_t columnNumber)
     {
         /* ComPtr<IAdaptiveTableCell> tableCell(cell);
          ComPtr<IAdaptiveContainer> tableCellAsContainer;
@@ -47,28 +47,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         if (showGridLines)
         {
             // If we're showing grid lines add padding so the content isn't against the grid lines
-            //RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(true));
+            // RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(true));
             renderArgs.AddContainerPadding(true);
         }
 
         // Render the cell as a container
-      /*  ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
-        RETURN_IF_FAILED(renderContext->get_ElementRenderers(&rendererRegistration));*/
+        /*  ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
+          RETURN_IF_FAILED(renderContext->get_ElementRenderers(&rendererRegistration));*/
         auto rendererRegistration = renderContext.ElementRenderers();
 
-       /* ComPtr<IAdaptiveElementRenderer> containerRenderer;
-        HString containerTypeString;
-        RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
-        RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));*/
-        //winrt::hstring containerTypeString{L"Container"};
+        /* ComPtr<IAdaptiveElementRenderer> containerRenderer;
+         HString containerTypeString;
+         RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
+         RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));*/
+        // winrt::hstring containerTypeString{L"Container"};
         // TODO: should be fine, right?
         auto containerRenderer = rendererRegistration.Get(L"Container");
 
         /*ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
         RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));*/
 
-       /* ComPtr<IUIElement> cellRenderedAsContainer;
-        RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &cellRenderedAsContainer));*/
+        /* ComPtr<IUIElement> cellRenderedAsContainer;
+         RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &cellRenderedAsContainer));*/
         // TODO: no need to cast cell to IAdapativeCardElement, right?
         auto cellRenderedAsContainer = containerRenderer.Render(cell, renderContext, renderArgs);
         // Handle Grid Lines or Cell Spacing
@@ -76,7 +76,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         auto hostConfig = renderContext.HostConfig();
 
-        //ComPtr<IFrameworkElement> cellFrameworkElement;
+        // ComPtr<IFrameworkElement> cellFrameworkElement;
         rtxaml::FrameworkElement cellFrameworkElement{nullptr};
         if (showGridLines)
         {
@@ -112,14 +112,14 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             cellBorder.Child(cellRenderedAsContainer);
             cellFrameworkElement = cellBorder;
             // Clear the container padding flag from the renderArgs
-            //RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(false));
+            // RETURN_IF_FAILED(renderArgs->put_AddContainerPadding(false));
             // TODO: how do we know it wasn't true before? should we save and then reassign?
             renderArgs.AddContainerPadding(false);
         }
         else
         {
             // If we're not showing gridlines, use the rendered cell as the frameworkElement, and add the cell spacing
-           /* RETURN_IF_FAILED(cellRenderedAsContainer.As(&cellFrameworkElement));*/
+            /* RETURN_IF_FAILED(cellRenderedAsContainer.As(&cellFrameworkElement));*/
             cellFrameworkElement = cellRenderedAsContainer.as<rtxaml::FrameworkElement>();
 
             /*ComPtr<IAdaptiveTableConfig> tableConfig;
@@ -127,7 +127,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             auto tableConfig = hostConfig.Table();
 
             uint32_t cellSpacing = tableConfig.CellSpacing();
-            //RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
+            // RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
             double cellSpacingDouble = static_cast<double>(cellSpacing);
 
             // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
@@ -142,34 +142,33 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 marginThickness.Top = 0;
             }
 
-            //RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
+            // RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
             cellFrameworkElement.Margin(marginThickness);
         }
 
         // If the cell didn't have a vertical content alignment when we started, set it back to null
         if (cellVerticalAlignment == nullptr)
         {
-            //RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(nullptr));
+            // RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(nullptr));
             cell.VerticalContentAlignment(nullptr);
-            
         }
 
         /*RETURN_IF_FAILED(cellFrameworkElement.CopyTo(renderedCell));*/
         return cellFrameworkElement;
 
-        //return S_OK;
+        // return S_OK;
     }
 
-    void RenderRow(rtom::AdaptiveTableRow const& row,
-                   winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveTableColumnDefinition> const& columns,
-                   rtrender::AdaptiveRenderContext const& renderContext,
-                   rtrender::AdaptiveRenderArgs const& renderArgs,
-                   winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
-                   boolean firstRowAsHeaders,
-                   boolean showGridLines,
-                   rtom::ContainerStyle gridStyle,
-                   uint32_t rowNumber,
-                   rtxaml::Controls::Grid const& xamlGrid)
+    void AdaptiveTableRenderer::RenderRow(rtom::AdaptiveTableRow const& row,
+                                          winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveTableColumnDefinition> const& columns,
+                                          rtrender::AdaptiveRenderContext const& renderContext,
+                                          rtrender::AdaptiveRenderArgs const& renderArgs,
+                                          winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
+                                          boolean firstRowAsHeaders,
+                                          boolean showGridLines,
+                                          rtom::ContainerStyle gridStyle,
+                                          uint32_t rowNumber,
+                                          rtxaml::Controls::Grid const& xamlGrid)
     {
         // Create the row definition and add it to the grid
         /*ComPtr<IRowDefinition> xamlRowDefinition =

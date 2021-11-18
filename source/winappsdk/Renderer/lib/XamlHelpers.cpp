@@ -681,7 +681,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 /*ComPtr<IFrameworkElement> rootElement;
                 THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));*/
                 // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
-                tileControl.RootElement(rootPanel);
+                // TODO: I don't see this rootelement being used anywhere, a bug?
+                //tileControl.RootElement(rootPanel);
 
                 // THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
                 tileControl.LoadImageBrush(background);
@@ -806,107 +807,107 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return std::tuple(result, renderedElement);
     }
 
-    HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
-                           _In_ IAdaptiveRenderContext* renderContext,
-                           _In_ IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ IUIElement** result,
-                           _COM_Outptr_ IAdaptiveCardElement** renderedElement)
-    {
-        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-        RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+    //HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
+    //                       _In_ IAdaptiveRenderContext* renderContext,
+    //                       _In_ IAdaptiveRenderArgs* renderArgs,
+    //                       _COM_Outptr_ IUIElement** result,
+    //                       _COM_Outptr_ IAdaptiveCardElement** renderedElement)
+    //{
+    //    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+    //    RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
-        ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
-        RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
+    //    ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
+    //    RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
 
-        HString elementType;
-        RETURN_IF_FAILED(currentElement->get_ElementTypeString(elementType.GetAddressOf()));
+    //    HString elementType;
+    //    RETURN_IF_FAILED(currentElement->get_ElementTypeString(elementType.GetAddressOf()));
 
-        bool fallbackHandled = false;
-        ComPtr<IUIElement> fallbackControl;
-        switch (elementFallback)
-        {
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
-        {
-            // We have content, get the type of the fallback element
-            ComPtr<IAdaptiveCardElement> fallbackElement;
-            RETURN_IF_FAILED(currentElement->get_FallbackContent(&fallbackElement));
+    //    bool fallbackHandled = false;
+    //    ComPtr<IUIElement> fallbackControl;
+    //    switch (elementFallback)
+    //    {
+    //    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
+    //    {
+    //        // We have content, get the type of the fallback element
+    //        ComPtr<IAdaptiveCardElement> fallbackElement;
+    //        RETURN_IF_FAILED(currentElement->get_FallbackContent(&fallbackElement));
 
-            HString fallbackElementType;
-            RETURN_IF_FAILED(fallbackElement->get_ElementTypeString(fallbackElementType.GetAddressOf()));
+    //        HString fallbackElementType;
+    //        RETURN_IF_FAILED(fallbackElement->get_ElementTypeString(fallbackElementType.GetAddressOf()));
 
-            RETURN_IF_FAILED(WarnForFallbackContentElement(renderContext, elementType.Get(), fallbackElementType.Get()));
+    //        RETURN_IF_FAILED(WarnForFallbackContentElement(renderContext, elementType.Get(), fallbackElementType.Get()));
 
-            // Try to render the fallback element
-            ComPtr<IAdaptiveElementRenderer> fallbackElementRenderer;
-            RETURN_IF_FAILED(elementRenderers->Get(fallbackElementType.Get(), &fallbackElementRenderer));
-            HRESULT hr = E_PERFORM_FALLBACK;
+    //        // Try to render the fallback element
+    //        ComPtr<IAdaptiveElementRenderer> fallbackElementRenderer;
+    //        RETURN_IF_FAILED(elementRenderers->Get(fallbackElementType.Get(), &fallbackElementRenderer));
+    //        HRESULT hr = E_PERFORM_FALLBACK;
 
-            if (fallbackElementRenderer)
-            {
-                // perform this element's fallback
-                hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-                if (renderedElement)
-                {
-                    RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
-                }
-            }
+    //        if (fallbackElementRenderer)
+    //        {
+    //            // perform this element's fallback
+    //            hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
+    //            if (renderedElement)
+    //            {
+    //                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+    //            }
+    //        }
 
-            if (hr == E_PERFORM_FALLBACK)
-            {
-                // The fallback content told us to fallback, make a recursive call to this method
-                RETURN_IF_FAILED(RenderFallback(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl, renderedElement));
-            }
-            else
-            {
-                // Check the non-fallback return value from the render call
-                RETURN_IF_FAILED(hr);
-            }
+    //        if (hr == E_PERFORM_FALLBACK)
+    //        {
+    //            // The fallback content told us to fallback, make a recursive call to this method
+    //            RETURN_IF_FAILED(RenderFallback(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl, renderedElement));
+    //        }
+    //        else
+    //        {
+    //            // Check the non-fallback return value from the render call
+    //            RETURN_IF_FAILED(hr);
+    //        }
 
-            // We handled the fallback content
-            fallbackHandled = true;
-            break;
-        }
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
-        {
-            // If the fallback is drop, nothing to do but warn
-            RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
-            fallbackHandled = true;
-            break;
-        }
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
-        default:
-        {
-            break;
-        }
-        }
+    //        // We handled the fallback content
+    //        fallbackHandled = true;
+    //        break;
+    //    }
+    //    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
+    //    {
+    //        // If the fallback is drop, nothing to do but warn
+    //        RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
+    //        fallbackHandled = true;
+    //        break;
+    //    }
+    //    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
+    //    default:
+    //    {
+    //        break;
+    //    }
+    //    }
 
-        if (fallbackHandled)
-        {
-            // We did it, copy out the result if any
-            RETURN_IF_FAILED(fallbackControl.CopyTo(result));
-            return S_OK;
-        }
-        else
-        {
-            // We didn't do it, can our ancestor?
-            boolean ancestorHasFallback;
-            RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
+    //    if (fallbackHandled)
+    //    {
+    //        // We did it, copy out the result if any
+    //        RETURN_IF_FAILED(fallbackControl.CopyTo(result));
+    //        return S_OK;
+    //    }
+    //    else
+    //    {
+    //        // We didn't do it, can our ancestor?
+    //        boolean ancestorHasFallback;
+    //        RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
 
-            if (!ancestorHasFallback)
-            {
-                // standard unknown element handling
-                std::wstring errorString = L"No Renderer found for type: ";
-                errorString += elementType.GetRawBuffer(nullptr);
-                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::NoRendererForType,
-                                                           HStringReference(errorString.c_str()).Get()));
-                return S_OK;
-            }
-            else
-            {
-                return E_PERFORM_FALLBACK;
-            }
-        }
-    }
+    //        if (!ancestorHasFallback)
+    //        {
+    //            // standard unknown element handling
+    //            std::wstring errorString = L"No Renderer found for type: ";
+    //            errorString += elementType.GetRawBuffer(nullptr);
+    //            RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::NoRendererForType,
+    //                                                       HStringReference(errorString.c_str()).Get()));
+    //            return S_OK;
+    //        }
+    //        else
+    //        {
+    //            return E_PERFORM_FALLBACK;
+    //        }
+    //    }
+    //}
 
     void GetSeparationConfigForElement(_In_ IAdaptiveCardElement* cardElement,
                                        _In_ IAdaptiveHostConfig* hostConfig,

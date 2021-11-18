@@ -35,7 +35,9 @@
 
 #include <winrt/base.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.System.h>
+#include <winrt/Windows.Web.Http.Filters.h>
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.Xaml.Automation.h>
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>

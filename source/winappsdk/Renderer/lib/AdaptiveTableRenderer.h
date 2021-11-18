@@ -18,6 +18,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
     private:
+
         winrt::Windows::UI::Xaml::FrameworkElement RenderCell(
             winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell const& cell,
             winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,

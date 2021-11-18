@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 {
     // TODO: Comeback to this thing
     struct DECLSPEC_UUID("D940E878-F2E0-4AF7-A844-4D090C7379E3") IImageLoadTrackerListener
-        : public winrt::Windows::Foundation::IUnknown
+        : public ::IUnknown
     {
     public:
         virtual void AllImagesLoaded() = 0;

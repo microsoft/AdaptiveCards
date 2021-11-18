@@ -17,11 +17,11 @@ using namespace ABI::Windows::UI::Xaml::Input;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
-    HandleLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
-                              winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
-                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
-                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
+    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
+        winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
         // The text box may need to go into a number of parent containers to handle validation and inline actions.
         // textBoxParentContainer represents the current parent container.

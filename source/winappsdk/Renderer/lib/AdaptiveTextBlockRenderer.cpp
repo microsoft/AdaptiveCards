@@ -173,7 +173,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    rtxaml::Automation::Peers::AutomationHeadingLevel GetHeadingLevelFromContext(rtrender::AdaptiveRenderContext const& renderContext)
+    rtxaml::Automation::Peers::AutomationHeadingLevel
+    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(rtrender::AdaptiveRenderContext const& renderContext)
     {
         /* ComPtr<IAdaptiveHostConfig> hostConfig;
          RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));

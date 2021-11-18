@@ -31,8 +31,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
         HandleLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
                                   winrt::Windows::UI::Xaml::UIElement const& textBox,
-                                  winrt::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext const& renderContext,
-                                  winrt::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs const& renderArgs);
+                                  winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                  winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation

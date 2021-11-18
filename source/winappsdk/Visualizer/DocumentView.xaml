@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:toolkitControls="using:Microsoft.Toolkit.WinUI3.UI.Controls">
+    xmlns:toolkitControls="using:Microsoft.Toolkit.WinUI3.UI.Controls" xmlns:toolkitControls1="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
         <local:GenericDocumentView x:Name="GenericDocumentViewName"/>
 
         <!--Vertical draggable column splitter-->
-        <toolkitControls:GridSplitter
+        <toolkitControls1:GridSplitter
             AutomationProperties.Name="Content splitter"
             Width="11"
             Background="{ThemeResource SystemControlBackgroundAccentBrush}"
