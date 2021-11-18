@@ -114,24 +114,10 @@ export class Versions {
     static readonly v1_3 = new Version(1, 3);
     static readonly v1_4 = new Version(1, 4);
     static readonly v1_5 = new Version(1, 5);
-    static readonly v1_6 = new Version(1, 6);
+    // If preview tag is added/removed from any version,
+    // don't forget to update .ac-schema-version-1-?::after too in adaptivecards-site\themes\adaptivecards\source\css\style.css
+    static readonly v1_6 = new Version(1, 6, "1.6 Preview");
     static readonly latest = Versions.v1_5;
-    // version over latest is considered "vNext feature"
-    // if latest or maxSupportedVersion is changed,
-    // don't forget to update styles .ac-schema-version-1-?::after to add/remove Preview tag from adaptivecards-site\themes\adaptivecards\source\css\style.css
-    static readonly maxSupportedVersion = Versions.v1_6;
-}
-
-const LogEventIfVersionIsPreview = (sender: SerializableObject, name: string, value: any, context: BaseSerializationContext, version: Version) => {
-    if (version.isPreviewFeature()) {
-        context.logParseEvent(
-            sender,
-            Enums.ValidationEvent.PreviewFeatureInUse,
-            Strings.errors.propertyIsPreviewFeature(
-                value,
-                name,
-                version.toString()));
-    }
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -501,8 +487,6 @@ export class ValueSetProperty extends PropertyDefinition {
                 if (sourceValue.toLowerCase() === versionedValue.value.toLowerCase()) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    LogEventIfVersionIsPreview(sender, sourceValue, this.name, context, targetVersion);
-
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return versionedValue.value;
                     }
@@ -596,8 +580,6 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
             for (let versionedValue of this.values) {
                 if (versionedValue.value === enumValue) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
-
-                    LogEventIfVersionIsPreview(sender, sourceValue, this.name, context, targetVersion);
 
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return enumValue;
@@ -865,7 +847,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
-    static defaultMaxVersion: Version = Versions.maxSupportedVersion;
+    static defaultMaxVersion: Version = Versions.latest;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -943,8 +925,6 @@ export abstract class SerializableObject {
                     let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
                     if (source.hasOwnProperty(property.name)) {
-                        LogEventIfVersionIsPreview(this, property.name, propertyValue, context, property.targetVersion);
-
                         if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
                             propertyValue = property.parse(this, source, context);
                         }
