@@ -114,9 +114,30 @@ export class Versions {
     static readonly v1_6 = new Version(1, 6, "1.6 Preview");
     static readonly latest = Versions.v1_5;
 
-    // Versions in declaredVersions are sorted.
-    static readonly declaredVersions: Version[] = [Versions.v1_0, Versions.v1_1, Versions.v1_2, Versions.v1_3,
-        Versions.v1_4, Versions.v1_5, Versions.v1_6];
+    static getAllDeclaredVersions(): Version[] {
+        let ctor = <any>Versions;
+        let properties: Version[] = [];
+
+        for (let propertyName in ctor) {
+            try {
+                let propertyValue = ctor[propertyName];
+
+                if (propertyValue instanceof Version) {
+                    properties.push(propertyValue);
+                }
+            }
+            catch {
+                // If a property happens to have a getter function and
+                // it throws an exception, we need to catch it here
+            }
+        }
+        return properties.sort((v1: Version, v2: Version) => v1.compareTo(v2) );
+    }
+
+    static getMaxiumDeclaredVersion(): Version {
+        const versions = Versions.getAllDeclaredVersions();
+        return versions[versions.length-1];
+    }
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -846,7 +867,8 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
-    static defaultMaxVersion: Version = Versions.declaredVersions[Versions.declaredVersions.length-1];
+
+    static defaultMaxVersion: Version = Versions.getMaxiumDeclaredVersion();
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 

@@ -7,5 +7,5 @@ export class GlobalSettings {
     static showVersionPicker: boolean = false;
     static selectedHostContainerControlsTargetVersion: boolean = true;
     static showTargetVersionMismatchWarning: boolean = true;
-    static supportedTargetVersions: Adaptive.Version[] = Adaptive.Versions.declaredVersions;
+    static supportedTargetVersions: Adaptive.Version[] = Adaptive.Versions.getAllDeclaredVersions();
 }
