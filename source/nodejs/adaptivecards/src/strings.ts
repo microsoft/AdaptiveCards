@@ -28,7 +28,7 @@ export class Strings {
         tooManyCarouselPages: (maxCarouselPages: number) => `Maximum number of Carousel pages exceeded (${maxCarouselPages}).`,
         columnAlreadyBelongsToAnotherSet: () => "This column already belongs to another ColumnSet.",
         invalidCardType: () => `Invalid or missing card type. Make sure the card's type property is set to "AdaptiveCard".`,
-        unsupportedCardVersion: (version: string, maxSupportedVersion: string) => `The specified card version (${version}) is not supported. The maximum supported card version is ${maxSupportedVersion}.`,
+        unsupportedCardVersion: (version: string, maxSupportedVersion: string) => `The specified card version (${version}) is not supported or still in preview. The latest released card version is ${maxSupportedVersion}.`,
         duplicateId: (id: string) => `Duplicate Id "${id}".`,
         markdownProcessingNotEnabled: () => "Markdown processing isn't enabled. Please see https://www.npmjs.com/package/adaptivecards#supporting-markdown",
         processMarkdownEventRemoved: () => "The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.",

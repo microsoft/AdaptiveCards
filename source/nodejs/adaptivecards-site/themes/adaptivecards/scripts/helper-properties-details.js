@@ -20,7 +20,12 @@ hexo.extend.helper.register('properties_details', function (locals, properties, 
 		// Get the markdown for the property and turn it into HTML
 		html += '<div class="w3-container">';
 
-		html += marked(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion), { headerPrefix: "dedupe-header" });
+		// mark header with class name like ac-schema-version-1.5
+		html +=  `<div class="ac-schema-version-${elementVersion?.replace(/\./, '-')}" style="display: flex;">`
+		html += marked(typedschema.markdown.createPropertyDetailsHeader(property, 3), { headerPrefix: "dedupe-header" });
+		html += '</div>'
+
+		html += marked(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion, false /* include header */));
 		html += '</div>'
 
 

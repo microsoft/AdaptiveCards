@@ -109,8 +109,32 @@ export class Versions {
     static readonly v1_3 = new Version(1, 3);
     static readonly v1_4 = new Version(1, 4);
     static readonly v1_5 = new Version(1, 5);
-    static readonly v1_6 = new Version(1, 6);
-    static readonly latest = Versions.v1_6;
+    // If preview tag is added/removed from any version,
+    // don't forget to update .ac-schema-version-1-?::after too in adaptivecards-site\themes\adaptivecards\source\css\style.css
+    static readonly v1_6 = new Version(1, 6, "1.6 Preview");
+    static readonly latest = Versions.v1_5;
+
+    static getAllDeclaredVersions(): Version[] {
+        let ctor = <any>Versions;
+        let properties: Version[] = [];
+
+        for (let propertyName in ctor) {
+            if (propertyName.match(/^v[0-9_]*$/)) { // filter latest
+                try {
+                    let propertyValue = ctor[propertyName];
+
+                    if (propertyValue instanceof Version) {
+                        properties.push(propertyValue);
+                    }
+                }
+                catch {
+                    // If a property happens to have a getter function and
+                    // it throws an exception, we need to catch it here
+                }
+            }
+        }
+        return properties.sort((v1: Version, v2: Version) => v1.compareTo(v2) );
+    }
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
