@@ -133,11 +133,6 @@ export class Versions {
         }
         return properties.sort((v1: Version, v2: Version) => v1.compareTo(v2) );
     }
-
-    static getMaxiumDeclaredVersion(): Version {
-        const versions = Versions.getAllDeclaredVersions();
-        return versions[versions.length-1];
-    }
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -868,7 +863,7 @@ export type PropertyBag = { [propertyName: string]: any };
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
 
-    static defaultMaxVersion: Version = Versions.getMaxiumDeclaredVersion();
+    static defaultMaxVersion: Version = Versions.latest;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
