@@ -119,16 +119,18 @@ export class Versions {
         let properties: Version[] = [];
 
         for (let propertyName in ctor) {
-            try {
-                let propertyValue = ctor[propertyName];
+            if (propertyName.match(/^v[0-9_]*$/)) { // filter latest
+                try {
+                    let propertyValue = ctor[propertyName];
 
-                if (propertyValue instanceof Version) {
-                    properties.push(propertyValue);
+                    if (propertyValue instanceof Version) {
+                        properties.push(propertyValue);
+                    }
                 }
-            }
-            catch {
-                // If a property happens to have a getter function and
-                // it throws an exception, we need to catch it here
+                catch {
+                    // If a property happens to have a getter function and
+                    // it throws an exception, we need to catch it here
+                }
             }
         }
         return properties.sort((v1: Version, v2: Version) => v1.compareTo(v2) );
