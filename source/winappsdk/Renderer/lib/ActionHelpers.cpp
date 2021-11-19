@@ -1581,8 +1581,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         rtxaml::Controls::Panel showCardsPanel = showCardsStackPanel.as<rtxaml::Controls::Panel>();
         /*ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));*/
-        // TODO: is this correct?
-        rtxaml::Controls::IGridStatics gridStatics;
 
         currentButtonIndex = 0;
         bool pastLastPrimaryAction = false;
@@ -1734,7 +1732,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                  THROW_IF_FAILED(overflowButton.As(&actionFrameworkElement));
                  THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentButtonIndex));*/
                 // TODO: No need to convert, right?
-                gridStatics.SetColumn(overflowButton, currentButtonIndex);
+                rtxaml::Controls::Grid::SetColumn(overflowButton, currentButtonIndex);
             }
 
             // Add the overflow button to the panel

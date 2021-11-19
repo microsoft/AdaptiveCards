@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveToggleVisibilityActionRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
 using namespace ABI::AdaptiveCards::Rendering::WinUI3;

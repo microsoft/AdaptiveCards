@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTextBlockRenderer.h"
+#include "AdaptiveTextBlockRenderer.g.cpp"
 #include "AdaptiveRenderContext.h"
 #include "TextHelpers.h"
 

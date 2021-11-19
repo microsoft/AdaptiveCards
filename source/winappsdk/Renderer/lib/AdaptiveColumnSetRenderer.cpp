@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveColumnSetRenderer.h"
+#include "AdaptiveColumnSetRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
@@ -77,7 +78,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
              &gridStatics));*/
 
             rtxaml::Controls::Grid xamlGrid{};
-            rtxaml::Controls::IGridStatics gridStatics{};
 
             // ComPtr<IVector<AdaptiveColumn*>> columns;
             // RETURN_IF_FAILED(adaptiveColumnSet->get_Columns(&columns));
@@ -203,11 +203,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                     renderContext, spacing, separatorThickness, separatorColor, false);
                                 if (const auto separatorAsFrameworkElement = separator.try_as<rtxaml::FrameworkElement>())
                                 {
-                                    gridStatics.SetColumn(separatorAsFrameworkElement, currentColumn++);
+                                    rtxaml::Controls::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
                                 }
                                 /*  ComPtr<IFrameworkElement> separatorAsFrameworkElement;
                                   RETURN_IF_FAILED(separator.As(&separatorAsFrameworkElement));*/
-                                /*gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                                /*rtxaml::Controls::Grid::>SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
                                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());*/
                             }
                         }
@@ -230,10 +230,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                         // Mark the column container with the current column
                         /* ComPtr<IFrameworkElement> columnAsFrameworkElement;
                          RETURN_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
-                         gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);*/
+                         rtxaml::Controls::Grid::>SetColumn(columnAsFrameworkElement.Get(), currentColumn++);*/
                         if (const auto columnAsFrameworkElement = xamlColumn.try_as<rtxaml::FrameworkElement>())
                         {
-                            gridStatics.SetColumn(columnAsFrameworkElement, currentColumn++);
+                            rtxaml::Controls::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
                         }
 
                         // Finally add the column container to the grid

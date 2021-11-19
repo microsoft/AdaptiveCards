@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveToggleInputRenderer.h"
+#include "AdaptiveToggleInputRenderer.g.cpp"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

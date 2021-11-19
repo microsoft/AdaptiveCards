@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include <cmath>
 #include "TileControl.h"
+#include "TileControl.g.cpp"
 #include "XamlHelpers.h"
+#include <cmath>
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
@@ -227,14 +228,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                         originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
                     }
 
-                    rtxaml::Controls::ICanvasStatics canvasStatics;
-
                     // Set Left and Top for rectangle
                     /* ComPtr<ICanvasStatics> canvasStatics;
                      ABI::Windows::Foundation::GetActivationFactory(
                          HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);*/
-                    canvasStatics.SetLeft(rectangleAsUIElement, originPositionX);
-                    canvasStatics.SetTop(rectangleAsUIElement, originPositionY);
+                    rtxaml::Controls::Canvas::SetLeft(rectangleAsUIElement, originPositionX);
+                    rtxaml::Controls::Canvas::SetTop(rectangleAsUIElement, originPositionY);
 
                     double imageWidth{}, imageHeight{};
                     if (fillMode == rtom::BackgroundImageFillMode::Cover)

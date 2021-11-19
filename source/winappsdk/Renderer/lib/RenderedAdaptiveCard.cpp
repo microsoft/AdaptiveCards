@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
+#include "RenderedAdaptiveCard.h"
+#include "RenderedAdaptiveCard.g.cpp"
+
 #include "AdaptiveActionEventArgs.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveMediaEventArgs.h"
-#include "RenderedAdaptiveCard.h"
-#include "XamlBuilder.h"
-#include "XamlHelpers.h"
 #include "ElementTagContent.h"
 
 using namespace concurrency;

@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveShowCardActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;

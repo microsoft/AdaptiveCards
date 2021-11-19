@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"

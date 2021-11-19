@@ -4,7 +4,10 @@
 //  Copyright (c) 2014  Microsoft Corporation
 //
 #include "pch.h"
+
 #include "WholeItemsPanel.h"
+#include "WholeItemsPanel.g.cpp"
+
 #include "XamlHelpers.h"
 #include "ElementTagContent.h"
 
@@ -419,7 +422,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             return rtxaml::Automation::AutomationProperties::GetName(dependencyObject);
         }
 
-        // We shouldn't reach here
+        // TODO: We shouldn't reach here
         return L"";
     }
 

@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement AdaptiveShowCardActionParser::FromJson(
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement AdaptiveShowCardActionParser::FromJson(
         winrt::Windows::Data::Json::JsonObject const& inputJson,
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
@@ -17,6 +17,6 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     {
         return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<implementation::AdaptiveShowCardAction, ::AdaptiveCards::ShowCardAction, ::AdaptiveCards::ShowCardActionParser>(
                    inputJson, elementParsers, actionParsers, warnings)
-            .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>();
+            .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>();
     }
 }

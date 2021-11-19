@@ -167,6 +167,7 @@
     <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTextStyleConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />

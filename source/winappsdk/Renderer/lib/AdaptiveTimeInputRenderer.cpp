@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveTimeInputRenderer.g.cpp"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

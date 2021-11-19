@@ -83,6 +83,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                     AdaptiveElementParserRegistration reg = new AdaptiveElementParserRegistration();
                     reg.Set(CSharpKeywordInput.customInputType, new CustomInputParser());
 
+                    AdaptiveActionParserRegistration k = new AdaptiveActionParserRegistration();
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, reg, new AdaptiveActionParserRegistration());
 
                     _renderer.ElementRenderers.Set(CSharpKeywordInput.customInputType, new CustomInputRenderer());

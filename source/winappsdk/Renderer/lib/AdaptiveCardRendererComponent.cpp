@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
+#include "AdaptiveCardRenderer.g.cpp"
 
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveActionRendererRegistration.h"
@@ -34,9 +35,6 @@
 #include "DefaultResourceDictionary.h"
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
-#include "AdaptiveCardRenderer.g.cpp"
-
-
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

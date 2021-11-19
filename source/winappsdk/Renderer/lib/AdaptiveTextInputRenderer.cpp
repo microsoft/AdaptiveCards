@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTextInputRenderer.h"
+#include "AdaptiveTextInputRenderer.g.cpp"
 #include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;

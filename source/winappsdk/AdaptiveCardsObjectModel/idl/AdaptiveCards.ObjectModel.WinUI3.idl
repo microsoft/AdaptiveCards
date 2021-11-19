@@ -828,27 +828,27 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         AdaptiveActionSetParser();
     };
 
-    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveActionParser
     {
         AdaptiveOpenUrlActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveActionParser
     {
         AdaptiveShowCardActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveActionParser
     {
         AdaptiveSubmitActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveActionParser
     {
         AdaptiveExecuteActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveActionParser
     {
         AdaptiveToggleVisibilityActionParser();
     };

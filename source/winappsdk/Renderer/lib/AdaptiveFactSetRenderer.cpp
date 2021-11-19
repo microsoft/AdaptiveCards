@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveFactSetRenderer.g.cpp"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
@@ -41,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
              RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));*/
 
             rtxaml::Controls::Grid xamlGrid{};
-            rtxaml::Controls::IGridStatics gridStatics{};
+            //rtxaml::Controls::IGridStatics gridStatics{};
 
             /*ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateABIClass<IColumnDefinition>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
@@ -175,11 +176,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                                                                     L"Adaptive.Fact.Value",
                                                                                                     valueTextBlock);
 
-                    gridStatics.SetColumn(titleTextBlock, 0);
-                    gridStatics.SetRow(titleTextBlock, currentFact);
+                    rtxaml::Controls::Grid::SetColumn(titleTextBlock, 0);
+                    rtxaml::Controls::Grid::SetRow(titleTextBlock, currentFact);
 
-                    gridStatics.SetColumn(valueTextBlock, 1);
-                    gridStatics.SetRow(valueTextBlock, currentFact);
+                    rtxaml::Controls::Grid::SetColumn(valueTextBlock, 1);
+                    rtxaml::Controls::Grid::SetRow(valueTextBlock, currentFact);
 
                     // Finally add the column container to the grid, and increment the column count
                     /*  ComPtr<IPanel> gridAsPanel;

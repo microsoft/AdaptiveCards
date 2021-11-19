@@ -1098,21 +1098,6 @@ namespace ABI {
 
 #endif // ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColumnSetRenderer_FWD_DEFINED__
 
-#ifndef ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
-#define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
-namespace ABI {
-    namespace AdaptiveCards {
-        namespace Rendering {
-            namespace WinUI3 {
-                interface IAdaptiveFactRenderer;
-            } /* WinUI3 */
-        } /* Rendering */
-    } /* AdaptiveCards */
-} /* ABI */
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactRenderer
-
-#endif // ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
-
 #ifndef ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveChoiceSetInputRenderer_FWD_DEFINED__
 #define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveChoiceSetInputRenderer_FWD_DEFINED__
 namespace ABI {
@@ -2508,14 +2493,6 @@ typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment
 
 
 
-
-#pragma external_header (push)
-#pragma warning (push)
-#pragma warning (disable:4668) 
-#pragma warning (disable:4001) 
-#pragma once 
-#pragma warning (pop)
-#pragma external_header (pop)
 namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
@@ -2530,20 +2507,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionsOrientation
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionsOrientation
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ActionsOrientation : int
                 {
                     Vertical = 0,
                     Horizontal,
-                } ActionsOrientation;
+                };
                 const ActionsOrientation ActionsOrientation_Vertical = ActionsOrientation::Vertical;
                 const ActionsOrientation ActionsOrientation_Horizontal = ActionsOrientation::Horizontal;
                 
@@ -2555,22 +2532,22 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionAlignment
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionAlignment
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ActionAlignment : int
                 {
                     Left = 0,
                     Center,
                     Right,
                     Stretch,
-                } ActionAlignment;
+                };
                 const ActionAlignment ActionAlignment_Left = ActionAlignment::Left;
                 const ActionAlignment ActionAlignment_Center = ActionAlignment::Center;
                 const ActionAlignment ActionAlignment_Right = ActionAlignment::Right;
@@ -2584,20 +2561,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionMode
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionMode
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ActionMode : int
                 {
                     Inline = 0,
                     Popup,
-                } ActionMode;
+                };
                 const ActionMode ActionMode_Inline = ActionMode::Inline;
                 const ActionMode ActionMode_Popup = ActionMode::Popup;
                 
@@ -2609,20 +2586,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.IconPlacement
+ * Struct AdaptiveCards.Rendering.WinUI3.IconPlacement
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM IconPlacement : int
                 {
                     AboveTitle = 0,
                     LeftOfTitle,
-                } IconPlacement;
+                };
                 const IconPlacement IconPlacement_AboveTitle = IconPlacement::AboveTitle;
                 const IconPlacement IconPlacement_LeftOfTitle = IconPlacement::LeftOfTitle;
                 
@@ -7399,78 +7376,6 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace Rendering {
             namespace WinUI3 {
-                class AdaptiveFactRenderer;
-            } /* WinUI3 */
-        } /* Rendering */
-    } /* AdaptiveCards */
-} /* ABI */
-
-
-
-/*
- *
- * Interface AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer
- *
- * Interface is a part of the implementation of type AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer
- *
- *
- * The IID for this interface was automatically generated by MIDLRT.
- *
- * Interface IID generation seed: AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer:
- *
- *
- */
-#if !defined(____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__)
-#define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_Rendering_WinUI3_IAdaptiveFactRenderer[] = L"AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer";
-namespace ABI {
-    namespace AdaptiveCards {
-        namespace Rendering {
-            namespace WinUI3 {
-                /* [uuid("65932b45-b7d5-5154-bff6-b47df24c0853"), version, object, exclusiveto] */
-                MIDL_INTERFACE("65932b45-b7d5-5154-bff6-b47df24c0853")
-                IAdaptiveFactRenderer : public IInspectable
-                {
-                public:
-                    
-                };
-
-                MIDL_CONST_ID IID & IID_IAdaptiveFactRenderer=_uuidof(IAdaptiveFactRenderer);
-                
-            } /* WinUI3 */
-        } /* Rendering */
-    } /* AdaptiveCards */
-} /* ABI */
-
-EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer;
-#endif /* !defined(____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__) */
-
-
-/*
- *
- * Class AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer
- *
- * RuntimeClass can be activated.
- *
- * Class implements the following interfaces:
- *    AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer ** Default Interface **
- *    AdaptiveCards.Rendering.WinUI3.IAdaptiveElementRenderer
- *
- * Class Threading Model:  Both Single and Multi Threaded Apartment
- *
- * Class Marshaling Behavior:  Agile - Class is agile
- *
- */
-
-#ifndef RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer[] = L"AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer";
-#endif
-
-namespace ABI {
-    namespace AdaptiveCards {
-        namespace Rendering {
-            namespace WinUI3 {
                 class AdaptiveChoiceSetInputRenderer;
             } /* WinUI3 */
         } /* Rendering */
@@ -9091,12 +8996,6 @@ typedef interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColumnRend
 typedef interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColumnSetRenderer __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColumnSetRenderer;
 
 #endif // ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColumnSetRenderer_FWD_DEFINED__
-
-#ifndef ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
-#define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
-typedef interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer;
-
-#endif // ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_FWD_DEFINED__
 
 #ifndef ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveChoiceSetInputRenderer_FWD_DEFINED__
 #define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveChoiceSetInputRenderer_FWD_DEFINED__
@@ -11787,71 +11686,63 @@ interface __FIReference_1_AdaptiveCards__CObjectModel__CWinUI3__CHAlignment
 
 
 
-#pragma external_header (push)
-#pragma warning (push)
-#pragma warning (disable:4668) 
-#pragma warning (disable:4001) 
-#pragma once 
-#pragma warning (pop)
-#pragma external_header (pop)
-
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionsOrientation
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionsOrientation
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionsOrientation
 {
     ActionsOrientation_Vertical = 0,
     ActionsOrientation_Horizontal,
-} __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionsOrientation;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionAlignment
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionAlignment
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionAlignment
 {
     ActionAlignment_Left = 0,
     ActionAlignment_Center,
     ActionAlignment_Right,
     ActionAlignment_Stretch,
-} __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionAlignment;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.ActionMode
+ * Struct AdaptiveCards.Rendering.WinUI3.ActionMode
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionMode
 {
     ActionMode_Inline = 0,
     ActionMode_Popup,
-} __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CActionMode;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.Rendering.WinUI3.IconPlacement
+ * Struct AdaptiveCards.Rendering.WinUI3.IconPlacement
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIconPlacement
 {
     IconPlacement_AboveTitle = 0,
     IconPlacement_LeftOfTitle,
-} __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIconPlacement;
+};
 
 
 
@@ -20219,115 +20110,6 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveColum
 #ifndef RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveColumnSetRenderer_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveColumnSetRenderer_DEFINED
 extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_Rendering_WinUI3_AdaptiveColumnSetRenderer[] = L"AdaptiveCards.Rendering.WinUI3.AdaptiveColumnSetRenderer";
-#endif
-
-
-
-/*
- *
- * Interface AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer
- *
- * Interface is a part of the implementation of type AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer
- *
- *
- * The IID for this interface was automatically generated by MIDLRT.
- *
- * Interface IID generation seed: AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer:
- *
- *
- */
-#if !defined(____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__)
-#define ____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_Rendering_WinUI3_IAdaptiveFactRenderer[] = L"AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer";
-/* [uuid("65932b45-b7d5-5154-bff6-b47df24c0853"), version, object, exclusiveto] */
-typedef struct __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRendererVtbl
-{
-    BEGIN_INTERFACE
-    HRESULT ( STDMETHODCALLTYPE *QueryInterface)(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This,
-    /* [in] */ __RPC__in REFIID riid,
-    /* [annotation][iid_is][out] */
-    _COM_Outptr_  void **ppvObject
-    );
-
-ULONG ( STDMETHODCALLTYPE *AddRef )(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This
-    );
-
-ULONG ( STDMETHODCALLTYPE *Release )(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This
-    );
-
-HRESULT ( STDMETHODCALLTYPE *GetIids )(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This,
-    /* [out] */ __RPC__out ULONG *iidCount,
-    /* [size_is][size_is][out] */ __RPC__deref_out_ecount_full_opt(*iidCount) IID **iids
-    );
-
-HRESULT ( STDMETHODCALLTYPE *GetRuntimeClassName )(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This,
-    /* [out] */ __RPC__deref_out_opt HSTRING *className
-    );
-
-HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
-    __RPC__in __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer * This,
-    /* [OUT ] */ __RPC__out TrustLevel *trustLevel
-    );
-END_INTERFACE
-    
-} __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRendererVtbl;
-
-interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer
-{
-    CONST_VTBL struct __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRendererVtbl *lpVtbl;
-};
-
-#ifdef COBJMACROS
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_QueryInterface(This,riid,ppvObject) \
-( (This)->lpVtbl->QueryInterface(This,riid,ppvObject) )
-
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_AddRef(This) \
-        ( (This)->lpVtbl->AddRef(This) )
-
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_Release(This) \
-        ( (This)->lpVtbl->Release(This) )
-
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_GetIids(This,iidCount,iids) \
-        ( (This)->lpVtbl->GetIids(This,iidCount,iids) )
-
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_GetRuntimeClassName(This,className) \
-        ( (This)->lpVtbl->GetRuntimeClassName(This,className) )
-
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_GetTrustLevel(This,trustLevel) \
-        ( (This)->lpVtbl->GetTrustLevel(This,trustLevel) )
-
-
-#endif /* COBJMACROS */
-
-
-EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer;
-#endif /* !defined(____x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveFactRenderer_INTERFACE_DEFINED__) */
-
-
-/*
- *
- * Class AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer
- *
- * RuntimeClass can be activated.
- *
- * Class implements the following interfaces:
- *    AdaptiveCards.Rendering.WinUI3.IAdaptiveFactRenderer ** Default Interface **
- *    AdaptiveCards.Rendering.WinUI3.IAdaptiveElementRenderer
- *
- * Class Threading Model:  Both Single and Multi Threaded Apartment
- *
- * Class Marshaling Behavior:  Agile - Class is agile
- *
- */
-
-#ifndef RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_Rendering_WinUI3_AdaptiveFactRenderer[] = L"AdaptiveCards.Rendering.WinUI3.AdaptiveFactRenderer";
 #endif
 
 

@@ -4,6 +4,7 @@
 
 #include "ActionHelpers.h"
 #include "AdaptiveContainerRenderer.h"
+#include "AdaptiveContainerRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;

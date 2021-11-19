@@ -40,7 +40,10 @@ namespace AdaptiveCards::Rendering::WinUI3
             bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageLoaded});
 
         // Ensure we don't try and write the private data from multiple threads
-        auto exclusiveLock = m_lock.LockExclusive();
+       /* auto exclusiveLock = m_lock.LockExclusive();*/
+        // TODO: can we get into deadlock here if we crash somewhere in between?
+        // TODO: exlucisve lock resolved when the function finishes - it was cleaned after (am I right?:)
+        m_lock.lock();
 
         /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage;
         THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));*/
@@ -52,6 +55,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             m_trackedImageCount++;
             m_totalImageCount++;
         }
+        m_lock.unlock();
     }
 
     void ImageLoadTracker::MarkFailedLoadBitmapImage(rtxaml::Media::Imaging::BitmapImage const& bitmapImage)
@@ -69,27 +73,30 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     void ImageLoadTracker::AbandonOutstandingImages()
     {
-        auto exclusiveLock = m_lock.LockExclusive();
+        // TODO: change to lock instead of try_lock
+        m_lock.try_lock();
         for (auto& eventRegistration : m_eventRevokers)
         {
             UnsubscribeFromEvents(eventRegistration.first, eventRegistration.second);
         }
         m_eventRevokers.clear();
+        m_lock.unlock();
     }
 
     void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener* listener)
     {
         try
         {
-            if (m_listeners.find(listener) == m_listeners.end())
-            {
-                m_listeners.emplace(listener);
-            }
-            else
-            {
-                /*return E_INVALIDARG;*/
-                // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
-            }
+            // TODO: COME BACK AND FIX IT
+            // if (m_listeners.find(listener) == m_listeners.end())
+            //{
+            //    m_listeners.emplace(listener);
+            //}
+            // else
+            //{
+            //    /*return E_INVALIDARG;*/
+            //    // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
+            //}
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -101,15 +108,16 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         try
         {
-            if (m_listeners.find(listener) != m_listeners.end())
-            {
-                m_listeners.erase(listener);
-            }
-            else
-            {
-                /*  return E_INVALIDARG;*/
-                // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
-            }
+            // TODO: COME BACK AND FIX IT
+            // if (m_listeners.find(listener) != m_listeners.end())
+            //{
+            //    m_listeners.erase(listener);
+            //}
+            // else
+            //{
+            //    /*  return E_INVALIDARG;*/
+            //    // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
+            //}
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -119,19 +127,22 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender, rtxaml::RoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender,
+                                                    rtxaml::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender, rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender,
+                                                    rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
     void ImageLoadTracker::ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender)
     {
-        auto exclusiveLock = m_lock.LockExclusive();
+      /*  auto exclusiveLock = m_lock.LockExclusive();*/
+        m_lock.lock();
         m_trackedImageCount--;
         if (m_eventRevokers.find(sender) != m_eventRevokers.end())
         {
@@ -142,9 +153,11 @@ namespace AdaptiveCards::Rendering::WinUI3
         {
             m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
+        m_lock.unlock();
     }
 
-    void ImageLoadTracker::UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage, winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage,
+                                                 winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
         /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;

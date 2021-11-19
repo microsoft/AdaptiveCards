@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveDateInputRenderer.h"
+#include "AdaptiveDateInputRenderer.g.cpp"
 #include "XamlHelpers.h"
 
 using namespace Microsoft::WRL;

@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveChoiceSetInputRenderer.g.cpp"
 #include "ParseUtil.h"
 
 using namespace Microsoft::WRL;

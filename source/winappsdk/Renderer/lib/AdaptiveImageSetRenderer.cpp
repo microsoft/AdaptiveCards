@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveImageSetRenderer.h"
+#include "AdaptiveImageSetRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;

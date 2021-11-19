@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveBase64Util.h"

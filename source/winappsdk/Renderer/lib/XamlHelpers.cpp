@@ -134,7 +134,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
-    //HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
+    // HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
     //{
     //    // Iterate over the elements in a container and ensure that the correct separators are marked as visible
     //    ComPtr<IVector<UIElement*>> children;
@@ -149,8 +149,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //                                                 ComPtr<IFrameworkElement> childAsFrameworkElement;
     //                                                 RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
 
-    //                                                 // Get the tag for the element. The separators themselves will not have tags.
-    //                                                 ComPtr<IInspectable> tag;
+    //                                                 // Get the tag for the element. The separators themselves will
+    //                                                 not have tags. ComPtr<IInspectable> tag;
     //                                                 RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
 
     //                                                 if (tag)
@@ -546,7 +546,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
     }
 
-    //void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
+    // void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
     //                           _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImage,
     //                           _In_ IAdaptiveRenderContext* renderContext,
     //                           _In_ IAdaptiveRenderArgs* renderArgs)
@@ -682,7 +682,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));*/
                 // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
                 // TODO: I don't see this rootelement being used anywhere, a bug?
-                //tileControl.RootElement(rootPanel);
+                // tileControl.RootElement(rootPanel);
 
                 // THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
                 tileControl.LoadImageBrush(background);
@@ -807,7 +807,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return std::tuple(result, renderedElement);
     }
 
-    //HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
+    // HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
     //                       _In_ IAdaptiveRenderContext* renderContext,
     //                       _In_ IAdaptiveRenderArgs* renderArgs,
     //                       _COM_Outptr_ IUIElement** result,
@@ -845,8 +845,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //        if (fallbackElementRenderer)
     //        {
     //            // perform this element's fallback
-    //            hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-    //            if (renderedElement)
+    //            hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs,
+    //            &fallbackControl); if (renderedElement)
     //            {
     //                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
     //            }
@@ -977,7 +977,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return hasSeparator || (elementSpacing != rtom::Spacing::None);
     }
 
-    //HRESULT AddRenderedControl(_In_ IUIElement* newControl,
+    // HRESULT AddRenderedControl(_In_ IUIElement* newControl,
     //                           _In_ IAdaptiveCardElement* element,
     //                           _In_ IPanel* parentPanel,
     //                           _In_ IUIElement* separator,
@@ -1225,7 +1225,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return nullptr;
     }
 
-    //void AddSeparatorIfNeeded(int& currentElement,
+    // void AddSeparatorIfNeeded(int& currentElement,
     //                          _In_ IAdaptiveCardElement* element,
     //                          _In_ IAdaptiveHostConfig* hostConfig,
     //                          _In_ IAdaptiveRenderContext* renderContext,
@@ -1239,11 +1239,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //        UINT spacing;
     //        UINT separatorThickness;
     //        ABI::Windows::UI::Color separatorColor;
-    //        XamlHelpers::GetSeparationConfigForElement(element, hostConfig, &spacing, &separatorThickness, &separatorColor, &needsSeparator);
-    //        if (needsSeparator)
+    //        XamlHelpers::GetSeparationConfigForElement(element, hostConfig, &spacing, &separatorThickness,
+    //        &separatorColor, &needsSeparator); if (needsSeparator)
     //        {
-    //            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
-    //            XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+    //            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness,
+    //            separatorColor); XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
     //            THROW_IF_FAILED(separator.CopyTo(addedSeparator));
     //        }
     //    }
@@ -1802,7 +1802,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return inputStackPanel;
     }
 
-    //HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
+    // HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
     //                                   _In_ IAdaptiveRenderContext* renderContext,
     //                                   _In_ IAdaptiveRenderArgs* renderArgs,
     //                                   _Out_ IUIElement** inputLayout)
@@ -1857,8 +1857,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //        unsigned int childrenCount{};
     //        RETURN_IF_FAILED(panelChildren->get_Size(&childrenCount));
 
-    //        // We only copy one element into the input layout, if there's only one element, then we can assume it's our layout
-    //        if (childrenCount == 1)
+    //        // We only copy one element into the input layout, if there's only one element, then we can assume it's
+    //        our layout if (childrenCount == 1)
     //        {
     //            ComPtr<IUIElement> onlyElement;
     //            RETURN_IF_FAILED(panelChildren->GetAt(0, &onlyElement));
@@ -1923,9 +1923,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //        XamlHelpers::AppendXamlElementToPanel(errorMessageControl.Get(), stackPanelAsPanel.Get());
     //    }
 
-    //    // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
-    //    ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-    //    RETURN_IF_FAILED(
+    //    // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us
+    //    to use. ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics; RETURN_IF_FAILED(
     //        GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
     //                             &automationPropertiesStatics));
 
@@ -1947,7 +1946,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //    return S_OK;
     //}
 
-    //HRESULT HandleInputLayoutAndValidation(IAdaptiveInputElement* adaptiveInput,
+    // HRESULT HandleInputLayoutAndValidation(IAdaptiveInputElement* adaptiveInput,
     //                                       IUIElement* inputUIElement,
     //                                       boolean hasTypeSpecificValidation,
     //                                       _In_ IAdaptiveRenderContext* renderContext,
@@ -1998,7 +1997,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //    XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer.Get(), stackPanelAsPanel.Get());
 
     //    // Different input renderers perform stuff differently
-    //    // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
+    //    // Input.Text and Input.Number render the border previously so the object received as parameter may be a
+    //    border
     //    // Input.Time and Input.Date let this method render the border for them
     //    // Input.Toggle
     //    ComPtr<IUIElement> actualInputUIElement;
@@ -2010,8 +2010,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //    {
     //        if (hasValidation)
     //        {
-    //            // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
-    //            if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+    //            // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the
+    //            actual TextBox from the border if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
     //            {
     //                RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
     //            }
@@ -2026,9 +2026,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     //        }
     //    }
 
-    //    // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
-    //    ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-    //    RETURN_IF_FAILED(
+    //    // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us
+    //    to use. ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics; RETURN_IF_FAILED(
     //        GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
     //                             &automationPropertiesStatics));
 
@@ -2179,7 +2178,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
          RETURN_IF_FAILED(
              GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
                                   &automationPropertiesStatics));*/
-        rtxaml::Automation::IAutomationPropertiesStatics automationPropertiesStatics{};
 
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
@@ -2191,7 +2189,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
         /*RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));*/
-        automationPropertiesStatics.SetIsRequiredForForm(inputUIElementAsDependencyObject, isRequired);
+        rtxaml::Automation::AutomationProperties::SetIsRequiredForForm(inputUIElementAsDependencyObject, isRequired);
 
         // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
         /* ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);*/
@@ -2207,12 +2205,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 {
                     if (const auto contentAsDependencyObject = content.try_as<rtxaml::DependencyObject>())
                     {
-                        if (const auto automationPropertiesStatics5 =
-                                automationPropertiesStatics.try_as<rtxaml::Automation::IAutomationPropertiesStatics5>())
-                        {
-                            auto uiElementDescribers = automationPropertiesStatics5.GetDescribedBy(inputUIElementAsDependencyObject);
-                            uiElementDescribers.Append(contentAsDependencyObject);
-                        }
+                        auto uiElementDescribers =
+                            rtxaml::Automation::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
+                        uiElementDescribers.Append(contentAsDependencyObject);
                     }
                 }
             }

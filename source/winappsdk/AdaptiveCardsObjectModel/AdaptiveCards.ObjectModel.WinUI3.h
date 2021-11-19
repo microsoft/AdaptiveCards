@@ -10736,7 +10736,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpe
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveOpenUrlActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10808,7 +10808,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSho
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveShowCardActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10880,7 +10880,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSub
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveSubmitActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10952,7 +10952,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExe
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveExecuteActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -11024,7 +11024,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTog
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleVisibilityActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30733,7 +30733,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpe
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveOpenUrlActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30842,7 +30842,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSho
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveShowCardActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30951,7 +30951,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSub
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveSubmitActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31060,7 +31060,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExe
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveExecuteActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31169,7 +31169,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTog
  *
  * Class implements the following interfaces:
  *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleVisibilityActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *

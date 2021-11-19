@@ -27,6 +27,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     XamlBuilder::XamlBuilder()
     {
         // TODO: work on this
+        m_imageLoadTracker = winrt::make_self<::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker>();
         m_imageLoadTracker->AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
         m_randomAccessStreamStatics = winrt::Windows::Storage::Streams::RandomAccessStream{};
 

@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinUI3_##cls, BaseTrust)
-#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_WinUI3_##cls, BaseTrust)
-#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.WinUI3." L#cls, BaseTrust)
-#define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_Rendering_WinUI3
 #define AdaptivePointerCast dynamic_pointer_cast
 
 // don't want windows.h min()/max() definitions as they conflict with std::numeric_limits<T>::min()/max()
@@ -15,6 +11,7 @@
 
 #define DISABLE_NS_PREFIX_CHECKS 1
 #include <wil/cppwinrt.h>
+#include <wil/result_macros.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
 #include <unordered_map>
@@ -69,7 +66,6 @@
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.WinUI3.h"
 #include "Util.h"
-#include "Vector.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 

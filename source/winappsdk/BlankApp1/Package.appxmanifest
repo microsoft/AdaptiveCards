@@ -3,7 +3,7 @@
   <Identity
     Name="c578e853-5dc6-416e-827d-a79b1fca3968"
     Publisher="CN=Administrator"
-    Version="1.0.0.0" />
+    Version="1.0.2.0" />
   <mp:PhoneIdentity PhoneProductId="c578e853-5dc6-416e-827d-a79b1fca3968" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>BlankApp1</DisplayName>

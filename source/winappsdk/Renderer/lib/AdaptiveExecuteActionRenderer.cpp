@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveExecuteActionRenderer.h"
+#include "AdaptiveExecuteActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
 using namespace ABI::AdaptiveCards::Rendering::WinUI3;

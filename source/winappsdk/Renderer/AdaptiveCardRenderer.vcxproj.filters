@@ -82,6 +82,7 @@
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveTextStyleConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\DefaultResourceDictionary.h" />

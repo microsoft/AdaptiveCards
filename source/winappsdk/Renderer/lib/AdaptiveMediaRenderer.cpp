@@ -3,6 +3,8 @@
 #include "pch.h"
 
 #include "AdaptiveMediaRenderer.h"
+#include "AdaptiveMediaRenderer.g.cpp"
+
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
 

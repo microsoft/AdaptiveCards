@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
 using namespace ABI::AdaptiveCards::Rendering::WinUI3;

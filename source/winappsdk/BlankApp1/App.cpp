@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include "App.h"
 #include "MainPage.h"
@@ -22,16 +22,16 @@ App::App()
     InitializeComponent();
     Suspending({ this, &App::OnSuspending });
 
-#if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-    UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
-    {
-        if (IsDebuggerPresent())
-        {
-            auto errorMessage = e.Message();
-            __debugbreak();
-        }
-    });
-#endif
+//#if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
+//    UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
+//    {
+//        if (IsDebuggerPresent())
+//        {
+//            auto errorMessage = e.Message();
+//            __debugbreak();
+//        }
+//    });
+//#endif
 }
 
 /// <summary>

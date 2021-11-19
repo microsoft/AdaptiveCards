@@ -3,8 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTableRenderer.h"
-#include "util.h"
-#include "XamlHelpers.h"
+#include "AdaptiveTableRenderer.g.cpp"
 
 using namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers;
 using namespace ABI::AdaptiveCards::Rendering::WinUI3;

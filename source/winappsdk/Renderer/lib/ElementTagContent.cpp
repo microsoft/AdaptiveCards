@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 #include "pch.h"
+
 #include "ElementTagContent.h"
+#include "ElementTagContent.g.cpp"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

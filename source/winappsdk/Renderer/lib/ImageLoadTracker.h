@@ -7,14 +7,14 @@
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    struct TrackedImageDetails : winrt::implements<TrackedImageDetails, winrt::Windows::Foundation::IInspectable>
+    struct TrackedImageDetails : winrt::implements<TrackedImageDetails, ::IInspectable>
     {
         // TODO: add {} for initialization?
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
     };
 
-    struct ImageLoadTracker : winrt::implements<ImageLoadTracker, winrt::Windows::Foundation::IInspectable>
+    struct ImageLoadTracker : winrt::implements<ImageLoadTracker, ::IInspectable>
     {
     public:
         ~ImageLoadTracker();
@@ -27,7 +27,8 @@ namespace AdaptiveCards::Rendering::WinUI3
         int GetTotalImagesTracked();
 
     private:
-        Microsoft::WRL::Wrappers::SRWLock m_lock;
+       /* Microsoft::WRL::Wrappers::SRWLock m_lock;*/
+        std::mutex m_lock;
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;

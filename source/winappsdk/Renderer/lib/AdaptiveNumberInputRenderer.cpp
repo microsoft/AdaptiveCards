@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveNumberInputRenderer.g.cpp"
 #include <limits>
 
 using namespace Microsoft::WRL;
