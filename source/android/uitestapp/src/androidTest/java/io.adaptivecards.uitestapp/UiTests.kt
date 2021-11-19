@@ -32,6 +32,8 @@ import android.R.attr.x
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import org.junit.Ignore
+import org.junit.rules.Timeout
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -45,6 +47,10 @@ class UiTests {
 
     @get:Rule
     val mActivityRule: ActivityScenarioRule<RenderCardUiTestAppActivity> = ActivityScenarioRule<RenderCardUiTestAppActivity>(RenderCardUiTestAppActivity::class.java)
+
+    // Add a timeout of 1 minute for every test
+    @get:Rule
+    var mTimeout = Timeout(60, TimeUnit.SECONDS)
 
     @Test
     @Throws(IOException::class)
@@ -172,7 +178,6 @@ class UiTests {
 
     // For some reason this test method is not working on the pipeline but does work locally,
     // more investigation will be performed
-    @Ignore
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetShowsAllElementsOnClick() {
@@ -199,7 +204,6 @@ class UiTests {
 
     // For some reason this test method is not working on the pipeline but does work locally,
     // more investigation will be performed
-    @Ignore
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetMaintainsAllChoices() {
