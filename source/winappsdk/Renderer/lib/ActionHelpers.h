@@ -155,9 +155,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                              rtom::AdaptiveActionSet const& adaptiveActionSet,
                              rtom::IAdaptiveActionElement const& action,
                              rtxaml::Controls::Panel const& showCardsPanel,
-                             rtxaml::UIElement actionButton,
-                             rtxaml::UIElement actionOverflowItem,
-                             uint32_t buttonIndex,
                              rtrender::AdaptiveRenderContext const& renderContext,
                              rtrender::AdaptiveRenderArgs const& renderArgs);
 

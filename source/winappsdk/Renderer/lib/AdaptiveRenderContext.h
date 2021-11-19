@@ -50,18 +50,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         void AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
                                ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                               winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                               uint32_t primaryButtonIndex,
                                WinUI3::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                                ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                               winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                               uint32_t primaryButtonIndex,
                                WinUI3::AdaptiveRenderArgs const& renderArgs);
 
         void AddOverflowButton(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,

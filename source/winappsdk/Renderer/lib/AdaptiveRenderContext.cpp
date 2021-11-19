@@ -47,26 +47,18 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
                                                   ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
-                                                  winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                                  winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                                   winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                                  uint32_t primaryButtonIndex,
                                                   WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        return GetRenderResult()->AddInlineShowCard(
-            actionSet, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
+        GetRenderResult()->AddInlineShowCard(actionSet, showCardAction, showCardUIElement, renderArgs);
     }
 
     void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                                                   ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
-                                                  winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                                  winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                                   winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                                  uint32_t primaryButtonIndex,
                                                   WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        GetRenderResult()->AddInlineShowCard(
-            adaptiveCard, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
+        GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
 
     void AdaptiveRenderContext::AddOverflowButton(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,

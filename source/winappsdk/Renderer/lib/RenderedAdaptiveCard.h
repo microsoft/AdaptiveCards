@@ -42,18 +42,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         void AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
                                ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                               winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                               uint32_t primaryButtonIndex,
                                Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                                ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                               winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                               uint32_t primaryButtonIndex,
                                WinUI3::AdaptiveRenderArgs const& renderArgs);
 
         void AddOverflowButton(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
@@ -79,10 +73,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         void AddInlineShowCardHelper(uint32_t internalId,
                                      ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                                     winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                     winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                      winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                     uint32_t primaryButtonIndex,
                                      WinUI3::AdaptiveRenderArgs const& renderArgs);
 
         ObjectModel::WinUI3::AdaptiveCard m_originatingCard;

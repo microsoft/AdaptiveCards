@@ -49,90 +49,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         {
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
-            winrt::Windows::UI::Xaml::Visibility overflowButtonVisibility = winrt::Windows::UI::Xaml::Visibility::Collapsed;
-            if (showCardInfoToHandle->overflowUIElement)
-            {
-                overflowButtonVisibility = showCardInfoToHandle->overflowUIElement.Visibility();
-            }
-
-            // Check if the action is being invoked from the overflow menu
-            if (overflowButtonVisibility == winrt::Windows::UI::Xaml::Visibility::Visible)
-            {
-                // When a show card action is selected from the overflow menu, we need to move it from the overflow menu
-                // to the action bar by swapping it with the last item currently there. In order to do this we make this
-                // action non-visible in the flyout menu and visible in the action bar, and we make the last action
-                // visible in the action bar visible in the flyout menu and non-visible in the action bar.
-
-                auto overflowButtonPair = m_overflowButtons.find(showCardInfoToHandle->actionSetId);
-                auto overflowButton = overflowButtonPair->second;
-                auto buttonParent = overflowButton.as<winrt::Windows::UI::Xaml::FrameworkElement>().Parent();
-                auto actionPanel = buttonParent.as<winrt::Windows::UI::Xaml::Controls::Panel>();
-                auto actionButtons = actionPanel.Children();
-
-                winrt::Windows::Foundation::Collections::IVector<winrt::Windows::UI::Xaml::Controls::ColumnDefinition> columnDefinitions;
-                if (auto actionPanelAsGrid = buttonParent.try_as<winrt::Windows::UI::Xaml::Controls::Grid>())
-                {
-                    columnDefinitions = actionPanelAsGrid.ColumnDefinitions();
-                }
-
-                // Walk the buttons in the button bar. We're looking for the last visible action button (so we can hide
-                // it now that it's visible on the overflow menu). This will be the second to last visible button in the
-                // panel (the last being the overflow button itself)
-                uint32_t currentButtonIndex = 0;
-                uint32_t lastVisibleButtonIndex = 0;
-                uint32_t penultimateVisibleButtonIndex = 0;
-                winrt::Windows::UI::Xaml::UIElement lastVisibleButton{nullptr};
-                winrt::Windows::UI::Xaml::UIElement penultimateVisibleButton{nullptr};
-                for (auto&& action : actionButtons)
-                {
-                    if (action.Visibility() == winrt::Windows::UI::Xaml::Visibility::Visible)
-                    {
-                        penultimateVisibleButton = lastVisibleButton;
-                        lastVisibleButton = action;
-
-                        penultimateVisibleButtonIndex = lastVisibleButtonIndex;
-                        lastVisibleButtonIndex = currentButtonIndex;
-                    }
-
-                    ++currentButtonIndex;
-                }
-
-                // If there isn't a visible button available to swap this show card with, there's nothing to do here.
-                if (penultimateVisibleButton)
-                {
-                    penultimateVisibleButton.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
-
-                    // Set the column width to auto if we're using column definitions to allow the space allocated for this button to collapse
-                    if (columnDefinitions)
-                    {
-                        columnDefinitions.GetAt(penultimateVisibleButtonIndex).Width({0, winrt::Windows::UI::Xaml::GridUnitType::Auto});
-                    }
-
-                    // Make the show card button visible
-                    showCardInfoToHandle->buttonUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
-
-                    // Set the column width to 1* if we're using column definitions to show equal width buttons
-                    if (columnDefinitions)
-                    {
-                        columnDefinitions.GetAt(showCardInfoToHandle->primaryButtonIndex).Width({1.0, winrt::Windows::UI::Xaml::GridUnitType::Star});
-                    }
-
-                    // Next get the flyout menu so we can collapse this action from the flyout and show the one we hid from the action bar
-                    auto overflowButtonAsButtonWithFlyout =
-                        overflowButton.as<winrt::Windows::UI::Xaml::Controls::IButtonWithFlyout>();
-                    auto flyoutBase = overflowButtonAsButtonWithFlyout.Flyout();
-                    auto flyout = flyoutBase.as<winrt::Windows::UI::Xaml::Controls::MenuFlyout>();
-
-                    for (auto&& flyouts : flyout.Items())
-                    {
-                        flyouts.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
-                    }
-
-                    // Make the the action we're handling collapsed in the overflow menu. It is now shown in the button bar and don't want it to show here.
-                    showCardInfoToHandle->overflowUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
-                }
-            }
-
             // Determine if the card is currently being shown
             winrt::Windows::UI::Xaml::Visibility currentVisibility = showCardInfoToHandle->cardUIElement.Visibility();
 
@@ -173,10 +89,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             {
                 auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
-                auto elementTagContent =
-                    toggleElementAsFrameworkElement.Tag().as<rtrender::ElementTagContent>();
+                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<rtrender::ElementTagContent>();
                 // TODO: once again, how to do it correctly????
-               /* auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);*/
+                /* auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);*/
                 winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
 
                 if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleTrue)
@@ -332,46 +247,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
                                                  ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                                                 winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                                 winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                                  winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                                 uint32_t primaryButtonIndex,
                                                  Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
+        AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
 
     void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                                                  ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                                                 winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                                 winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                                  winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                                 uint32_t primaryButtonIndex,
                                                  WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        AddInlineShowCardHelper(adaptiveCard.InternalId(),
-                                showCardAction,
-                                actionButtonUIElement,
-                                actionOverflowUIElement,
-                                showCardUIElement,
-                                primaryButtonIndex,
-                                renderArgs);
+        AddInlineShowCardHelper(adaptiveCard.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
 
     void RenderedAdaptiveCard::AddInlineShowCardHelper(uint32_t actionSetId,
                                                        ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
-                                                       winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
-                                                       winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
                                                        winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
-                                                       uint32_t primaryButtonIndex,
                                                        WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
         auto showCardInfo = std::make_shared<ShowCardInfo>();
         showCardInfo->actionSetId = actionSetId;
-        showCardInfo->buttonUIElement = actionButtonUIElement;
-        showCardInfo->overflowUIElement = actionOverflowUIElement;
         showCardInfo->cardUIElement = showCardUIElement;
-        showCardInfo->primaryButtonIndex = primaryButtonIndex;
 
         m_showCards.emplace(std::make_pair(showCardAction.InternalId(), showCardInfo));
 

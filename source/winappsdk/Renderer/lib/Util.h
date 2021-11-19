@@ -468,10 +468,7 @@ typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler
 struct ShowCardInfo
 {
     uint32_t actionSetId;
-    winrt::Windows::UI::Xaml::UIElement buttonUIElement{nullptr};
-    winrt::Windows::UI::Xaml::UIElement overflowUIElement{nullptr};
     winrt::Windows::UI::Xaml::UIElement cardUIElement{nullptr};
-    uint32_t primaryButtonIndex;
 };
 
 // Peek interface to help get implementation types from winrt interfaces
