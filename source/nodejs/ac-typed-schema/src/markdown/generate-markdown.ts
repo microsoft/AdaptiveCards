@@ -13,6 +13,10 @@ import * as console from "console";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
 
+const getPreviewMarkDown = (version: string) => {
+    return `<span class="ac-schema-version-${version?.replace(/\./, '-')}"></span>`
+}
+
 class MarkdownConfig {
     private _locale : string = "en";
     private _i18n : I18n;
@@ -29,7 +33,7 @@ class MarkdownConfig {
     get i18n() {
         return this._i18n;
     }
-    
+
     get locale() {
         return this._locale;
     }
@@ -94,7 +98,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 
 			var formattedProperty: any = {
-				Property: style.propertyNameSummary(name),
+				Property: style.propertyNameSummary(name) + getPreviewMarkDown(summary.version),
 				Type: summary.formattedType,
 				Required: summary.required,
 				Description: __(summary.description)
@@ -307,12 +311,14 @@ export function createPropertiesDetails(classDefinition: SchemaClass, headerLeve
 	return md + '\n';
 }
 
-export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
+export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string, includeHeader: boolean = true) {
 	var md = '';
 
 	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 
-	md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
+	if (includeHeader) {
+		md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
+	}
 
 	// TODO: Add plugin point for custom JSON schema properties like gltf_*
 	var detailedDescription = property.description;
@@ -345,6 +351,10 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	}
 
 	return md + '\n';
+}
+
+export function createPropertyDetailsHeader(property: SchemaProperty, headerLevel: number) {
+	return style.getHeaderMarkdown(property.name, headerLevel);
 }
 
 export function propertyHasComplexTypes(property: SchemaProperty) {
