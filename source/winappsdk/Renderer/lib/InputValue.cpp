@@ -22,14 +22,6 @@ using namespace AdaptiveCards::Rendering::WinUI3;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3
 {
-    /*   HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
-       {
-           HString currentValue;
-           RETURN_IF_FAILED(inputValue->get_CurrentValue(currentValue.GetAddressOf()));
-
-           return inputValue->Validate(nullptr);
-       }*/
-
     // TODO: what is this function?
     void ValidateIfNeeded(rtrender::IAdaptiveInputValue const& inputValue)
     {
@@ -38,44 +30,16 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         inputValue.Validate();
     }
 
-    // HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInputElement,
-    //                                           _In_ IUIElement* uiInputElement,
-    //                                           _In_ IBorder* validationBorder)
-    //{
-    //    m_adaptiveInputElement = adaptiveInputElement;
-    //    m_uiInputElement = uiInputElement;
-    //    m_validationBorder = validationBorder;
-    //
-    //    return S_OK;
-    //}
-
     InputValue::InputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
                            winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
                            winrt::Windows::UI::Xaml::Controls::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
         m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)
 
-        // TODO: Figure out how to fix: no default constructor exists for rtxaml::UIElement
     {
-        auto k = 5;
     }
 
-    InputValue::InputValue() :  m_uiInputElement(nullptr), m_validationError(nullptr){};
-
-    // HRESULT InputValue::Validate(_Out_ boolean* isInputValid)
-    //{
-    //    boolean isValid;
-    //    RETURN_IF_FAILED(IsValueValid(&isValid));
-    //
-    //    RETURN_IF_FAILED(SetValidation(isValid));
-    //
-    //    if (isInputValid)
-    //    {
-    //        *isInputValid = isValid;
-    //    }
-    //
-    //    return S_OK;
-    //}
+    InputValue::InputValue() : m_uiInputElement(nullptr), m_validationError(nullptr){};
 
     bool InputValue::Validate()
     {
@@ -89,16 +53,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         return isValid;
     }
 
+    // TODO: should we return a bool?
     void InputValue::SetFocus()
     {
-        // Set focus on the input control
-        /* ComPtr<IControl> inputAsControl;
-         RETURN_IF_FAILED(m_uiInputElement.As(&inputAsControl));
-
-         boolean isFocused;
-         RETURN_IF_FAILED(inputAsControl->Focus(FocusState_Programmatic, &isFocused));
-
-         return S_OK;*/
         if (const auto inputAsControl = m_uiInputElement.try_as<rtxaml::Controls::Control>())
         {
             inputAsControl.Focus(rtxaml::FocusState::Programmatic);
@@ -107,14 +64,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     void InputValue::SetAccessibilityProperties(bool isInputValid)
     {
-        /*ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics;
-
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));*/
-
-        rtxaml::Automation::IAutomationPropertiesStatics5 automationPropertiesStatics{};
-
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
         /*ComPtr<IUIElement> uiInputElement(m_uiInputElement);
@@ -131,7 +80,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(uiValidationError.As(&uiValidationErrorAsDependencyObject));*/
         auto inputUIElementAsDependencyObject = m_uiInputElement.as<rtxaml::DependencyObject>();
 
-        auto uiElementDescribers = automationPropertiesStatics.GetDescribedBy(inputUIElementAsDependencyObject);
+        auto uiElementDescribers = rtxaml::Automation::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
 
         auto uiValidationErrorAsDependencyObject = m_validationError.as<rtxaml::DependencyObject>();
 
@@ -152,37 +101,21 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         }
 
         /* RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), isInputValid));*/
-        automationPropertiesStatics.SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
+        rtxaml::Automation::AutomationProperties::SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
     }
-
-    /*HRESULT InputValue::get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage)
-    {
-        return m_validationError.CopyTo(uiErrorMessage);
-    }*/
-
-    /*HRESULT InputValue::put_ErrorMessage(_In_ IUIElement* uiErrorMessage)
-    {
-        m_validationError = uiErrorMessage;
-        return S_OK;
-    }*/
 
     bool InputValue::IsValueValid()
     {
-        /*boolean isRequired;
-        RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));*/
         auto isRequired = m_adaptiveInputElement.IsRequired();
 
         bool isRequiredValid = true;
         if (isRequired)
         {
-            /*HString currentValue;
-            RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));*/
             auto currentValue = CurrentValue();
 
             isRequiredValid = !currentValue.empty();
         }
 
-        /* *isInputValid = isRequiredValid;*/
         return isRequiredValid;
     }
 
@@ -213,27 +146,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
                 m_validationError.Visibility(rtxaml::Visibility::Visible);
             }
 
-            /* RETURN_IF_FAILED(SetAccessibilityProperties(isInputValid));*/
             SetAccessibilityProperties(isInputValid);
         }
     }
-
-    /*   HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputElement)
-       {
-           return m_adaptiveInputElement.CopyTo(inputElement);
-       }*/
-
-    /*  HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                                    _In_ IUIElement* uiTextBoxElement,
-                                                    _In_ IBorder* validationBorder)
-      {
-          m_adaptiveTextInput = adaptiveTextInput;
-
-          Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
-          RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
-
-          return InputValue::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder);
-      }*/
 
     TextInputBase::TextInputBase(rtom::AdaptiveTextInput const& adaptiveTextInput,
                                  rtxaml::UIElement const& uiTextInputElement,
@@ -275,20 +190,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         return isBaseValid && isRegexValid;
     }
 
-    /*HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                                   _In_ ITextBox* uiTextBoxElement,
-                                                   _In_ IBorder* validationBorder)
-    {
-        m_textBoxElement = uiTextBoxElement;
-
-        ComPtr<IUIElement> textBoxAsUIElement;
-        RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
-
-        RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(adaptiveTextInput, textBoxAsUIElement.Get(), validationBorder));
-
-        return S_OK;
-    }*/
-
     TextInputValue::TextInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
                                    rtxaml::Controls::TextBox const& uiTextBoxElement,
                                    rtxaml::Controls::Border const& validationBorder) :
@@ -297,56 +198,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     {
     }
 
-    /*  HRESULT TextInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
-      {
-          return m_textBoxElement->get_Text(serializedUserInput);
-      }*/
-
-  /*  HRESULT PasswordInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput]
-                                                       _In_ IPasswordBox* uiPasswordElement,
-                                                       _In_ IBorder* validationBorder)
-    {
-        m_passwordElement = uiPasswordElement;
-
-        ComPtr<IUIElement> passwordAsUIElement;
-        RETURN_IF_FAILED(m_passwordElement.As(&passwordAsUIElement));
-
-        RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(adaptiveTextInput, passwordAsUIElement.Get(), validationBorder));
-
-        return S_OK;
-    }*/
-
     PasswordInputValue::PasswordInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
                                            rtxaml::Controls::PasswordBox const& uiPasswordElement,
-                                           rtxaml::Controls::Border const& validationBorder)  // TODO: this is kinda madness? HOW TO AVOID THIS?
-    // TODO: is this the right way? Do we need to chain call constructors?
+                                           rtxaml::Controls::Border const& validationBorder) :
+        TextInputBase(adaptiveTextInput, uiPasswordElement, validationBorder),
+        m_passwordElement(uiPasswordElement)
     {
-        m_passwordElement = uiPasswordElement;
-        // TODO: This is done so we can call TextInputBase "constructor" directly. Can we do it better?
-        TextInputBase::Initialize(adaptiveTextInput, uiPasswordElement, validationBorder);
     }
-
-    /*  IFACEMETHODIMP AdaptiveCards::Rendering::WinUI3::PasswordInputValue::CurrentValue()
-      {
-          return m_passwordElement->get_Password(serializedUserInput);
-      }*/
-
-    /*HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adaptiveNumberInput,
-                                                     _In_ ITextBox* uiTextBoxElement,
-                                                     _In_ IBorder* validationBorder)
-    {
-        m_adaptiveNumberInput = adaptiveNumberInput;
-        m_textBoxElement = uiTextBoxElement;
-
-        ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
-
-        ComPtr<IUIElement> textBoxAsUIElement;
-        RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
-
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), textBoxAsUIElement.Get(),
-    validationBorder)); return S_OK;
-    }*/
 
     NumberInputValue::NumberInputValue(rtom::AdaptiveNumberInput const& adaptiveNumberInput,
                                        rtxaml::Controls::TextBox const& uiInputTextBoxElement,
@@ -355,11 +213,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         m_adaptiveNumberInput(adaptiveNumberInput), m_textBoxElement(uiInputTextBoxElement)
     {
     }
-
-    // HRESULT NumberInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
-    //{
-    //    return m_textBoxElement->get_Text(serializedUserInput);
-    //}
 
     bool NumberInputValue::IsValueValid()
     {
@@ -414,25 +267,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         return isValid;
     }
 
-    /* HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptiveDateInput,
-                                                    _In_ ICalendarDatePicker* uiDatePickerElement,
-                                                    _In_ IBorder* validationBorder)
-     {
-         m_adaptiveDateInput = adaptiveDateInput;
-         m_datePickerElement = uiDatePickerElement;
-
-         Microsoft::WRL::ComPtr<IAdaptiveInputElement> dateInputAsAdaptiveInput;
-         RETURN_IF_FAILED(m_adaptiveDateInput.As(&dateInputAsAdaptiveInput));
-
-         ComPtr<IUIElement> datePickerAsUIElement;
-         RETURN_IF_FAILED(m_datePickerElement.As(&datePickerAsUIElement));
-
-         RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(dateInputAsAdaptiveInput.Get(),
-     datePickerAsUIElement.Get(), validationBorder));
-
-         return S_OK;
-     }*/
-
     DateInputValue::DateInputValue(rtom::AdaptiveDateInput const& adaptiveDateInput,
                                    rtxaml::Controls::CalendarDatePicker const& uiDatePickerElement,
                                    rtxaml::Controls::Border const& validationBorder) :
@@ -469,23 +303,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
         return formattedDate;
     }
-
-    /*HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptiveTimeInput,
-                                                   _In_ ITimePicker* uiTimePickerElement,
-                                                   _In_ IBorder* validationBorder)
-    {
-        m_adaptiveTimeInput = adaptiveTimeInput;
-        m_timePickerElement = uiTimePickerElement;
-
-        Microsoft::WRL::ComPtr<IAdaptiveInputElement> timeInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveTimeInput.As(&timeInputAsAdaptiveInput));
-
-        ComPtr<IUIElement> timePickerAsUIElement;
-        RETURN_IF_FAILED(m_timePickerElement.As(&timePickerAsUIElement));
-
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(),
-    validationBorder)); return S_OK;
-    }*/
 
     TimeInputValue::TimeInputValue(rtom::AdaptiveTimeInput adaptiveTimeInput,
                                    rtxaml::Controls::TimePicker uiTimePickerElement,
@@ -581,23 +398,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         return isBaseValid && isMaxMinValid;
     }
 
-    /* HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adaptiveToggleInput,
-                                                      _In_ ICheckBox* uiCheckBoxElement,
-                                                      _In_ IBorder* validationBorder)
-     {
-         m_adaptiveToggleInput = adaptiveToggleInput;
-         m_checkBoxElement = uiCheckBoxElement;
-
-         Microsoft::WRL::ComPtr<IAdaptiveInputElement> toggleInputAsAdaptiveInput;
-         RETURN_IF_FAILED(m_adaptiveToggleInput.As(&toggleInputAsAdaptiveInput));
-
-         ComPtr<IUIElement> checkBoxAsUIElement;
-         RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
-
-         RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(toggleInputAsAdaptiveInput.Get(),
-     checkBoxAsUIElement.Get(), validationBorder)); return S_OK;
-     }*/
-
     ToggleInputValue::ToggleInputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput adaptiveToggleInput,
                                        winrt::Windows::UI::Xaml::Controls::CheckBox uiCheckBoxElement,
                                        winrt::Windows::UI::Xaml::Controls::Border validationBorder) :
@@ -660,23 +460,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         return "";
     }
 
-    /*HRESULT CompactChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                               _In_ ISelector* choiceSetSelectorElement,
-                                                               _In_ IBorder* validationBorder)
-    {
-        m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
-        m_selectorElement = choiceSetSelectorElement;
-
-        Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
-
-        Microsoft::WRL::ComPtr<IUIElement> selectorAsUIElement;
-        m_selectorElement.As(&selectorAsUIElement);
-
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(),
-    selectorAsUIElement.Get(), validationBorder)); return S_OK;
-    }*/
-
     CompactChoiceSetInputValue::CompactChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
                                                            rtxaml::Controls::Primitives::Selector choiceSetSelector,
                                                            rtxaml::Controls::Border validationBorder) :
@@ -702,23 +485,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex);
         return UTF8ToHString(choiceValue);
     }
-
-    /*HRESULT ExpandedChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                _In_ IPanel* choiceSetPanelElement,
-                                                                _In_ IBorder* validationBorder)
-    {
-        m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
-        m_panelElement = choiceSetPanelElement;
-
-        Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
-
-        Microsoft::WRL::ComPtr<IUIElement> panelAsUIElement;
-        m_panelElement.As(&panelAsUIElement);
-
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), panelAsUIElement.Get(),
-    validationBorder)); return S_OK;
-    }*/
 
     ExpandedChoiceSetInputValue::ExpandedChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
                                                              rtxaml::Controls::Panel choiceSetPanelElement,
@@ -832,24 +598,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         }
     }
 
-    /*HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                _In_ IAutoSuggestBox* autoSuggestBox,
-                                                                _In_ IBorder* validationBorder)
-    {
-        m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
-        m_autoSuggestBox = autoSuggestBox;
-
-        Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
-
-        Microsoft::WRL::ComPtr<IUIElement> autoSuggestBoxAsUIElement;
-        RETURN_IF_FAILED(m_autoSuggestBox.As(&autoSuggestBoxAsUIElement));
-
-        RETURN_IF_FAILED(
-            InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(),
-    validationBorder)); return S_OK;
-    }*/
-
     FilteredChoiceSetInputValue::FilteredChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
                                                              rtxaml::Controls::AutoSuggestBox autoSuggestBox,
                                                              rtxaml::Controls::Border validationBorder) :
@@ -916,26 +664,26 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));*/
         auto choices = m_adaptiveChoiceSetInput.Choices();
 
-       /* ComPtr<IAdaptiveChoiceInput> selectedChoice;
-        IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-            choices.Get(),
-            [&selectedChoice, text](IAdaptiveChoiceInput* choice)
-            {
-                HString titleHString;
-                RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
+        /* ComPtr<IAdaptiveChoiceInput> selectedChoice;
+         IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+             choices.Get(),
+             [&selectedChoice, text](IAdaptiveChoiceInput* choice)
+             {
+                 HString titleHString;
+                 RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
 
-                std::string title = HStringToUTF8(titleHString.Get());
+                 std::string title = HStringToUTF8(titleHString.Get());
 
-                if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
-                {
-                    selectedChoice = choice;
-                }
+                 if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
+                 {
+                     selectedChoice = choice;
+                 }
 
-                return S_OK;
-            });*/
+                 return S_OK;
+             });*/
         // TODO: I'm not missing anything here, right? IterateOverVector is not neccessary
         rtom::AdaptiveChoiceInput selectedChoice{nullptr};
-        for (auto choice: choices)
+        for (auto choice : choices)
         {
             auto titleHString = choice.Title();
 
