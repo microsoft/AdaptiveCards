@@ -31,6 +31,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         MediaEventInvoker{winrt::make<implementation::AdaptiveMediaEventInvoker>(*renderResult)},
         m_weakRenderResult{*renderResult}, m_actionSentimentDefaultDictionary{defaultActionSentimentStyles}
     {
+        if (const auto originatingCard = renderResult->OriginatingCard())
+        {
+            Rtl = originatingCard.Rtl();
+        }
     }
 
     WinUI3::AdaptiveInputs AdaptiveRenderContext::UserInputs() { return GetRenderResult()->UserInputs(); }

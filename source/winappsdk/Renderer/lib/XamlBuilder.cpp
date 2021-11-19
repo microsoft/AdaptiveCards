@@ -60,7 +60,7 @@ namespace AdaptiveCards::Rendering::WinUI3
      CATCH_RETURN();*/
 
     rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
-                                                                        rtrender::AdaptiveRenderContext renderContext,
+                                                                        rtrender::AdaptiveRenderContext const& renderContext,
                                                                         XamlBuilder* xamlBuilder,
                                                                         rtom::ContainerStyle defaultContainerStyle)
     {
@@ -343,20 +343,20 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     void XamlBuilder::AddListener(IXamlBuilderListener* listener)
     {
-        // TODO: figure out how to do this
-        /* if (m_listeners.find(listener) == m_listeners.end())
+        //TODO: figure out how to do this
+         if (m_listeners.find(listener) == m_listeners.end())
          {
              m_listeners.emplace(listener);
-         }*/
+         }
     }
 
     void XamlBuilder::RemoveListener(IXamlBuilderListener* listener)
     {
-        // TODO: figure out how to do this
-        /*if (m_listeners.find(listener) != m_listeners.end())
+        //TODO: figure out how to do this
+        if (m_listeners.find(listener) != m_listeners.end())
         {
             m_listeners.erase(listener);
-        }*/
+        }
     }
 
     void XamlBuilder::SetFixedDimensions(uint32_t width, uint32_t height) noexcept
@@ -442,6 +442,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             // TODO: I should be able to cast here directly, right? *bodyElementHostImpl?
             bodyElementContainer = bodyElementHost;
 
+
             if (xamlBuilder && xamlBuilder->m_fixedDimensions)
             {
                 rootElement.Width(xamlBuilder->m_fixedWidth);
@@ -452,6 +453,12 @@ namespace AdaptiveCards::Rendering::WinUI3
             if (adaptiveCardHeightType == rtom::HeightType::Stretch)
             {
                 rootElement.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
+            }
+
+            // TODO: Add RTL check and add flow direction
+            if (auto const contextRtl = renderContext.Rtl())
+            {
+                rootElement.FlowDirection(contextRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
             }
 
             // TODO: no need to do that, remove later;

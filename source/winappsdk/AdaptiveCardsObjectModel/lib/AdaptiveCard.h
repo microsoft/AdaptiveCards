@@ -44,6 +44,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<uint32_t> MinHeight;
         property<WinUI3::AdaptiveRefresh> Refresh{nullptr};
         property<WinUI3::AdaptiveAuthentication> Authentication{nullptr};
+        property<winrt::Windows::Foundation::IReference<bool>> Rtl;
 
         winrt::Windows::Data::Json::JsonObject ToJson();
         winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation>
