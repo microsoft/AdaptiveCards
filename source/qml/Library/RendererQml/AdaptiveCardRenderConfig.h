@@ -6,6 +6,8 @@ namespace RendererQml
 {
     struct CardConfig
     {
+        std::string cardBorderColor{ "#33FFFFFF" };
+        std::string focusRectangleColor{ "#80FFFFFF" };
         int cardRadius{ 8 };
     };
 
@@ -133,6 +135,7 @@ namespace RendererQml
         std::string textColor{ "#F2FFFFFF" };
         std::string radioButtonInnerCircleColorOnChecked{ "#F2000000" };
         std::string checkBoxIconColorOnChecked{ "#F2000000" };
+        std::string focusRectangleColor{ "#80FFFFFF" };
         int radioButtonOuterCircleSize{ 16 };
         int radioButtonInnerCircleSize{ 6 };
         int checkBoxSize{ 16 };
@@ -156,6 +159,7 @@ namespace RendererQml
         std::string textColorPressed{ "#F2000000" };
         std::string textColorDisabled{ "#66FFFFFF" };
         std::string fontWeight{ "Font.DemiBold" };
+        std::string focusRectangleColor{ "#80FFFFFF" };
         int buttonRadius = 16;
         int horizotalPadding = 10;
         int verticalPadding = 5;

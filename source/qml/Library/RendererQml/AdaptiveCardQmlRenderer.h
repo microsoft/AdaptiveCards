@@ -44,7 +44,7 @@ namespace RendererQml
         std::pair<std::shared_ptr<RenderedQmlAdaptiveCard>, int> RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, int contentIndex);
 
     protected:
-        static void addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context, const bool hasBackgroundImage = false);
+        static void addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context, const std::string parentName, const bool hasBackgroundImage = false);
         static void addTextRunSelectActions(const std::shared_ptr<AdaptiveRenderContext>& context);
         static void AddActions(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions, std::shared_ptr<AdaptiveRenderContext> context, bool removeBottomMargin = true);
 		static void AddContainerElements(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& elements, std::shared_ptr<AdaptiveRenderContext> context);
@@ -107,6 +107,7 @@ namespace RendererQml
 		static const std::string getMinWidth();
 		static const std::string getMinWidthActionSet();
 		static const std::string getMinWidthFactSet();
+		static const std::string getSelectLinkFunction();
 
 		template <typename CardElement>
 		static const std::shared_ptr<QmlTag> applyHorizontalBleed(CardElement cardElement, std::shared_ptr<QmlTag> uiContainer, std::shared_ptr<AdaptiveRenderContext> context);
@@ -128,5 +129,6 @@ namespace RendererQml
         static const std::string GetImagePath(std::shared_ptr<AdaptiveRenderContext> context, const std::string url);
 
         static std::shared_ptr<QmlTag> AddCornerRectangles(std::shared_ptr<QmlTag> uiCard, int rectangleSize);
+        static std::shared_ptr<QmlTag> AddAccessibilityToTextBlock(std::shared_ptr<QmlTag> uiTextBlock, std::shared_ptr<AdaptiveRenderContext> context);
     };
 }

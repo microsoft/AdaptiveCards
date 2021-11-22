@@ -66,7 +66,6 @@ namespace RendererQml
         auto cardConfig = context->GetRenderConfig()->getCardConfig();
         context->setDefaultIdName("defaultId");
 		int margin = context->GetConfig()->GetSpacing().paddingSpacing;
-
         auto uiCard = std::make_shared<QmlTag>("Rectangle");
         uiCard->AddImports("import QtQuick 2.15");
         uiCard->AddImports("import QtQuick.Layouts 1.3");
@@ -81,7 +80,7 @@ namespace RendererQml
 		uiCard->Property("Layout.fillWidth", "true");
 		uiCard->Property("readonly property string bgColor", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
 		uiCard->Property("color", "bgColor");
-		uiCard->Property("border.color", isChildCard? " bgColor" : "'#B2B2B2'");
+		uiCard->Property("border.color", isChildCard? " bgColor" : context->GetHexColor(cardConfig.cardBorderColor));
         uiCard->AddFunctions("MouseArea{anchors.fill: parent;onClicked: adaptiveCard.nextItemInFocusChain().forceActiveFocus();}");
         uiCard->Property("activeFocusOnTab", "false");
         uiCard->Property("radius", Formatter() << (isChildCard ? 0 : cardConfig.cardRadius));
@@ -129,7 +128,7 @@ namespace RendererQml
 		ValidateShowCardInActions(card->GetActions(), context);
 		AddContainerElements(bodyLayout, card->GetBody(), context);
 		AddActions(bodyLayout, card->GetActions(), context);
-        addSelectAction(uiCard, uiCard->GetId(), card->GetSelectAction(), context, hasBackgroundImage);
+        addSelectAction(uiCard, uiCard->GetId(), card->GetSelectAction(), context, "Adaptive Card", hasBackgroundImage);
 
 		auto showCardsList = context->getShowCardsLoaderIdsList();
 		auto removeBottomMarginValue = RemoveBottomMarginValue(showCardsList);
@@ -170,7 +169,7 @@ namespace RendererQml
             clipRectangle->Property("anchors.fill", "parent");
             clipRectangle->Property("clip", "true");
             clipRectangle->Property("radius", Formatter() << cardConfig.cardRadius);
-            clipRectangle->Property("border.color", "'#B2B2B2'");
+            clipRectangle->Property("border.color", context->GetHexColor(cardConfig.cardBorderColor));
             clipRectangle->Property("border.width", "1");
             clipRectangle->Property("color", "'transparent'");
             clipRectangle->Property("z", "1");
@@ -197,6 +196,7 @@ namespace RendererQml
         uiCard->AddFunctions(AdaptiveCardQmlRenderer::getMinWidth());
         uiCard->AddFunctions(AdaptiveCardQmlRenderer::getMinWidthActionSet());
 		uiCard->AddFunctions(AdaptiveCardQmlRenderer::getMinWidthFactSet());
+		uiCard->AddFunctions(AdaptiveCardQmlRenderer::getSelectLinkFunction());
 		return uiCard;
 	}
 
@@ -331,7 +331,7 @@ namespace RendererQml
         }
     }
 
-    void AdaptiveCardQmlRenderer::addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context, const bool hasBackgroundImage)
+    void AdaptiveCardQmlRenderer::addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context, const std::string parentName, const bool hasBackgroundImage)
     {
         if (context->GetConfig()->GetSupportsInteractivity() && selectAction != nullptr)
         {
@@ -342,6 +342,7 @@ namespace RendererQml
                 return;
             }
 
+            std::string mouseAreaId = Formatter() << parent->GetId() << "_selectAction_mouseArea";
             const auto parentColor = !parent->GetProperty("readonly property string bgColor").empty() ? parent->GetProperty("readonly property string bgColor") : "'transparent'";
             const auto hoverColor = context->GetRGBColor(context->GetConfig()->GetContainerStyles().emphasisPalette.backgroundColor);
 
@@ -349,6 +350,7 @@ namespace RendererQml
             mouseArea->Property("anchors.fill", "parent");
             mouseArea->Property("acceptedButtons", "Qt.LeftButton");
             mouseArea->Property("hoverEnabled", "true");
+            mouseArea->Property("id", mouseAreaId);
 
             std::ostringstream onEntered;
             onEntered << "{" << rectId << ".color = " << hoverColor << ";";
@@ -372,16 +374,22 @@ namespace RendererQml
             if (selectAction->GetElementTypeString() == "Action.OpenUrl")
             {
                 onClickedFunction = getActionOpenUrlClickFunc(std::dynamic_pointer_cast<AdaptiveCards::OpenUrlAction>(selectAction), context);
+                parent->Property("Keys.onPressed", Formatter() << "{if (event.key === Qt.Key_Return || event.key === Qt.Key_Space){ " << mouseAreaId << ".clicked( " << mouseAreaId << ".mouseX)}}");
             }
             else if (selectAction->GetElementTypeString() == "Action.Submit")
             {
                 context->addToSubmitActionButtonList(mouseArea, std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(selectAction));
+                parent->Property("Keys.onPressed", Formatter() << "{if (event.key === Qt.Key_Return || event.key === Qt.Key_Space){ " << mouseAreaId << ".released( " << mouseAreaId << ".mouseX)}}");
             }
             else
             {
                 onClickedFunction = "";
             }
             mouseArea->Property("onClicked", Formatter() << "{\n" << onClickedFunction << "}");
+
+            parent->Property("activeFocusOnTab", "true");
+            parent->Property("onActiveFocusChanged", Formatter() << "{ if (activeFocus){ " << mouseAreaId << ".entered();}else{ " << mouseAreaId << ".exited();}}");
+            parent->Property("Accessible.name", Formatter() << parentName << selectAction->GetElementTypeString(), true);
 
             parent->AddChild(mouseArea);
         }
@@ -445,14 +453,13 @@ namespace RendererQml
 		std::string fontFamily = context->GetConfig()->GetFontFamily(textBlock->GetFontType());
 		int fontSize = context->GetConfig()->GetFontSize(textBlock->GetFontType(), textBlock->GetTextSize());
 
-		auto uiTextBlock = std::make_shared<QmlTag>("Text");
+		auto uiTextBlock = std::make_shared<QmlTag>("TextEdit");
 		std::string textType = textBlock->GetElementTypeString();
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(textBlock->GetHorizontalAlignment());
 
 		uiTextBlock->Property("width", "parent.width");
 
-		//Does not work for Rich text
-		uiTextBlock->Property("elide", "Text.ElideRight");
+		//ElideRight and MaxLine Count not supported
 
 		uiTextBlock->Property("clip", "true");
 		uiTextBlock->Property("textFormat", "Text.RichText");
@@ -478,11 +485,6 @@ namespace RendererQml
 			uiTextBlock->Property("visible", "false");
 		}
 
-		//Does not work for Rich text
-		if (textBlock->GetMaxLines() > 0)
-		{
-			uiTextBlock->Property("maximumLineCount", std::to_string(textBlock->GetMaxLines()));
-		}
 
 		if (textBlock->GetWrap())
 		{
@@ -516,6 +518,8 @@ namespace RendererQml
 			<< "console.log(link);"
 			<< "}";
 		uiTextBlock->Property("onLinkActivated", onLinkActivatedFunction);
+
+        uiTextBlock = AddAccessibilityToTextBlock(uiTextBlock, context);
 
 		return uiTextBlock;
 
@@ -626,6 +630,8 @@ namespace RendererQml
             clearIcon->Property("id", Formatter() << input->GetId() << "_clear_icon");
             clearIcon->Property("visible", Formatter() << input->GetId() << ".text.length != 0");
             clearIcon->Property("onClicked", Formatter() << "{nextItemInFocusChain().forceActiveFocus();" << input->GetId() << ".clear()}");
+            clearIcon->Property("Accessible.name", Formatter() << (input->GetPlaceholder().empty() ? "Text" : input->GetPlaceholder()) << " clear", true);
+            clearIcon->Property("Accessible.role", "Accessible.Button");
 
             uiTextInput->Property("width", Formatter() << "parent.width - " << clearIcon->GetId() << ".width - " << textConfig.clearIconHorizontalPadding);
 
@@ -634,6 +640,8 @@ namespace RendererQml
         }
 
         uiTextInput->Property("font.pixelSize", Formatter() << textConfig.pixelSize);
+        uiTextInput->Property("Accessible.name", input->GetPlaceholder().empty() ? "Text Field" : input->GetPlaceholder(), true);
+        uiTextInput->Property("Accessible.role", "Accessible.EditableText");
 
         if (!input->GetValue().empty())
         {
@@ -755,6 +763,8 @@ namespace RendererQml
         {
             contentItemTag->Property("placeholderText", input->GetPlaceholder(), true);
         }
+        contentItemTag->Property("Accessible.name", input->GetPlaceholder().empty() ? "Number Input Field" : input->GetPlaceholder(), true);
+        contentItemTag->Property("Accessible.role", "Accessible.EditableText");
 
         auto textBackgroundTag = std::make_shared<QmlTag>("Rectangle");
         textBackgroundTag->Property("color", "'transparent'");
@@ -862,7 +872,7 @@ namespace RendererQml
         uiSplitterRactangle->Property("color", Formatter() << "(" << upDownIcon->GetId() << ".pressed || activeFocus) ? " << context->GetHexColor(numberConfig.backgroundColorOnPressed) << " : " << upDownIcon->GetId() << ".hovered ? " << context->GetHexColor(numberConfig.backgroundColorOnHovered) << " : " << context->GetHexColor(numberConfig.backgroundColorNormal));
         uiSplitterRactangle->Property("Keys.onPressed", Formatter() << "{\n"
             "if (event.key === Qt.Key_Up || event.key === Qt.Key_Down)\n"
-            "{" << uiNumberInput->GetId() << ".changeValue(event.key);event.accepted = true;}}\n"
+            "{" << uiNumberInput->GetId() << ".changeValue(event.key);accessiblityPrefix = '';event.accepted = true;}}\n"
         );
 
         uiNumberInput->Property("contentItem", contentItemTag->ToString());
@@ -902,12 +912,23 @@ namespace RendererQml
 
         context->addToInputElementList(origionalElementId, (inputId + ".value"));
 
+        uiNumberInput->Property("Accessible.ignored", "true");
+        clearIcon->Property("Accessible.name", Formatter() << (input->GetPlaceholder().empty() ? "Number Input" : input->GetPlaceholder()) << " clear", true);
+        clearIcon->Property("Accessible.role", "Accessible.Button");
+
+        uiSplitterRactangle->Property("property string accessiblityPrefix", "''");
+        uiSplitterRactangle->Property("onActiveFocusChanged", Formatter() << "{"
+            << "if (activeFocus)"
+            << "accessiblityPrefix = '" << (input->GetPlaceholder().empty() ? "Number Input " : input->GetPlaceholder()) << "stepper. Current number is '}");
+        uiSplitterRactangle->Property("Accessible.name", Formatter() << "accessiblityPrefix + " << contentItemTag->GetId() << ".displayText");
+        uiSplitterRactangle->Property("Accessible.role", "Accessible.NoRole");
+
         return numberInputRow;
 	}
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::RichTextBlockRender(std::shared_ptr<AdaptiveCards::RichTextBlock> richTextBlock, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		auto uiTextBlock = std::make_shared<QmlTag>("Text");
+		auto uiTextBlock = std::make_shared<QmlTag>("TextEdit");
 		std::string textType = richTextBlock->GetElementTypeString();
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(richTextBlock->GetHorizontalAlignment());
 
@@ -954,6 +975,8 @@ namespace RendererQml
 		uiTextBlock->AddChild(MouseAreaTag);
 
         context->addToTextRunSelectActionList(uiTextBlock, selectActionList);
+
+        uiTextBlock = AddAccessibilityToTextBlock(uiTextBlock, context);
 
 		return uiTextBlock;
 	}
@@ -1040,6 +1063,12 @@ namespace RendererQml
             input->GetIsVisible(),
             isChecked), context);
 
+        auto focusRectangle = std::make_shared<RendererQml::QmlTag>("Rectangle");
+        focusRectangle->Property("anchors.fill", "parent");
+        focusRectangle->Property("color", "transparent", true);
+        focusRectangle->Property("border.color", context->GetHexColor(toggleButtonConfig.focusRectangleColor));
+        focusRectangle->Property("border.width", "parent.activeFocus ? 1 : 0");
+        checkbox->AddChild(focusRectangle);
 
         checkbox->AddFunctions(Formatter() << "function colorChange(item,isPressed){\n"
             "if (isPressed) item.indicator.color = item.checked ? " << context->GetHexColor(toggleButtonConfig.colorOnCheckedAndPressed) << " : " << context->GetHexColor(toggleButtonConfig.colorOnUncheckedAndPressed) << ";\n"
@@ -1137,6 +1166,7 @@ namespace RendererQml
         );
         uiComboBox->Property("onActiveFocusChanged", "colorChange(false)");
         uiComboBox->Property("onHoveredChanged", "colorChange(false)");
+        uiComboBox->Property("Accessible.name", "displayText");
 
         const std::string iconId = choiceset.id + "_icon";
         auto iconTag = GetIconTag(context);
@@ -1196,6 +1226,7 @@ namespace RendererQml
         uiItemDelegate->Property("verticalPadding", Formatter() << choiceSetConfig.dropDownElementVerticalPadding);
         uiItemDelegate->Property("horizontalPadding", Formatter() << choiceSetConfig.dropDownElementHorizontalPadding);
         uiItemDelegate->Property("highlighted", "ListView.isCurrentItem");
+        uiItemDelegate->Property("Accessible.name", "modelData.text");
 
         auto backgroundTagDelegate = std::make_shared<QmlTag>("Rectangle");
         //TODO: These color styling should come from css
@@ -1305,6 +1336,7 @@ namespace RendererQml
         auto toggleButtonConfig = context->GetRenderConfig()->getToggleButtonConfig();
         auto uiColumn = std::make_shared<QmlTag>("Column");
         uiColumn->Property("id", choiceset.id);
+        uiColumn->Property("width", "parent.width");
 
         auto uiButtonGroup = std::make_shared<QmlTag>("ButtonGroup");
         uiButtonGroup->Property("id", choiceset.id + "_btngrp");
@@ -1345,6 +1377,52 @@ namespace RendererQml
                 << choiceset.id << ".colorChange(" << button->GetId() << ", false);}\n"
             );
             uiInnerColumn->AddChild(button);
+
+            auto focusRectangle = std::make_shared<RendererQml::QmlTag>("Rectangle");
+            focusRectangle->Property("width", Formatter() << uiColumn->GetId() << ".width");
+            focusRectangle->Property("height", "parent.height");
+            focusRectangle->Property("color", "transparent", true);
+            focusRectangle->Property("border.color", context->GetHexColor(toggleButtonConfig.focusRectangleColor));
+            focusRectangle->Property("border.width", "parent.activeFocus ? 1 : 0");
+            button->AddChild(focusRectangle);
+        }
+
+        if (!choiceset.isMultiSelect && uiInnerColumn->GetChildren().size() > 1)
+        {
+            uiColumn->Property("activeFocusOnTab", "true");
+            uiColumn->Property("onActiveFocusChanged", Formatter() << "{"
+                "if(activeFocus){"
+                "if(" << uiButtonGroup->GetId() << ".checkedButton !== null){"
+                << uiButtonGroup->GetId() << ".checkedButton.forceActiveFocus();}"
+                "else{"
+                << uiInnerColumn->GetChildren()[0]->GetId() << ".forceActiveFocus()}}}");
+
+            for (int i = 0; i < uiInnerColumn->GetChildren().size(); i++)
+            {
+                std::string upString = "";
+                std::string downString = "";
+                std::string tabString = Formatter() << "if(event.key == Qt.Key_Tab)\n"
+                    << "{" << uiColumn->GetId() << ".nextItemInFocusChain().forceActiveFocus(); event.accepted = true;}\n";
+
+                auto button = uiInnerColumn->GetChildren()[i];
+
+                if (i != 0)
+                {
+                    auto prevButtonId = uiInnerColumn->GetChildren()[i - 1]->GetId();
+                    upString = Formatter() << "if(event.key == Qt.Key_Up)\n"
+                        << "{" << prevButtonId << ".checked = true; " << prevButtonId << ".forceActiveFocus(); event.accepted = true;}\n";
+                }
+
+                if (i != uiInnerColumn->GetChildren().size() - 1)
+                {
+                    auto nextButtonId = uiInnerColumn->GetChildren()[i + 1]->GetId();
+                    downString = Formatter() << "if(event.key == Qt.Key_Down)\n"
+                        << "{" << nextButtonId << ".checked = true; " << nextButtonId << ".forceActiveFocus(); event.accepted = true;}\n";
+                }
+
+                button->Property("Keys.onPressed", Formatter() << "{"<< upString << downString << tabString << "}");
+                button->Property("activeFocusOnTab", "false");
+            }
         }
 
         uiColumn->AddFunctions(Formatter() << "function colorChange(item,isPressed){\n"
@@ -1526,6 +1604,11 @@ namespace RendererQml
         uiTextField->Property("topPadding", Formatter() << dateInputConfig.textVerticalPadding);
         uiTextField->Property("bottomPadding", Formatter() << dateInputConfig.textVerticalPadding);
         uiTextField->Property("padding", "0");
+        uiTextField->Property("Accessible.name", "placeholderText");
+        uiTextField->Property("Accessible.role", "Accessible.EditableText");
+        uiTextField->Property("Keys.onReleased", Formatter() << "{"
+            "if (event.key === Qt.Key_Escape)\n"
+            "{event.accepted = true}\n}");
 
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("color", "'transparent'");
@@ -1708,6 +1791,8 @@ namespace RendererQml
             << "nextItemInFocusChain().forceActiveFocus();\n"
             << uiTextFieldId << ".clear();\n" << "}";
         clearIcon->Property("onClicked", clearIcon_OnClicked_value);
+        clearIcon->Property("Accessible.name", Formatter() << (input->GetPlaceholder().empty() ? "Date Input" : input->GetPlaceholder()) << " clear", true);
+        clearIcon->Property("Accessible.role", "Accessible.Button");
 				
         context->addToInputElementList(origionalElementId, (uiTextField->GetId() + ".selectedDate"));
 
@@ -1716,6 +1801,8 @@ namespace RendererQml
         uiDateInputRow->AddChild(clearIcon);
 
         uiDateInputWrapper->AddChild(uiDateInputRow);
+
+        uiDateInputCombobox->Property("Accessible.ignored", "true");
 
         return uiDateInputWrapper;
     }
@@ -1751,6 +1838,8 @@ namespace RendererQml
 		listviewCalendar->Property("property date minimumDate", minimumDate != "" ? minimumDate : Formatter() << "new Date(" << std::to_string(lowerDateLimit.at(0)) << "," << std::to_string(lowerDateLimit.at(1)) << "," << std::to_string(lowerDateLimit.at(2)) << ")");
 		listviewCalendar->Property("property date maximumDate", maximumDate != "" ? maximumDate : Formatter() << "new Date(" << std::to_string(upperDateLimit.at(0)) << "," << std::to_string(upperDateLimit.at(1)) << "," << std::to_string(upperDateLimit.at(2)) << ")");
 		listviewCalendar->Property("property date selectedDate", "new Date()");
+		listviewCalendar->Property("property string accessibilityPrefix", "Date Picker. The current date is", true);
+		listviewCalendar->Property("property string dateForSc", "''");
 
 		listviewCalendar->Property("id", Formatter() << textFieldId << "_calendarRoot");
 
@@ -1763,7 +1852,7 @@ namespace RendererQml
 			<< "curCalendarMonth = selectedDate.getMonth();"
             << "var curIndex = (selectedDate.getFullYear()) * 12 + selectedDate.getMonth();"
             << "currentIndex = curIndex;"
-			<< "positionViewAtIndex(curIndex, ListView.Center);" << " }");
+			<< "positionViewAtIndex(curIndex, ListView.Center);" << "getDateForSC(clickedDate); }");
 
 		listviewCalendar->AddFunctions(Formatter() << "function setCalendarDateFromString(dateString)\n"
 			<< "{\n"
@@ -1776,28 +1865,14 @@ namespace RendererQml
 			<< "setDate(selectedDate)\n"
 			<< "}");
 
-        listviewCalendar->Property("Keys.onPressed", Formatter() << "{"
-            << "var date = new Date(selectedDate)\n"
-            << "if (event.key === Qt.Key_Right)\n"
-            << "date.setDate(date.getDate() + 1)\n"
-            << "else if (event.key === Qt.Key_Left)\n"
-            << "date.setDate(date.getDate() - 1)\n"
-            << "else if (event.key === Qt.Key_Up)\n"
-            << "date.setDate(date.getDate() - 7)\n"
-            << "else if (event.key === Qt.Key_Down)\n"
-            << "date.setDate(date.getDate() + 7)\n"
-            << "else if (event.key === Qt.Key_Return)\n"
-            << "{\n"
-            << popupTag->GetId() << ".close();\n"
-            << textFieldId << ".text = selectedDate.toLocaleString(Qt.locale(\"en_US\"), \"dd\\/MMM\\/yyyy\")\n"
-            << "}\n"
-            << "if (date >= minimumDate && date <= maximumDate)\n"
-            << "{\n"
-            << "selectedDate = new Date(date)\n"
-            << "currentIndex = (selectedDate.getFullYear()) * 12 + selectedDate.getMonth()\n"
-            << "}"
-            << "event.accepted = true\n"
-        "}\n");
+		listviewCalendar->AddFunctions(Formatter() << "function getDateForSC(clickedDate)\n"
+			<< "{\n"
+			<< "var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']\n"
+			<< "var d = clickedDate.getDate()\n"
+			<< "var m = months[clickedDate.getMonth()]\n"
+			<< "var y = clickedDate.getFullYear()\n"
+			<< listviewCalendar->GetId() << ".dateForSc = m + ' ' + d + ' ' + y\n"
+			<< "}");
 
 		listviewCalendar->Property("Component.onCompleted", Formatter() << "{"
 			<< textFieldId << "." << "textChanged" << textFieldId << ".connect(setCalendarDateFromString);"
@@ -1846,6 +1921,10 @@ namespace RendererQml
 
 		auto delegateRectangle = std::make_shared<QmlTag>("Rectangle");
 		delegateRectangle->Property("id", Formatter() << textFieldId << "delegateRectangle");
+		delegateRectangle->Property("property bool datePickerFocusCheck", Formatter() << listviewCalendar->GetId() << ".activeFocus && " << listviewCalendar->GetId() << ".activeFocus && new Date(year,month,date).toDateString() == " << listviewCalendar->GetId() << ".selectedDate.toDateString()");
+		delegateRectangle->Property("onDatePickerFocusCheckChanged", "{if (datePickerFocusCheck)forceActiveFocus()}");
+		delegateRectangle->Property("Accessible.name", Formatter() << listviewCalendar->GetId() << ".accessibilityPrefix + " << listviewCalendar->GetId() << ".dateForSc");
+		delegateRectangle->Property("Accessible.role", "Accessible.NoRole");
 
 		auto delegateMouseArea = std::make_shared<QmlTag>("MouseArea");
 		delegateMouseArea->Property("id", Formatter() << textFieldId << "delegateMouseArea");
@@ -1890,6 +1969,14 @@ namespace RendererQml
 		delegateRectangle->Property("radius", "0.5 * width");
 		delegateRectangle->Property("property date cellDate", "new Date(year,month,date)");
 
+        auto borderFocusRectangle = std::make_shared<QmlTag>("Rectangle");
+        borderFocusRectangle->Property("width", Formatter() << dateInputConfig.dateElementSize);
+        borderFocusRectangle->Property("height", Formatter() << dateInputConfig.dateElementSize);
+        borderFocusRectangle->Property("color", "'transparent'");
+        borderFocusRectangle->Property("border.width", Formatter() << listviewCalendar->GetId() << ".activeFocus && new Date(year,month,date).toDateString() == " << listviewCalendar->GetId() << ".selectedDate.toDateString() ? 1 : 0");
+        borderFocusRectangle->Property("border.color", context->GetHexColor(dateInputConfig.calendarBorderColor));
+
+        delegateRectangle->AddChild(borderFocusRectangle);
 		delegateRectangle->AddChild(delegateText);
 		delegateRectangle->AddChild(delegateMouseArea);
 		repeaterTag->Property("delegate",delegateRectangle->ToString());
@@ -1904,6 +1991,14 @@ namespace RendererQml
 
         auto iconBackground = std::make_shared<QmlTag>("Rectangle");
         iconBackground->Property("color", context->GetHexColor(dateInputConfig.calendarBackgroundColor));
+        iconBackground->Property("border.width", "parent.activeFocus ? 1 : 0");
+        iconBackground->Property("border.color", context->GetHexColor(dateInputConfig.calendarBorderColor));
+
+        std::string setMonthDate = Formatter() << "var tempDate = new Date()\n"
+            << "tempDate.setMonth(" << listviewCalendar->GetId() << ".curCalendarMonth)\n"
+            << "tempDate.setYear(" << listviewCalendar->GetId() << ".curCalendarYear)\n"
+            << "tempDate.setDate(1)\n"
+            << listviewCalendar->GetId() << ".setDate(tempDate);" << listviewCalendar->GetId() << ".getDateForSC(tempDate)\n";
 
 		auto rightArrowButton = GetIconTag(context);
 		rightArrowButton->Property("id", Formatter() << textFieldId << "_rightArrow");
@@ -1917,13 +2012,16 @@ namespace RendererQml
 		rightArrowButton->Property("anchors.margins", "0");
 		rightArrowButton->Property("icon.source", RendererQml::right_arrow_28, true);
         rightArrowButton->Property("background", iconBackground->ToString());
+        rightArrowButton->Property("Keys.onReturnPressed", "onReleased()");
+        rightArrowButton->Property("Accessible.name", "Next Month", true);
+        rightArrowButton->Property("Accessible.role", "Accessible.Button");
 
 		std::string rightArrowOnClicked = Formatter() << "{\n"
 			<< listviewCalendar->GetId() << ".curCalendarYear = " << listviewCalendar->GetId() << ".curCalendarMonth ==11? " << listviewCalendar->GetId() << ".curCalendarYear + 1 : " << listviewCalendar->GetId() << ".curCalendarYear;\n"
 			<< listviewCalendar->GetId() << ".curCalendarMonth = (" << listviewCalendar->GetId() << ".curCalendarMonth + 1)%12;\n"
 			<< listviewCalendar->GetId() << ".positionViewAtIndex((" << listviewCalendar->GetId() << ".curCalendarYear) * 12 + (" << listviewCalendar->GetId() << ".curCalendarMonth), ListView.Center);\n"
-			<< "}\n";
-		rightArrowButton->Property("onClicked", rightArrowOnClicked);
+			<< setMonthDate << "}\n";
+		rightArrowButton->Property("onReleased", rightArrowOnClicked);
 
 		auto leftArrowButton = GetIconTag(context);
 		leftArrowButton->Property("id", Formatter() << textFieldId << "_leftArrow");
@@ -1938,13 +2036,49 @@ namespace RendererQml
 		leftArrowButton->Property("anchors.right", Formatter() << rightArrowButton->GetId() << ".left");
 		leftArrowButton->Property("icon.source", RendererQml::left_arrow_28, true);
         leftArrowButton->Property("background", iconBackground->ToString());
+        leftArrowButton->Property("Keys.onReturnPressed", "onReleased()");
+        leftArrowButton->Property("Accessible.name", "Previous Month", true);
+        leftArrowButton->Property("Accessible.role", "Accessible.Button");
 
 		std::string leftArrowOnClicked = Formatter() << "{\n"
 			<< listviewCalendar->GetId() << ".curCalendarYear = " << listviewCalendar->GetId() << ".curCalendarMonth - 1 < 0 ? " << listviewCalendar->GetId() << ".curCalendarYear - 1 : " << listviewCalendar->GetId() << ".curCalendarYear;\n"
 			<< listviewCalendar->GetId() << ".curCalendarMonth = " << listviewCalendar->GetId() << ".curCalendarMonth - 1 < 0 ? 11 : " << listviewCalendar->GetId() << ".curCalendarMonth - 1;\n"
 			<< listviewCalendar->GetId() << ".positionViewAtIndex((" << listviewCalendar->GetId() << ".curCalendarYear) * 12 + (" << listviewCalendar->GetId() << ".curCalendarMonth), ListView.Center);\n"
-			<< "}\n";
-		leftArrowButton->Property("onClicked", leftArrowOnClicked);
+            << setMonthDate << "}\n";
+		leftArrowButton->Property("onReleased", leftArrowOnClicked);
+
+        leftArrowButton->Property("KeyNavigation.tab", rightArrowButton->GetId());
+        rightArrowButton->Property("KeyNavigation.tab", listviewCalendar->GetId());
+        leftArrowButton->Property("KeyNavigation.backtab", listviewCalendar->GetId());
+        rightArrowButton->Property("KeyNavigation.backtab", leftArrowButton->GetId());
+
+        listviewCalendar->Property("Keys.onPressed", Formatter() << "{"
+            << "var date = new Date(selectedDate)\n"
+            << "if (event.key === Qt.Key_Right)\n"
+            << "date.setDate(date.getDate() + 1)\n"
+            << "else if (event.key === Qt.Key_Left)\n"
+            << "date.setDate(date.getDate() - 1)\n"
+            << "else if (event.key === Qt.Key_Up)\n"
+            << "date.setDate(date.getDate() - 7)\n"
+            << "else if (event.key === Qt.Key_Down)\n"
+            << "date.setDate(date.getDate() + 7)\n"
+            << "else if (event.key === Qt.Key_Return)\n"
+            << "{\n"
+            << popupTag->GetId() << ".close();\n"
+            << textFieldId << ".text = selectedDate.toLocaleString(Qt.locale(\"en_US\"), \"dd\\/MMM\\/yyyy\")\n"
+            << "}\n"
+            << "else if (event.key === Qt.Key_Tab) {\n"
+            << leftArrowButton->GetId() << ".forceActiveFocus()}\n"
+            << "else if (event.key === Qt.Key_Backtab) {\n"
+            << rightArrowButton->GetId() << ".forceActiveFocus()}\n"
+            << "if (date >= minimumDate && date <= maximumDate)\n"
+            << "{\n"
+            << "selectedDate = new Date(date)\n"
+            << "currentIndex = (selectedDate.getFullYear()) * 12 + selectedDate.getMonth()\n"
+            << "}\n"
+            << listviewCalendar->GetId() << ".accessibilityPrefix = '';getDateForSC(selectedDate);"
+            << "event.accepted = true\n"
+            "}\n");
 
 		popupTag->AddChild(rightArrowButton);
 		popupTag->AddChild(leftArrowButton);
@@ -2148,7 +2282,7 @@ namespace RendererQml
 
 		uiRectangle->AddChild(uiImage);
 
-        addSelectAction(uiRectangle, uiRectangle->GetId(), image->GetSelectAction(), context);
+        addSelectAction(uiRectangle, uiRectangle->GetId(), image->GetSelectAction(), context, image->GetElementTypeString());
 
 		return uiRectangle;
 	}
@@ -2207,6 +2341,11 @@ namespace RendererQml
         uiTimeInput->Property("topPadding", Formatter() << timeConfig.textVerticalPadding);
         uiTimeInput->Property("bottomPadding", Formatter() << timeConfig.textVerticalPadding);
         uiTimeInput->Property("padding", "0");
+        uiTimeInput->Property("Accessible.name", "placeholderText");
+        uiTimeInput->Property("Accessible.role", "Accessible.EditableText");
+        uiTimeInput->Property("Keys.onReleased", Formatter() << "{"
+            "if (event.key === Qt.Key_Escape)\n"
+            "{event.accepted = true}\n}");
 
         uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
 
@@ -2289,6 +2428,8 @@ namespace RendererQml
             << timePopup_id << ".close();\n"
             << "}";
         clearIcon->Property("onClicked", clearIcon_OnClicked_value);
+        clearIcon->Property("Accessible.name", Formatter() << (input->GetPlaceholder().empty() ? "Time Input" : input->GetPlaceholder()) << " clear", true);
+        clearIcon->Property("Accessible.role", "Accessible.Button");
 
         //Popup that contains the hours and min ListViews
         auto PopupBgrTag = std::make_shared<QmlTag>("Rectangle");
@@ -2317,6 +2458,7 @@ namespace RendererQml
         auto timeBoxTag = std::make_shared<QmlTag>("Rectangle");
         timeBoxTag->Property("anchors.fill", "parent");
         timeBoxTag->Property("color", "'transparent'");
+        timeBoxTag->Property("Accessible.name", "Time Picker", true);
 
         auto timeBoxRow = std::make_shared<QmlTag>("RowLayout");
         timeBoxRow->Property("width", "parent.width");
@@ -2353,6 +2495,8 @@ namespace RendererQml
             ListViewttProperties["Text"].insert(std::pair<std::string, std::string>("KeyNavigation.left", listViewMin_id));
             ListViewttProperties["ListView"].insert(std::pair<std::string, std::string>("Keys.onReturnPressed", Formatter() << timePopup_id << ".close()"));
             ListViewttProperties["ListView"].insert(std::pair<std::string, std::string>("Layout.rightMargin", Formatter() << timeConfig.timePickerColumnSpacing));
+            ListViewttProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.name", Formatter() << "(" << listViewtt_id << ".currentIndex < 0) ? ' ' : (" << listViewtt_id << ".currentIndex == 0 ? 'AM' : 'PM')"));
+            ListViewttProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.role", "Accessible.StaticText"));
 
             listViewttTag = AdaptiveCardQmlRenderer::ListViewTagforTimeInput(id, listViewtt_id, ListViewttProperties, true, context);
 
@@ -2372,6 +2516,8 @@ namespace RendererQml
         ListViewHoursProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{ forceActiveFocus();" << listViewHours_id << ".currentIndex=index;" << "var x=String(index).padStart(2, '0') ;" << id << ".insert(0,x);" << "}"));
         ListViewHoursProperties["ListView"].insert(std::pair<std::string, std::string>("KeyNavigation.right", listViewMin_id));
         ListViewHoursProperties["ListView"].insert(std::pair<std::string, std::string>("Keys.onReturnPressed", Formatter() << timePopup_id << ".close()"));
+        ListViewHoursProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.name", Formatter() << "(" << listViewHours_id << ".currentIndex < 0) ? ' ' : 'Hour ' + String(" << listViewHours_id << ".currentIndex" << (is12hour ? " + 1" : "") << ")"));
+        ListViewHoursProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.role", "Accessible.StaticText"));
 
         auto ListViewHoursTag = AdaptiveCardQmlRenderer::ListViewTagforTimeInput(id, listViewHours_id, ListViewHoursProperties, false, context);
 
@@ -2379,6 +2525,8 @@ namespace RendererQml
         ListViewMinProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{ forceActiveFocus();" << listViewMin_id << ".currentIndex=index;" << "var x=String(index).padStart(2, '0') ;" << id << ".insert(2,x);" << "}"));
         ListViewMinProperties["ListView"].insert(std::pair<std::string, std::string>("KeyNavigation.left", listViewHours_id));
         ListViewMinProperties["ListView"].insert(std::pair<std::string, std::string>("Keys.onReturnPressed", Formatter() << timePopup_id << ".close()"));
+        ListViewMinProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.name", Formatter() << "(" << listViewMin_id << ".currentIndex < 0) ? ' ' : 'Minute ' + String(" << listViewMin_id << ".currentIndex)"));
+        ListViewMinProperties["Rectangle"].insert(std::pair<std::string, std::string>("Accessible.role", "Accessible.StaticText"));
         if (is12hour == false)
         {
             ListViewMinProperties["ListView"].insert(std::pair<std::string, std::string>("Layout.rightMargin", Formatter() << timeConfig.timePickerColumnSpacing));
@@ -2390,6 +2538,7 @@ namespace RendererQml
         uiTimeComboBox->Property("Keys.onReturnPressed", Formatter() << timePopup_id << ".open()");
         uiTimeComboBox->Property("focusPolicy", "Qt.NoFocus");
         uiTimeComboBox->Property("onActiveFocusChanged", Formatter() << uiTimeInputWrapper->GetId() << ".colorChange(false)");
+        uiTimeComboBox->Property("Accessible.ignored", "true");
 
         timeBoxTag->AddChild(timeBoxRow);
 
@@ -2477,6 +2626,11 @@ namespace RendererQml
             else if (outer_iterator->first.compare("Text") == 0)
             {
                 propertyTag = TextTag;
+            }
+
+            else if (outer_iterator->first.compare("Rectangle") == 0)
+            {
+                propertyTag = delegateRectTag;
             }
 
             for (inner_iterator = outer_iterator->second.begin(); inner_iterator != outer_iterator->second.end(); inner_iterator++)
@@ -2676,7 +2830,7 @@ namespace RendererQml
 		}
         backgroundRect->Property("color", "parent.bgColor");
 
-        addSelectAction(uiFrame, backgroundRect->GetId(), columnSet->GetSelectAction(), context);
+        addSelectAction(uiFrame, backgroundRect->GetId(), columnSet->GetSelectAction(), context, columnSet->GetElementTypeString());
         uiFrame->Property("background", backgroundRect->ToString());
 
 		uiFrame = addColumnSetElements(columnSet, uiFrame, context);
@@ -2870,7 +3024,7 @@ namespace RendererQml
         }
         backgroundRect->Property("color", "parent.bgColor");
 
-        addSelectAction(uiContainer, backgroundRect->GetId(), cardElement->GetSelectAction(), context, hasBackgroundImage);
+        addSelectAction(uiContainer, backgroundRect->GetId(), cardElement->GetSelectAction(), context, cardElement->GetElementTypeString(), hasBackgroundImage);
         uiContainer->Property("background", backgroundRect->ToString());
 
         int tempMargin = 0;
@@ -3047,6 +3201,18 @@ namespace RendererQml
             contentItem->AddChild(contentLayout);
             contentItem->Property("height", "parent.height");
             contentItem->Property("implicitWidth", Formatter() << contentLayout->GetId() << ".implicitWidth");
+            contentItem->Property("activeFocusOnTab", Formatter() << "!" << buttonElement->GetId() << ".isButtonDisabled");
+            contentItem->Property("Accessible.role", "Accessible.Button");
+
+            auto focusRectangle = std::make_shared<QmlTag>("Rectangle");
+            focusRectangle->Property("width", Formatter() << buttonElement->GetId() << ".width");
+            focusRectangle->Property("height", Formatter() << buttonElement->GetId() << ".height");
+            focusRectangle->Property("x", Formatter() << "-" << buttonConfig.horizotalPadding);
+            focusRectangle->Property("y", Formatter() << "-" << buttonConfig.verticalPadding);
+            focusRectangle->Property("color", "transparent", true);
+            focusRectangle->Property("border.color", context->GetHexColor(buttonConfig.focusRectangleColor));
+            focusRectangle->Property("border.width", "parent.activeFocus ? 1 : 0");
+            contentItem->AddChild(focusRectangle);
 
             //Add button icon
             if (!action->GetIconUrl().empty())
@@ -3093,8 +3259,7 @@ namespace RendererQml
             contentText->Property("font.pixelSize", Formatter() << buttonConfig.pixelSize);
             contentText->Property("font.weight", buttonConfig.fontWeight);
             contentText->Property("elide", "Text.ElideRight");
-
-            bgRectangle->Property("border.width", Formatter() << buttonId << ".activeFocus ? 2 : 1");
+            contentItem->Property("Accessible.name", Formatter() << contentText->GetId() << ".text");
 
             auto connectionElement = std::make_shared<QmlTag>("Connections");
             connectionElement->Property("id", Formatter() << buttonElement->GetId() << "_connection");
@@ -3106,21 +3271,21 @@ namespace RendererQml
                 << "\n}"
                 << "\n}");
 
-            if(isShowCardButton)
+            if (isShowCardButton)
             {
-                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
+                bgRectangle->Property("border.color", context->GetHexColor(buttonConfig.borderColorNormal));
                 bgRectangle->Property("color", Formatter() << "(" << buttonId << ".showCard || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal));
                 contentText->Property("color", Formatter() << "( " << buttonId << ".showCard || " << buttonId << ".hovered || " << buttonId << ".down) ? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal));
             }
             else if (action->GetElementTypeString() == "Action.Submit")
             {
-                bgRectangle->Property("border.color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.buttonColorDisabled) << " : (" << buttonId << ".activeFocus && " << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal) << ")");
+                bgRectangle->Property("border.color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.buttonColorDisabled) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
                 bgRectangle->Property("color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.buttonColorDisabled) << ": (" << buttonId << ".down ? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal) << ")");
                 contentText->Property("color", Formatter() << buttonElement->GetId() << ".isButtonDisabled ? " << context->GetHexColor(buttonConfig.textColorDisabled) << ": (" << "( " << buttonId << ".hovered || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal) << ")");
             }
             else
             {
-                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
+                bgRectangle->Property("border.color", context->GetHexColor(buttonConfig.borderColorNormal));
                 bgRectangle->Property("color", Formatter() << buttonId << ".down ? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal));
                 contentText->Property("color", Formatter() << "( " << buttonId << ".hovered || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal));
             }
@@ -3150,7 +3315,7 @@ namespace RendererQml
 				showCardIcon->Property("icon.height", "12");
 				showCardIcon->Property("icon.source", RendererQml::arrow_down_12, true);
 				showCardIcon->Property("background", showCardIconBackground->ToString());
-                showCardIcon->Property("onReleased", Formatter() << "{" << buttonId << ".released();" << buttonId << ".forceActiveFocus()}");
+                showCardIcon->Property("onReleased", Formatter() << buttonId << ".released();");
                 textLayout->AddChild(showCardIcon);
             }
 
@@ -3174,13 +3339,16 @@ namespace RendererQml
             {
                 context->addToSubmitActionButtonList(buttonElement, std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(action));
                 buttonElement->AddChild(connectionElement);
+                buttonElement->Property("onIsButtonDisabledChanged", "{if(isButtonDisabled){contentItem.nextItemInFocusChain().forceActiveFocus();}}");
             }
             else
             {
                 onReleasedFunction = "";
             }
 
-            buttonElement->Property("onReleased", Formatter() << "{\n" << onReleasedFunction << "}\n");
+            buttonElement->Property("activeFocusOnTab", "false");
+            buttonElement->Property("onReleased", Formatter() << "{\ncontentItem.forceActiveFocus();" << onReleasedFunction << "}\n");
+            buttonElement->Property("Accessible.ignored", "true");
             return buttonElement;
         }
 
@@ -3209,7 +3377,7 @@ namespace RendererQml
             const auto action = element.second;
 
             onReleasedFunction = getActionShowCardClickFunc(buttonElement, context);
-            buttonElement->Property("onReleased", Formatter() << "{\n" << onReleasedFunction << "}\n");
+            buttonElement->Property("onReleased", Formatter() << "{\ncontentItem.forceActiveFocus();" << onReleasedFunction << "}\n");
         }
 
         context->clearShowCardButtonList();
@@ -3892,6 +4060,49 @@ namespace RendererQml
 		return minWidthFactSet;
 	}
 
+    const std::string RendererQml::AdaptiveCardQmlRenderer::getSelectLinkFunction()
+    {
+        std::string selectLinkFunction = R"(function selectLink(element, next) {
+            let start, end;
+            if (next) {
+                element.cursorPosition = element.selectionEnd + 1;
+                element.deselect();
+                while (element.cursorPosition < element.length && element.linkAt(element.cursorRectangle.x, element.cursorRectangle.y) === "")element.cursorPosition++
+                if (element.cursorPosition !== element.length) {
+                    start = element.cursorPosition - 1;
+                    element.link = element.linkAt(element.cursorRectangle.x - 1, element.cursorRectangle.y);
+                    while (element.cursorPosition < element.length && element.linkAt(element.cursorRectangle.x - 1, element.cursorRectangle.y) === element.link)element.cursorPosition++
+                    if (element.cursorPosition <= element.length) {
+                        end = element.cursorPosition === element.length ? element.cursorPosition : element.cursorPosition - 1;
+                        element.select(start, end);
+                        return true;
+                    }
+                }
+            } else {
+                element.cursorPosition = element.selectionStart - 1;
+                element.deselect();
+                while (element.cursorPosition > 0 && element.linkAt(element.cursorRectangle.x + 1, element.cursorRectangle.y) === "")element.cursorPosition--
+                if (element.cursorPosition !== 0) {
+                    end = element.selectionStart + 1;
+                    element.link = element.linkAt(element.cursorRectangle.x, element.cursorRectangle.y);
+                    while (element.cursorPosition > 0 && element.linkAt(element.cursorRectangle.x, element.cursorRectangle.y) === element.link)element.cursorPosition--
+                    if (element.cursorPosition >= 0) {
+                        start = element.cursorPosition;
+                        element.select(end, start);
+                        return true;
+                    }
+                }
+            }
+            element.accessibleText = element.cursorPosition === 0 ? element.getText(0, element.length) : ""
+            element.link = ""
+            return false;
+        })";
+
+        selectLinkFunction.erase(std::remove(selectLinkFunction.begin(), selectLinkFunction.end(), '\t'), selectLinkFunction.end());
+
+        return selectLinkFunction;
+    }
+
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetIconTag(std::shared_ptr<AdaptiveRenderContext> context)
     {
         auto iconBackgroundTag = std::make_shared<QmlTag>("Rectangle");
@@ -4074,5 +4285,38 @@ namespace RendererQml
         uiCard->AddChild(rightRectangle);
 
         return uiCard;
+    }
+
+    std::shared_ptr<QmlTag> RendererQml::AdaptiveCardQmlRenderer::AddAccessibilityToTextBlock(std::shared_ptr<QmlTag> uiTextBlock, std::shared_ptr<AdaptiveRenderContext> context)
+    {
+        auto cardConfig = context->GetRenderConfig()->getCardConfig();
+
+        uiTextBlock->Property("property string accessibleText", "getText(0, length)");
+        uiTextBlock->Property("property string link", "", true);
+        uiTextBlock->Property("activeFocusOnTab", "true");
+        uiTextBlock->Property("Accessible.name", "accessibleText");
+        uiTextBlock->Property("readOnly", "true");
+        uiTextBlock->Property("selectByMouse", "false");
+        uiTextBlock->Property("selectByKeyboard", "false");
+        uiTextBlock->Property("Keys.onPressed", Formatter() << "{"
+            << "if (event.key === Qt.Key_Tab) {event.accepted = selectLink(this, true);}"
+            << "else if (event.key === Qt.Key_Backtab) {event.accepted = selectLink(this, false);}"
+            << " else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter || event.key == Qt.Key_Space) { if (link) {linkActivated(link);} event.accepted = true;}}");
+
+        uiTextBlock->Property("onSelectedTextChanged", Formatter() << "{"
+            << "if (link) { accessibleText = selectedText + ' has link,' + link + '. To activate press space bar.';}"
+            << "else {accessibleText = ''}}");
+
+        uiTextBlock->Property("onActiveFocusChanged", Formatter() << "{"
+            << "if (activeFocus) { accessibleText = getText(0,length);}}");
+
+        auto uiFocusRectangle = std::make_shared<QmlTag>("Rectangle");
+        uiFocusRectangle->Property("anchors.fill", "parent");
+        uiFocusRectangle->Property("color", "transparent", true);
+        uiFocusRectangle->Property("border.width", "parent.activeFocus ? 1 : 0");
+        uiFocusRectangle->Property("border.color", Formatter() << "parent.activeFocus ? '" << cardConfig.focusRectangleColor << "' : 'transparent'");
+        uiTextBlock->AddChild(uiFocusRectangle);
+
+        return uiTextBlock;
     }
 }
