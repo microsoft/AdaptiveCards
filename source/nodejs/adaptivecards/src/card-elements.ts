@@ -5001,7 +5001,6 @@ class ActionCollection {
             let buttonStrip = document.createElement("div");
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
-            buttonStrip.setAttribute("role", "menubar");
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
@@ -5108,12 +5107,6 @@ class ActionCollection {
                 action.render();
 
                 if (action.renderedElement) {
-                    if (primaryActions.length > 1) {
-                        action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        action.renderedElement.setAttribute("aria-setsize", primaryActions.length.toString());
-                        action.renderedElement.setAttribute("role", "menuitem");
-                    }
-
                     if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                         action.renderedElement.style.flex = "0 1 100%";
                     }
