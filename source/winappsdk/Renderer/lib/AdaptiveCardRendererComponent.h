@@ -8,17 +8,14 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    namespace rtxaml = ::winrt::Windows::UI::Xaml;
-
     // This class is effectively a singleton, and stays around between subsequent renders.
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
     {
     private:
-        rtxaml::ResourceDictionary m_overrideDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_overrideDictionary;
         WinUI3::AdaptiveHostConfig m_hostConfig;
         WinUI3::AdaptiveFeatureRegistration m_featureRegistration;
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
-        /*::AdaptiveCards::Rendering::WinUI3::XamlBuilder* m_xamlBuilder;*/
         bool m_explicitDimensions = false;
         uint32_t m_desiredWidth = 0;
         uint32_t m_desiredHeight = 0;
@@ -32,13 +29,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         AdaptiveCardRenderer();
 
         // IAdaptiveCardRenderer
-        void OverrideStyles(rtxaml::ResourceDictionary const& overrideDictionary)
+        void OverrideStyles(winrt::Windows::UI::Xaml::ResourceDictionary const& overrideDictionary)
         {
             m_overrideDictionary = overrideDictionary;
             SetMergedDictionary();
         }
 
-        rtxaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
+        winrt::Windows::UI::Xaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
         void HostConfig(WinUI3::AdaptiveHostConfig const& hostConfig)
         {
@@ -80,11 +77,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         WinUI3::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
         WinUI3::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
 
-        rtxaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
+        winrt::Windows::UI::Xaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
-        /*::AdaptiveCards::Rendering::WinUI3::XamlBuilder* GetXamlBuilder() { return m_xamlBuilder; }*/
-        rtxaml::ResourceDictionary GetActionSentimentResourceDictionary()
+        winrt::Windows::UI::Xaml::ResourceDictionary GetActionSentimentResourceDictionary()
         {
             return m_actionSentimentResourceDictionary;
         }
@@ -98,9 +94,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                             winrt::Windows::Foundation::IInspectable const& value);
         void SetMergedDictionary();
 
-        rtxaml::ResourceDictionary m_defaultResourceDictionary;
-        rtxaml::ResourceDictionary m_mergedResourceDictionary;
-        rtxaml::ResourceDictionary m_actionSentimentResourceDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_defaultResourceDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_mergedResourceDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_actionSentimentResourceDictionary;
         WinUI3::AdaptiveCardResourceResolvers m_resourceResolvers;
         winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;

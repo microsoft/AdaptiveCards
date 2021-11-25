@@ -30,13 +30,15 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         static winrt::Windows::UI::Xaml::FrameworkElement
         BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
-                                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext renderContext,
+                                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                                       XamlBuilder* xamlBuilder,
                                       winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle =
                                           winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::Default);
 
         /* HRESULT AddListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
          HRESULT RemoveListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;*/
+        // TODO: not sure what we need this for? Are they for public? remove them for now
+        // TODO: I think these methods are created so people from outside can listen to images loading?
         void AddListener(::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener);
         void RemoveListener(::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener);
         void SetFixedDimensions(uint32_t width, uint32_t height) noexcept;
@@ -64,12 +66,14 @@ namespace AdaptiveCards::Rendering::WinUI3
     private:
         /* winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;*/
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;
-        std::set<winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener>> m_listeners;
+        // TODO: why do we need this?
+        std::set<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener*> m_listeners;
         /*winrt::Windows::Storage::Streams::IRandomAccessStreamStatics m_randomAccessStreamStatics{};*/
         winrt::Windows::Storage::Streams::RandomAccessStream m_randomAccessStreamStatics{};
         /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*,
          * ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
-      /*  std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
+        /*  std::vector<winrt::com_ptr<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream,
+         * winrt::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;*/
         std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>> m_getStreamOperations;
         std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
         /* std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;*/
@@ -84,7 +88,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         bool m_enableXamlImageHandling = false;
 
         /*Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;*/
-      /*  winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardResourceResolvers> m_resourceResolvers;*/
+        /*  winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardResourceResolvers> m_resourceResolvers;*/
         /*winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers m_resourceResolvers;*/
 
         static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
@@ -105,14 +109,14 @@ namespace AdaptiveCards::Rendering::WinUI3
         void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
         template<typename T>
         void SetAutoSize(T const& destination,
-                        winrt::Windows::Foundation::IInspectable const& parentElement,
-                        winrt::Windows::Foundation::IInspectable const&, /* imageContainer */
-                        bool isVisible,
-                        bool imageFiresOpenEvent);
+                         winrt::Windows::Foundation::IInspectable const& parentElement,
+                         winrt::Windows::Foundation::IInspectable const&, /* imageContainer */
+                         bool isVisible,
+                         bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,
-                        	ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
+                            ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
                             ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
 
         template<typename T>

@@ -92,6 +92,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
              }*/
 
             toReturn = resourceDictionary.TryLookup(resourceKey).try_as<T>();
+            return toReturn;
         }
         catch (...)
         {
@@ -233,10 +234,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         {
             // TODO: is this the right way?
             // TODO: COME BACK TO THIS ASAP!
-            /* if (auto wholeItemsPanel = peek_innards<rtrender::implementation::WholeItemsPanel>(panel))
-             {
-                 wholeItemsPanel->AddElementToStretchablesList(elementToAppend);
-             }*/
+            if (const auto wholeItemsPanel = panel.try_as<rtrender::WholeItemsPanel>())
+            {
+                auto wholeItemsPanelImpl = peek_innards<rtrender::implementation::WholeItemsPanel>(wholeItemsPanel);
+                wholeItemsPanelImpl->AddElementToStretchablesList(elementToAppend);
+            }
         }
     }
 

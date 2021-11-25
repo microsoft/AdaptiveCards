@@ -3,7 +3,6 @@
 #pragma once
 
 #include "AdaptiveDateInputRenderer.g.h"
-#include "DateInput.h"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

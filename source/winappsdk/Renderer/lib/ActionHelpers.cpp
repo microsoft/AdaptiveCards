@@ -8,23 +8,6 @@
 #include "LinkButton.h"
 #include "AdaptiveHostConfig.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace ABI::Windows::UI::Xaml::Input;
-using namespace ABI::Windows::UI::Xaml::Media;
-
-namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
-namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
-namespace rtxaml = winrt::Windows::UI::Xaml;
-
 namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 {
     rtxaml::Thickness GetButtonMargin(rtrender::AdaptiveActionsConfig const& actionsConfig)
@@ -56,21 +39,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             toolTip.Content(tooltipTextBlock);
             rtxaml::Controls::ToolTipService::SetToolTip(tooltipTarget, toolTip);
         }
-    }
-
-    void SetAutomationNameAndDescription(_In_ IDependencyObject* dependencyObject, _In_opt_ HSTRING name, _In_opt_ HSTRING description)
-    {
-        // Set the automation properties
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        THROW_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
-
-        ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
-        THROW_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
-
-        THROW_IF_FAILED(automationPropertiesStatics->SetName(dependencyObject, name));
-        THROW_IF_FAILED(automationPropertiesStatics5->SetFullDescription(dependencyObject, description));
     }
 
     void SetAutomationNameAndDescription(rtxaml::DependencyObject const& dependencyObject,
@@ -196,278 +164,81 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         }
     }
 
-    // void ArrangeButtonContent(_In_ HSTRING actionTitle,
-    //                          _In_ HSTRING actionIconUrl,
-    //                          _In_ HSTRING actionTooltip,
-    //                          _In_ HSTRING actionAccessibilityText,
-    //                          _In_ IAdaptiveActionsConfig* actionsConfig,
-    //                          _In_ IAdaptiveRenderContext* renderContext,
-    //                          ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
-    //                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-    //                          bool allActionsHaveIcons,
-    //                          _In_ IButton* button)
-    //{
-    //    HString title;
-    //    THROW_IF_FAILED(title.Set(actionTitle));
-
-    //    HString iconUrl;
-    //    THROW_IF_FAILED(iconUrl.Set(actionIconUrl));
-
-    //    HString tooltip;
-    //    THROW_IF_FAILED(tooltip.Set(actionTooltip));
-
-    //    HString accessibilityText;
-    //    THROW_IF_FAILED(accessibilityText.Set(actionAccessibilityText));
-
-    //    HString name;
-    //    HString description;
-    //    if (accessibilityText.IsValid())
-    //    {
-    //        // If we have accessibility text use that as the name and tooltip as the description
-    //        name.Set(accessibilityText.Get());
-    //        description.Set(tooltip.Get());
-    //    }
-    //    else if (title.IsValid())
-    //    {
-    //        // If we have a title, use title as the automation name and tooltip as the description
-    //        name.Set(title.Get());
-    //        description.Set(tooltip.Get());
-    //    }
-    //    else
-    //    {
-    //        // If there's no title, use tooltip as the name
-    //        name.Set(tooltip.Get());
-    //    }
-
-    //    ComPtr<IButton> localButton(button);
-    //    ComPtr<IDependencyObject> buttonAsDependencyObject;
-    //    THROW_IF_FAILED(localButton.As(&buttonAsDependencyObject));
-    //    SetAutomationNameAndDescription(buttonAsDependencyObject.Get(), name.Get(), description.Get());
-    //    SetTooltip(to_winrt(tooltip), to_winrt(buttonAsDependencyObject));
-
-    //    // Check if the button has an iconUrl
-    //    if (iconUrl != nullptr)
-    //    {
-    //        // Get icon configs
-    //        ABI::AdaptiveCards::Rendering::WinUI3::IconPlacement iconPlacement;
-    //        UINT32 iconSize;
-
-    //        THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
-    //        THROW_IF_FAILED(actionsConfig->get_IconSize(&iconSize));
-
-    //        // Define the alignment for the button contents
-    //        ComPtr<IStackPanel> buttonContentsStackPanel =
-    //            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-
-    //        // Create image and add it to the button
-    //        ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-    //            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
-
-    //        THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
-
-    //        THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(
-    //            winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Center)
-    //                .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
-    //                .get()));
-
-    //        ComPtr<IAdaptiveCardElement> adaptiveCardElement;
-    //        THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-    //        auto childRenderArgs =
-    //            winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, buttonContentsStackPanel, nullptr);
-
-    //        /*auto childRenderArgsTo = to_wrl(childRenderArgs);*/
-
-    //        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-    //        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-
-    //        ComPtr<IUIElement> buttonIcon;
-    //        ComPtr<IAdaptiveElementRenderer> elementRenderer;
-    //        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
-    //        if (elementRenderer != nullptr)
-    //        {
-    //            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, to_wrl(childRenderArgs).Get(),
-    //            &buttonIcon); if (buttonIcon == nullptr)
-    //            {
-    //                XamlHelpers::SetContent(localButton.Get(), title.Get());
-    //                return;
-    //            }
-    //        }
-
-    //        // Create title text block
-    //        ComPtr<ITextBlock> buttonText =
-    //            XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-    //        THROW_IF_FAILED(buttonText->put_Text(title.Get()));
-    //        THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
-
-    //        ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
-    //        THROW_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
-    //        THROW_IF_FAILED(buttonTextAsFrameworkElement->put_VerticalAlignment(
-    //            ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Center));
-
-    //        // Handle different arrangements inside button
-    //        ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
-    //        THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
-
-    //        // Set icon height to iconSize (aspect ratio is automatically maintained)
-    //        THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
-
-    //        ComPtr<IUIElement> separator;
-    //        if (iconPlacement == ABI::AdaptiveCards::Rendering::WinUI3::IconPlacement::AboveTitle && allActionsHaveIcons)
-    //        {
-    //            THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
-    //        }
-    //        else
-    //        {
-    //            THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
-
-    //            // Only add spacing when the icon must be located at the left of the title
-    //            UINT spacingSize;
-    //            THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
-
-    //            ABI::Windows::UI::Color color = {0};
-    //            separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
-    //        }
-
-    //        ComPtr<IPanel> buttonContentsPanel;
-    //        THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
-
-    //        // Add image to stack panel
-    //        XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get());
-
-    //        // Add separator to stack panel
-    //        if (separator != nullptr)
-    //        {
-    //            XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
-    //        }
-
-    //        // Add text to stack panel
-    //        XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get());
-
-    //        // Finally, put the stack panel inside the final button
-    //        ComPtr<IContentControl> buttonContentControl;
-    //        THROW_IF_FAILED(localButton.As(&buttonContentControl));
-    //        THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
-    //    }
-    //    else
-    //    {
-    //        XamlHelpers::SetContent(localButton.Get(), title.Get());
-    //    }
-    //}
-
+    // TODO: refactors this
     void HandleActionStyling(rtom::IAdaptiveActionElement const& adaptiveActionElement,
                              rtxaml::FrameworkElement const& buttonFrameworkElement,
                              bool isOverflowActionButton,
                              rtrender::AdaptiveRenderContext const& renderContext)
     {
-        // TODO: implement this function?
-    }
+        winrt::hstring actionSentiment{};
+        if (adaptiveActionElement != nullptr)
+        {
+            actionSentiment = adaptiveActionElement.Style();
+        }
 
-    // HRESULT HandleActionStyling(_In_ IAdaptiveActionElement* adaptiveActionElement,
-    //                            _In_ IFrameworkElement* buttonFrameworkElement,
-    //                            bool isOverflowActionButton,
-    //                            _In_ IAdaptiveRenderContext* renderContext)
-    //{
-    //    HString actionSentiment;
-    //    if (adaptiveActionElement != nullptr)
-    //    {
-    //        RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
-    //    }
+        int32_t isSentimentPositive, isSentimentDestructive{}, isSentimentDefault{};
 
-    //    INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
+        auto resourceDictionary = renderContext.OverrideStyles();
 
-    //    ComPtr<IResourceDictionary> resourceDictionary;
-    //    RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
-    //    ComPtr<IStyle> styleToApply;
+        auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
-    //    auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
+        // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
+        if (isOverflowActionButton)
+        {
+            if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, L"Adaptive.Action.Overflow"))
+            {
+                buttonFrameworkElement.Style(style);
+            }
+        }
 
-    //    // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
-    //    if (isOverflowActionButton)
-    //    {
-    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-    //                                                                                  L"Adaptive.Action.Overflow",
-    //                                                                                  &styleToApply)))
-    //        {
-    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-    //        }
-    //    }
+        if (actionSentiment.empty() || actionSentiment == L"default")
+        {
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement);
+        }
+        else if (actionSentiment == L"positive")
+        {
+            if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, L"Adaptive.Action.Positive"))
+            {
+                buttonFrameworkElement.Style(style);
+            }
+            else
+            {
+                // By default, set the action background color to accent color
 
-    //    if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(),
-    //    &isSentimentDefault)) &&
-    //         (isSentimentDefault == 0)) ||
-    //        WindowsIsStringEmpty(actionSentiment.Get()))
-    //    {
-    //        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action",
-    //        buttonFrameworkElement));
-    //    }
-    //    else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(),
-    //    &isSentimentPositive)) &&
-    //             (isSentimentPositive == 0))
-    //    {
-    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-    //                                                                                  L"Adaptive.Action.Positive",
-    //                                                                                  &styleToApply)))
-    //        {
-    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-    //        }
-    //        else
-    //        {
-    //            // By default, set the action background color to accent color
-    //            auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-    //            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
-    //                                                                              L"PositiveActionDefaultStyle",
-    //                                                                              styleToApply.GetAddressOf())))
-    //            {
-    //                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-    //            }
-    //        }
-    //    }
-    //    else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive)) &&
-    //             (isSentimentDestructive == 0))
-    //    {
-    //        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-    //                                                                                  L"Adaptive.Action.Destructive",
-    //                                                                                  &styleToApply)))
-    //        {
-    //            RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-    //        }
-    //        else
-    //        {
-    //            // By default, set the action text color to attention color
-    //            auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+                if (const auto style =
+                        XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Style>(actionSentimentDictionary,
+                                                                                           L"PositiveActionDefaultStyle"))
+                {
+                    buttonFrameworkElement.Style(style);
+                }
+            }
+        }
+        else if (actionSentiment == L"destructive")
+        {
+            if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, L"Adaptive.Action.Destructive"))
+            {
+                buttonFrameworkElement.Style(style);
+            }
+            else
+            {
+                // By default, set the action text color to attention color
+                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-    //            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
-    //                                                                              L"DestructiveActionDefaultStyle",
-    //                                                                              styleToApply.GetAddressOf())))
-    //            {
-    //                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        HString actionSentimentStyle;
-    //        RETURN_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
-    //                                             actionSentiment.Get(),
-    //                                             actionSentimentStyle.GetAddressOf()));
-    //        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
-    //    }
-    //    return S_OK;
-    //}
-
-    HRESULT SetMatchingHeight(_In_ IFrameworkElement* elementToChange, _In_ IFrameworkElement* elementToMatch)
-    {
-        DOUBLE actualHeight;
-        RETURN_IF_FAILED(elementToMatch->get_ActualHeight(&actualHeight));
-
-        ComPtr<IFrameworkElement> localElement(elementToChange);
-        RETURN_IF_FAILED(localElement->put_Height(actualHeight));
-
-        ComPtr<IUIElement> frameworkElementAsUIElement;
-        RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
-        RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
-        return S_OK;
+                if (const auto style =
+                        XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Style>(actionSentimentDictionary,
+                                                                                           L"DestructiveActionDefaultStyle"))
+                {
+                    buttonFrameworkElement.Style(style);
+                }
+            }
+        }
+        else
+        {
+            winrt::hstring actionSentimentStyle = L"Adaptive.Action." + actionSentiment;
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle, buttonFrameworkElement);
+        }
     }
 
     void SetMatchingHeight(rtxaml::FrameworkElement const& elementToChange, rtxaml::FrameworkElement const& elementToMatch)
@@ -544,8 +315,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         if (adaptiveActionElement)
         {
             auto actionInvoker = renderContext.ActionInvoker();
-            auto clickToken = button.Click([adaptiveActionElement, actionInvoker](auto...)
-                                           { actionInvoker.SendActionEvent(adaptiveActionElement); });
+            auto clickToken =
+                button.Click([adaptiveActionElement, actionInvoker](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                                                                    rtxaml::RoutedEventArgs const& /*args*/) -> void // TODO: can we just use (auto..)?
+                             { actionInvoker.SendActionEvent(adaptiveActionElement); });
             button.IsEnabled(adaptiveActionElement.IsEnabled());
         }
 
@@ -718,182 +491,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return xamlGrid;
     }
 
-    // void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
-    //                        _In_ IAdaptiveRenderArgs* renderArgs,
-    //                        _In_ IUIElement* textInputUIElement,
-    //                        _In_ IUIElement* textBoxParentContainer,
-    //                        bool isMultilineTextBox,
-    //                        _In_ IAdaptiveActionElement* inlineAction,
-    //                        _COM_Outptr_ IUIElement** textBoxWithInlineAction)
-    //{
-    //    ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
-    //    ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
-
-    //    ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
-    //    THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
-
-    //    ComPtr<IAdaptiveHostConfig> hostConfig;
-    //    THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-    //    // Inline ShowCards are not supported for inline actions
-    //    if (WarnForInlineShowCard(renderContext, localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
-    //    {
-    //        THROW_IF_FAILED(localTextBoxContainer.CopyTo(textBoxWithInlineAction));
-    //        return;
-    //    }
-
-    //    if ((actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit) ||
-    //        (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute))
-    //    {
-    //        THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
-    //    }
-
-    //    // Create a grid to hold the text box and the action button
-    //    ComPtr<IGridStatics> gridStatics;
-    //    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-
-    //    ComPtr<IGrid> xamlGrid =
-    //    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-    //    ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-    //    THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions)); ComPtr<IPanel> gridAsPanel;
-    //    THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
-
-    //    // Create the first column and add the text box to it
-    //    ComPtr<IColumnDefinition> textBoxColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-    //        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-    //    THROW_IF_FAILED(textBoxColumnDefinition->put_Width({1, GridUnitType::GridUnitType_Star}));
-    //    THROW_IF_FAILED(columnDefinitions->Append(textBoxColumnDefinition.Get()));
-
-    //    ComPtr<IFrameworkElement> textBoxContainerAsFrameworkElement;
-    //    THROW_IF_FAILED(localTextBoxContainer.As(&textBoxContainerAsFrameworkElement));
-
-    //    THROW_IF_FAILED(gridStatics->SetColumn(textBoxContainerAsFrameworkElement.Get(), 0));
-    //    XamlHelpers::AppendXamlElementToPanel(textBoxContainerAsFrameworkElement.Get(), gridAsPanel.Get());
-
-    //    // Create a separator column
-    //    ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-    //        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-    //    THROW_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
-    //    THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
-
-    //    UINT spacingSize;
-    //    THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
-
-    //    auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
-
-    //    ComPtr<IFrameworkElement> separatorAsFrameworkElement;
-    //    THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
-
-    //    THROW_IF_FAILED(gridStatics->SetColumn(separatorAsFrameworkElement.Get(), 1));
-    //    XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
-
-    //    // Create a column for the button
-    //    ComPtr<IColumnDefinition> inlineActionColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-    //        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-    //    THROW_IF_FAILED(inlineActionColumnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
-    //    THROW_IF_FAILED(columnDefinitions->Append(inlineActionColumnDefinition.Get()));
-
-    //    HString iconUrl;
-    //    THROW_IF_FAILED(localInlineAction->get_IconUrl(iconUrl.GetAddressOf()));
-    //    ComPtr<IUIElement> actionUIElement;
-    //    if (iconUrl != nullptr)
-    //    {
-    //        // Render the icon using the adaptive image renderer
-    //        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-    //        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-    //        ComPtr<IAdaptiveElementRenderer> imageRenderer;
-    //        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
-
-    //        ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-    //            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
-
-    //        THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
-
-    //        ComPtr<IAdaptiveCardElement> adaptiveImageAsElement;
-    //        THROW_IF_FAILED(adaptiveImage.As(&adaptiveImageAsElement));
-
-    //        THROW_IF_FAILED(imageRenderer->Render(adaptiveImageAsElement.Get(), renderContext, renderArgs, &actionUIElement));
-    //    }
-    //    else
-    //    {
-    //        // If there's no icon, just use the title text. Put it centered in a grid so it is
-    //        // centered relative to the text box.
-    //        HString title;
-    //        THROW_IF_FAILED(localInlineAction->get_Title(title.GetAddressOf()));
-
-    //        ComPtr<ITextBlock> titleTextBlock =
-    //            XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-    //        THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
-
-    //        ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
-    //        THROW_IF_FAILED(titleTextBlock.As(&textBlockAsFrameworkElement));
-    //        THROW_IF_FAILED(textBlockAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Center));
-
-    //        ComPtr<IGrid> titleGrid =
-    //            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-    //        ComPtr<IPanel> panel;
-    //        THROW_IF_FAILED(titleGrid.As(&panel));
-    //        XamlHelpers::AppendXamlElementToPanel(titleTextBlock.Get(), panel.Get());
-
-    //        THROW_IF_FAILED(panel.As(&actionUIElement));
-    //    }
-
-    //    // Make the action the same size as the text box
-    //    EventRegistrationToken eventToken;
-    //    THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-    //        Callback<IRoutedEventHandler>(
-    //            [actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
-    //                                                                  /*args*/) -> HRESULT
-    //            {
-    //                ComPtr<IFrameworkElement> actionFrameworkElement;
-    //                RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
-
-    //                return ActionHelpers::SetMatchingHeight(actionFrameworkElement.Get(),
-    //                                                        textBoxContainerAsFrameworkElement.Get());
-    //            })
-    //            .Get(),
-    //        &eventToken));
-
-    //    // Wrap the action in a button
-    //    ComPtr<IUIElement> touchTargetUIElement;
-    //    WrapInTouchTarget(nullptr,
-    //                      actionUIElement.Get(),
-    //                      localInlineAction.Get(),
-    //                      renderContext,
-    //                      false,
-    //                      L"Adaptive.Input.Text.InlineAction",
-    //                      nullptr,
-    //                      (iconUrl != nullptr),
-    //                      &touchTargetUIElement);
-
-    //    ComPtr<IFrameworkElement> touchTargetFrameworkElement;
-    //    THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
-
-    //    // Align to bottom so the icon stays with the bottom of the text box as it grows in the multiline case
-    //    THROW_IF_FAILED(touchTargetFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Bottom));
-
-    //    // Add the action to the column
-    //    THROW_IF_FAILED(gridStatics->SetColumn(touchTargetFrameworkElement.Get(), 2));
-    //    XamlHelpers::AppendXamlElementToPanel(touchTargetFrameworkElement.Get(), gridAsPanel.Get());
-
-    //    // If this isn't a multiline input, enter should invoke the action
-    //    ComPtr<IAdaptiveActionInvoker> actionInvoker;
-    //    THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
-
-    //    if (!isMultilineTextBox)
-    //    {
-    //        EventRegistrationToken keyDownEventToken;
-    //        THROW_IF_FAILED(textInputUIElement->add_KeyDown(
-    //            Callback<IKeyEventHandler>(
-    //                [actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
-    //                { return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get()); })
-    //                .Get(),
-    //            &keyDownEventToken));
-    //    }
-
-    //    THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
-    //}
-
     rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement const& adaptiveCardElement,
                                         rtxaml::UIElement const& elementToWrap,
                                         rtom::IAdaptiveActionElement const& action,
@@ -1056,58 +653,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             { actionInvoker.SendActionEvent(strongAction); });
     }
 
-    void WireButtonClickToAction(_In_ IButton* button, _In_ IAdaptiveActionElement* action, _In_ IAdaptiveRenderContext* renderContext)
-    {
-        // Note that this method currently doesn't support inline show card actions, it
-        // assumes the caller won't call this method if inline show card is specified.
-        ComPtr<IButton> localButton(button);
-        ComPtr<IAdaptiveActionInvoker> actionInvoker;
-        THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
-        ComPtr<IAdaptiveActionElement> strongAction(action);
-
-        // Add click handler
-        ComPtr<IButtonBase> buttonBase;
-        THROW_IF_FAILED(localButton.As(&buttonBase));
-
-        EventRegistrationToken clickToken;
-
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>(
-                                                  [strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                /*args*/) -> HRESULT
-                                                  {
-                                                      THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
-                                                      return S_OK;
-                                                  })
-                                                  .Get(),
-                                              &clickToken));
-    }
-
-    void HandleSelectAction(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                            _In_ IAdaptiveActionElement* selectAction,
-                            _In_ IAdaptiveRenderContext* renderContext,
-                            _In_ IUIElement* uiElement,
-                            bool supportsInteractivity,
-                            bool fullWidthTouchTarget,
-                            _COM_Outptr_ IUIElement** outUiElement)
-    {
-        if (selectAction != nullptr && supportsInteractivity)
-        {
-            // WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget,
-            // L"Adaptive.SelectAction", nullptr, true, outUiElement);
-        }
-        else
-        {
-            if (selectAction != nullptr)
-            {
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
-                                          HStringReference(L"SelectAction present, but Interactivity is not supported").Get());
-            }
-
-            ComPtr<IUIElement> localUiElement(uiElement);
-            THROW_IF_FAILED(localUiElement.CopyTo(outUiElement));
-        }
-    }
-
     rtxaml::UIElement HandleSelectAction(rtom::IAdaptiveCardElement const& adaptiveCardElement,
                                          rtom::IAdaptiveActionElement const& selectAction,
                                          rtrender::AdaptiveRenderContext const& renderContext,
@@ -1231,65 +776,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return flyoutItem;
     }
 
-    HRESULT AddOverflowFlyoutItem(_In_ IAdaptiveActionElement* action,
-                                  _In_ IButton* overflowButton,
-                                  _In_ IAdaptiveRenderContext* renderContext,
-                                  _COM_Outptr_ IUIElement** flyoutUIItem)
-    {
-        // Get the flyout items vector
-        ComPtr<IButton> button(overflowButton);
-        ComPtr<IButtonWithFlyout> buttonWithFlyout;
-        RETURN_IF_FAILED(button.As(&buttonWithFlyout));
-
-        ComPtr<IFlyoutBase> flyout;
-        RETURN_IF_FAILED(buttonWithFlyout->get_Flyout(&flyout));
-
-        ComPtr<IMenuFlyout> menuFlyout;
-        RETURN_IF_FAILED(flyout.As(&menuFlyout));
-
-        ComPtr<IVector<MenuFlyoutItemBase*>> flyoutItems;
-        RETURN_IF_FAILED(menuFlyout->get_Items(&flyoutItems));
-        // Create a flyout item
-        ComPtr<IMenuFlyoutItem> flyoutItem =
-            XamlHelpers::CreateABIClass<IMenuFlyoutItem>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyoutItem));
-
-        // Set the title
-        HString actionTitle;
-        RETURN_IF_FAILED(action->get_Title(actionTitle.GetAddressOf()));
-        RETURN_IF_FAILED(flyoutItem->put_Text(actionTitle.Get()));
-
-        // Set the tooltip
-        HString tooltip;
-        RETURN_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
-
-        ComPtr<IDependencyObject> flyoutItemAsDependencyObject;
-        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsDependencyObject));
-        SetTooltip(to_winrt(tooltip), to_winrt(flyoutItemAsDependencyObject));
-
-        // Hook the menu item up to the action invoker
-        ComPtr<IAdaptiveActionElement> actionParam(action);
-        ComPtr<IAdaptiveActionInvoker> actionInvoker;
-        RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
-        EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(flyoutItem->add_Click(Callback<IRoutedEventHandler>(
-                                                   [actionParam, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                /*args*/) -> HRESULT
-                                                   { return actionInvoker->SendActionEvent(actionParam.Get()); })
-                                                   .Get(),
-                                               &clickToken));
-
-        // Add the new menu item to the vector
-        ComPtr<IMenuFlyoutItemBase> flyoutItemAsBase;
-        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsBase));
-        RETURN_IF_FAILED(flyoutItems->Append(flyoutItemAsBase.Get()));
-
-        ComPtr<IUIElement> flyoutItemAsUIElement;
-        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsUIElement));
-        RETURN_IF_FAILED(flyoutItemAsUIElement.CopyTo(flyoutUIItem));
-
-        return S_OK;
-    }
-
     void BuildInlineShowCard(rtom::AdaptiveCard const& adaptiveCard,
                              rtom::AdaptiveActionSet const& adaptiveActionSet,
                              rtom::IAdaptiveActionElement const& action,
@@ -1393,25 +879,13 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                            rtrender::AdaptiveRenderContext const& renderContext,
                                            rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        /* ComPtr<IAdaptiveHostConfig> hostConfig;
-         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-         ComPtr<IAdaptiveActionsConfig> actionsConfig;
-         RETURN_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));*/
-
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
-
-        /*ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment actionAlignment;
-        RETURN_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
-
-        ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation actionsOrientation;
-        RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));*/
 
         rtrender::ActionAlignment actionAlignment = actionsConfig.ActionAlignment();
         rtrender::ActionsOrientation actionsOrientation = actionsConfig.ActionsOrientation();
 
         // Declare the panel that will host the buttons
-        /* winrt::com_ptr<rtxaml::Controls::Panel> actionsPanel;*/
         rtxaml::Controls::Panel actionsPanel{nullptr};
         winrt::Windows::Foundation::Collections::IVector<rtxaml::Controls::ColumnDefinition> columnDefinitions;
 
@@ -1420,22 +894,13 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // If stretch alignment and orientation is horizontal, we use a grid with equal column widths to achieve
             // stretch behavior. For vertical orientation, we'll still just use a stack panel since the concept of
             // stretching buttons height isn't really valid, especially when the height of cards are typically dynamic.
-            /*ComPtr<IGrid> actionsGrid =
-                XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));*/
-
             rtxaml::Controls::Grid actionsGrid;
             columnDefinitions = actionsGrid.ColumnDefinitions();
-            // TODO: Am I doing this right?
-            /* actionsPanel = winrt::make_self<rtxaml::Controls::Panel>(actionsGrid);*/
             actionsPanel = actionsGrid.as<rtxaml::Controls::Panel>();
-            /*  RETURN_IF_FAILED(actionsGrid->get_ColumnDefinitions(&columnDefinitions));
-              RETURN_IF_FAILED(actionsGrid.As(&actionsPanel));*/
         }
         else
         {
             // Create a stack panel for the action buttons
-            /*ComPtr<IStackPanel> actionStackPanel =
-                XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));*/
             rtxaml::Controls::StackPanel actionStackPanel{};
 
             auto uiOrientation = actionsOrientation == rtrender::ActionsOrientation::Horizontal ?
@@ -1444,16 +909,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
             actionStackPanel.Orientation(uiOrientation);
 
-            /*RETURN_IF_FAILED(actionStackPanel->put_Orientation(uiOrientation));*/
-
-            /* ComPtr<IFrameworkElement> actionsFrameworkElement;
-             RETURN_IF_FAILED(actionStackPanel.As(&actionsFrameworkElement));*/
-
             switch (actionAlignment)
             {
             case rtrender::ActionAlignment::Center:
                 // TODO: DO I need this cast?
-                // actionsFrameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
                 actionStackPanel.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
                 break;
             case rtrender::ActionAlignment::Left:
@@ -1468,15 +927,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             }
 
             // Add the action buttons to the stack panel
-            // RETURN_IF_FAILED(actionStackPanel.As(&actionsPanel));
-            // TODO: Can I just call as?
-            // actionStackPanel.as(actionsPanel);
-            /*actionsPanel = winrt::make_self<rtxaml::Controls::StackPanel>(actionStackPanel);*/
-            // TODO: is this correct?
             actionsPanel = actionStackPanel.as<rtxaml::Controls::Panel>();
         }
 
-        /*Thickness buttonMargin = reinterpret_cast<Thickness&>(GetButtonMargin(to_winrt(actionsConfig)));*/
         auto buttonMargin = GetButtonMargin(actionsConfig);
         if (actionsOrientation == rtrender::ActionsOrientation::Horizontal)
         {
@@ -1484,23 +937,16 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // We do NOT remove the margin from the individual button itself, since that would cause
             // the equal columns stretch behavior to not have equal columns (since the first and last
             // button would be narrower without the same margins as its peers).
-            /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
-            RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
-            RETURN_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0}));*/
             actionsPanel.Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0});
         }
         else
         {
             // Negate the spacing on the top and bottom so the first and last buttons don't have extra padding
-            /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
-            RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
-            RETURN_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1}));*/
             actionsPanel.Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1});
         }
 
         // Get the max number of actions and check the host config to confirm whether we render actions beyond the max in the overflow menu
-        /*UINT32 maxActions;
-        RETURN_IF_FAILED(actionsConfig->get_MaxActions(&maxActions));*/
+
         auto maxActions = actionsConfig.MaxActions();
 
         auto hostConfigImpl = peek_innards<rtrender::implementation::AdaptiveHostConfig>(hostConfig);
@@ -1508,89 +954,69 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
         bool allActionsHaveIcons{true};
 
-        IterateOverVector<rtom::IAdaptiveActionElement>(children,
-                                                        [&](rtom::IAdaptiveActionElement child)
-                                                        {
-                                                            winrt::hstring iconUrl = child.IconUrl();
+        for (auto child : children)
+        {
+            winrt::hstring iconUrl = child.IconUrl();
 
-                                                            if (iconUrl.empty())
-                                                            {
-                                                                allActionsHaveIcons = false;
-                                                            }
-                                                        });
+            if (iconUrl.empty())
+            {
+                allActionsHaveIcons = false;
+            }
+        }
 
         renderArgs.AllowAboveTitleIconPlacement(allActionsHaveIcons);
 
-        /* ComPtr<IStackPanel> showCardsStackPanel =
-             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-         ComPtr<IPanel> showCardsPanel;
-         RETURN_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));*/
         rtxaml::Controls::StackPanel showCardsStackPanel{};
         rtxaml::Controls::Panel showCardsPanel = showCardsStackPanel.as<rtxaml::Controls::Panel>();
-        /*ComPtr<IGridStatics> gridStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));*/
 
         uint32_t currentButtonIndex = 0;
         rtxaml::Controls::Button overflowButton;
 
-        IterateOverVector<rtom::IAdaptiveActionElement>(
-            children,
-            [&](rtom::IAdaptiveActionElement child)
+        for (auto child : children)
+        {
+            // TODO: is this correct?
+            rtom::IAdaptiveActionElement action{child};
+            rtom::ActionMode mode = action.Mode();
+
+            rtom::ActionType actionType = action.ActionType();
+
+            rtxaml::UIElement actionControl{nullptr};
+
+            if (currentButtonIndex < maxActions && mode == rtom::ActionMode::Primary)
             {
-                // TODO: is this correct?
-                /*ComPtr<IAdaptiveActionElement> action(child);*/
-                rtom::IAdaptiveActionElement action(child);
-                rtom::ActionMode mode = action.Mode();
+                // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
+                actionControl = CreateActionButtonInActionSet(
+                    adaptiveCard, adaptiveActionSet, action, currentButtonIndex, actionsPanel, showCardsPanel, columnDefinitions, renderContext, renderArgs);
 
-                rtom::ActionType actionType = action.ActionType();
-                // TODO: can I just construct rtxaml::IUIElement instead?
-                // ComPtr<IUIElement> actionControl;
-                /*  winrt::com_ptr<rtxaml::UIElement> actionControl;*/
-                rtxaml::UIElement actionControl{nullptr};
-
-                if (currentButtonIndex < maxActions && mode == rtom::ActionMode::Primary)
+                currentButtonIndex++;
+            }
+            else if (currentButtonIndex >= maxActions && (mode == rtom::ActionMode::Primary) && !overflowMaxActions)
+            {
+                // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
+                renderContext.AddWarning(rtom::WarningStatusCode::MaxActionsExceeded,
+                                         {L"Some actions were not rendered due to exceeding the maximum number of actions allowed"});
+                return S_OK;
+            }
+            else
+            {
+                // If the action's mode is secondary or we're overflowing max actions, create a flyout item on the overflow menu
+                if (overflowButton == nullptr)
                 {
-                    // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                    // TODO: Can we do this? How to properly assign UIElement to COM_PTR, use peek_innards? can I use .as(&comPtr)?
-                    actionControl = CreateActionButtonInActionSet(adaptiveCard,
-                                                                  adaptiveActionSet,
-                                                                  action,
-                                                                  currentButtonIndex,
-                                                                  actionsPanel,
-                                                                  showCardsPanel,
-                                                                  columnDefinitions,
-                                                                  renderContext,
-                                                                  renderArgs);
-
-                    currentButtonIndex++;
+                    // Create a button for the overflow menu if it doesn't exist yet
+                    overflowButton = CreateFlyoutButton(renderContext, renderArgs);
                 }
-                else if (currentButtonIndex >= maxActions && (mode == rtom::ActionMode::Primary) && !overflowMaxActions)
+
+                // Add a flyout item to the overflow menu
+                AddOverflowFlyoutItem(action, overflowButton, adaptiveCard, adaptiveActionSet, showCardsPanel, renderContext, renderArgs);
+
+                // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
+                if (mode == rtom::ActionMode::Primary)
                 {
-                    // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
                     renderContext.AddWarning(rtom::WarningStatusCode::MaxActionsExceeded,
-                                             {L"Some actions were not rendered due to exceeding the maximum number of actions allowed"});
-                    return S_OK;
+                                             {L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed"});
                 }
-                else
-                {
-                    // If the action's mode is secondary or we're overflowing max actions, create a flyout item on the overflow menu
-                    if (overflowButton == nullptr)
-                    {
-                        // Create a button for the overflow menu if it doesn't exist yet
-                        overflowButton = CreateFlyoutButton(renderContext, renderArgs);
-                    }
-
-                    // Add a flyout item to the overflow menu
-                    AddOverflowFlyoutItem(action, overflowButton, adaptiveCard, adaptiveActionSet, showCardsPanel, renderContext, renderArgs);
-
-                    // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
-                    if (mode == rtom::ActionMode::Primary)
-                    {
-                        renderContext.AddWarning(rtom::WarningStatusCode::MaxActionsExceeded,
-                                                 {L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed"});
-                    }
-                }
-            });
+            }
+        }
 
         // Lastly add the overflow button itself to the action panel
         if (overflowButton != nullptr)
@@ -1598,17 +1024,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // If using equal width columns, add another column and assign the it to the overflow button
             if (columnDefinitions != nullptr)
             {
-                /* ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));*/
-                /*  RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
-                  RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));*/
                 rtxaml::Controls::ColumnDefinition columnDefinition{};
                 columnDefinition.Width({1.0, rtxaml::GridUnitType::Star});
                 columnDefinitions.Append(columnDefinition);
 
-                /* ComPtr<IFrameworkElement> actionFrameworkElement;
-                 THROW_IF_FAILED(overflowButton.As(&actionFrameworkElement));
-                 THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentButtonIndex));*/
                 // TODO: No need to convert, right?
                 rtxaml::Controls::Grid::SetColumn(overflowButton, currentButtonIndex);
             }
@@ -1617,8 +1036,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             XamlHelpers::AppendXamlElementToPanel(overflowButton, actionsPanel);
 
             // Register the overflow button with the render context
-            /* ComPtr<IUIElement> overflowButtonAsUIElement;
-             overflowButton.As(&overflowButtonAsUIElement);*/
 
             auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
@@ -1634,20 +1051,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         }
 
         // Reset icon placement value
-        /*  RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(false));*/
         renderArgs.AllowAboveTitleIconPlacement(false);
-
-        /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
-        RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
-        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                     L"Adaptive.Actions",
-                                                                     actionsPanelAsFrameworkElement.Get()));*/
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, actionsPanel);
 
-        /*  ComPtr<IStackPanel> actionSet =
-              XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-          ComPtr<IPanel> actionSetAsPanel;
-          actionSet.As(&actionSetAsPanel);*/
         rtxaml::Controls::StackPanel actionPanel;
 
         // Add buttons and show cards to panel

@@ -1377,11 +1377,11 @@ winrt::Windows::Foundation::Uri GetUrlFromString(rtrender::AdaptiveHostConfig co
     // THROW_IF_FAILED(localUrl.CopyTo(url));
 }
 
-Color GenerateLHoverColor(const Color& originalColor)
+winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor)
 {
     const double hoverIncrement = 0.25;
 
-    Color hoverColor;
+    winrt::Windows::UI::Color hoverColor;
     hoverColor.A = originalColor.A;
     hoverColor.R = originalColor.R - static_cast<BYTE>(originalColor.R * hoverIncrement);
     hoverColor.G = originalColor.G - static_cast<BYTE>(originalColor.G * hoverIncrement);

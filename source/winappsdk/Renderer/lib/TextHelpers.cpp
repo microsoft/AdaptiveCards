@@ -80,6 +80,7 @@ void StyleXamlTextBlockProperties(rtom::AdaptiveTextBlock const& adaptiveTextBlo
      RETURN_IF_FAILED(localAdaptiveTextBlock.As(&adaptiveTextElement));
      RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement.Get(), renderContext, renderArgs, TextRunStyleParameters(), xamlTextBlock));*/
     SetHorizontalAlignment(adaptiveTextBlock, renderContext, xamlTextBlock);
+    auto size = adaptiveTextBlock.Size();
 
     StyleTextElement(adaptiveTextBlock, renderContext, renderArgs, TextRunStyleParameters(), xamlTextBlock);
 }

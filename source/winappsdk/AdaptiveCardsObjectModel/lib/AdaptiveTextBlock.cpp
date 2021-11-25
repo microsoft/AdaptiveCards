@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         MaxLines = sharedTextBlock->GetMaxLines();
         HorizontalAlignment = opt_cast<WinUI3::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
         Style = opt_cast<WinUI3::TextStyle>(sharedTextBlock->GetStyle());
-
+        auto f = sharedTextBlock->GetTextSize();
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(sharedTextBlock);
     }

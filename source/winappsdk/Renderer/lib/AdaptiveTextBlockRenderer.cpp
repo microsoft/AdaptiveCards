@@ -59,6 +59,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
               ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
               RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));*/
             rtxaml::Controls::TextBlock xamlTextBlock{};
+            StyleXamlTextBlockProperties(adaptiveTextBlock, renderContext, renderArgs, xamlTextBlock);
             auto inlines = xamlTextBlock.Inlines();
 
             // Check if this text block has a style and if so apply the appropriate styling from the host config

@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
         m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::WinUI3::XamlBuilder>())
     {
-		// TODO: is this legal to detach implementaiton from comptr?
+        // TODO: is this legal to detach implementaiton from comptr?
         ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
         ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();
@@ -134,10 +134,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             for (auto&& error : adaptiveCardParseResult.Errors())
             {
                 renderResultErrors.Append(error);
-    }
+            }
 
             return *renderedCard;
-    }
+        }
     }
 
     WinUI3::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson)
@@ -171,48 +171,33 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     }
 
     void AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
-                                                                                 winrt::Windows::Foundation::IInspectable const& value)
+                                                                              winrt::Windows::Foundation::IInspectable const& value)
     {
         m_actionSentimentResourceDictionary.Insert(winrt::box_value(resourceName), value);
     }
 
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
     {
-        ABI::Windows::UI::Color accentColor;
-        THROW_IF_FAILED(GetColorFromAdaptiveColor(to_wrl(m_hostConfig).Get(),
-                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor_Accent,
-                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle_Default,
-                                                  false, // isSubtle
-                                                  false, // highlight
-                                                  &accentColor));
+        auto accentColor =
+            GetColorFromAdaptiveColor(m_hostConfig, rtom::ForegroundColor::Accent, rtom::ContainerStyle::Default, false, false);
+        auto attentionColor =
+            GetColorFromAdaptiveColor(m_hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
 
-        ABI::Windows::UI::Color attentionColor;
-        THROW_IF_FAILED(GetColorFromAdaptiveColor(to_wrl(m_hostConfig).Get(),
-                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor_Attention,
-                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle_Default,
-                                                  false, // isSubtle
-                                                  false, // highlight
-                                                  &attentionColor));
-
-        ABI::Windows::UI::Color hoverAccentColor = GenerateLHoverColor(accentColor);
-        ABI::Windows::UI::Color hoverAttentionColor = GenerateLHoverColor(attentionColor);
+        auto hoverAccentColor = GenerateLHoverColor(accentColor);
+        auto hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
         auto accentColorBrush = ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(accentColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
-                                                       to_winrt(accentColorBrush));
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush);
 
         auto lightAccentColorBrush = ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(hoverAccentColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
-                                                       to_winrt(lightAccentColorBrush));
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush);
 
         auto attentionColorBrush = ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(attentionColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
-                                                       to_winrt(attentionColorBrush));
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush);
 
-        auto lightAttentionColorBrush =
-            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(hoverAttentionColor);
+        auto lightAttentionColorBrush = ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(hoverAttentionColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
-                                                       to_winrt(lightAttentionColorBrush));
+                                                       lightAttentionColorBrush);
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()

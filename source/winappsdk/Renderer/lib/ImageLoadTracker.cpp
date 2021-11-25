@@ -87,6 +87,11 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         try
         {
+            if (m_listeners.find(listener) == m_listeners.end())
+            {
+                m_listeners.emplace(listener);
+            }
+
             // TODO: COME BACK AND FIX IT
             // if (m_listeners.find(listener) == m_listeners.end())
             //{
@@ -108,6 +113,10 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         try
         {
+            if (m_listeners.find(listener) != m_listeners.end())
+            {
+                m_listeners.erase(listener);
+            }
             // TODO: COME BACK AND FIX IT
             // if (m_listeners.find(listener) != m_listeners.end())
             //{

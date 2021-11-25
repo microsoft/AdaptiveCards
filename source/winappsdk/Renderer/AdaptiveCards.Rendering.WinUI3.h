@@ -6149,7 +6149,7 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE Set(
                         /* [in] */HSTRING type,
-                        /* [in] */ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer * parser
+                        /* [in] */ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer * renderer
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Get(
                         /* [in] */HSTRING type,
@@ -6216,7 +6216,7 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE Set(
                         /* [in] */HSTRING type,
-                        /* [in] */ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer * parser
+                        /* [in] */ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer * renderer
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Get(
                         /* [in] */HSTRING type,
@@ -18031,7 +18031,7 @@ HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
 HRESULT ( STDMETHODCALLTYPE *Set )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration * This,
         /* [in] */HSTRING type,
-        /* [in] */__x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRenderer * parser
+        /* [in] */__x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRenderer * renderer
         );
     HRESULT ( STDMETHODCALLTYPE *Get )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration * This,
@@ -18070,8 +18070,8 @@ interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererReg
 #define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration_GetTrustLevel(This,trustLevel) \
         ( (This)->lpVtbl->GetTrustLevel(This,trustLevel) )
 
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration_Set(This,type,parser) \
-    ( (This)->lpVtbl->Set(This,type,parser) )
+#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration_Set(This,type,renderer) \
+    ( (This)->lpVtbl->Set(This,type,renderer) )
 
 #define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveElementRendererRegistration_Get(This,type,result) \
     ( (This)->lpVtbl->Get(This,type,result) )
@@ -18157,7 +18157,7 @@ HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
 HRESULT ( STDMETHODCALLTYPE *Set )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration * This,
         /* [in] */HSTRING type,
-        /* [in] */__x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRenderer * parser
+        /* [in] */__x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRenderer * renderer
         );
     HRESULT ( STDMETHODCALLTYPE *Get )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration * This,
@@ -18196,8 +18196,8 @@ interface __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegi
 #define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration_GetTrustLevel(This,trustLevel) \
         ( (This)->lpVtbl->GetTrustLevel(This,trustLevel) )
 
-#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration_Set(This,type,parser) \
-    ( (This)->lpVtbl->Set(This,type,parser) )
+#define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration_Set(This,type,renderer) \
+    ( (This)->lpVtbl->Set(This,type,renderer) )
 
 #define __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveActionRendererRegistration_Get(This,type,result) \
     ( (This)->lpVtbl->Get(This,type,result) )

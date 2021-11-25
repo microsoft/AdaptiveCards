@@ -142,9 +142,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             // TODO: do we need private IDL for these scenarios?
             // auto input = winrt::make_self<rtrender::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
-            rtrender::NumberInputValue input{adaptiveNumberInput, textBox, validationBorder};
+           auto input = winrt::make_self<rtrender::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
-            renderContext.AddInputValue(input, renderArgs);
+            renderContext.AddInputValue(*input, renderArgs);
 
             return inputLayout;
         }

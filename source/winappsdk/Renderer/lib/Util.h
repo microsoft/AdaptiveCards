@@ -514,7 +514,7 @@ void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostC
 winrt::Windows::Foundation::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
                                                  winrt::hstring const& urlString);
 
-ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
+winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor);
 
 winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 

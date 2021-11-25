@@ -104,8 +104,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
              validationBorder.Get())); RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
              RETURN_IF_FAILED(inputLayout.CopyTo(timeInputControl));*/
-            rtrender::TimeInputValue input{adaptiveTimeInput, timePicker, validationBorder};
-            renderContext.AddInputValue(input, renderArgs);
+            // TODO: come back to all the inputs, not sure if this is right
+            auto input = winrt::make_self<rtrender::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);
+            renderContext.AddInputValue(*input, renderArgs);
 
             return inputLayout;
         }

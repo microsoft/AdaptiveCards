@@ -212,9 +212,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         std::tie(textInputControl, validationBorder) =
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
-        // TODO: is everything correct here?
-        rtrender::TextInputValue inputValue{adaptiveTextInput, textBox, validationBorder};
-        renderContext.AddInputValue(inputValue, renderArgs);
+        // TODO: come back here, not sure if this is correct?
+        auto inputValue = winrt::make_self<rtrender::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
+        renderContext.AddInputValue(*inputValue, renderArgs);
 
         ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;
@@ -263,8 +263,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
          RETURN_IF_FAILED(
              MakeAndInitialize<PasswordInputValue>(&inputValue, adaptiveTextInput, passwordBox.Get(),
          validationBorder.Get())); RETURN_IF_FAILED(renderContext->AddInputValue(inputValue.Get(), renderArgs));*/
-        rtrender::PasswordInputValue inputValue{adaptiveTextInput, passwordBox, validationBorder};
-        renderContext.AddInputValue(inputValue, renderArgs);
+        // TODO: come back to inputs, not sure if it's correct
+        auto inputValue = winrt::make_self<rtrender::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
+        renderContext.AddInputValue(*inputValue, renderArgs);
 
         return textInputControl;
     }
@@ -278,7 +279,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             /*ComPtr<IAdaptiveHostConfig> hostConfig;
             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
             auto hostConfig = renderContext.HostConfig();
-            if (::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
                                          L"Text Input was stripped from card because interactivity is not supported");
