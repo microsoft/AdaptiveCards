@@ -4,9 +4,6 @@
 
 #include "AdaptiveToggleInputRenderer.g.h"
 
-// TODO: do we need this includ here?
-#include "ToggleInput.h"
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     struct AdaptiveToggleInputRenderer : AdaptiveToggleInputRendererT<AdaptiveToggleInputRenderer>

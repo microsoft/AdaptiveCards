@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-//#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "IImageLoadTrackerListener.h"
 
 namespace AdaptiveCards::Rendering::WinUI3
@@ -27,7 +26,6 @@ namespace AdaptiveCards::Rendering::WinUI3
         int GetTotalImagesTracked();
 
     private:
-       /* Microsoft::WRL::Wrappers::SRWLock m_lock;*/
         std::mutex m_lock;
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;

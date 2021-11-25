@@ -6,18 +6,6 @@
 #include "XamlHelpers.h"
 #include <windows.globalization.datetimeformatting.h>
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::Globalization::DateTimeFormatting;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace ABI::Windows::UI::Xaml::Documents;
-using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace AdaptiveCards::Rendering::WinUI3;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3
@@ -43,11 +31,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     bool InputValue::Validate()
     {
-        /*boolean isValid;
-        RETURN_IF_FAILED(IsValueValid(&isValid));*/
         auto isValid = IsValueValid();
-
-        // RETURN_IF_FAILED(SetValidation(isValid));
         SetValidation(isValid);
 
         return isValid;
@@ -66,18 +50,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     {
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        /*ComPtr<IUIElement> uiInputElement(m_uiInputElement);
-
-        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
-
-        ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-        RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
-                                                                     uiElementDescribers.GetAddressOf()));
-
-        ComPtr<IUIElement> uiValidationError(m_validationError);
-        ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
-        RETURN_IF_FAILED(uiValidationError.As(&uiValidationErrorAsDependencyObject));*/
         auto inputUIElementAsDependencyObject = m_uiInputElement.as<rtxaml::DependencyObject>();
 
         auto uiElementDescribers = rtxaml::Automation::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
@@ -86,21 +58,17 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
         uint32_t index;
         bool found = uiElementDescribers.IndexOf(uiValidationErrorAsDependencyObject, index);
-        // RETURN_IF_FAILED(uiElementDescribers->IndexOf(uiValidationErrorAsDependencyObject.Get(), &index, &found));
 
         // If the error message is visible then the input element must be described by it, otherwise we try to remove it from the list of describers
         if (!isInputValid && !found)
         {
-            /* RETURN_IF_FAILED(uiElementDescribers->Append(uiValidationErrorAsDependencyObject.Get()));*/
             uiElementDescribers.Append(uiValidationErrorAsDependencyObject);
         }
         else if (isInputValid && found)
         {
-            /* RETURN_IF_FAILED(uiElementDescribers->RemoveAt(index));*/
             uiElementDescribers.RemoveAt(index);
         }
 
-        /* RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), isInputValid));*/
         rtxaml::Automation::AutomationProperties::SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
     }
 
@@ -162,17 +130,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     bool TextInputBase::IsValueValid()
     {
         // Call the base class to validate isRequired
-        /*boolean isBaseValid;
-        RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));*/
         auto isBaseValid = InputValue::IsValueValid();
 
         // Validate the regex if one exists
-        /*HString regex;
-        RETURN_IF_FAILED(m_adaptiveTextInput->get_Regex(regex.GetAddressOf()));*/
         auto regex = m_adaptiveTextInput.Regex();
-
-        /*HString currentValue;
-        RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));*/
         auto currentValue = CurrentValue();
 
         bool isRegexValid = true;
@@ -217,17 +178,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     bool NumberInputValue::IsValueValid()
     {
         // Call the base class to validate isRequired
-        /* boolean isValid;
-         RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
-
-         ComPtr<ABI::Windows::Foundation::IReference<double>> max;
-         RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
-
-         ComPtr<ABI::Windows::Foundation::IReference<double>> min;
-         RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
-
-         HString currentValue;
-         RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));*/
         bool isValid = InputValue::IsValueValid();
         auto max = m_adaptiveNumberInput.Max();
         auto min = m_adaptiveNumberInput.Min();
@@ -243,16 +193,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
                 if (max)
                 {
-                    /*  double maxDouble;
-                      RETURN_IF_FAILED(max->get_Value(&maxDouble));*/
                     double maxDouble = max.Value();
                     isValid &= (currentDouble <= maxDouble);
                 }
 
                 if (min)
                 {
-                    /*double minDouble;
-                    RETURN_IF_FAILED(min->get_Value(&minDouble));*/
                     double minDouble = min.Value();
                     isValid &= (currentDouble >= minDouble);
                 }
@@ -277,27 +223,16 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     winrt::hstring DateInputValue::CurrentValue()
     {
-        /*ComPtr<IReference<DateTime>> dateRef;
-        RETURN_IF_FAILED(m_datePickerElement->get_Date(&dateRef));*/
         auto dateRef = m_datePickerElement.Date();
 
         winrt::hstring formattedDate{};
         if (dateRef != nullptr)
         {
-            /*DateTime date;
-            RETURN_IF_FAILED(dateRef->get_Value(&date));*/
             auto date = dateRef.Value();
-            /*ComPtr<IDateTimeFormatterFactory> dateTimeFactory;
-            RETURN_IF_FAILED(GetActivationFactory(
-                HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));*/
 
-            /* ComPtr<IDateTimeFormatter> dateTimeFormatter;
-             RETURN_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter
-                 HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));*/
+            // TODO: is this correct?
             winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter dateTimeFormatter{
                 L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
-
-            /*RETURN_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));*/
             formattedDate = dateTimeFormatter.Format(date);
         }
 
@@ -314,20 +249,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     winrt::hstring TimeInputValue::CurrentValue()
     {
-        /* ComPtr<ITimePicker3> timePicker3;
-         RETURN_IF_FAILED(m_timePickerElement.As(&timePicker3));*/
-
-        /* ComPtr<IReference<TimeSpan>> timeSpanReference;
-         RETURN_IF_FAILED(timePicker3->get_SelectedTime(&timeSpanReference));*/
-
         auto timeSpanReference = m_timePickerElement.SelectedTime();
 
         char buffer[6] = {0};
 
         if (timeSpanReference != nullptr)
         {
-            /*TimeSpan timeSpan;
-            RETURN_IF_FAILED(timeSpanReference->get_Value(&timeSpan));*/
             // timeSpan here is std::chrono::duration<int64_t, 100 * std::nano>, so count will give the same value as duration before
             auto timeSpan = timeSpanReference.Value();
 
@@ -345,28 +272,16 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     bool TimeInputValue::IsValueValid()
     {
         // Call the base class to validate isRequired
-        /*boolean isBaseValid;
-        RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));*/
         bool isBaseValid = InputValue::IsValueValid();
 
         // If time is set, validate max and min
         bool isMaxMinValid = true;
-
-        /*ComPtr<ITimePicker3> timePicker3;
-        RETURN_IF_FAILED(m_timePickerElement.As(&timePicker3));
-
-        ComPtr<IReference<TimeSpan>> timeSpanReference;
-        RETURN_IF_FAILED(timePicker3->get_SelectedTime(&timeSpanReference));*/
         auto timeSpanReference = m_timePickerElement.SelectedTime();
 
         if (isBaseValid && (timeSpanReference != nullptr))
         {
-            /*TimeSpan currentTime;
-            RETURN_IF_FAILED(timeSpanReference->get_Value(&currentTime));*/
             auto currentTime = timeSpanReference.Value();
 
-            /*HString minTimeString;
-            RETURN_IF_FAILED(m_adaptiveTimeInput->get_Min(minTimeString.GetAddressOf()));*/
             auto minTimeString = m_adaptiveTimeInput.Min();
             if (!minTimeString.empty())
             {
@@ -374,15 +289,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
                 unsigned int minHours, minMinutes;
                 if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
                 {
-                    /*TimeSpan minTime{(INT64)(minHours * 60 + minMinutes) * 10000000 * 60};*/
-                    // TODO: Can we make it look nicer? this is rather ugly
                     winrt::Windows::Foundation::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 1000000 * 60};
                     isMaxMinValid &= currentTime.count() >= minTime.count();
                 }
             }
 
-            /*HString maxTimeString;
-            RETURN_IF_FAILED(m_adaptiveTimeInput->get_Max(maxTimeString.GetAddressOf()));*/
             auto maxTimeString = m_adaptiveTimeInput.Max();
             if (!maxTimeString.empty())
             {
@@ -408,8 +319,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     winrt::hstring ToggleInputValue::CurrentValue()
     {
-        /* boolean checkedValue = false;
-         XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &checkedValue);*/
         auto checkedValue = XamlHelpers::GetToggleValue(m_checkBoxElement);
 
         if (checkedValue)
@@ -427,8 +336,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         // Don't use the base class IsValueValid to validate required for toggle. That method counts required as
         // satisfied if any value is set, but for toggle required means the check box is checked. An unchecked value
         // will still have a value (either false, or whatever's in valueOff).
-        /* boolean isRequired;
-         RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired))*/
         auto isRequired = m_adaptiveInputElement.IsRequired();
 
         bool meetsRequirement = true;
@@ -444,19 +351,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     {
         if (selectedIndex != -1)
         {
-            /*ComPtr<IVector<AdaptiveChoiceInput*>> choices;
-            THROW_IF_FAILED(choiceInput->get_Choices(&choices));*/
             auto choices = choiceInput.Choices();
 
-            /*ComPtr<IAdaptiveChoiceInput> choice;
-            THROW_IF_FAILED(choices->GetAt(selectedIndex, &choice));*/
             // TODO: should we check if selectedIndex is a valid index? And if not, should we log an error / throw an exception?
             auto choice = choices.GetAt(selectedIndex);
-            /*HString value;
-            THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));*/
-
             return HStringToUTF8(choice.Value());
         }
+        // TODO: what do we do here? throw?
         return "";
     }
 
@@ -470,16 +371,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     winrt::hstring CompactChoiceSetInputValue::CurrentValue()
     {
-        /*ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle choiceSetStyle;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));*/
         auto choiceSetStyle = m_adaptiveChoiceSetInput.ChoiceSetStyle();
-
-        // boolean isMultiSelect;
-        // RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
         auto isMultiSelect = m_adaptiveChoiceSetInput.IsMultiSelect();
-
-        // INT32 selectedIndex;
-        // RETURN_IF_FAILED(m_selectorElement->get_SelectedIndex(&selectedIndex));
         auto selectedIndex = m_selectorElement.SelectedIndex();
 
         std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex);
@@ -497,42 +390,20 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
     winrt::hstring ExpandedChoiceSetInputValue::CurrentValue()
     {
         // Get the panel children
-        /*ComPtr<IVector<UIElement*>> panelChildren;
-        RETURN_IF_FAILED(m_panelElement->get_Children(panelChildren.ReleaseAndGetAddressOf()));*/
         auto panelChildren = m_panelElement.Children();
-
-        // UINT size;
-        // RETURN_IF_FAILED(panelChildren->get_Size(&size));
-        auto size = panelChildren.Size();
-
-        // boolean isMultiSelect;
-        // RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
         auto isMultiSelect = m_adaptiveChoiceSetInput.IsMultiSelect();
+        uint32_t index = 0;
 
         if (isMultiSelect)
         {
             // For multiselect, gather all the inputs in a comma delimited list
             std::string multiSelectValues;
-            /*for (UINT i = 0; i < size; i++)
-            {
-                ComPtr<IUIElement> currentElement;
-                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
 
-                boolean checkedValue = false;
-                XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                if (checkedValue)
-                {
-                    std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), i);
-                    multiSelectValues += choiceValue + ",";
-                }
-            }*/
-            uint32_t index = 0;
             for (auto element : panelChildren)
             {
                 if (XamlHelpers::GetToggleValue(element))
                 {
-                    multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index) + ",";
+                    multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index++) + ",";
                 }
             }
 
@@ -545,55 +416,29 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         else
         {
             // Look for the single selected choice
-            /* INT32 selectedIndex = -1;
-             for (UINT i = 0; i < size; i++)
-             {
-                 ComPtr<IUIElement> currentElement;
-                 RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                 boolean checkedValue = false;
-                 XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                 if (checkedValue)
-                 {
-                     selectedIndex = i;
-                     break;
-                 }
-             }*/
-            uint32_t index = 0;
-            uint32_t selectedIndex = -1;
             for (auto element : panelChildren)
             {
                 if (XamlHelpers::GetToggleValue(element))
                 {
-                    selectedIndex = index;
                     break;
                 }
+                index++;
             }
-            /*std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex);
-            RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));*/
+
             // TODO: Bad readability right?
-            return UTF8ToHString(GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex));
+            return UTF8ToHString(GetChoiceValue(m_adaptiveChoiceSetInput, index));
         }
     }
 
     void ExpandedChoiceSetInputValue::SetFocus()
     {
         // Put focus on the first choice in the choice set
-        /*ComPtr<IVector<UIElement*>> panelChildren;
-        RETURN_IF_FAILED(m_panelElement->get_Children(panelChildren.ReleaseAndGetAddressOf()));*/
         auto panelChildren = m_panelElement.Children();
-
-        // ComPtr<IUIElement> firstChoice;
-        // RETURN_IF_FAILED(panelChildren->GetAt(0, &firstChoice));
         auto firstChoice = panelChildren.GetAt(0);
-
-        // ComPtr<IControl> choiceAsControl;
-        // RETURN_IF_FAILED(firstChoice.As(&choiceAsControl));
 
         if (const auto choiceAsControl = firstChoice.try_as<rtxaml::Controls::Control>())
         {
-            // TODO: do we need to return bool indicating where focus was set?
+            // TODO: do we need to return bool indicating whether focus was set?
             choiceAsControl.Focus(rtxaml::FocusState::Programmatic);
         }
     }
@@ -608,20 +453,15 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     winrt::hstring FilteredChoiceSetInputValue::CurrentValue()
     {
-        /* ComPtr<IVector<AdaptiveChoiceInput*>> choices;
-         RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));*/
         auto choices = m_adaptiveChoiceSetInput.Choices();
-
-        // ComPtr<IAdaptiveChoiceInput> selectedChoice;
-        // RETURN_IF_FAILED(GetSelectedChoice(&selectedChoice));
         auto selectedChoice = GetSelectedChoice();
         if (selectedChoice != nullptr)
+
         {
-            /*RETURN_IF_FAILED(selectedChoice->get_Value(serializedUserInput));*/
             return selectedChoice.Value();
         }
 
-        // TODO: is this correct to return empty hstring?
+        // TODO: is this correct to return empty hstring? What do we do here?
         return L"";
     }
 
@@ -630,22 +470,17 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
         bool isValid;
 
         // Check if there's text in the autoSuggestBox
-        /* HString textHString;
-         RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));*/
         auto textHString = m_autoSuggestBox.Text();
+
         if (textHString.empty())
         {
             // Empty input is only valid if it's not required
-            /*boolean isRequired;
-            RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));*/
             auto isRequired = m_adaptiveInputElement.IsRequired();
             isValid = !isRequired;
         }
         else
         {
             // Non-empty input must match one of the exisiting choices
-            /*ComPtr<IAdaptiveChoiceInput> selectedChoice;
-            RETURN_IF_FAILED(GetSelectedChoice(&selectedChoice));*/
             auto selectedChoice = GetSelectedChoice();
             isValid = (selectedChoice != nullptr);
         }
@@ -655,33 +490,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
 
     rtom::AdaptiveChoiceInput FilteredChoiceSetInputValue::GetSelectedChoice()
     {
-        /*HString textHString;
-        RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));*/
         auto textHString = m_autoSuggestBox.Text();
         std::string text = HStringToUTF8(textHString);
-
-        /*ComPtr<IVector<AdaptiveChoiceInput*>> choices;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));*/
         auto choices = m_adaptiveChoiceSetInput.Choices();
 
-        /* ComPtr<IAdaptiveChoiceInput> selectedChoice;
-         IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-             choices.Get(),
-             [&selectedChoice, text](IAdaptiveChoiceInput* choice)
-             {
-                 HString titleHString;
-                 RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
-
-                 std::string title = HStringToUTF8(titleHString.Get());
-
-                 if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
-                 {
-                     selectedChoice = choice;
-                 }
-
-                 return S_OK;
-             });*/
-        // TODO: I'm not missing anything here, right? IterateOverVector is not neccessary
         rtom::AdaptiveChoiceInput selectedChoice{nullptr};
         for (auto choice : choices)
         {
@@ -692,8 +504,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
             if (!::AdaptiveCards::ParseUtil::ToLowercase(text).compare(::AdaptiveCards::ParseUtil::ToLowercase(title)))
             {
                 selectedChoice = choice;
-                // TODO: do we need to break here?
-                break;
+                // TODO: do we need to break here? can we just return? why do we need to keep going
             }
         }
 

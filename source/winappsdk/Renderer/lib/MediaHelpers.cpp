@@ -5,19 +5,7 @@
 #include "XamlBuilder.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::Windows::UI;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Media;
-using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::Storage::Streams;
 
 const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;

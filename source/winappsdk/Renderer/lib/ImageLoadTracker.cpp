@@ -189,7 +189,6 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         for (auto listener : m_listeners)
         {
-            // TODO: solve these listeners
             listener->AllImagesLoaded();
         }
     }
