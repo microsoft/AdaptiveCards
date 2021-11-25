@@ -4,9 +4,6 @@
 
 #include "AdaptiveTimeInputRenderer.g.h"
 
-// TODO: do we need this include?
-#include "TimeInput.h"
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     struct AdaptiveTimeInputRenderer : AdaptiveTimeInputRendererT<AdaptiveTimeInputRenderer>

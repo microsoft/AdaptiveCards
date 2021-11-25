@@ -5,15 +5,6 @@
 #include "AdaptiveTimeInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveTimeInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
