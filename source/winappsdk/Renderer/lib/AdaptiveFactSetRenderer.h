@@ -4,13 +4,11 @@
 
 #include "AdaptiveFactSetRenderer.g.h"
 
-// TODO: Do we need this import here?
-#include "FactSet.h"
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
 
-    // TODO: have FactRenderer in .idl but no implementation for it, is that expected?
+    // TODO: have FactRenderer in .idl but no implementation for it, is that expected? I don't think we need it
+    // TODO: I didn't find it possible to declare a single fact without wrapping into FactSet according to https://adaptivecards.io/explorer/Fact.html
     struct AdaptiveFactSetRenderer : AdaptiveFactSetRendererT<AdaptiveFactSetRenderer>
     {
         AdaptiveFactSetRenderer() = default;

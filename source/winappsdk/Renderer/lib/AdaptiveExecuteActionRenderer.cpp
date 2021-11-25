@@ -18,8 +18,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     {
         try
         {
-            /*RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
-            return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);*/
             // TODO: do we need to check for errors here? or catch -> nullptr should be enough
             renderContext.LinkSubmitActionToCard(action, renderArgs);
             return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);

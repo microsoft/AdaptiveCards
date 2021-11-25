@@ -19,7 +19,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     private:
         winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
-      /*  ::AdaptiveCards::Rendering::WinUI3::XamlBuilder* m_xamlBuilder;*/
     };
 }
 

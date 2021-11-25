@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         property<WinUI3::AdaptiveErrorMessageConfig> ErrorMessage;
         property<WinUI3::AdaptiveLabelConfig> Label;
-        // TODO: reiterate on this. Do we only need a setter or getter, or both?
+        // TODO: reiterate on this. Do we only need a setter or getter, or both? when we don't get {get; set;} in IDL - do we assume both getter and setter required?
         //IFACEMETHODIMP put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveErrorMessageConfig* errorMessage);
     };
 }
