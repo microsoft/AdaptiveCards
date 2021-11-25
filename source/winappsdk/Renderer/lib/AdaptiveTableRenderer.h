@@ -4,7 +4,7 @@
 
 #include "AdaptiveTableRenderer.g.h"
 // TODO: do we need this here?
-#include "Table.h"
+//#include "Table.h"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

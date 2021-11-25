@@ -3,7 +3,6 @@
 #pragma once
 
 #include "AdaptiveRichTextBlockRenderer.g.h"
-#include "RichTextBlock.h" // TODO: do we need this import?
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {

@@ -6,10 +6,6 @@
 #include "AdaptiveSubmitActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace Microsoft::WRL;
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(rtom::IAdaptiveActionElement const& action,

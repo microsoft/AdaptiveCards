@@ -13,7 +13,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
-
         static winrt::Windows::UI::Xaml::UIElement
         BuildShowCard(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& showCard,
                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,

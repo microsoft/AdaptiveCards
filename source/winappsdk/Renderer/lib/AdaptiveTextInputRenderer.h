@@ -4,8 +4,6 @@
 
 #include "AdaptiveTextInputRenderer.g.h"
 
-#include "TextInput.h"
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     struct AdaptiveTextInputRenderer : AdaptiveTextInputRendererT<AdaptiveTextInputRenderer>

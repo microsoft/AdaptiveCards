@@ -6,16 +6,6 @@
 #include "AdaptiveTextInputRenderer.g.cpp"
 #include "ActionHelpers.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Input;
-
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     std::tuple<rtxaml::UIElement, rtxaml::Controls::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
@@ -24,10 +14,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        // The text box may need to go into a number of parent containers to handle validation and inline actions.
-        // textBoxParentContainer represents the current parent container.
-        /* ComPtr<IUIElement> textBoxParentContainer = inputUIElement;*/
-
         // If there's any validation on this input, put the input inside a border. We don't use
         // XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
         // well as the text input, which is not the desired behavior.
@@ -35,69 +21,42 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
          ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
          RETURN_IF_FAILED(localTextInput.As(&textInputAsAdaptiveInput));*/
 
-        /* HString regex;
-         RETURN_IF_FAILED(adaptiveTextInput->get_Regex(regex.GetAddressOf()));
-         boolean isRequired;
-         RETURN_IF_FAILED(textInputAsAdaptiveInput->get_IsRequired(&isRequired));*/
+        // The text box may need to go into a number of parent containers to handle validation and inline actions.
+        // textBoxParentContainer represents the current parent container.
+        auto textBoxParentContainer = inputUIElement;
+
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
 
-        /* ComPtr<IBorder> validationBorder;*/
-        rtxaml::Controls::Border validationBorder{};
-        /*if (regex.IsValid() || isRequired)*/
-        // TODO: not sure about hstring.isValid() here, what is the proper way to mimic behavior?
+        rtxaml::Controls::Border validationBorder{nullptr};
+
         if (!regex.empty() || isRequired)
         {
-            /*RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
-            RETURN_IF_FAILED(validationBorder.As(&textBoxParentContainer));*/
             validationBorder =
                 ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
         }
 
         // If this input has an inline action, render it next to the input
-        /* ComPtr<IAdaptiveActionElement> inlineAction;
-         RETURN_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));*/
         auto inlineAction = adaptiveTextInput.InlineAction();
 
         if (inlineAction != nullptr)
         {
-            /*boolean isMultiline;
-            RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));
-
-            ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle style;
-            RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&style));
-
-            isMultiline &= style != (ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Password);
-
-            ComPtr<IUIElement> textBoxWithInlineAction;
-            ActionHelpers::HandleInlineAction(
-                renderContext, renderArgs, inputUIElement, textBoxParentContainer.Get(), isMultiline,
-            inlineAction.Get(), &textBoxWithInlineAction); textBoxParentContainer = textBoxWithInlineAction;*/
             bool isMultiline = adaptiveTextInput.IsMultiline();
             rtom::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != rtom::TextInputStyle::Password;
-            auto textBoxWithInlineAction = ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::HandleInlineAction(
-                renderContext, renderArgs, inputUIElement, inputUIElement, isMultiline, inlineAction);
+            // TODO: not sure why inputUIElement is passed twice here.. (as textBoxParentContainer)
+            textBoxParentContainer = ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::HandleInlineAction(
+                renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
         }
-
-        /*boolean isMultiline;
-        RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));*/
 
         if (!adaptiveTextInput.IsMultiline())
         {
-            /*  ComPtr<IFrameworkElement> textBoxFrameworkElement;
-              RETURN_IF_FAILED(textBoxParentContainer.As(&textBoxFrameworkElement));
-              RETURN_IF_FAILED(textBoxFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));*/
-            auto textBoxFrameworkElement = inputUIElement.as<rtxaml::FrameworkElement>();
+            auto textBoxFrameworkElement = textBoxParentContainer.as<rtxaml::FrameworkElement>();
             textBoxFrameworkElement.VerticalAlignment(rtxaml::VerticalAlignment::Top);
         }
 
         // Call XamlHelpers::HandleInputLayoutAndValidation to handle accessibility properties. Pass nullptr for
         // validationBorder as we've already handled that above.
-        /*ComPtr<IUIElement> inputLayout;
-        ComPtr<IUIElement> validationError;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, &inputLayout, nullptr));*/
         rtxaml::UIElement inputLayout{nullptr};
         std::tie(inputLayout, std::ignore) =
             ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveTextInput,
@@ -106,10 +65,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                                                                             // if it's correct way here with regex hstring
                                                                                             renderContext);
 
-        /*RETURN_IF_FAILED(inputLayout.CopyTo(textInputLayout));
-        RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
-        return S_OK;*/
-        // TODO: can I just return from XamlHelpers without using std::tie?
+        // TODO: we can't just return xamlHelpres function cal as we need to return nullptr for validationBorder, correct?
         return {inputLayout, nullptr};
     }
 
@@ -118,8 +74,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                                rtrender::AdaptiveRenderContext const& renderContext,
                                                                rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        /*ComPtr<ITextBox> textBox =
-            XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));*/
         rtxaml::Controls::TextBox textBox{};
 
         // boolean isMultiLine;
