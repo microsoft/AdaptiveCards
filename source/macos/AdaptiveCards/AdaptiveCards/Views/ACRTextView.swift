@@ -97,7 +97,8 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
         linkTextAttributes = [
             .foregroundColor: config.foregroundColor,
             .underlineColor: config.underlineColor,
-            .underlineStyle: config.underlineStyle.rawValue
+            .underlineStyle: config.underlineStyle.rawValue,
+            .cursor: NSCursor.pointingHand
         ]
     }
     

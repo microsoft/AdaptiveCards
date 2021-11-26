@@ -18,10 +18,12 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     
     private let buttonConfig: ChoiceSetButtonConfig?
     private let buttonType: ChoiceSetButtonType
+    private let localisedStringConfig: LocalisedStringConfig
     
     init(renderConfig: RenderConfig, buttonType: ChoiceSetButtonType) {
         self.buttonType = buttonType
         self.buttonConfig = buttonType == .switch ? renderConfig.checkBoxButtonConfig : renderConfig.radioButtonConfig
+        self.localisedStringConfig = renderConfig.localisedStringConfig
         super.init(frame: .zero)
         button.setButtonType(buttonType == .switch ? .switch : .radio)
         setupViews()
@@ -29,6 +31,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
         setupActions()
         updateButtonImage()
         setupTrackingArea()
+        setupAccessibility()
     }
     
     public required init?(coder: NSCoder) {
@@ -90,6 +93,11 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
         addTrackingArea(trackingArea)
     }
     
+    private func setupAccessibility() {
+        setAccessibilityElement(true)
+        setAccessibilityRole(buttonType == .radio ? .radioButton : .checkBox)
+    }
+    
     override func mouseEntered(with event: NSEvent) {
         button.isHighlighted = true
     }
@@ -111,11 +119,17 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
         button.image?.size = NSSize(width: 16, height: 16)
         button.alternateImage?.size = NSSize(width: 16, height: 16)
         button.imageScaling = .scaleProportionallyUpOrDown
+        if buttonType == .switch {
+            NSAccessibility.announce(valueChangedMessage())
+        }
     }
     
     @objc private func handleButtonAction() {
         delegate?.acrChoiceButtonDidSelect(self)
         updateButtonImage()
+        if buttonType == .radio {
+            NSAccessibility.announce(valueChangedMessage())
+        }
     }
     
     var value: String {
@@ -132,6 +146,18 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     
     var isValid: Bool {
         return true
+    }
+    
+    override func accessibilityValue() -> Any? {
+        return state
+    }
+
+    private func valueChangedMessage() -> String {
+        var message: String
+        message = state == .on ? (buttonType == .switch ? localisedStringConfig.choiceSetTickBoxTicked : localisedStringConfig.choiceSetRadioButtonSelected) : (buttonType == .switch ? localisedStringConfig.choiceSetTickBoxUnticked : "")
+        message += ", " + (accessibilityLabel() ?? "")
+        message += ", " + (accessibilityRole()?.description(with: .none) ?? "")
+        return message
     }
 }
 // MARK: EXTENSION
@@ -170,5 +196,23 @@ extension ACRChoiceButton {
         set {
             label.stringValue = newValue
         }
+    }
+}
+
+extension NSAccessibility {
+    public static func announce(_ message: String) {
+        DispatchQueue.main.asyncAfter(duration: 0.2, execute: {
+            self.post(
+                element: NSApp.mainWindow as Any,
+                notification: .announcementRequested,
+                userInfo: [.announcement: message, .priority: NSAccessibilityPriorityLevel.high.rawValue]
+            )
+        })
+    }
+}
+
+extension DispatchQueue {
+    func asyncAfter(duration: TimeInterval, execute: @escaping () -> Void) {
+        asyncAfter(deadline: .now() + duration, execute: execute)
     }
 }

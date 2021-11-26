@@ -39,11 +39,14 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         if inputBlock.getIsMultiline() {
-            let multilineView = ACRMultilineInputTextView(config: config.inputFieldConfig)
+            let multilineView = ACRMultilineInputTextView(config: config)
             multilineView.setId(inputBlock.getId())
             multilineView.setVisibilty(to: inputBlock.getIsVisible())
             if let placeholderString = inputBlock.getPlaceholder() {
                 multilineView.setPlaceholder(placeholderString)
+                // In NSTextView we are drawing placeholder, so to make screen reader read placeholder, add as part of title
+                let prevAccessibilityTitle = multilineView.textView.accessibilityTitle()
+                multilineView.textView.setAccessibilityTitle((prevAccessibilityTitle ?? "") + ", " + placeholderString)
             }
             if let valueString = inputBlock.getValue(), !valueString.isEmpty {
                 multilineView.setValue(value: valueString, maximumLen: inputBlock.getMaxLength())
@@ -67,6 +70,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             textView.cell?.truncatesLastVisibleLine = true
             textView.cell?.lineBreakMode = .byTruncatingTail
             textView.isHidden = !inputBlock.getIsVisible()
+            textView.setAccessibilityTitle(config.localisedStringConfig.inputTextFieldAccessibilityTitle)
         }
         // Create placeholder and initial value string if they exist
         if let placeholderString = inputBlock.getPlaceholder() {
@@ -160,7 +164,7 @@ class ACRTextInputView: ACRTextField, InputHandlingViewProtocol {
     override func textDidChange(_ notification: Notification) {
         super.textDidChange(notification)
         guard maxLen > 0  else { return } // maxLen returns 0 if propery not set
-        // This stops the user from exceeding the maxLength property of Inut.Text if prroperty was set
+        // This stops the user from exceeding the maxLength property of Input.Text if property was set
         guard let textView = notification.object as? NSTextView, textView.string.count > maxLen else { return }
         textView.string = String(textView.string.dropLast())
         // Below check added to ensure prefilled value doesn't exceede the maxLength property if set

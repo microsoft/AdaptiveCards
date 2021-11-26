@@ -53,6 +53,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
         
         // Add SelectAction
         columnSetView.setupSelectAction(columnSet.getSelectAction(), rootView: rootView)
+        columnSetView.setupSelectActionAccessibility(on: columnSetView, for: columnSet.getSelectAction())
         
         if numberOfStretchItems == totalColumns && !columnViews.isEmpty {
             let firstColumn = columnViews[0]

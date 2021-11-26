@@ -48,6 +48,15 @@ class ActionSubmitRendererTests: XCTestCase {
         XCTAssertEqual(targetHandlerDelegate.lastDataJSON, "helloworld")
     }
     
+    func testValidDataJsonSet() {
+        actionSubmit = .make(dataJson: "String", inputText: FakeInputText.make())
+        let button = renderButton()
+        guard let target = acrView.targets.first as? ActionSubmitTarget else { return XCTFail() }
+        XCTAssertEqual(acrView.targets.count, 1)
+        XCTAssertEqual(target.dataJson, "String")
+        XCTAssertEqual(button.target as! ActionSubmitTarget, target)
+    }
+    
     func testIconPosition() {
         hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .aboveTitle))
         actionSubmit = .make()

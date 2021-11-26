@@ -45,6 +45,8 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
         }
         
         columnView.setupSelectAction(column.getSelectAction(), rootView: rootView)
+        columnView.setupSelectActionAccessibility(on: columnView, for: column.getSelectAction())
+        
         columnView.setVerticalHuggingPriority(1)
      
         return columnView

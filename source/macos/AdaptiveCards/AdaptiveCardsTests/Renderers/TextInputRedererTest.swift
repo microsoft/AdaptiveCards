@@ -38,6 +38,16 @@ class TextInputRendererTest: XCTestCase {
         XCTAssertEqual(inputTextField.stringValue, "a long str")
     }
     
+    func testSetAccessibilityValue() {
+        let valueString: String = "somevalue"
+        inputText = .make(value: valueString)
+        
+        let inputTextField = renderTextInput()
+        XCTAssertEqual(inputTextField.accessibilityChildren()?.count, 1)
+        XCTAssertEqual(inputTextField.accessibilityTitle(), "Text Field")
+        XCTAssertEqual(inputTextField.accessibilityValue(), "somevalue")
+    }
+    
     private func renderTextInput() -> ACRTextInputView {
         let view = textInputRenderer.render(element: inputText, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         

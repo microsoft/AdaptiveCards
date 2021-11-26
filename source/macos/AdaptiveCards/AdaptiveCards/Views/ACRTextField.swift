@@ -13,12 +13,14 @@ class ACRTextField: NSTextField {
     }
     
     weak var textFieldDelegate: ACRTextFieldDelegate?
-    private let config: InputFieldConfig
+    private let config: RenderConfig
+    private let inputConfig: InputFieldConfig
     private let isDarkMode: Bool
     private let textFieldMode: Mode
     
     init(dateTimeFieldWith config: RenderConfig) {
-        self.config = config.inputFieldConfig
+        self.config = config
+        self.inputConfig = config.inputFieldConfig
         textFieldMode = .dateTime
         isDarkMode = config.isDarkMode
         super.init(frame: .zero)
@@ -27,7 +29,8 @@ class ACRTextField: NSTextField {
     }
     
     init(config: RenderConfig) {
-        self.config = config.inputFieldConfig
+        self.config = config
+        self.inputConfig = config.inputFieldConfig
         textFieldMode = .text
         self.isDarkMode = config.isDarkMode
         super.init(frame: .zero)
@@ -36,7 +39,8 @@ class ACRTextField: NSTextField {
     }
     
     init(numericFieldWith config: RenderConfig) {
-        self.config = config.inputFieldConfig
+        self.config = config
+        self.inputConfig = config.inputFieldConfig
         textFieldMode = .number
         isDarkMode = config.isDarkMode
         super.init(frame: .zero)
@@ -57,51 +61,52 @@ class ACRTextField: NSTextField {
         if textFieldMode == .dateTime {
             // 20 is image width and 12 is the spacing after image to text
             leftPadding += 32
-            if config.clearButtonImage == nil {
+            if inputConfig.clearButtonImage == nil {
                 // Implies old date field, so clear button hugs edge
                 leftPadding -= 12
             }
         } else {
-            leftPadding += config.leftPadding
+            leftPadding += inputConfig.leftPadding
         }
-        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, yPadding: config.yPadding, focusRingCornerRadius: config.focusRingCornerRadius, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
+        customCell.setupSpacing(rightPadding: inputConfig.rightPadding, leftPadding: leftPadding, yPadding: inputConfig.yPadding, focusRingCornerRadius: inputConfig.focusRingCornerRadius, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
         cell = customCell
-        font = config.font
+        font = inputConfig.font
         if wantsClearButton {
             addSubview(clearButton)
             clearButton.isHidden = true
         }
         // Add inintial backgound color to text box
         wantsLayer = true
-        layer?.backgroundColor = config.backgroundColor.cgColor
-        layer?.borderWidth = config.borderWidth
-        layer?.borderColor = config.borderColor.cgColor
+        layer?.backgroundColor = inputConfig.backgroundColor.cgColor
+        layer?.borderWidth = inputConfig.borderWidth
+        layer?.borderColor = inputConfig.borderColor.cgColor
         setupTrackingArea()
     }
     
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: config.height).isActive = true
+        heightAnchor.constraint(equalToConstant: inputConfig.height).isActive = true
         if wantsClearButton {
-            clearButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -config.rightPadding).isActive = true
+            clearButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inputConfig.rightPadding).isActive = true
             clearButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         }
     }
     
     private (set) lazy var clearButton: NSButtonWithImageSpacing = {
         let clearImage: NSImage?
-        if config.clearButtonImage == nil, wantsClearButton {
+        if inputConfig.clearButtonImage == nil, wantsClearButton {
             // displaying old clear button
             let resourceName = isDarkMode ? "clear_18_w" : "clear_18"
             clearImage = BundleUtils.getImage(resourceName, ofType: "png")
         } else {
-            clearImage = config.clearButtonImage
+            clearImage = inputConfig.clearButtonImage
         }
         let view = NSButtonWithImageSpacing(image: clearImage ?? NSImage(), target: self, action: #selector(handleClearAction))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
         view.isBordered = false
+        view.setAccessibilityTitle(config.localisedStringConfig.clearButtonAccessibilityTitle)
         return view
     }()
     
@@ -115,7 +120,7 @@ class ACRTextField: NSTextField {
             let placeholderAttrString = NSAttributedString(string: newValue ?? "")
             let range = NSRange(location: 0, length: placeholderAttrString.length )
             let attributedString = NSMutableAttributedString(attributedString: placeholderAttrString)
-            attributedString.addAttributes([.foregroundColor: config.placeholderTextColor, .font: config.font], range: range)
+            attributedString.addAttributes([.foregroundColor: inputConfig.placeholderTextColor, .font: inputConfig.font], range: range)
             placeholderAttributedString = attributedString
         }
     }
@@ -156,30 +161,30 @@ class ACRTextField: NSTextField {
     
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        self.layer?.backgroundColor = config.highlightedColor.cgColor
+        self.layer?.backgroundColor = inputConfig.highlightedColor.cgColor
     }
     
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        self.layer?.backgroundColor = config.backgroundColor.cgColor
+        self.layer?.backgroundColor = inputConfig.backgroundColor.cgColor
     }
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         if textFieldMode != .dateTime {
-            layer?.borderColor = config.activeBorderColor.cgColor
+            layer?.borderColor = inputConfig.activeBorderColor.cgColor
         }
     }
     
     override func textDidBeginEditing(_ notification: Notification) {
         if textFieldMode != .dateTime {
-            layer?.borderColor = config.activeBorderColor.cgColor
+            layer?.borderColor = inputConfig.activeBorderColor.cgColor
         }
         return super.textDidBeginEditing(notification)
     }
     
     override func textDidEndEditing(_ notification: Notification) {
-        layer?.borderColor = config.borderColor.cgColor
+        layer?.borderColor = inputConfig.borderColor.cgColor
         return super.textDidEndEditing(notification)
     }
     
@@ -188,13 +193,22 @@ class ACRTextField: NSTextField {
     }
     
     private var wantsClearButton: Bool {
-        return config.wantsClearButton || (textFieldMode == .dateTime)
+        return inputConfig.wantsClearButton || (textFieldMode == .dateTime)
     }
     
     override func becomeFirstResponder() -> Bool {
         let textView = window?.fieldEditor(true, for: nil) as? NSTextView
         textView?.insertionPointColor = isDarkMode ? .white : .black
         return super.becomeFirstResponder()
+    }
+    
+    override func accessibilityChildren() -> [Any]? {
+        if wantsClearButton && !clearButton.isHidden {
+            var temp = super.accessibilityChildren()
+            temp?.append(clearButton)
+            return temp
+        }
+        return super.accessibilityChildren()
     }
 }
 

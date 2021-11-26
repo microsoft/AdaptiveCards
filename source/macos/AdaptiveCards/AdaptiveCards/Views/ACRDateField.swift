@@ -29,7 +29,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
        return view
     }()
 
-    private lazy var iconButton: NSButtonWithImageSpacing = {
+    private (set) lazy var iconButton: NSButtonWithImageSpacing = {
         let calendarResourceName = isDarkMode ? "calendar-month-dark" : "calendar-month-light"
         let clockResourceName = isDarkMode ? "recents_20_w" : "recents_20"
         let calendarImage = BundleUtils.getImage(calendarResourceName, ofType: "png")
@@ -40,6 +40,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
         view.isBordered = false
+        view.setAccessibilityTitle(isTimeMode ? config.localisedStringConfig.timePickerButtonAccessibilityTitle: config.localisedStringConfig.datePickerButtonAccessibilityTitle)
         return view
     }()
     
@@ -122,6 +123,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         setupViews()
         setupConstraints()
         setupPopover()
+        setupAccessibility()
     }
     
     required init?(coder: NSCoder) {
@@ -145,6 +147,17 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private func setupPopover() {
         datePickerCalendar.dateValue = Date()
         datePickerTextfield.dateValue = Date()
+    }
+    
+    private func setupAccessibility() {
+        setAccessibilityElement(true)
+        setAccessibilityRoleDescription(isTimeMode  ? config.localisedStringConfig.timePickerFieldAccessibilityRoleDescription : config.localisedStringConfig.datePickerFieldAccessibilityRoleDescription)
+    }
+
+    override func accessibilityChildren() -> [Any]? {
+        var temp = textField.accessibilityChildren()
+        temp?.append(iconButton)
+        return temp
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -186,6 +199,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
             popoverView.view = stackview
             popoverView.view.frame = frame
             popover = NSPopover(contentViewController: popoverView, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
+            popover?.setAccessibilityParent(self)
         } else {
             popover?.show(relativeTo: iconButton.bounds, of: iconButton, preferredEdge: .maxY)
         }
@@ -200,6 +214,15 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     
     @objc private func handleDateAction(_ datePicker: NSDatePicker) {
         selectedDate = datePicker.dateValue
+    }
+    
+    override func accessibilityLabel() -> String? {
+        if !textField.stringValue.isEmpty {
+            return textField.stringValue
+        } else if let placeholder = placeholder {
+            return placeholder
+        }
+        return nil
     }
 }
 

@@ -93,8 +93,8 @@ class ACRViewTests: XCTestCase {
     // Test Submit Action is clicked
     func testSubmitActionCount() {
         view.addInputHandler(FakeInputHandlingView())
-        view.handleSubmitAction(actionView: NSView(), dataJson: "")
-        
+        // Empty stringg or dataJson is a valid input
+        view.handleSubmitAction(actionView: NSView(), dataJson: nil)
         XCTAssertEqual(actionDelegate.submitActionCount, 1)
         XCTAssertEqual(actionDelegate.dictValues, 1)
     }
@@ -108,7 +108,7 @@ class ACRViewTests: XCTestCase {
         fakeShowCard.addInputHandler(FakeInputHandlingView())
         
         fakeShowCard.parent = view
-        fakeShowCard.handleSubmitAction(actionView: NSView(), dataJson: "")
+        fakeShowCard.handleSubmitAction(actionView: NSView(), dataJson: nil)
         
         XCTAssertEqual(actionDelegate.submitActionCount, 1)
         XCTAssertEqual(actionDelegate.dictValues, 2)
@@ -130,7 +130,7 @@ class ACRViewTests: XCTestCase {
         fakeShowCard.parent = view
         fakeShowCard2.parent = fakeShowCard
         
-        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
+        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: nil)
         
         XCTAssertEqual(actionDelegate.dictValues, 4)
     }
@@ -149,7 +149,7 @@ class ACRViewTests: XCTestCase {
         fakeShowCard.parent = view
         fakeShowCard2.parent = view
         
-        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
+        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: nil)
         
         XCTAssertEqual(actionDelegate.dictValues, 1)
     }

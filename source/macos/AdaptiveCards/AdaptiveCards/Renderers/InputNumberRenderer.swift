@@ -56,6 +56,7 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
         view.cell?.usesSingleLineMode = true
         view.maximumNumberOfLines = 1
         view.cell?.lineBreakMode = .byTruncatingTail
+        view.setAccessibilityTitle(config.localisedStringConfig.inputNumberAccessibilityTitle)
         if #available(OSX 10.13, *) {
             view.layer?.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
         }
@@ -77,7 +78,7 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
         var stringValue = textfield.stringValue
         
         stepper.doubleValue = Double(textField.stringValue) ?? stepper.doubleValue
-        let charSet = NSCharacterSet(charactersIn: "1234567890.").inverted
+        let charSet = NSCharacterSet(charactersIn: "1234567890.-").inverted
         let chars = stringValue.components(separatedBy: charSet)
         stringValue = chars.joined()
 
@@ -91,6 +92,22 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
             stringValue = "\(chuncks[0])"
         default:
             stringValue = "\(chuncks[0]).\(chuncks[1])"
+        }
+        
+        // "-" should be at start if preset
+        let minus = NSCharacterSet(charactersIn: "-")
+        let minusSeparatedChuncks = stringValue.components(separatedBy: minus as CharacterSet)
+        switch minusSeparatedChuncks.count {
+        case 0:
+            stringValue = ""
+        case 1:
+            stringValue = "\(minusSeparatedChuncks[0])"
+        default:
+            if minusSeparatedChuncks[0].isEmpty {
+                stringValue = "-\(minusSeparatedChuncks[1])"
+            } else {
+                stringValue = "\(minusSeparatedChuncks[0])"
+            }
         }
 
         // replace string

@@ -123,6 +123,24 @@ class InputNumberRendererTest: XCTestCase {
         let inputNumberField = renderNumberInput()
         XCTAssertEqual(inputNumberField.value, "12.3")
     }
+    
+    func testNegativeValuesReturnedWhenStored() {
+        inputNumber = .make(value : -12.3)
+        
+        let inputNumberField = renderNumberInput()
+        XCTAssertEqual(inputNumberField.value, "-12.3")
+    }
+    
+    func testAccessibilityValueSet() {
+        let val: NSNumber = 20.00
+        inputNumber = .make(value: val)
+        
+        let inputNumberField = renderNumberInput()
+        XCTAssertEqual(inputNumberField.inputString, "20.0")
+        XCTAssertEqual(inputNumberField.accessibilityChildren()?.count, 2)
+        XCTAssertEqual(inputNumberField.textField.accessibilityTitle(), "Input Number")
+        XCTAssertEqual(inputNumberField.textField.accessibilityValue(), "20")
+    }
        
     private func renderNumberInput() -> ACRNumericTextField {
         let view = inputNumberRenderer.render(element: inputNumber, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)

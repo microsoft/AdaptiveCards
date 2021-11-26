@@ -7,12 +7,14 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     @IBOutlet var textView: ACRTextView!
     
     private var placeholderAttrString: NSAttributedString?
-    private let config: InputFieldConfig
+    private let config: RenderConfig
+    private let inputConfig: InputFieldConfig
     var maxLen: Int = 0
     var id: String?
     
-    init(config: InputFieldConfig) {
+    init(config: RenderConfig) {
         self.config = config
+        self.inputConfig = config.inputFieldConfig
         super.init(frame: .zero)
         BundleUtils.loadNibNamed("ACRMultilineInputTextView", owner: self)
         textView.allowsUndo = true
@@ -34,15 +36,14 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         contentView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        let heightConstraint = contentView.heightAnchor.constraint(equalToConstant: 100.0)
-        heightConstraint.priority = .fittingSizeCompression
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
         heightConstraint.isActive = true
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         scrollView.wantsLayer = true
-        scrollView.focusRingCornerRadius = config.focusRingCornerRadius
+        scrollView.focusRingCornerRadius = inputConfig.focusRingCornerRadius
         scrollView.focusRingType = .exterior
         scrollView.autohidesScrollers = true
         scrollView.disableScroll = true
@@ -52,14 +53,15 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         textView.isAutomaticDashSubstitutionEnabled = false
         textView.isAutomaticTextReplacementEnabled = false
         textView.smartInsertDeleteEnabled = false
-        textView.font = config.font
+        textView.font = inputConfig.font
         textView.textContainer?.lineFragmentPadding = 0
-        textView.textContainerInset = NSSize(width: config.multilineFieldInsets.left, height: config.multilineFieldInsets.top)
+        textView.textContainerInset = NSSize(width: inputConfig.multilineFieldInsets.left, height: inputConfig.multilineFieldInsets.top)
         wantsLayer = true
-        layer?.borderColor = config.borderColor.cgColor
-        layer?.borderWidth = config.borderWidth
-        layer?.cornerRadius = config.focusRingCornerRadius
-        textView.backgroundColor = config.backgroundColor
+        layer?.borderColor = inputConfig.borderColor.cgColor
+        layer?.borderWidth = inputConfig.borderWidth
+        layer?.cornerRadius = inputConfig.focusRingCornerRadius
+        textView.backgroundColor = inputConfig.backgroundColor
+        textView.setAccessibilityTitle(config.localisedStringConfig.inputTextFieldAccessibilityTitle)
         
         // For hover need tracking area
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
@@ -68,9 +70,9 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     
     func setPlaceholder(_ placeholder: String) {
         let placeholderValue = NSMutableAttributedString(string: placeholder)
-        placeholderValue.addAttributes([.foregroundColor: config.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
-        textView.placeholderLeftPadding = config.multilineFieldInsets.left
-        textView.placeholderTopPadding = config.multilineFieldInsets.top
+        placeholderValue.addAttributes([.foregroundColor: inputConfig.placeholderTextColor, .font: inputConfig.font], range: NSRange(location: 0, length: placeholderValue.length))
+        textView.placeholderLeftPadding = inputConfig.multilineFieldInsets.left
+        textView.placeholderTopPadding = inputConfig.multilineFieldInsets.top
         textView.placeholderAttrString = placeholderValue
     }
     
@@ -80,7 +82,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         if maxCharLen > 0, attributedValue.string.count > maxCharLen {
             attributedValue = NSMutableAttributedString(string: String(attributedValue.string.dropLast(attributedValue.string.count - maxCharLen)))
         }
-        attributedValue.addAttributes([.foregroundColor: NSColor.textColor, .font: config.font], range: NSRange(location: 0, length: attributedValue.length))
+        attributedValue.addAttributes([.foregroundColor: NSColor.textColor, .font: inputConfig.font], range: NSRange(location: 0, length: attributedValue.length))
         textView.textStorage?.setAttributedString(attributedValue)
     }
     
@@ -104,11 +106,11 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     }
     
     override func mouseEntered(with event: NSEvent) {
-        textView.backgroundColor = config.highlightedColor
+        textView.backgroundColor = inputConfig.highlightedColor
     }
     
     override func mouseExited(with event: NSEvent) {
-        textView.backgroundColor = config.backgroundColor
+        textView.backgroundColor = inputConfig.backgroundColor
     }
 }
 
@@ -133,11 +135,11 @@ extension ACRMultilineInputTextView: InputHandlingViewProtocol {
 extension ACRMultilineInputTextView: ACRTextViewResponderDelegate {
     func textViewDidBecomeFirstResponder() {
         scrollView.disableScroll = false
-        layer?.borderColor = config.activeBorderColor.cgColor
+        layer?.borderColor = inputConfig.activeBorderColor.cgColor
     }
     
     func textViewDidResignFirstResponder() {
         scrollView.disableScroll = true
-        layer?.borderColor = config.borderColor.cgColor
+        layer?.borderColor = inputConfig.borderColor.cgColor
     }
 }

@@ -103,6 +103,16 @@ class InputTimeRendererTest: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: inputTimeField.datePickerCalendar.dateValue), dateFormatter.string(from: Date()))
         XCTAssertEqual(dateFormatter.string(from: inputTimeField.datePickerTextfield.dateValue), dateFormatter.string(from: Date()))
     }
+    
+    func testAccessbilityValueIsSet() {
+        let val: String = "12:24"
+        inputTime = .make(value: val)
+        
+        let inputTimeField = renderTimeInput()
+        XCTAssertEqual(inputTimeField.accessibilityRoleDescription(), "Time Picker")
+        XCTAssertEqual(inputTimeField.iconButton.accessibilityTitle(), "Time Picker Button")
+        XCTAssertEqual(inputTimeField.textField.accessibilityValue(), "12:24 PM")
+    }
 
     private func renderTimeInput() -> ACRDateField {
         let view = inputTimeRenderer.render(element: inputTime, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)

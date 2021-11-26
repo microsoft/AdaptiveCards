@@ -9,7 +9,7 @@ class ACRChoiceSetButtontests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default,checkBoxButtonConfig: setupCheckBoxButton(), radioButtonConfig: setupRadioButton())
+        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default,checkBoxButtonConfig: setupCheckBoxButton(), radioButtonConfig: setupRadioButton(), localisedStringConfig: nil)
         choiceCheckBoxButtonView = ACRChoiceButton(renderConfig: renderConfig, buttonType: .switch)
         choiceRadioButtonView = ACRChoiceButton(renderConfig: renderConfig, buttonType: .radio)
     }
@@ -69,7 +69,7 @@ class ACRChoiceSetButtontests: XCTestCase {
     }
     
     func testRadioButtonWithoutImages() {
-        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil)
+        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil, localisedStringConfig: nil)
         choiceRadioButtonView = ACRChoiceButton(renderConfig: renderConfig, buttonType: .radio)
         let defaultRadioButton = NSButton(radioButtonWithTitle: "", target: nil, action: nil)
         
@@ -78,7 +78,7 @@ class ACRChoiceSetButtontests: XCTestCase {
     }
     
     func testCheckBoxButtonWithoutImages() {
-        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil)
+        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil, localisedStringConfig: nil)
         choiceCheckBoxButtonView = ACRChoiceButton(renderConfig: renderConfig, buttonType: .switch)
         let defaultCheckBoxButton = NSButton(checkboxWithTitle: "", target: nil, action: nil)
         

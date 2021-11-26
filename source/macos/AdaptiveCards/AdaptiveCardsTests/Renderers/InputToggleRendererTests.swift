@@ -67,6 +67,17 @@ class InputToggleRendererTests: XCTestCase {
         XCTAssertEqual(inputToggleView.wrap, true)
     }
     
+    func testRendereSetsAccessiblityLabel() {
+        inputToggle = .make(title: "Test", value: "true", valueOn: "false", valueOff: "true")
+        
+        let inputToggleView = renderInputToggleView()
+        XCTAssertEqual(inputToggleView.state, .off)
+        XCTAssertEqual(inputToggleView.accessibilityValue() as? Bool, false)
+        
+        XCTAssertEqual(inputToggleView.accessibilityRole(), .checkBox)
+        XCTAssertEqual(inputToggleView.accessibilityLabel(), "Test")
+    }
+    
     private func renderInputToggleView() -> ACRChoiceButton {
         let view = inputToggleRenderer.render(element: inputToggle, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         

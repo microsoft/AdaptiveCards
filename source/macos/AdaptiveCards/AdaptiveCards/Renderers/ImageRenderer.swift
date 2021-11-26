@@ -91,6 +91,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         wrappingView.setupSelectAction(imageElement.getSelectAction(), rootView: rootView)
+        wrappingView.setupSelectActionAccessibility(on: wrappingView, for: imageElement.getSelectAction())
         
         return wrappingView
     }

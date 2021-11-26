@@ -180,6 +180,8 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         
         guard let leading = stackViewLeadingConstraint, let trailing = stackViewTrailingConstraint, let top = stackViewTopConstraint, let bottom = stackViewBottomConstraint else { return }
         NSLayoutConstraint.activate([leading, trailing, top, bottom])
+        stackView.setHuggingPriority(.fittingSizeCompression, for: .vertical)
+        stackView.setContentHuggingPriority(.fittingSizeCompression, for: .vertical)
     }
     
     /// This method can be overridden, but not to be called from anywhere

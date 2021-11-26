@@ -12,7 +12,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         if !choiceSetInput.getIsMultiSelect() {
             // style is compact or expanded
             if choiceSetInput.getChoiceSetStyle() == .compact {
-                return choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
+                return choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView, renderConfig: config)
             } else {
                 // radio button renderer
                 return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView, renderConfig: config)
@@ -50,7 +50,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         return value.components(separatedBy: ",")
     }
     
-    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView) -> NSView {
+    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, renderConfig: RenderConfig) -> NSView {
         // compact button renderer
         let choiceSetFieldCompactView = ACRChoiceSetCompactView()
         choiceSetFieldCompactView.autoenablesItems = false
@@ -79,6 +79,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         rootView.addInputHandler(choiceSetFieldCompactView)
+        choiceSetFieldCompactView.setAccessibilityRoleDescription(renderConfig.localisedStringConfig.choiceSetCompactAccessibilityRoleDescriptor)
         return choiceSetFieldCompactView
     }
     

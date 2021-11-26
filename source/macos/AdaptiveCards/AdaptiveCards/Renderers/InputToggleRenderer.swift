@@ -32,6 +32,7 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
         // This function returnns true/fase even if data not set in json
         inputToggleView.valueOn = inputToggle.getValueOn()
         inputToggleView.valueOff = inputToggle.getValueOff()
+        inputToggleView.setAccessibilityLabel(title)
         rootView.addInputHandler(inputToggleView)
         return inputToggleView
      }

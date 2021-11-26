@@ -39,7 +39,7 @@ open class AdaptiveCard {
 }
 
 public struct RenderConfig {
-    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil)
+    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default, checkBoxButtonConfig: nil, radioButtonConfig: nil, localisedStringConfig: nil)
     let isDarkMode: Bool
     let buttonConfig: ButtonConfig
     // swiftlint:disable identifier_name
@@ -48,8 +48,9 @@ public struct RenderConfig {
     let checkBoxButtonConfig: ChoiceSetButtonConfig?
     let radioButtonConfig: ChoiceSetButtonConfig?
     let inputFieldConfig: InputFieldConfig
+    public let localisedStringConfig: LocalisedStringConfig
     
-    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool, hyperlinkColorConfig: HyperlinkColorConfig, inputFieldConfig: InputFieldConfig, checkBoxButtonConfig: ChoiceSetButtonConfig?, radioButtonConfig: ChoiceSetButtonConfig?) {
+    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool, hyperlinkColorConfig: HyperlinkColorConfig, inputFieldConfig: InputFieldConfig, checkBoxButtonConfig: ChoiceSetButtonConfig?, radioButtonConfig: ChoiceSetButtonConfig?, localisedStringConfig: LocalisedStringConfig?) {
         self.isDarkMode = isDarkMode
         self.buttonConfig = buttonConfig
 		self.supportsSchemeV1_3 = supportsSchemeV1_3
@@ -57,6 +58,7 @@ public struct RenderConfig {
         self.checkBoxButtonConfig = checkBoxButtonConfig
         self.radioButtonConfig = radioButtonConfig
         self.inputFieldConfig = inputFieldConfig
+        self.localisedStringConfig = localisedStringConfig ?? .default
     }
 }
 
@@ -184,5 +186,35 @@ public struct InputFieldConfig {
         self.activeBorderColor = activeBorderColor
         self.placeholderTextColor = placeholderTextColor
         self.multilineFieldInsets = multilineFieldInsets
+    }
+}
+
+public struct LocalisedStringConfig {
+    public static let `default` = LocalisedStringConfig(choiceSetCompactAccessibilityRoleDescriptor: "Drop Down", inputNumberAccessibilityTitle: "Input Number", inputTextFieldAccessibilityTitle: "Text Field", choiceSetTickBoxTicked: "Ticked", choiceSetTickBoxUnticked: "Unticked", choiceSetRadioButtonSelected: "Selectd", datePickerFieldAccessibilityRoleDescription: "Date Picker", timePickerFieldAccessibilityRoleDescription: "Time Picker", datePickerButtonAccessibilityTitle: "Date Picker Button", timePickerButtonAccessibilityTitle: "Time Picker Button", clearButtonAccessibilityTitle: "Clear Button")
+
+    let choiceSetCompactAccessibilityRoleDescriptor: String
+    let inputNumberAccessibilityTitle: String
+    let inputTextFieldAccessibilityTitle: String
+    let choiceSetTickBoxTicked: String
+    let choiceSetTickBoxUnticked: String
+    let choiceSetRadioButtonSelected: String
+    let datePickerFieldAccessibilityRoleDescription: String
+    let timePickerFieldAccessibilityRoleDescription: String
+    let datePickerButtonAccessibilityTitle: String
+    let timePickerButtonAccessibilityTitle: String
+    let clearButtonAccessibilityTitle: String
+
+    public init(choiceSetCompactAccessibilityRoleDescriptor: String, inputNumberAccessibilityTitle: String, inputTextFieldAccessibilityTitle: String, choiceSetTickBoxTicked: String, choiceSetTickBoxUnticked: String, choiceSetRadioButtonSelected: String, datePickerFieldAccessibilityRoleDescription: String, timePickerFieldAccessibilityRoleDescription: String, datePickerButtonAccessibilityTitle: String, timePickerButtonAccessibilityTitle: String, clearButtonAccessibilityTitle: String) {
+        self.choiceSetCompactAccessibilityRoleDescriptor = choiceSetCompactAccessibilityRoleDescriptor
+        self.inputNumberAccessibilityTitle = inputNumberAccessibilityTitle
+        self.inputTextFieldAccessibilityTitle = inputTextFieldAccessibilityTitle
+        self.choiceSetTickBoxTicked = choiceSetTickBoxTicked
+        self.choiceSetTickBoxUnticked = choiceSetTickBoxUnticked
+        self.choiceSetRadioButtonSelected = choiceSetRadioButtonSelected
+        self.datePickerFieldAccessibilityRoleDescription = datePickerFieldAccessibilityRoleDescription
+        self.timePickerFieldAccessibilityRoleDescription = timePickerFieldAccessibilityRoleDescription
+        self.datePickerButtonAccessibilityTitle = datePickerButtonAccessibilityTitle
+        self.timePickerButtonAccessibilityTitle = timePickerButtonAccessibilityTitle
+        self.clearButtonAccessibilityTitle = clearButtonAccessibilityTitle
     }
 }

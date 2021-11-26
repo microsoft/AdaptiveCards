@@ -38,6 +38,18 @@ class MultilineInputTextRendererTest: XCTestCase {
         XCTAssertEqual(inputTextField.textView.string, "a long str")
     }
     
+    func testAccessibilityValueSet() {
+        let valueString: String = "somevalue"
+        let placeholderString: String = "Sample Placeholder"
+        inputText = .make(placeholderString: placeholderString, value: valueString, isMultiline: true)
+        
+        let inputTextField = renderTextInput()
+        // Placeholder is added as part of title as it is drawn in Multiline View
+        XCTAssertEqual(inputTextField.textView.accessibilityTitle(), "Text Field, Sample Placeholder")
+        XCTAssertEqual(inputTextField.textView.accessibilityValue(), "somevalue")
+        
+    }
+    
     
     
     private func renderTextInput() -> ACRMultilineInputTextView {

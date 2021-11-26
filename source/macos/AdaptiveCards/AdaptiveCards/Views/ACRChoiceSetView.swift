@@ -56,6 +56,7 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
         newButton.labelAttributedString = attributedString
         newButton.wrap = self.wrap
         newButton.buttonValue = value
+        newButton.setAccessibilityLabel(attributedString.string)
         return newButton
     }
     

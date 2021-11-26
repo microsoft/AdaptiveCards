@@ -17,6 +17,7 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
         
         // add selectAction
         containerView.setupSelectAction(container.getSelectAction(), rootView: rootView)
+        containerView.setupSelectActionAccessibility(on: containerView, for: container.getSelectAction())
         
         var leadingBlankSpace: SpacingView?
         if container.getVerticalContentAlignment() == .center || container.getVerticalContentAlignment() == .bottom {

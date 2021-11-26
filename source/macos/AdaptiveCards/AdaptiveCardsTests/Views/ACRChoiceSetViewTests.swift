@@ -8,7 +8,7 @@ class ACRChoiceSetViewtests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default,checkBoxButtonConfig: nil, radioButtonConfig: nil)
+        renderConfig = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default,checkBoxButtonConfig: nil, radioButtonConfig: nil, localisedStringConfig: nil)
         choiceSetView = ACRChoiceSetView(renderConfig: renderConfig)
     }
     
@@ -29,5 +29,25 @@ class ACRChoiceSetViewtests: XCTestCase {
         button2.button.performClick(nil)
         XCTAssertEqual(button1.state, .off)
         XCTAssertEqual(button2.state, .on)
+    }
+    
+    func testChoiceSetRadioButtonAccessibility() {
+        choiceSetView.isRadioGroup = true
+        let button1 = choiceSetView.setupButton(attributedString: NSMutableAttributedString(string: "Button1"), value: "1")
+        let button2 = choiceSetView.setupButton(attributedString: NSMutableAttributedString(string: "Button2"), value: "2")
+        
+        XCTAssertEqual(button1.accessibilityRole(), .radioButton)
+        XCTAssertEqual(button1.accessibilityLabel(), "Button1")
+        XCTAssertEqual(button2.accessibilityLabel(), "Button2")
+    }
+    
+    func testChoiceSetCheckBoxButtonAccessibility() {
+        choiceSetView.isRadioGroup = false
+        let button1 = choiceSetView.setupButton(attributedString: NSMutableAttributedString(string: "Button1"), value: "1")
+        let button2 = choiceSetView.setupButton(attributedString: NSMutableAttributedString(string: "Button2"), value: "2")
+        
+        XCTAssertEqual(button1.accessibilityRole(), .checkBox)
+        XCTAssertEqual(button1.accessibilityLabel(), "Button1")
+        XCTAssertEqual(button2.accessibilityLabel(), "Button2")
     }
 }

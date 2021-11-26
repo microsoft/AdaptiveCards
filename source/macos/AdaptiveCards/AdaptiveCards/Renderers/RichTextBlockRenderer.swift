@@ -22,7 +22,8 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: config.hyperlinkColorConfig.foregroundColor,
             NSAttributedString.Key.underlineColor: config.hyperlinkColorConfig.underlineColor,
-            NSAttributedString.Key.underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue
+            NSAttributedString.Key.underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue,
+            NSAttributedString.Key.cursor: NSCursor.pointingHand
         ]
         textView.linkTextAttributes = linkAttributes
         // init content
@@ -66,7 +67,7 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
                 if let actionTarget = target {
                     textRunContent.addAttributes([.selectAction: actionTarget], range: NSRange(location: 0, length: textRunContent.length))
                     textRunContent.addAttributes(linkAttributes, range: NSRange(location: 0, length: textRunContent.length))
-                    
+                    textRunContent.addAttributes([.accessibilityLink: true], range: NSRange(location: 0, length: textRunContent.length))
                     // setup textView to handle selectAction events
                     textView.setupSelectAction(textRun.getSelectAction(), rootView: rootView)
                 }

@@ -41,7 +41,8 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.linkTextAttributes = [
             .foregroundColor: config.hyperlinkColorConfig.foregroundColor,
             .underlineColor: config.hyperlinkColorConfig.underlineColor,
-            .underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue
+            .underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue,
+            .cursor: NSCursor.pointingHand
         ]
         
         if attributedString.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
