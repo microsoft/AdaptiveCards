@@ -8,6 +8,8 @@
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
 
+using namespace AdaptiveCards::Rendering::WinUI3::MediaHelpers;
+
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     rtxaml::UIElement AdaptiveMediaRenderer::Render(rtom::IAdaptiveCardElement const& adaptiveCardElement,
