@@ -483,6 +483,7 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                      RETURN_IF_FAILED(inlines->Append(lineBreak.Get()));
                  }*/
                 // TODO: Can I do it this way?
+                // TODO: Do we need to check for presnence of the API?
                 inlines.Append(rtxaml::Documents::LineBreak{});
             }
         }
