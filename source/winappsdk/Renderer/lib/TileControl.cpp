@@ -73,11 +73,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         rtxaml::Media::RectangleGeometry clip;
         clip.Rect(rect);
-        /* m_containerElement.Clip();
-         m_containerElement.as<rtxaml::UIElement>().Clip()
-         ComPtr<IUIElement> containerAsUIElement;
-         RETURN_IF_FAILED(m_containerElement.As(&containerAsUIElement));
-         RETURN_IF_FAILED(containerAsUIElement->put_Clip(clip.Get()));*/
         if (const auto containerAsUIElement = m_containerElement.try_as<rtxaml::UIElement>())
         {
             containerAsUIElement.Clip(clip);
@@ -89,10 +84,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     void TileControl::RefreshContainerTile()
     {
-        rtom::BackgroundImageFillMode fillMode{};
-        rtom::HAlignment hAlignment{};
-        rtom::VAlignment vAlignment{};
-        ExtractBackgroundImageData(fillMode, hAlignment, vAlignment);
+        rtom::BackgroundImageFillMode fillMode = m_adaptiveBackgroundImage.FillMode();
+        rtom::HAlignment hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();
+        rtom::VAlignment vAlignment = m_adaptiveBackgroundImage.VerticalAlignment();
 
         int numberSpriteToInstanciate{1};
         int numberImagePerColumn{1};
@@ -172,14 +166,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         if (numberSpriteToInstanciate > count)
         {
             // instanciate all elements not created yet
-            for (int x{}; x < (numberSpriteToInstanciate - count); x++)
+            for (int x = 0; x < (numberSpriteToInstanciate - count); x++)
             {
-                /*ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::WinUI3::XamlHelpers::CreateABIClass<IRectangle>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
-
-                ComPtr<IUIElement> rectangleAsUIElement;
-                THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
-                THROW_IF_FAILED(children->Append(rectangleAsUIElement.Get()));*/
                 rtxaml::Shapes::Rectangle rectangle;
 
                 children.Append(rectangle.as<rtxaml::UIElement>());
@@ -190,89 +178,64 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         else
         {
             // remove elements not used now
-            for (int x{}; x < (count - numberSpriteToInstanciate); ++x)
+            for (int x = 0; x < (count - numberSpriteToInstanciate); x++)
             {
                 children.RemoveAtEnd();
                 m_xamlChildren.pop_back();
             }
         }
 
-        // Convert ImageBrush to Brush
-        /*ComPtr<IBrush> brushXamlAsBrush;
-        THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsBrush));*/
-
-        if (const auto brushXamlAsBrush = m_brushXaml.try_as<rtxaml::Media::Brush>())
+        // TODO: do we need this cast?
+        // m_brushXaml to rtxaml::Media::Brush?
+        // Change positions+brush for all actives elements
+        for (int x = 0, index = 0; x < numberImagePerRow; x++)
         {
-            // Change positions+brush for all actives elements
-            for (int x = 0, index = 0; x < numberImagePerRow; x++)
+            for (int y = 0; y < numberImagePerColumn; y++, index++)
             {
-                for (int y = 0; y < numberImagePerColumn; y++, index++)
+                // Get Rectangle
+                auto rectangle = m_xamlChildren[index];
+
+                // For cover, the bitmapimage must be scaled to fill the container and then clipped to only the
+                // necessary section Set rectangle.
+                rectangle.Fill(m_brushXaml);
+
+                double originPositionX{0.0}, originPositionY{0.0};
+                if (fillMode != rtom::BackgroundImageFillMode::Cover)
                 {
-                    // Get Rectangle
-                    auto rectangle = m_xamlChildren[index];
+                    originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
+                    originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
+                }
 
-                    // For cover, the bitmapimage must be scaled to fill the container and then clipped to only the
-                    // necessary section Set rectangle.Fill
-                    /* ComPtr<IShape> rectangleAsShape;
-                     THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
-                     THROW_IF_FAILED(rectangleAsShape->put_Fill(brushXamlAsBrush.Get()));*/
-                    auto rectangleAsShape = rectangle.as<rtxaml::Shapes::Shape>();
+                // Set Left and Top for rectangle
+                rtxaml::Controls::Canvas::SetLeft(rectangle, originPositionX);
+                rtxaml::Controls::Canvas::SetTop(rectangle, originPositionY);
 
-                    // Convert rectangle to UIElement
-                    auto rectangleAsUIElement = rectangleAsShape.as<rtxaml::UIElement>();
+                double imageWidth{0.0}, imageHeight{0.0};
+                if (fillMode == rtom::BackgroundImageFillMode::Cover)
+                {
+                    imageWidth = m_containerSize.Width;
+                    imageHeight = m_containerSize.Height;
+                }
+                else
+                {
+                    imageWidth = m_imageSize.Width;
+                    imageHeight = m_imageSize.Height;
+                }
 
-                    double originPositionX{}, originPositionY{};
-                    if (fillMode != rtom::BackgroundImageFillMode::Cover)
-                    {
-                        originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
-                        originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
-                    }
+                // Set Width and Height for Rectangle
+                rectangle.Width(imageWidth);
+                rectangle.Height(imageHeight);
 
-                    // Set Left and Top for rectangle
-                    /* ComPtr<ICanvasStatics> canvasStatics;
-                     ABI::Windows::Foundation::GetActivationFactory(
-                         HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);*/
-                    rtxaml::Controls::Canvas::SetLeft(rectangleAsUIElement, originPositionX);
-                    rtxaml::Controls::Canvas::SetTop(rectangleAsUIElement, originPositionY);
+                if (fillMode == rtom::BackgroundImageFillMode::Cover)
+                {
+                    // TODO: do we ened to convert it to tile brush? not really, right?
+                    m_brushXaml.Stretch(rtxaml::Media::Stretch::UniformToFill);
 
-                    double imageWidth{}, imageHeight{};
-                    if (fillMode == rtom::BackgroundImageFillMode::Cover)
-                    {
-                        imageWidth = m_containerSize.Width;
-                        imageHeight = m_containerSize.Height;
-                    }
-                    else
-                    {
-                        imageWidth = m_imageSize.Width;
-                        imageHeight = m_imageSize.Height;
-                    }
-
-                    auto rectangleAsFElement = rectangle.as<rtxaml::FrameworkElement>();
-                    // Set Width and Height for Rectangle
-                    rectangleAsFElement.Width(imageWidth);
-                    rectangleAsFElement.Height(imageHeight);
-
-                    if (fillMode == rtom::BackgroundImageFillMode::Cover)
-                    {
-                        auto brushXamlAsTileBrush = m_brushXaml.as<rtxaml::Media::TileBrush>();
-
-                        brushXamlAsTileBrush.Stretch(rtxaml::Media::Stretch::UniformToFill);
-
-                        // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
-                        brushXamlAsTileBrush.AlignmentX(static_cast<rtxaml::Media::AlignmentX>(hAlignment));
-                        brushXamlAsTileBrush.AlignmentY(static_cast<rtxaml::Media::AlignmentY>(vAlignment));
-                    }
+                    // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
+                    m_brushXaml.AlignmentX(static_cast<rtxaml::Media::AlignmentX>(hAlignment));
+                    m_brushXaml.AlignmentY(static_cast<rtxaml::Media::AlignmentY>(vAlignment));
                 }
             }
         }
-    }
-
-    void TileControl::ExtractBackgroundImageData(rtom::BackgroundImageFillMode& fillMode,
-                                                 rtom::HAlignment& hAlignment,
-                                                 rtom::VAlignment& vAlignment)
-    {
-        fillMode = m_adaptiveBackgroundImage.FillMode();
-        hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();
-        vAlignment = m_adaptiveBackgroundImage.VerticalAlignment();
     }
 }
