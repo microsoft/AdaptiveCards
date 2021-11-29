@@ -208,6 +208,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 auto tag = childAsFrameworkElement.Tag();
                 if (tag)
                 {
+                    // TODDO: do we wanto to peek_innards to make sure this is our implementation?
                     if (const auto elementTagContent = tag.try_as<rtrender::ElementTagContent>())
                     {
                         auto separator = elementTagContent.Separator();

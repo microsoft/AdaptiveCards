@@ -11,17 +11,6 @@
 #include "ElementTagContent.h"
 
 using namespace concurrency;
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
@@ -89,11 +78,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             {
                 auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
+                // TODO: we need to peek to make sure it's our own class, right? because it's coming from the Tag
+                // auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);
                 auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<rtrender::ElementTagContent>();
-                // TODO: once again, how to do it correctly????
-                /* auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);*/
-                winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
 
+                winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
                 if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleTrue)
                 {
                     visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
@@ -105,7 +94,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 else if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleToggle)
                 {
                     bool currentVisibility = elementTagContent.ExpectedVisibility();
-                    /* THROW_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));*/
                     visibilityToSet = currentVisibility ? winrt::Windows::UI::Xaml::Visibility::Collapsed :
                                                           winrt::Windows::UI::Xaml::Visibility::Visible;
                 }
@@ -113,23 +101,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 toggleElementAsUIElement.Visibility(visibilityToSet);
                 elementTagContent.ExpectedVisibility(visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible);
 
-                /*winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IPanel> parentPanel;
-                THROW_IF_FAILED(elementTagContent->get_ParentPanel(parentPanel.put()));*/
                 auto parentPanel = elementTagContent.ParentPanel();
-                parentPanels.emplace_back(std::move(parentPanel));
+                parentPanels.emplace_back(parentPanel);
 
-                /* winrt::com_ptr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> cardElement;
-                 THROW_IF_FAILED(elementTagContent->get_AdaptiveCardElement(cardElement.put()));*/
                 auto cardElement = elementTagContent.CardElement();
 
                 if (auto cardElementAsColumn = cardElement.try_as<ObjectModel::WinUI3::AdaptiveColumn>())
                 {
-                    /*winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IColumnDefinition> columnDefinition;
-                    THROW_IF_FAILED(elementTagContent->get_ColumnDefinition(columnDefinition.put()));
-                    ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleColumnWidth(cardElementAsColumn,
-                                                                                       (visibilityToSet ==
-                                                                                        winrt::Windows::UI::Xaml::Visibility::Visible),
-                                                                                       to_winrt(columnDefinition.get()));*/
                     auto columnDefinition = elementTagContent.ColumnDefinition();
                     ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleColumnWidth(
                         cardElementAsColumn, (visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible), columnDefinition);
@@ -149,6 +127,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     void RenderedAdaptiveCard::SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
         auto actionType = actionElement.ActionType();
+
         switch (actionType)
         {
         case ObjectModel::WinUI3::ActionType::ToggleVisibility:
