@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include <wrl.h>
-#include <wrl/wrappers/corewrappers.h>
 #include <string>
 
 #include "AdaptiveCards.Rendering.WinUI3.h"
@@ -113,203 +111,26 @@ namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
 namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
 namespace rtxaml = winrt::Windows::UI::Xaml;
 
-template<typename D, typename I, typename... Args>
-HRESULT MakeRt(Microsoft::WRL::ComPtr<I>& out, Args&&... args) noexcept
-try
-{
-    out.Attach(winrt::make<D>(std::forward<Args>(args)...).as<I>().detach());
-    return S_OK;
-}
-CATCH_RETURN();
-
-template<typename> struct winrt_to_abi;
-template<typename> struct abi_to_winrt;
-#define map_rt_to_abi_(rt, abi) \
-    template<> struct winrt_to_abi<winrt::rt> \
-    { \
-        using type = ::ABI::abi; \
-    }; \
-    template<> struct abi_to_winrt<ABI::abi> \
-    { \
-        using type = ::winrt::rt; \
-    };
-
-#define map_rt_to_abi(x) map_rt_to_abi_(x, x)
-
-map_rt_to_abi(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement);
-map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard);
-map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
-map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSet, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionInvoker);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionRendererRegistration,
-               AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveElementRendererRegistration,
-               AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext, AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext);
-map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
-map_rt_to_abi_(Windows::UI::Xaml::Controls::ColumnDefinition, Windows::UI::Xaml::Controls::IColumnDefinition);
-map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
-map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
-map_rt_to_abi_(Windows::UI::Xaml::Media::Brush, Windows::UI::Xaml::Media::IBrush);
-map_rt_to_abi_(Windows::UI::Xaml::ResourceDictionary, Windows::UI::Xaml::IResourceDictionary);
-map_rt_to_abi_(Windows::UI::Xaml::UIElement, Windows::UI::Xaml::IUIElement);
-map_rt_to_abi_(Windows::UI::Xaml::FrameworkElement, Windows::UI::Xaml::IFrameworkElement);
-
-template<typename I> auto to_winrt(I* src)
-{
-    return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
-}
-
-template<typename I> auto to_winrt(Microsoft::WRL::ComPtr<I> const& src)
-{
-    return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
-}
-
-inline auto to_winrt(_In_opt_ HSTRING abi)
-{
-    return reinterpret_cast<winrt::hstring const&>(abi);
-}
-
-inline auto to_winrt(Microsoft::WRL::Wrappers::HString const& abi)
-{
-    return to_winrt(abi.Get());
-}
-
-template<typename I> auto to_wrl(I const& i)
-{
-    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<std::decay_t<I>>::type>&>(i);
-}
-
-template<typename I> auto to_wrl(I&& i)
-{
-    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<std::decay_t<I>>::type>&>(i);
-}
-
-HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept;
-
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept;
 winrt::hstring UTF8ToHString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
-HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
-
-std::string HStringToUTF8(HSTRING in);
 std::string HStringToUTF8(winrt::hstring const& in);
-
-winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
 inline bool Boolify(const boolean value) noexcept
 {
     return (value > 0);
 }
 
-template<typename T, typename TInterface, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<IIterable<T*>> vectorIterable;
-    HRESULT hr = localVector.As<IIterable<T*>>(&vectorIterable);
-
-    if (SUCCEEDED(hr))
-    {
-        Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
-        vectorIterable->First(&vectorIterator);
-
-        boolean hasCurrent = false;
-        hr = vectorIterator->get_HasCurrent(&hasCurrent);
-        while (SUCCEEDED(hr) && hasCurrent)
-        {
-            Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-            if (FAILED(vectorIterator->get_Current(current.GetAddressOf())))
-            {
-                return S_OK;
-            }
-
-            hr = iterationCallback(current.Get());
-            if (stopOnFailure && FAILED(hr))
-            {
-                return hr;
-            }
-
-            hr = vectorIterator->MoveNext(&hasCurrent);
-        }
-    }
-
-    return hr;
-}
-
-template<typename T, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    return IterateOverVectorWithFailure<T, T, C>(vector, stopOnFailure, iterationCallback);
-}
-
-template<typename T, typename TInterface, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<ABI::Windows::Foundation::Collections::IIterable<T*>> vectorIterable;
-    THROW_IF_FAILED(localVector.As<ABI::Windows::Foundation::Collections::IIterable<T*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IIterator<T*>> vectorIterator;
-    if (FAILED(vectorIterable->First(&vectorIterator)))
-    {
-        return;
-    }
-
-    boolean hasCurrent = false;
-    HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-        hr = vectorIterator->get_Current(current.GetAddressOf());
-        if (FAILED(hr))
-        {
-            break;
-        }
-
-        iterationCallback(current.Get());
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }
-}
-
+// TODO: we don't need this, right?
 template<typename T, typename TInterface, typename C>
 void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
 {
-    /* Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-     ComPtr<ABI::Windows::Foundation::Collections::IIterable<T*>> vectorIterable;
-     THROW_IF_FAILED(localVector.As<ABI::Windows::Foundation::Collections::IIterable<T*>>(&vectorIterable));*/
-
-    /*Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IIterator<T*>> vectorIterator;
-    if (FAILED(vectorIterable->First(&vectorIterator)))
-    {
-        return;
-    }
-
-    boolean hasCurrent = false;
-    HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-        hr = vectorIterator->get_Current(current.GetAddressOf());
-        if (FAILED(hr))
-        {
-            break;
-        }
-
-        iterationCallback(current.Get());
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }*/
-
     for (T item : vector)
     {
         iterationCallback(item);
@@ -317,25 +138,12 @@ void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vecto
 }
 
 template<typename T, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    IterateOverVector<T, T, C>(vector, iterationCallback);
-}
-
-template<typename T, typename C>
 void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
 {
     IterateOverVector<T, T, C>(vector, iterationCallback);
 }
 
-HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
-
-HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,
-                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
-                                  bool isSubtle,
-                                  bool highlight,
-                                  _Out_ ABI::Windows::UI::Color* uiColor) noexcept;
+winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
 // TODO: const& for enums?
 winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
@@ -344,126 +152,66 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Render
                                                     bool isSubtle,
                                                     bool highlight);
 
-HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
-                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
-
 winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle const& style,
                                                       winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig);
 
-HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
-                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                _Out_ ABI::Windows::UI::Color* borderColor) noexcept;
-
 winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig);
-
-HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                       _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
 winrt::Windows::UI::Xaml::Documents::TextHighlighter
 GetHighlighter(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement const& adaptiveTextElement,
                winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
-// HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-//                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
-//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
-//                                _Outptr_ HSTRING* resultFontFamilyName,
-//                                _Out_ UINT32* resultSize,
-//                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
-
 winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
-
-HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                                  _Outptr_ HSTRING* resultFontFamilyName) noexcept;
 
 uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
                                  rtom::FontType const& fontType,
                                  rtom::TextSize const& desiredSize);
 
-HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
-                                _Out_ UINT32* resultSize) noexcept;
-
 winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHostConfig const& hostConfig,
                                                             rtom::FontType const& fontType,
                                                             rtom::TextWeight const& desiredWeight);
 
-HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                               ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
-                               _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
-
 rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
-
-HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                    ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                    _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontTypeDefinition** styleDefinition) noexcept;
 
 uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom::TextSize const& desiredSize);
 
-HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig* sizesConfig,
-                    ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
-                    _Out_ UINT32* resultSize) noexcept;
-
 uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig, rtom::TextWeight const& desiredWeight);
 
-HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig* weightsConfig,
-                      ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
-                      _Out_ UINT16* resultWeight) noexcept;
-
 uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing);
-
-HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing,
-                                  _Out_ UINT* spacingSize) noexcept;
-
-HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
-HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
 
 winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
 winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
 winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson);
 std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inputJson);
 
-HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
-HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
+// TODO: these functions live in ObjectModelUtil now if I'm correct? we don't need them here?
+//HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
+//HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
+//HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
+//HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
-HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
+//HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+//HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedActionType,
-                                     _Outptr_ HSTRING* result);
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedElementType,
-                                      _Outptr_ HSTRING* result);
+//HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedActionType,
+//                                     _Outptr_ HSTRING* result);
+//HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedElementType,
+//                                      _Outptr_ HSTRING* result);
 
-HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
-                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration,
-                          _Out_ bool* meetsRequirements);
+bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::AdaptiveFeatureRegistration const& featureRegistration);
 
-bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::IAdaptiveFeatureRegistration const& featureRegistration);
+bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage);
 
-HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImageElement,
-                               _Out_ BOOL* isValid);
 
-bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImageElement);
-
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
-                                                                                 ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveActionEventArgs*>>
-    ActionEventSource;
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
-                                                                                 ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventArgs*>>
-    MediaEventSource;
+// TODO: I don't see this typedef being used anywhere
+//typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
+//                                                                                 ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveActionEventArgs*>>
+//    ActionEventSource;
+//typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
+//                                                                                 ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventArgs*>>
+//    MediaEventSource;
 
 struct ShowCardInfo
 {
@@ -481,18 +229,6 @@ protected:
     virtual ~ITypePeek() {}
 };
 
-template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
-{
-    Microsoft::WRL::ComPtr<T> inner;
-    Microsoft::WRL::ComPtr<ITypePeek> peeker;
-
-    if (r && SUCCEEDED(r->QueryInterface(__uuidof(ITypePeek), &peeker)))
-    {
-        inner = reinterpret_cast<T*>(peeker->PeekAt(__uuidof(T)));
-    }
-    return inner;
-}
-
 template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
 {
     winrt::com_ptr<D> out;
@@ -507,10 +243,6 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                      _In_ HSTRING urlString,
-                      _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-
 winrt::Windows::Foundation::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
                                                  winrt::hstring const& urlString);
 
@@ -518,27 +250,20 @@ winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& o
 
 winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
-// HRESULT GetDateTimeReference(unsigned int year,
-//                             unsigned int month,
-//                             unsigned int day,
-//                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
 winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year,
                                                                                                   unsigned int month,
                                                                                                   unsigned int day);
 
-HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* textElement,
-                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement** copiedTextElement);
-
 rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement);
 
+// TODO: rethink this perhaps?
 template<typename T> inline T EnumBitwiseOR(T a, T b)
 {
     return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-// TODO: Helper to extract value from a ref. if () will handle ref = nullptr as well.
-template<typename T>
-inline T GetValueFromRef(winrt::Windows::Foundation::IReference<T> const& ref, T defaultValue)
+// TODO: Helper to extract value from a ref. if will handle ref = nullptr as well.
+template<typename T> inline T GetValueFromRef(winrt::Windows::Foundation::IReference<T> const& ref, T defaultValue)
 {
     if (ref != nullptr)
     {
@@ -551,13 +276,9 @@ namespace AdaptiveCards::Rendering::WinUI3
 {
     struct XamlBuilder;
 
-
-   /* void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
-                                         XamlBuilder* xamlBuilder);*/
-    // TODO: is this the correct way to do it?
+    // TODO: is this the correct way to do it? Should we also simply accept XamlBuilder* ?
     void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder);
 
     void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration);
-   /* void RegisterDefaultActionRenderers(rtrender::AdaptiveActionRendererRegistration const& registration);*/
 }
