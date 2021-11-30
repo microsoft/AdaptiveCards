@@ -2,61 +2,27 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveFeatureRegistration.h"
+#include "AdaptiveFeatureRegistration.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::UI;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveFeatureRegistration::AdaptiveFeatureRegistration() {}
-
-    HRESULT AdaptiveFeatureRegistration::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveFeatureRegistration::AdaptiveFeatureRegistration(std::shared_ptr<::AdaptiveCards::FeatureRegistration> sharedParserRegistration) :
+        m_sharedFeatureRegistration(sharedParserRegistration)
     {
-        std::shared_ptr<FeatureRegistration> sharedParserRegistration = std::make_shared<FeatureRegistration>();
-        return RuntimeClassInitialize(sharedParserRegistration);
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveFeatureRegistration::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept
-    try
-    {
-        m_sharedFeatureRegistration = sharedParserRegistration;
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveFeatureRegistration::Set(_In_ HSTRING name, _In_ HSTRING version) noexcept
-    try
+    void AdaptiveFeatureRegistration::Set(hstring const& name, hstring const& version)
     {
         m_sharedFeatureRegistration->AddFeature(HStringToUTF8(name), HStringToUTF8(version));
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveFeatureRegistration::Get(_In_ HSTRING name, _Outptr_ HSTRING* version) noexcept
-    try
+    hstring AdaptiveFeatureRegistration::Get(hstring const& name)
     {
-        *version = nullptr;
-        const std::string featureVersion = m_sharedFeatureRegistration->GetFeatureVersion(HStringToUTF8(name));
-
-        return UTF8ToHString(featureVersion, version);
+        return UTF8ToHString(m_sharedFeatureRegistration->GetFeatureVersion(HStringToUTF8(name)));
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveFeatureRegistration::Remove(_In_ HSTRING name) noexcept
-    try
+    void AdaptiveFeatureRegistration::Remove(hstring const& name)
     {
         m_sharedFeatureRegistration->RemoveFeature(HStringToUTF8(name));
-
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    const std::shared_ptr<FeatureRegistration>& AdaptiveFeatureRegistration::GetSharedFeatureRegistration()
-    {
-        return m_sharedFeatureRegistration;
     }
 }

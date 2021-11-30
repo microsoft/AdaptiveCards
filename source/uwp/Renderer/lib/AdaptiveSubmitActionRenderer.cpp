@@ -3,29 +3,24 @@
 #include "pch.h"
 
 #include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveSubmitActionRenderer::RuntimeClassInitialize() noexcept
-    try
+    rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
+                             rtrender::AdaptiveRenderContext const& renderContext,
+                             rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        return S_OK;
+        try
+        {
+            renderContext.LinkSubmitActionToCard(action, renderArgs);
+            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+        }
+        catch(winrt::hresult_error const& ex)
+        {
+            // TODO: what do we do here?
+            return nullptr;
+        }
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveSubmitActionRenderer::Render(_In_ IAdaptiveActionElement* action,
-                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                 _In_ IAdaptiveRenderArgs* renderArgs,
-                                                 _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
-    try
-    {
-        RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
-        return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
-    }
-    CATCH_RETURN;
 }

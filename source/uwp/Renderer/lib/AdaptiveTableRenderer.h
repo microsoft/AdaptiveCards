@@ -2,46 +2,49 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "Table.h"
+#include "AdaptiveTableRenderer.g.h"
+// TODO: do we need this here?
+//#include "Table.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveTableRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveTableRenderer : AdaptiveTableRendererT<AdaptiveTableRenderer>
     {
-        AdaptiveRuntime(AdaptiveTableRenderer);
-
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveTableRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** tableControl) noexcept override;
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        HRESULT RenderCell(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell* cell,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                           _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>* verticalContentAlignment,
-                           boolean showGridLines,
-                           ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle gridStyle,
-                           UINT32 rowNumber,
-                           UINT32 columnNumber,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** renderedCell);
 
-        HRESULT RenderRow(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow* row,
-                          _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*>* columns,
-                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                          _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>* verticalContentAlignment,
-                          boolean firstRowAsHeaders,
-                          boolean showGridLines,
-                          ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle gridStyle,
-                          UINT32 rowNumber,
-                          _In_ ABI::Windows::UI::Xaml::Controls::IGrid* xamlGrid);
+        winrt::Windows::UI::Xaml::FrameworkElement RenderCell(
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell const& cell,
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+            winrt::Windows::Foundation::IReference<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment> const& verticalContentAlignment,
+            boolean showGridLines,
+            winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle gridStyle,
+            uint32_t rowNumber,
+            uint32_t columnNumber);
+
+        void RenderRow(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow const& row,
+                       winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition> const& columns,
+                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                       winrt::Windows::Foundation::IReference<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment> const& verticalContentAlignment,
+                       boolean firstRowAsHeaders,
+                       boolean showGridLines,
+                       winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle gridStyle,
+                       uint32_t rowNumber,
+                       winrt::Windows::UI::Xaml::Controls::Grid const& xamlGrid);
     };
+}
 
-    ActivatableClass(AdaptiveTableRenderer);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveTableRenderer : AdaptiveTableRendererT<AdaptiveTableRenderer, implementation::AdaptiveTableRenderer>
+    {
+    };
 }

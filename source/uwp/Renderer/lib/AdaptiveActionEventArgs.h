@@ -1,27 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.Uwp.h"
+#include "AdaptiveActionEventArgs.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace rtobjects = winrt::AdaptiveCards::ObjectModel::Uwp;
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveActionEventArgs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionEventArgs>
+    struct AdaptiveActionEventArgs : AdaptiveActionEventArgsT<AdaptiveActionEventArgs>
     {
-        AdaptiveRuntime(AdaptiveActionEventArgs);
+        AdaptiveActionEventArgs(rtobjects::IAdaptiveActionElement const& action, Uwp::AdaptiveInputs const& inputs) :
+            Action{action},
+            Inputs{inputs}
+        {
 
-    public:
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs* inputs);
+        }
 
-        // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** inputs);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs> m_inputs;
+        property<rtobjects::IAdaptiveActionElement> Action;
+        property<Uwp::AdaptiveInputs> Inputs;
     };
 }
+
+// TODO: Do we need this for event args? It doesn't have a ctor in IDL, so probably not
+//namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+//{
+//    struct AdaptiveActionEventArgs : AdaptiveActionEventArgsT<AdaptiveActionEventArgs, implementation::AdaptiveActionEventArgs>
+//    {
+//    };
+//}

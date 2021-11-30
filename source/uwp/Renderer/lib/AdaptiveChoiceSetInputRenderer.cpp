@@ -3,72 +3,62 @@
 #include "pch.h"
 
 #include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveChoiceSetInputRenderer.g.cpp"
 #include "ParseUtil.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveChoiceSetInputRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveChoiceSetInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                                   _In_ IAdaptiveRenderContext* renderContext,
-                                                   _In_ IAdaptiveRenderArgs* renderArgs,
-                                                   _COM_Outptr_ IUIElement** choiceInputSet) noexcept
-    try
+    winrt::Windows::UI::Xaml::UIElement AdaptiveChoiceSetInputRenderer::Render(
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        try
         {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
-            return S_OK;
+            auto hostConfig = renderContext.HostConfig();
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                         L"ChoiceSet was stripped from card because interactivity is not supported");
+            }
+
+            rtom::ChoiceSetStyle choiceSetStyle;
+
+            bool isMultiSelect;
+
+            if (const auto adaptiveChoiceSetInput = cardElement.try_as<rtom::AdaptiveChoiceSetInput>())
+            {
+                choiceSetStyle = adaptiveChoiceSetInput.ChoiceSetStyle();
+                isMultiSelect = adaptiveChoiceSetInput.IsMultiSelect();
+
+                if (choiceSetStyle == rtom::ChoiceSetStyle::Compact && !isMultiSelect)
+                {
+                    return BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
+                }
+                else if (choiceSetStyle == rtom::ChoiceSetStyle::Filtered)
+                {
+                    return BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
+                }
+                else
+                {
+                    return BuildExpandedChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput, isMultiSelect);
+                }
+            }
         }
-
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
-
-        ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle choiceSetStyle;
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
-
-        boolean isMultiSelect;
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
-
-        if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle_Compact && !isMultiSelect)
+        catch (winrt::hresult_error const& ex)
         {
-            RETURN_IF_FAILED(BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
+            // TODO: what do we do here?
+            return nullptr;
         }
-        else if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle_Filtered)
-        {
-            RETURN_IF_FAILED(BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
-        }
-        else
-        {
-            RETURN_IF_FAILED(BuildExpandedChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), isMultiSelect, choiceInputSet));
-        }
-
-        return S_OK;
+        return nullptr;
     }
-    CATCH_RETURN;
 
-    std::vector<std::string> AdaptiveChoiceSetInputRenderer::GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
+    std::vector<std::string> AdaptiveChoiceSetInputRenderer::GetChoiceSetValueVector(rtom::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
-        HString value;
-        THROW_IF_FAILED(adaptiveChoiceSetInput->get_Value(value.GetAddressOf()));
+        auto value = adaptiveChoiceSetInput.Value();
 
         std::vector<std::string> values;
-        std::string stdValue = HStringToUTF8(value.Get());
+        std::string stdValue = HStringToUTF8(value);
         std::stringstream streamValue(stdValue);
 
         while (streamValue.good())
@@ -81,311 +71,215 @@ namespace AdaptiveCards::Rendering::Uwp
         return values;
     }
 
-    bool AdaptiveChoiceSetInputRenderer::IsChoiceSelected(std::vector<std::string> selectedValues, _In_ IAdaptiveChoiceInput* choice)
+    bool AdaptiveChoiceSetInputRenderer::IsChoiceSelected(std::vector<std::string> selectedValues,
+                                                          rtom::AdaptiveChoiceInput const& choice)
     {
-        HString value;
-        THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));
-        std::string stdValue = HStringToUTF8(value.Get());
+        auto value = choice.Value();
+        std::string stdValue = HStringToUTF8(value);
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    HRESULT AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
-                                                                       _In_ IAdaptiveRenderArgs* renderArgs,
-                                                                       _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                       _COM_Outptr_ IUIElement** choiceInputSet)
+    winrt::Windows::UI::Xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
-        ComPtr<IComboBox> comboBox =
-            XamlHelpers::CreateABIClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
+        rtxaml::Controls::ComboBox comboBox{};
 
-        HString placeHolderText;
-        ComPtr<IComboBox2> comboBox2;
-        RETURN_IF_FAILED(comboBox.As(&comboBox2));
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Placeholder(placeHolderText.GetAddressOf()));
-        RETURN_IF_FAILED(comboBox2->put_PlaceholderText(placeHolderText.Get()));
-
+        comboBox.PlaceholderText(adaptiveChoiceSetInput.Placeholder());
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
-        ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
-        RETURN_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));
-        RETURN_IF_FAILED(comboBoxAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+        comboBox.HorizontalAlignment(rtxaml::HorizontalAlignment::Stretch);
 
-        ComPtr<IItemsControl> itemsControl;
-        RETURN_IF_FAILED(comboBox.As(&itemsControl));
-
-        ComPtr<IObservableVector<IInspectable*>> items;
-        RETURN_IF_FAILED(itemsControl->get_Items(items.GetAddressOf()));
-
-        ComPtr<IVector<IInspectable*>> itemsVector;
-        RETURN_IF_FAILED(items.As(&itemsVector));
-
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*>> choices;
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
+        auto items = comboBox.Items();
+        auto choices = adaptiveChoiceSetInput.Choices();
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
-        boolean wrap;
-        adaptiveChoiceSetInput->get_Wrap(&wrap);
+
+        bool wrap = adaptiveChoiceSetInput.Wrap();
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        IterateOverVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-            choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
-                HString title;
-                RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
 
-                ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateABIClass<IComboBoxItem>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBoxItem));
+        for (auto adaptiveChoiceInput : choices)
+        {
+            auto title = adaptiveChoiceInput.Title();
 
-                XamlHelpers::SetContent(comboBoxItem.Get(), title.Get(), wrap);
+            rtxaml::Controls::ComboBoxItem comboBoxItem{};
 
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetContent(comboBoxItem, title, wrap);
+
+            if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
+            {
                 // If multiple values are specified, no option is selected
-                if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
-                {
-                    selectedIndex = currentIndex;
-                }
+                selectedIndex = currentIndex;
+            }
+            items.Append(comboBoxItem);
+            currentIndex++;
+        }
 
-                ComPtr<IInspectable> inspectable;
-                RETURN_IF_FAILED(comboBoxItem.As(&inspectable));
+        comboBox.SelectedIndex(selectedIndex);
 
-                RETURN_IF_FAILED(itemsVector->Append(inspectable.Get()));
-                currentIndex++;
-                return S_OK;
-            });
+        comboBox.Tapped([](winrt::Windows::Foundation::IInspectable const&, rtxaml::Input::TappedRoutedEventArgs const& args)
+                        { args.Handled(true); });
 
-        ComPtr<ISelector> selector;
-        RETURN_IF_FAILED(comboBox.As(&selector));
-        RETURN_IF_FAILED(selector->put_SelectedIndex(selectedIndex));
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                        L"Adaptive.Input.ChoiceSet.Compact",
+                                                                                        comboBox);
 
-        ComPtr<IUIElement> comboBoxAsUIElement;
-        RETURN_IF_FAILED(comboBox.As(&comboBoxAsUIElement));
-        RETURN_IF_FAILED(XamlHelpers::AddHandledTappedEvent(comboBoxAsUIElement.Get()));
+        rtxaml::UIElement inputLayout{nullptr};
+        rtxaml::Controls::Border validationBorder{nullptr};
 
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                    L"Adaptive.Input.ChoiceSet.Compact",
-                                                    comboBoxAsFrameworkElement.Get());
-
-        ComPtr<IAdaptiveChoiceSetInput> localAdaptiveChoiceSetInput(adaptiveChoiceSetInput);
-        ComPtr<IAdaptiveInputElement> adaptiveChoiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(localAdaptiveChoiceSetInput.As(&adaptiveChoiceSetInputAsAdaptiveInput));
-
-        ComPtr<IUIElement> inputLayout;
-        ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            adaptiveChoiceSetInputAsAdaptiveInput.Get(), comboBoxAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
-
-        ComPtr<ISelector> comboBoxAsSelector;
-        RETURN_IF_FAILED(comboBox.As(&comboBoxAsSelector));
+        // TODO: revisit this
+        std::tie(inputLayout, validationBorder) =
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
-        ComPtr<CompactChoiceSetInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<CompactChoiceSetInputValue>(
-            &input, adaptiveChoiceSetInput, comboBoxAsSelector.Get(), validationBorder.Get()));
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+        // TODO: come back here. AddInputValue probably needs to be modified to take in appropriate parameter
+        auto input = winrt::make_self<rtrender::CompactChoiceSetInputValue>(adaptiveChoiceSetInput, comboBox, validationBorder);
+        renderContext.AddInputValue(*input, renderArgs);
 
-        return inputLayout.CopyTo(choiceInputSet);
+        return inputLayout;
     }
 
-    HRESULT AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
-                                                                        _In_ IAdaptiveRenderArgs* renderArgs,
-                                                                        _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                        boolean isMultiSelect,
-                                                                        _COM_Outptr_ IUIElement** choiceInputSet)
+    rtxaml::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(rtrender::AdaptiveRenderContext const& renderContext,
+                                                                                  rtrender::AdaptiveRenderArgs const& renderArgs,
+                                                                                  rtom::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+                                                                                  bool isMultiSelect)
     {
-        ComPtr<IVector<AdaptiveChoiceInput*>> choices;
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
+        auto choices = adaptiveChoiceSetInput.Choices();
 
-        ComPtr<IStackPanel> stackPanel =
-            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        stackPanel->put_Orientation(Orientation::Orientation_Vertical);
-
-        ComPtr<IPanel> panel;
-        RETURN_IF_FAILED(stackPanel.As(&panel));
+        rtxaml::Controls::StackPanel stackPanel{};
+        // TODO: No need to set vertical orientation, that's default, right?
+        /* stackPanel.Orientation(rtxaml::Controls::Orientation::Vertical);*/
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
-        boolean wrap;
-        adaptiveChoiceSetInput->get_Wrap(&wrap);
+        bool wrap = adaptiveChoiceSetInput.Wrap();
 
-        IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-            choices.Get(), [panel, isMultiSelect, renderContext, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
-                ComPtr<IUIElement> choiceItem;
-                if (isMultiSelect)
+        for (auto input : choices)
+        {
+            rtxaml::UIElement choiceItem{nullptr};
+            if (isMultiSelect)
+            {
+                rtxaml::Controls::CheckBox checkBox{};
+                // TODO: no need to cast, right?
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                                L"Adaptive.Input.Choice.Multiselect",
+                                                                                                checkBox);
+
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetToggleValue(checkBox, IsChoiceSelected(values, input));
+                // TODO: is this correct way?
+                choiceItem = checkBox;
+            }
+            else
+            {
+                rtxaml::Controls::RadioButton radioButton{};
+
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                                L"Adaptive.Input.Choice.SingleSelect",
+                                                                                                radioButton);
+                if (values.size() == 1)
                 {
-                    ComPtr<ICheckBox> checkBox =
-                        XamlHelpers::CreateABIClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
-                    RETURN_IF_FAILED(checkBox.As(&choiceItem));
-
-                    ComPtr<IFrameworkElement> frameworkElement;
-                    RETURN_IF_FAILED(checkBox.As(&frameworkElement));
-                    XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                L"Adaptive.Input.Choice.Multiselect",
-                                                                frameworkElement.Get());
-
-                    XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
+                    // When isMultiSelect is false, only 1 specified value is accepted.
+                    // Otherwise, leave all options unset
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetToggleValue(radioButton, IsChoiceSelected(values, input));
                 }
-                else
-                {
-                    ComPtr<IRadioButton> radioButton = XamlHelpers::CreateABIClass<IRadioButton>(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RadioButton));
-                    RETURN_IF_FAILED(radioButton.As(&choiceItem));
+                choiceItem = radioButton;
+            }
+            winrt::hstring title = input.Title();
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetContent(choiceItem, title, wrap);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddHandledTappedEvent(choiceItem);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(choiceItem, stackPanel);
+        }
 
-                    ComPtr<IFrameworkElement> frameworkElement;
-                    RETURN_IF_FAILED(radioButton.As(&frameworkElement));
-                    XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                L"Adaptive.Input.Choice.SingleSelect",
-                                                                frameworkElement.Get());
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                        L"Adaptive.Input.ChoiceSet.Expanded",
+                                                                                        stackPanel);
 
-                    if (values.size() == 1)
-                    {
-                        // When isMultiSelect is false, only 1 specified value is accepted.
-                        // Otherwise, leave all options unset
-                        XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
-                    }
-                }
+        rtxaml::UIElement inputLayout{nullptr};
 
-                HString title;
-                RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
-                XamlHelpers::SetContent(choiceItem.Get(), title.Get(), wrap);
-
-                RETURN_IF_FAILED(XamlHelpers::AddHandledTappedEvent(choiceItem.Get()));
-
-                XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
-                return S_OK;
-            });
-
-        ComPtr<IFrameworkElement> choiceSetAsFrameworkElement;
-        RETURN_IF_FAILED(stackPanel.As(&choiceSetAsFrameworkElement));
-        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                     L"Adaptive.Input.ChoiceSet.Expanded",
-                                                                     choiceSetAsFrameworkElement.Get()));
-
-        ComPtr<IAdaptiveChoiceSetInput> localAdaptiveChoiceSetInput(adaptiveChoiceSetInput);
-        ComPtr<IAdaptiveInputElement> adaptiveChoiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(localAdaptiveChoiceSetInput.As(&adaptiveChoiceSetInputAsAdaptiveInput));
-
-        ComPtr<IUIElement> choiceSetAsUIElement;
-        RETURN_IF_FAILED(stackPanel.As(&choiceSetAsUIElement));
-
-        ComPtr<IUIElement> inputLayout;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            adaptiveChoiceSetInputAsAdaptiveInput.Get(), choiceSetAsUIElement.Get(), false, renderContext, &inputLayout, nullptr));
+        // TODO: is this correct way?
+        std::tie(inputLayout, std::ignore) =
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
-        ComPtr<ExpandedChoiceSetInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<ExpandedChoiceSetInputValue>(&input, adaptiveChoiceSetInput, panel.Get(), nullptr);
-                         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
-
-        return inputLayout.CopyTo(choiceInputSet);
+        // TODO: revisit this. AddInputValue args need to be modified to accept proper inputValue
+        auto input = winrt::make_self<rtrender::ExpandedChoiceSetInputValue>(adaptiveChoiceSetInput, stackPanel, nullptr);
+        renderContext.AddInputValue(*input, renderArgs);
+        return inputLayout;
     }
 
-    HRESULT AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
-                                                                        _In_ IAdaptiveRenderArgs* renderArgs,
-                                                                        _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                        _COM_Outptr_ IUIElement** choiceInputSet)
+    rtxaml::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(rtrender::AdaptiveRenderContext const& renderContext,
+                                                                                  rtrender::AdaptiveRenderArgs const& renderArgs,
+                                                                                  rtom::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
-        ComPtr<IAutoSuggestBox> autoSuggestBox =
-            XamlHelpers::CreateABIClass<IAutoSuggestBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_AutoSuggestBox));
+        rtxaml::Controls::AutoSuggestBox autoSuggestBox{};
 
-        ComPtr<IItemsControl> autoSuggestBoxAsItemsControl;
-        RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsItemsControl));
-
-        ComPtr<IVector<AdaptiveChoiceInput*>> choices;
-        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
+        auto choices = adaptiveChoiceSetInput.Choices();
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
         // Set up the initial choice list, and set the value if present
-        ComPtr<IVector<HSTRING>> choiceList = Microsoft::WRL::Make<Vector<HSTRING>>();
-        IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-            choices.Get(), [choiceList, values, autoSuggestBox](IAdaptiveChoiceInput* adaptiveChoiceInput) {
-                HString title;
-                RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
-                RETURN_IF_FAILED(choiceList->Append(title.Get()));
+        // TODO: is this a correct way to initialize a vector?
+        winrt::Windows::Foundation::Collections::IVector<winrt::hstring> choiceList{};
+        for (auto input : choices)
+        {
+            auto title = input.Title();
+            choiceList.Append(title);
 
-                // If multiple values are specified, no option is selected
-                if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
-                {
-                    RETURN_IF_FAILED(autoSuggestBox->put_Text(title.Get()));
-                }
+            // If multiple values are specified, no option is selected
+            if (values.size() == 1 && IsChoiceSelected(values, input))
+            {
+                autoSuggestBox.Text(title);
+            }
+        }
 
-                return S_OK;
-            });
-
-        ComPtr<IInspectable> choiceListAsInspectable;
-        RETURN_IF_FAILED(choiceList.As(&choiceListAsInspectable));
-        RETURN_IF_FAILED(autoSuggestBoxAsItemsControl->put_ItemsSource(choiceListAsInspectable.Get()));
+        autoSuggestBox.ItemsSource(choiceList);
 
         // When we get focus open the suggestion list. This ensures the choices are shown on first focus.
-        ComPtr<IUIElement5> autoSuggestBoxAsUIElement5;
-        RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsUIElement5));
-        EventRegistrationToken gotFocusToken;
-        RETURN_IF_FAILED(autoSuggestBoxAsUIElement5->add_GettingFocus(
-            Callback<ABI::Windows::Foundation::ITypedEventHandler<UIElement*, ABI::Windows::UI::Xaml::Input::GettingFocusEventArgs*>>(
-                [autoSuggestBox](IInspectable* /*sender*/, ABI::Windows::UI::Xaml::Input::IGettingFocusEventArgs*
-                                 /*args*/) -> HRESULT {
-                    autoSuggestBox->put_IsSuggestionListOpen(true);
-                    return S_OK;
-                })
-                .Get(),
-            &gotFocusToken));
+        // TODO: no need for token, right? is this event going to clear itself? or we need a revoker?
+        autoSuggestBox.GettingFocus([autoSuggestBox](IInspectable const&, rtxaml::Input::GettingFocusEventArgs const& args) -> void
+                                    { autoSuggestBox.IsSuggestionListOpen(true); });
 
+        // TODO: no need for token, right?
         // When the text changes, update the ItemSource with matching items
-        EventRegistrationToken textChangedToken;
-        RETURN_IF_FAILED(autoSuggestBox->add_TextChanged(
-            Callback<ABI::Windows::Foundation::ITypedEventHandler<AutoSuggestBox*, AutoSuggestBoxTextChangedEventArgs*>>(
-                [choices, autoSuggestBoxAsItemsControl](IInspectable* sender, IAutoSuggestBoxTextChangedEventArgs*) -> HRESULT {
-                    ComPtr<IInspectable> localSender = sender;
+        autoSuggestBox.TextChanged(
+            [choices](IInspectable const& sender, rtxaml::Controls::AutoSuggestBoxTextChangedEventArgs const&) -> void
+            {
+                // TODO: is this correct way to do it?
+                if (const auto autoSuggestBox = sender.try_as<rtxaml::Controls::AutoSuggestBox>())
+                {
+                    auto currentTextHstring = autoSuggestBox.Text();
+                    std::string currentText = HStringToUTF8(currentTextHstring);
 
-                    ComPtr<IAutoSuggestBox> autoSuggestBox;
-                    RETURN_IF_FAILED(localSender.As(&autoSuggestBox));
+                    winrt::Windows::Foundation::Collections::IVector<winrt::hstring> currentResults{};
 
-                    HString currentTextHstring;
-                    RETURN_IF_FAILED(autoSuggestBox->get_Text(currentTextHstring.GetAddressOf()));
-                    std::string currentText = HStringToUTF8(currentTextHstring.Get());
+                    for (auto input : choices)
+                    {
+                        auto titleHString = input.Title();
+                        std::string title = HStringToUTF8(titleHString);
 
-                    ComPtr<IVector<HSTRING>> currentResults = Microsoft::WRL::Make<Vector<HSTRING>>();
-
-                    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-                        choices.Get(), [currentText, currentResults](IAdaptiveChoiceInput* adaptiveChoiceInput) {
-                            HString titleHString;
-                            RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(titleHString.GetAddressOf()));
-
-                            std::string title = HStringToUTF8(titleHString.Get());
-
-                            if (ParseUtil::ToLowercase(title).find(ParseUtil::ToLowercase(currentText)) != std::string::npos)
-                            {
-                                RETURN_IF_FAILED(currentResults->Append(titleHString.Get()));
-                            }
-                            return S_OK;
-                        });
-
-                    ComPtr<IInspectable> currentResultsAsInspectable;
-                    RETURN_IF_FAILED(currentResults.As(&currentResultsAsInspectable));
-
-                    RETURN_IF_FAILED(autoSuggestBoxAsItemsControl->put_ItemsSource(currentResultsAsInspectable.Get()));
-                    return S_OK;
-                })
-                .Get(),
-            &textChangedToken));
-
-        ComPtr<IUIElement> autoSuggestBoxAsUIElement;
-        RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsUIElement));
-
-        ComPtr<IAdaptiveChoiceSetInput> localChoiceSetInput(adaptiveChoiceSetInput);
-        ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(localChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+                        if (::AdaptiveCards::ParseUtil::ToLowercase(title).find(
+                                ::AdaptiveCards::ParseUtil::ToLowercase(currentText)) != std::string::npos)
+                        {
+                            currentResults.Append(titleHString);
+                        }
+                    }
+                    autoSuggestBox.ItemsSource(currentResults);
+                }
+            });
 
         // Handle input validation
-        ComPtr<IUIElement> inputLayout;
-        ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), true, renderContext, &inputLayout, &validationBorder));
+        rtxaml::UIElement inputLayout{nullptr};
+        rtxaml::Controls::Border validationBorder{nullptr};
+
+        std::tie(inputLayout, validationBorder) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
         // Create the InputValue and add it to the context
-        ComPtr<FilteredChoiceSetInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<FilteredChoiceSetInputValue>(
-            &input, adaptiveChoiceSetInput, autoSuggestBox.Get(), validationBorder.Get()));
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+        auto input = winrt::make_self<rtrender::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
+        renderContext.AddInputValue(*input, renderArgs);
 
-        RETURN_IF_FAILED(inputLayout.CopyTo(choiceInputSet));
-        return S_OK;
+        return inputLayout;
     }
 }

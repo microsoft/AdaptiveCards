@@ -2,84 +2,109 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "XamlBuilder.h"
+#include "AdaptiveCardRenderer.g.h"
+#include "AdaptiveHostConfig.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class XamlBuilder;
-
     // This class is effectively a singleton, and stays around between subsequent renders.
-    class AdaptiveCardRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardRenderer>,
-                                              Microsoft::WRL::FtmBase>
+    struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
     {
-        AdaptiveRuntime(AdaptiveCardRenderer);
+    private:
+        winrt::Windows::UI::Xaml::ResourceDictionary m_overrideDictionary;
+        Uwp::AdaptiveHostConfig m_hostConfig;
+        Uwp::AdaptiveFeatureRegistration m_featureRegistration;
+        winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
+        bool m_explicitDimensions = false;
+        uint32_t m_desiredWidth = 0;
+        uint32_t m_desiredHeight = 0;
+
+        winrt::com_ptr<implementation::AdaptiveHostConfig> GetHostConfig()
+        {
+            return peek_innards<implementation::AdaptiveHostConfig>(m_hostConfig);
+        }
 
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveCardRenderer();
 
         // IAdaptiveCardRenderer
-        IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) override;
-        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
-        IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig) override;
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** hostConfig) override;
-        IFACEMETHODIMP put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration) override;
-        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration** featureRegistration) override;
-        IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight) override;
-        IFACEMETHODIMP ResetFixedDimensions() override;
+        void OverrideStyles(winrt::Windows::UI::Xaml::ResourceDictionary const& overrideDictionary)
+        {
+            m_overrideDictionary = overrideDictionary;
+            SetMergedDictionary();
+        }
 
-        IFACEMETHODIMP get_OverflowMaxActions(_Out_ boolean* overflowMaxActions) override;
-        IFACEMETHODIMP put_OverflowMaxActions(boolean overflowMaxActions) override;
+        winrt::Windows::UI::Xaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
-        IFACEMETHODIMP get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText) override;
-        IFACEMETHODIMP put_OverflowButtonText(_In_ HSTRING overflowButtonText) override;
+        void HostConfig(Uwp::AdaptiveHostConfig const& hostConfig)
+        {
+            m_hostConfig = hostConfig;
+            UpdateActionSentimentResourceDictionary();
+        }
 
-        IFACEMETHODIMP get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText) override;
-        IFACEMETHODIMP put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText) override;
+        Uwp::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
 
-        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                          _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
+        void FeatureRegistration(Uwp::AdaptiveFeatureRegistration const& featureRegistration)
+        {
+            m_featureRegistration = featureRegistration;
+        }
 
-        IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
+        Uwp::AdaptiveFeatureRegistration FeatureRegistration();
 
-        IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-                                                  _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
+        void SetFixedDimensions(uint32_t desiredWidth, uint32_t desiredHeight);
+        void ResetFixedDimensions() { m_explicitDimensions = false; };
 
-        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration** result) override;
-        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration** result) override;
+        void OverflowMaxActions(bool overflowMaxActions);
+        bool OverflowMaxActions();
 
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* GetHostConfig();
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
-        bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> GetXamlBuilder();
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetActionSentimentResourceDictionary();
+        hstring OverflowButtonText() { return GetHostConfig()->OverflowButtonText; }
+        void OverflowButtonText(hstring const& overflowButtonText)
+        {
+            return GetHostConfig()->OverflowButtonText = overflowButtonText;
+        }
 
-        IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value);
+        hstring OverflowButtonAccessibilityText() { return GetHostConfig()->OverflowButtonAccessibilityText; }
+        void OverflowButtonAccessibilityText(hstring const& text)
+        {
+            return GetHostConfig()->OverflowButtonAccessibilityText = text;
+        }
+
+        Uwp::RenderedAdaptiveCard RenderAdaptiveCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard);
+        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
+        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson);
+
+        Uwp::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
+        Uwp::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
+
+        winrt::Windows::UI::Xaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
+        bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
+        winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
+        winrt::Windows::UI::Xaml::ResourceDictionary GetActionSentimentResourceDictionary()
+        {
+            return m_actionSentimentResourceDictionary;
+        }
+
+        auto ResourceResolvers() { return m_resourceResolvers; }
 
     private:
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
-        HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);
-        HRESULT SetMergedDictionary();
+        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
+                                                            winrt::Windows::Foundation::IInspectable const& value);
+        void SetMergedDictionary();
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration> m_featureRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
-
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
-        bool m_explicitDimensions = false;
-        UINT32 m_desiredWidth = 0;
-        UINT32 m_desiredHeight = 0;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_defaultResourceDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_mergedResourceDictionary;
+        winrt::Windows::UI::Xaml::ResourceDictionary m_actionSentimentResourceDictionary;
+        Uwp::AdaptiveCardResourceResolvers m_resourceResolvers;
+        winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
+        winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };
-
-    ActivatableClass(AdaptiveCardRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer, implementation::AdaptiveCardRenderer>
+    {
+    };
 }

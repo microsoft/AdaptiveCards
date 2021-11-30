@@ -1,24 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.Uwp.h"
+#include "AdaptiveMediaEventArgs.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveMediaEventArgs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventArgs>
+    struct AdaptiveMediaEventArgs : AdaptiveMediaEventArgsT < AdaptiveMediaEventArgs>
     {
-        AdaptiveRuntime(AdaptiveMediaEventArgs);
-
-    public:
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* media);
-
-        // IAdaptiveMediaEventArgs
-        IFACEMETHODIMP get_Media(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia** media);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia> m_media;
+        AdaptiveMediaEventArgs(ObjectModel::Uwp::AdaptiveMedia const& media = nullptr) : Media{media} {}
+        property<ObjectModel::Uwp::AdaptiveMedia> Media;
     };
 }

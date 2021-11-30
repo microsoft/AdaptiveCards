@@ -2,114 +2,36 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
+#include "RenderedAdaptiveCard.h"
+#include "RenderedAdaptiveCard.g.cpp"
+
 #include "AdaptiveActionEventArgs.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveMediaEventArgs.h"
-#include "RenderedAdaptiveCard.h"
-#include "XamlBuilder.h"
-#include "XamlHelpers.h"
 #include "ElementTagContent.h"
 
 using namespace concurrency;
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    RenderedAdaptiveCard::RenderedAdaptiveCard() {}
-
-    HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
+    RenderedAdaptiveCard::RenderedAdaptiveCard() :
+        RenderedAdaptiveCard(winrt::single_threaded_vector<ObjectModel::Uwp::AdaptiveError>(),
+                             winrt::single_threaded_vector<ObjectModel::Uwp::AdaptiveWarning>())
     {
-        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>>().Get(),
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>>().Get()));
-        return S_OK;
     }
 
-    HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* warnings)
+    RenderedAdaptiveCard::RenderedAdaptiveCard(
+        winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
+        winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings) :
+        Errors{errors},
+        Warnings{warnings}, m_inputs{winrt::make_self<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
     {
-        m_errors = errors;
-        m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
-        m_actionEvents = std::make_shared<ActionEventSource>();
-        m_mediaClickedEvents = std::make_shared<MediaEventSource>();
-        return S_OK;
     }
 
-    HRESULT RenderedAdaptiveCard::get_OriginatingCard(_COM_Outptr_ IAdaptiveCard** value)
+    void RenderedAdaptiveCard::HandleInlineShowCardEvent(ObjectModel::Uwp::IAdaptiveActionElement const& actionElement)
     {
-        return m_originatingCard.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_OriginatingHostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
-    {
-        return m_originatingHostConfig.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_FrameworkElement(_COM_Outptr_ IFrameworkElement** value)
-    {
-        return m_frameworkElement.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value)
-    {
-        return m_inputs.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::add_Action(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
-        _Out_ EventRegistrationToken* token)
-    {
-        return m_actionEvents->Add(handler, token);
-    }
-
-    HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token) { return m_actionEvents->Remove(token); }
-
-    HRESULT RenderedAdaptiveCard::add_MediaClicked(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>* handler,
-        _Out_ EventRegistrationToken* token)
-    {
-        return m_mediaClickedEvents->Add(handler, token);
-    }
-
-    HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
-    {
-        return m_mediaClickedEvents->Remove(token);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
-    {
-        return m_errors.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>** value)
-    {
-        return m_warnings.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::HandleInlineShowCardEvent(_In_ IAdaptiveActionElement* actionElement)
-    {
-        ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-        ComPtr<IAdaptiveShowCardAction> showCardAction;
-        RETURN_IF_FAILED(localActionElement.As(&showCardAction));
-
-        UINT32 showCardToToggle;
-        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardToToggle));
+        auto showCardAction = actionElement.as<ObjectModel::Uwp::AdaptiveShowCardAction>();
+        auto showCardToToggle = showCardAction.InternalId();
         auto found = m_showCards.find(showCardToToggle);
 
         if (found != m_showCards.end())
@@ -117,18 +39,17 @@ namespace AdaptiveCards::Rendering::Uwp
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
             // Determine if the card is currently being shown
-            ABI::Windows::UI::Xaml::Visibility currentVisibility;
-            showCardInfoToHandle->cardUIElement->get_Visibility(&currentVisibility);
+            winrt::Windows::UI::Xaml::Visibility currentVisibility = showCardInfoToHandle->cardUIElement.Visibility();
 
-            if (currentVisibility == Visibility_Visible)
+            if (currentVisibility == winrt::Windows::UI::Xaml::Visibility::Visible)
             {
                 // If it was shown, hide it
-                showCardInfoToHandle->cardUIElement->put_Visibility(Visibility_Collapsed);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
             }
             else
             {
                 // If it was hidden, show it, and hide all other cards in this action set
-                showCardInfoToHandle->cardUIElement->put_Visibility(Visibility_Visible);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
 
                 for (auto& showCardEntry : m_showCards)
                 {
@@ -136,151 +57,95 @@ namespace AdaptiveCards::Rendering::Uwp
                     auto currentShowCardInfo = showCardEntry.second;
                     if ((showCardInfoToHandle->actionSetId == currentShowCardInfo->actionSetId) && (showCardToToggle != showCardId))
                     {
-                        ComPtr<IUIElement> showCardUIElementCurrent = currentShowCardInfo->cardUIElement;
-                        RETURN_IF_FAILED(showCardUIElementCurrent->put_Visibility(Visibility_Collapsed));
+                        currentShowCardInfo->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
                     }
                 }
             }
         }
-        return S_OK;
     }
 
-    static HRESULT HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
+    void HandleToggleVisibilityClick(winrt::Windows::UI::Xaml::FrameworkElement const& cardFrameworkElement,
+                                     ObjectModel::Uwp::IAdaptiveActionElement const& action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<IAdaptiveToggleVisibilityAction> toggleAction;
-        RETURN_IF_FAILED(localAction.As(&toggleAction));
-
-        ComPtr<IVector<AdaptiveToggleVisibilityTarget*>> targets;
-        RETURN_IF_FAILED(toggleAction->get_TargetElements(&targets));
-
-        ComPtr<IIterable<AdaptiveToggleVisibilityTarget*>> targetsIterable;
-        RETURN_IF_FAILED(targets.As<IIterable<AdaptiveToggleVisibilityTarget*>>(&targetsIterable));
-
-        boolean hasCurrent;
-        ComPtr<IIterator<AdaptiveToggleVisibilityTarget*>> targetIterator;
-        HRESULT hr = targetsIterable->First(&targetIterator);
-        RETURN_IF_FAILED(targetIterator->get_HasCurrent(&hasCurrent));
-
-        std::unordered_set<IPanel*> parentPanels;
-        while (SUCCEEDED(hr) && hasCurrent)
+        auto toggleAction = action.as<ObjectModel::Uwp::AdaptiveToggleVisibilityAction>();
+        std::vector<rtxaml::Controls::Panel> parentPanels;
+        for (auto&& currentTarget : toggleAction.TargetElements())
         {
-            ComPtr<IAdaptiveToggleVisibilityTarget> currentTarget;
-            RETURN_IF_FAILED(targetIterator->get_Current(&currentTarget));
+            auto toggleId = currentTarget.ElementId();
+            auto toggle = currentTarget.IsVisible();
 
-            HString toggleId;
-            RETURN_IF_FAILED(currentTarget->get_ElementId(toggleId.GetAddressOf()));
-
-            ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible toggle;
-            RETURN_IF_FAILED(currentTarget->get_IsVisible(&toggle));
-
-            ComPtr<IInspectable> toggleElement;
-            RETURN_IF_FAILED(cardFrameworkElement->FindName(toggleId.Get(), &toggleElement));
-
-            if (toggleElement != nullptr)
+            if (auto toggleObject = cardFrameworkElement.FindName(toggleId))
             {
-                ComPtr<IUIElement> toggleElementAsUIElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
+                auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
+                auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
+                // TODO: we need to peek to make sure it's our own class, right? because it's coming from the Tag
+                // auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);
+                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<rtrender::ElementTagContent>();
 
-                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
-
-                ComPtr<IInspectable> tag;
-                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
-
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
-
-                Visibility visibilityToSet = Visibility_Visible;
-                if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleTrue)
+                winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
+                if (toggle == ObjectModel::Uwp::IsVisible::IsVisibleTrue)
                 {
-                    visibilityToSet = Visibility_Visible;
+                    visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleFalse)
+                else if (toggle == ObjectModel::Uwp::IsVisible::IsVisibleFalse)
                 {
-                    visibilityToSet = Visibility_Collapsed;
+                    visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Collapsed;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleToggle)
+                else if (toggle == ObjectModel::Uwp::IsVisible::IsVisibleToggle)
                 {
-                    boolean currentVisibility{};
-                    RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
-                    visibilityToSet = (currentVisibility) ? Visibility_Collapsed : Visibility_Visible;
+                    bool currentVisibility = elementTagContent.ExpectedVisibility();
+                    visibilityToSet = currentVisibility ? winrt::Windows::UI::Xaml::Visibility::Collapsed :
+                                                          winrt::Windows::UI::Xaml::Visibility::Visible;
                 }
 
-                RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
-                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
+                toggleElementAsUIElement.Visibility(visibilityToSet);
+                elementTagContent.ExpectedVisibility(visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible);
 
-                ComPtr<IPanel> parentPanel;
-                RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
-                parentPanels.insert(parentPanel.Get());
+                auto parentPanel = elementTagContent.ParentPanel();
+                parentPanels.emplace_back(parentPanel);
 
-                ComPtr<IAdaptiveCardElement> cardElement;
-                RETURN_IF_FAILED(elementTagContent->get_AdaptiveCardElement(&cardElement));
+                auto cardElement = elementTagContent.CardElement();
 
-                // If the element we're toggling is a column, we'll need to change the width on the column definition
-                ComPtr<IAdaptiveColumn> cardElementAsColumn;
-                if (SUCCEEDED(cardElement.As(&cardElementAsColumn)))
+                if (auto cardElementAsColumn = cardElement.try_as<ObjectModel::Uwp::AdaptiveColumn>())
                 {
-                    ComPtr<IColumnDefinition> columnDefinition;
-                    RETURN_IF_FAILED(elementTagContent->get_ColumnDefinition(&columnDefinition));
-                    RETURN_IF_FAILED(XamlHelpers::HandleColumnWidth(cardElementAsColumn.Get(),
-                                                                    (visibilityToSet == Visibility_Visible),
-                                                                    columnDefinition.Get()));
+                    auto columnDefinition = elementTagContent.ColumnDefinition();
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(
+                        cardElementAsColumn, (visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible), columnDefinition);
                 }
             }
-
-            hr = targetIterator->MoveNext(&hasCurrent);
         }
 
-        for (auto parentPanel : parentPanels)
+        for (auto&& parentPanel : parentPanels)
         {
             if (parentPanel)
             {
-                XamlHelpers::SetSeparatorVisibility(parentPanel);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
             }
         }
-
-        return S_OK;
     }
 
-    HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
+    void RenderedAdaptiveCard::SendActionEvent(ObjectModel::Uwp::IAdaptiveActionElement const& actionElement)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
-        RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
+        auto actionType = actionElement.ActionType();
 
         switch (actionType)
         {
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ToggleVisibility:
+        case ObjectModel::Uwp::ActionType::ToggleVisibility:
+            return HandleToggleVisibilityClick(m_frameworkElement, actionElement);
+
+        case ObjectModel::Uwp::ActionType::ShowCard:
         {
-            return HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
-        }
-
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ShowCard:
-        {
-            ComPtr<IAdaptiveActionsConfig> actionConfig;
-            RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
-
-            ComPtr<IAdaptiveShowCardActionConfig> showCardConfig;
-            RETURN_IF_FAILED(actionConfig->get_ShowCard(&showCardConfig));
-
-            ABI::AdaptiveCards::Rendering::Uwp::ActionMode actionMode;
-            RETURN_IF_FAILED(showCardConfig->get_ActionMode(&actionMode));
-
-            bool handleInlineShowCard = (actionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode_Inline);
+            auto actionConfig = m_originatingHostConfig.Actions();
+            auto showCardConfig = actionConfig.ShowCard();
+            auto actionMode = showCardConfig.ActionMode();
+            bool handleInlineShowCard = (actionMode == Uwp::ActionMode::Inline);
 
             if (handleInlineShowCard)
             {
                 // If the host is custom rendering ActionSets, they are responsible for showing and hiding the cards therein.
                 // Check if the action being invoked is one we registered, otherwise we'll send the action to the host.
-                ComPtr<IAdaptiveActionElement> action(actionElement);
-                ComPtr<IAdaptiveShowCardAction> showCardAction;
-                RETURN_IF_FAILED(action.As(&showCardAction));
-
-                UINT32 internalId;
-                RETURN_IF_FAILED(showCardAction->get_InternalId(&internalId));
-
-                auto found = m_showCards.find(internalId);
-                handleInlineShowCard &= (found != m_showCards.end());
+                auto showCardAction = actionElement.as<ObjectModel::Uwp::AdaptiveShowCardAction>();
+                handleInlineShowCard &= (m_showCards.find(showCardAction.InternalId()) != m_showCards.end());
             }
 
             if (handleInlineShowCard)
@@ -289,217 +154,150 @@ namespace AdaptiveCards::Rendering::Uwp
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
-
-                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+                Action(*this, winrt::make<implementation::AdaptiveActionEventArgs>(actionElement, nullptr));
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit:
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Execute:
+        case ObjectModel::Uwp::ActionType::Submit:
+        case ObjectModel::Uwp::ActionType::Execute:
         {
-            ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs associatedInputs;
+            ObjectModel::Uwp::AssociatedInputs associatedInputs;
 
-            if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit)
+            if (actionType == ObjectModel::Uwp::ActionType::Submit)
             {
-                ComPtr<IAdaptiveSubmitAction> submitAction;
-                RETURN_IF_FAILED(localActionElement.As(&submitAction));
-                RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
+                associatedInputs = actionElement.as<ObjectModel::Uwp::AdaptiveSubmitAction>().AssociatedInputs();
             }
             else
             {
-                ComPtr<IAdaptiveExecuteAction> executeAction;
-                RETURN_IF_FAILED(localActionElement.As(&executeAction));
-                RETURN_IF_FAILED(executeAction->get_AssociatedInputs(&associatedInputs));
+                associatedInputs = actionElement.as<ObjectModel::Uwp::AdaptiveExecuteAction>().AssociatedInputs();
             }
 
-            ComPtr<IAdaptiveInputs> gatheredInputs;
-            boolean inputsAreValid;
-            if (associatedInputs == ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs::None)
+            Uwp::AdaptiveInputs gatheredInputs;
+            bool inputsAreValid;
+            if (associatedInputs == ObjectModel::Uwp::AssociatedInputs::None)
             {
-                // Create an empty inputs object
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
+                gatheredInputs = winrt::make<implementation::AdaptiveInputs>();
                 inputsAreValid = true;
             }
             else
             {
-                // get the inputElements in Json form.
-                RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(localActionElement.Get(), &inputsAreValid));
+                gatheredInputs = UserInputs();
+                inputsAreValid = gatheredInputs.ValidateInputs(actionElement);
             }
 
-            if (!inputsAreValid)
+            if (inputsAreValid)
             {
-                return S_OK;
+                Action(*this, winrt::make<implementation::AdaptiveActionEventArgs>(actionElement, gatheredInputs));
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
-                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+                return;
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_OpenUrl:
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Custom:
+        case ObjectModel::Uwp::ActionType::OpenUrl:
+        case ObjectModel::Uwp::ActionType::Custom:
         default:
         {
-            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-
-            // Create an empty inputs object
-            ComPtr<IAdaptiveInputs> inputs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
-
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, inputs.Get()));
-            return m_actionEvents->InvokeAll(this, eventArgs.Get());
+            Action(*this,
+                   winrt::make<implementation::AdaptiveActionEventArgs>(actionElement,
+                                                                        winrt::make<implementation::AdaptiveInputs>()));
         }
         }
     }
 
-    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
+    void RenderedAdaptiveCard::SendMediaClickedEvent(ObjectModel::Uwp::AdaptiveMedia const& mediaElement)
     {
-        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
-
-        return m_mediaClickedEvents->InvokeAll(this, eventArgs.Get());
+        MediaClicked(*this, winrt::make<implementation::AdaptiveMediaEventArgs>(mediaElement));
     }
 
-    void RenderedAdaptiveCard::SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value)
+    void RenderedAdaptiveCard::SetFrameworkElement(winrt::Windows::UI::Xaml::FrameworkElement const& value)
     {
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(ObjectModel::Uwp::AdaptiveCard const& value)
     {
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* value)
+    void RenderedAdaptiveCard::SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value)
     {
         m_originatingHostConfig = value;
     }
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
-                                                    _In_ IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
+                                                 ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+                                                 winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                 Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
-
-        RETURN_IF_FAILED(AddInlineShowCardHelper(
-            actionSetId, showCardAction, showCardUIElement, renderArgs));
-
-        return S_OK;
+        AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
-    CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                                    ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard,
+                                                 ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+                                                 winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                 Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(adaptiveCard->get_InternalId(&actionSetId));
-
-        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardUIElement, renderArgs));
-
-        return S_OK;
+        AddInlineShowCardHelper(adaptiveCard.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
-    CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(UINT32 actionSetId,
-                                                          _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCardHelper(uint32_t actionSetId,
+                                                       ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+                                                       winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                       Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 showCardActionId;
-        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardActionId));
-
-        std::shared_ptr<ShowCardInfo> showCardInfo = std::make_shared<ShowCardInfo>();
+        auto showCardInfo = std::make_shared<ShowCardInfo>();
         showCardInfo->actionSetId = actionSetId;
         showCardInfo->cardUIElement = showCardUIElement;
 
-        m_showCards.emplace(std::make_pair(showCardActionId, showCardInfo));
+        m_showCards.emplace(std::make_pair(showCardAction.InternalId(), showCardInfo));
 
         // We also add the parent card relationship here
-        ComPtr<IAdaptiveShowCardAction> localShowCardAction(showCardAction);
-        ComPtr<IAdaptiveCard> card;
-        RETURN_IF_FAILED(localShowCardAction->get_Card(card.GetAddressOf()));
-
-        RETURN_IF_FAILED(LinkCardToParent(card.Get(), renderArgs));
-
-        return S_OK;
+        LinkCardToParent(showCardAction.Card(), renderArgs);
     }
-    CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
-    try
+    void RenderedAdaptiveCard::AddOverflowButton(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
-
-        m_overflowButtons.emplace(std::make_pair(actionSetId, actionUIElement));
-
-        return S_OK;
+        m_overflowButtons.emplace(std::make_pair(actionSet.InternalId(), actionUIElement));
     }
-    CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
-    try
+    void RenderedAdaptiveCard::AddOverflowButton(ObjectModel::Uwp::AdaptiveCard const& actionCard,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        UINT32 adaptiveCardId;
-        RETURN_IF_FAILED(actionCard->get_InternalId(&adaptiveCardId));
-
-        m_overflowButtons.emplace(std::make_pair(adaptiveCardId, actionUIElement));
-
-        return S_OK;
+        m_overflowButtons.emplace(std::make_pair(actionCard.InternalId(), actionUIElement));
     }
-    CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ IAdaptiveInputValue* inputItem, _In_ IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        return m_inputs->AddInputValue(inputItem, renderArgs);
+        m_inputs->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::LinkActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction,
+                                                Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        return m_inputs->LinkSubmitActionToCard(action, renderArgs);
+        return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
-                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::LinkCardToParent(ObjectModel::Uwp::AdaptiveCard const& card, Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         // We get the card internal id from the showcard action
-        UINT32 cardId;
-        RETURN_IF_FAILED(card->get_InternalId(&cardId));
+        uint32_t cardId = card.InternalId();
 
         // Then we get the parent card internal id from the renderArgs
-        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
-        UINT32 parentCardId = InternalId().Hash();
+        uint32_t parentCardId = ::AdaptiveCards::InternalId().Hash();
         if (renderArgs)
         {
-            ComPtr<IAdaptiveCard> parentCard;
-            RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
-
-            if (parentCard)
+            if (auto parentCard = renderArgs.ParentCard())
             {
-                parentCard->get_InternalId(&parentCardId);
+                parentCardId = parentCard.InternalId();
             }
         }
 
-        return m_inputs->LinkCardToParent(cardId, parentCardId);
+        m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
-    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
+    Rendering::Uwp::IAdaptiveInputValue RenderedAdaptiveCard::GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement)
     {
-        return m_inputs->GetInputValue(inputElement, inputValue);
+        return m_inputs->GetInputValue(inputElement);
     }
 }

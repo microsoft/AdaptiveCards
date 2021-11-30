@@ -3,58 +3,52 @@
 #include "pch.h"
 
 #include "AdaptiveToggleInputRenderer.h"
-
-namespace Xaml
-{
-    using namespace winrt::Windows::UI::Xaml;
-}
-
-namespace XamlHelpers
-{
-    using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
-}
-
-using namespace winrt::AdaptiveCards::ObjectModel::Uwp;
-using namespace winrt::AdaptiveCards::Rendering::Uwp;
+#include "AdaptiveToggleInputRenderer.g.cpp"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    Xaml::UIElement AdaptiveToggleInputRenderer::Render(IAdaptiveCardElement cardElement,
-                                                        AdaptiveRenderContext renderContext,
-                                                        AdaptiveRenderArgs renderArgs)
+    rtxaml::UIElement AdaptiveToggleInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                          rtrender::AdaptiveRenderContext const& renderContext,
+                                                          rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        if (!renderContext.HostConfig().SupportsInteractivity())
+        try
         {
-            renderContext.AddWarning(winrt::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
-                                     L"Toggle Input was stripped from card because interactivity is not supported");
+            auto hostConfig = renderContext.HostConfig();
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                         L"Toggle Input was stripped from card because interactivity is not supported");
+                return nullptr;
+            }
 
+            auto adaptiveToggleInput = cardElement.as<rtom::AdaptiveToggleInput>();
+
+            rtxaml::Controls::CheckBox checkBox{};
+
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetContent(checkBox,
+                                                                        adaptiveToggleInput.Title(),
+                                                                        adaptiveToggleInput.Wrap());
+
+            checkBox.IsChecked(adaptiveToggleInput.ValueOn() == adaptiveToggleInput.Value());
+            checkBox.Tapped([](winrt::Windows::Foundation::IInspectable const& /* sender */,
+                               rtxaml::Input::TappedRoutedEventArgs const& args) { return args.Handled(true); });
+
+            checkBox.VerticalAlignment(rtxaml::VerticalAlignment::Top);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
+
+            rtxaml::UIElement inputLayout{nullptr};
+            std::tie(inputLayout, std::ignore) =
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveToggleInput, checkBox, false, renderContext, false);
+
+            // TODO: come back here, not sure if this is right
+            auto input = winrt::make_self<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
+            renderContext.AddInputValue(*input, renderArgs);
+            return inputLayout;
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            // TODO: what do we do here?
             return nullptr;
         }
-
-        AdaptiveToggleInput toggleInput = cardElement.as<AdaptiveToggleInput>();
-
-        Xaml::Controls::CheckBox checkBox{};
-        XamlHelpers::SetContent(checkBox, toggleInput.Title(), toggleInput.Wrap());
-
-        checkBox.IsChecked(toggleInput.ValueOn() == toggleInput.Value());
-        checkBox.VerticalAlignment(Xaml::VerticalAlignment::Top);
-
-        // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
-        checkBox.Tapped([](IInspectable const& /* sender */, Xaml::Input::TappedRoutedEventArgs const& args)
-                        { return args.Handled(true); });
-
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
-        Xaml::UIElement inputLayout = XamlHelpers::HandleInputLayoutAndValidation(toggleInput, checkBox, false, renderContext);
-
-        winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::ToggleInputValue> inputValue;
-        THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::ToggleInputValue>(
-            inputValue.put(),
-            toggleInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInput>().get(),
-            checkBox.as<ABI::Windows::UI::Xaml::Controls::ICheckBox>().get(),
-            nullptr));
-
-        renderContext.AddInputValue(inputValue.as<IAdaptiveInputValue>(), renderArgs);
-
-        return inputLayout;
     }
 }

@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveCardResourceResolvers.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveCardResourceResolvers
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers>
+    struct AdaptiveCardResourceResolvers : AdaptiveCardResourceResolversT < AdaptiveCardResourceResolvers>
     {
-        AdaptiveRuntime(AdaptiveCardResourceResolvers);
+        AdaptiveCardResourceResolvers() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        void Set(hstring const& scheme, Uwp::IAdaptiveCardResourceResolver const& resolver);
+        Uwp::IAdaptiveCardResourceResolver Get(hstring const& scheme);
 
-        IFACEMETHODIMP Set(_In_ HSTRING scheme, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolver* resolver);
-        IFACEMETHODIMP Get(_In_ HSTRING scheme,
-                           _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolver** resolver);
-
-    private:
-        std::map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolver>> m_resourceResolvers;
+        std::map<hstring, Rendering::Uwp::IAdaptiveCardResourceResolver> m_resourceResolvers;
     };
+}
 
-    ActivatableClass(AdaptiveCardResourceResolvers);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveCardResourceResolvers
+        : AdaptiveCardResourceResolversT<AdaptiveCardResourceResolvers, implementation::AdaptiveCardResourceResolvers>
+    {
+    };
 }

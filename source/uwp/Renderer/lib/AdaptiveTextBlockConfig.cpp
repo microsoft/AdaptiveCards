@@ -3,35 +3,12 @@
 #include "pch.h"
 
 #include "AdaptiveTextBlockConfig.h"
+#include "AdaptiveTextBlockConfig.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveTextBlockConfig::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveTextBlockConfig::AdaptiveTextBlockConfig(::AdaptiveCards::TextBlockConfig const& textBlockConfig)
     {
-        TextBlockConfig textBlockConfig;
-        return RuntimeClassInitialize(textBlockConfig);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveTextBlockConfig::RuntimeClassInitialize(TextBlockConfig textBlockConfig) noexcept
-    {
-        m_headingLevel = textBlockConfig.headingLevel;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextBlockConfig::get_HeadingLevel(_Out_ UINT32* headingLevel)
-    {
-        *headingLevel = m_headingLevel;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextBlockConfig::put_HeadingLevel(UINT32 headingLevel)
-    {
-        m_headingLevel = headingLevel;
-        return S_OK;
+        HeadingLevel = textBlockConfig.headingLevel;
     }
 }

@@ -4,51 +4,40 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "InputValue.h"
+#include "AdaptiveInputs.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveInputs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs>
+    struct AdaptiveInputs : AdaptiveInputsT<AdaptiveInputs>
     {
-        AdaptiveRuntime(AdaptiveInputs);
-
-    public:
-        AdaptiveInputs();
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveInputs() = default;
 
         // IAdaptiveInputs
-        IFACEMETHODIMP AsJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** value);
-        IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
+        winrt::Windows::Data::Json::JsonObject AsJson();
+        winrt::Windows::Foundation::Collections::ValueSet AsValueSet();
 
-        IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
-                                      boolean* inputsAreValid);
+        bool ValidateInputs(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction);
 
-        HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkCardToParent(UINT32 cardId, UINT32 parentCardId);
+        void AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, _In_ Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkSubmitActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& action,
+                                    Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(uint32_t cardId, uint32_t parentCardId);
 
-        HRESULT GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                              _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue);
+        Uwp::IAdaptiveInputValue GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement);
 
     private:
         std::string GetInputItemsAsJsonString();
-        void GetInputsToValidate(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
-                                 _Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>& inputs);
-        void GetAllInputs(_Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>& inputs);
-        HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                                        _Out_ UINT32* actionInternalId);
+        std::vector<Uwp::IAdaptiveInputValue> GetInputsToValidate(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction);
+        uint32_t GetInternalIdFromAction(ObjectModel::Uwp::IAdaptiveActionElement const& action);
 
         // Map with key: input id, value: input value class
         // This one has the collection of all input element values, this was introduced to be able to set the error
         // message to the input value and at the same time, being able to respect custom inputs having error messages
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>> m_inputValues;
+        std::unordered_map<std::string, Uwp::IAdaptiveInputValue> m_inputValues;
 
         // This is cache of the last inputs that were retrieved for validation (and succeeded)
         // This is needed as the AsJson and AsValueSet methods are called after validating but we don't get an action reference to rebuild the list
-        std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>> m_lastRetrievedValues;
+        std::vector<Uwp::IAdaptiveInputValue> m_lastRetrievedValues;
 
         // Map with key: internal id of card, value: internal id of parent card
         // This map allows us to move vertically accross the cards to retrieve the inputs
@@ -62,6 +51,11 @@ namespace AdaptiveCards::Rendering::Uwp
         // the card This is needed to retrieve inputs once we know what cards to look into
         std::unordered_map<std::size_t, std::vector<std::string>> m_inputsPerCard;
     };
+}
 
-    ActivatableClass(AdaptiveInputs);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveInputs : AdaptiveInputsT<AdaptiveInputs, implementation::AdaptiveInputs>
+    {
+    };
 }

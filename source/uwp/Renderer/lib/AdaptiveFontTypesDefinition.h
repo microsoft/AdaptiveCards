@@ -2,28 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveFontTypesDefinition.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveFontTypesDefinition
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypesDefinition>
+    struct AdaptiveFontTypesDefinition : AdaptiveFontTypesDefinitionT<AdaptiveFontTypesDefinition>
     {
-        AdaptiveRuntime(AdaptiveFontTypesDefinition);
+        AdaptiveFontTypesDefinition(::AdaptiveCards::FontTypesDefinition const& fontTypesDefinition = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(FontTypesDefinition fontTypesDefinition) noexcept;
-
-        IFACEMETHODIMP get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value);
-        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value);
-
-        IFACEMETHODIMP get_Monospace(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value);
-        IFACEMETHODIMP put_Monospace(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition> m_default;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition> m_monospace;
+        property<Uwp::AdaptiveFontTypeDefinition> Default;
+        property<Uwp::AdaptiveFontTypeDefinition> Monospace;
     };
+}
 
-    ActivatableClass(AdaptiveFontTypesDefinition);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveFontTypesDefinition
+        : AdaptiveFontTypesDefinitionT<AdaptiveFontTypesDefinition, implementation::AdaptiveFontTypesDefinition>
+    {
+    };
 }

@@ -2,24 +2,25 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "FactSet.h"
+#include "AdaptiveFactSetRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveFactSetRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+
+    // TODO: have FactRenderer in .idl but no implementation for it, is that expected? I don't think we need it
+    // TODO: I didn't find it possible to declare a single fact without wrapping into FactSet according to https://adaptivecards.io/explorer/Fact.html
+    struct AdaptiveFactSetRenderer : AdaptiveFactSetRendererT<AdaptiveFactSetRenderer>
     {
-        AdaptiveRuntime(AdaptiveFactSetRenderer);
+        AdaptiveFactSetRenderer() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        Windows::UI::Xaml::UIElement Render(AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+                                            AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                            AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
     };
-
-    ActivatableClass(AdaptiveFactSetRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveFactSetRenderer : AdaptiveFactSetRendererT<AdaptiveFactSetRenderer, implementation::AdaptiveFactSetRenderer>
+    {
+    };
 }

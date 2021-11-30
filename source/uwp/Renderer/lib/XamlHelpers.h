@@ -4,374 +4,244 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "WholeItemsPanel.h"
+#include <type_traits>
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
-    template<typename T> Microsoft::WRL::ComPtr<T> CreateABIClass(Microsoft::WRL::Wrappers::HStringReference className)
-    {
-        Microsoft::WRL::ComPtr<IInspectable> inspectableClass;
-        THROW_IF_FAILED(RoActivateInstance(className.Get(), inspectableClass.ReleaseAndGetAddressOf()));
+    namespace rtrender = winrt::AdaptiveCards::Rendering::Uwp;
+    namespace rtom = winrt::AdaptiveCards::ObjectModel::Uwp;
+    namespace rtxaml = winrt::Windows::UI::Xaml;
 
-        Microsoft::WRL::ComPtr<T> result;
-        THROW_IF_FAILED(inspectableClass.As<T>(&result));
-        return result;
+    inline rtxaml::Media::Brush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
+    {
+        rtxaml::Media::SolidColorBrush solidColorBrush;
+        solidColorBrush.Color(color);
+        return solidColorBrush;
     }
 
-    inline Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color)
-    {
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::ISolidColorBrush> solidColorBrush =
-            CreateABIClass<ABI::Windows::UI::Xaml::Media::ISolidColorBrush>(
-                Microsoft::WRL::Wrappers::HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-        THROW_IF_FAILED(solidColorBrush->put_Color(color));
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> solidColorBrushAsBrush;
-        THROW_IF_FAILED(solidColorBrush.As(&solidColorBrushAsBrush));
-        return solidColorBrushAsBrush;
-    }
+    void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
+                                        winrt::hstring const& resourceName,
+                                        rtxaml::FrameworkElement frameworkElement);
 
-    HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                           HSTRING resourceName,
-                                           _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
-
-    HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                           const wchar_t* resourceName,
-                                           _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
-
-    void SetStyleFromResourceDictionary(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext,
-                                        winrt::hstring resourceName,
-                                        winrt::Windows::UI::Xaml::IFrameworkElement frameworkElement);
-
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                                                               UINT spacing,
-                                                                               UINT separatorThickness,
-                                                                               ABI::Windows::UI::Color separatorColor,
-                                                                               bool isHorizontal = true);
+    rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
+                                      uint32_t spacing,
+                                      uint32_t separatorThickness,
+                                      winrt::Windows::UI::Color const& separatorColor,
+                                      bool isHorizontal = true);
 
     template<typename T>
-    HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
-                                                   HSTRING resourceName,
-                                                   _COM_Outptr_result_maybenull_ T** style) noexcept
+    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, winrt::hstring const& resourceName)
     {
         if (resourceDictionary == nullptr)
         {
-            return E_INVALIDARG;
+            return nullptr;
         }
-
-        *style = nullptr;
+        T toReturn{nullptr};
         try
         {
-            // Get a resource key for the requested style that we can use for ResourceDictionary Lookups
-            ComPtr<IPropertyValueStatics> propertyValueStatics;
-            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
-                                                 &propertyValueStatics));
-            ComPtr<IInspectable> resourceKey;
-            THROW_IF_FAILED(propertyValueStatics->CreateString(resourceName, resourceKey.GetAddressOf()));
+            auto resourceKey = winrt::box_value(resourceName);
 
-            // Search for the named resource
-            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
-            ComPtr<IInspectable> dictionaryValue;
-            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-
-            boolean hasKey{};
-            if (SUCCEEDED(strongDictionary.As(&resourceDictionaryMap)) &&
-                SUCCEEDED(resourceDictionaryMap->HasKey(resourceKey.Get(), &hasKey)) && hasKey &&
-                SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
-            {
-                ComPtr<T> resourceToReturn;
-                if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
-                {
-                    THROW_IF_FAILED(resourceToReturn.CopyTo(style));
-                    return S_OK;
-                }
-            }
+            toReturn = resourceDictionary.TryLookup(resourceKey).try_as<T>();
+            return toReturn;
         }
         catch (...)
         {
+            // TODO: do we want to catch exception and extract some value from it?
         }
-        return E_FAIL;
+        // TOOD: do we return nullptr?
+        return nullptr;
     }
 
     template<typename T>
-    HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
-                                                   const wchar_t* resourceName,
-                                                   _COM_Outptr_result_maybenull_ T** style) noexcept
+    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
     {
-        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, HStringReference(resourceName).Get(), style);
+        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName));
     }
 
-    HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
+    void SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel);
 
-    HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn* column,
-                              boolean isVisible,
-                              _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
+    void HandleColumnWidth(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn const& column,
+                           bool isVisible,
+                           winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
 
-    HRESULT HandleTableColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition* column,
-                                   _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
+    void HandleTableColumnWidth(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition const& column,
+                                winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
 
     template<typename T>
-    void AppendXamlElementToPanel(_In_ T* xamlElement,
-                                  _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-                                  ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType = ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Auto)
+    void AppendXamlElementToPanel(T const& xamlElement,
+                                  rtxaml::Controls::Panel const& panel,
+                                  rtom::HeightType heightType = rtom::HeightType::Auto)
     {
         if (!xamlElement)
         {
             return;
         }
 
-        Microsoft::WRL::ComPtr<T> localXamlElement(xamlElement);
+        auto elementToAppend = xamlElement.as<rtxaml::UIElement>();
+        panel.Children().Append(elementToAppend);
 
-        ComPtr<IUIElement> elementToAppend;
-        THROW_IF_FAILED(localXamlElement.As(&elementToAppend));
-
-        ComPtr<IVector<UIElement*>> panelChildren;
-        THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
-
-        THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
-
-        if (heightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
+        if (heightType == rtom::HeightType::Stretch)
         {
-            ComPtr<IPanel> spPanel(panel);
-            ComPtr<IWholeItemsPanel> wholeItemsPanel;
-            if (SUCCEEDED(spPanel.As(&wholeItemsPanel)))
+            // TODO: is this the right way?
+            // TODO: can we peek innards right away?
+            if (const auto wholeItemsPanel = panel.try_as<rtrender::WholeItemsPanel>())
             {
-                ComPtr<WholeItemsPanel> wholeItemsPanelObj = PeekInnards<WholeItemsPanel>(wholeItemsPanel);
-                wholeItemsPanelObj->AddElementToStretchablesList(elementToAppend.Get());
+                auto wholeItemsPanelImpl = peek_innards<rtrender::implementation::WholeItemsPanel>(wholeItemsPanel);
+                wholeItemsPanelImpl->AddElementToStretchablesList(elementToAppend);
             }
         }
     }
 
-    template<typename T> void SetToggleValue(_In_ T* item, boolean isChecked)
+    template<typename T> void SetToggleValue(T const& item, bool isChecked)
     {
-        ComPtr<IPropertyValueStatics> propertyValueStatics;
-        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
-                                                       &propertyValueStatics);
+        // TODO: compiling fails at AdaptiveToggleInputRenderer.cpp(66)
+        // static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>, T > ::value, "T
+        // must inherit from ToggleButton");
+        // TODO: do we want static asserts? or is it fine with compilers catching misusages?
 
-        ComPtr<IPropertyValue> propertyValue;
-        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
-
-        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
-        propertyValue.As(&boolProperty);
-
-        ComPtr<T> localItem(item);
-        ComPtr<IToggleButton> toggleButton;
-        THROW_IF_FAILED(localItem.As(&toggleButton));
-        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+        auto toggleButton =
+            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                                                     // toggleButton descendabts have isChecked() exposed, right?
+        toggleButton.IsChecked(isChecked);
     }
 
-    template<typename T> void GetToggleValue(_In_ T* item, _Out_ boolean* isChecked)
+    template<typename T> bool GetToggleValue(T const& item)
     {
-        ComPtr<T> localItem(item);
-        ComPtr<IToggleButton> toggleButton;
-        THROW_IF_FAILED(localItem.As(&toggleButton));
+        // TODO: InputValue613 failes to compile, why?
+        /*static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
+        auto toggleButton =
+            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                                                     // toggleButton descendants have isChecked() exposed, right?
 
-        ComPtr<IReference<bool>> isCheckedReference;
-        THROW_IF_FAILED(toggleButton->get_IsChecked(&isCheckedReference));
-
-        if (isCheckedReference != nullptr)
-        {
-            THROW_IF_FAILED(isCheckedReference->get_Value(isChecked));
-        }
-        else
-        {
-            *isChecked = false;
-        }
+        return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
-    void SetContent(winrt::Windows::UI::Xaml::Controls::IContentControl contentControl,
-                    _In_ winrt::param::hstring contentString,
-                    boolean wrap = false);
-
-    template<typename T> void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
+    template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
-        ComPtr<T> localItem(item);
-        ComPtr<IContentControl> contentControl;
-        THROW_IF_FAILED(localItem.As(&contentControl));
+        // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
+        /* static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ContenControl");*/
+        SetContent(item, contentString, false);
+    }
 
-        ComPtr<ITextBlock> content =
-            XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-        THROW_IF_FAILED(content->put_Text(contentString));
+    template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
+    {
+        // TODO: compiling failing as ToggleInputRenderer(52)
+        /*  static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
+        rtxaml::Controls::TextBlock content{};
+        content.Text(contentString);
 
         if (wrap)
         {
-            THROW_IF_FAILED(content->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords));
+            content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords);
         }
-        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+
+        if (const auto contentControl = item.try_as<rtxaml::Controls::ContentControl>())
+        {
+            contentControl.Content(content);
+        }
     }
 
-    template<typename T> void SetContent(T* item, HSTRING contentString) { SetContent(item, contentString, false); }
+    rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
+                                                 rtxaml::Controls::Border const& containerBorder,
+                                                 rtrender::AdaptiveRenderContext const& renderContext,
+                                                 rtrender::AdaptiveRenderArgs renderArgs);
+
+    bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig);
 
     template<typename T>
-    void AddRow(_In_ T* item, _In_ ABI::Windows::UI::Xaml::Controls::IGrid* grid, ABI::Windows::UI::Xaml::GridLength rowHeight)
+    void SetVerticalContentAlignmentToChildren(T const& container, rtom::VerticalContentAlignment verticalContentAlignment)
     {
-        ComPtr<ABI::Windows::UI::Xaml::Controls::IGrid> localGrid(grid);
-
-        ComPtr<IVector<RowDefinition*>> rowDefinitions;
-        THROW_IF_FAILED(localGrid->get_RowDefinitions(&rowDefinitions));
-
-        unsigned int rowIndex;
-        THROW_IF_FAILED(rowDefinitions->get_Size(&rowIndex));
-        ComPtr<IGridStatics> gridStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-        Microsoft::WRL::ComPtr<T> localItem(item);
-        ComPtr<IFrameworkElement> localItemAsFrameworkElement;
-        THROW_IF_FAILED(localItem.As(&localItemAsFrameworkElement));
-        gridStatics->SetRow(localItemAsFrameworkElement.Get(), rowIndex);
-
-        ComPtr<IRowDefinition> rowDefinition =
-            XamlHelpers::CreateABIClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-        THROW_IF_FAILED(rowDefinition->put_Height(rowHeight));
-        THROW_IF_FAILED(rowDefinitions->Append(rowDefinition.Get()));
-
-        ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> localPanel;
-        THROW_IF_FAILED(localGrid.As(&localPanel));
-        XamlHelpers::AppendXamlElementToPanel(item, localPanel.Get());
+        if (const auto containerAsPanel = container.try_as<rtrender::WholeItemsPanel>())
+        {
+            // TODO: can we peek innards right away?
+            auto containerAsPanelImpl = peek_innards<rtrender::implementation::WholeItemsPanel>(containerAsPanel);
+            containerAsPanelImpl->SetVerticalContentAlignment(verticalContentAlignment);
+        }
     }
-
-    HRESULT HandleStylingAndPadding(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainerBase* adaptiveContainer,
-                                    _In_ ABI::Windows::UI::Xaml::Controls::IBorder* containerBorder,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* containerStyle);
-
-    bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
-
-    template<typename T>
-    void SetVerticalContentAlignmentToChildren(_In_ T* container, _In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
-    {
-        ComPtr<T> localContainer(container);
-        ComPtr<IWholeItemsPanel> containerAsPanel;
-        THROW_IF_FAILED(localContainer.As(&containerAsPanel));
-
-        ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(containerAsPanel);
-        panel->SetVerticalContentAlignment(verticalContentAlignment);
-    }
-
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl);
-
-    HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                    ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);
-
-    HRESULT CreateValidationBorder(ABI::Windows::UI::Xaml::IUIElement* childElement,
-                                   ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                   ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
-
-    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInput,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                       _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
-
-    HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInput,
-                                           ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
-                                           boolean hasTypeSpecificValidation,
-                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                           ABI::Windows::UI::Xaml::IUIElement** inputLayout,
-                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
     winrt::Windows::UI::Xaml::UIElement
-    HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
-                                   winrt::Windows::UI::Xaml::UIElement inputUIElement,
-                                   boolean hasTypeSpecificValidation,
-                                   winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext);
+    RenderInputLabel(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInputElement,
+                     winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                     winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
-    template<typename TXamlControl>
-    HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                   _In_ TXamlControl* xamlControl)
-    {
-        ComPtr<IUIElement> labelControl;
-        RETURN_IF_FAILED(RenderInputLabel(adaptiveInputElement, renderContext, renderArgs, &labelControl));
+    winrt::Windows::UI::Xaml::UIElement
+    RenderInputErrorMessage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInputElement,
+                            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
 
-        if (labelControl != nullptr)
-        {
-            ComPtr<IInspectable> labelControlAsInspectable;
-            RETURN_IF_FAILED(labelControl.As(&labelControlAsInspectable));
-            RETURN_IF_FAILED(xamlControl->put_Header(labelControlAsInspectable.Get()));
-        }
+    winrt::Windows::UI::Xaml::Controls::Border
+    CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
+                           winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
 
-        return S_OK;
-    }
+    winrt::Windows::UI::Xaml::UIElement
+    HandleLabelAndErrorMessage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInput,
+                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                               winrt::Windows::UI::Xaml::UIElement const& inputLayout);
 
-    HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+    std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Windows::UI::Xaml::Controls::Border>
+    HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInput,
+                                   winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                                   bool hasTypeSpecificValidation,
+                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                   bool ifValidationBorderIsNeeded = true);
+
+    void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
                                _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImage,
                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
-    HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
-                               _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
-                               _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-                               _In_ ABI::Windows::UI::Xaml::IUIElement* separator,
-                               _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition,
-                               std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
+    void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
+                               rtom::AdaptiveBackgroundImage const& backgroundImage,
+                               rtrender::AdaptiveRenderContext const& renderContext,
+                               rtrender::AdaptiveRenderArgs const& renderArgs);
 
-    HRESULT RenderFallback(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* currentElement,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
-                           _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** renderedElement);
+    void AddRenderedControl(rtxaml::UIElement const& newControl,
+                            rtom::IAdaptiveCardElement const& element,
+                            rtxaml::Controls::Panel const& parentPanel,
+                            rtxaml::UIElement const& separator,
+                            rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
 
-    void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                       _Out_ UINT* spacing,
-                                       _Out_ UINT* separatorThickness,
-                                       _Out_ ABI::Windows::UI::Color* separatorColor,
-                                       _Out_ bool* needsSeparator);
+    // TODO: come back to this function
+    std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                                                                             rtrender::AdaptiveRenderContext const& renderContext,
+                                                                             rtrender::AdaptiveRenderArgs const& renderArgs);
 
-    inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                      const std::string& warning)
+    bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement);
+
+    inline void WarnFallbackString(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
     {
-        HString warningMsg;
-        RETURN_IF_FAILED(UTF8ToHString(warning, warningMsg.GetAddressOf()));
-
-        RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::PerformingFallback,
-                                                   warningMsg.Get()));
-        return S_OK;
+        renderContext.AddWarning(rtom::WarningStatusCode::PerformingFallback, warning);
     }
 
-    inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                                 _In_ HSTRING parentElementType,
-                                                 _In_ HSTRING fallbackElementType)
-    try
+    inline void WarnForFallbackContentElement(rtrender::AdaptiveRenderContext const& renderContext,
+                                              winrt::hstring const& parentElementType,
+                                              winrt::hstring const& fallbackElementType)
     {
-        std::string warning = "Performing fallback for element of type \"";
-        warning.append(HStringToUTF8(parentElementType));
-        warning.append("\" (fallback element type \"");
-        warning.append(HStringToUTF8(fallbackElementType));
-        warning.append("\")");
-
-        return WarnFallbackString(renderContext, warning);
+        auto warning = L"Performing fallback for element of type \"" + parentElementType +
+            L"\" (fallback element type \"" + fallbackElementType + L"\")";
+        WarnFallbackString(renderContext, warning);
     }
-    CATCH_RETURN;
 
-    inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                       _In_ HSTRING elementType)
-    try
+    inline void WarnForFallbackDrop(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
     {
-        std::string warning = "Dropping element of type \"";
-        warning.append(HStringToUTF8(elementType));
-        warning.append("\" for fallback");
-
-        return WarnFallbackString(renderContext, warning);
+        WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
-    CATCH_RETURN;
 
-    void AddSeparatorIfNeeded(int& currentElement,
-                              _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-                              _Outptr_ ABI::Windows::UI::Xaml::IUIElement** addedSeparator);
+    winrt::Windows::UI::Xaml::UIElement
+    AddSeparatorIfNeeded(int& currentElement,
+                         winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& element,
+                         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+                         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                         winrt::Windows::UI::Xaml::Controls::Panel const& parentPanel);
 
-    HRESULT SetAutoImageSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
-                             _In_ IInspectable* parentElement,
-                             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
-                             bool setVisible);
+    void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
+                          winrt::Windows::Foundation::IInspectable const& parentElement,
+                          winrt::Windows::UI::Xaml::Media::Imaging::BitmapSource const& imageSource,
+                          bool setVisible);
 
-    HRESULT ApplyMarginToXamlElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                     _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element) noexcept;
+    void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig const& hostConfig,
+                                  winrt::Windows::UI::Xaml::IFrameworkElement const& element);
 }

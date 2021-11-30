@@ -2,48 +2,27 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveColorsConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveColorsConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig>
+    struct AdaptiveColorsConfig : AdaptiveColorsConfigT<AdaptiveColorsConfig>
     {
-        AdaptiveRuntime(AdaptiveColorsConfig);
+        AdaptiveColorsConfig(::AdaptiveCards::ColorsConfig colorsConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(ColorsConfig colorsConfig) noexcept;
-
-        IFACEMETHODIMP get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Accent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Accent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Dark(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Dark(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Light(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Light(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Good(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Good(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Warning(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Warning(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-        IFACEMETHODIMP get_Attention(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig** value);
-        IFACEMETHODIMP put_Attention(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig* value);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_default;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_accent;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_dark;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_light;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_good;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_warning;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> m_attention;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Default;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Accent;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Dark;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Light;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Good;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Warning;
+        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Attention;
     };
+}
 
-    ActivatableClass(AdaptiveColorsConfig);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveColorsConfig : AdaptiveColorsConfigT<AdaptiveColorsConfig, implementation::AdaptiveColorsConfig>
+    {
+    };
 }

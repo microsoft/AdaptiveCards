@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveFactSetRenderer.g.cpp"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
@@ -14,156 +15,120 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveFactSetRenderer::RuntimeClassInitialize() noexcept
-    try
+
+    rtxaml::UIElement AdaptiveFactSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                      rtrender::AdaptiveRenderContext const& renderContext,
+                                                      rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveFactSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                            _In_ IAdaptiveRenderContext* renderContext,
-                                            _In_ IAdaptiveRenderArgs* renderArgs,
-                                            _COM_Outptr_ IUIElement** factSetControl) noexcept
-    try
-    {
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveFactSet> adaptiveFactSet;
-
-        RETURN_IF_FAILED(cardElement.As(&adaptiveFactSet));
-
-        ComPtr<IGrid> xamlGrid =
-            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-        ComPtr<IGridStatics> gridStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-
-        ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateABIClass<IColumnDefinition>(
-            HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-        ComPtr<IColumnDefinition> valueColumn = XamlHelpers::CreateABIClass<IColumnDefinition>(
-            HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-        GridLength factSetGridTitleLength = {0, GridUnitType::GridUnitType_Auto};
-        GridLength factSetGridValueLength = {1, GridUnitType::GridUnitType_Star};
-
-        RETURN_IF_FAILED(titleColumn->put_Width(factSetGridTitleLength));
-        RETURN_IF_FAILED(valueColumn->put_Width(factSetGridValueLength));
-        ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-        RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
-        RETURN_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
-        RETURN_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
-
-        GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
-        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType;
-        RETURN_IF_FAILED(cardElement->get_Height(&heightType));
-        if (heightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
+        try
         {
-            factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
-        }
+            auto adaptiveFactSet = cardElement.as<rtom::AdaptiveFactSet>();
 
-        ComPtr<IVector<AdaptiveFact*>> facts;
-        RETURN_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
-        int currentFact = 0, validFacts = 0;
-        IterateOverVector<AdaptiveFact, IAdaptiveFact>(
-            facts.Get(),
-            [xamlGrid, gridStatics, factSetGridHeight, &currentFact, &validFacts, renderContext, renderArgs](IAdaptiveFact* fact) {
-                ComPtr<IRowDefinition> factRow = XamlHelpers::CreateABIClass<IRowDefinition>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-                RETURN_IF_FAILED(factRow->put_Height(factSetGridHeight));
+            rtxaml::Controls::Grid xamlGrid{};
 
-                ComPtr<IVector<RowDefinition*>> rowDefinitions;
-                RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&rowDefinitions));
-                RETURN_IF_FAILED(rowDefinitions->Append(factRow.Get()));
+            rtxaml::Controls::ColumnDefinition titleColumn{};
+            rtxaml::Controls::ColumnDefinition valueColumn{};
 
-                ComPtr<IAdaptiveFact> localFact(fact);
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-                ComPtr<IAdaptiveFactSetConfig> factSetConfig;
-                RETURN_IF_FAILED(hostConfig->get_FactSet(&factSetConfig));
+            // TODO: does value(0 in this case) matter when type=Auto?
+            rtxaml::GridLength factSetGridTitleLength{0, rtxaml::GridUnitType::Auto};
+            rtxaml::GridLength factSetGridValueLength{1, rtxaml::GridUnitType::Star};
+
+            titleColumn.Width(factSetGridTitleLength);
+            valueColumn.Width(factSetGridValueLength);
+
+            auto columnDefinitions = xamlGrid.ColumnDefinitions();
+            columnDefinitions.Append(titleColumn);
+            columnDefinitions.Append(valueColumn);
+
+            rtxaml::GridLength factSetGridHeight{0, rtxaml::GridUnitType::Auto};
+
+            auto heightType = cardElement.Height();
+
+            if (heightType == rtom::HeightType::Stretch)
+            {
+                factSetGridHeight = {1, rtxaml::GridUnitType::Star};
+            }
+
+            auto facts = adaptiveFactSet.Facts();
+
+            int currentFact = 0, validFacts = 0;
+
+            for (auto fact : facts)
+            {
+                rtxaml::Controls::RowDefinition factRow{};
+                factRow.Height(factSetGridHeight);
+
+                auto rowDefinitions = xamlGrid.RowDefinitions();
+                rowDefinitions.Append(factRow);
+
+                auto hostConfig = renderContext.HostConfig();
+                auto factSetConfig = hostConfig.FactSet();
 
                 // Get Language
-                HString language;
-                RETURN_IF_FAILED(localFact->get_Language(language.GetAddressOf()));
+                winrt::hstring language = fact.Language();
 
                 // Create the title xaml textblock and style it from Host options
-                ComPtr<IAdaptiveFactSetTextConfig> titleTextConfig;
-                RETURN_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
+                auto titleTextConfig = factSetConfig.Title();
+                rtxaml::Controls::TextBlock titleTextBlock{};
 
-                ComPtr<ITextBlock> titleTextBlock =
-                    XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+                winrt::hstring factTitle = fact.Title();
 
-                HString factTitle;
-                RETURN_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
-
-                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
-                    renderContext, renderArgs, titleTextConfig.Get(), language.Get(), factTitle.Get(), titleTextBlock.Get()));
+                SetXamlInlinesWithFactSetTextConfig(renderContext, renderArgs, titleTextConfig, language, factTitle, titleTextBlock);
 
                 // Create the value xaml textblock and style it from Host options
-                ComPtr<IAdaptiveFactSetTextConfig> valueTextConfig;
-                RETURN_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
+                auto valueTextConfig = factSetConfig.Value();
+                rtxaml::Controls::TextBlock valueTextBlock{};
 
-                ComPtr<ITextBlock> valueTextBlock =
-                    XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+                winrt::hstring factValue = fact.Value();
 
-                HString factValue;
-                RETURN_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
+                SetXamlInlinesWithFactSetTextConfig(renderContext, renderArgs, valueTextConfig, language, factValue, valueTextBlock);
 
-                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
-                    renderContext, renderArgs, valueTextConfig.Get(), language.Get(), factValue.Get(), valueTextBlock.Get()));
-
-                if (factTitle.Get() != nullptr || factValue.Get() != nullptr)
+                if (!factTitle.empty() || !factValue.empty())
                 {
                     // Mark the column container with the current column
-                    ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
-                    RETURN_IF_FAILED(titleTextBlock.As(&titleTextBlockAsFrameWorkElement));
-                    ComPtr<IFrameworkElement> valueTextBlockAsFrameWorkElement;
-                    RETURN_IF_FAILED(valueTextBlock.As(&valueTextBlockAsFrameWorkElement));
 
-                    UINT32 spacing;
-                    RETURN_IF_FAILED(factSetConfig->get_Spacing(&spacing));
-                    // Add spacing from hostconfig to right margin of title.
-                    titleTextBlockAsFrameWorkElement->put_Margin({0, 0, (double)spacing, 0});
+                    auto spacing = factSetConfig.Spacing();
+                    titleTextBlock.Margin({0, 0, (double)spacing, 0});
 
-                    RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                                 L"Adaptive.Fact.Title",
-                                                                                 titleTextBlockAsFrameWorkElement.Get()));
-                    RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                                 L"Adaptive.Fact.Value",
-                                                                                 valueTextBlockAsFrameWorkElement.Get()));
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                                    L"Adaptive.Fact.Title",
+                                                                                                    titleTextBlock);
 
-                    RETURN_IF_FAILED(gridStatics->SetColumn(titleTextBlockAsFrameWorkElement.Get(), 0));
-                    RETURN_IF_FAILED(gridStatics->SetRow(titleTextBlockAsFrameWorkElement.Get(), currentFact));
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                                    L"Adaptive.Fact.Value",
+                                                                                                    valueTextBlock);
 
-                    RETURN_IF_FAILED(gridStatics->SetColumn(valueTextBlockAsFrameWorkElement.Get(), 1));
-                    RETURN_IF_FAILED(gridStatics->SetRow(valueTextBlockAsFrameWorkElement.Get(), currentFact));
+                    rtxaml::Controls::Grid::SetColumn(titleTextBlock, 0);
+                    rtxaml::Controls::Grid::SetRow(titleTextBlock, currentFact);
+
+                    rtxaml::Controls::Grid::SetColumn(valueTextBlock, 1);
+                    rtxaml::Controls::Grid::SetRow(valueTextBlock, currentFact);
 
                     // Finally add the column container to the grid, and increment the column count
-                    ComPtr<IPanel> gridAsPanel;
-                    RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
-                    ComPtr<IUIElement> titleUIElement;
-                    RETURN_IF_FAILED(titleTextBlockAsFrameWorkElement.As(&titleUIElement));
-                    ComPtr<IUIElement> valueUIElement;
-                    RETURN_IF_FAILED(valueTextBlockAsFrameWorkElement.As(&valueUIElement));
 
-                    XamlHelpers::AppendXamlElementToPanel(titleUIElement.Get(), gridAsPanel.Get());
-                    XamlHelpers::AppendXamlElementToPanel(valueUIElement.Get(), gridAsPanel.Get());
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(titleTextBlock, xamlGrid);
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(valueTextBlock, xamlGrid);
                     ++currentFact;
                     ++validFacts;
                 }
-                return S_OK;
-            });
+            }
 
-        if (validFacts == 0)
-        {
-            return S_OK;
+            if (validFacts == 0)
+            {
+                // TODO: is this right? or we're supposed to do something else?
+                return nullptr;
+            }
+
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", xamlGrid);
+
+            return xamlGrid;
         }
-
-        ComPtr<IFrameworkElement> factSetAsFrameworkElement;
-        RETURN_IF_FAILED(xamlGrid.As(&factSetAsFrameworkElement));
-        RETURN_IF_FAILED(
-            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", factSetAsFrameworkElement.Get()));
-
-        return xamlGrid.CopyTo(factSetControl);
+        catch (winrt::hresult_error const& ex)
+        {
+            // TODO: what do we do here?
+            return nullptr;
+        }
     }
-    CATCH_RETURN;
 }

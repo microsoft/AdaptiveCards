@@ -2,45 +2,46 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "ChoiceSetInput.h"
+#include "AdaptiveChoiceSetInputRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveChoiceSetInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveChoiceSetInputRenderer : AdaptiveChoiceSetInputRendererT<AdaptiveChoiceSetInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveChoiceSetInputRenderer);
-
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveChoiceSetInputRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        static std::vector<std::string> GetChoiceSetValueVector(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput);
-        static bool IsChoiceSelected(std::vector<std::string> selectedValues,
-                                     _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput* choice);
+        static std::vector<std::string> GetChoiceSetValueVector(rtom::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
 
-        HRESULT BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                            boolean isMultiSelect,
-                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        static bool IsChoiceSelected(std::vector<std::string> selectedValues, rtom::AdaptiveChoiceInput const& choice);
 
-        HRESULT BuildCompactChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                           _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        winrt::Windows::UI::Xaml::UIElement BuildExpandedChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+            bool isMultiSelect);
 
-        HRESULT BuildFilteredChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        winrt::Windows::UI::Xaml::UIElement BuildCompactChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
+
+        winrt::Windows::UI::Xaml::UIElement BuildFilteredChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
     };
+}
 
-    ActivatableClass(AdaptiveChoiceSetInputRenderer);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveChoiceSetInputRenderer
+        : AdaptiveChoiceSetInputRendererT<AdaptiveChoiceSetInputRenderer, implementation::AdaptiveChoiceSetInputRenderer>
+    {
+    };
 }
