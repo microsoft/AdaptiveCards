@@ -22,4 +22,7 @@
         } \
     } while (0, 0)
 #define CATCH_RETURN \
-    catch (...) { return E_FAIL; }
+    catch (...) \
+    { \
+        return E_FAIL; \
+    }

@@ -14,7 +14,10 @@
 using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
-    BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(std::nullopt),
+    BaseCardElement(CardElementType::TextBlock),
+    m_wrap(false),
+    m_maxLines(0),
+    m_hAlignment(std::nullopt),
     m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
@@ -45,8 +48,7 @@ Json::Value TextBlock::SerializeToJsonValue() const
 
     if (m_textStyle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] =
-            TextStyleToString(m_textStyle.value_or(TextStyle::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle.value_or(TextStyle::Default));
     }
 
     return root;
@@ -192,8 +194,9 @@ void TextBlock::PopulateKnownPropertiesSet()
 {
     m_textElementProperties->PopulateKnownPropertiesSet(m_knownProperties);
 
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)});
 }

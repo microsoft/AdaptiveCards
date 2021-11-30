@@ -5,21 +5,20 @@
 
 #include "Container.h"
 
-namespace AdaptiveCards
+namespace AdaptiveCards {
+class BaseCardElement;
+
+class TableCell : public Container
 {
-    class BaseCardElement;
+public:
+    TableCell();
+    TableCell(const TableCell&) = default;
+    TableCell(TableCell&&) = default;
+    TableCell& operator=(const TableCell&) = default;
+    TableCell& operator=(TableCell&&) = default;
+    virtual ~TableCell() = default;
 
-    class TableCell : public Container
-    {
-    public:
-        TableCell();
-        TableCell(const TableCell&) = default;
-        TableCell(TableCell&&) = default;
-        TableCell& operator=(const TableCell&) = default;
-        TableCell& operator=(TableCell&&) = default;
-        virtual ~TableCell() = default;
-
-        static std::shared_ptr<TableCell> DeserializeTableCellFromString(ParseContext& context, const std::string& root);
-        static std::shared_ptr<TableCell> DeserializeTableCell(ParseContext& context, const Json::Value& root);
-    };
-}
+    static std::shared_ptr<TableCell> DeserializeTableCellFromString(ParseContext& context, const std::string& root);
+    static std::shared_ptr<TableCell> DeserializeTableCell(ParseContext& context, const Json::Value& root);
+};
+} // namespace AdaptiveCards

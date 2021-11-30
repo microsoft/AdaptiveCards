@@ -21,15 +21,8 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
-namespace AdaptiveCardsSharedModelUnitTest
-{
-    TEST_CLASS(ExplicitDimensionTest)
-    {
-    public:
-        TEST_METHOD(PositiveTest)
-        {
-            std::string testJsonString =
-                "{\
+namespace AdaptiveCardsSharedModelUnitTest {
+TEST_CLASS(ExplicitDimensionTest){public : TEST_METHOD(PositiveTest){std::string testJsonString = "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -42,18 +35,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            int width = image->GetPixelWidth();
-            Assert::AreEqual(10, width);
-            int height = image->GetPixelHeight();
-            Assert::AreEqual(50, height);
-        }
-        TEST_METHOD(PositiveTestWithOneDimensionOnly)
-        {
-            std::string testJsonString =
-                "{\
+std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+int width = image->GetPixelWidth();
+Assert::AreEqual(10, width);
+int height = image->GetPixelHeight();
+Assert::AreEqual(50, height);
+} // namespace AdaptiveCardsSharedModelUnitTest
+TEST_METHOD(PositiveTestWithOneDimensionOnly)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -65,19 +58,19 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            int height = image->GetPixelHeight();
-            Assert::AreEqual(10, height);
-            int width = image->GetPixelWidth();
-            Assert::AreEqual(0, width);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+    int height = image->GetPixelHeight();
+    Assert::AreEqual(10, height);
+    int width = image->GetPixelWidth();
+    Assert::AreEqual(0, width);
+}
 
-        TEST_METHOD(MalformedUnitTest)
-        {
-            std::string testJsonString =
-                "{\
+TEST_METHOD(MalformedUnitTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -89,18 +82,17 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
-                WarningStatusCode::InvalidDimensionSpecified);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+    Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
+    Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == WarningStatusCode::InvalidDimensionSpecified);
+}
 
-        TEST_METHOD(MalformedUnitLengthTest)
-        {
-            std::string testJsonString =
-                "{\
+TEST_METHOD(MalformedUnitLengthTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -112,18 +104,17 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
-                WarningStatusCode::InvalidDimensionSpecified);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+    Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
+    Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == WarningStatusCode::InvalidDimensionSpecified);
+}
 
-        TEST_METHOD(MalformedUnitTypeTest)
-        {
-            std::string testJsonString =
-                "{\
+TEST_METHOD(MalformedUnitTypeTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -135,18 +126,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            Assert::AreEqual<size_t>(0, parseResult->GetWarnings().size());
-            Assert::AreEqual<size_t>(10, image->GetPixelHeight());
-            Assert::AreEqual<size_t>(0, image->GetPixelWidth());
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+    Assert::AreEqual<size_t>(0, parseResult->GetWarnings().size());
+    Assert::AreEqual<size_t>(10, image->GetPixelHeight());
+    Assert::AreEqual<size_t>(0, image->GetPixelWidth());
+}
 
-        TEST_METHOD(MalformedNegativeIntValueTest)
-        {
-            std::string testJsonString =
-                "{\
+TEST_METHOD(MalformedNegativeIntValueTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -159,19 +150,17 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-            Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
-                WarningStatusCode::InvalidDimensionSpecified);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+    Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
+    Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == WarningStatusCode::InvalidDimensionSpecified);
+}
 
-        TEST_METHOD(MalformedDimensionValuesTest)
-        {
-            std::vector<std::string>payloads =
-            {
-                "{\
+TEST_METHOD(MalformedDimensionValuesTest)
+{
+    std::vector<std::string> payloads = {
+        "{\
                       \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                       \"type\" : \"AdaptiveCard\",\
                       \"version\" : \"1.0\",\
@@ -184,7 +173,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                           }\
                       ]\
                 }",
-                "{\
+        "{\
                       \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                       \"type\" : \"AdaptiveCard\",\
                       \"version\" : \"1.0\",\
@@ -197,7 +186,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                           }\
                       ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -210,7 +199,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                           }\
                       ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -223,7 +212,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                           }\
                       ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -236,7 +225,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                           }\
                        ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -249,7 +238,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        }\
                      ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -262,7 +251,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        }\
                      ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -275,7 +264,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        }\
                      ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -288,7 +277,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        }\
                      ]\
                   }",
-                  "{\
+        "{\
                        \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
                        \"type\" : \"AdaptiveCard\",\
                        \"version\" : \"1.0\",\
@@ -300,32 +289,32 @@ namespace AdaptiveCardsSharedModelUnitTest
                              \"height\" : \"050px\"\
                        }\
                      ]\
-                  }"
-            };
+                  }"};
 
-            for (auto payload : payloads)
-            {
-                try {
-                    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(payload, "1.1");
-                    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-                    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-
-                    Assert::AreEqual<size_t>(2, parseResult->GetWarnings().size());
-                    Assert::AreEqual<unsigned int>(0U, image->GetPixelHeight());
-                    Assert::AreEqual<unsigned int>(0U, image->GetPixelWidth());
-                }
-                catch(const AdaptiveCardParseException &)
-                {
-                    // no exception should be thrown
-                    Assert::Fail();
-                }
-            }
-        }
-
-        void ValidateColumnSetMinHeight()
+    for (auto payload : payloads)
+    {
+        try
         {
-            std::string testJsonString =
-                "{\
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(payload, "1.1");
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+
+            Assert::AreEqual<size_t>(2, parseResult->GetWarnings().size());
+            Assert::AreEqual<unsigned int>(0U, image->GetPixelHeight());
+            Assert::AreEqual<unsigned int>(0U, image->GetPixelWidth());
+        }
+        catch (const AdaptiveCardParseException&)
+        {
+            // no exception should be thrown
+            Assert::Fail();
+        }
+    }
+}
+
+void ValidateColumnSetMinHeight()
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.2\",\
@@ -349,18 +338,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            Assert::AreEqual<bool>(columnSet->GetMinHeight() == 50, true);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<bool>(column->GetMinHeight() == 75, true);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    Assert::AreEqual<bool>(columnSet->GetMinHeight() == 50, true);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<bool>(column->GetMinHeight() == 75, true);
+}
 
-        void ValidateContainerMinHeight()
-        {
-            std::string testJsonString =
-                "{\
+void ValidateContainerMinHeight()
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.2\",\
@@ -378,16 +367,16 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Container> container = std::static_pointer_cast<Container>(element);
-            Assert::AreEqual<bool>(container->GetMinHeight() == 100, true);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<Container> container = std::static_pointer_cast<Container>(element);
+    Assert::AreEqual<bool>(container->GetMinHeight() == 100, true);
+}
 
-        void ValidateAdaptiveCardMinHeight()
-        {
-            std::string testJsonString =
-                "{\
+void ValidateAdaptiveCardMinHeight()
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.2\",\
@@ -400,26 +389,21 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-            Assert::AreEqual<bool>(parseResult->GetAdaptiveCard()->GetMinHeight() == 100, true);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+    Assert::AreEqual<bool>(parseResult->GetAdaptiveCard()->GetMinHeight() == 100, true);
+}
 
-        TEST_METHOD(MinHeightForAllElementsTest)
-        {
-            // This test validates columnset and column minHeigh property
-            ValidateColumnSetMinHeight();
-            ValidateContainerMinHeight();
-            ValidateAdaptiveCardMinHeight();
-        }
-    };
+TEST_METHOD(MinHeightForAllElementsTest)
+{
+    // This test validates columnset and column minHeigh property
+    ValidateColumnSetMinHeight();
+    ValidateContainerMinHeight();
+    ValidateAdaptiveCardMinHeight();
+}
+}
+;
 
-    TEST_CLASS(ExplicitDimensionForColumnTest)
-    {
-    public:
-        TEST_METHOD(PositiveValueTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_CLASS(ExplicitDimensionForColumnTest){public : TEST_METHOD(PositiveValueTest){std::string testJsonString = "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -437,17 +421,17 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<std::string>(column->GetWidth(), "auto");
-        }
+std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+std::shared_ptr<Column> column = columnSet->GetColumns().front();
+Assert::AreEqual<std::string>(column->GetWidth(), "auto");
+}
 
-        TEST_METHOD(PositiveRelativeWidthTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_METHOD(PositiveRelativeWidthTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -465,18 +449,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<std::string>(column->GetWidth(), "20");
-            Assert::AreEqual<bool>(column->GetPixelWidth() != 20, true);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<std::string>(column->GetWidth(), "20");
+    Assert::AreEqual<bool>(column->GetPixelWidth() != 20, true);
+}
 
-        TEST_METHOD(PositiveExplicitWidthTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_METHOD(PositiveExplicitWidthTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -494,18 +478,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<std::string>("20px",  column->GetWidth());
-            Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<std::string>("20px", column->GetWidth());
+    Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
+}
 
-        TEST_METHOD(ExplicitWidthMalformedUnitTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_METHOD(ExplicitWidthMalformedUnitTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -523,21 +507,20 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
-                WarningStatusCode::InvalidDimensionSpecified);
-            std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<int>(0, column->GetPixelWidth());
-            Assert::AreEqual<std::string>("20px20", column->GetWidth());
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
+    Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == WarningStatusCode::InvalidDimensionSpecified);
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<int>(0, column->GetPixelWidth());
+    Assert::AreEqual<std::string>("20px20", column->GetWidth());
+}
 
-        TEST_METHOD(ExplicitWidthMalformedValueTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_METHOD(ExplicitWidthMalformedValueTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -555,21 +538,20 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
-                WarningStatusCode::InvalidDimensionSpecified);
-            std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<int>(0, column->GetPixelWidth());
-            Assert::AreEqual<std::string>("-20px", column->GetWidth());
-        }
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    Assert::AreEqual<size_t>(1, parseResult->GetWarnings().size());
+    Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == WarningStatusCode::InvalidDimensionSpecified);
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<int>(0, column->GetPixelWidth());
+    Assert::AreEqual<std::string>("-20px", column->GetWidth());
+}
 
-        TEST_METHOD(ExplicitWidthFloatValueTest)
-        {
-            std::string testJsonString =
-            "{\
+TEST_METHOD(ExplicitWidthFloatValueTest)
+{
+    std::string testJsonString =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -588,12 +570,13 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
-            std::shared_ptr<Column> column = columnSet->GetColumns().front();
-            Assert::AreEqual<std::string>("20.5px", column->GetWidth());
-            Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
-        }
-    };
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+    std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+    std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+    std::shared_ptr<Column> column = columnSet->GetColumns().front();
+    Assert::AreEqual<std::string>("20.5px", column->GetWidth());
+    Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
+}
+}
+;
 }

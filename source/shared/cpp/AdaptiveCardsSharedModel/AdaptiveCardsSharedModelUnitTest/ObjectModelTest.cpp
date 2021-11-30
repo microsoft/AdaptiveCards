@@ -21,32 +21,24 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 using namespace std::string_literals;
 
-namespace AdaptiveCardsSharedModelUnitTest
+namespace AdaptiveCardsSharedModelUnitTest {
+TEST_CLASS(ObjectModelTest){public :
+                                // An empty JSON does not produce any selectAction
+                                TEST_METHOD(SelectActionEmptyJsonTest){ParseContext context;
+
+Json::Value json;
+std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false);
+
+Assert::IsTrue(selectAction == nullptr);
+} // namespace AdaptiveCardsSharedModelUnitTest
+
+// A card JSON without selectAction key does not produce any selectAction
+TEST_METHOD(SelectActionNonExistentTest)
 {
-    TEST_CLASS(ObjectModelTest)
-    {
-    public:
-        // An empty JSON does not produce any selectAction
-        TEST_METHOD(SelectActionEmptyJsonTest)
-        {
-            ParseContext context;
 
-            Json::Value json;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                context,
-                json,
-                AdaptiveCardSchemaKey::SelectAction,
-                false);
-
-            Assert::IsTrue(selectAction == nullptr);
-        }
-
-        // A card JSON without selectAction key does not produce any selectAction
-        TEST_METHOD(SelectActionNonExistentTest)
-        {
-
-            // Card without card-level selectAction
-            std::string cardStr = "{\
+    // Card without card-level selectAction
+    std::string cardStr =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\" : \"AdaptiveCard\",\
                 \"version\" : \"1.0\",\
@@ -63,23 +55,20 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            Json::Value json = ParseUtil::GetJsonValueFromString(cardStr);
+    Json::Value json = ParseUtil::GetJsonValueFromString(cardStr);
 
-            ParseContext context;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                context,
-                json,
-                AdaptiveCardSchemaKey::SelectAction,
-                false);
+    ParseContext context;
+    std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false);
 
-            Assert::IsTrue(selectAction == nullptr);
-        }
+    Assert::IsTrue(selectAction == nullptr);
+}
 
-        // A card JSON with selectAction of incorrect type does not produce any selectAction
-        TEST_METHOD(SelectActionInvalidTypeTest)
-        {
-            // An arbitrary JSON with OpenUrl selectAction
-            std::string str = "{\
+// A card JSON with selectAction of incorrect type does not produce any selectAction
+TEST_METHOD(SelectActionInvalidTypeTest)
+{
+    // An arbitrary JSON with OpenUrl selectAction
+    std::string str =
+        "{\
                 \"type\" : \"ColumnSet\",\
                 \"selectAction\": {\
                     \"type\": \"Action.Invalid\",\
@@ -89,23 +78,20 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 }\
             }";
-            Json::Value json = ParseUtil::GetJsonValueFromString(str);
+    Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            ParseContext context;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                context,
-                json,
-                AdaptiveCardSchemaKey::SelectAction,
-                false);
+    ParseContext context;
+    std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false);
 
-            Assert::IsTrue(selectAction->GetElementType() == ActionType::UnknownAction);
-        }
+    Assert::IsTrue(selectAction->GetElementType() == ActionType::UnknownAction);
+}
 
-        // A card JSON with an OpenUrl selectAction
-        TEST_METHOD(SelectActionOpenUrlTest)
-        {
-            // Card with card-level OpenUrl selectAction
-            std::string str = "{\
+// A card JSON with an OpenUrl selectAction
+TEST_METHOD(SelectActionOpenUrlTest)
+{
+    // Card with card-level OpenUrl selectAction
+    std::string str =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\" : \"AdaptiveCard\",\
                 \"version\" : \"1.0\",\
@@ -127,24 +113,21 @@ namespace AdaptiveCardsSharedModelUnitTest
                     \"url\" : \"http://select-action.io\"\
                 }\
             }";
-            Json::Value json = ParseUtil::GetJsonValueFromString(str);
+    Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            ParseContext context;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                context,
-                json,
-                AdaptiveCardSchemaKey::SelectAction,
-                false);
+    ParseContext context;
+    std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false);
 
-            Assert::IsFalse(selectAction == nullptr);
-            Assert::AreEqual(selectAction->GetElementTypeString(), "Action.OpenUrl"s);
-        }
+    Assert::IsFalse(selectAction == nullptr);
+    Assert::AreEqual(selectAction->GetElementTypeString(), "Action.OpenUrl"s);
+}
 
-        // An arbitrary JSON with a Submit selectAction (for other elements such as Container, ColumnSet, etc.)
-        TEST_METHOD(SelectActionAnyJsonTest)
-        {
-            // An arbitrary JSON with OpenUrl selectAction
-            std::string str = "{\
+// An arbitrary JSON with a Submit selectAction (for other elements such as Container, ColumnSet, etc.)
+TEST_METHOD(SelectActionAnyJsonTest)
+{
+    // An arbitrary JSON with OpenUrl selectAction
+    std::string str =
+        "{\
                 \"type\" : \"ColumnSet\",\
                 \"selectAction\": {\
                     \"type\": \"Action.Submit\",\
@@ -154,22 +137,19 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 }\
             }";
-            Json::Value json = ParseUtil::GetJsonValueFromString(str);
+    Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            ParseContext context;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                context,
-                json,
-                AdaptiveCardSchemaKey::SelectAction,
-                false);
+    ParseContext context;
+    std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false);
 
-            Assert::IsFalse(selectAction == nullptr);
-            Assert::AreEqual(selectAction->GetElementTypeString(), "Action.Submit"s);
-        }
+    Assert::IsFalse(selectAction == nullptr);
+    Assert::AreEqual(selectAction->GetElementTypeString(), "Action.Submit"s);
+}
 
-        TEST_METHOD(DuplicateIdSimpleTest)
-        {
-            std::string cardWithDuplicateIds = "{\
+TEST_METHOD(DuplicateIdSimpleTest)
+{
+    std::string cardWithDuplicateIds =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\" : \"AdaptiveCard\",\
                 \"version\" : \"1.0\",\
@@ -190,13 +170,15 @@ namespace AdaptiveCardsSharedModelUnitTest
                     } \
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult;
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
-        }
+    std::shared_ptr<ParseResult> parseResult;
+    Assert::ExpectException<AdaptiveCardParseException>(
+        [&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
+}
 
-        TEST_METHOD(DuplicateIdNestedTest)
-        {
-            std::string cardWithDuplicateIds = "{\
+TEST_METHOD(DuplicateIdNestedTest)
+{
+    std::string cardWithDuplicateIds =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -241,13 +223,15 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
                }";
-            std::shared_ptr<ParseResult> parseResult;
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
-        }
+    std::shared_ptr<ParseResult> parseResult;
+    Assert::ExpectException<AdaptiveCardParseException>(
+        [&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
+}
 
-        TEST_METHOD(MediaElementTest)
-        {
-            std::string cardWithMediaElement = "{\
+TEST_METHOD(MediaElementTest)
+{
+    std::string cardWithMediaElement =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\" : \"AdaptiveCard\",\
                 \"version\" : \"1.0\",\
@@ -270,25 +254,26 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            auto card = AdaptiveCard::DeserializeFromString(cardWithMediaElement, "1.0")->GetAdaptiveCard();
-            std::shared_ptr<Media> mediaElement = std::static_pointer_cast<Media> (card->GetBody()[0]);
+    auto card = AdaptiveCard::DeserializeFromString(cardWithMediaElement, "1.0")->GetAdaptiveCard();
+    std::shared_ptr<Media> mediaElement = std::static_pointer_cast<Media>(card->GetBody()[0]);
 
-            Assert::IsTrue(mediaElement->GetElementType() == CardElementType::Media);
-            Assert::AreEqual(mediaElement->GetElementTypeString(), "Media"s);
-            Assert::AreEqual(mediaElement->GetPoster(), "http://adaptivecards.io/content/cats/1.png"s);
-            Assert::AreEqual(mediaElement->GetAltText(), "This is a video"s);
+    Assert::IsTrue(mediaElement->GetElementType() == CardElementType::Media);
+    Assert::AreEqual(mediaElement->GetElementTypeString(), "Media"s);
+    Assert::AreEqual(mediaElement->GetPoster(), "http://adaptivecards.io/content/cats/1.png"s);
+    Assert::AreEqual(mediaElement->GetAltText(), "This is a video"s);
 
-            auto sources = mediaElement->GetSources();
-            Assert::IsTrue(sources.size() == 2);
-            Assert::AreEqual(sources[0]->GetMimeType(), "video/mp4"s);
-            Assert::AreEqual(sources[0]->GetUrl(), "http://source1.mp4"s);
-            Assert::AreEqual(sources[1]->GetMimeType(), "video/avi"s);
-            Assert::AreEqual(sources[1]->GetUrl(), "http://source2.avi"s);
-        }
+    auto sources = mediaElement->GetSources();
+    Assert::IsTrue(sources.size() == 2);
+    Assert::AreEqual(sources[0]->GetMimeType(), "video/mp4"s);
+    Assert::AreEqual(sources[0]->GetUrl(), "http://source1.mp4"s);
+    Assert::AreEqual(sources[1]->GetMimeType(), "video/avi"s);
+    Assert::AreEqual(sources[1]->GetUrl(), "http://source2.avi"s);
+}
 
-        TEST_METHOD(ShowCardSerialization)
-        {
-            std::string cardWithShowCard = "{\
+TEST_METHOD(ShowCardSerialization)
+{
+    std::string cardWithShowCard =
+        "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\" : \"AdaptiveCard\",\
                 \"version\" : \"2.0\",\
@@ -321,48 +306,48 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            auto mainCard = AdaptiveCard::DeserializeFromString(cardWithShowCard, "2.0")->GetAdaptiveCard();
-            auto showCard = (std::static_pointer_cast<ShowCardAction>(mainCard->GetActions()[0]))->GetCard();
+    auto mainCard = AdaptiveCard::DeserializeFromString(cardWithShowCard, "2.0")->GetAdaptiveCard();
+    auto showCard = (std::static_pointer_cast<ShowCardAction>(mainCard->GetActions()[0]))->GetCard();
 
-            Assert::AreEqual(showCard->GetVersion(), "2.0"s);
-            Assert::AreEqual(showCard->GetBody().size(), (size_t)1);
-            Assert::IsTrue(showCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
-            Assert::AreEqual(std::static_pointer_cast<TextBlock>(showCard->GetBody()[0])->GetText(), "What do you think?"s);
+    Assert::AreEqual(showCard->GetVersion(), "2.0"s);
+    Assert::AreEqual(showCard->GetBody().size(), (size_t)1);
+    Assert::IsTrue(showCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
+    Assert::AreEqual(std::static_pointer_cast<TextBlock>(showCard->GetBody()[0])->GetText(), "What do you think?"s);
 
-            Assert::AreEqual(showCard->GetActions().size(), (size_t)1);
-            Assert::IsTrue(showCard->GetActions()[0]->GetElementType() == ActionType::Submit);
-            Assert::AreEqual(showCard->GetActions()[0]->GetTitle(), "Neat!"s);
+    Assert::AreEqual(showCard->GetActions().size(), (size_t)1);
+    Assert::IsTrue(showCard->GetActions()[0]->GetElementType() == ActionType::Submit);
+    Assert::AreEqual(showCard->GetActions()[0]->GetTitle(), "Neat!"s);
 
-            auto serializedShowCard = showCard->Serialize();
-            auto roundTrippedShowCard = AdaptiveCard::DeserializeFromString(serializedShowCard, "2.0")->GetAdaptiveCard();
+    auto serializedShowCard = showCard->Serialize();
+    auto roundTrippedShowCard = AdaptiveCard::DeserializeFromString(serializedShowCard, "2.0")->GetAdaptiveCard();
 
-            Assert::AreEqual(showCard->GetVersion(), "2.0"s);
-            Assert::AreEqual(roundTrippedShowCard->GetBody().size(), (size_t)1);
-            Assert::IsTrue(roundTrippedShowCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
-            Assert::AreEqual(std::static_pointer_cast<TextBlock>(roundTrippedShowCard->GetBody()[0])->GetText(), "What do you think?"s);
+    Assert::AreEqual(showCard->GetVersion(), "2.0"s);
+    Assert::AreEqual(roundTrippedShowCard->GetBody().size(), (size_t)1);
+    Assert::IsTrue(roundTrippedShowCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
+    Assert::AreEqual(std::static_pointer_cast<TextBlock>(roundTrippedShowCard->GetBody()[0])->GetText(), "What do you think?"s);
 
-            Assert::AreEqual(roundTrippedShowCard->GetActions().size(), (size_t)1);
-            Assert::IsTrue(roundTrippedShowCard->GetActions()[0]->GetElementType() == ActionType::Submit);
-            Assert::AreEqual(roundTrippedShowCard->GetActions()[0]->GetTitle(), "Neat!"s);
-        }
+    Assert::AreEqual(roundTrippedShowCard->GetActions().size(), (size_t)1);
+    Assert::IsTrue(roundTrippedShowCard->GetActions()[0]->GetElementType() == ActionType::Submit);
+    Assert::AreEqual(roundTrippedShowCard->GetActions()[0]->GetTitle(), "Neat!"s);
+}
 
-        template<typename T>
-            void runWrapTest(const std::vector<std::shared_ptr<BaseCardElement>> &body, int index, bool expectation)
-        {
-            auto testingElem = std::dynamic_pointer_cast<T>(body.at(index));
-            if(testingElem)
-            {
-                Assert::AreEqual(testingElem->GetWrap(), expectation);
-            }
-            else
-            {
-                Assert::Fail(L"improper json payload");
-            }
-        }
+template <typename T>
+void runWrapTest(const std::vector<std::shared_ptr<BaseCardElement>>& body, int index, bool expectation)
+{
+    auto testingElem = std::dynamic_pointer_cast<T>(body.at(index));
+    if (testingElem)
+    {
+        Assert::AreEqual(testingElem->GetWrap(), expectation);
+    }
+    else
+    {
+        Assert::Fail(L"improper json payload");
+    }
+}
 
-        TEST_METHOD(ChoiceSetWrapParsingTest)
-        {
-            std::string testjson{ R"(
+TEST_METHOD(ChoiceSetWrapParsingTest)
+{
+    std::string testjson{R"(
                 {
                     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                     "type": "AdaptiveCard",
@@ -415,18 +400,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                 }
             )"};
 
-            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
-            auto card = parseResult->GetAdaptiveCard();
-            auto body = card->GetBody();
+    auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+    auto card = parseResult->GetAdaptiveCard();
+    auto body = card->GetBody();
 
-            runWrapTest<ChoiceSetInput>(body, 0, true);
-            // default value test
-            runWrapTest<ChoiceSetInput>(body, 1, false);
-        }
+    runWrapTest<ChoiceSetInput>(body, 0, true);
+    // default value test
+    runWrapTest<ChoiceSetInput>(body, 1, false);
+}
 
-        TEST_METHOD(ToggleInputWrapParsingTest)
-        {
-            std::string testjson{ R"(
+TEST_METHOD(ToggleInputWrapParsingTest)
+{
+    std::string testjson{R"(
                 {
                     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                     "type": "AdaptiveCard",
@@ -453,18 +438,18 @@ namespace AdaptiveCardsSharedModelUnitTest
                 }
             )"};
 
-            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
-            auto card = parseResult->GetAdaptiveCard();
-            auto body = card->GetBody();
+    auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+    auto card = parseResult->GetAdaptiveCard();
+    auto body = card->GetBody();
 
-            runWrapTest<ToggleInput>(body, 0, true);
-            // default value test
-            runWrapTest<ToggleInput>(body, 1, false);
-        }
+    runWrapTest<ToggleInput>(body, 0, true);
+    // default value test
+    runWrapTest<ToggleInput>(body, 1, false);
+}
 
-        TEST_METHOD(ChoiceSetOptionalChoicesTest)
-        {
-            std::string testjson{ R"(
+TEST_METHOD(ChoiceSetOptionalChoicesTest)
+{
+    std::string testjson{R"(
                 {
                     "type": "AdaptiveCard",
                     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -479,26 +464,28 @@ namespace AdaptiveCardsSharedModelUnitTest
                 }
             )"};
 
-            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
-            auto card = parseResult->GetAdaptiveCard();
-            auto body = card->GetBody();
+    auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+    auto card = parseResult->GetAdaptiveCard();
+    auto body = card->GetBody();
 
-            Assert::IsTrue(parseResult->GetWarnings().size() == 0);
-            Assert::IsTrue(body.size() == 1);
-            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput);
-            auto choiceSetElement = std::dynamic_pointer_cast<ChoiceSetInput>(body.at(0));
-            Assert::IsTrue(choiceSetElement->GetChoices().size() == 0);
+    Assert::IsTrue(parseResult->GetWarnings().size() == 0);
+    Assert::IsTrue(body.size() == 1);
+    Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput);
+    auto choiceSetElement = std::dynamic_pointer_cast<ChoiceSetInput>(body.at(0));
+    Assert::IsTrue(choiceSetElement->GetChoices().size() == 0);
 
-            const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
-            auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
-            std::string expectedJson = "{\"actions\":[],\"body\":[{\"id\":\"1\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.5\"}\n";
-            Assert::AreEqual(expectedJson, serializedCardAsString);
-        }
-        TEST_METHOD(ImplicitColumnTypeTest)
-        {
-            // Columns set to type "Column" or with type unset should parse correctly
-            std::string columnTypeSetOrEmpty =
-            "{\
+    const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
+    auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
+    std::string expectedJson =
+        "{\"actions\":[],\"body\":[{\"id\":\"1\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}],\"type\":\"AdaptiveCard\","
+        "\"version\":\"1.5\"}\n";
+    Assert::AreEqual(expectedJson, serializedCardAsString);
+}
+TEST_METHOD(ImplicitColumnTypeTest)
+{
+    // Columns set to type "Column" or with type unset should parse correctly
+    std::string columnTypeSetOrEmpty =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -520,9 +507,9 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            // Columns set to a bogus type should not parse correctly
-            std::string columnTypeInvalid =
-            "{\
+    // Columns set to a bogus type should not parse correctly
+    std::string columnTypeInvalid =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -540,25 +527,25 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(columnTypeSetOrEmpty, "1.0");
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(columnTypeSetOrEmpty, "1.0");
 
-            try
-            {
-                parseResult = AdaptiveCard::DeserializeFromString(columnTypeInvalid, "1.0");
-                Assert::IsTrue(false, L"Deserializing should throw an exception");
-            }
-            catch (const AdaptiveCardParseException& e)
-            {
-                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
-                Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
-            }
-        }
+    try
+    {
+        parseResult = AdaptiveCard::DeserializeFromString(columnTypeInvalid, "1.0");
+        Assert::IsTrue(false, L"Deserializing should throw an exception");
+    }
+    catch (const AdaptiveCardParseException& e)
+    {
+        Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+        Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
+    }
+}
 
-        TEST_METHOD(ImplicitImageTypeInImageSetTest)
-        {
-            // Images set to type "Image" or with type unset should parse correctly within an image set
-            std::string imageTypeSetOrEmpty =
-            "{\
+TEST_METHOD(ImplicitImageTypeInImageSetTest)
+{
+    // Images set to type "Image" or with type unset should parse correctly within an image set
+    std::string imageTypeSetOrEmpty =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -578,9 +565,9 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            // Images set to a bogus type should not parse correctly
-            std::string imageTypeInvalid =
-            "{\
+    // Images set to a bogus type should not parse correctly
+    std::string imageTypeInvalid =
+        "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -597,23 +584,23 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(imageTypeSetOrEmpty, "1.0");
+    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(imageTypeSetOrEmpty, "1.0");
 
-            try
-            {
-                parseResult = AdaptiveCard::DeserializeFromString(imageTypeInvalid, "1.0");
-                Assert::IsTrue(false, L"Deserializing should throw an exception");
-            }
-            catch (const AdaptiveCardParseException& e)
-            {
-                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
-                Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
-            }
-        }
+    try
+    {
+        parseResult = AdaptiveCard::DeserializeFromString(imageTypeInvalid, "1.0");
+        Assert::IsTrue(false, L"Deserializing should throw an exception");
+    }
+    catch (const AdaptiveCardParseException& e)
+    {
+        Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+        Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
+    }
+}
 
-        TEST_METHOD(TextBlockStyleParsingTest)
-        {
-            std::string testjson{ R"(
+TEST_METHOD(TextBlockStyleParsingTest)
+{
+    std::string testjson{R"(
                 {
                     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                     "type": "AdaptiveCard",
@@ -652,21 +639,22 @@ namespace AdaptiveCardsSharedModelUnitTest
                 }
             )"};
 
-            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
-            auto card = parseResult->GetAdaptiveCard();
-            auto body = card->GetBody();
-            std::vector<std::optional<TextStyle>> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Default, std::nullopt, std::nullopt };
+    auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+    auto card = parseResult->GetAdaptiveCard();
+    auto body = card->GetBody();
+    std::vector<std::optional<TextStyle>> expectedStyles = {TextStyle::Heading, TextStyle::Heading, TextStyle::Default, std::nullopt, std::nullopt};
 
-            auto i = 0;
-            for (const auto& elem : body) {
-                std::shared_ptr<TextBlock> textBlock = std::dynamic_pointer_cast<TextBlock>(elem);
-                Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
-            }
-        }
+    auto i = 0;
+    for (const auto& elem : body)
+    {
+        std::shared_ptr<TextBlock> textBlock = std::dynamic_pointer_cast<TextBlock>(elem);
+        Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
+    }
+}
 
-        TEST_METHOD(PasswordStyleParseTest)
-        {
-            const std::string testjson{ R"(
+TEST_METHOD(PasswordStyleParseTest)
+{
+    const std::string testjson{R"(
                     {
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                         "type": "AdaptiveCard",
@@ -687,21 +675,21 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }
                 )"};
 
-            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
-            auto card = parseResult->GetAdaptiveCard();
-            auto body = card->GetBody();
-            Assert::AreEqual(body.size(), 2ui64);
+    auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+    auto card = parseResult->GetAdaptiveCard();
+    auto body = card->GetBody();
+    Assert::AreEqual(body.size(), 2ui64);
 
-            auto plainInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
-            Assert::IsTrue(TextInputStyle::Text == plainInput->GetTextInputStyle());
+    auto plainInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
+    Assert::IsTrue(TextInputStyle::Text == plainInput->GetTextInputStyle());
 
-            auto passwordInput = std::dynamic_pointer_cast<TextInput>(body.at(1));
-            Assert::IsTrue(TextInputStyle::Password == passwordInput->GetTextInputStyle());
-        }
+    auto passwordInput = std::dynamic_pointer_cast<TextInput>(body.at(1));
+    Assert::IsTrue(TextInputStyle::Password == passwordInput->GetTextInputStyle());
+}
 
-        TEST_METHOD(PasswordWithMultilineParseTest)
-        {
-            const std::string testjson{ R"(
+TEST_METHOD(PasswordWithMultilineParseTest)
+{
+    const std::string testjson{R"(
                     {
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                         "type": "AdaptiveCard",
@@ -718,26 +706,27 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }
                 )"};
 
-            const auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+    const auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
 
-            // verify we emitted a warning and it's correct
-            const auto warnings = parseResult->GetWarnings();
-            Assert::IsTrue(warnings.size() == 1ui64);
-            const auto warning = warnings.at(0);
-            Assert::IsTrue(WarningStatusCode::InvalidValue == warning->GetStatusCode());
-            Assert::AreEqual("Input.Text ignores isMultiline when using password style"s, warning->GetReason());
+    // verify we emitted a warning and it's correct
+    const auto warnings = parseResult->GetWarnings();
+    Assert::IsTrue(warnings.size() == 1ui64);
+    const auto warning = warnings.at(0);
+    Assert::IsTrue(WarningStatusCode::InvalidValue == warning->GetStatusCode());
+    Assert::AreEqual("Input.Text ignores isMultiline when using password style"s, warning->GetReason());
 
-            // verify the generated element still reports itself as supporting multiline
-            const auto card = parseResult->GetAdaptiveCard();
-            const auto body = card->GetBody();
-            Assert::AreEqual(body.size(), 1ui64);
-            const auto theInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
-            Assert::IsTrue(TextInputStyle::Password == theInput->GetTextInputStyle());
-            Assert::IsTrue(theInput->GetIsMultiline());
+    // verify the generated element still reports itself as supporting multiline
+    const auto card = parseResult->GetAdaptiveCard();
+    const auto body = card->GetBody();
+    Assert::AreEqual(body.size(), 1ui64);
+    const auto theInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
+    Assert::IsTrue(TextInputStyle::Password == theInput->GetTextInputStyle());
+    Assert::IsTrue(theInput->GetIsMultiline());
 
-            // verify that we still serialize isMultiline == true
-            const auto serializedCard = card->SerializeToJsonValue();
-            Assert::IsTrue(serializedCard["body"][0]["isMultiline"].asBool());
-        }
-    };
+    // verify that we still serialize isMultiline == true
+    const auto serializedCard = card->SerializeToJsonValue();
+    Assert::IsTrue(serializedCard["body"][0]["isMultiline"].asBool());
+}
+}
+;
 }

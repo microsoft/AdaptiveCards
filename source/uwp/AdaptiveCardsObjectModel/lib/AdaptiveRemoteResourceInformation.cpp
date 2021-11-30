@@ -4,11 +4,10 @@
 #include "AdaptiveRemoteResourceInformation.h"
 #include "AdaptiveRemoteResourceInformation.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+AdaptiveRemoteResourceInformation::AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info)
 {
-    AdaptiveRemoteResourceInformation::AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info)
-    {
-        Url = UTF8ToHString(info.url);
-        MimeType = UTF8ToHString(info.mimeType);
-    }
+    Url = UTF8ToHString(info.url);
+    MimeType = UTF8ToHString(info.mimeType);
 }
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

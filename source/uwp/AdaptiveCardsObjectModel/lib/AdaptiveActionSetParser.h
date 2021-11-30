@@ -5,22 +5,20 @@
 #include "ActionSet.h"
 #include "AdaptiveActionSetParser.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+struct AdaptiveActionSetParser : AdaptiveActionSetParserT<AdaptiveActionSetParser>
 {
-    struct AdaptiveActionSetParser : AdaptiveActionSetParserT<AdaptiveActionSetParser>
-    {
-        AdaptiveActionSetParser() = default;
+    AdaptiveActionSetParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
-            winrt::Windows::Data::Json::JsonObject const& inputJson,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
-    };
-}
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
+struct AdaptiveActionSetParser : AdaptiveActionSetParserT<AdaptiveActionSetParser, implementation::AdaptiveActionSetParser>
 {
-    struct AdaptiveActionSetParser : AdaptiveActionSetParserT<AdaptiveActionSetParser, implementation::AdaptiveActionSetParser>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

@@ -6,25 +6,24 @@
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveShowCardAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+AdaptiveShowCardAction::AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction)
 {
-    AdaptiveShowCardAction::AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction)
+    if (auto card = sharedShowCardAction->GetCard())
     {
-        if (auto card = sharedShowCardAction->GetCard())
-        {
-            Card = winrt::make<implementation::AdaptiveCard>(card);
-        }
-
-        InitializeBaseElement(sharedShowCardAction);
+        Card = winrt::make<implementation::AdaptiveCard>(card);
     }
 
-    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveShowCardAction::GetSharedModel()
-    {
-        auto showCardAction = std::make_shared<::AdaptiveCards::ShowCardAction>();
-        CopySharedElementProperties(*showCardAction);
-
-        showCardAction->SetCard(peek_innards<implementation::AdaptiveCard>(Card.get())->GetSharedModel());
-
-        return showCardAction;
-    }
+    InitializeBaseElement(sharedShowCardAction);
 }
+
+std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveShowCardAction::GetSharedModel()
+{
+    auto showCardAction = std::make_shared<::AdaptiveCards::ShowCardAction>();
+    CopySharedElementProperties(*showCardAction);
+
+    showCardAction->SetCard(peek_innards<implementation::AdaptiveCard>(Card.get())->GetSharedModel());
+
+    return showCardAction;
+}
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

@@ -3,22 +3,20 @@
 #pragma once
 #include "AdaptiveToggleInputRenderer.g.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation {
+struct AdaptiveToggleInputRenderer : AdaptiveToggleInputRendererT<AdaptiveToggleInputRenderer>
 {
-    struct AdaptiveToggleInputRenderer : AdaptiveToggleInputRendererT<AdaptiveToggleInputRenderer>
-    {
-        AdaptiveToggleInputRenderer() = default;
+    AdaptiveToggleInputRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs);
-    };
-}
+    winrt::Windows::UI::Xaml::UIElement Render(
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement,
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext,
+        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs);
+};
+} // namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
- namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation {
+struct AdaptiveToggleInputRenderer : AdaptiveToggleInputRendererT<AdaptiveToggleInputRenderer, implementation::AdaptiveToggleInputRenderer>
 {
-    struct AdaptiveToggleInputRenderer
-        : AdaptiveToggleInputRendererT<AdaptiveToggleInputRenderer, implementation::AdaptiveToggleInputRenderer>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

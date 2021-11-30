@@ -5,27 +5,26 @@
 #include "pch.h"
 #include "ParseContext.h"
 
-namespace AdaptiveCards
+namespace AdaptiveCards {
+class ChoiceInput
 {
-    class ChoiceInput
-    {
-    public:
-        ChoiceInput();
+public:
+    ChoiceInput();
 
-        std::string Serialize();
-        Json::Value SerializeToJsonValue();
+    std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
-        std::string GetTitle() const;
-        void SetTitle(const std::string& value);
+    std::string GetTitle() const;
+    void SetTitle(const std::string& value);
 
-        std::string GetValue() const;
-        void SetValue(const std::string& value);
+    std::string GetValue() const;
+    void SetValue(const std::string& value);
 
-        static std::shared_ptr<ChoiceInput> Deserialize(ParseContext&, const Json::Value& root);
-        static std::shared_ptr<ChoiceInput> DeserializeFromString(ParseContext&, const std::string& jsonString);
+    static std::shared_ptr<ChoiceInput> Deserialize(ParseContext&, const Json::Value& root);
+    static std::shared_ptr<ChoiceInput> DeserializeFromString(ParseContext&, const std::string& jsonString);
 
-    private:
-        std::string m_title;
-        std::string m_value;
-    };
-}
+private:
+    std::string m_title;
+    std::string m_value;
+};
+} // namespace AdaptiveCards

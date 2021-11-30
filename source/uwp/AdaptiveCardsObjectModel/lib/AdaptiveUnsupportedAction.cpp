@@ -5,19 +5,18 @@
 #include "AdaptiveUnsupportedAction.h"
 #include "AdaptiveUnsupportedAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+AdaptiveUnsupportedAction::AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknown)
 {
-    AdaptiveUnsupportedAction::AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknown)
-    {
-        InitializeBaseElement(sharedUnknown);
-    }
-
-    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveUnsupportedAction::GetSharedModel()
-    {
-        auto unknownAction = std::make_shared<::AdaptiveCards::UnknownAction>();
-        unknownAction->SetElementTypeString(HStringToUTF8(ActionTypeString));
-        CopySharedElementProperties(*unknownAction);
-
-        return unknownAction;
-    }
+    InitializeBaseElement(sharedUnknown);
 }
+
+std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveUnsupportedAction::GetSharedModel()
+{
+    auto unknownAction = std::make_shared<::AdaptiveCards::UnknownAction>();
+    unknownAction->SetElementTypeString(HStringToUTF8(ActionTypeString));
+    CopySharedElementProperties(*unknownAction);
+
+    return unknownAction;
+}
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

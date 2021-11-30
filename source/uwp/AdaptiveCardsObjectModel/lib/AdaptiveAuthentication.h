@@ -5,28 +5,31 @@
 #include "Authentication.h"
 #include "AdaptiveAuthentication.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+struct DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveAuthentication : AdaptiveAuthenticationT<AdaptiveAuthentication, ITypePeek>
 {
-    struct DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveAuthentication : AdaptiveAuthenticationT < AdaptiveAuthentication, ITypePeek>
+    AdaptiveAuthentication() : AdaptiveAuthentication(std::make_shared<::AdaptiveCards::Authentication>())
     {
-        AdaptiveAuthentication() : AdaptiveAuthentication(std::make_shared<::AdaptiveCards::Authentication>()) {}
-        AdaptiveAuthentication(std::shared_ptr<::AdaptiveCards::Authentication> const& sharedRefresh);
+    }
+    AdaptiveAuthentication(std::shared_ptr<::AdaptiveCards::Authentication> const& sharedRefresh);
 
-        property<hstring> Text;
-        property<hstring> ConnectionName;
-        property<Uwp::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton>> Buttons;
+    property<hstring> Text;
+    property<hstring> ConnectionName;
+    property<Uwp::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
+    property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton>> Buttons;
 
-        std::shared_ptr<::AdaptiveCards::Authentication> GetSharedModel();
+    std::shared_ptr<::AdaptiveCards::Authentication> GetSharedModel();
 
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-    };
-}
+    // ITypePeek method
+    void* PeekAt(REFIID riid) override
+    {
+        return PeekHelper(riid, this);
+    }
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
+struct AdaptiveAuthentication : AdaptiveAuthenticationT<AdaptiveAuthentication, implementation::AdaptiveAuthentication>
 {
-    struct AdaptiveAuthentication : AdaptiveAuthenticationT<AdaptiveAuthentication, implementation::AdaptiveAuthentication>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

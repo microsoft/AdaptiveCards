@@ -5,24 +5,22 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+class AdaptiveMediaEventInvoker
+    : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker>
 {
-    class AdaptiveMediaEventInvoker
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker>
-    {
-        AdaptiveRuntime(AdaptiveMediaEventInvoker);
+    AdaptiveRuntime(AdaptiveMediaEventInvoker);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+public:
+    HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+    HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* mediaElement);
+    IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* mediaElement);
 
-    private:
-        Microsoft::WRL::WeakRef m_weakRenderResult;
-    };
+private:
+    Microsoft::WRL::WeakRef m_weakRenderResult;
+};
 
-    ActivatableClass(AdaptiveMediaEventInvoker);
-}
+ActivatableClass(AdaptiveMediaEventInvoker);
+} // namespace AdaptiveCards::Rendering::Uwp

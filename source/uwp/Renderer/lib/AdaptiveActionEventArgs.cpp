@@ -8,24 +8,26 @@ using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize()
 {
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize() { return S_OK; }
-
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(_In_ IAdaptiveActionElement* action, _In_ IAdaptiveInputs* inputs)
-    {
-        m_action = action;
-        m_inputs = inputs;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionEventArgs::get_Action(_COM_Outptr_ IAdaptiveActionElement** action)
-    {
-        return m_action.CopyTo(action);
-    }
-
-    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(_COM_Outptr_ IAdaptiveInputs** inputs)
-    {
-        return m_inputs.CopyTo(inputs);
-    }
+    return S_OK;
 }
+
+HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(_In_ IAdaptiveActionElement* action, _In_ IAdaptiveInputs* inputs)
+{
+    m_action = action;
+    m_inputs = inputs;
+    return S_OK;
+}
+
+HRESULT AdaptiveActionEventArgs::get_Action(_COM_Outptr_ IAdaptiveActionElement** action)
+{
+    return m_action.CopyTo(action);
+}
+
+IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(_COM_Outptr_ IAdaptiveInputs** inputs)
+{
+    return m_inputs.CopyTo(inputs);
+}
+} // namespace AdaptiveCards::Rendering::Uwp

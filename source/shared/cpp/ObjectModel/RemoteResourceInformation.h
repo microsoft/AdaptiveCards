@@ -4,12 +4,11 @@
 
 #include "pch.h"
 
-namespace AdaptiveCards
+namespace AdaptiveCards {
+struct RemoteResourceInformation
 {
-    struct RemoteResourceInformation
-    {
-        std::string url;
-        std::string mimeType;
-    };
+    std::string url;
+    std::string mimeType;
+};
 
-}
+} // namespace AdaptiveCards

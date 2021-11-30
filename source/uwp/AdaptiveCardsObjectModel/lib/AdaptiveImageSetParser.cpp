@@ -7,16 +7,15 @@
 #include "AdaptiveImageSetParser.h"
 #include "AdaptiveImageSetParser.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveImageSetParser::FromJson(
+    winrt::Windows::Data::Json::JsonObject const& inputJson,
+    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
 {
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveImageSetParser::FromJson(
-        winrt::Windows::Data::Json::JsonObject const& inputJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
-    {
-        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveImageSet, ::AdaptiveCards::ImageSet, ::AdaptiveCards::ImageSetParser>(
-                   inputJson, elementParsers, actionParsers, warnings)
-            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
-    }
+    return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveImageSet, ::AdaptiveCards::ImageSet, ::AdaptiveCards::ImageSetParser>(
+               inputJson, elementParsers, actionParsers, warnings)
+        .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
 }
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

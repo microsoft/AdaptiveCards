@@ -6,8 +6,7 @@
 using namespace AdaptiveCards;
 
 TextRun::TextRun() :
-    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()),
-    m_highlight(false)
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()), m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }

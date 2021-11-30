@@ -6,27 +6,30 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveShowCardAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+struct DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, ITypePeek>, AdaptiveActionElementBase
 {
-    struct DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, ITypePeek>, AdaptiveActionElementBase
+    AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction = std::make_shared<::AdaptiveCards::ShowCardAction>());
+
+    property<Uwp::AdaptiveCard> Card{nullptr};
+
+    auto ActionType()
     {
-        AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction =
-                                   std::make_shared<::AdaptiveCards::ShowCardAction>());
+        return ActionType::ShowCard;
+    }
 
-        property<Uwp::AdaptiveCard> Card{nullptr};
+    virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
 
-        auto ActionType() { return ActionType::ShowCard; }
+    // ITypePeek method
+    void* PeekAt(REFIID riid) override
+    {
+        return PeekHelper(riid, this);
+    }
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
-        virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
-
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-    };
-}
-
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
+struct AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, implementation::AdaptiveShowCardAction>
 {
-    struct AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, implementation::AdaptiveShowCardAction>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

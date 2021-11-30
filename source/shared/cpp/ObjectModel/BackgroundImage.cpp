@@ -84,8 +84,7 @@ Json::Value BackgroundImage::SerializeToJsonValue() const
 
         if (m_hAlignment != HorizontalAlignment::Left)
         {
-            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
-                HorizontalAlignmentToString(m_hAlignment);
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
         }
 
         if (m_vAlignment != VerticalAlignment::Top)

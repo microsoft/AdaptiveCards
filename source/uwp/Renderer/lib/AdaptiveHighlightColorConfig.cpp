@@ -8,44 +8,43 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept
+try
 {
-    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept
-    try
-    {
-        HighlightColorConfig colorConfig;
-        return RuntimeClassInitialize(colorConfig);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize(HighlightColorConfig colorConfig) noexcept
-    {
-        RETURN_IF_FAILED(GetColorFromString(colorConfig.defaultColor, &m_defaultColor));
-        RETURN_IF_FAILED(GetColorFromString(colorConfig.subtleColor, &m_subtleColor));
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHighlightColorConfig::get_Default(_Out_ ABI::Windows::UI::Color* value)
-    {
-        *value = m_defaultColor;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHighlightColorConfig::put_Default(ABI::Windows::UI::Color color)
-    {
-        m_defaultColor = color;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHighlightColorConfig::get_Subtle(_Out_ ABI::Windows::UI::Color* value)
-    {
-        *value = m_subtleColor;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHighlightColorConfig::put_Subtle(ABI::Windows::UI::Color color)
-    {
-        m_subtleColor = color;
-        return S_OK;
-    }
+    HighlightColorConfig colorConfig;
+    return RuntimeClassInitialize(colorConfig);
 }
+CATCH_RETURN;
+
+HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize(HighlightColorConfig colorConfig) noexcept
+{
+    RETURN_IF_FAILED(GetColorFromString(colorConfig.defaultColor, &m_defaultColor));
+    RETURN_IF_FAILED(GetColorFromString(colorConfig.subtleColor, &m_subtleColor));
+    return S_OK;
+}
+
+HRESULT AdaptiveHighlightColorConfig::get_Default(_Out_ ABI::Windows::UI::Color* value)
+{
+    *value = m_defaultColor;
+    return S_OK;
+}
+
+HRESULT AdaptiveHighlightColorConfig::put_Default(ABI::Windows::UI::Color color)
+{
+    m_defaultColor = color;
+    return S_OK;
+}
+
+HRESULT AdaptiveHighlightColorConfig::get_Subtle(_Out_ ABI::Windows::UI::Color* value)
+{
+    *value = m_subtleColor;
+    return S_OK;
+}
+
+HRESULT AdaptiveHighlightColorConfig::put_Subtle(ABI::Windows::UI::Color color)
+{
+    m_subtleColor = color;
+    return S_OK;
+}
+} // namespace AdaptiveCards::Rendering::Uwp

@@ -5,22 +5,20 @@
 #include "FactSet.h"
 #include "AdaptiveFactSetParser.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+struct AdaptiveFactSetParser : AdaptiveFactSetParserT<AdaptiveFactSetParser>
 {
-    struct AdaptiveFactSetParser : AdaptiveFactSetParserT<AdaptiveFactSetParser>
-    {
-        AdaptiveFactSetParser() = default;
+    AdaptiveFactSetParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
-            winrt::Windows::Data::Json::JsonObject const& inputJson,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
-    };
-}
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
+struct AdaptiveFactSetParser : AdaptiveFactSetParserT<AdaptiveFactSetParser, implementation::AdaptiveFactSetParser>
 {
-    struct AdaptiveFactSetParser : AdaptiveFactSetParserT<AdaptiveFactSetParser, implementation::AdaptiveFactSetParser>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

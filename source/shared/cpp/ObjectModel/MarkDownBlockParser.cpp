@@ -160,8 +160,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser& pars
 
     const int currentChar = stream.peek();
 
-    if (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r' ||
-        stream.eof())
+    if (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r' || stream.eof())
     {
         parser.Flush(currentChar, token);
         return EmphasisState::Captured;
@@ -258,8 +257,8 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const int ch) const
     {
         // non-EOF extended chars (i.e. < 0) are treated as non-space non-punctuation characters
         return (!MarkDownBlockParser::IsSpace(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
+               !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
+               !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
     }
     return false;
 }
@@ -357,8 +356,7 @@ void EmphasisParser::UpdateLookBehind(const int ch)
 
 void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToken)
 {
-    if (!TryCapturingRightEmphasisToken(ch, currentToken) && !TryCapturingLeftEmphasisToken(ch, currentToken) &&
-        !currentToken.empty())
+    if (!TryCapturingRightEmphasisToken(ch, currentToken) && !TryCapturingLeftEmphasisToken(ch, currentToken) && !currentToken.empty())
     {
         // no valid emphasis delimiter runs found during current emphasis delimiter run
         // treat them as regular string tokens
@@ -483,8 +481,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
-    if (lookahead.peek() > 0 &&
-        (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
+    if (lookahead.peek() > 0 && (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;

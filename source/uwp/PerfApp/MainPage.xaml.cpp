@@ -43,25 +43,25 @@ using namespace Windows::Data::Json;
 ref class MyTextBlockRenderer sealed : public IAdaptiveElementRenderer
 {
 public:
-    MyTextBlockRenderer(MainPageViewModel^ viewModel)
+    MyTextBlockRenderer(MainPageViewModel ^ viewModel)
     {
         m_viewModel = viewModel;
     }
 
-    virtual Windows::UI::Xaml::UIElement^ Render(IAdaptiveCardElement^ element, AdaptiveRenderContext^ context, AdaptiveRenderArgs^ renderArgs)
-    {
-        AdaptiveTextBlockRenderer^ textBlockRenderer = ref new AdaptiveTextBlockRenderer();
+    virtual Windows::UI::Xaml::UIElement ^
+        Render(IAdaptiveCardElement ^ element, AdaptiveRenderContext ^ context, AdaptiveRenderArgs ^ renderArgs) {
+            AdaptiveTextBlockRenderer ^ textBlockRenderer = ref new AdaptiveTextBlockRenderer();
 
-        ULONGLONG startTextBlockTicks = GetTickCount64();
-        Windows::UI::Xaml::UIElement^ object = textBlockRenderer->Render(element, context, renderArgs);
-        ULONGLONG endTextBlockTicks = GetTickCount64();
+            ULONGLONG startTextBlockTicks = GetTickCount64();
+            Windows::UI::Xaml::UIElement ^ object = textBlockRenderer->Render(element, context, renderArgs);
+            ULONGLONG endTextBlockTicks = GetTickCount64();
 
-        m_viewModel->AddTextBlockDataPoint(endTextBlockTicks - startTextBlockTicks);
+            m_viewModel->AddTextBlockDataPoint(endTextBlockTicks - startTextBlockTicks);
 
-        return object;
-    }
-private:
-    MainPageViewModel ^ m_viewModel;
+            return object;
+        } private : MainPageViewModel
+                    ^
+                    m_viewModel;
 };
 
 task<void> MainPage::RenderCards()
@@ -69,8 +69,8 @@ task<void> MainPage::RenderCards()
     runButton->IsEnabled = false;
 
     // Set the custom text block renderer to get perf data on text blocks
-    MyTextBlockRenderer^ myTextBlockRenderer = ref new MyTextBlockRenderer(m_viewModel);
-    AdaptiveCardRenderer^ renderer = ref new AdaptiveCardRenderer();
+    MyTextBlockRenderer ^ myTextBlockRenderer = ref new MyTextBlockRenderer(m_viewModel);
+    AdaptiveCardRenderer ^ renderer = ref new AdaptiveCardRenderer();
     renderer->ElementRenderers->Set("TextBlock", myTextBlockRenderer);
 
     // Get the values for the requested numbers of parse and render iterations
@@ -83,7 +83,7 @@ task<void> MainPage::RenderCards()
     renderIterationsStringStream >> renderIterations;
 
     // Pop the folder picker to let the user select the folder from which we read cards
-    FolderPicker^ folderPicker = ref new FolderPicker();
+    FolderPicker ^ folderPicker = ref new FolderPicker();
     folderPicker->FileTypeFilter->Append(".json");
     auto pickedFolder = co_await folderPicker->PickSingleFolderAsync();
     if (pickedFolder == nullptr)
@@ -94,28 +94,29 @@ task<void> MainPage::RenderCards()
 
     // Loop through the files in the selected folder, parsing and rendering each card
     auto files = co_await pickedFolder->GetFilesAsync(CommonFileQuery::OrderByName);
-    for each(auto file in files)
-    {
-        String^ payload = co_await FileIO::ReadTextAsync(file);
-
-        for (UINT iParse = 0; iParse < parseIterations; iParse++)
+    for
+        each(auto file in files)
         {
-            ULONGLONG startParseTicks = GetTickCount64();
-            AdaptiveCardParseResult^ parseResult = AdaptiveCard::FromJsonString(payload);
-            ULONGLONG endParseTicks = GetTickCount64();
+            String ^ payload = co_await FileIO::ReadTextAsync(file);
 
-            m_viewModel->AddParseDataPoint(file->Name, iParse, endParseTicks - startParseTicks);
-
-            for (UINT iRender = 0; iRender < renderIterations; iRender++)
+            for (UINT iParse = 0; iParse < parseIterations; iParse++)
             {
-                ULONGLONG startRenderTicks = GetTickCount64();
-                RenderedAdaptiveCard^ renderedCard = renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
-                ULONGLONG endRenderTicks = GetTickCount64();
+                ULONGLONG startParseTicks = GetTickCount64();
+                AdaptiveCardParseResult ^ parseResult = AdaptiveCard::FromJsonString(payload);
+                ULONGLONG endParseTicks = GetTickCount64();
 
-                m_viewModel->AddRenderDataPoint(file->Name, iRender, endRenderTicks - startRenderTicks);
+                m_viewModel->AddParseDataPoint(file->Name, iParse, endParseTicks - startParseTicks);
+
+                for (UINT iRender = 0; iRender < renderIterations; iRender++)
+                {
+                    ULONGLONG startRenderTicks = GetTickCount64();
+                    RenderedAdaptiveCard ^ renderedCard = renderer->RenderAdaptiveCard(parseResult->AdaptiveCard);
+                    ULONGLONG endRenderTicks = GetTickCount64();
+
+                    m_viewModel->AddRenderDataPoint(file->Name, iRender, endRenderTicks - startRenderTicks);
+                }
             }
         }
-    }
 
     m_viewModel->DoneRunning();
     runButton->IsEnabled = true;
@@ -129,12 +130,12 @@ MainPage::MainPage()
     DataContext = m_viewModel;
 }
 
-void PerfApp::MainPage::runButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PerfApp::MainPage::runButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     RenderCards();
 }
 
-void PerfApp::MainPage::resetButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PerfApp::MainPage::resetButton_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     m_viewModel->Reset();
 }

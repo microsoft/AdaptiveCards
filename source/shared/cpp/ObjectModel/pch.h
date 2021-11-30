@@ -42,7 +42,6 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
-    constexpr const char* const c_sharedModelVersion = "1.5";
+namespace AdaptiveCards {
+constexpr const char* const c_sharedModelVersion = "1.5";
 }

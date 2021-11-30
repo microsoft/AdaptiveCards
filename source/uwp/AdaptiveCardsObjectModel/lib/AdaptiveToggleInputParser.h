@@ -5,22 +5,20 @@
 #include "ToggleInput.h"
 #include "AdaptiveToggleInputParser.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser>
 {
-    struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser>
-    {
-        AdaptiveToggleInputParser() = default;
+    AdaptiveToggleInputParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
-            winrt::Windows::Data::Json::JsonObject const& inputJson,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
-    };
-}
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
+struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser, implementation::AdaptiveToggleInputParser>
 {
-    struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser, implementation::AdaptiveToggleInputParser>
-    {
-    };
-}
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

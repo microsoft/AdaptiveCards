@@ -2,31 +2,29 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+class AdaptiveMediaConfig
+    : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaConfig>
 {
-    class AdaptiveMediaConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaConfig>
-    {
-        AdaptiveRuntime(AdaptiveMediaConfig);
+    AdaptiveRuntime(AdaptiveMediaConfig);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(MediaConfig mediaConfig) noexcept;
+public:
+    HRESULT RuntimeClassInitialize() noexcept;
+    HRESULT RuntimeClassInitialize(MediaConfig mediaConfig) noexcept;
 
-        IFACEMETHODIMP get_DefaultPoster(_Outptr_ HSTRING* defaultPoster);
-        IFACEMETHODIMP put_DefaultPoster(_In_ HSTRING defaultPoster);
+    IFACEMETHODIMP get_DefaultPoster(_Outptr_ HSTRING* defaultPoster);
+    IFACEMETHODIMP put_DefaultPoster(_In_ HSTRING defaultPoster);
 
-        IFACEMETHODIMP get_PlayButton(_Outptr_ HSTRING* playButton);
-        IFACEMETHODIMP put_PlayButton(_In_ HSTRING playButton);
+    IFACEMETHODIMP get_PlayButton(_Outptr_ HSTRING* playButton);
+    IFACEMETHODIMP put_PlayButton(_In_ HSTRING playButton);
 
-        IFACEMETHODIMP get_AllowInlinePlayback(_Out_ boolean* AllowInlinePlayback);
-        IFACEMETHODIMP put_AllowInlinePlayback(boolean AllowInlinePlayback);
+    IFACEMETHODIMP get_AllowInlinePlayback(_Out_ boolean* AllowInlinePlayback);
+    IFACEMETHODIMP put_AllowInlinePlayback(boolean AllowInlinePlayback);
 
-    private:
-        Microsoft::WRL::Wrappers::HString m_defaultPoster;
-        Microsoft::WRL::Wrappers::HString m_playButton;
-        boolean m_allowInlinePlayback;
-    };
-    ActivatableClass(AdaptiveMediaConfig);
-}
+private:
+    Microsoft::WRL::Wrappers::HString m_defaultPoster;
+    Microsoft::WRL::Wrappers::HString m_playButton;
+    boolean m_allowInlinePlayback;
+};
+ActivatableClass(AdaptiveMediaConfig);
+} // namespace AdaptiveCards::Rendering::Uwp

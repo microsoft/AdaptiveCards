@@ -13,8 +13,7 @@
 
 using namespace AdaptiveCards;
 
-RichTextBlock::RichTextBlock() :
-    BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(std::nullopt)
+RichTextBlock::RichTextBlock() : BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -81,6 +80,7 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::DeserializeFromString(Pars
 
 void RichTextBlock::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines)});
 }

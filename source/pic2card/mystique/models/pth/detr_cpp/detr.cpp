@@ -3,7 +3,7 @@
 
 #include "detr.hpp"
 
-cv::Mat addmat(cv::Mat &lhs, cv::Mat &rhs)
+cv::Mat addmat(cv::Mat& lhs, cv::Mat& rhs)
 {
     return lhs + rhs;
 }
@@ -14,12 +14,12 @@ struct Detr
     std::string model_path;
     torch::jit::script::Module model;
 
-    Detr(const std::string &model_path) : model_path(model_path)
+    Detr(const std::string& model_path) : model_path(model_path)
     {
         loadModel();
     }
 
-    const std::string &getModelPath()
+    const std::string& getModelPath()
     {
         return model_path;
     }
@@ -32,9 +32,9 @@ struct Detr
     /**
      * Resize the image without lossing the aspect ratio, and ensure the dimentions
      * won't over shoot due to higher or lower aspect ratio.
-     * 
+     *
      * max_size should be greater than the size.
-     * 
+     *
      *  width / height == newW / newH
      **/
     std::vector<uint> getNewSize(uint width, uint height, uint size, uint max_size)
@@ -76,7 +76,7 @@ struct Detr
         return {newW, newH};
     }
 
-    const std::vector<cv::Mat> predict(cv::Mat &image)
+    const std::vector<cv::Mat> predict(cv::Mat& image)
     {
         cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
         image.convertTo(image, CV_32FC3, 1.0f / 255.0f);
@@ -107,10 +107,7 @@ struct Detr
         inputs.push_back(imTensor);
         auto outDict = model.forward(inputs).toGenericDict();
 
-        torch::Tensor predLogits = outDict.at("pred_logits")
-                                       .toTensor()
-                                       .squeeze()
-                                       .softmax(-1);
+        torch::Tensor predLogits = outDict.at("pred_logits").toTensor().squeeze().softmax(-1);
 
         // predLogits = predLogits.narrow(1, 0, predLogits.size(1) - 1);
         torch::Tensor predBoxes = outDict.at("pred_boxes").toTensor().squeeze();
@@ -118,11 +115,11 @@ struct Detr
         // // Map the torch::Tensor to cv::Mat, helps to avoid torch package dependency at python side.
         predLogits = predLogits.to(torch::kCPU).to(torch::kF32);
         cv::Mat cvMatLogits(predLogits.size(0), predLogits.size(1), CV_32F);
-        std::memcpy((void *)cvMatLogits.data, predLogits.data_ptr(), sizeof(float) * predLogits.numel());
+        std::memcpy((void*)cvMatLogits.data, predLogits.data_ptr(), sizeof(float) * predLogits.numel());
 
         predBoxes = predBoxes.to(torch::kCPU).to(torch::kF32);
         cv::Mat cvMatBoxes(predBoxes.size(0), predBoxes.size(1), CV_32F);
-        std::memcpy((void *)cvMatBoxes.data, predBoxes.data_ptr(), sizeof(float) * predBoxes.numel());
+        std::memcpy((void*)cvMatBoxes.data, predBoxes.data_ptr(), sizeof(float) * predBoxes.numel());
 
         return {cvMatLogits, cvMatBoxes};
     }
@@ -133,7 +130,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
     m.def("addmat", &addmat, "add two matrix");
 
     py::class_<Detr>(m, "Detr")
-        .def(py::init<const std::string &>())
+        .def(py::init<const std::string&>())
         .def("get_model_path", &Detr::getModelPath)
         .def_readonly("model_path", &Detr::model_path)
         // .def("load", &Detr::loadModel)

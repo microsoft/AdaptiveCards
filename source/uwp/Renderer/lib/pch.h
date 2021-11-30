@@ -64,5 +64,3 @@
 #include <windows.foundation.collections.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.ui.xaml.markup.h>
-
-

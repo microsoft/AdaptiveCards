@@ -6,19 +6,18 @@
 #include "AdaptiveToggleVisibilityTarget.g.cpp"
 #include "ToggleVisibilityTarget.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
+AdaptiveToggleVisibilityTarget::AdaptiveToggleVisibilityTarget(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
 {
-    AdaptiveToggleVisibilityTarget::AdaptiveToggleVisibilityTarget(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
-    {
-        ElementId = UTF8ToHString(sharedToggleTarget->GetElementId());
-        IsVisible = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::IsVisible>(sharedToggleTarget->GetIsVisible());
-    }
-
-    std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> AdaptiveToggleVisibilityTarget::GetSharedModel()
-    {
-        auto toggleTarget = std::make_shared<::AdaptiveCards::ToggleVisibilityTarget>();
-        toggleTarget->SetElementId(HStringToUTF8(ElementId));
-        toggleTarget->SetIsVisible(static_cast<::AdaptiveCards::IsVisible>(IsVisible.get()));
-        return toggleTarget;
-    }
+    ElementId = UTF8ToHString(sharedToggleTarget->GetElementId());
+    IsVisible = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::IsVisible>(sharedToggleTarget->GetIsVisible());
 }
+
+std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> AdaptiveToggleVisibilityTarget::GetSharedModel()
+{
+    auto toggleTarget = std::make_shared<::AdaptiveCards::ToggleVisibilityTarget>();
+    toggleTarget->SetElementId(HStringToUTF8(ElementId));
+    toggleTarget->SetIsVisible(static_cast<::AdaptiveCards::IsVisible>(IsVisible.get()));
+    return toggleTarget;
+}
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

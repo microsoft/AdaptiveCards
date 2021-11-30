@@ -5,15 +5,14 @@
 
 #include <string>
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+class DateTimeParser
 {
-    class DateTimeParser
-    {
-    public:
-        DateTimeParser(const std::string& language);
-        std::string GenerateString(const DateTimePreparser& text);
+public:
+    DateTimeParser(const std::string& language);
+    std::string GenerateString(const DateTimePreparser& text);
 
-    private:
-        std::string m_languageString;
-    };
-}
+private:
+    std::string m_languageString;
+};
+} // namespace AdaptiveCards::Rendering::Uwp

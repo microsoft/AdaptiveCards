@@ -70,7 +70,7 @@ void AdaptiveCards::Authentication::SetButtons(std::vector<std::shared_ptr<AuthC
 bool Authentication::ShouldSerialize() const
 {
     return !m_text.empty() || !m_connectionName.empty() || !m_buttons.empty() ||
-        (m_tokenExchangeResource != nullptr && m_tokenExchangeResource->ShouldSerialize());
+           (m_tokenExchangeResource != nullptr && m_tokenExchangeResource->ShouldSerialize());
 }
 
 std::string Authentication::Serialize() const
@@ -94,8 +94,7 @@ Json::Value Authentication::SerializeToJsonValue() const
 
     if (m_tokenExchangeResource != nullptr && m_tokenExchangeResource->ShouldSerialize())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TokenExchangeResource)] =
-            m_tokenExchangeResource->SerializeToJsonValue();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TokenExchangeResource)] = m_tokenExchangeResource->SerializeToJsonValue();
     }
 
     if (!m_buttons.empty())

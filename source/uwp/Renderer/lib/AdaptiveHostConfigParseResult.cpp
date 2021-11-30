@@ -21,30 +21,31 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Uwp {
+AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult()
 {
-    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult() {}
-
-    HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize()
-    {
-        m_errors = Make<Vector<AdaptiveError*>>();
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* value)
-    {
-        m_hostConfig = value;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveHostConfigParseResult::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
-    {
-        return m_hostConfig.CopyTo(value);
-    }
-
-    HRESULT AdaptiveHostConfigParseResult::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
-    {
-        return m_errors.CopyTo(value);
-    }
 }
+
+HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize()
+{
+    m_errors = Make<Vector<AdaptiveError*>>();
+    return S_OK;
+}
+
+HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* value)
+{
+    m_hostConfig = value;
+    return S_OK;
+}
+
+HRESULT AdaptiveHostConfigParseResult::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
+{
+    return m_hostConfig.CopyTo(value);
+}
+
+HRESULT AdaptiveHostConfigParseResult::get_Errors(
+    _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
+{
+    return m_errors.CopyTo(value);
+}
+} // namespace AdaptiveCards::Rendering::Uwp
