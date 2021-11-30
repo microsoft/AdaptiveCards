@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAuthCardButton.h"
-#import "AuthCardButton.h"
+#import <AdaptiveCards/ACOAuthCardButton.h>
+#import <AdaptiveCards/AuthCardButton.h>
 
 using namespace AdaptiveCards;
 
