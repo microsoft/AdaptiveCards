@@ -32,7 +32,7 @@ Pod::Spec.new do |spec|
     sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
   end
 
-  spec.platform         = :ios, '12'
+  spec.platform         = :ios, '14'
 
   spec.frameworks = 'AVFoundation', 'AVKit', 'CoreGraphics', 'QuartzCore', 'UIKit'
 
