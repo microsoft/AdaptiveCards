@@ -29,6 +29,35 @@ PS: Latest Build Status is against `main` branch.
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/37917/main.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564/main.svg) |
 
+## Code format
+
+We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.
+
+### Setup Git hooks
+This is a one time setup. When you `git commit`, it will automatically do the format check and ask you to correct it if format error detected.
+```
+scripts\SetupClangFormat.bat
+```
+
+### Two ways to format the files
+
+### 1) Use script to format files before you submit the change 
+
+`PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False`
+
+or
+
+`PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False -Path yourfolder`
+
+#### 2) clang-format and IDE integration, and use the IDE to format it
+- Use Visual Studio:
+1. Configure your [clang-format tools](https://devblogs.microsoft.com/cppblog/clangformat-support-in-visual-studio-2017-15-7-preview-1/).
+2. Open the modified file.
+3. Use shortcut keys Ctrl+K, Ctrl+D to format the current file.
+
+- Use Visual Studio Code and other IDE
+Check the IDE integration in https://clang.llvm.org/docs/ClangFormat.html
+
 #### End User License Agreement for our binary packages
 Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:
 - [UWP/.NET](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Windows.txt)
