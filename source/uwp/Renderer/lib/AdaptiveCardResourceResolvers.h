@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveCardResourceResolvers : AdaptiveCardResourceResolversT < AdaptiveCardResourceResolvers>
+    struct AdaptiveCardResourceResolvers : AdaptiveCardResourceResolversT<AdaptiveCardResourceResolvers>
     {
         AdaptiveCardResourceResolvers() = default;
 

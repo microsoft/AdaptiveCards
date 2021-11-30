@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveContainerStylesDefinition : AdaptiveContainerStylesDefinitionT < AdaptiveContainerStylesDefinition>
+    struct AdaptiveContainerStylesDefinition : AdaptiveContainerStylesDefinitionT<AdaptiveContainerStylesDefinition>
     {
         AdaptiveContainerStylesDefinition(::AdaptiveCards::ContainerStylesDefinition const& stylesDefinition = {});
 

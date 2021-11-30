@@ -15,6 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
     };
 }
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
 {
     struct AdaptiveTimeInputRenderer : AdaptiveTimeInputRendererT<AdaptiveTimeInputRenderer, implementation::AdaptiveTimeInputRenderer>

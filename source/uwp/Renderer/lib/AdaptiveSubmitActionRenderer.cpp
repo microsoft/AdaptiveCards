@@ -9,15 +9,15 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+                                                           rtrender::AdaptiveRenderContext const& renderContext,
+                                                           rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             renderContext.LinkSubmitActionToCard(action, renderArgs);
             return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
-        catch(winrt::hresult_error const& ex)
+        catch (winrt::hresult_error const& ex)
         {
             // TODO: what do we do here?
             return nullptr;

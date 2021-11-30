@@ -65,7 +65,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
                         if (!keepItem)
                         {
-                            winrt::Windows::Foundation::Size remainingSpace = {measuredAvailableSize.Width, static_cast<float>(availableHeightForItem)};
+                            winrt::Windows::Foundation::Size remainingSpace = {measuredAvailableSize.Width,
+                                                                               static_cast<float>(availableHeightForItem)};
 
                             child.Measure(remainingSpace);
 
@@ -87,7 +88,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            winrt::Windows::Foundation::Size noLimit{std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()};
+                            winrt::Windows::Foundation::Size noLimit{std::numeric_limits<float>::infinity(),
+                                                                     std::numeric_limits<float>::infinity()};
                             childAsTextBlock.TextWrapping(rtxaml::TextWrapping::NoWrap);
                             childAsTextBlock.Measure(noLimit);
                             childSize = childAsTextBlock.DesiredSize();
@@ -115,8 +117,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                     keepItem = false;
                                     // we must measure it a last time as we have changed its properties
                                     // if we keep it, it will be measured again with the exact remaining space
-                                   child.Measure(noVerticalLimit);
-
+                                    child.Measure(noVerticalLimit);
                                 }
                             }
                             m_isTruncated = !keepItem;
@@ -198,8 +199,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::Windows::Foundation::Size WholeItemsPanel::ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize)
     {
-        float currentHeight {0.0f};
-        float extraPaddingPerItem {0.0f};
+        float currentHeight{0.0f};
+        float extraPaddingPerItem{0.0f};
 
         auto children = this->Children();
         m_measuredCount = children.Size();
@@ -240,7 +241,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
                 }
-                const winrt::Windows::Foundation::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
+                const winrt::Windows::Foundation::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width
+                                                                                                                 // does not respect Text alignment
 
                 child.Arrange(rc);
 
@@ -249,7 +251,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             else
             {
                 // Arrange the child outside the panel
-                const winrt::Windows::Foundation::Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
+                const winrt::Windows::Foundation::Rect rc = {0.0f,
+                                                             OutsidePanelY - childSize.Height,
+                                                             childSize.Width,
+                                                             childSize.Height};
                 child.Arrange(rc);
             }
         }
@@ -294,7 +299,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         for (uint32_t i = 0; i < count; i++)
         {
             AppendAltTextToUIElement(children.GetAt(i), buffer);
-
         }
     }
 
@@ -324,9 +328,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
-                if (const auto tagAsElementTagContent = tag.try_as<rtrender::implementation::ElementTagContent>())
+                // TODO: do we want to peek_innards here to make sure it's our own implementation?
+                if (const auto tagAsElementTagContent = tag.try_as<rtrender::ElementTagContent>())
                 {
-                    tagAsElementTagContent->IsStretchable(true);
+                    tagAsElementTagContent.IsStretchable(true);
                 }
                 else
                 {
@@ -364,8 +369,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         bool childTruncated = false;
         auto children = panel.Children();
         uint32_t size = children.Size();
-       
-        for (auto child: children)
+
+        for (auto child : children)
         {
             // Subgroups (columns) are implemented with WholeItemsPanel
             if (auto childAsWholeItemPanel = child.as<rtrender::WholeItemsPanel>())
@@ -415,16 +420,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     // Creates the Alt Text
     void WholeItemsPanel::AppendAltTextToUIElement(rtxaml::UIElement const& element, std::wstring& buffer)
     {
-
         if (const auto textBlock = element.try_as<rtxaml::Controls::TextBlock>())
         {
             AppendText(textBlock.Text(), buffer);
-
         }
         else if (const auto wholeItemsPanel = element.try_as<rtrender::implementation::WholeItemsPanel>())
         {
             wholeItemsPanel->AppendAltText(buffer);
-
         }
         else if (const auto image = element.try_as<rtxaml::Controls::Image>())
         {

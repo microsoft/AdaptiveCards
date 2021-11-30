@@ -15,24 +15,28 @@ namespace AdaptiveCards
         {
             runtimeclass AdaptiveHostConfigParseResult;
 
-            enum ActionsOrientation {
+            enum ActionsOrientation
+            {
                 Vertical = 0,
                 Horizontal,
             };
 
-             enum ActionAlignment {
+            enum ActionAlignment
+            {
                 Left = 0,
                 Center,
                 Right,
                 Stretch,
             };
 
-            enum ActionMode {
+            enum ActionMode
+            {
                 Inline = 0,
                 Popup,
             };
 
-            enum IconPlacement {
+            enum IconPlacement
+            {
                 AboveTitle = 0,
                 LeftOfTitle,
             };
@@ -523,7 +527,7 @@ namespace AdaptiveCards
                                                  AdaptiveRenderArgs renderArgs);
             };
 
-			[default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTableRenderer();
             };
@@ -562,11 +566,6 @@ namespace AdaptiveCards
             {
                 AdaptiveColumnSetRenderer();
             };
-
-          /*  [default_interface] runtimeclass AdaptiveFactRenderer : IAdaptiveElementRenderer
-            {
-                AdaptiveFactRenderer();
-            };*/
 
             [default_interface] runtimeclass AdaptiveChoiceSetInputRenderer : IAdaptiveElementRenderer
             {
@@ -643,33 +642,29 @@ namespace AdaptiveCards
                 TileControl();
 
                 AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage BackgroundImage;
-                // Windows.UI.Xaml.FrameworkElement RootElement;
                 Windows.UI.Xaml.UIElement ResolvedImage { get; };
                 Windows.Foundation.Size ImageSize;
-
                 void LoadImageBrush(Windows.UI.Xaml.UIElement uielement);
             }
 
             runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
             {
-				WholeItemsPanel();
+                WholeItemsPanel();
                 String GetAltText();
                 Boolean IsAllContentClippedOut();
                 Boolean IsTruncated();
             }
 
-			
-			runtimeclass ElementTagContent
-			{
-				Windows.UI.Xaml.Controls.ColumnDefinition ColumnDefinition {get; };
-				AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement CardElement {get; };
-				Windows.UI.Xaml.UIElement Separator {get; };
+            runtimeclass ElementTagContent
+            {
+                ElementTagContent();
+                Windows.UI.Xaml.Controls.ColumnDefinition ColumnDefinition { get; };
+                AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement CardElement { get; };
+                Windows.UI.Xaml.UIElement Separator { get; };
                 Windows.UI.Xaml.Controls.Panel ParentPanel { get; };
-
-				ElementTagContent();
                 Boolean ExpectedVisibility;
                 Boolean IsStretchable;
-			}
+            }
         }
     }
 }

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "util.h"
-
 #include "AdaptiveHostConfigParseResult.g.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation

@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveMediaConfig : AdaptiveMediaConfigT < AdaptiveMediaConfig>
+    struct AdaptiveMediaConfig : AdaptiveMediaConfigT<AdaptiveMediaConfig>
     {
         AdaptiveMediaConfig(::AdaptiveCards::MediaConfig const& mediaConfig = {});
 
@@ -15,6 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<bool> AllowInlinePlayback;
     };
 }
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
 {
     struct AdaptiveMediaConfig : AdaptiveMediaConfigT<AdaptiveMediaConfig, implementation::AdaptiveMediaConfig>

@@ -3,8 +3,6 @@
 #pragma once
 
 #include "AdaptiveTableRenderer.g.h"
-// TODO: do we need this here?
-//#include "Table.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -18,7 +16,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
-
         winrt::Windows::UI::Xaml::FrameworkElement RenderCell(
             winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell const& cell,
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,

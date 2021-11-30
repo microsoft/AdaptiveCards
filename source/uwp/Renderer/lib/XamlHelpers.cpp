@@ -426,9 +426,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
             auto heightType = element.Height();
 
-            auto tagContent = winrt::make_self<rtrender::implementation::ElementTagContent>(
+            auto tagContent = winrt::make<rtrender::implementation::ElementTagContent>(
                 element, parentPanel, separator, columnDefinition, isVisible, heightType == rtom::HeightType::Stretch);
-            newControlAsFrameworkElement.Tag(*tagContent);
+            newControlAsFrameworkElement.Tag(tagContent);
 
             XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
 

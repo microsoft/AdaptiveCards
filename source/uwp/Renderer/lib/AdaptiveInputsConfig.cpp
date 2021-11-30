@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveInputsConfig::AdaptiveInputsConfig(::AdaptiveCards::InputsConfig inputsConfig) :
+    AdaptiveInputsConfig::AdaptiveInputsConfig(::AdaptiveCards::InputsConfig const& inputsConfig) :
         ErrorMessage{winrt::make<implementation::AdaptiveErrorMessageConfig>(inputsConfig.errorMessage)},
         Label{winrt::make<implementation::AdaptiveLabelConfig>(inputsConfig.label)}
     {

@@ -7,17 +7,6 @@
 #include "AdaptiveRenderContext.h"
 #include "TextHelpers.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace ABI::Windows::UI::Xaml::Automation::Peers;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     rtxaml::UIElement AdaptiveTextBlockRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
@@ -30,8 +19,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::hstring text = adaptiveTextBlock.Text();
 
             // If the text is null, return immediately without constructing a text block
-            // if (text.Get() == nullptr)
-            // TODO: not sure how to check it properly, need to come back here
             if (text.empty())
             {
                 renderContext.AddError(rtom::ErrorStatusCode::RequiredPropertyMissing,
@@ -53,18 +40,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (textStyle == rtom::TextStyle::Heading)
             {
                 auto headingTextStyleConfig = textStylesConfig.Heading();
-                // TODO: no need to cast adaptiveTextBlock right?
                 SetXamlInlinesWithTextStyleConfig(adaptiveTextBlock, renderContext, renderArgs, headingTextStyleConfig, xamlTextBlock);
             }
             else if (textStyle == rtom::TextStyle::ColumnHeader)
             {
                 auto columnHeaderTextStyleConfig = textStylesConfig.ColumnHeader();
-                // TODO: check if need to cast?
                 SetXamlInlinesWithTextStyleConfig(adaptiveTextBlock, renderContext, renderArgs, columnHeaderTextStyleConfig, xamlTextBlock);
             }
             else
             {
-                // TODO: check if need to cast?
                 SetXamlInlines(adaptiveTextBlock, renderContext, renderArgs, false, inlines);
             }
 

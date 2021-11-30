@@ -6,16 +6,9 @@
 #include "AdaptiveActionInvoker.g.cpp"
 #include "Util.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::UI::Xaml;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    void AdaptiveActionInvoker::SendActionEvent(ObjectModel::Uwp::IAdaptiveActionElement const& actionElement)
+    void AdaptiveActionInvoker::SendActionEvent(rtom::IAdaptiveActionElement const& actionElement)
     {
         if (auto strong = peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))
         {

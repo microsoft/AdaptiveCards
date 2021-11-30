@@ -6,10 +6,6 @@
 #include "AdaptiveToggleVisibilityActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     rtxaml::UIElement AdaptiveToggleVisibilityActionRenderer::Render(rtom::IAdaptiveActionElement const& actionElement,

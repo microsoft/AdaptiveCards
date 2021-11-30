@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveActionsConfig : AdaptiveActionsConfigT < AdaptiveActionsConfig>
+    struct AdaptiveActionsConfig : AdaptiveActionsConfigT<AdaptiveActionsConfig>
     {
-        AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig actionsConfig = {});
+        AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig const& actionsConfig = {});
 
         property<Uwp::AdaptiveShowCardActionConfig> ShowCard;
         property<Uwp::ActionsOrientation> ActionsOrientation;

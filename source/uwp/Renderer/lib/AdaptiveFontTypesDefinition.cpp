@@ -6,9 +6,6 @@
 #include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveFontTypesDefinition.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveFontTypesDefinition::AdaptiveFontTypesDefinition(::AdaptiveCards::FontTypesDefinition const& typesDefinition) :

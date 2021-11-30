@@ -14,17 +14,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
     {
-        // If there's any validation on this input, put the input inside a border. We don't use
-        // XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
-        // well as the text input, which is not the desired behavior.
-        /* ComPtr<IAdaptiveTextInput> localTextInput(adaptiveTextInput);
-         ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
-         RETURN_IF_FAILED(localTextInput.As(&textInputAsAdaptiveInput));*/
-
         // The text box may need to go into a number of parent containers to handle validation and inline actions.
         // textBoxParentContainer represents the current parent container.
         auto textBoxParentContainer = inputUIElement;
 
+        // If there's any validation on this input, put the input inside a border. We don't use
+        // XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
+        // well as the text input, which is not the desired behavior.
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
 
@@ -32,8 +28,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         if (!regex.empty() || isRequired)
         {
-            validationBorder =
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
+            validationBorder = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
         }
 
         // If this input has an inline action, render it next to the input
@@ -58,13 +53,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // Call XamlHelpers::HandleInputLayoutAndValidation to handle accessibility properties. Pass nullptr for
         // validationBorder as we've already handled that above.
         rtxaml::UIElement inputLayout{nullptr};
-        std::tie(inputLayout, std::ignore) =
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveTextInput,
-                                                                                            inputUIElement,
-                                                                                            !regex.empty(), // TODO: not sure
-                                                                                                            // if it's correct way here with regex hstring
-                                                                                            renderContext,
-																							false);
+
+        std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveTextInput, inputUIElement, !regex.empty(), renderContext, false);
+
         return {inputLayout, validationBorder};
     }
 
@@ -105,11 +97,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             break;
         }
 
-        /*  ComPtr<IInputScope> inputScope =
-              XamlHelpers::CreateABIClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
-          ComPtr<IVector<InputScopeName*>> names;
-          RETURN_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
-          RETURN_IF_FAILED(names->Append(inputScopeName.Get()));*/
         rtxaml::Input::InputScope inputScope{};
         inputScope.Names().Append(inputScopeName);
 

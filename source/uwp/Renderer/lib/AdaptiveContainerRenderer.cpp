@@ -57,9 +57,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             rtxaml::Controls::Border containerBorder{};
 
             auto containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveContainer,
-                                                                                                           containerBorder,
-                                                                                                           renderContext,
-                                                                                                           renderArgs);
+                                                                                                        containerBorder,
+                                                                                                        renderContext,
+                                                                                                        renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
 

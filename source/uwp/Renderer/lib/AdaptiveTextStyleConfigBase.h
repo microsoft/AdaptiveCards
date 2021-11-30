@@ -13,6 +13,5 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<ObjectModel::Uwp::ForegroundColor> Color;
         property<bool> IsSubtle;
         property<ObjectModel::Uwp::FontType> FontType;
-
     };
 }

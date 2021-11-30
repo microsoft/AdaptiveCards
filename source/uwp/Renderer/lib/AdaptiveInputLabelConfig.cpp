@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveInputLabelConfig::AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig inputLabelConfig)
+    AdaptiveInputLabelConfig::AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig const& inputLabelConfig)
     {
         Color = static_cast<ObjectModel::Uwp::ForegroundColor>(inputLabelConfig.color);
         IsSubtle = inputLabelConfig.isSubtle;

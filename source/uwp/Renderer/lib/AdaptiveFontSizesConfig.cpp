@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveFontSizesConfig::AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig fontSizesConfig)
+    AdaptiveFontSizesConfig::AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig const& fontSizesConfig)
     {
         Default = fontSizesConfig.GetFontSize(::AdaptiveCards::TextSize::Default);
         Small = fontSizesConfig.GetFontSize(::AdaptiveCards::TextSize::Small);

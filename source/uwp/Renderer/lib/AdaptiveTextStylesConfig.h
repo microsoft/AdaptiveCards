@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveTextStylesConfig : AdaptiveTextStylesConfigT < AdaptiveTextStylesConfig>
+    struct AdaptiveTextStylesConfig : AdaptiveTextStylesConfigT<AdaptiveTextStylesConfig>
     {
         AdaptiveTextStylesConfig(::AdaptiveCards::TextStylesConfig const& textConfig = {});
 

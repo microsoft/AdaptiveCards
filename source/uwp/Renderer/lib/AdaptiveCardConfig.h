@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveCardConfig : AdaptiveCardConfigT < AdaptiveCardConfig>
+    struct AdaptiveCardConfig : AdaptiveCardConfigT<AdaptiveCardConfig>
     {
-        AdaptiveCardConfig(::AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig = {});
+        AdaptiveCardConfig(::AdaptiveCards::AdaptiveCardConfig const& adaptiveCardConfig = {});
 
         property<bool> AllowCustomStyle;
     };

@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveImageSetConfig : AdaptiveImageSetConfigT < AdaptiveImageSetConfig>
+    struct AdaptiveImageSetConfig : AdaptiveImageSetConfigT<AdaptiveImageSetConfig>
     {
-        AdaptiveImageSetConfig(::AdaptiveCards::ImageSetConfig ImageSetConfig = {});
+        AdaptiveImageSetConfig(::AdaptiveCards::ImageSetConfig const& ImageSetConfig = {});
 
         property<ObjectModel::Uwp::ImageSize> ImageSize;
         property<uint32_t> MaxImageHeight;

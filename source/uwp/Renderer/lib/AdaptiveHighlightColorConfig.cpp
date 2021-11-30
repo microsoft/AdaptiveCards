@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveHighlightColorConfig::AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig colorConfig)
+    AdaptiveHighlightColorConfig::AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig const& colorConfig)
     {
         Default = GetColorFromString(colorConfig.defaultColor);
         Subtle = GetColorFromString(colorConfig.subtleColor);

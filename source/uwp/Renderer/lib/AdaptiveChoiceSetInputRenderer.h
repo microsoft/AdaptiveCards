@@ -20,11 +20,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         static bool IsChoiceSelected(std::vector<std::string> selectedValues, rtom::AdaptiveChoiceInput const& choice);
 
-        winrt::Windows::UI::Xaml::UIElement BuildExpandedChoiceSetInput(
-            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
-            bool isMultiSelect);
+        winrt::Windows::UI::Xaml::UIElement
+        BuildExpandedChoiceSetInput(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                                    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+                                    bool isMultiSelect);
 
         winrt::Windows::UI::Xaml::UIElement BuildCompactChoiceSetInput(
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,

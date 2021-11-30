@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveFontSizesConfig : AdaptiveFontSizesConfigT < AdaptiveFontSizesConfig>
+    struct AdaptiveFontSizesConfig : AdaptiveFontSizesConfigT<AdaptiveFontSizesConfig>
     {
-        AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig fontSizesConfig = {});
+        AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig const& fontSizesConfig = {});
 
         property<uint32_t> Small;
         property<uint32_t> Default;

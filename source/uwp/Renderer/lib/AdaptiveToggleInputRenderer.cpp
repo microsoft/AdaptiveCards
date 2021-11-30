@@ -26,8 +26,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             rtxaml::Controls::CheckBox checkBox{};
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetContent(checkBox,
-                                                                        adaptiveToggleInput.Title(),
-                                                                        adaptiveToggleInput.Wrap());
+                                                                     adaptiveToggleInput.Title(),
+                                                                     adaptiveToggleInput.Wrap());
 
             checkBox.IsChecked(adaptiveToggleInput.ValueOn() == adaptiveToggleInput.Value());
             checkBox.Tapped([](winrt::Windows::Foundation::IInspectable const& /* sender */,
@@ -37,12 +37,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
 
             rtxaml::UIElement inputLayout{nullptr};
-            std::tie(inputLayout, std::ignore) =
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveToggleInput, checkBox, false, renderContext, false);
+            std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+                adaptiveToggleInput, checkBox, false, renderContext, false);
 
             // TODO: come back here, not sure if this is right
-            auto input = winrt::make_self<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
-            renderContext.AddInputValue(*input, renderArgs);
+            auto input = winrt::make<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
+            renderContext.AddInputValue(input, renderArgs);
             return inputLayout;
         }
         catch (winrt::hresult_error const& ex)

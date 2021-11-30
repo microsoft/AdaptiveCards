@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveMediaEventInvoker : AdaptiveMediaEventInvokerT < AdaptiveMediaEventInvoker>
+    struct AdaptiveMediaEventInvoker : AdaptiveMediaEventInvokerT<AdaptiveMediaEventInvoker>
     {
         AdaptiveMediaEventInvoker() {}
 

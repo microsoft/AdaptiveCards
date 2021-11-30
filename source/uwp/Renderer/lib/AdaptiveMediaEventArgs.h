@@ -5,7 +5,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveMediaEventArgs : AdaptiveMediaEventArgsT < AdaptiveMediaEventArgs>
+    struct AdaptiveMediaEventArgs : AdaptiveMediaEventArgsT<AdaptiveMediaEventArgs>
     {
         AdaptiveMediaEventArgs(ObjectModel::Uwp::AdaptiveMedia const& media = nullptr) : Media{media} {}
         property<ObjectModel::Uwp::AdaptiveMedia> Media;

@@ -225,7 +225,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                 resourceResolver = resourceResolvers.Get(mediaSourceUrl.SchemeName());
             }
 
-            if (resourceResolver = nullptr)
+            if (resourceResolver == nullptr)
             {
                 mediaElement.Source(mediaSourceUrl);
             }

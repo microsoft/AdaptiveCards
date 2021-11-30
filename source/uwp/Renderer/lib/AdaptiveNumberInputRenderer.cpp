@@ -63,11 +63,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             rtxaml::UIElement inputLayout{nullptr};
             rtxaml::Controls::Border validationBorder{nullptr};
-            std::tie(inputLayout, validationBorder) =
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveNumberInput, // TODO: no need to cast here either, right?
-                                                                                                textBox,
-                                                                                                (max || min), // TODO: no need to compare with nullptr, right?
-                                                                                                renderContext);
+            std::tie(inputLayout, validationBorder) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+                adaptiveNumberInput, // TODO: no need to cast here either, right?
+                textBox,
+                (max || min), // TODO: no need to compare with nullptr, right?
+                renderContext);
             // Create the InputValue and add it to the context
             // TODO: is this the right way to do it?
             // TODO: do we need private IDL for these scenarios?

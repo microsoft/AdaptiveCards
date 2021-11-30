@@ -461,7 +461,8 @@ namespace AdaptiveCards::Rendering::Uwp
                     auto imageStream = operation.GetResults();
                     // TODO: not totally sure about all this stream stuf...
                     winrt::Windows::Storage::Streams::InMemoryRandomAccessStream randomAccessStream{};
-                    auto copyStreamOperation = winrt::Windows::Storage::Streams::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
+                    auto copyStreamOperation =
+                        winrt::Windows::Storage::Streams::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
                     m_copyStreamOperations.push_back(copyStreamOperation);
 
                     copyStreamOperation.Completed(

@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveTableConfig : AdaptiveTableConfigT < AdaptiveTableConfig>
+    struct AdaptiveTableConfig : AdaptiveTableConfigT<AdaptiveTableConfig>
     {
         AdaptiveTableConfig(::AdaptiveCards::TableConfig const& tableConfig = {});
 

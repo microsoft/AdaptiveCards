@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::Windows::UI::Xaml::UIElement AdaptiveImageSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                                         rtrender::AdaptiveRenderContext const& renderContext,
-                                                                         rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveImageSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                       rtrender::AdaptiveRenderContext const& renderContext,
+                                                       rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

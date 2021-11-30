@@ -9,7 +9,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     struct AdaptiveLabelConfig : AdaptiveLabelConfigT<AdaptiveLabelConfig>
     {
-        AdaptiveLabelConfig(::AdaptiveCards::LabelConfig labelConfig = {});
+        AdaptiveLabelConfig(::AdaptiveCards::LabelConfig const& labelConfig = {});
 
         property<ObjectModel::Uwp::Spacing> InputSpacing;
         property<Uwp::AdaptiveInputLabelConfig> RequiredInputs;

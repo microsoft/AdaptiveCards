@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveFontWeightsConfig : AdaptiveFontWeightsConfigT < AdaptiveFontWeightsConfig>
+    struct AdaptiveFontWeightsConfig : AdaptiveFontWeightsConfigT<AdaptiveFontWeightsConfig>
     {
-        AdaptiveFontWeightsConfig(::AdaptiveCards::FontWeightsConfig fontWeightsConfig = {});
+        AdaptiveFontWeightsConfig(::AdaptiveCards::FontWeightsConfig const& fontWeightsConfig = {});
 
         property<uint16_t> Lighter;
         property<uint16_t> Default;
@@ -21,4 +21,3 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
     {
     };
 }
-

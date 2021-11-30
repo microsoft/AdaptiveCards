@@ -27,8 +27,8 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-
-    Uwp::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJsonString(hstring const& hostConfigJson) {
+    Uwp::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJsonString(hstring const& hostConfigJson)
+    {
         std::string adaptiveJsonString = HStringToUTF8(hostConfigJson);
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
     }

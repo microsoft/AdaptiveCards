@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveCardGetResourceStreamArgs : AdaptiveCardGetResourceStreamArgsT < AdaptiveCardGetResourceStreamArgs>
+    struct AdaptiveCardGetResourceStreamArgs : AdaptiveCardGetResourceStreamArgsT<AdaptiveCardGetResourceStreamArgs>
     {
         AdaptiveCardGetResourceStreamArgs(winrt::Windows::Foundation::Uri const& url = nullptr) : Url{url} {}
 

@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveImageConfig : AdaptiveImageConfigT < AdaptiveImageConfig>
+    struct AdaptiveImageConfig : AdaptiveImageConfigT<AdaptiveImageConfig>
     {
-        AdaptiveImageConfig(::AdaptiveCards::ImageConfig ImageConfig = {});
+        AdaptiveImageConfig(::AdaptiveCards::ImageConfig const& ImageConfig = {});
 
         property<ObjectModel::Uwp::ImageSize> ImageSize;
     };

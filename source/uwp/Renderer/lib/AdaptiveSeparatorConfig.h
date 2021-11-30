@@ -14,6 +14,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<winrt::Windows::UI::Color> LineColor;
     };
 }
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
 {
     struct AdaptiveSeparatorConfig : AdaptiveSeparatorConfigT<AdaptiveSeparatorConfig, AdaptiveSeparatorConfig>

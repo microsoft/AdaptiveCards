@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveImageSizesConfig::AdaptiveImageSizesConfig(::AdaptiveCards::ImageSizesConfig imageSizesConfig)
+    AdaptiveImageSizesConfig::AdaptiveImageSizesConfig(::AdaptiveCards::ImageSizesConfig const& imageSizesConfig)
     {
         Small = imageSizesConfig.smallSize;
         Medium = imageSizesConfig.mediumSize;

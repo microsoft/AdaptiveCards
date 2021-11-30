@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveActionsConfig::AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig actionsConfig) :
+    AdaptiveActionsConfig::AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig const& actionsConfig) :
         ShowCard{winrt::make<implementation::AdaptiveShowCardActionConfig>(actionsConfig.showCard)}
     {
         ActionsOrientation = static_cast<Uwp::ActionsOrientation>(actionsConfig.actionsOrientation);

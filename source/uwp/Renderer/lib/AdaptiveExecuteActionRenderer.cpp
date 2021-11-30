@@ -6,10 +6,6 @@
 #include "AdaptiveExecuteActionRenderer.g.cpp"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     rtxaml::UIElement AdaptiveExecuteActionRenderer::Render(rtom::IAdaptiveActionElement const& action,

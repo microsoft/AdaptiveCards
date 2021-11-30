@@ -24,8 +24,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             columnSetBorder.Child(gridContainer);
 
-            rtom::ContainerStyle containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(
-                adaptiveColumnSet, columnSetBorder, renderContext, renderArgs);
+            rtom::ContainerStyle containerStyle =
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumnSet, columnSetBorder, renderContext, renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
             auto newRenderArgs =

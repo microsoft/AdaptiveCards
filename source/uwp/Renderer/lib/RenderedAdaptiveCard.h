@@ -57,8 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
         void AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs);
-        void LinkActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction,
-                              Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction, Uwp::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(ObjectModel::Uwp::AdaptiveCard const& card, Uwp::AdaptiveRenderArgs const& renderArgs);
         Uwp::IAdaptiveInputValue GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement);
 

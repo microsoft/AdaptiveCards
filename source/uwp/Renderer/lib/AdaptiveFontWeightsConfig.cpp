@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveFontWeightsConfig::AdaptiveFontWeightsConfig(::AdaptiveCards::FontWeightsConfig fontWeightsConfig)
+    AdaptiveFontWeightsConfig::AdaptiveFontWeightsConfig(::AdaptiveCards::FontWeightsConfig const& fontWeightsConfig)
     {
         Default = static_cast<uint16_t>(fontWeightsConfig.GetFontWeight(::AdaptiveCards::TextWeight::Default));
         Lighter = static_cast<uint16_t>(fontWeightsConfig.GetFontWeight(::AdaptiveCards::TextWeight::Lighter));

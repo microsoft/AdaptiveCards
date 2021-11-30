@@ -15,6 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     };
 }
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
 {
     struct AdaptiveTextStyleConfig : AdaptiveTextStyleConfigT<AdaptiveTextStyleConfig, implementation::AdaptiveTextStyleConfig>

@@ -16,12 +16,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         InputValue();
 
         // TODO: getting compile errors with this for some reason...
-        //property<winrt::Windows::UI::Xaml::UIElement> ErrorMessage;
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement InputElement()
-        {
-            return m_adaptiveInputElement;
-        };
-       winrt::Windows::UI::Xaml::UIElement ErrorMessage() { return m_validationError; };
+        // property<winrt::Windows::UI::Xaml::UIElement> ErrorMessage;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
+        winrt::Windows::UI::Xaml::UIElement ErrorMessage() { return m_validationError; };
         void ErrorMessage(winrt::Windows::UI::Xaml::UIElement const& errorMessage)
         {
             m_validationError = errorMessage;

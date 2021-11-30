@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveCardConfig::AdaptiveCardConfig(::AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig)
+    AdaptiveCardConfig::AdaptiveCardConfig(::AdaptiveCards::AdaptiveCardConfig const& adaptiveCardConfig)
     {
         AllowCustomStyle = adaptiveCardConfig.allowCustomStyle;
     }

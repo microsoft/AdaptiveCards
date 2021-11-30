@@ -33,12 +33,15 @@ namespace AdaptiveCards::Rendering::Uwp
         std::unordered_map<winrt::Windows::Foundation::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 
-        void TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& eventArgs);
-        void TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& eventArgs);
+        void TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender,
+                                      winrt::Windows::UI::Xaml::RoutedEventArgs const& eventArgs);
+        void TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender,
+                                      winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& eventArgs);
         void ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender);
 
         // TODO: Do I need a const ref here? or just ref?
-        void UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage, winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
+        void UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage,
+                                   winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };

@@ -34,7 +34,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         void AddElementToStretchablesList(rtxaml::UIElement const& element);
         bool IsUIElementInStretchableList(rtxaml::UIElement const& element);
-        void SetVerticalContentAlignment(AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment) {  m_verticalContentAlignment = verticalContentAlignment; }
+        void SetVerticalContentAlignment(AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
+        {
+            m_verticalContentAlignment = verticalContentAlignment;
+        }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

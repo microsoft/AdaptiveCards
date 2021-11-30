@@ -8,7 +8,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     struct AdaptiveImageSizesConfig : AdaptiveImageSizesConfigT<AdaptiveImageSizesConfig>
     {
-        AdaptiveImageSizesConfig(::AdaptiveCards::ImageSizesConfig imageSizesConfig = {});
+        AdaptiveImageSizesConfig(::AdaptiveCards::ImageSizesConfig const& imageSizesConfig = {});
 
         property<uint32_t> Small;
         property<uint32_t> Medium;

@@ -6,15 +6,13 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveShowCardActionConfig : AdaptiveShowCardActionConfigT < AdaptiveShowCardActionConfig>
+    struct AdaptiveShowCardActionConfig : AdaptiveShowCardActionConfigT<AdaptiveShowCardActionConfig>
     {
         AdaptiveShowCardActionConfig(::AdaptiveCards::ShowCardActionConfig const& showCardActionConfig = {});
 
         property<Uwp::ActionMode> ActionMode;
         property<ObjectModel::Uwp::ContainerStyle> Style;
         property<uint32_t> InlineTopMargin;
-
-        IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

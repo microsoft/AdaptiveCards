@@ -32,7 +32,6 @@
 using namespace AdaptiveCards;
 using namespace AdaptiveCards::Rendering::Uwp;
 
-
 std::string WStringToString(std::wstring_view in)
 {
     const int length_in = static_cast<int>(in.length());
@@ -295,7 +294,6 @@ winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style, rt
     return styleDefinition.BorderColor();
 }
 
-
 // TODO: do we want try/catch here?
 winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType)
 {
@@ -333,7 +331,6 @@ winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hos
         return L"";
     }
 }
-
 
 uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType, rtom::TextSize const& desiredSize)
 {
@@ -499,8 +496,8 @@ uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig,
 {
     try
     {
-		// TODO: we have a lot of functions like this. Can we have a MAP of values?
-		// TODO: so we don't have to do if/else all the time?
+        // TODO: we have a lot of functions like this. Can we have a MAP of values?
+        // TODO: so we don't have to do if/else all the time?
         switch (desiredWeight)
         {
         case rtom::TextWeight::Lighter:
@@ -546,7 +543,7 @@ std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inp
 
 winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson)
 {
-	// TODO: do we want to check for null here?
+    // TODO: do we want to check for null here?
     return inputJson.Stringify();
 }
 
@@ -660,7 +657,6 @@ bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage)
     return false;
 }
 
-
 winrt::Windows::Foundation::Uri GetUrlFromString(rtrender::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
 {
     winrt::Windows::Foundation::Uri uri{nullptr};
@@ -720,10 +716,9 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
                                                                                                   unsigned int month,
                                                                                                   unsigned int day)
 {
-	// TODO: default constructor for reference will be invoked, right?
+    // TODO: default constructor for reference will be invoked, right?
     return GetDateTime(year, month, day);
 }
-
 
 rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement)
 {
@@ -732,7 +727,7 @@ rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& tex
         rtom::AdaptiveTextRun textRun;
 
         // TODO: is this the right way to do it? Or do we need to .Value()?
-		// TODO: does IReference has copy constructor that will extract .Value() and copy it? (at least for primitifves)?
+        // TODO: does IReference has copy constructor that will extract .Value() and copy it? (at least for primitifves)?
         textRun.Color(textElement.Color());
         textRun.FontType(textElement.FontType());
         textRun.IsSubtle(textElement.IsSubtle());

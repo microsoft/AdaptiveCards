@@ -8,7 +8,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     struct AdaptiveHighlightColorConfig : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig>
     {
-        AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig highlightColorConfig = {});
+        AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig const& highlightColorConfig = {});
 
         property<winrt::Windows::UI::Color> Default;
         property<winrt::Windows::UI::Color> Subtle;

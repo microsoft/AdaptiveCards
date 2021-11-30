@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveFactSetConfig : AdaptiveFactSetConfigT < AdaptiveFactSetConfig>
+    struct AdaptiveFactSetConfig : AdaptiveFactSetConfigT<AdaptiveFactSetConfig>
     {
-        AdaptiveFactSetConfig(::AdaptiveCards::FactSetConfig factSetConfig = {});
+        AdaptiveFactSetConfig(::AdaptiveCards::FactSetConfig const& factSetConfig = {});
 
         property<Uwp::AdaptiveFactSetTextConfig> Title;
         property<Uwp::AdaptiveFactSetTextConfig> Value;

@@ -6,18 +6,8 @@
 #include "AdaptiveFactSetRenderer.g.cpp"
 #include "TextHelpers.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-
     rtxaml::UIElement AdaptiveFactSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
                                                       rtrender::AdaptiveRenderContext const& renderContext,
                                                       rtrender::AdaptiveRenderArgs const& renderArgs)
@@ -93,12 +83,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     titleTextBlock.Margin({0, 0, (double)spacing, 0});
 
                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                                                    L"Adaptive.Fact.Title",
-                                                                                                    titleTextBlock);
+                                                                                                 L"Adaptive.Fact.Title",
+                                                                                                 titleTextBlock);
 
                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                                                    L"Adaptive.Fact.Value",
-                                                                                                    valueTextBlock);
+                                                                                                 L"Adaptive.Fact.Value",
+                                                                                                 valueTextBlock);
 
                     rtxaml::Controls::Grid::SetColumn(titleTextBlock, 0);
                     rtxaml::Controls::Grid::SetRow(titleTextBlock, currentFact);

@@ -48,9 +48,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (const auto columnAsContainerBase = adaptiveColumn.try_as<rtom::IAdaptiveContainerBase>())
             {
                 containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(columnAsContainerBase,
-                                                                                                          columnBorder,
-                                                                                                          renderContext,
-                                                                                                          renderArgs);
+                                                                                                       columnBorder,
+                                                                                                       renderContext,
+                                                                                                       renderArgs);
             }
 
             auto parentElement = renderArgs.ParentElement();

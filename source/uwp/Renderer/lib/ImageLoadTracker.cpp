@@ -3,14 +3,6 @@
 #include "pch.h"
 #include "ImageLoadTracker.h"
 
-#include <wrl\event.h>
-
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Media::Imaging;
-
 namespace AdaptiveCards::Rendering::Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
@@ -40,7 +32,7 @@ namespace AdaptiveCards::Rendering::Uwp
             bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageLoaded});
 
         // Ensure we don't try and write the private data from multiple threads
-       /* auto exclusiveLock = m_lock.LockExclusive();*/
+        /* auto exclusiveLock = m_lock.LockExclusive();*/
         // TODO: can we get into deadlock here if we crash somewhere in between?
         // TODO: exlucisve lock resolved when the function finishes - it was cleaned after (am I right?:)
         m_lock.lock();
@@ -150,7 +142,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void ImageLoadTracker::ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender)
     {
-      /*  auto exclusiveLock = m_lock.LockExclusive();*/
+        /*  auto exclusiveLock = m_lock.LockExclusive();*/
         m_lock.lock();
         m_trackedImageCount--;
         if (m_eventRevokers.find(sender) != m_eventRevokers.end())

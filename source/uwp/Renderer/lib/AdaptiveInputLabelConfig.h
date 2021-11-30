@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    struct AdaptiveInputLabelConfig : AdaptiveInputLabelConfigT < AdaptiveInputLabelConfig>
+    struct AdaptiveInputLabelConfig : AdaptiveInputLabelConfigT<AdaptiveInputLabelConfig>
     {
-        AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig inputLabelConfig = {});
+        AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig const& inputLabelConfig = {});
 
         property<winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor> Color;
         property<bool> IsSubtle;
@@ -17,6 +17,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<winrt::AdaptiveCards::ObjectModel::Uwp::TextWeight> Weight;
     };
 }
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
 {
     struct AdaptiveInputLabelConfig : AdaptiveInputLabelConfigT<AdaptiveInputLabelConfig, implementation::AdaptiveInputLabelConfig>

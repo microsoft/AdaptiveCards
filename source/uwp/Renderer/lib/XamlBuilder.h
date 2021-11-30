@@ -41,10 +41,9 @@ namespace AdaptiveCards::Rendering::Uwp
             rtrender::AdaptiveRenderArgs renderArgs,
             std::function<void(rtxaml::UIElement child)> childCreatedCallback);
 
-        winrt::Windows::UI::Xaml::UIElement
-        BuildImage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& adaptiveCardElement,
-                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+        winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& adaptiveCardElement,
+                                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;

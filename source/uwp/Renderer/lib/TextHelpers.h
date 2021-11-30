@@ -34,7 +34,6 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                         bool isInHyperlink,
                         winrt::Windows::Foundation::Collections::IVector<winrt::Windows::UI::Xaml::Documents::Inline> inlines);
 
-
 uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                         rtrender::AdaptiveRenderContext const& renderContext,
                         rtrender::AdaptiveRenderArgs const& renderArgs,
@@ -43,7 +42,6 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                         TextRunStyleParameters const& styleParameters,
                         winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines);
 
-
 uint32_t AddSingleTextInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                              rtrender::AdaptiveRenderContext const& renderContext,
                              rtrender::AdaptiveRenderArgs const& renderArgs,
@@ -51,7 +49,6 @@ uint32_t AddSingleTextInline(rtom::IAdaptiveTextElement const& adaptiveTextEleme
                              // TODO: should it be const TextRunStyleParameters& ?
                              const TextRunStyleParameters& styleParameters,
                              winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines);
-
 
 uint32_t SetXamlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                         rtrender::AdaptiveRenderContext const& renderContext,

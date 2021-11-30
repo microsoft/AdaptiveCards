@@ -24,8 +24,5 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveActionRendererRegistration::Remove(hstring const& type)
-    {
-        m_registration.erase(type);
-    }
+    void AdaptiveActionRendererRegistration::Remove(hstring const& type) { m_registration.erase(type); }
 }
