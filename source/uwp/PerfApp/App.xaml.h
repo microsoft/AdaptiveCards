@@ -9,19 +9,21 @@
 
 #include "App.g.h"
 
-namespace PerfApp {
-/// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
-/// </summary>
-ref class App sealed
+namespace PerfApp
 {
-protected:
-    virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs ^ e) override;
+    /// <summary>
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// </summary>
+    ref class App sealed
+    {
+    protected:
+        virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e) override;
 
-    internal : App();
+    internal:
+        App();
 
-private:
-    void OnSuspending(Platform::Object ^ sender, Windows::ApplicationModel::SuspendingEventArgs ^ e);
-    void OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^ e);
-};
-} // namespace PerfApp
+    private:
+        void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
+        void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
+    };
+}
