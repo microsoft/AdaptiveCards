@@ -10,8 +10,6 @@
 #endif
 
 #define DISABLE_NS_PREFIX_CHECKS 1
-#include <wil/cppwinrt.h>
-#include <wil/result_macros.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
 #include <unordered_map>
