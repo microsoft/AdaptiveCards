@@ -11,21 +11,13 @@
 #include "XamlHelpers.h"
 #include "ElementTagContent.h"
 
-using namespace std;
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::UI::Xaml::Media;
-
 static const float OutsidePanelY = -1000.0f;
+
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
+    // TODO: can we do it in the header?
+    uint32_t WholeItemsPanel::s_bleedMargin = 0;
+
     // IFrameworkElementOverrides
     winrt::Windows::Foundation::Size WholeItemsPanel::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
     {
@@ -37,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         auto children = this->Children();
         count = children.Size();
 
-        const winrt::Windows::Foundation::Size noVerticalLimit{availableSize.Width, numeric_limits<float>::infinity()};
+        const winrt::Windows::Foundation::Size noVerticalLimit{availableSize.Width, std::numeric_limits<float>::infinity()};
         auto measuredAvailableSize{availableSize};
 
         m_visibleCount = count;
@@ -95,7 +87,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            winrt::Windows::Foundation::Size noLimit{numeric_limits<float>::infinity(), numeric_limits<float>::infinity()};
+                            winrt::Windows::Foundation::Size noLimit{std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()};
                             childAsTextBlock.TextWrapping(rtxaml::TextWrapping::NoWrap);
                             childAsTextBlock.Measure(noLimit);
                             childSize = childAsTextBlock.DesiredSize();
@@ -164,8 +156,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                         childSize = child.DesiredSize();
 
                         m_visibleCount = i + 1;
-                        currentHeight = max((currentHeight + childSize.Height), measuredAvailableSize.Height);
-                        maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
+                        currentHeight = std::max((currentHeight + childSize.Height), measuredAvailableSize.Height);
+                        maxDesiredWidth = std::max(childSize.Width, maxDesiredWidth);
                     }
                     else
                     {
@@ -176,7 +168,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     continue;
                 }
                 currentHeight = newHeight;
-                maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
+                maxDesiredWidth = std::max(childSize.Width, maxDesiredWidth);
             }
         }
 
@@ -192,7 +184,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
 
         // If inside an infinity/auto width container
-        if (measuredAvailableSize.Width == numeric_limits<float>::infinity())
+        if (measuredAvailableSize.Width == std::numeric_limits<float>::infinity())
         {
             // We use the calculated max desired width of children
             return {maxDesiredWidth, currentHeight};
@@ -271,10 +263,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         rtxaml::Media::RectangleGeometry clip;
 
         const double bleedMargin = static_cast<double>(s_bleedMargin);
-        float x0 = static_cast<float>(-max(margin.Left, bleedMargin));
-        float y0 = static_cast<float>(-max(margin.Top, bleedMargin));
-        float x1 = static_cast<float>(max(margin.Left, bleedMargin) + finalSize.Width + max(margin.Right, bleedMargin));
-        float y1 = static_cast<float>(max(margin.Top, bleedMargin) + finalSize.Height + max(margin.Bottom, bleedMargin));
+        float x0 = static_cast<float>(-std::max(margin.Left, bleedMargin));
+        float y0 = static_cast<float>(-std::max(margin.Top, bleedMargin));
+        float x1 = static_cast<float>(std::max(margin.Left, bleedMargin) + finalSize.Width + std::max(margin.Right, bleedMargin));
+        float y1 = static_cast<float>(std::max(margin.Top, bleedMargin) + finalSize.Height + std::max(margin.Bottom, bleedMargin));
         clip.Rect({x0, y0, x1, y1});
 
         this->Clip(clip);
@@ -308,15 +300,14 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     winrt::hstring WholeItemsPanel::GetAltText()
     {
-        wstring buffer;
+        // TODO: is this correct?
+        std::wstring buffer;
         AppendAltText(buffer);
         return {buffer.c_str()};
     }
 
     void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
 
-    // TODO: fix this
-    uint32_t WholeItemsPanel::s_bleedMargin = 0;
     void WholeItemsPanel::SetBleedMargin(uint32_t bleedMargin)
     {
         // Bleed margin is the extent to which the content may "bleed" out of the panel on the left and right. It is
@@ -339,10 +330,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 }
                 else
                 {
-                    auto tagContent = winrt::make_self<rtrender::implementation::ElementTagContent>();
-                    tagContent->IsStretchable(true);
-                    // not sure if it works, or we'll have to go to projection and then convert to IINspectible
-                    elementAsFrameworkElement.Tag(*tagContent);
+                    // TODO: should we call winrt::make to skip overhead of projection?
+                    rtrender::ElementTagContent tagContent{};
+                    tagContent.IsStretchable(true);
+                    elementAsFrameworkElement.Tag(tagContent);
                 }
             }
         }
@@ -355,6 +346,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
+                // TODO: do I need peek_innards for this?
                 if (const auto tagAsElementTagContent = tag.try_as<rtrender::ElementTagContent>())
                 {
                     return tagAsElementTagContent.IsStretchable();
@@ -400,7 +392,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         rtxaml::Thickness margins = shape.Margin();
         const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
         const double effectiveAvailableHeight = availableHeight - margins.Top - margins.Bottom;
-        const double minSize = min(effectiveAvailableWidth, effectiveAvailableHeight);
+        const double minSize = std::min(effectiveAvailableWidth, effectiveAvailableHeight);
         shape.Width(effectiveAvailableWidth);
         shape.Height(effectiveAvailableHeight);
     }
@@ -418,11 +410,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     {
         if (const auto dependencyObject = element.try_as<rtxaml::DependencyObject>())
         {
-           /* auto automationStatics = *winrt::make_self<rtxaml::Automation::IAutomationPropertiesStatics>();*/
             return rtxaml::Automation::AutomationProperties::GetName(dependencyObject);
         }
 
-        // TODO: We shouldn't reach here
+        // TODO: We shouldn't reach here. What do we do? throw or return empty string?
         return L"";
     }
 

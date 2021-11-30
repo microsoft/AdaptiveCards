@@ -7,33 +7,22 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    /* struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public
-     * rtxaml::Controls::PanelT<WholeItemsPanel, ITypePeek>*/
+    // TODO: we don't really need it in the idl, right? we can just do this:
+    // WholeItemsPanel: winrt::Windows::UI::Xaml::Controls::PanelT<WholeItemsPanel, ITypePeek>
+    // TODO: I don't think we want to expose this type..
     struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
-    /*  : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
-                                            ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
-                                            Microsoft::WRL::CloakedIid<ITypePeek>,
-                                            Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>*/
     {
     public:
         WholeItemsPanel() = default;
-        // IFrameworkElementOverrides
-        // virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
-        //    /* [in] */ ABI::Windows::Foundation::Size availableSize,
-        //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
-        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size const& availableSize);
 
+        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size const& availableSize);
         winrt::Windows::Foundation::Size ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize);
-        // virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
-        //    /* [in] */ ABI::Windows::Foundation::Size finalSize,
-        //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
 
         virtual void OnApplyTemplate(void);
 
         virtual winrt::hstring GetAltText();
 
         // Method used inside the component to reduce the number of temporary allocations
-        /* _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);*/
         void AppendAltText(std::wstring& buffer);
 
         void SetMainPanel(bool value);

@@ -30,6 +30,11 @@ using namespace Microsoft::WRL::Wrappers;
 // HResultException.  This provides future flexibility in case we some day
 // want to throw more varied types of exception.
 
+
+
+
+// TODO: I do not need this file at all, correct?
+
 class HResultException
 {
     HRESULT m_Hr;
