@@ -1,1 +1,1 @@
-../ ACRChoiceSetCompactStyleView.h
+../ACRChoiceSetCompactStyleView.h
