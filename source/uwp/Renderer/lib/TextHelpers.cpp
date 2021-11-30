@@ -9,7 +9,7 @@
 #include <safeint.h>
 
 using namespace AdaptiveCards::Rendering::Uwp;
-// using namespace AdaptiveCards;
+using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace std::string_literals;
 

@@ -63,7 +63,7 @@ namespace AdaptiveCards
 
                 AdaptiveElementRendererRegistration ElementRenderers { get; };
                 AdaptiveActionRendererRegistration ActionRenderers { get; };
-            };
+            }
 
             runtimeclass AdaptiveActionEventArgs
             {
@@ -83,7 +83,7 @@ namespace AdaptiveCards
                 Windows.UI.Color BackgroundColor;
                 Windows.UI.Color BorderColor;
                 AdaptiveColorsConfig ForegroundColors;
-            };
+            }
 
             runtimeclass AdaptiveContainerStylesDefinition
             {
@@ -95,7 +95,7 @@ namespace AdaptiveCards
                 AdaptiveContainerStyleDefinition Attention;
                 AdaptiveContainerStyleDefinition Warning;
                 AdaptiveContainerStyleDefinition Accent;
-            };
+            }
 
             runtimeclass AdaptiveFontSizesConfig
             {
@@ -106,7 +106,7 @@ namespace AdaptiveCards
                 UInt32 Medium;
                 UInt32 Large;
                 UInt32 ExtraLarge;
-            };
+            }
 
             runtimeclass AdaptiveFontWeightsConfig
             {
@@ -115,7 +115,7 @@ namespace AdaptiveCards
                 UInt16 Lighter;
                 UInt16 Default;
                 UInt16 Bolder;
-            };
+            }
 
             runtimeclass AdaptiveFontTypeDefinition
             {
@@ -124,7 +124,7 @@ namespace AdaptiveCards
                 String FontFamily;
                 AdaptiveFontWeightsConfig FontWeights;
                 AdaptiveFontSizesConfig FontSizes;
-            };
+            }
 
             runtimeclass AdaptiveFontTypesDefinition
             {
@@ -132,7 +132,7 @@ namespace AdaptiveCards
 
                 AdaptiveFontTypeDefinition Default;
                 AdaptiveFontTypeDefinition Monospace;
-            };
+            }
 
             runtimeclass AdaptiveHighlightColorConfig
             {
@@ -140,7 +140,7 @@ namespace AdaptiveCards
 
                 Windows.UI.Color Default;
                 Windows.UI.Color Subtle;
-            };
+            }
 
             runtimeclass AdaptiveColorConfig
             {
@@ -149,7 +149,7 @@ namespace AdaptiveCards
                 Windows.UI.Color Default;
                 Windows.UI.Color Subtle;
                 AdaptiveHighlightColorConfig HighlightColors;
-            };
+            }
 
             runtimeclass AdaptiveColorsConfig
             {
@@ -162,7 +162,7 @@ namespace AdaptiveCards
                 AdaptiveColorConfig Good;
                 AdaptiveColorConfig Warning;
                 AdaptiveColorConfig Attention;
-            };
+            }
 
             interface IAdaptiveTextStyleConfig
             {
@@ -171,9 +171,9 @@ namespace AdaptiveCards
                 AdaptiveCards.ObjectModel.Uwp.ForegroundColor Color;
                 Boolean IsSubtle;
                 AdaptiveCards.ObjectModel.Uwp.FontType FontType;
-            };
+            }
 
-            runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); };
+            runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); }
 
             runtimeclass AdaptiveTextStylesConfig
             {
@@ -181,7 +181,7 @@ namespace AdaptiveCards
 
                 AdaptiveTextStyleConfig Heading;
                 AdaptiveTextStyleConfig ColumnHeader;
-            };
+            }
 
             runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
             {
@@ -189,7 +189,7 @@ namespace AdaptiveCards
 
                 Boolean Wrap;
                 UInt32 MaxWidth;
-            };
+            }
 
             runtimeclass AdaptiveSpacingConfig
             {
@@ -201,7 +201,7 @@ namespace AdaptiveCards
                 UInt32 Large;
                 UInt32 ExtraLarge;
                 UInt32 Padding;
-            };
+            }
 
             runtimeclass AdaptiveSeparatorConfig
             {
@@ -209,7 +209,7 @@ namespace AdaptiveCards
 
                 UInt32 LineThickness;
                 Windows.UI.Color LineColor;
-            };
+            }
 
             runtimeclass AdaptiveImageSizesConfig
             {
@@ -218,7 +218,7 @@ namespace AdaptiveCards
                 UInt32 Small;
                 UInt32 Medium;
                 UInt32 Large;
-            };
+            }
 
             runtimeclass AdaptiveImageSetConfig
             {
@@ -226,21 +226,21 @@ namespace AdaptiveCards
 
                 AdaptiveCards.ObjectModel.Uwp.ImageSize ImageSize;
                 UInt32 MaxImageHeight;
-            };
+            }
 
             runtimeclass AdaptiveImageConfig
             {
                 AdaptiveImageConfig();
 
                 AdaptiveCards.ObjectModel.Uwp.ImageSize ImageSize;
-            };
+            }
 
             runtimeclass AdaptiveCardConfig
             {
                 AdaptiveCardConfig();
 
                 Boolean AllowCustomStyle;
-            };
+            }
 
             runtimeclass AdaptiveFactSetConfig
             {
@@ -249,7 +249,7 @@ namespace AdaptiveCards
                 AdaptiveFactSetTextConfig Title;
                 AdaptiveFactSetTextConfig Value;
                 UInt32 Spacing;
-            };
+            }
 
             runtimeclass AdaptiveShowCardActionConfig
             {
@@ -258,7 +258,7 @@ namespace AdaptiveCards
                 ActionMode ActionMode;
                 AdaptiveCards.ObjectModel.Uwp.ContainerStyle Style;
                 UInt32 InlineTopMargin;
-            };
+            }
 
             runtimeclass AdaptiveActionsConfig
             {
@@ -272,7 +272,7 @@ namespace AdaptiveCards
                 AdaptiveCards.ObjectModel.Uwp.Spacing Spacing;
                 IconPlacement IconPlacement;
                 UInt32 IconSize;
-            };
+            }
 
             runtimeclass AdaptiveMediaConfig
             {
@@ -281,7 +281,7 @@ namespace AdaptiveCards
                 String DefaultPoster;
                 String PlayButton;
                 Boolean AllowInlinePlayback;
-            };
+            }
 
             runtimeclass AdaptiveInputLabelConfig
             {
@@ -292,7 +292,7 @@ namespace AdaptiveCards
                 AdaptiveCards.ObjectModel.Uwp.TextSize Size;
                 String Suffix;
                 AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
-            };
+            }
 
             runtimeclass AdaptiveLabelConfig
             {
@@ -302,7 +302,7 @@ namespace AdaptiveCards
 
                 AdaptiveInputLabelConfig RequiredInputs;
                 AdaptiveInputLabelConfig OptionalInputs;
-            };
+            }
 
             runtimeclass AdaptiveErrorMessageConfig
             {
@@ -311,7 +311,7 @@ namespace AdaptiveCards
                 AdaptiveCards.ObjectModel.Uwp.TextSize Size;
                 AdaptiveCards.ObjectModel.Uwp.Spacing Spacing;
                 AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
-            };
+            }
 
             runtimeclass AdaptiveInputsConfig
             {
@@ -319,21 +319,21 @@ namespace AdaptiveCards
 
                 AdaptiveErrorMessageConfig ErrorMessage;
                 AdaptiveLabelConfig Label;
-            };
+            }
 
             runtimeclass AdaptiveTextBlockConfig
             {
                 AdaptiveTextBlockConfig();
 
                 UInt32 HeadingLevel;
-            };
+            }
 
             runtimeclass AdaptiveTableConfig
             {
                 AdaptiveTableConfig();
 
                 UInt32 CellSpacing;
-            };
+            }
 
             runtimeclass AdaptiveHostConfig
             {
@@ -362,7 +362,7 @@ namespace AdaptiveCards
 
                 static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
                 static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
-            };
+            }
 
             runtimeclass AdaptiveHostConfigParseResult
             {
@@ -370,7 +370,7 @@ namespace AdaptiveCards
 
                 AdaptiveHostConfig HostConfig { get; };
                 Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.AdaptiveError> Errors { get; };
-            };
+            }
 
             runtimeclass AdaptiveCardResourceResolvers
             {
@@ -378,13 +378,13 @@ namespace AdaptiveCards
 
                 void Set(String scheme, IAdaptiveCardResourceResolver resolver);
                 IAdaptiveCardResourceResolver Get(String scheme);
-            };
+            }
 
             interface IAdaptiveCardResourceResolver
             {
                 Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> GetResourceStreamAsync(
                     AdaptiveCardGetResourceStreamArgs args);
-            };
+            }
 
             runtimeclass AdaptiveCardGetResourceStreamArgs
             {
@@ -394,7 +394,7 @@ namespace AdaptiveCards
 
                 [method_name("CreateAdaptiveCardGetResourceStreamArgs")] AdaptiveCardGetResourceStreamArgs(
                     Windows.Foundation.Uri uri);
-            };
+            }
 
             runtimeclass RenderedAdaptiveCard
             {
@@ -409,7 +409,7 @@ namespace AdaptiveCards
 
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
-            };
+            }
 
             runtimeclass AdaptiveInputs
             {
@@ -419,7 +419,7 @@ namespace AdaptiveCards
                 Windows.Foundation.Collections.ValueSet AsValueSet();
 
                 Boolean ValidateInputs(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement submitAction);
-            };
+            }
 
             runtimeclass AdaptiveFeatureRegistration
             {
@@ -428,14 +428,14 @@ namespace AdaptiveCards
                 void Set(String name, String version);
                 String Get(String name);
                 void Remove(String name);
-            };
+            }
 
             runtimeclass AdaptiveElementRendererRegistration
             {
                 void Set(String type, IAdaptiveElementRenderer renderer);
                 IAdaptiveElementRenderer Get(String type);
                 void Remove(String type);
-            };
+            }
 
             runtimeclass AdaptiveActionRendererRegistration
             {
@@ -444,21 +444,21 @@ namespace AdaptiveCards
                 void Set(String type, IAdaptiveActionRenderer renderer);
                 IAdaptiveActionRenderer Get(String type);
                 void Remove(String type);
-            };
+            }
 
             runtimeclass AdaptiveActionInvoker
             {
                 AdaptiveActionInvoker();
 
                 void SendActionEvent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement actionElement);
-            };
+            }
 
             runtimeclass AdaptiveMediaEventInvoker
             {
                 AdaptiveMediaEventInvoker();
 
                 void SendMediaClickedEvent(AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia mediaElement);
-            };
+            }
 
             runtimeclass AdaptiveRenderArgs
             {
@@ -471,7 +471,7 @@ namespace AdaptiveCards
                 Boolean AncestorHasFallback;
                 Boolean AddContainerPadding;
                 AdaptiveCards.ObjectModel.Uwp.AdaptiveCard ParentCard;
-            };
+            }
 
             interface IAdaptiveInputValue
             {
@@ -484,7 +484,7 @@ namespace AdaptiveCards
                 };
                 Boolean Validate();
                 void SetFocus();
-            };
+            }
 
             runtimeclass AdaptiveRenderContext
             {
@@ -511,131 +511,131 @@ namespace AdaptiveCards
 
                 void AddError(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode statusCode, String message);
                 void AddWarning(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode statusCode, String message);
-            };
+            }
 
             interface IAdaptiveElementRenderer
             {
                 Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
-            };
+            }
 
             interface IAdaptiveActionRenderer
             {
                 Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTableRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveTextBlockRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTextBlockRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveRichTextBlockRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveRichTextBlockRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveImageRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveImageRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveImageSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveImageSetRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveContainerRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveColumnRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveColumnRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveColumnSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveColumnSetRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveChoiceSetInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveChoiceSetInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveDateInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveDateInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveNumberInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveNumberInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveTextInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTextInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveTimeInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTimeInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveToggleInputRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveToggleInputRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveFactSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveFactSetRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveMediaRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveMediaRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveActionSetRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveOpenUrlActionRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveShowCardActionRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveSubmitActionRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveExecuteActionRenderer();
-            };
+            }
 
             [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveToggleVisibilityActionRenderer();
-            };
+            }
 
             runtimeclass TileControl : Windows.UI.Xaml.Controls.ContentControl
             {
@@ -650,6 +650,7 @@ namespace AdaptiveCards
             runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
             {
                 WholeItemsPanel();
+
                 String GetAltText();
                 Boolean IsAllContentClippedOut();
                 Boolean IsTruncated();
@@ -658,6 +659,7 @@ namespace AdaptiveCards
             runtimeclass ElementTagContent
             {
                 ElementTagContent();
+
                 Windows.UI.Xaml.Controls.ColumnDefinition ColumnDefinition { get; };
                 AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement CardElement { get; };
                 Windows.UI.Xaml.UIElement Separator { get; };
