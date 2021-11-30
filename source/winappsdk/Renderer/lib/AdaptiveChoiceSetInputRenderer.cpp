@@ -200,7 +200,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         // TODO: is this correct way?
         std::tie(inputLayout, std::ignore) =
-            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext);
+            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
         // TODO: revisit this. AddInputValue args need to be modified to accept proper inputValue

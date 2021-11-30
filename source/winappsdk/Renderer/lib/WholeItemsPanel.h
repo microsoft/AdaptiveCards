@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         void AddElementToStretchablesList(rtxaml::UIElement const& element);
         bool IsUIElementInStretchableList(rtxaml::UIElement const& element);
-        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment);
+        void SetVerticalContentAlignment(AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment) {  m_verticalContentAlignment = verticalContentAlignment; }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -48,7 +48,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         uint32_t m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment m_verticalContentAlignment{};
+        AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

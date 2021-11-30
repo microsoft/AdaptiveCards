@@ -210,11 +210,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == rtom::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == rtom::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -357,11 +357,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // potentially, we should never reach here
 
         return false;
-    }
-
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment)
-    {
-        m_verticalContentAlignment = verticalContentAlignment;
     }
 
     bool WholeItemsPanel::IsAnySubgroupTruncated(rtxaml::Controls::Panel panel)

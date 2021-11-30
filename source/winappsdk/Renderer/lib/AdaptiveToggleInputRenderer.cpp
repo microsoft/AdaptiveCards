@@ -38,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
             rtxaml::UIElement inputLayout{nullptr};
             std::tie(inputLayout, std::ignore) =
-                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveToggleInput, checkBox, false, renderContext);
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveToggleInput, checkBox, false, renderContext, false);
 
             // TODO: come back here, not sure if this is right
             auto input = winrt::make_self<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);

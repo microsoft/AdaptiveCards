@@ -63,7 +63,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                                                             inputUIElement,
                                                                                             !regex.empty(), // TODO: not sure
                                                                                                             // if it's correct way here with regex hstring
-                                                                                            renderContext);
+                                                                                            renderContext,
+																							false);
         return {inputLayout, validationBorder};
     }
 
