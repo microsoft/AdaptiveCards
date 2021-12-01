@@ -151,7 +151,7 @@ try
     RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
         Callback<IRoutedEventHandler>(
             [touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
-                IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                 // Take ownership of the passed in HSTRING
                 HString localMimeType;
                 localMimeType.Attach(lambdaMimeType);

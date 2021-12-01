@@ -99,7 +99,7 @@ HRESULT TileControl::LoadImageBrush(_In_ IUIElement* uielement)
     EventRegistrationToken eventToken;
 
     THROW_IF_FAILED(bitmapImage->add_ImageOpened(
-        Callback<IRoutedEventHandler>([&](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+        Callback<IRoutedEventHandler>([&](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
             ComPtr<IUIElement> uiElement;
             THROW_IF_FAILED(get_ResolvedImage(&uiElement));
 

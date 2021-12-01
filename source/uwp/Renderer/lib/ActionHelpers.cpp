@@ -445,7 +445,7 @@ HRESULT BuildAction(
         RETURN_IF_FAILED(buttonBase->add_Click(
             Callback<IRoutedEventHandler>(
                 [action, actionInvoker](
-                    IInspectable* /*sender*/, IRoutedEventArgs *
+                    IInspectable* /*sender*/, IRoutedEventArgs*
                     /*args*/) -> HRESULT { return actionInvoker->SendActionEvent(action.Get()); })
                 .Get(),
             &clickToken));
@@ -639,7 +639,7 @@ void HandleInlineAction(
     THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
         Callback<IRoutedEventHandler>(
             [actionUIElement, textBoxContainerAsFrameworkElement](
-                IInspectable* /*sender*/, IRoutedEventArgs *
+                IInspectable* /*sender*/, IRoutedEventArgs*
                 /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
@@ -822,7 +822,7 @@ void WireButtonClickToAction(_In_ IButton* button, _In_ IAdaptiveActionElement* 
     THROW_IF_FAILED(buttonBase->add_Click(
         Callback<IRoutedEventHandler>(
             [strongAction, actionInvoker](
-                IInspectable* /*sender*/, IRoutedEventArgs *
+                IInspectable* /*sender*/, IRoutedEventArgs*
                 /*args*/) -> HRESULT {
                 THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                 return S_OK;
@@ -1023,11 +1023,9 @@ HRESULT AddOverflowFlyoutItem(
     RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
     EventRegistrationToken clickToken;
     RETURN_IF_FAILED(flyoutItem->add_Click(
-        Callback<IRoutedEventHandler>(
-            [actionParam, actionInvoker](
-                IInspectable* /*sender*/, IRoutedEventArgs *
-                /*args*/) -> HRESULT { return actionInvoker->SendActionEvent(actionParam.Get()); })
-            .Get(),
+        Callback<IRoutedEventHandler>([actionParam, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
+            return actionInvoker->SendActionEvent(actionParam.Get());
+        }).Get(),
         &clickToken));
 
     ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;

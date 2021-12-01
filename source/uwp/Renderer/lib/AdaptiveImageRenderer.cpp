@@ -736,7 +736,7 @@ void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* par
             THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
                 Callback<IRoutedEventHandler>(
                     [ellipseAsFrameworkElement, weakParent, isVisible](
-                        IInspectable* sender, IRoutedEventArgs *
+                        IInspectable* sender, IRoutedEventArgs*
                         /*args*/) -> HRESULT {
                         if (isVisible)
                         {
@@ -804,7 +804,7 @@ void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInsp
             THROW_IF_FAILED(xamlImage->add_ImageOpened(
                 Callback<IRoutedEventHandler>(
                     [weakImage, weakParent, imageSourceAsBitmap, isVisible](
-                        IInspectable* /*sender*/, IRoutedEventArgs *
+                        IInspectable* /*sender*/, IRoutedEventArgs*
                         /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
                         RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));

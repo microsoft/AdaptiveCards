@@ -356,7 +356,7 @@ HRESULT HandleMediaClick(
 
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(mediaElement->add_MediaOpened(
-            Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+            Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                 boolean audioOnly;
                 RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
 

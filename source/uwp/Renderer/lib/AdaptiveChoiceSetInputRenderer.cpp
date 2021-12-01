@@ -318,7 +318,7 @@ HRESULT AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(
     RETURN_IF_FAILED(autoSuggestBoxAsUIElement5->add_GettingFocus(
         Callback<ABI::Windows::Foundation::ITypedEventHandler<UIElement*, ABI::Windows::UI::Xaml::Input::GettingFocusEventArgs*>>(
             [autoSuggestBox](
-                IInspectable* /*sender*/, ABI::Windows::UI::Xaml::Input::IGettingFocusEventArgs *
+                IInspectable* /*sender*/, ABI::Windows::UI::Xaml::Input::IGettingFocusEventArgs*
                 /*args*/) -> HRESULT {
                 autoSuggestBox->put_IsSuggestionListOpen(true);
                 return S_OK;

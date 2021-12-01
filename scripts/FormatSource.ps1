@@ -186,6 +186,10 @@ if ([string]::IsNullOrEmpty($ClangFormat))
     exit 1
 }
 
+Write-Host "[clang-format] Path is $ClangFormat"  
+Write-Host "[clang-format] Version is: "
+    & $ClangFormat --version
+
 function Format-Directory
 {
     [CmdletBinding()]
@@ -274,6 +278,7 @@ if ($Success)
 }
 else
 {
+    Write-Host "You may need to update Visual studio and have the correct clang-format version in your local machine"
     Write-Host -ForegroundColor Red "Errors found (see output). Please make sure to resolve all issues before opening a Pull Request."
     Write-Host -ForegroundColor Red "Formatting can be applied by running:"
     Write-Host -ForegroundColor Red "   PowerShell.exe -ExecutionPolicy Bypass $PSCommandPath -ModifiedOnly `$False` [-Path <path to file or directory>]"
