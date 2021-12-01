@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRParseWarning.h"
-#import "AdaptiveCardParseWarning.h"
+#import <AdaptiveCards/ACRParseWarning.h>
+#import <AdaptiveCards/AdaptiveCardParseWarning.h>
 #import <Foundation/Foundation.h>
 
 @interface ACRParseWarning ()

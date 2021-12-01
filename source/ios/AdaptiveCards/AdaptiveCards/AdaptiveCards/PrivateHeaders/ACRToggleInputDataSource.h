@@ -5,12 +5,12 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElement.h"
-#import "ACRColumnSetView.h"
-#import "ACRIBaseCardElementRenderer.h"
-#import "ACRIBaseInputHandler.h"
-#import <Adaptivecards/HostConfig.h>
-#import <Adaptivecards/ToggleInput.h>
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACRColumnSetView.h>
+#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/ToggleInput.h>
 
 @interface ACRToggleInputDataSource : NSObject <ACRIBaseInputHandler>
 

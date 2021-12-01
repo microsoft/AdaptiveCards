@@ -6,10 +6,10 @@
 //
 //
 
-#import "ACRInputLabelView.h"
-#import "BaseInputElement.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/BaseInputElement.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/ACRView.h>
 
 using namespace AdaptiveCards;
 

@@ -4,8 +4,8 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACOBaseCardElement.h"
-#import "BaseCardElement.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/BaseCardElement.h>
 
 using namespace AdaptiveCards;
 

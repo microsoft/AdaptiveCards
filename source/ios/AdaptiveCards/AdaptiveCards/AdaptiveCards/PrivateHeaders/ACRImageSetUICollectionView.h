@@ -5,10 +5,10 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRView.h"
-#import "HostConfig.h"
-#import "ImageSet.h"
-#import "SharedAdaptiveCard.h"
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/ImageSet.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRImageSetUICollectionView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
