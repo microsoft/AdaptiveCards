@@ -4,8 +4,8 @@
 //
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
-#import "ACOParseContext.h"
-#import "ParseContext.h"
+#import <AdaptiveCards/ACOParseContext.h>
+#import <AdaptiveCards/ParseContext.h>
 
 using namespace AdaptiveCards;
 
