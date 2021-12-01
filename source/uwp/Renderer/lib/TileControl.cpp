@@ -55,13 +55,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::Windows::Foundation::Size TileControl::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
     {
-        return TileControl_base::MeasureOverride(availableSize);
+        return __super::MeasureOverride(availableSize);
     }
 
     winrt::Windows::Foundation::Size TileControl::ArrangeOverride(winrt::Windows::Foundation::Size const& arrangeBounds)
     {
         // TODO: am I doing this right?
-        m_containerSize = TileControl_base::ArrangeOverride(arrangeBounds);
+        m_containerSize = __super::ArrangeOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
         winrt::Windows::Foundation::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
