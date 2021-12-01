@@ -4,10 +4,10 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOBaseActionElement.h"
-#import "ACOBaseCardElement.h"
-#import "ACREnums.h"
-#import "ACOHostConfig.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACREnums.h>
+#import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/HostConfig.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/ACORenderContext.h>
