@@ -1,0 +1,39 @@
+steps:
+- task: CocoaPods@0
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
+
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
+    scheme: 'ADCIOSVisualizer'
+    xcodeVersion: '12'
+    packageApp: false
+    signingOption: 'default'
+    sdk: 'iphonesimulator'
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 12'
+- task: Xcode@5
+  inputs:
+    actions: 'test'
+    xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
+    scheme: 'ADCIOSVisualizer'
+    xcodeVersion: '12'
+    packageApp: false
+    signingOption: 'default'
+    sdk: 'iphonesimulator'
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 12'
+- task: Xcode@5
+  inputs:
+    actions: 'test'
+    xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
+    scheme: 'AdaptiveCards'
+    xcodeVersion: '12'
+    packageApp: false
+    signingOption: 'default'
+    sdk: 'iphonesimulator'
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 12'
