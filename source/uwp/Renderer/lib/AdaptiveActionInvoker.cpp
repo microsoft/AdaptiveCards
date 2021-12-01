@@ -12,32 +12,30 @@ using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards::Rendering::Uwp {
-HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept
+namespace AdaptiveCards::Rendering::Uwp
 {
-    return S_OK;
-}
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
-try
-{
-    ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
-    return strongRenderResult.AsWeak(&m_weakRenderResult);
-}
-CATCH_RETURN;
-
-HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
-{
-    ComPtr<IRenderedAdaptiveCard> strongRenderResult;
-    RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
-    if (strongRenderResult != nullptr)
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+    try
     {
-        ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
-        if (renderResult != nullptr)
-        {
-            RETURN_IF_FAILED(renderResult->SendActionEvent(actionElement));
-        }
+        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
+        return strongRenderResult.AsWeak(&m_weakRenderResult);
     }
-    return S_OK;
+    CATCH_RETURN;
+
+    HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
+    {
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        if (strongRenderResult != nullptr)
+        {
+            ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+            if (renderResult != nullptr)
+            {
+                RETURN_IF_FAILED(renderResult->SendActionEvent(actionElement));
+            }
+        }
+        return S_OK;
+    }
 }
-} // namespace AdaptiveCards::Rendering::Uwp

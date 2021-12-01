@@ -5,46 +5,47 @@
 #include "pch.h"
 #include "StyledCollectionElement.h"
 
-namespace AdaptiveCards {
-class Column;
-
-class ColumnSet : public StyledCollectionElement
+namespace AdaptiveCards
 {
-    friend class ColumnSetParser;
+    class Column;
 
-public:
-    ColumnSet();
-    ColumnSet(const ColumnSet&) = default;
-    ColumnSet(ColumnSet&&) = default;
-    ColumnSet& operator=(const ColumnSet&) = default;
-    ColumnSet& operator=(ColumnSet&&) = default;
-    ~ColumnSet() = default;
+    class ColumnSet : public StyledCollectionElement
+    {
+        friend class ColumnSetParser;
 
-    Json::Value SerializeToJsonValue() const override;
-    void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
+    public:
+        ColumnSet();
+        ColumnSet(const ColumnSet&) = default;
+        ColumnSet(ColumnSet&&) = default;
+        ColumnSet& operator=(const ColumnSet&) = default;
+        ColumnSet& operator=(ColumnSet&&) = default;
+        ~ColumnSet() = default;
 
-    std::vector<std::shared_ptr<Column>>& GetColumns();
-    const std::vector<std::shared_ptr<Column>>& GetColumns() const;
+        Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+        std::vector<std::shared_ptr<Column>>& GetColumns();
+        const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
-private:
-    void PopulateKnownPropertiesSet();
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-    std::vector<std::shared_ptr<Column>> m_columns;
-};
+    private:
+        void PopulateKnownPropertiesSet();
 
-class ColumnSetParser : public BaseCardElementParser
-{
-public:
-    ColumnSetParser() = default;
-    ColumnSetParser(const ColumnSetParser&) = default;
-    ColumnSetParser(ColumnSetParser&&) = default;
-    ColumnSetParser& operator=(const ColumnSetParser&) = default;
-    ColumnSetParser& operator=(ColumnSetParser&&) = default;
-    virtual ~ColumnSetParser() = default;
+        std::vector<std::shared_ptr<Column>> m_columns;
+    };
 
-    std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
-    std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
-};
-} // namespace AdaptiveCards
+    class ColumnSetParser : public BaseCardElementParser
+    {
+    public:
+        ColumnSetParser() = default;
+        ColumnSetParser(const ColumnSetParser&) = default;
+        ColumnSetParser(ColumnSetParser&&) = default;
+        ColumnSetParser& operator=(const ColumnSetParser&) = default;
+        ColumnSetParser& operator=(ColumnSetParser&&) = default;
+        virtual ~ColumnSetParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
+}

@@ -58,7 +58,8 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& conte
 
     auto imageSet = BaseCardElement::Deserialize<ImageSet>(context, value);
     // Get ImageSize
-    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
+    imageSet->m_imageSize =
+        ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
     auto images = ParseUtil::GetElementCollection<Image>(
@@ -79,8 +80,8 @@ std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(ParseCont
 
 void ImageSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images), AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
 }
 
 void ImageSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

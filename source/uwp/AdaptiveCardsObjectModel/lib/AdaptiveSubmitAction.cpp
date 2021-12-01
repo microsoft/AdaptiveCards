@@ -5,31 +5,32 @@
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveSubmitAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-AdaptiveSubmitAction::AdaptiveSubmitAction(const std::shared_ptr<::AdaptiveCards::SubmitAction>& sharedSubmitAction)
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    auto sharedJson = sharedSubmitAction->GetDataJson();
-    if (!sharedJson.empty())
+    AdaptiveSubmitAction::AdaptiveSubmitAction(const std::shared_ptr<::AdaptiveCards::SubmitAction>& sharedSubmitAction)
     {
-        DataJson = StringToJsonValue(sharedJson);
+        auto sharedJson = sharedSubmitAction->GetDataJson();
+        if (!sharedJson.empty())
+        {
+            DataJson = StringToJsonValue(sharedJson);
+        }
+
+        AssociatedInputs = static_cast<Uwp::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
+
+        InitializeBaseElement(sharedSubmitAction);
     }
 
-    AssociatedInputs = static_cast<Uwp::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
-
-    InitializeBaseElement(sharedSubmitAction);
-}
-
-std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveSubmitAction::GetSharedModel()
-{
-    auto submitAction = std::make_shared<::AdaptiveCards::SubmitAction>();
-    CopySharedElementProperties(*submitAction);
-
-    if (DataJson.get())
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveSubmitAction::GetSharedModel()
     {
-        submitAction->SetDataJson(JsonValueToString(DataJson));
-    }
+        auto submitAction = std::make_shared<::AdaptiveCards::SubmitAction>();
+        CopySharedElementProperties(*submitAction);
 
-    submitAction->SetAssociatedInputs(static_cast<::AdaptiveCards::AssociatedInputs>(AssociatedInputs.get()));
-    return submitAction;
+        if (DataJson.get())
+        {
+            submitAction->SetDataJson(JsonValueToString(DataJson));
+        }
+
+        submitAction->SetAssociatedInputs(static_cast<::AdaptiveCards::AssociatedInputs>(AssociatedInputs.get()));
+        return submitAction;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

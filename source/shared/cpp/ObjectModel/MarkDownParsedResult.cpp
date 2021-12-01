@@ -138,7 +138,8 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
     while (!(currentEmphasis == m_emphasisLookUpTable.end()))
     {
         // keep exploring left until right token is found
-        if ((*currentEmphasis)->IsLeftEmphasis() || ((*currentEmphasis)->IsLeftAndRightEmphasis() && leftEmphasisToExplore.empty()))
+        if ((*currentEmphasis)->IsLeftEmphasis() ||
+            ((*currentEmphasis)->IsLeftAndRightEmphasis() && leftEmphasisToExplore.empty()))
         {
             if ((*currentEmphasis)->IsLeftAndRightEmphasis() && (*currentEmphasis)->IsRightEmphasis())
             {

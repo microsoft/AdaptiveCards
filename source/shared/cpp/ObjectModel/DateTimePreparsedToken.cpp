@@ -5,7 +5,8 @@
 
 using namespace AdaptiveCards;
 
-DateTimePreparsedToken::DateTimePreparsedToken() : m_text(""), m_date{}, m_format(DateTimePreparsedTokenFormat::RegularString)
+DateTimePreparsedToken::DateTimePreparsedToken() :
+    m_text(""), m_date{}, m_format(DateTimePreparsedTokenFormat::RegularString)
 {
 }
 

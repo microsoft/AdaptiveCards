@@ -7,9 +7,15 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
-namespace AdaptiveCardsSharedModelUnitTest {
-TEST_CLASS(UnknownElementParsing){public :
-                                      TEST_METHOD(CanGetCustomJsonPayload){const std::string testJsonString{"{\
+namespace AdaptiveCardsSharedModelUnitTest
+{
+    TEST_CLASS(UnknownElementParsing)
+    {
+    public:
+        TEST_METHOD(CanGetCustomJsonPayload)
+        {
+            const std::string testJsonString{
+            "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -20,23 +26,23 @@ TEST_CLASS(UnknownElementParsing){public :
                     }\
                 ]\
             }"};
-std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-Assert::AreEqual(elem->GetElementTypeString(), std::string("Random"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            Assert::AreEqual(elem->GetElementTypeString(), std::string("Random"));
 
-std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-Json::Value value = delegate->GetAdditionalProperties();
-std::string jsonString = ParseUtil::JsonToString(value);
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
+            Json::Value value = delegate->GetAdditionalProperties();
+            std::string jsonString = ParseUtil::JsonToString(value);
 
-const std::string expected{R"({"payload":"You can even draw attention to certain text with color","type":"Random"}
+            const std::string expected{R"({"payload":"You can even draw attention to certain text with color","type":"Random"}
 )"};
-Assert::AreEqual(expected, jsonString);
-} // namespace AdaptiveCardsSharedModelUnitTest
+            Assert::AreEqual(expected, jsonString);
+        }
 
-TEST_METHOD(CanGetCustomJsonPayloadWithKnownElementFollowing)
-{
-    const std::string testJsonString{
-        "{\
+        TEST_METHOD(CanGetCustomJsonPayloadWithKnownElementFollowing)
+        {
+            const std::string testJsonString{
+            "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -54,21 +60,20 @@ TEST_METHOD(CanGetCustomJsonPayloadWithKnownElementFollowing)
                     }\
                 ]\
             }"};
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-    Json::Value value = delegate->GetAdditionalProperties();
-    std::string jsonString = ParseUtil::JsonToString(value);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
+            Json::Value value = delegate->GetAdditionalProperties();
+            std::string jsonString = ParseUtil::JsonToString(value);
 
-    const std::string expected{R"({"payload":"You can even draw attention to certain text with color","type":"Unknown"})"
-                               "\n"};
-    Assert::AreEqual(expected, jsonString);
-}
+            const std::string expected {R"({"payload":"You can even draw attention to certain text with color","type":"Unknown"})""\n"};
+            Assert::AreEqual(expected, jsonString);
+        }
 
-TEST_METHOD(CanGetJsonPayloadOfArrayType)
-{
-    const std::string testJsonString{
-        "{\
+        TEST_METHOD(CanGetJsonPayloadOfArrayType)
+        {
+            const std::string testJsonString{
+            "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -93,22 +98,21 @@ TEST_METHOD(CanGetJsonPayloadOfArrayType)
                     }\
                 ]\
             }"};
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    Assert::AreEqual(elem->GetElementTypeString(), std::string("RadioButton"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            Assert::AreEqual(elem->GetElementTypeString(), std::string("RadioButton"));
 
-    std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
-    Json::Value value = delegate->GetAdditionalProperties();
-    std::string jsonString = ParseUtil::JsonToString(value);
+            std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
+            Json::Value value = delegate->GetAdditionalProperties();
+            std::string jsonString = ParseUtil::JsonToString(value);
 
-    std::string expected{R"({"payload":[{"testloadone":"You can even draw attention to certain text with color"},{"testloadtwo":"You can even draw attention to certain text with markdown"}],"type":"RadioButton"})"
-                         "\n"};
-    Assert::AreEqual(expected, jsonString);
-}
+            std::string expected{R"({"payload":[{"testloadone":"You can even draw attention to certain text with color"},{"testloadtwo":"You can even draw attention to certain text with markdown"}],"type":"RadioButton"})""\n"};
+            Assert::AreEqual(expected, jsonString);
+        }
 
-TEST_METHOD(CanHandleCustomAction)
-{
-    const std::string testJsonString{R"(
+        TEST_METHOD(CanHandleCustomAction)
+        {
+            const std::string testJsonString{ R"(
                 {
                     "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
                     "type": "AdaptiveCard",
@@ -130,22 +134,22 @@ TEST_METHOD(CanHandleCustomAction)
                             }
                         }]})"};
 
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-    std::shared_ptr<BaseActionElement> elem = parseResult->GetAdaptiveCard()->GetActions().front();
-    Assert::AreEqual(elem->GetElementTypeString(), std::string("Alert"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<BaseActionElement> elem = parseResult->GetAdaptiveCard()->GetActions().front();
+            Assert::AreEqual(elem->GetElementTypeString(), std::string("Alert"));
 
-    std::shared_ptr<UnknownAction> delegate = std::static_pointer_cast<UnknownAction>(elem);
-    Json::Value value = delegate->GetAdditionalProperties();
-    std::string jsonString = ParseUtil::JsonToString(value);
+            std::shared_ptr<UnknownAction> delegate = std::static_pointer_cast<UnknownAction>(elem);
+            Json::Value value = delegate->GetAdditionalProperties();
+            std::string jsonString = ParseUtil::JsonToString(value);
 
-    const std::string expected{R"({"data":{"id":"1234567890"},"title":"Submit","type":"Alert"}
+            const std::string expected {R"({"data":{"id":"1234567890"},"title":"Submit","type":"Alert"}
 )"};
-    Assert::AreEqual(expected, jsonString);
-}
+            Assert::AreEqual(expected, jsonString);
+        }
 
-TEST_METHOD(RoundTripTestForCustomAction)
-{
-    const std::string testJsonString{R"(
+        TEST_METHOD(RoundTripTestForCustomAction)
+        {
+            const std::string testJsonString{ R"(
                 {
                     "type": "AdaptiveCard",
                     "version": "1.0",
@@ -166,14 +170,13 @@ TEST_METHOD(RoundTripTestForCustomAction)
                             }
                         }]})"};
 
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-    const auto expectedValue = ParseUtil::GetJsonValueFromString(testJsonString);
-    const auto expectedString = ParseUtil::JsonToString(expectedValue);
-    const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
-    const auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
-    Assert::AreEqual(expectedString, serializedCardAsString);
-    Assert::IsTrue(expectedValue == serializedCard);
-}
-}
-;
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            const auto expectedValue = ParseUtil::GetJsonValueFromString(testJsonString);
+            const auto expectedString = ParseUtil::JsonToString(expectedValue);
+            const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
+            const auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
+            Assert::AreEqual(expectedString, serializedCardAsString);
+            Assert::IsTrue(expectedValue == serializedCard);
+        }
+    };
 }

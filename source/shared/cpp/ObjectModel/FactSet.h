@@ -6,43 +6,44 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards {
-class Fact;
-
-class FactSet : public BaseCardElement
+namespace AdaptiveCards
 {
-    friend class FactSetParser;
+    class Fact;
 
-public:
-    FactSet();
-    FactSet(const FactSet&) = default;
-    FactSet(FactSet&&) = default;
-    FactSet& operator=(const FactSet&) = default;
-    FactSet& operator=(FactSet&&) = default;
-    ~FactSet() = default;
+    class FactSet : public BaseCardElement
+    {
+        friend class FactSetParser;
 
-    Json::Value SerializeToJsonValue() const override;
+    public:
+        FactSet();
+        FactSet(const FactSet&) = default;
+        FactSet(FactSet&&) = default;
+        FactSet& operator=(const FactSet&) = default;
+        FactSet& operator=(FactSet&&) = default;
+        ~FactSet() = default;
 
-    std::vector<std::shared_ptr<Fact>>& GetFacts();
-    const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
+        Json::Value SerializeToJsonValue() const override;
 
-private:
-    void PopulateKnownPropertiesSet();
+        std::vector<std::shared_ptr<Fact>>& GetFacts();
+        const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
-    std::vector<std::shared_ptr<Fact>> m_facts;
-};
+    private:
+        void PopulateKnownPropertiesSet();
 
-class FactSetParser : public BaseCardElementParser
-{
-public:
-    FactSetParser() = default;
-    FactSetParser(const FactSetParser&) = default;
-    FactSetParser(FactSetParser&&) = default;
-    FactSetParser& operator=(const FactSetParser&) = default;
-    FactSetParser& operator=(FactSetParser&&) = default;
-    virtual ~FactSetParser() = default;
+        std::vector<std::shared_ptr<Fact>> m_facts;
+    };
 
-    std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
-    std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
-};
-} // namespace AdaptiveCards
+    class FactSetParser : public BaseCardElementParser
+    {
+    public:
+        FactSetParser() = default;
+        FactSetParser(const FactSetParser&) = default;
+        FactSetParser(FactSetParser&&) = default;
+        FactSetParser& operator=(const FactSetParser&) = default;
+        FactSetParser& operator=(FactSetParser&&) = default;
+        virtual ~FactSetParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
+}

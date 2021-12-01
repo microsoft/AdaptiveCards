@@ -28,7 +28,7 @@ void RestoreConsoleModeForDisplay(DWORD dwRestore)
     }
 }
 
-int main(int /*argc*/, char* argv[])
+int main(int /*argc*/, char *argv[])
 {
     DWORD dwOld = SetConsoleModeForDisplay();
 

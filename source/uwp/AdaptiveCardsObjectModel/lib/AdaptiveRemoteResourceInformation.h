@@ -3,21 +3,20 @@
 #pragma once
 #include "AdaptiveRemoteResourceInformation.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct AdaptiveRemoteResourceInformation : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation>
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveRemoteResourceInformation()
+    struct AdaptiveRemoteResourceInformation : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation>
     {
-    }
-    AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info);
+        AdaptiveRemoteResourceInformation() { }
+        AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info);
 
-    property<hstring> Url;
-    property<hstring> MimeType;
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveRemoteResourceInformation
-    : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation, implementation::AdaptiveRemoteResourceInformation>
+        property<hstring> Url;
+        property<hstring> MimeType;
+    };
+}
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveRemoteResourceInformation : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation, implementation::AdaptiveRemoteResourceInformation>
+    {
+    };
+}

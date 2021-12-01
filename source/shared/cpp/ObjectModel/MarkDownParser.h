@@ -8,26 +8,27 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-namespace AdaptiveCards {
-class MarkDownParser
+namespace AdaptiveCards
 {
-public:
-    MarkDownParser(const std::string& txt);
+    class MarkDownParser
+    {
+    public:
+        MarkDownParser(const std::string& txt);
 
-    std::string TransformToHtml();
+        std::string TransformToHtml();
 
-    std::string GetRawText() const;
+        std::string GetRawText() const;
 
-    bool HasHtmlTags();
+        bool HasHtmlTags();
 
-    bool IsEscaped() const;
+        bool IsEscaped() const;
 
-private:
-    void ParseBlock();
-    std::string EscapeText();
-    std::string m_text;
-    MarkDownParsedResult m_parsedResult;
-    bool m_hasHTMLTag;
-    bool m_isEscaped;
-};
-} // namespace AdaptiveCards
+    private:
+        void ParseBlock();
+        std::string EscapeText();
+        std::string m_text;
+        MarkDownParsedResult m_parsedResult;
+        bool m_hasHTMLTag;
+        bool m_isEscaped;
+    };
+}

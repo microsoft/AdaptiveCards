@@ -7,27 +7,28 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::Rendering::Uwp {
-HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept
-try
+namespace AdaptiveCards::Rendering::Uwp
 {
-    return S_OK;
-}
-CATCH_RETURN;
+    HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept
+    try
+    {
+        return S_OK;
+    }
+    CATCH_RETURN;
 
-HRESULT AdaptiveCardResourceResolvers::Set(_In_ HSTRING scheme, _In_ IAdaptiveCardResourceResolver* resolver)
-{
-    std::string schemeString;
-    RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
-    m_resourceResolvers[schemeString] = resolver;
-    return S_OK;
-}
+    HRESULT AdaptiveCardResourceResolvers::Set(_In_ HSTRING scheme, _In_ IAdaptiveCardResourceResolver* resolver)
+    {
+        std::string schemeString;
+        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
+        m_resourceResolvers[schemeString] = resolver;
+        return S_OK;
+    }
 
-HRESULT AdaptiveCardResourceResolvers::Get(_In_ HSTRING scheme, _COM_Outptr_ IAdaptiveCardResourceResolver** resolver)
-{
-    std::string schemeString;
-    RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
-    ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
-    return resolverPtr.CopyTo(resolver);
+    HRESULT AdaptiveCardResourceResolvers::Get(_In_ HSTRING scheme, _COM_Outptr_ IAdaptiveCardResourceResolver** resolver)
+    {
+        std::string schemeString;
+        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
+        ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
+        return resolverPtr.CopyTo(resolver);
+    }
 }
-} // namespace AdaptiveCards::Rendering::Uwp

@@ -77,8 +77,7 @@ void RichTextElementProperties::Deserialize(ParseContext& context, const Json::V
 void RichTextElementProperties::PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties)
 {
     TextElementProperties::PopulateKnownPropertiesSet(knownProperties);
-    knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Italic),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Strikethrough),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Underline)});
+    knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Italic),
+                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Strikethrough),
+                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Underline)});
 }

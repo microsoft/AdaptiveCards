@@ -28,9 +28,8 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 
     if (!isValidColor)
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-            WarningStatusCode::InvalidColorFormat,
-            "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidColorFormat,
+                                                                         "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
         return "#00000000";
     }
 
@@ -48,11 +47,10 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
     return validBackgroundColor;
 }
 
-void ValidateUserInputForDimensionWithUnit(
-    const std::string& unit,
-    const std::string& requestedDimension,
-    std::optional<int>& parsedDimension,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+void ValidateUserInputForDimensionWithUnit(const std::string& unit,
+                                           const std::string& requestedDimension,
+                                           std::optional<int>& parsedDimension,
+                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
     constexpr auto warningMessage = "expected input argument to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
@@ -71,16 +69,16 @@ void ValidateUserInputForDimensionWithUnit(
         {
             if (warnings)
             {
-                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                    WarningStatusCode::InvalidDimensionSpecified, warningMessage + requestedDimension));
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  warningMessage + requestedDimension));
             }
         }
         catch (const std::out_of_range&)
         {
             if (warnings)
             {
-                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                    WarningStatusCode::InvalidDimensionSpecified, "out of range: " + requestedDimension));
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  "out of range: " + requestedDimension));
             }
         }
     }
@@ -88,8 +86,8 @@ void ValidateUserInputForDimensionWithUnit(
     {
         if (warnings)
         {
-            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                WarningStatusCode::InvalidDimensionSpecified, warningMessage + requestedDimension));
+            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                              warningMessage + requestedDimension));
         }
     }
 }

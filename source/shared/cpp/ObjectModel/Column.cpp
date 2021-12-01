@@ -95,13 +95,12 @@ Json::Value Column::SerializeToJsonValue() const
 
 void Column::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
 }
 
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -114,12 +113,11 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
 void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(
-        true, // isTopToBottomContainer
-        context,
-        value,
-        AdaptiveCardSchemaKey::Items,
-        false); // isRequired
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 
@@ -142,8 +140,9 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
 
         if (!isFallbackColumn)
         {
-            context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                WarningStatusCode::UnknownElementType, "Column Fallback must be a Column. Fallback content dropped."));
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,
+                                                           "Column Fallback must be a Column. Fallback content dropped."));
 
             column->SetFallbackContent(nullptr);
             column->SetFallbackType(FallbackType::None);

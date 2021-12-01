@@ -5,30 +5,29 @@
 #include "UnknownElement.h"
 #include "AdaptiveUnsupportedElement.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, ITypePeek>, AdaptiveCardElementBase
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedTextBlock = std::make_shared<::AdaptiveCards::UnknownElement>());
-
-    auto ElementType()
+    struct DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
+        : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, ITypePeek>,
+          AdaptiveCardElementBase
     {
-        return ElementType::Unsupported;
-    }
+        AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedTextBlock =
+                                       std::make_shared<::AdaptiveCards::UnknownElement>());
 
-    std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
+        auto ElementType() { return ElementType::Unsupported; }
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
+        std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
-    std::string m_actualType;
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, implementation::AdaptiveUnsupportedElement>
+        std::string m_actualType;
+    };
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, implementation::AdaptiveUnsupportedElement>
+    {
+    };
+}

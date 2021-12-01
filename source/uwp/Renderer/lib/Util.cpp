@@ -74,7 +74,8 @@ std::wstring StringToWString(std::string_view in)
         {
             std::wstring out(length_out, L'\0');
 
-            const int length_written = ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
+            const int length_written =
+                ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
 
             if (length_written == length_out)
             {
@@ -183,10 +184,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetContainerStyleDefinition(
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    _Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept
+HRESULT GetContainerStyleDefinition(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
+                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                    _Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition> containerStyles;
@@ -218,13 +218,12 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetColorFromAdaptiveColor(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
-    bool isSubtle,
-    bool highlight,
-    _Out_ ABI::Windows::UI::Color* uiColor) noexcept
+HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
+                                  bool isSubtle,
+                                  bool highlight,
+                                  _Out_ ABI::Windows::UI::Color* uiColor) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
@@ -275,11 +274,10 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetHighlighter(
-    _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-    _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept
+HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                       _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextHighlighter> localTextHighlighter =
         XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::ITextHighlighter>(
@@ -323,10 +321,9 @@ HRESULT GetHighlighter(
     return S_OK;
 }
 
-HRESULT GetSpacingSizeFromSpacing(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing,
-    _Out_ UINT* spacingSize) noexcept
+HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing,
+                                  _Out_ UINT* spacingSize) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig> spacingConfig;
@@ -362,10 +359,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetBackgroundColorFromStyle(
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept
+HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
+                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
@@ -376,10 +372,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetBorderColorFromStyle(
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    _Out_ ABI::Windows::UI::Color* borderColor) noexcept
+HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
+                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                _Out_ ABI::Windows::UI::Color* borderColor) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
@@ -390,14 +385,13 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontDataFromFontType(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
-    _Outptr_ HSTRING* resultFontFamilyName,
-    _Out_ UINT32* resultSize,
-    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
+HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+                                _Outptr_ HSTRING* resultFontFamilyName,
+                                _Out_ UINT32* resultSize,
+                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
 try
 {
     RETURN_IF_FAILED(GetFontFamilyFromFontType(hostConfig, fontType, resultFontFamilyName));
@@ -407,10 +401,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontFamilyFromFontType(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-    _Outptr_ HSTRING* resultFontFamilyName) noexcept
+HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                                  _Outptr_ HSTRING* resultFontFamilyName) noexcept
 try
 {
     HString result;
@@ -441,11 +434,10 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontSizeFromFontType(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
-    _Out_ UINT32* resultSize) noexcept
+HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+                                _Out_ UINT32* resultSize) noexcept
 try
 {
     UINT32 result;
@@ -500,11 +492,10 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontWeightFromStyle(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
-    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
+HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                               ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                               ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+                               _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
 try
 {
     UINT16 result;
@@ -553,10 +544,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontType(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept
+HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept
 try
 {
     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypesDefinition* fontTypes;
@@ -576,10 +566,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontSize(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig* sizesConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
-    _Out_ UINT32* resultSize) noexcept
+HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig* sizesConfig,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+                    _Out_ UINT32* resultSize) noexcept
 try
 {
     switch (desiredSize)
@@ -605,10 +594,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontWeight(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig* weightsConfig,
-    ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
-    _Out_ UINT16* resultWeight) noexcept
+HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig* weightsConfig,
+                      ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+                      _Out_ UINT16* resultWeight) noexcept
 try
 {
     switch (desiredWeight)
@@ -734,10 +722,9 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::Elem
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-HRESULT MeetsRequirements(
-    _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
-    _Out_ bool* meetsRequirements)
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
+                          _Out_ bool* meetsRequirements)
 {
     ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>> requirements;
     RETURN_IF_FAILED(cardElement->get_Requirements(&requirements));
@@ -789,7 +776,8 @@ HRESULT MeetsRequirements(
     return S_OK;
 }
 
-HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImageElement,
+                               _Out_ BOOL* isValid)
 {
     *isValid = FALSE;
     ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
@@ -802,10 +790,9 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdapt
     return S_OK;
 }
 
-void GetUrlFromString(
-    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-    _In_ HSTRING urlString,
-    _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url)
+void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                      _In_ HSTRING urlString,
+                      _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url)
 {
     ComPtr<ABI::Windows::Foundation::IUriRuntimeClassFactory> uriActivationFactory;
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
@@ -829,6 +816,7 @@ void GetUrlFromString(
 
     THROW_IF_FAILED(localUrl.CopyTo(url));
 }
+
 
 Color GenerateLHoverColor(const Color& originalColor)
 {
@@ -877,9 +865,8 @@ HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int
     return S_OK;
 }
 
-HRESULT CopyTextElement(
-    _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* textElement,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** copiedTextElement)
+HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** copiedTextElement)
 {
     ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextRun> localCopiedTextRun =
         XamlHelpers::CreateABIClass<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextRun>(

@@ -6,46 +6,47 @@
 #include "BaseCardElement.h"
 #include "TableCell.h"
 
-namespace AdaptiveCards {
-class BaseCardElement;
-
-class TableRow : public BaseCardElement
+namespace AdaptiveCards
 {
-public:
-    TableRow();
-    TableRow(const TableRow&) = default;
-    TableRow(TableRow&&) = default;
-    TableRow& operator=(const TableRow&) = default;
-    TableRow& operator=(TableRow&&) = default;
-    virtual ~TableRow() = default;
+    class BaseCardElement;
 
-    Json::Value SerializeToJsonValue() const override;
+    class TableRow : public BaseCardElement
+    {
+    public:
+        TableRow();
+        TableRow(const TableRow&) = default;
+        TableRow(TableRow&&) = default;
+        TableRow& operator=(const TableRow&) = default;
+        TableRow& operator=(TableRow&&) = default;
+        virtual ~TableRow() = default;
 
-    std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells();
-    const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells() const;
-    void SetCells(const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& value);
+        Json::Value SerializeToJsonValue() const override;
 
-    std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
-    void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
+        std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells();
+        const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells() const;
+        void SetCells(const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& value);
 
-    std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
-    void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
+        std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
 
-    ContainerStyle GetStyle() const;
-    void SetStyle(const ContainerStyle value);
+        std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
+        void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
 
-    static std::shared_ptr<TableRow> DeserializeTableRowFromString(ParseContext& context, const std::string& root);
-    static std::shared_ptr<TableRow> DeserializeTableRow(ParseContext& context, const Json::Value& root);
+        ContainerStyle GetStyle() const;
+        void SetStyle(const ContainerStyle value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        static std::shared_ptr<TableRow> DeserializeTableRowFromString(ParseContext& context, const std::string& root);
+        static std::shared_ptr<TableRow> DeserializeTableRow(ParseContext& context, const Json::Value& root);
 
-    ContainerStyle m_style;
+    private:
+        void PopulateKnownPropertiesSet();
 
-    std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
-    std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
+        ContainerStyle m_style;
 
-    std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
-    std::optional<bool> m_rtl;
-};
-} // namespace AdaptiveCards
+        std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
+        std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
+
+        std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
+        std::optional<bool> m_rtl;
+    };
+}

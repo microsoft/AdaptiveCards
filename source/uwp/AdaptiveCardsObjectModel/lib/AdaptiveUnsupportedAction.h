@@ -6,28 +6,27 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveUnsupportedAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct DECLSPEC_UUID("D5018CF5-97D9-4FC4-88E8-9415D51431B6") AdaptiveUnsupportedAction : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, ITypePeek>, AdaptiveActionElementBase
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknownAction = std::make_shared<::AdaptiveCards::UnknownAction>());
-
-    auto ActionType()
+    struct DECLSPEC_UUID("D5018CF5-97D9-4FC4-88E8-9415D51431B6") AdaptiveUnsupportedAction
+        : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, ITypePeek>,
+          AdaptiveActionElementBase
     {
-        return Uwp::ActionType::Unsupported;
-    }
+        AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknownAction =
+                                      std::make_shared<::AdaptiveCards::UnknownAction>());
 
-    std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
+        auto ActionType() { return Uwp::ActionType::Unsupported; }
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveUnsupportedAction : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, implementation::AdaptiveUnsupportedAction>
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+    };
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveUnsupportedAction : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, implementation::AdaptiveUnsupportedAction>
+    {
+    };
+}

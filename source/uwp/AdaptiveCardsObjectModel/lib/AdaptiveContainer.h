@@ -6,39 +6,35 @@
 #include "AdaptiveBackgroundImage.h"
 #include "AdaptiveContainer.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveContainer : AdaptiveContainerT<AdaptiveContainer, ITypePeek>, AdaptiveCardElementBase
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedcontainer = std::make_shared<::AdaptiveCards::Container>());
-
-    // IAdaptiveCardElement
-    auto ElementType()
+    struct DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveContainer : AdaptiveContainerT<AdaptiveContainer, ITypePeek>, AdaptiveCardElementBase
     {
-        return ElementType::Container;
-    }
+        AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedcontainer = std::make_shared<::AdaptiveCards::Container>());
 
-    virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
+        // IAdaptiveCardElement
+        auto ElementType() { return ElementType::Container; }
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
+        virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
-    property<winrt::Windows::Foundation::Collections::IVector<Uwp::IAdaptiveCardElement>> Items;
-    property<Uwp::IAdaptiveActionElement> SelectAction;
-    property<Uwp::ContainerStyle> Style;
-    property_opt<Uwp::VerticalContentAlignment> VerticalContentAlignment;
-    property<Uwp::AdaptiveBackgroundImage> BackgroundImage{nullptr};
-    property<uint32_t> MinHeight;
-    property<bool> Bleed;
-    property<Uwp::BleedDirection> BleedDirection;
-    property_opt<bool> Rtl;
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveContainer : AdaptiveContainerT<AdaptiveContainer, implementation::AdaptiveContainer>
+        property<winrt::Windows::Foundation::Collections::IVector<Uwp::IAdaptiveCardElement>> Items;
+        property<Uwp::IAdaptiveActionElement> SelectAction;
+        property<Uwp::ContainerStyle> Style;
+        property_opt<Uwp::VerticalContentAlignment> VerticalContentAlignment;
+        property<Uwp::AdaptiveBackgroundImage> BackgroundImage{nullptr};
+        property<uint32_t> MinHeight;
+        property<bool> Bleed;
+        property<Uwp::BleedDirection> BleedDirection;
+        property_opt<bool> Rtl;
+    };
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveContainer : AdaptiveContainerT<AdaptiveContainer, implementation::AdaptiveContainer>
+    {
+    };
+}

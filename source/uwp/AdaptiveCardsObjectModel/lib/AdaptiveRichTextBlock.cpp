@@ -5,21 +5,22 @@
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveRichTextBlock.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-AdaptiveRichTextBlock::AdaptiveRichTextBlock(const std::shared_ptr<::AdaptiveCards::RichTextBlock>& sharedRichTextBlock) noexcept
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
-    Inlines = GenerateInlinesProjection(sharedRichTextBlock->GetInlines());
+    AdaptiveRichTextBlock::AdaptiveRichTextBlock(const std::shared_ptr<::AdaptiveCards::RichTextBlock>& sharedRichTextBlock) noexcept
+    {
+        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
+        Inlines = GenerateInlinesProjection(sharedRichTextBlock->GetInlines());
 
-    InitializeBaseElement(sharedRichTextBlock);
-}
+        InitializeBaseElement(sharedRichTextBlock);
+    }
 
-std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveRichTextBlock::GetSharedModel()
-{
-    auto richTextBlock = std::make_shared<::AdaptiveCards::RichTextBlock>();
-    CopySharedElementProperties(*richTextBlock);
-    richTextBlock->SetHorizontalAlignment(HorizontalAlignment.get<::AdaptiveCards::HorizontalAlignment>());
-    richTextBlock->GetInlines() = GenerateSharedInlines(Inlines);
-    return richTextBlock;
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveRichTextBlock::GetSharedModel()
+    {
+        auto richTextBlock = std::make_shared<::AdaptiveCards::RichTextBlock>();
+        CopySharedElementProperties(*richTextBlock);
+        richTextBlock->SetHorizontalAlignment(HorizontalAlignment.get<::AdaptiveCards::HorizontalAlignment>());
+        richTextBlock->GetInlines() = GenerateSharedInlines(Inlines);
+        return richTextBlock;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

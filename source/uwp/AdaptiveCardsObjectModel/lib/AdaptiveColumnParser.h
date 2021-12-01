@@ -5,20 +5,22 @@
 #include "Column.h"
 #include "AdaptiveColumnParser.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser>
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveColumnParser() = default;
+    struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser>
+    {
+        AdaptiveColumnParser() = default;
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
-        winrt::Windows::Data::Json::JsonObject const& inputJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser, implementation::AdaptiveColumnParser>
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+    };
+}
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser, implementation::AdaptiveColumnParser>
+    {
+    };
+}

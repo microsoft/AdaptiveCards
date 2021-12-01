@@ -7,14 +7,8 @@
 using namespace AdaptiveCards;
 
 StyledCollectionElement::StyledCollectionElement(CardElementType type, ContainerStyle style, std::optional<VerticalContentAlignment> alignment) :
-    CollectionCoreElement(type),
-    m_style(style),
-    m_verticalContentAlignment(alignment),
-    m_bleedDirection(ContainerBleedDirection::BleedAll),
-    m_minHeight(0),
-    m_hasPadding(false),
-    m_hasBleed(false),
-    m_parentalId()
+    CollectionCoreElement(type), m_style(style), m_verticalContentAlignment(alignment),
+    m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
 }
 
@@ -137,7 +131,8 @@ Json::Value StyledCollectionElement::SerializeToJsonValue() const
 
     if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
+            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())

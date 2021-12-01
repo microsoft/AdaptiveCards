@@ -44,12 +44,13 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
     auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
 
     // Parse Facts
-    auto facts = ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, false);
+    auto facts =
+        ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, false);
 
     if (facts.empty())
     {
-        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-            WarningStatusCode::RequiredPropertyMissing, "required property, \"fact\", is missing"));
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
+                                                                                 "required property, \"fact\", is missing"));
     }
 
     factSet->m_facts = std::move(facts);

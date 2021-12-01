@@ -5,65 +5,66 @@
 #include "pch.h"
 #include "BaseInputElement.h"
 
-namespace AdaptiveCards {
-class ChoiceInput;
-
-class ChoiceSetInput : public BaseInputElement
+namespace AdaptiveCards
 {
-    friend class ChoiceSetInputParser;
+    class ChoiceInput;
 
-public:
-    ChoiceSetInput();
-    ChoiceSetInput(const ChoiceSetInput&) = default;
-    ChoiceSetInput(ChoiceSetInput&&) = default;
-    ChoiceSetInput& operator=(const ChoiceSetInput&) = default;
-    ChoiceSetInput& operator=(ChoiceSetInput&&) = default;
-    ~ChoiceSetInput() = default;
+    class ChoiceSetInput : public BaseInputElement
+    {
+        friend class ChoiceSetInputParser;
 
-    Json::Value SerializeToJsonValue() const override;
+    public:
+        ChoiceSetInput();
+        ChoiceSetInput(const ChoiceSetInput&) = default;
+        ChoiceSetInput(ChoiceSetInput&&) = default;
+        ChoiceSetInput& operator=(const ChoiceSetInput&) = default;
+        ChoiceSetInput& operator=(ChoiceSetInput&&) = default;
+        ~ChoiceSetInput() = default;
 
-    bool GetIsMultiSelect() const;
-    void SetIsMultiSelect(const bool isMultiSelect);
+        Json::Value SerializeToJsonValue() const override;
 
-    ChoiceSetStyle GetChoiceSetStyle() const;
-    void SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle);
+        bool GetIsMultiSelect() const;
+        void SetIsMultiSelect(const bool isMultiSelect);
 
-    std::vector<std::shared_ptr<ChoiceInput>>& GetChoices();
-    const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
+        ChoiceSetStyle GetChoiceSetStyle() const;
+        void SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle);
 
-    std::string GetValue() const;
-    void SetValue(const std::string& value);
+        std::vector<std::shared_ptr<ChoiceInput>>& GetChoices();
+        const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
-    bool GetWrap() const;
-    void SetWrap(bool value);
+        std::string GetValue() const;
+        void SetValue(const std::string& value);
 
-    std::string GetPlaceholder() const;
-    void SetPlaceholder(const std::string& value);
+        bool GetWrap() const;
+        void SetWrap(bool value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        std::string GetPlaceholder() const;
+        void SetPlaceholder(const std::string& value);
 
-    bool m_wrap;
-    bool m_isMultiSelect;
-    std::string m_placeholder;
+    private:
+        void PopulateKnownPropertiesSet();
 
-    std::string m_value;
-    ChoiceSetStyle m_choiceSetStyle;
+        bool m_wrap;
+        bool m_isMultiSelect;
+        std::string m_placeholder;
 
-    std::vector<std::shared_ptr<ChoiceInput>> m_choices;
-};
+        std::string m_value;
+        ChoiceSetStyle m_choiceSetStyle;
 
-class ChoiceSetInputParser : public BaseCardElementParser
-{
-public:
-    ChoiceSetInputParser() = default;
-    ChoiceSetInputParser(const ChoiceSetInputParser&) = default;
-    ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
-    ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
-    ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
-    virtual ~ChoiceSetInputParser() = default;
+        std::vector<std::shared_ptr<ChoiceInput>> m_choices;
+    };
 
-    std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
-    std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
-};
-} // namespace AdaptiveCards
+    class ChoiceSetInputParser : public BaseCardElementParser
+    {
+    public:
+        ChoiceSetInputParser() = default;
+        ChoiceSetInputParser(const ChoiceSetInputParser&) = default;
+        ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
+        ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
+        ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
+        virtual ~ChoiceSetInputParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
+}

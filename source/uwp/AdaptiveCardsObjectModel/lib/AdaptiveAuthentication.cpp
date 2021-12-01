@@ -7,45 +7,46 @@
 #include "AdaptiveAuthCardButton.h"
 #include "AdaptiveAuthentication.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-AdaptiveAuthentication::AdaptiveAuthentication(const std::shared_ptr<::AdaptiveCards::Authentication>& sharedAuthentication)
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    Text = UTF8ToHString(sharedAuthentication->GetText());
-    ConnectionName = UTF8ToHString(sharedAuthentication->GetConnectionName());
-
-    if (auto tokenExchangeResource = sharedAuthentication->GetTokenExchangeResource())
+    AdaptiveAuthentication::AdaptiveAuthentication(const std::shared_ptr<::AdaptiveCards::Authentication>& sharedAuthentication)
     {
-        TokenExchangeResource = *winrt::make_self<implementation::AdaptiveTokenExchangeResource>(tokenExchangeResource);
+        Text = UTF8ToHString(sharedAuthentication->GetText());
+        ConnectionName = UTF8ToHString(sharedAuthentication->GetConnectionName());
+
+        if (auto tokenExchangeResource = sharedAuthentication->GetTokenExchangeResource())
+        {
+            TokenExchangeResource = *winrt::make_self<implementation::AdaptiveTokenExchangeResource>(tokenExchangeResource);
+        }
+
+        std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton> buttons;
+        for (auto& button : sharedAuthentication->GetButtons())
+        {
+            auto newShared = winrt::make_self<implementation::AdaptiveAuthCardButton>(button);
+            buttons.push_back(*newShared);
+        }
+
+        Buttons = winrt::single_threaded_vector<Uwp::AdaptiveAuthCardButton>(std::move(buttons));
     }
 
-    std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton> buttons;
-    for (auto& button : sharedAuthentication->GetButtons())
+    std::shared_ptr<::AdaptiveCards::Authentication> AdaptiveAuthentication::GetSharedModel()
     {
-        auto newShared = winrt::make_self<implementation::AdaptiveAuthCardButton>(button);
-        buttons.push_back(*newShared);
-    }
+        auto authentication = std::make_shared<::AdaptiveCards::Authentication>();
+        authentication->SetText(HStringToUTF8(Text));
+        authentication->SetConnectionName(HStringToUTF8(ConnectionName));
 
-    Buttons = winrt::single_threaded_vector<Uwp::AdaptiveAuthCardButton>(std::move(buttons));
+        if (auto resource = peek_innards<implementation::AdaptiveTokenExchangeResource>(TokenExchangeResource.get()))
+        {
+            authentication->SetTokenExchangeResource(resource->GetSharedModel());
+        }
+
+        for (auto&& button : Buttons.get())
+        {
+            auto impl = peek_innards<implementation::AdaptiveAuthCardButton>(button);
+            auto sharedAuthCardButton = impl->GetSharedModel();
+            authentication->GetButtons().emplace_back(std::AdaptivePointerCast<::AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
+        }
+
+        return authentication;
+    }
 }
-
-std::shared_ptr<::AdaptiveCards::Authentication> AdaptiveAuthentication::GetSharedModel()
-{
-    auto authentication = std::make_shared<::AdaptiveCards::Authentication>();
-    authentication->SetText(HStringToUTF8(Text));
-    authentication->SetConnectionName(HStringToUTF8(ConnectionName));
-
-    if (auto resource = peek_innards<implementation::AdaptiveTokenExchangeResource>(TokenExchangeResource.get()))
-    {
-        authentication->SetTokenExchangeResource(resource->GetSharedModel());
-    }
-
-    for (auto&& button : Buttons.get())
-    {
-        auto impl = peek_innards<implementation::AdaptiveAuthCardButton>(button);
-        auto sharedAuthCardButton = impl->GetSharedModel();
-        authentication->GetButtons().emplace_back(std::AdaptivePointerCast<::AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
-    }
-
-    return authentication;
-}
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

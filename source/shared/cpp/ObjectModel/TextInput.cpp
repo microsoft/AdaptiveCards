@@ -44,7 +44,8 @@ Json::Value TextInput::SerializeToJsonValue() const
 
     if (m_inlineAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InlineAction)] = BaseCardElement::SerializeSelectAction(m_inlineAction);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InlineAction)] =
+            BaseCardElement::SerializeSelectAction(m_inlineAction);
     }
 
     if (!m_regex.empty())
@@ -145,8 +146,9 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     // renderers should ignore multiline in this case)
     if (isMultiline && textInputStyle == TextInputStyle::Password)
     {
-        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-            WarningStatusCode::InvalidValue, "Input.Text ignores isMultiline when using password style"));
+        context.warnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidValue,
+                                                       "Input.Text ignores isMultiline when using password style"));
     }
 
     textInput->SetInlineAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::InlineAction, false));
@@ -162,10 +164,9 @@ std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(ParseCon
 
 void TextInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput)});
 }

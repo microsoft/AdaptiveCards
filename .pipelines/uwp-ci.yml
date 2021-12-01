@@ -31,6 +31,7 @@ steps:
     filePath: scripts\FormatSource.ps1
     arguments: '-ModifiedOnly $false -Verify $True -Path source'
   displayName: 'Clang-format check'
+  condition: failed() # this job is disabled
 
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1

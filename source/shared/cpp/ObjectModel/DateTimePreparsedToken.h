@@ -3,26 +3,27 @@
 #pragma once
 #include "pch.h"
 
-namespace AdaptiveCards {
-class DateTimePreparsedToken
+namespace AdaptiveCards
 {
-public:
-    DateTimePreparsedToken();
-    DateTimePreparsedToken(std::string const& text, DateTimePreparsedTokenFormat format);
-    DateTimePreparsedToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
+    class DateTimePreparsedToken
+    {
+    public:
+        DateTimePreparsedToken();
+        DateTimePreparsedToken(std::string const& text, DateTimePreparsedTokenFormat format);
+        DateTimePreparsedToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
 
-    std::string GetText() const;
-    DateTimePreparsedTokenFormat GetFormat() const;
-    // returns values 1-31
-    int GetDay() const;
-    // returns values 0-11
-    int GetMonth() const;
-    // return values 1900 onward
-    int GetYear() const;
+        std::string GetText() const;
+        DateTimePreparsedTokenFormat GetFormat() const;
+        // returns values 1-31
+        int GetDay() const;
+        // returns values 0-11
+        int GetMonth() const;
+        // return values 1900 onward
+        int GetYear() const;
 
-private:
-    std::string m_text;
-    struct tm m_date;
-    DateTimePreparsedTokenFormat m_format;
-};
-} // namespace AdaptiveCards
+    private:
+        std::string m_text;
+        struct tm m_date;
+        DateTimePreparsedTokenFormat m_format;
+    };
+}

@@ -3,39 +3,41 @@
 
 #pragma once
 
-namespace AdaptiveCards {
-class AdaptiveCardParseWarning;
-class ParseContext;
-
-class TableColumnDefinition
+namespace AdaptiveCards
 {
-public:
-    TableColumnDefinition();
+    class AdaptiveCardParseWarning;
+    class ParseContext;
 
-    std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    class TableColumnDefinition
+    {
+    public:
+        TableColumnDefinition();
 
-    std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
-    void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
+        std::string Serialize();
+        Json::Value SerializeToJsonValue();
 
-    std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
-    void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
+        std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
+        void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
 
-    std::optional<unsigned int> GetWidth() const;
-    void SetWidth(const std::optional<unsigned int>& value);
+        std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
 
-    // explicit width takes precedence over relative width
-    std::optional<unsigned int> GetPixelWidth() const;
-    void SetPixelWidth(const std::optional<unsigned int>& value);
+        std::optional<unsigned int> GetWidth() const;
+        void SetWidth(const std::optional<unsigned int>& value);
 
-    static std::shared_ptr<AdaptiveCards::TableColumnDefinition> Deserialize(ParseContext& context, const Json::Value& root);
-    static std::shared_ptr<AdaptiveCards::TableColumnDefinition> DeserializeFromString(ParseContext& context, const std::string& jsonString);
+        // explicit width takes precedence over relative width
+        std::optional<unsigned int> GetPixelWidth() const;
+        void SetPixelWidth(const std::optional<unsigned int>& value);
 
-private:
-    std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
-    std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
+        static std::shared_ptr<AdaptiveCards::TableColumnDefinition> Deserialize(ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<AdaptiveCards::TableColumnDefinition> DeserializeFromString(ParseContext& context,
+                                                                                           const std::string& jsonString);
 
-    std::optional<unsigned int> m_pixelWidth;
-    std::optional<unsigned int> m_width;
-};
-} // namespace AdaptiveCards
+    private:
+        std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
+        std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
+
+        std::optional<unsigned int> m_pixelWidth;
+        std::optional<unsigned int> m_width;
+    };
+}

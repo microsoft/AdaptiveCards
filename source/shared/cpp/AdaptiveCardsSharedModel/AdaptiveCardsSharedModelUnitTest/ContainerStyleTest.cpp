@@ -11,8 +11,14 @@ using namespace AdaptiveCards;
 
 using namespace std::string_literals;
 
-namespace AdaptiveCardsSharedModelUnitTest {
-TEST_CLASS(ContainerStyleTest){public : TEST_METHOD(CanCheckParentalContainerStyleTest){std::string testJsonString{R"(
+namespace AdaptiveCardsSharedModelUnitTest
+{
+    TEST_CLASS(ContainerStyleTest)
+    {
+    public:
+        TEST_METHOD(CanCheckParentalContainerStyleTest)
+        {
+            std::string testJsonString {R"(
             {
                 "type": "AdaptiveCard",
                 "body": [
@@ -30,16 +36,16 @@ TEST_CLASS(ContainerStyleTest){public : TEST_METHOD(CanCheckParentalContainerSty
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "version": "1.2"
             })"};
-std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
-auto containerStyle = container -> GetStyle();
-Assert::AreEqual<std::string>(ContainerStyleToString(containerStyle), ContainerStyleToString(ContainerStyle::Emphasis));
-} // namespace AdaptiveCardsSharedModelUnitTest
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+            auto containerStyle = container->GetStyle();
+            Assert::AreEqual<std::string>(ContainerStyleToString(containerStyle), ContainerStyleToString(ContainerStyle::Emphasis));
+        }
 
-TEST_METHOD(HaveValidPaddingFlagSetTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(HaveValidPaddingFlagSetTest)
+        {
+            std::string testJsonString {R"(
             {
                 "type": "AdaptiveCard",
                 "body": [
@@ -57,18 +63,18 @@ TEST_METHOD(HaveValidPaddingFlagSetTest)
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "version": "1.2"
             })"};
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
-    auto items = container->GetItems();
-    std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items.back());
-    // When container style is differrent from parent and child, child should get padding
-    Assert::IsTrue(container2->GetPadding());
-}
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+            auto items = container->GetItems();
+            std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items.back());
+            // When container style is differrent from parent and child, child should get padding
+            Assert::IsTrue(container2->GetPadding());
+        }
 
-TEST_METHOD(ColumnContainerStyleTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(ColumnContainerStyleTest)
+        {
+            std::string testJsonString {R"(
             {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "AdaptiveCard",
@@ -140,34 +146,34 @@ TEST_METHOD(ColumnContainerStyleTest)
                 ]
             }
             )"};
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    std::shared_ptr<ColumnSet> columnset = std::static_pointer_cast<ColumnSet>(elem);
-    auto columns = columnset->GetColumns();
-    std::shared_ptr<Column> column1 = std::static_pointer_cast<Column>(columns.at(0));
-    Assert::IsTrue(column1->GetStyle() == ContainerStyle::None);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<ColumnSet> columnset= std::static_pointer_cast<ColumnSet>(elem);
+            auto columns = columnset->GetColumns();
+            std::shared_ptr<Column> column1 = std::static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::None);
 
-    std::shared_ptr<Column> column2 = std::static_pointer_cast<Column>(columns.at(2));
-    Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
+            std::shared_ptr<Column> column2 = std::static_pointer_cast<Column>(columns.at(2));
+            Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
 
-    auto items = column2->GetItems();
-    std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.at(1));
-    Assert::IsTrue(container1->GetStyle() == ContainerStyle::None);
-    Assert::IsFalse(container1->GetPadding());
+            auto items = column2->GetItems();
+            std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.at(1));
+            Assert::IsTrue(container1->GetStyle() == ContainerStyle::None);
+            Assert::IsFalse(container1->GetPadding());
 
-    std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items.at(2));
-    Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
-    Assert::IsTrue(container2->GetPadding());
+            std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items.at(2));
+            Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(container2->GetPadding());
 
-    std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items.at(3));
-    Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
-    Assert::IsFalse(container3->GetPadding());
-}
+            std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items.at(3));
+            Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsFalse(container3->GetPadding());
+        }
 
-TEST_METHOD(CanParseBleedPropertyTest)
-{
-    std::vector<std::string> testJsonStrings{
-        {R"({
+        TEST_METHOD(CanParseBleedPropertyTest)
+        {
+            std::vector<std::string> testJsonStrings {
+            {R"({
                 "type": "AdaptiveCard",
                 "body": [
                     {
@@ -186,7 +192,7 @@ TEST_METHOD(CanParseBleedPropertyTest)
                 "version": "1.2"
             })"},
 
-        {R"({
+            {R"({
                 "type": "AdaptiveCard",
                 "body": [
                     {
@@ -202,25 +208,25 @@ TEST_METHOD(CanParseBleedPropertyTest)
                 ],
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "version": "1.2"
-            })"}};
+            })"}
+            };
 
-    std::vector<std::shared_ptr<Container>> containers{};
-    for (auto json : testJsonStrings)
-    {
-        std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(json, "1.2");
-        std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-        std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
-        containers.push_back(container);
-    }
+            std::vector<std::shared_ptr<Container>> containers{};
+            for(auto json : testJsonStrings) {
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(json, "1.2");
+                std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+                std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+                containers.push_back(container);
+            }
 
-    Assert::IsTrue(containers.at(0)->GetBleed());
-    Assert::IsFalse(containers.at(1)->GetBleed());
-}
+            Assert::IsTrue(containers.at(0)->GetBleed());
+            Assert::IsFalse(containers.at(1)->GetBleed());
+        }
 
-TEST_METHOD(CanSerializeBleedPropertyTest)
-{
-    std::vector<std::string> testJsonStrings{
-        {R"({
+        TEST_METHOD(CanSerializeBleedPropertyTest)
+        {
+            std::vector<std::string> testJsonStrings {
+            {R"({
                 "type": "AdaptiveCard",
                 "body": [
                     {
@@ -247,7 +253,7 @@ TEST_METHOD(CanSerializeBleedPropertyTest)
             }
             )"},
 
-        {R"({
+            {R"({
                 "type": "AdaptiveCard",
                 "body": [
                     {
@@ -271,24 +277,24 @@ TEST_METHOD(CanSerializeBleedPropertyTest)
                     }],
                 "version": "1.2"
             }
-            )"}};
+            )"}
+            };
 
-    std::vector<std::shared_ptr<Container>> containers{};
-    for (auto json : testJsonStrings)
-    {
-        std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(json, "1.2");
-        const auto expectedValue = ParseUtil::GetJsonValueFromString(json);
-        auto expectedString = ParseUtil::JsonToString(expectedValue);
-        const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
-        auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
-        Assert::AreEqual(expectedString, serializedCardAsString);
-        Assert::IsTrue(expectedValue == serializedCard);
-    }
-}
+            std::vector<std::shared_ptr<Container>> containers{};
+            for(auto json : testJsonStrings) {
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(json, "1.2");
+                const auto expectedValue = ParseUtil::GetJsonValueFromString(json);
+                auto expectedString = ParseUtil::JsonToString(expectedValue);
+                const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
+                auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
+                Assert::AreEqual(expectedString, serializedCardAsString);
+                Assert::IsTrue(expectedValue == serializedCard);
+            }
+        }
 
-TEST_METHOD(BleedPropertyConveysCorrectInformationTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(BleedPropertyConveysCorrectInformationTest)
+        {
+            std::string testJsonString {R"(
             {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "AdaptiveCard",
@@ -342,37 +348,37 @@ TEST_METHOD(BleedPropertyConveysCorrectInformationTest)
                 ]
             }
             )"};
-    std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    std::shared_ptr<ColumnSet> columnset = std::static_pointer_cast<ColumnSet>(elem);
-    auto columns = columnset->GetColumns();
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<ColumnSet> columnset= std::static_pointer_cast<ColumnSet>(elem);
+            auto columns = columnset->GetColumns();
 
-    std::shared_ptr<Column> column1 = std::static_pointer_cast<Column>(columns.at(0));
-    Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
+            std::shared_ptr<Column> column1 = std::static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
 
-    auto items = column1->GetItems();
-    std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.back());
-    Assert::IsTrue(container1->GetStyle() == ContainerStyle::Default);
-    Assert::IsFalse(container1->GetCanBleed());
+            auto items = column1->GetItems();
+            std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.back());
+            Assert::IsTrue(container1->GetStyle() == ContainerStyle::Default);
+            Assert::IsFalse(container1->GetCanBleed());
 
-    auto items1 = container1->GetItems();
-    std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items1.back());
-    Assert::AreEqual<std::string>("4", container2->GetId());
-    Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
-    Assert::IsFalse(container2->GetCanBleed());
+            auto items1 = container1->GetItems();
+            std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items1.back());
+            Assert::AreEqual<std::string>("4", container2->GetId());
+            Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
+            Assert::IsFalse(container2->GetCanBleed());
 
-    auto items2 = container2->GetItems();
-    std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items2.back());
-    Assert::AreEqual<std::string>("5", container3->GetId());
-    Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
-    Assert::IsTrue(container3->GetCanBleed());
-    // check that the container can return the correct parent's ID to which it can expand
-    Assert::IsTrue(container1->GetInternalId() == container3->GetParentalId());
-}
+            auto items2 = container2->GetItems();
+            std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items2.back());
+            Assert::AreEqual<std::string>("5", container3->GetId());
+            Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsTrue(container3->GetCanBleed());
+            // check that the container can return the correct parent's ID to which it can expand
+            Assert::IsTrue(container1->GetInternalId() == container3->GetParentalId());
+        }
 
-TEST_METHOD(BleedPropertyColumnSetTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(BleedPropertyColumnSetTest)
+        {
+            std::string testJsonString {R"(
             {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "AdaptiveCard",
@@ -462,58 +468,59 @@ TEST_METHOD(BleedPropertyColumnSetTest)
             }
             )"};
 
-    using std::shared_ptr;
-    using std::static_pointer_cast;
+            using std::shared_ptr;
+            using std::static_pointer_cast;
 
-    shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
+            shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
 
-    shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    shared_ptr<ColumnSet> columnset = static_pointer_cast<ColumnSet>(elem);
-    Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Emphasis);
+            shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            shared_ptr<ColumnSet> columnset = static_pointer_cast<ColumnSet>(elem);
+            Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Emphasis);
 
-    auto columns = columnset->GetColumns();
-    shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
-    Assert::IsTrue(column1->GetStyle() == ContainerStyle::Default);
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft | ContainerBleedDirection::BleedUp) ==
-        column1->GetBleedDirection());
+            auto columns = columnset->GetColumns();
+            shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedUp) == column1->GetBleedDirection());
 
-    auto items = column1->GetItems();
-    shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft | ContainerBleedDirection::BleedRight) ==
-        container->GetBleedDirection());
-    Assert::IsTrue(column1->GetInternalId() == container->GetParentalId());
+            auto items = column1->GetItems();
+            shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedRight) == container->GetBleedDirection());
+            Assert::IsTrue(column1->GetInternalId() == container->GetParentalId()); 
 
-    shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
-    Assert::IsTrue(column2->GetStyle() == ContainerStyle::Default);
-    Assert::IsTrue(column2->GetPadding());
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedUp) == column2->GetBleedDirection());
+            shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
+            Assert::IsTrue(column2->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(column2->GetPadding());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedUp) == column2->GetBleedDirection());
 
-    auto items2 = column2->GetItems();
-    shared_ptr<Container> container2 = static_pointer_cast<Container>(items2.back());
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft | ContainerBleedDirection::BleedRight) ==
-        container2->GetBleedDirection());
+            auto items2 = column2->GetItems();
+            shared_ptr<Container> container2 = static_pointer_cast<Container>(items2.back());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedRight) == container2->GetBleedDirection());
 
-    shared_ptr<Column> column3 = static_pointer_cast<Column>(columns.at(2));
-    Assert::IsTrue(column3->GetStyle() == ContainerStyle::Default);
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedRight | ContainerBleedDirection::BleedUp) ==
-        column3->GetBleedDirection());
+            shared_ptr<Column> column3 = static_pointer_cast<Column>(columns.at(2));
+            Assert::IsTrue(column3->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight |
+                            ContainerBleedDirection::BleedUp) == column3->GetBleedDirection());
 
-    auto items3 = column3->GetItems();
-    shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedRight | ContainerBleedDirection::BleedLeft) ==
-        container3->GetBleedDirection());
-    Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId());
-}
+            auto items3 = column3->GetItems();
+            shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight|
+                            ContainerBleedDirection::BleedLeft) == container3->GetBleedDirection());
+            Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId()); 
+        }
 
-TEST_METHOD(BleedPropertyNestedColumnSetTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(BleedPropertyNestedColumnSetTest)
+        {
+            std::string testJsonString {R"(
               {
                 "type": "AdaptiveCard",
                 "body": [
@@ -650,58 +657,62 @@ TEST_METHOD(BleedPropertyNestedColumnSetTest)
             }
             )"};
 
-    using std::shared_ptr;
-    using std::static_pointer_cast;
+            using std::shared_ptr;
+            using std::static_pointer_cast;
 
-    shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
+            shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
 
-    shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-    shared_ptr<ColumnSet> columnset = static_pointer_cast<ColumnSet>(elem);
-    Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Default);
+            shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            shared_ptr<ColumnSet> columnset= static_pointer_cast<ColumnSet>(elem);
+            Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Default);
 
-    auto columns = columnset->GetColumns();
-    shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
-    Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
-    Assert::IsFalse(column1->GetBleed());
-    Assert::IsFalse(column1->GetCanBleed());
+            auto columns = columnset->GetColumns();
+            shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsFalse(column1->GetBleed());
+            Assert::IsFalse(column1->GetCanBleed());
 
-    auto items = column1->GetItems();
-    shared_ptr<ColumnSet> innerconlumnset = static_pointer_cast<ColumnSet>(items.back());
-    auto innercolumns = innerconlumnset->GetColumns();
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft) == innercolumns.at(0)->GetBleedDirection());
-    Assert::IsTrue(innercolumns.at(0)->GetParentalId() == column1->GetInternalId());
+            auto items = column1->GetItems();
+            shared_ptr<ColumnSet> innerconlumnset = static_pointer_cast<ColumnSet>(items.back());
+            auto innercolumns = innerconlumnset->GetColumns();
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == innercolumns.at(0)->GetBleedDirection());
+            Assert::IsTrue(innercolumns.at(0)->GetParentalId() == column1->GetInternalId());
 
-    Assert::IsTrue(ContainerBleedDirection::BleedDown == innercolumns.at(1)->GetBleedDirection());
+            Assert::IsTrue(ContainerBleedDirection::BleedDown == innercolumns.at(1)->GetBleedDirection());
 
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedRight) == innercolumns.at(2)->GetBleedDirection());
-    Assert::IsTrue(innercolumns.at(2)->GetParentalId() == column1->GetInternalId());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight) == innercolumns.at(2)->GetBleedDirection());
+            Assert::IsTrue(innercolumns.at(2)->GetParentalId() == column1->GetInternalId());
 
-    shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
-    Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
-    Assert::IsFalse(column2->GetCanBleed());
+            shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
+            Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsFalse(column2->GetCanBleed());
 
-    auto items2 = column2->GetItems();
-    shared_ptr<ColumnSet> innerconlumnset2 = static_pointer_cast<ColumnSet>(items2.back());
-    auto innercolumns2 = innerconlumnset2->GetColumns();
-    shared_ptr<Column> innercolumn0 = static_pointer_cast<Column>(innercolumns2.at(0));
-    shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumn0->GetItems().at(0));
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft) == innercontainer->GetBleedDirection());
-    Assert::IsTrue(innercontainer->GetParentalId() == column2->GetInternalId());
+            auto items2 = column2->GetItems();
+            shared_ptr<ColumnSet> innerconlumnset2 = static_pointer_cast<ColumnSet>(items2.back());
+            auto innercolumns2 = innerconlumnset2->GetColumns();
+            shared_ptr<Column> innercolumn0 = static_pointer_cast<Column>(innercolumns2.at(0));
+            shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumn0->GetItems().at(0));
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == innercontainer->GetBleedDirection());
+            Assert::IsTrue(innercontainer->GetParentalId() == column2->GetInternalId());
 
-    shared_ptr<Column> innercolumn1 = static_pointer_cast<Column>(innercolumns2.at(1));
-    shared_ptr<Container> innercontainer1 = static_pointer_cast<Container>(innercolumn1->GetItems().at(0));
-    Assert::IsTrue(ContainerBleedDirection::BleedDown == innercontainer1->GetBleedDirection());
+            shared_ptr<Column> innercolumn1 = static_pointer_cast<Column>(innercolumns2.at(1));
+            shared_ptr<Container> innercontainer1 = static_pointer_cast<Container>(innercolumn1->GetItems().at(0));
+            Assert::IsTrue(ContainerBleedDirection::BleedDown == innercontainer1->GetBleedDirection());
 
-    shared_ptr<Column> innercolumn2 = static_pointer_cast<Column>(innercolumns2.at(2));
-    shared_ptr<Container> innercontainer2 = static_pointer_cast<Container>(innercolumn2->GetItems().at(0));
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedRight) == innercontainer2->GetBleedDirection());
-    Assert::IsTrue(innercontainer2->GetParentalId() == column2->GetInternalId());
-}
+            shared_ptr<Column> innercolumn2 = static_pointer_cast<Column>(innercolumns2.at(2));
+            shared_ptr<Container> innercontainer2 = static_pointer_cast<Container>(innercolumn2->GetItems().at(0));
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight) == innercontainer2->GetBleedDirection());
+            Assert::IsTrue(innercontainer2->GetParentalId() == column2->GetInternalId());
+        }
 
-TEST_METHOD(BleedPropertyNestedLeftAndRightRestrictedColumnSetTest)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(BleedPropertyNestedLeftAndRightRestrictedColumnSetTest)
+        {
+            std::string testJsonString {R"(
             {
                 "type": "AdaptiveCard",
                 "body": [
@@ -783,53 +794,54 @@ TEST_METHOD(BleedPropertyNestedLeftAndRightRestrictedColumnSetTest)
             }
             )"};
 
-    using std::shared_ptr;
-    using std::static_pointer_cast;
+            using std::shared_ptr;
+            using std::static_pointer_cast;
 
-    shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
-    Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
+            shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
 
-    shared_ptr<Container> rootcontainer = static_pointer_cast<Container>(parseResult->GetAdaptiveCard()->GetBody().front());
-    shared_ptr<ColumnSet> columnset = static_pointer_cast<ColumnSet>(rootcontainer->GetItems().at(0));
+            shared_ptr<Container> rootcontainer = static_pointer_cast<Container>(parseResult->GetAdaptiveCard()->GetBody().front());
+            shared_ptr<ColumnSet> columnset =  static_pointer_cast<ColumnSet>(rootcontainer->GetItems().at(0));
 
-    Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Default);
 
-    auto columns = columnset->GetColumns();
-    shared_ptr<Column> columnRight = static_pointer_cast<Column>(columns.at(1));
-    Assert::IsTrue(columnRight->GetStyle() == ContainerStyle::None);
-    Assert::IsFalse(columnRight->GetCanBleed());
+            auto columns = columnset->GetColumns();
+            shared_ptr<Column> columnRight = static_pointer_cast<Column>(columns.at(1));
+            Assert::IsTrue(columnRight->GetStyle() == ContainerStyle::None);
+            Assert::IsFalse(columnRight->GetCanBleed());
 
-    auto items = columnRight->GetItems();
-    shared_ptr<ColumnSet> innercolumnset = static_pointer_cast<ColumnSet>(items.back());
-    Assert::IsFalse(innercolumnset->GetCanBleed());
+            auto items = columnRight->GetItems();
+            shared_ptr<ColumnSet> innercolumnset = static_pointer_cast<ColumnSet>(items.back());
+            Assert::IsFalse(innercolumnset->GetCanBleed());
 
-    auto innercolumns = innercolumnset->GetColumns();
-    Assert::IsFalse(innercolumns.at(0)->GetCanBleed());
+            auto innercolumns = innercolumnset->GetColumns();
+            Assert::IsFalse(innercolumns.at(0)->GetCanBleed());
 
-    shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumns.at(0)->GetItems().at(0));
-    Assert::IsTrue(innercontainer->GetPadding());
-    Assert::IsTrue(innercontainer->GetBleed());
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedUp) == innercontainer->GetBleedDirection());
+            shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumns.at(0)->GetItems().at(0));
+            Assert::IsTrue(innercontainer->GetPadding());
+            Assert::IsTrue(innercontainer->GetBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedUp) == innercontainer->GetBleedDirection());
 
-    Assert::IsFalse(innercolumns.at(2)->GetCanBleed());
+            Assert::IsFalse(innercolumns.at(2)->GetCanBleed());
 
-    shared_ptr<Container> innercontainerRight = static_pointer_cast<Container>(innercolumns.at(2)->GetItems().at(0));
-    Assert::IsTrue(innercontainerRight->GetPadding());
-    Assert::IsTrue(innercontainerRight->GetBleed());
-    Assert::IsTrue(
-        (ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedRight | ContainerBleedDirection::BleedUp) ==
-        innercontainerRight->GetBleedDirection());
-    Assert::IsTrue(innercontainerRight->GetParentalId() == columnset->GetInternalId());
+            shared_ptr<Container> innercontainerRight = static_pointer_cast<Container>(innercolumns.at(2)->GetItems().at(0));
+            Assert::IsTrue(innercontainerRight->GetPadding());
+            Assert::IsTrue(innercontainerRight->GetBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight|
+                            ContainerBleedDirection::BleedUp) == innercontainerRight->GetBleedDirection());
+            Assert::IsTrue(innercontainerRight->GetParentalId() == columnset->GetInternalId());
 
-    Assert::IsFalse(innercolumns.at(1)->GetCanBleed());
-    shared_ptr<Column> columnLeft = static_pointer_cast<Column>(columns.at(0));
-    Assert::IsTrue(columnLeft->GetStyle() == ContainerStyle::None);
-    Assert::IsFalse(columnLeft->GetCanBleed());
-}
+            Assert::IsFalse(innercolumns.at(1)->GetCanBleed());
+            shared_ptr<Column> columnLeft = static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(columnLeft->GetStyle() == ContainerStyle::None);
+            Assert::IsFalse(columnLeft->GetCanBleed());
+        }
 
-TEST_METHOD(BleedSequentialColumnSets)
-{
-    std::string testJsonString{R"(
+        TEST_METHOD(BleedSequentialColumnSets)
+        {
+            std::string testJsonString {R"(
             {
                 "type": "AdaptiveCard",
                 "version":"1.0",
@@ -909,14 +921,14 @@ TEST_METHOD(BleedSequentialColumnSets)
             }
             )"};
 
-    auto adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, "1.2")->GetAdaptiveCard();
-    Assert::IsTrue(adaptiveCard != nullptr);
+            auto adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, "1.2")->GetAdaptiveCard();
+            Assert::IsTrue(adaptiveCard != nullptr);
 
-    // The first column in the second column set should bleed to the left
-    auto secondColumnSet = std::static_pointer_cast<ColumnSet>(adaptiveCard->GetBody()[1]);
-    Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetCanBleed());
-    Assert::IsTrue((ContainerBleedDirection::BleedDown | ContainerBleedDirection::BleedLeft) == secondColumnSet->GetColumns()[0]->GetBleedDirection());
-}
-}
-;
+            // The first column in the second column set should bleed to the left
+            auto secondColumnSet = std::static_pointer_cast<ColumnSet>(adaptiveCard->GetBody()[1]);
+            Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == secondColumnSet->GetColumns()[0]->GetBleedDirection());
+        }
+    };
 }

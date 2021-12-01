@@ -6,32 +6,29 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveOpenUrlAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-struct DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, ITypePeek>, AdaptiveActionElementBase
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction = std::make_shared<::AdaptiveCards::OpenUrlAction>());
-
-    // IAdaptiveOpenUrlAction
-    property<winrt::Windows::Foundation::Uri> Url{nullptr};
-
-    // IAdaptiveActionElement
-    auto ActionType()
+    struct DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, ITypePeek>, AdaptiveActionElementBase
     {
-        return ActionType::OpenUrl;
-    }
+        AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction =
+                                  std::make_shared<::AdaptiveCards::OpenUrlAction>());
 
-    virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
+        // IAdaptiveOpenUrlAction
+        property<winrt::Windows::Foundation::Uri> Url{nullptr};
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        // IAdaptiveActionElement
+        auto ActionType() { return ActionType::OpenUrl; }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation {
-struct AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, implementation::AdaptiveOpenUrlAction>
+        virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
+
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+    };
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, implementation::AdaptiveOpenUrlAction>
+    {
+    };
+}

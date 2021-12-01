@@ -5,9 +5,10 @@
 #include "AdaptiveError.h"
 #include "AdaptiveError.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation {
-AdaptiveError::AdaptiveError(winrt::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode const& statusCode, hstring const& message) :
-    Message{message}, StatusCode{statusCode}
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
+    AdaptiveError::AdaptiveError(winrt::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode const& statusCode, hstring const& message)
+        : Message{message}, StatusCode{statusCode}
+    {
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
