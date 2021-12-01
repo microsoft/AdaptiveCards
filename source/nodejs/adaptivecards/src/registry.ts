@@ -47,10 +47,10 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     copyTo(target: CardObjectRegistry<T>) {
-        let keys = Object.keys(this._items);
+        const keys = Object.keys(this._items);
 
-        for (let key of keys) {
-            let typeRegistration = this._items[key];
+        for (const key of keys) {
+            const typeRegistration = this._items[key];
 
             target.register(typeRegistration.typeName, typeRegistration.objectType, typeRegistration.schemaVersion, typeRegistration.singletonBehavior);
         }
@@ -79,7 +79,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     createInstance(typeName: string, targetVersion: Version): T | undefined {
-        let registrationInfo = this.findByName(typeName);
+        const registrationInfo = this.findByName(typeName);
 
         return (registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0) ? new registrationInfo.objectType() : undefined;
     }

@@ -21,7 +21,7 @@ export class TableColumnDefinition extends SerializableObject {
         "width",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
             let result: SizeAndUnit = property.defaultValue;
-            let value = source[property.name];
+            const value = source[property.name];
             let invalidWidth = false;
 
             if (typeof value === "number" && !isNaN(value)) {
@@ -111,7 +111,7 @@ export abstract class StylableContainer<T extends CardElement> extends StylableC
     }
 
     protected internalRemoveItem(item: T): boolean {
-        let itemIndex = this._items.indexOf(item);
+        const itemIndex = this._items.indexOf(item);
 
         if (itemIndex >= 0) {
             this._items.splice(itemIndex, 1);
@@ -131,11 +131,11 @@ export abstract class StylableContainer<T extends CardElement> extends StylableC
 
         this._items = [];
 
-        let items = source[this.getCollectionPropertyName()];
+        const items = source[this.getCollectionPropertyName()];
 
         if (Array.isArray(items)) {
-            for (let item of items) {
-                let instance = this.parseItem(item, context);
+            for (const item of items) {
+                const instance = this.parseItem(item, context);
 
                 if (instance) {
                     this._items.push(instance);
@@ -183,10 +183,10 @@ export class TableCell extends Container {
 
     protected applyBorder() {
         if (this.renderedElement && this.getHasBorder()) {
-            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.parentRow.parentTable.gridStyle);
+            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.parentRow.parentTable.gridStyle);
 
             if (styleDefinition.borderColor) {
-                const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
+                const borderColor = stringToCssColor(styleDefinition.borderColor);
 
                 if (borderColor) {
                     this.renderedElement.style.borderRight = "1px solid " + borderColor;
@@ -206,7 +206,7 @@ export class TableCell extends Container {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        let cellElement = super.internalRender();
+        const cellElement = super.internalRender();
 
         if (cellElement) {
             cellElement.setAttribute("role", this.cellType === "data" ? "cell" : "columnheader");
@@ -246,7 +246,7 @@ export class TableCell extends Container {
         }
 
         if (this.columnIndex >= 0) {
-            let horizontalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).horizontalCellContentAlignment;
+            const horizontalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).horizontalCellContentAlignment;
 
             if (horizontalAlignment !== undefined) {
                 return horizontalAlignment;
@@ -270,7 +270,7 @@ export class TableCell extends Container {
         }
 
         if (this.columnIndex >= 0) {
-            let verticalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).verticalCellContentAlignment;
+            const verticalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).verticalCellContentAlignment;
 
             if (verticalAlignment !== undefined) {
                 return verticalAlignment;
@@ -326,10 +326,10 @@ export class TableRow extends StylableContainer<TableCell> {
 
     protected applyBackground() {
         if (this.renderedElement) {
-            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
+            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
 
             if (styleDefinition.backgroundColor) {
-                const bgColor = <string>stringToCssColor(styleDefinition.backgroundColor);
+                const bgColor = stringToCssColor(styleDefinition.backgroundColor);
                 this.renderedElement.style.backgroundColor = bgColor;
             }
         }
@@ -344,25 +344,25 @@ export class TableRow extends StylableContainer<TableCell> {
     }
     
     protected internalRender(): HTMLElement | undefined {
-        let isFirstRow = this.getIsFirstRow();
-        let cellSpacing = this.hostConfig.table.cellSpacing;
+        const isFirstRow = this.getIsFirstRow();
+        const cellSpacing = this.hostConfig.table.cellSpacing;
 
-        let rowElement = document.createElement("div");
+        const rowElement = document.createElement("div");
         rowElement.setAttribute("role", "row");
         rowElement.style.display = "flex";
         rowElement.style.flexDirection = "row";
 
         for (let i = 0; i < Math.min(this.getItemCount(), this.parentTable.getColumnCount()); i++) {
-            let cell = this.getItemAt(i);
+            const cell = this.getItemAt(i);
 
             // Cheating a bit in order to keep cellType read-only
             cell["_columnIndex"] = i;
             cell["_cellType"] = (this.parentTable.firstRowAsHeaders && isFirstRow) ? "header" : "data";
 
-            let renderedCell = cell.render();
+            const renderedCell = cell.render();
 
             if (renderedCell) {
-                let column = this.parentTable.getColumnAt(i);
+                const column = this.parentTable.getColumnAt(i);
 
                 if (column.computedWidth.unit === SizeUnit.Pixel) {
                     renderedCell.style.flex = "0 0 " + column.computedWidth.physicalSize + "px";
@@ -443,7 +443,7 @@ export class Table extends StylableContainer<TableRow> {
 
     @property(Table.gridStyleProperty)
     get gridStyle(): string | undefined {
-        let style = this.getValue(Table.gridStyleProperty);
+        const style = this.getValue(Table.gridStyleProperty);
 
         if (style && this.hostConfig.containerStyles.getStyleByName(style)) {
             return style;
@@ -494,13 +494,13 @@ export class Table extends StylableContainer<TableRow> {
         if (this.getItemCount() > 0) {
             let totalWeights: number = 0;
 
-            for (let column of this._columns) {
+            for (const column of this._columns) {
                 if (column.width.unit === SizeUnit.Weight) {
                     totalWeights += column.width.physicalSize;
                 }
             }
 
-            for (let column of this._columns) {
+            for (const column of this._columns) {
                 if (column.width.unit === SizeUnit.Pixel) {
                     column.computedWidth = new SizeAndUnit(column.width.physicalSize, SizeUnit.Pixel);
                 }
@@ -509,16 +509,16 @@ export class Table extends StylableContainer<TableRow> {
                 }
             }
 
-            let tableElement = document.createElement("div");
+            const tableElement = document.createElement("div");
             tableElement.setAttribute("role", "table");
             tableElement.style.display = "flex";
             tableElement.style.flexDirection = "column";
 
             if (this.showGridLines) {
-                let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
+                const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
 
                 if (styleDefinition.borderColor) {
-                    const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
+                    const borderColor = stringToCssColor(styleDefinition.borderColor);
     
                     if (borderColor) {
                         tableElement.style.borderTop = "1px solid " + borderColor;
@@ -527,14 +527,14 @@ export class Table extends StylableContainer<TableRow> {
                 }
             }
 
-            let cellSpacing = this.hostConfig.table.cellSpacing;
+            const cellSpacing = this.hostConfig.table.cellSpacing;
 
             for (let i = 0; i < this.getItemCount(); i++) {
-                let renderedRow = this.getItemAt(i).render();
+                const renderedRow = this.getItemAt(i).render();
 
                 if (renderedRow) {
                     if (i > 0 && !this.showGridLines && cellSpacing > 0) {
-                        let separatorRow = document.createElement("div");
+                        const separatorRow = document.createElement("div");
                         separatorRow.setAttribute("aria-hidden", "true");
                         separatorRow.style.height = cellSpacing + "px";
 
@@ -558,7 +558,7 @@ export class Table extends StylableContainer<TableRow> {
     }
 
     removeColumn(column: TableColumnDefinition) {
-        let index = this._columns.indexOf(column);
+        const index = this._columns.indexOf(column);
 
         if (index >= 0) {
             this.removeCellsFromColumn(index);

@@ -17,7 +17,7 @@ export class MenuItem {
 
     private updateCssClasses() {
         if (this._element) {
-            let effectiveHostConfig = this._hostConfig ? this._hostConfig : defaultHostConfig;
+            const effectiveHostConfig = this._hostConfig ? this._hostConfig : defaultHostConfig;
 
             this._element.className = effectiveHostConfig.makeCssClassName("ac-ctrl");
             this._element.classList.add(effectiveHostConfig.makeCssClassName(this.isEnabled ? "ac-ctrl-dropdown-item" : "ac-ctrl-dropdown-item-disabled"));

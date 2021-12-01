@@ -79,8 +79,8 @@ export class StringWithSubstitutions {
             throw new Error("The referencedInputs parameter cannot be null.")
         }
 
-        for (let input of inputs) {
-            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(<string>this._original);
+        for (const input of inputs) {
+            const matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(this._original);
 
             if (matches != null && input.id) {
                 referencedInputs[input.id] = input;
@@ -92,13 +92,13 @@ export class StringWithSubstitutions {
         this._processed = this._original;
 
         if (this._original) {
-            let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+            const regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
             let matches;
 
-            while ((matches = regEx.exec(<string>this._original)) !== null) {
-                for (let key of Object.keys(inputs)) {
+            while ((matches = regEx.exec(this._original)) !== null) {
+                for (const key of Object.keys(inputs)) {
                     if (key.toLowerCase() == matches[1].toLowerCase()) {
-                        let matchedInput = inputs[key];
+                        const matchedInput = inputs[key];
 
                         let valueForReplace = "";
 
@@ -114,7 +114,7 @@ export class StringWithSubstitutions {
                             valueForReplace = encodeURIComponent(valueForReplace);
                         }
 
-                        this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
+                        this._processed = (this._processed).replace(matches[0], valueForReplace);
 
                         break;
                     }
@@ -183,7 +183,7 @@ export class SizeAndUnit {
     unit: Enums.SizeUnit;
 
     static parse(input: string, requireUnitSpecifier: boolean = false): SizeAndUnit {
-        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+        const result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
         if (typeof input === "number") {
             result.physicalSize = input;
@@ -191,9 +191,9 @@ export class SizeAndUnit {
             return result;
         }
         else if (typeof input === "string") {
-            let regExp = /^([0-9]+)(px|\*)?$/g;
-            let matches = regExp.exec(input);
-            let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
+            const regExp = /^([0-9]+)(px|\*)?$/g;
+            const matches = regExp.exec(input);
+            const expectedMatchCount = requireUnitSpecifier ? 3 : 2;
 
             if (matches && matches.length >= expectedMatchCount) {
                 result.physicalSize = parseInt(matches[1]);
@@ -232,10 +232,10 @@ export class UUID {
     private static lut: string[] = [];
 
     static generate(): string {
-        let d0 = Math.random() * 0xffffffff | 0;
-        let d1 = Math.random() * 0xffffffff | 0;
-        let d2 = Math.random() * 0xffffffff | 0;
-        let d3 = Math.random() * 0xffffffff | 0;
+        const d0 = Math.random() * 0xffffffff | 0;
+        const d1 = Math.random() * 0xffffffff | 0;
+        const d2 = Math.random() * 0xffffffff | 0;
+        const d3 = Math.random() * 0xffffffff | 0;
 
         return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
             UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +

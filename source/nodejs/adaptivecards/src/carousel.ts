@@ -271,7 +271,7 @@ export class Carousel extends Container {
             }
         }
 
-        carouselContainer.appendChild(carouselWrapper as HTMLElement);
+        carouselContainer.appendChild(carouselWrapper );
 
         carouselContainer.tabIndex = 0;
 
@@ -285,7 +285,7 @@ export class Carousel extends Container {
 
         cardLevelContainer.addEventListener("keydown", (event) => {
             // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
-           let activeIndex = this._carousel?.activeIndex;
+           const activeIndex = this._carousel?.activeIndex;
            this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
            if (activeIndex) { 
                this._carousel?.slideTo(activeIndex);

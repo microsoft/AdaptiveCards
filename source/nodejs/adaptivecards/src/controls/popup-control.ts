@@ -24,7 +24,7 @@ export abstract class PopupControl {
     }
 
     render(rootElementBounds: ClientRect): HTMLElement {
-        let element = document.createElement("div");
+        const element = document.createElement("div");
         element.tabIndex = 0;
         element.className = this.hostConfig.makeCssClassName("ac-ctrl", "ac-ctrl-popup-container");
         element.setAttribute("role", "dialog");
@@ -57,7 +57,7 @@ export abstract class PopupControl {
 
             document.body.appendChild(this._overlayElement);
 
-            var rootElementBounds = rootElement.getBoundingClientRect();
+            const rootElementBounds = rootElement.getBoundingClientRect();
 
             this._popupElement = this.render(rootElementBounds);
             this._popupElement.classList.remove(
@@ -77,20 +77,20 @@ export abstract class PopupControl {
 
             this._overlayElement.appendChild(this._popupElement);
 
-            var popupElementBounds = this._popupElement.getBoundingClientRect();
+            const popupElementBounds = this._popupElement.getBoundingClientRect();
 
-            var availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
-            var availableSpaceAbove = rootElementBounds.top;
+            const availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
+            const availableSpaceAbove = rootElementBounds.top;
             var availableSpaceRight = window.innerWidth - rootElementBounds.left;
             var availableSpaceRight = window.innerWidth - rootElementBounds.right;
-            var availableSpaceLeft = rootElementBounds.left;
+            const availableSpaceLeft = rootElementBounds.left;
 
-            var left = rootElementBounds.left + Utils.getScrollX();
-            var top;
+            let left = rootElementBounds.left + Utils.getScrollX();
+            let top;
 
             if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
                 // Not enough space above or below root element
-                var actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
+                const actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
 
                 this._popupElement.style.maxHeight = actualPopupHeight + "px";
 
@@ -103,7 +103,7 @@ export abstract class PopupControl {
 
                 if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
                     // Not enough space left or right of root element
-                    var actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
+                    const actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
 
                     this._popupElement.style.maxWidth = actualPopupWidth + "px";
 

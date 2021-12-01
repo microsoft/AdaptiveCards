@@ -73,7 +73,7 @@ export class AdaptiveApplet {
     }
 
     private showManualRefreshButton(refreshAction: ExecuteAction) {
-        let displayBuiltInManualRefreshButton = this.onShowManualRefreshButton ? this.onShowManualRefreshButton(this) : true;
+        const displayBuiltInManualRefreshButton = this.onShowManualRefreshButton ? this.onShowManualRefreshButton(this) : true;
 
         if (displayBuiltInManualRefreshButton) {
             this._refreshButtonHostElement.style.display = "none";
@@ -96,7 +96,7 @@ export class AdaptiveApplet {
                     message = Strings.runtime.clckToRestartAutomaticRefresh();
                 }
 
-                let cardPayload = {
+                const cardPayload = {
                     type: "AdaptiveCard",
                     version: "1.2",
                     body: [
@@ -117,7 +117,7 @@ export class AdaptiveApplet {
                     ]
                 };
 
-                let card = new AdaptiveCard();
+                const card = new AdaptiveCard();
                 card.parse(cardPayload, new SerializationContext(Versions.v1_2));
                 card.onExecuteAction = (action: Action) => {
                     if (action.id === "refreshCard") {
@@ -142,14 +142,14 @@ export class AdaptiveApplet {
 
     private createActivityRequest(action: ExecuteAction, trigger: ActivityRequestTrigger, consecutiveRefreshes: number): ActivityRequest | undefined {
         if (this.card) {
-            let request = new ActivityRequest(action, trigger, consecutiveRefreshes);
+            const request = new ActivityRequest(action, trigger, consecutiveRefreshes);
             request.onSend = (sender: ActivityRequest) => {
                 sender.attemptNumber++;
 
                 this.internalSendActivityRequestAsync(request);
             }
 
-            let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, request, action) : false;
+            const cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, request, action) : false;
 
             return cancel ? undefined : request;
         }
@@ -159,7 +159,7 @@ export class AdaptiveApplet {
     }
 
     private createMagicCodeInputCard(attemptNumber: number): AdaptiveCard {
-        let payload = {
+        const payload = {
             type: "AdaptiveCard",
             version: "1.0",
             body: [
@@ -200,7 +200,7 @@ export class AdaptiveApplet {
             ]
         };
 
-        let card = new AdaptiveCard();
+        const card = new AdaptiveCard();
         card.parse(payload);
 
         return card;
@@ -225,17 +225,17 @@ export class AdaptiveApplet {
 
         if (this._cardPayload) {
             try {
-                let card = new AdaptiveCard();
+                const card = new AdaptiveCard();
 
                 if (this.hostConfig) {
                     card.hostConfig = this.hostConfig;
                 }
 
-                let serializationContext = this.createSerializationContext();
+                const serializationContext = this.createSerializationContext();
 
                 card.parse(this._cardPayload, serializationContext);
 
-                let doChangeCard = this.onCardChanging ? this.onCardChanging(this, this._cardPayload) : true;
+                const doChangeCard = this.onCardChanging ? this.onCardChanging(this, this._cardPayload) : true;
 
                 if (doChangeCard) {
                     this._card = card;
@@ -274,7 +274,7 @@ export class AdaptiveApplet {
                                 else {
                                     logEvent(Enums.LogLevel.Info, "Scheduling automatic card refresh number " + (consecutiveRefreshes + 1) + " in " + GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes + "ms");
 
-                                    let action = this._card.refresh.action;
+                                    const action = this._card.refresh.action;
 
                                     this._allowAutomaticCardUpdate = true;
 
@@ -316,7 +316,7 @@ export class AdaptiveApplet {
     private internalExecuteAction(action: Action, trigger: ActivityRequestTrigger, consecutiveRefreshes: number) {
         if (action instanceof ExecuteAction) {
             if (this.channelAdapter) {
-                let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
+                const request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
 
                 if (request) {
                     request.retryAsync();
@@ -341,7 +341,7 @@ export class AdaptiveApplet {
                 this._progressOverlay = document.createElement("div");
                 this._progressOverlay.className = "aaf-progress-overlay";
 
-                let spinner = document.createElement("div");
+                const spinner = document.createElement("div");
                 spinner.className = "aaf-spinner";
                 spinner.style.width = "28px";
                 spinner.style.height = "28px";
@@ -376,10 +376,10 @@ export class AdaptiveApplet {
     }
 
     private showAuthCodeInputDialog(request: ActivityRequest) {
-        let showBuiltInAuthCodeInputCard = this.onShowAuthCodeInputDialog ? this.onShowAuthCodeInputDialog(this, request) : true;
+        const showBuiltInAuthCodeInputCard = this.onShowAuthCodeInputDialog ? this.onShowAuthCodeInputDialog(this, request) : true;
 
         if (showBuiltInAuthCodeInputCard) {
-            let authCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
+            const authCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
             authCodeInputCard.render();
             authCodeInputCard.onExecuteAction = (submitMagicCodeAction: Action) => {
                 if (this.card && submitMagicCodeAction instanceof SubmitAction) {
@@ -427,7 +427,7 @@ export class AdaptiveApplet {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
         }
 
-        let overlay = this.createProgressOverlay(request);
+        const overlay = this.createProgressOverlay(request);
 
         if (overlay !== undefined) {
             this.renderedElement.appendChild(overlay);
@@ -491,7 +491,7 @@ export class AdaptiveApplet {
                     done = true;
                 }
                 else if (response instanceof ErrorResponse) {
-                    let retryIn: number = this.activityRequestFailed(response);
+                    const retryIn: number = this.activityRequestFailed(response);
 
                     if (retryIn >= 0 && request.attemptNumber < GlobalSettings.applets.maximumRetryAttempts) {
                         logEvent(
@@ -547,8 +547,8 @@ export class AdaptiveApplet {
                             else {
                                 this.showAuthCodeInputDialog(request);
 
-                                let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
-                                let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
+                                const left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
+                                const top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
 
                                 window.open(
                                     response.signinButton.value,

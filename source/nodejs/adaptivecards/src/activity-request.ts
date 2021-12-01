@@ -43,7 +43,7 @@ export class LoginRequestResponse extends ActivityResponse {
     constructor(readonly request: IActivityRequest, private _auth: Authentication) {
         super(request);
 
-        for (let button of this._auth.buttons) {
+        for (const button of this._auth.buttons) {
             if (button.type === "signin" && button.value !== undefined) {
                 try {
                     new URL(button.value);

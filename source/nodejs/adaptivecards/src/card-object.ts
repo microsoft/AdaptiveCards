@@ -84,7 +84,7 @@ export abstract class CardObject extends SerializableObject {
     abstract get hostConfig(): HostConfig;
 
     preProcessPropertyValue(property: PropertyDefinition, propertyValue?: any): any {
-        let value = propertyValue === undefined ? this.getValue(property) : propertyValue;
+        const value = propertyValue === undefined ? this.getValue(property) : propertyValue;
 
         if (GlobalSettings.allowPreProcessingPropertyValues) {
             let currentObject: CardObject | undefined = this;
@@ -142,7 +142,7 @@ export abstract class CardObject extends SerializableObject {
     }
 
     validateProperties(): ValidationResults {
-        let result = new ValidationResults();
+        const result = new ValidationResults();
 
         this.internalValidateProperties(result);
 

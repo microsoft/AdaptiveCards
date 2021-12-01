@@ -15,12 +15,12 @@ export class PopupMenu extends PopupControl {
     }
 
     protected renderContent(): HTMLElement {
-        var element = document.createElement("div");
+        const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
         element.setAttribute("role", "listbox");
 
         for (let i = 0; i < this._items.length; i++) {
-            var renderedItem = this._items.get(i).render(this.hostConfig);
+            const renderedItem = this._items.get(i).render(this.hostConfig);
             renderedItem.tabIndex = 0;
 
             element.appendChild(renderedItem);
@@ -38,7 +38,7 @@ export class PopupMenu extends PopupControl {
     keyDown(e: KeyboardEvent) {
         super.keyDown(e);
 
-        var selectedItemIndex = this._selectedIndex;
+        let selectedItemIndex = this._selectedIndex;
 
         switch (e.key) {
             case Constants.keys.tab:

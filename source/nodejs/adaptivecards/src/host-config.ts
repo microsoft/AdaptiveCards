@@ -7,7 +7,7 @@ import { HostCapabilities } from "./host-capabilities";
 
 function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
     if (typeof value === "string") {
-        let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
+        const parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
 
         return parsedValue !== undefined ? parsedValue : defaultValue;
     }
@@ -70,7 +70,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = <number>Utils.parseNumber(obj["maxImageHeight"], 100);
+            this.maxImageHeight = Utils.parseNumber(obj["maxImageHeight"], 100);
         }
     }
 
@@ -217,7 +217,7 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
     }
 
     toJSON(): any {
-        let result = super.toJSON();
+        const result = super.toJSON();
         result["suffix"] = this.suffix;
         result["suffixColor"] = Enums.TextColor[this.suffixColor];
 
@@ -263,7 +263,7 @@ export class FactTextDefinition extends BaseTextDefinition {
     }
 
     toJSON(): any {
-        let result = super.toJSON();
+        const result = super.toJSON();
         result["wrap"] = this.wrap;
 
         return result;
@@ -349,7 +349,7 @@ export class ActionsConfig {
             this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
-                let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
+                const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
                 if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
@@ -483,9 +483,9 @@ export class ContainerStyleSet {
             const customStyleArray = obj["customStyles"];
 
             if (customStyleArray && Array.isArray(customStyleArray)) {
-                for (let customStyle of customStyleArray) {
+                for (const customStyle of customStyleArray) {
                     if (customStyle) {
-                        let styleName = customStyle["name"];
+                        const styleName = customStyle["name"];
 
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
@@ -502,7 +502,7 @@ export class ContainerStyleSet {
     }
 
     toJSON() {
-        let customStyleArray: any[] = [];
+        const customStyleArray: any[] = [];
 
         Object.keys(this._allStyles).forEach(
             (key) => {
@@ -514,7 +514,7 @@ export class ContainerStyleSet {
                 }
             });
 
-        let result: any = {
+        const result: any = {
             default: this.default,
             emphasis: this.emphasis
         }
@@ -784,9 +784,9 @@ export class HostConfig {
     }
 
     makeCssClassNames(...classNames: string[]): string[] {
-        let result: string[] = [];
+        const result: string[] = [];
 
-        for (let className of classNames) {
+        for (const className of classNames) {
             result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
         }
 
@@ -794,7 +794,7 @@ export class HostConfig {
     }
 
     makeCssClassName(...classNames: string[]): string {
-        let result = this.makeCssClassNames(...classNames).join(" ");
+        const result = this.makeCssClassNames(...classNames).join(" ");
 
         return result ? result : "";
     }

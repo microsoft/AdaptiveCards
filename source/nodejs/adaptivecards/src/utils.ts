@@ -17,7 +17,7 @@ export function isInternetExplorer(): boolean {
 }
 
 export function isMobileOS(): boolean {
-    let userAgent = window.navigator.userAgent;
+    const userAgent = window.navigator.userAgent;
 
     return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
 }
@@ -62,11 +62,11 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
 }
 
 export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
-    for (let key in enumType) {
-        let keyAsNumber = parseInt(key, 10);
+    for (const key in enumType) {
+        const keyAsNumber = parseInt(key, 10);
 
         if (keyAsNumber >= 0) {
-            let value = enumType[key];
+            const value = enumType[key];
 
             if (value && typeof value === "string" && value.toLowerCase() === name.toLowerCase()) {
                 return keyAsNumber;
@@ -82,21 +82,21 @@ export function parseEnum(enumType: { [s: number]: string }, name: string, defau
         return defaultValue;
     }
 
-    let enumValue = getEnumValueByName(enumType, name);
+    const enumValue = getEnumValueByName(enumType, name);
 
     return enumValue !== undefined ? enumValue : defaultValue;
 }
 
 export function stringToCssColor(color: string | undefined): string | undefined {
     if (color) {
-        let regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
-        let matches = regEx.exec(color);
+        const regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+        const matches = regEx.exec(color);
 
         if (matches && matches[4]) {
-            let a = parseInt(matches[1], 16) / 255;
-            let r = parseInt(matches[2], 16);
-            let g = parseInt(matches[3], 16);
-            let b = parseInt(matches[4], 16);
+            const a = parseInt(matches[1], 16) / 255;
+            const r = parseInt(matches[2], 16);
+            const g = parseInt(matches[3], 16);
+            const b = parseInt(matches[4], 16);
 
             return "rgba(" + r + "," + g + "," + b + "," + a + ")";
         }
@@ -108,27 +108,27 @@ export function stringToCssColor(color: string | undefined): string | undefined 
 export function truncate(element: HTMLElement,
     maxHeight: number,
     lineHeight?: number) {
-    let fits = () => {
+    const fits = () => {
         // Allow a one pixel overflow to account for rounding differences
         // between browsers
         return maxHeight - element.scrollHeight >= -1.0;
     };
 
-    if (fits()) return;
+    if (fits()) {return;}
 
-    let fullText = element.innerHTML;
-    let truncateAt = (idx: any) => {
+    const fullText = element.innerHTML;
+    const truncateAt = (idx: any) => {
         element.innerHTML = fullText.substring(0, idx) + '...';
     }
 
-    let breakableIndices = findBreakableIndices(fullText);
+    const breakableIndices = findBreakableIndices(fullText);
     let lo = 0;
     let hi = breakableIndices.length;
     let bestBreakIdx = 0;
 
     // Do a binary search for the longest string that fits
     while (lo < hi) {
-        let mid = Math.floor((lo + hi) / 2);
+        const mid = Math.floor((lo + hi) / 2);
         truncateAt(breakableIndices[mid]);
 
         if (fits()) {
@@ -164,7 +164,7 @@ export function truncate(element: HTMLElement,
 }
 
 function findBreakableIndices(html: string): number[] {
-    let results: number[] = [];
+    const results: number[] = [];
     let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {
@@ -184,15 +184,15 @@ function findNextCharacter(html: string, currIdx: number): number {
     // If we found the start of an HTML tag, keep advancing until we get
     // past it, so we don't end up truncating in the middle of the tag
     while (currIdx < html.length && html[currIdx] == '<') {
-        while (currIdx < html.length && html[currIdx++] != '>');
+        while (currIdx < html.length && html[currIdx++] != '>'){;}
     }
 
     return currIdx;
 }
 
 export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
-    let start = element.offsetTop;
-    let end = start + element.clientHeight;
+    const start = element.offsetTop;
+    const end = start + element.clientHeight;
 
     if (end <= containerEnd) {
         return Enums.ContainerFitStatus.FullyInContainer;
