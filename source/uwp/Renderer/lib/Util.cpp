@@ -360,25 +360,26 @@ uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
                     switch (desiredSize)
                     {
                     case rtom::TextSize::Small:
-                        return 10;
+                        result = 10;
                         break;
                     case rtom::TextSize::Medium:
-                        return 14;
+                        result = 14;
                         break;
                     case rtom::TextSize::Large:
-                        return 17;
+                        result = 17;
                         break;
                     case rtom::TextSize::ExtraLarge:
-                        return 20;
+                        result = 20;
                         break;
                     case rtom::TextSize::Default:
                     default:
-                        return 12;
+                        result = 12;
                         break;
                     }
                 }
             }
         }
+        return result;
     }
     catch (winrt::hresult_error const& ex)
     {

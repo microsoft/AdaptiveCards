@@ -162,6 +162,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, {0}, false);
             }
         }
+        else
+        {
+            XamlHelpers::SetContent(button, title);
+        }
     }
 
     // TODO: refactors this
@@ -861,6 +865,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             // If using the equal width columns, we'll add a column and assign the column
             rtxaml::Controls::ColumnDefinition columnDefinition;
             columnDefinition.Width({0, rtxaml::GridUnitType::Auto});
+            columnDefinitions.Append(columnDefinition);
             rtxaml::Controls::Grid::SetColumn(actionControl.as<rtxaml::FrameworkElement>(), columnIndex);
         }
 
@@ -896,7 +901,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             // stretching buttons height isn't really valid, especially when the height of cards are typically dynamic.
             rtxaml::Controls::Grid actionsGrid;
             columnDefinitions = actionsGrid.ColumnDefinitions();
-            actionsPanel = actionsGrid.as<rtxaml::Controls::Panel>();
+            actionsPanel = actionsGrid;
         }
         else
         {
@@ -927,7 +932,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             }
 
             // Add the action buttons to the stack panel
-            actionsPanel = actionStackPanel.as<rtxaml::Controls::Panel>();
+            actionsPanel = actionStackPanel;
         }
 
         auto buttonMargin = GetButtonMargin(actionsConfig);
@@ -961,6 +966,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             if (iconUrl.empty())
             {
                 allActionsHaveIcons = false;
+                // TODO: will this break from the for loop?
+                // TODO: move this to the later loop/
+                break;
             }
         }
 
@@ -972,12 +980,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         uint32_t currentButtonIndex = 0;
         rtxaml::Controls::Button overflowButton;
 
-        for (auto child : children)
+        for (auto action : children)
         {
             // TODO: is this correct?
-            rtom::IAdaptiveActionElement action{child};
             rtom::ActionMode mode = action.Mode();
-
             rtom::ActionType actionType = action.ActionType();
 
             rtxaml::UIElement actionControl{nullptr};
@@ -1052,7 +1058,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
         // Reset icon placement value
         renderArgs.AllowAboveTitleIconPlacement(false);
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, actionsPanel);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adaptive.Actions"}, actionsPanel);
 
         rtxaml::Controls::StackPanel actionPanel;
 

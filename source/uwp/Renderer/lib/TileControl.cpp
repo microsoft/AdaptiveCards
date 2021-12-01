@@ -13,6 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         m_containerElement = rtxaml::Controls::Canvas{};
         m_brushXaml = rtxaml::Media::ImageBrush{};
+        this->Content(m_containerElement);
     }
 
     void TileControl::ImageOpened(const IInspectable& sender, const rtxaml::RoutedEventArgs& args)
@@ -50,23 +51,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void TileControl::OnApplyTemplate() { this->Content(m_containerElement); }
+    void TileControl::OnApplyTemplate() { TileControl_base::OnApplyTemplate(); }
 
     winrt::Windows::Foundation::Size TileControl::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
     {
-        /*ComPtr<IFrameworkElementOverrides> base;
-        RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
-                                                             reinterpret_cast<void**>(base.GetAddressOf())));
-
-        return base->MeasureOverride(availableSize, pReturnValue);*/
-        // TODO: I don't think I need to do it at all, do I?
         return TileControl_base::MeasureOverride(availableSize);
     }
 
     winrt::Windows::Foundation::Size TileControl::ArrangeOverride(winrt::Windows::Foundation::Size const& arrangeBounds)
     {
         // TODO: am I doing this right?
-        m_containerSize = TileControl_base::MeasureOverride(arrangeBounds);
+        m_containerSize = TileControl_base::ArrangeOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
         winrt::Windows::Foundation::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
