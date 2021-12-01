@@ -97,12 +97,20 @@ export class Label extends React.Component {
 			Enums.HorizontalAlignment.Left
 		));
 
+		// line-height
+		const lineHeight = this.hostConfig.getTextLineHeight(Utils.parseHostConfigEnum(
+			Enums.TextSize,
+			size,
+			Enums.TextSize.Default
+		));
+
 		return {
 			fontSize,
 			fontWeight: fontWeight.toString(),
 			fontFamily: fontFamilyValue,
 			color: colorValue,
-			textAlign
+			textAlign,
+			lineHeight
 		}
 	}
 }

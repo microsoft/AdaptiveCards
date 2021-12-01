@@ -176,13 +176,9 @@ export class ActionButton extends React.Component {
 		this.styleConfig.actionIconFlex, styles.button];
 		if (this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
 			if (this.props.isFirst && this.props.isLast) {
-				//Only one lement...Margin not required
-			} else if (this.props.isFirst) {
-				computedStyles.push({ marginRight: 5 })
-			} else if (this.props.isLast) {
-				computedStyles.push({ marginLeft: 5 })
-			} else {
-				computedStyles.push({ marginRight: 5, marginLeft: 5 })
+				//Only one element...Margin not required
+			} else if (!this.props.isLast) {
+                computedStyles.push({ marginRight: 10 })
 			}
 		}
 

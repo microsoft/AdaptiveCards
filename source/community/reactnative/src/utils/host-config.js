@@ -395,7 +395,13 @@ class FontConfig {
 export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
-	lineHeights;
+	lineHeights = {
+		small: 17,
+		default: 20,
+		medium: 23,
+		large: 26,
+		extraLarge: 34
+	};
 	spacing = {
 		none: 0,
 		small: 3,
@@ -584,6 +590,26 @@ export class HostConfig {
 				return fontStyle.fontSizes.extraLarge;
 			default:
 				return fontStyle.fontSizes.default;
+		}
+	}
+
+	/**
+	 * @param {string} fontSize 
+	 */
+	 getTextLineHeight = (fontSize) => {
+		switch (fontSize) {
+			case Enums.TextSize.Small:
+				return this.lineHeights.small
+			case Enums.TextSize.Default:
+				return this.lineHeights.default;
+			case Enums.TextSize.Medium:
+				return this.lineHeights.medium;
+			case Enums.TextSize.Large:
+				return this.lineHeights.large;
+			case Enums.TextSize.ExtraLarge:
+				return this.lineHeights.extraLarge;
+			default:
+				return this.lineHeights.default;
 		}
 	}
 

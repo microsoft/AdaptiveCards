@@ -68,7 +68,9 @@ export const defaultThemeConfig = {
         },
     },
     input: {
-        borderColor: Constants.EmphasisColor,
+		activeColor: Constants.BlackColor,
+		inactiveColor: Constants.LightBlack,
+		borderColor: Constants.EmphasisColor,
         backgroundColor: Constants.WhiteColor,
         borderRadius: 5,
         borderWidth: 1

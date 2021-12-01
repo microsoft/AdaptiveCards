@@ -44,6 +44,7 @@ export class Input extends React.Component {
 
 		this.inlineAction = {};
 		this.state = {
+			isFocused: false,
 			showInlineActionErrors: false,
 			text: Constants.EmptyString,
 		}
@@ -94,8 +95,8 @@ export class Input extends React.Component {
 									clearButtonMode={Constants.WhileEditingString}
 									textContentType={this.textStyle}
 									keyboardType={this.keyboardType}
-									onFocus={this.props.handleFocus}
-									onBlur={this.props.handleBlur}
+									onFocus={this.handleFocus}
+									onBlur={this.handleBlur}
 									value={this.props.value}
 									onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
 								/>
@@ -118,8 +119,9 @@ export class Input extends React.Component {
 		const { isMultiline } = this;
 
 		// remove placeholderTextColor from styles object before using
-		const { placeholderTextColor, ...stylesObject } = this.styleConfig.input;
+		const { placeholderTextColor, activeColor, inactiveColor, ...stylesObject } = this.styleConfig.input;
 		let inputComputedStyles = [stylesObject, styles.input];
+		inputComputedStyles.push({ borderColor: this.state.isFocused ? activeColor : inactiveColor })
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
@@ -269,9 +271,17 @@ export class Input extends React.Component {
 
 	handleFocus = () => {
 		this.setState({
+			isFocused: true,
 			showInlineActionErrors: false
 		});
 		this.props.handleFocus();
+	}
+
+	handleBlur = () => {
+		this.setState({
+			isFocused: false
+		});
+		this.props.handleBlur();
 	}
 
 	/**

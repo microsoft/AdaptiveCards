@@ -7,6 +7,7 @@ export const FlexColumn = 'column';
 export const FlexRowReverse = 'row-reverse';
 export const FlexEnd = 'flex-end';
 export const FlexWrap = 'wrap';
+export const NoWrap = 'nowrap';
 export const FlexStart = 'flex-start';
 export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';

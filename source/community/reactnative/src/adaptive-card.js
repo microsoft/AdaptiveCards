@@ -73,6 +73,8 @@ export default class AdaptiveCard extends React.Component {
 			payload: this.payload,
 			cardModel: this.cardModel
 		}
+        
+        this.scrollView = React.createRef();
 
 	}
 
@@ -93,6 +95,8 @@ export default class AdaptiveCard extends React.Component {
 				payload: this.payload,
 				cardModel: this.cardModel
 			});
+            
+            this.scrollView.current.scrollTo({x: 0, y: 0, animated: false});
 		}
 	}
 
@@ -225,7 +229,7 @@ export default class AdaptiveCard extends React.Component {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
-					<ScrollView
+					<ScrollView ref={this.scrollView}
 						contentContainerStyle={this.props.contentContainerStyle}
 						showsHorizontalScrollIndicator={true}
 						showsVerticalScrollIndicator={true}

@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
 	},
 	actionAlignmentVertical: {
 		flexDirection: Constants.FlexColumn,
+        flexWrap: Constants.NoWrap
 	},
 	leftAlignment: {
 		justifyContent: Constants.FlexStart,
