@@ -36,11 +36,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             checkBox.VerticalAlignment(rtxaml::VerticalAlignment::Top);
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
 
+
+            // TODO: I could convert it to structural binding but then compiler will generate unsued variable warning
+            // TODO: I could fix it with [[maybe_unused]], but then we aren't sure which variable exactly is unused
+            // TODO: I will leave std::tie here, it makes more sense to me.
             rtxaml::UIElement inputLayout{nullptr};
             std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
                 adaptiveToggleInput, checkBox, false, renderContext, false);
 
             // TODO: come back here, not sure if this is right
+            // TODO: should it be make self? should I put all input values under ::implementation namespace? Help needed here
             auto input = winrt::make<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
             renderContext.AddInputValue(input, renderArgs);
             return inputLayout;

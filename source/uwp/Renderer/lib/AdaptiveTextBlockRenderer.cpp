@@ -27,6 +27,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             rtxaml::Controls::TextBlock xamlTextBlock{};
+
+            // NOTE: Style must be applied BEFORE we set any actual values in code.
+            // TODO: Does it matter though? Even if we apply style before, the values that were set will be overriden by the
+            // TODO: renderer code that extracts them from markup(.json). So only the values that ARE NOT
+            // TODO: being programatically set will propagate from style. And it doesn't really matter
+            // TODO: whether we apply style before or after and setters from the code.
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
             StyleXamlTextBlockProperties(adaptiveTextBlock, renderContext, renderArgs, xamlTextBlock);
             auto inlines = xamlTextBlock.Inlines();
 
@@ -55,7 +62,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
             // are flush on the left edge of the card by enabling TrimSideBearings
             xamlTextBlock.OpticalMarginAlignment(rtxaml::OpticalMarginAlignment::TrimSideBearings);
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
 
             // If this text block has a heading style, set the corresponding automation property
             if (textStyle == rtom::TextStyle::Heading)

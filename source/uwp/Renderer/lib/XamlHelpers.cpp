@@ -46,13 +46,21 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
-                                        rtxaml::FrameworkElement frameworkElement)
+                                        rtxaml::FrameworkElement const& frameworkElement)
     {
         auto resourceDictionary = renderContext.OverrideStyles();
-        if (auto style = TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, resourceName))
+        try
         {
-            frameworkElement.Style(style);
+            if (auto style = TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, resourceName))
+            {
+                frameworkElement.Style(style);
+            }
         }
+        catch(...)
+        {
+            // TODO: lookup will throw if it cannot find a resource
+        }
+       
     }
 
     void XamlHelpers::SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel)

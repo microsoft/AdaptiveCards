@@ -21,7 +21,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
-                                        rtxaml::FrameworkElement frameworkElement);
+                                        rtxaml::FrameworkElement const& frameworkElement);
 
     rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
                                       uint32_t spacing,

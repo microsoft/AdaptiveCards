@@ -60,10 +60,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto renderArgs =
                 winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, adaptiveCard, nullptr);
 
-            rtxaml::Controls::Panel bodyElementContainer{nullptr};
-            rtxaml::UIElement rootElement{nullptr};
-
-            std::tie(bodyElementContainer, rootElement) =
+            auto& [bodyElementContainer, rootElement] =
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder);
 
             rtxaml::FrameworkElement rootAsFrameworkElement = rootElement.as<rtxaml::FrameworkElement>();

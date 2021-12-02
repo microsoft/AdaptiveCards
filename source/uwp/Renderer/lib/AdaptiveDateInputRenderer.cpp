@@ -74,10 +74,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePicker);
 
-            rtxaml::UIElement inputLayout{nullptr};
-            rtxaml::Controls::Border validationBorder{nullptr};
-
-            std::tie(inputLayout, validationBorder) =
+            auto& [inputLayout, validationBorder] =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
 
             // TODO: come back to inputs here.

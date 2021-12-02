@@ -45,14 +45,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::hstring min = adaptiveTimeInput.Min();
             winrt::hstring max = adaptiveTimeInput.Max();
 
-            /*ComPtr<IUIElement> timePickerAsUIElement;
-            RETURN_IF_FAILED(timePicker.As(&timePickerAsUIElement));*/
-
-            rtxaml::UIElement inputLayout{nullptr};
-            rtxaml::Controls::Border validationBorder{nullptr};
-            std::tie(inputLayout, validationBorder) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
-                adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext); // TODO: not sure about max/min(.)empty.
-                                                                                             // How to properly mimick HString.IsValid() ?
+            auto& [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+                adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext);
 
             // TODO: come back to all the inputs, not sure if this is right
             auto input = winrt::make_self<rtrender::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);

@@ -125,11 +125,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                                                      L"Adaptive.Input.ChoiceSet.Compact",
                                                                                      comboBox);
 
-        rtxaml::UIElement inputLayout{nullptr};
-        rtxaml::Controls::Border validationBorder{nullptr};
-
-        // TODO: revisit this
-        std::tie(inputLayout, validationBorder) =
+        auto& [inputLayout, validationBorder] =
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
@@ -197,7 +193,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         rtxaml::UIElement inputLayout{nullptr};
 
-        // TODO: is this correct way?
         std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
             adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
@@ -269,13 +264,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             });
 
         // Handle input validation
-        rtxaml::UIElement inputLayout{nullptr};
-        rtxaml::Controls::Border validationBorder{nullptr};
-
-        std::tie(inputLayout, validationBorder) =
+        auto& [inputLayout, validationBorder] =
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
-        // Create the InputValue and add it to the context
+        //TODO: come back here. Create the InputValue and add it to the context
         auto input = winrt::make_self<rtrender::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 

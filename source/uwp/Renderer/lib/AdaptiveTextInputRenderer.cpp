@@ -102,10 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         textBox.InputScope(inputScope);
 
-        rtxaml::UIElement textInputControl{nullptr};
-        rtxaml::Controls::Border validationBorder{nullptr};
-
-        std::tie(textInputControl, validationBorder) =
+        auto& [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         // TODO: come back here, not sure if this is correct?
@@ -126,10 +123,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         passwordBox.MaxLength(adaptiveTextInput.MaxLength());
         passwordBox.PlaceholderText(adaptiveTextInput.Placeholder());
 
-        rtxaml::UIElement textInputControl{nullptr};
-        rtxaml::Controls::Border validationBorder{nullptr};
-
-        std::tie(textInputControl, validationBorder) =
+        auto& [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, passwordBox, renderContext, renderArgs);
 
         // TODO: come back to inputs, not sure if it's correct
