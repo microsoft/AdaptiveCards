@@ -38,7 +38,22 @@ object TestHelpers {
     }
 
     internal fun selectPopupOption(optionText : String) {
-        Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        var success = false
+        for (i in 0 .. 5) {
+            try {
+                Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup())
+                    .perform(ViewActions.scrollTo(), ViewActions.click())
+                success = true
+                return
+            }
+            catch (e: Exception) {
+                Thread.sleep(1000);
+            }
+        }
+
+        if (!success){
+            throw Exception("Failed to click on action");
+        }
     }
 
     internal fun clickOnElementWithText(text : String) {

@@ -185,14 +185,15 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset and delete all text
-        TestHelpers.clearTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"))
+        val chosenAnimalContainer : ViewInteraction = TestHelpers.findInputInValidatedContainer("chosenAnimal")
+        TestHelpers.clearTextInInput(chosenAnimalContainer)
 
         // Click on a random point to dismiss the choices popup
         val device: UiDevice = UiDevice.getInstance(getInstrumentation())
-        device.click(1, 20)
+        device.click(1, 100)
 
         // Click again on the choiceset
-        TestHelpers.findInputInValidatedContainer("chosenAnimal").perform(ViewActions.scrollTo(), ViewActions.click());
+        chosenAnimalContainer.perform(ViewActions.scrollTo(), ViewActions.click());
 
         TestHelpers.selectPopupOption("Zebra White")
 
