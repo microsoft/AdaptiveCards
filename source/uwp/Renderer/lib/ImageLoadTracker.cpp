@@ -15,30 +15,20 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void ImageLoadTracker::TrackBitmapImage(rtxaml::Media::Imaging::BitmapImage const& bitmapImage)
     {
-        /*ComPtr<IBitmapImage> localBitmapImage(bitmapImage);*/
         // TODO: Am I doing this right?
         auto trackedImageDetails = winrt::make_self<TrackedImageDetails>();
 
-        /* ComPtr<IRoutedEventHandler> imageOpenedEventHandler =
-             Microsoft::WRL::Callback<IRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::TrackedImage_ImageLoaded);
-         THROW_IF_FAILED(bitmapImage->add_ImageOpened(imageOpenedEventHandler.Get(), &trackedImageDetails.imageOpenedRegistration));*/
-
-        /*ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler =
-            Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this,
-        &ImageLoadTracker::trackedImage_ImageFailed); THROW_IF_FAILED(bitmapImage->add_ImageFailed(imageFailedEventHandler.Get(),
-        &trackedImageDetails.imageFailedRegistration));*/
-
+        // TODO: are these revokers correct?
         trackedImageDetails->imageOpenedRevoker =
             bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageLoaded});
 
-        // Ensure we don't try and write the private data from multiple threads
-        /* auto exclusiveLock = m_lock.LockExclusive();*/
-        // TODO: can we get into deadlock here if we crash somewhere in between?
-        // TODO: exlucisve lock resolved when the function finishes - it was cleaned after (am I right?:)
-        m_lock.lock();
+        trackedImageDetails->imageFailedRevoker =
+            bitmapImage.ImageFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageFailed});
 
-        /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage;
-        THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));*/
+        // Ensure we don't try and write the private data from multiple threads
+        // TODO: I can also use scoped_lock but as I understand - scope lock is usually used for multiple mutexes
+        std::unique_lock lock{m_mutex};
+
         if (m_eventRevokers.find(bitmapImage) == m_eventRevokers.end())
         {
             // If we haven't registered for this image events yet, do so
@@ -47,7 +37,6 @@ namespace AdaptiveCards::Rendering::Uwp
             m_trackedImageCount++;
             m_totalImageCount++;
         }
-        m_lock.unlock();
     }
 
     void ImageLoadTracker::MarkFailedLoadBitmapImage(rtxaml::Media::Imaging::BitmapImage const& bitmapImage)
@@ -56,23 +45,18 @@ namespace AdaptiveCards::Rendering::Uwp
         m_hasFailure = true;
 
         // And then notify this image is done
-        /*ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
-        ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage;
-        THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));
-        ImageLoadResultReceived(inspectableBitmapImage.Get());*/
         ImageLoadResultReceived(bitmapImage);
     }
 
     void ImageLoadTracker::AbandonOutstandingImages()
     {
-        // TODO: change to lock instead of try_lock
-        m_lock.try_lock();
+        // TODO: will scoped lock work here?
+        std::unique_lock lock{m_mutex};
         for (auto& eventRegistration : m_eventRevokers)
         {
             UnsubscribeFromEvents(eventRegistration.first, eventRegistration.second);
         }
         m_eventRevokers.clear();
-        m_lock.unlock();
     }
 
     void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
@@ -142,8 +126,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void ImageLoadTracker::ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender)
     {
-        /*  auto exclusiveLock = m_lock.LockExclusive();*/
-        m_lock.lock();
+        std::unique_lock lock {m_mutex};
+
         m_trackedImageCount--;
         if (m_eventRevokers.find(sender) != m_eventRevokers.end())
         {
@@ -154,23 +138,11 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
-        m_lock.unlock();
     }
 
     void ImageLoadTracker::UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage,
                                                  winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
-        /*ComPtr<winrt::Windows::Foundation::IInspectable> inspectableBitmapImage(bitmapImage);
-        ComPtr<IBitmapImage> localBitmapImage;
-        inspectableBitmapImage.As(&localBitmapImage);*/
-
-        // Best effort, ignore returns
-        // if (const auto localBitMapImage = bitmapImage.try_as<rtxaml::Media::Imaging::BitmapImage>())
-        //{
-        //   /* localBitmapImage->remove_ImageOpened(trackedImageDetails.imageOpenedRegistration);
-        //    localBitmapImage->remove_ImageFailed(trackedImageDetails.imageFailedRegistration);*/
-        //    localBitMapImage.re
-        //}
         // TODO: this is the right way to do it, correct?
         // TODO: should we use events instead?
         trackedImageDetails->imageOpenedRevoker.revoke();

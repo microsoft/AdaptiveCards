@@ -26,7 +26,7 @@ namespace AdaptiveCards::Rendering::Uwp
         int GetTotalImagesTracked();
 
     private:
-        std::mutex m_lock;
+        std::mutex m_mutex;
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;

@@ -137,10 +137,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // If container style was explicitly assigned, apply background color and padding
         if (hasExplicitContainerStyle)
         {
-            // ABI::Windows::UI::Color backgroundColor;
-            // RETURN_IF_FAILED(GetBackgroundColorFromStyle(localContainerStyle, hostConfig.Get(), &backgroundColor));
-            // ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
-            // RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
             auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
             // TODO: do we need this getSolidColorBrush helper at all?
             containerBorder.Background(XamlHelpers::GetSolidColorBrush(backgroundColor));

@@ -519,12 +519,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // TODO: what's the point of eventToken if we don';t save it ?
-                // EventRegistrationToken eventToken;
-                // ComPtr<IInspectable> localParentElement(parentElement);
 
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
-                /*WeakRef weakParent;
-                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));*/
 
                 auto weakParent = winrt::make_weak(parentElement);
 
@@ -569,7 +565,6 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            /*ComPtr<IImage> xamlImage(destination);*/
             // TODO: am I doing this right? or need to create new object and pass destination in constructor?
             auto xamlImage = destination.as<rtxaml::Controls::Image>();
             auto imageSource = xamlImage.Source();
@@ -582,10 +577,6 @@ namespace AdaptiveCards::Rendering::Uwp
                 xamlImage.Visibility(rtxaml::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-
-                // TODO: is this needed to create weak ref? or we can create weak ref out of PARENT ELEMENT directly?
-                /*ComPtr<IInspectable> localParentElement(parentElement);*/
-
                 // Take weak references to the image and parent to avoid circular references between this lambda and
                 // its parents (Parent->Image->Lambda->(Parent and Image))
                 auto weakParent = winrt::make_weak(parentElement);

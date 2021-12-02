@@ -504,43 +504,24 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                         winrt::hstring const& altText,
                                         bool allowTitleAsTooltip)
     {
-        /*  ComPtr<IAdaptiveHostConfig> hostConfig;
-          THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         auto hostConfig = renderContext.HostConfig();
 
         if (ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction"))
         {
             // Was inline show card, so don't wrap the element and just return
-            /*ComPtr<IUIElement> localElementToWrap(elementToWrap);
-            localElementToWrap.CopyTo(finalElement);*/
             return elementToWrap;
         }
 
-        /*ComPtr<IButton> button;*/
         auto button = CreateAppropriateButton(action);
-
-        /*ComPtr<IContentControl> buttonAsContentControl;
-        THROW_IF_FAILED(button.As(&buttonAsContentControl));
-        THROW_IF_FAILED(buttonAsContentControl->put_Content(elementToWrap));*/
-        // Do I need to cast here before setting content?
         button.Content(elementToWrap);
 
-        /*ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-        THROW_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));*/
         auto spacingConfig = hostConfig.Spacing();
 
         uint32_t cardPadding = 0;
         if (fullWidth)
         {
-            /*THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));*/
             cardPadding = spacingConfig.Padding();
         }
-
-        /*ComPtr<IFrameworkElement> buttonAsFrameworkElement;
-        THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
-
-        ComPtr<IControl> buttonAsControl;
-        THROW_IF_FAILED(button.As(&buttonAsControl));*/
 
         // We want the hit target to equally split the vertical space above and below the current item.
         // However, all we know is the spacing of the current item, which only applies to the spacing above.
@@ -549,48 +530,32 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
         if (adaptiveCardElement != nullptr)
         {
-            /* ABI::AdaptiveCards::ObjectModel::Uwp::Spacing elementSpacing;
-             THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));*/
             auto elementSpacing = adaptiveCardElement.Spacing();
             uint32_t spacingSize = GetSpacingSizeFromSpacing(hostConfig, elementSpacing);
 
-            // THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
             double topBottomPadding = spacingSize / 2.0;
 
             // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
-            /*THROW_IF_FAILED(buttonAsControl->put_Padding({(double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding}));*/
             button.Padding({(double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding});
 
             double negativeCardMargin = cardPadding * -1.0;
             double negativeTopBottomMargin = topBottomPadding * -1.0;
 
-            /*THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin(
-                {negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin}));*/
-            // Do I need to cast here?
             button.Margin({negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin});
         }
 
         // Style the hit target button
-        /* THROW_IF_FAILED(
-             XamlHelpers::SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));*/
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, {style.c_str()}, button);
 
         // Determine tooltip, automation name, and automation description
-        winrt::hstring tooltip, name, description;
-        /*  HString tooltip;
-          HString name;
-          HString description;*/
+        winrt::hstring tooltip{}, name{}, description{};
         if (action != nullptr)
         {
             // If we have an action, get it's title and tooltip.
             winrt::hstring title = action.Title();
             tooltip = action.Tooltip();
-            // THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-            // THROW_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
-            //
-            // Is this correct way to check if title has the string inside? should I check c_str()?
-            // Do empty strings pass here? I could check for title.empty()
-            if (title.data())
+
+            if (!title.empty())
             {
                 // If we have a title, use title as the name and tooltip as the description
                 name = title;
@@ -610,11 +575,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             // Disable the select action button if necessary
             button.IsEnabled(action.IsEnabled());
-            /* THROW_IF_FAILED(action->get_IsEnabled(&isEnabled));
-             THROW_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));*/
         }
         // TODO: is it correct? what else should I check for? should I check if it's empty?? to mimick HString.IsValid()?
-        else if (altText.data())
+        else if (!altText.empty())
         {
             // If we don't have an action but we've been passed altText, use that for name and tooltip
             // name.Set(altText);
@@ -623,10 +586,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             tooltip = altText;
         }
 
-        /* ComPtr<IDependencyObject> buttonAsDependencyObject;
-         THROW_IF_FAILED(button.As(&buttonAsDependencyObject));*/
-        // SetAutomationNameAndDescription(buttonAsDependencyObject.Get(), name.Get(), description.Get());
-        // SetTooltip(to_winrt(tooltip), to_winrt(buttonAsDependencyObject));
         SetAutomationNameAndDescription(button, name, description);
         SetTooltip(tooltip, button);
 
@@ -636,20 +595,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             WireButtonClickToAction(button, action, renderContext);
         }
 
-        /*THROW_IF_FAILED(button.CopyTo(finalElement));*/
         return button;
     }
 
     void WireButtonClickToAction(rtxaml::Controls::Button button, rtom::IAdaptiveActionElement action, rtrender::AdaptiveRenderContext renderContext)
     {
-        /* ComPtr<IButton> localButton(button);
-         ComPtr<IAdaptiveActionInvoker> actionInvoker;
-         THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
-         ComPtr<IAdaptiveActionElement> strongAction(action);*/
-
         // TODO: is this a valid way to do it?
         auto actionInvoker = renderContext.ActionInvoker();
-        /* auto strongAction = *winrt::make_self<rtom::IAdaptiveActionElement>(actionInvoker);*/
+        // TODO: is this right?
         rtom::IAdaptiveActionElement strongAction{action};
 
         auto eventToken = button.Click(
@@ -680,8 +633,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             }
 
             return uiElement;
-            /*ComPtr<IUIElement> localUiElement(uiElement);
-            THROW_IF_FAILED(localUiElement.CopyTo(outUiElement));*/
         }
     }
 
@@ -708,30 +659,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     rtxaml::Controls::Button CreateFlyoutButton(rtrender::AdaptiveRenderContext renderContext, rtrender::AdaptiveRenderArgs renderArgs)
     {
         // Create an action button
-        /* ComPtr<IUIElement> overflowButtonAsUIElement;
-         RETURN_IF_FAILED(BuildAction(nullptr, renderContext, renderArgs, true, &overflowButtonAsUIElement));*/
         auto overflowButtonAsUIElement = BuildAction(nullptr, renderContext, renderArgs, true);
 
         // Create a menu flyout for the overflow button
-        // TODO : is this correct?
+        // TODO : is this correct? Is there other concrete type I can use here?
         auto overflowButtonAsButtonWithFlyout = overflowButtonAsUIElement.as<rtxaml::Controls::IButtonWithFlyout>();
-        /* ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
-         RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overflowButtonAsButtonWithFlyout));*/
-
-        /*ComPtr<IMenuFlyout> overflowFlyout =
-            XamlHelpers::CreateABIClass<IMenuFlyout>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyout));*/
 
         rtxaml::Controls::MenuFlyout overflowFlyout{};
-
-        /* ComPtr<IFlyoutBase> overflowFlyoutAsFlyoutBase;
-         RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));*/
-        // RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
         overflowButtonAsButtonWithFlyout.Flyout(overflowFlyout);
-
-        // Return overflow button
-        /*ComPtr<IButton> overFlowButtonAsButton;
-        RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overFlowButtonAsButton));
-        RETURN_IF_FAILED(overFlowButtonAsButton.CopyTo(overflowButton));*/
 
         return overflowButtonAsUIElement.as<rtxaml::Controls::Button>();
     }
@@ -776,7 +711,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // Add the new menu item to the vector
         flyoutItems.Append(flyoutItem);
 
-        // TODO: We don't need to do this, right? WinRT will cast for us?
         return flyoutItem;
     }
 

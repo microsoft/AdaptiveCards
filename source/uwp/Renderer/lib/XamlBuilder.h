@@ -58,10 +58,6 @@ namespace AdaptiveCards::Rendering::Uwp
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
 
-        /*Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;*/
-        /*  winrt::com_ptr<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveCardResourceResolvers> m_resourceResolvers;*/
-        /*winrt::AdaptiveCards::Rendering::Uwp::AdaptiveCardResourceResolvers m_resourceResolvers;*/
-
         // TODO: can we move word static to the function name?
         static std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>
         CreateRootCardElement(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard const& adaptiveCard,

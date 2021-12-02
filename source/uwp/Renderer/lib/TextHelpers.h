@@ -98,12 +98,7 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
     }
 
     rtom::HAlignment horizontalAlignment = GetValueFromRef(adaptiveHorizontalAlignmentReference, rtom::HAlignment::Left);
-
-    /*ComPtr<TXamlTextBlockType> xamlTextBlockComptr(xamlTextBlock);
-    ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> xamlTextBlockAsFrameworkElement;
-    RETURN_IF_FAILED(xamlTextBlockComptr.As(&xamlTextBlockAsFrameworkElement));*/
-    // TODO: I shouldn't need this cast, right?
-
+    
     switch (horizontalAlignment)
     {
     case rtom::HAlignment::Left:

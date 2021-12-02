@@ -158,8 +158,6 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
 rtrender::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(rtom::ContainerStyle const& style,
                                                                        rtrender::AdaptiveHostConfig const& hostConfig)
 {
-    /*ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition> containerStyles;
-    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));*/
     auto containerStyles = hostConfig.ContainerStyles();
 
     switch (style)

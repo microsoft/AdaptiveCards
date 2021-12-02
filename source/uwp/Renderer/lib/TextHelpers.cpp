@@ -475,13 +475,6 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
             if (const auto nextSibling = childNode.NextSibling())
             {
                 // there's more content... need a linebreak.
-                /* ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> lineBreak =
-                     XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IInline>(
-                         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_LineBreak));
-                 if (lineBreak)
-                 {
-                     RETURN_IF_FAILED(inlines->Append(lineBreak.Get()));
-                 }*/
                 // TODO: Can I do it this way?
                 // TODO: Do we need to check for presnence of the API?
                 inlines.Append(rtxaml::Documents::LineBreak{});
