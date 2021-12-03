@@ -281,7 +281,7 @@ namespace AdaptiveCards::Rendering::Uwp
         rtxaml::Controls::Panel parentPanel,
         rtrender::AdaptiveRenderContext renderContext,
         rtrender::AdaptiveRenderArgs renderArgs,
-        std::function<void(rtxaml::UIElement child)> childCreatedCallback)
+        std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
     {
         int iElement = 0;
         uint32_t childrenSize = children.Size();

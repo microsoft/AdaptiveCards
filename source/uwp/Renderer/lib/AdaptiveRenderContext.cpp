@@ -121,6 +121,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::com_ptr<implementation::RenderedAdaptiveCard> AdaptiveRenderContext::GetRenderResult()
     {
-        return peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get());
+        if (const auto renderResult = peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))
+        {
+            return renderResult;
+        }
+
+        // TODO: does this make sense?
+        throw(winrt::hresult_error(winrt::hresult_invalid_argument(
+            L"RenderResult could not be resolved. Most likely, the object is no longer alive because all the references were destroyed.")));
     }
 }

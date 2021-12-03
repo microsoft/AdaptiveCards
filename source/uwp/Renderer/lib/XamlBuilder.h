@@ -39,7 +39,7 @@ namespace AdaptiveCards::Rendering::Uwp
             rtxaml::Controls::Panel ParentPanel,
             rtrender::AdaptiveRenderContext context,
             rtrender::AdaptiveRenderArgs renderArgs,
-            std::function<void(rtxaml::UIElement child)> childCreatedCallback);
+            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
 
         winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& adaptiveCardElement,
                                                        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,

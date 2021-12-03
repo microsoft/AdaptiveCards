@@ -42,16 +42,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 columnPanel.FlowDirection(currentRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
             }
 
-            rtom::ContainerStyle containerStyle{};
-
-            // TODO: do I even need this if (const auto..) ?
-            if (const auto columnAsContainerBase = adaptiveColumn.try_as<rtom::IAdaptiveContainerBase>())
-            {
-                containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(columnAsContainerBase,
-                                                                                                       columnBorder,
-                                                                                                       renderContext,
-                                                                                                       renderArgs);
-            }
+            rtom::ContainerStyle containerStyle =
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumn, columnBorder, renderContext, renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
 
@@ -61,7 +53,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto childItems = adaptiveColumn.Items();
 
             ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
-                childItems, columnPanel, renderContext, newRenderArgs, [](rtxaml::IUIElement) {});
+                childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)

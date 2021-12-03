@@ -13,8 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     Uwp::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(hstring const& type)
     {
-        auto found = m_registration.find(type);
-        if (found != m_registration.end())
+        if (const auto found = m_registration.find(type); found != m_registration.end())
         {
             return found->second;
         }

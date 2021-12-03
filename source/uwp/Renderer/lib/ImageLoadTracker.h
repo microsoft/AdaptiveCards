@@ -30,6 +30,7 @@ namespace AdaptiveCards::Rendering::Uwp
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
+        // TODO: can I just hold a naked pointer *? instead of com_ptr?
         std::unordered_map<winrt::Windows::Foundation::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 

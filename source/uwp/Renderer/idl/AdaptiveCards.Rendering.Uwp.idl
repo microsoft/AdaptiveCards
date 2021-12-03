@@ -641,8 +641,8 @@ namespace AdaptiveCards
             {
                 TileControl();
 
-                AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage BackgroundImage;
                 Windows.UI.Xaml.UIElement ResolvedImage { get; };
+                AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.Size ImageSize;
                 void LoadImageBrush(Windows.UI.Xaml.UIElement uielement);
             }

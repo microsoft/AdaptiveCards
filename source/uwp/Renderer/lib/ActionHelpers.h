@@ -52,9 +52,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                        bool isMultilineTextBox,
                        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& inlineAction);
 
-    void WireButtonClickToAction(winrt::Windows::UI::Xaml::Controls::Button button,
-                                 winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement action,
-                                 winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext);
+    void WireButtonClickToAction(winrt::Windows::UI::Xaml::Controls::Button const& button,
+                                 winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action,
+                                 winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
 
     winrt::Windows::UI::Xaml::UIElement
     WrapInTouchTarget(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& adaptiveCardElement,

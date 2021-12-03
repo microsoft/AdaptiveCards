@@ -598,7 +598,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return button;
     }
 
-    void WireButtonClickToAction(rtxaml::Controls::Button button, rtom::IAdaptiveActionElement action, rtrender::AdaptiveRenderContext renderContext)
+    void WireButtonClickToAction(rtxaml::Controls::Button const& button, rtom::IAdaptiveActionElement const& action, rtrender::AdaptiveRenderContext const& renderContext)
     {
         // TODO: is this a valid way to do it?
         auto actionInvoker = renderContext.ActionInvoker();
