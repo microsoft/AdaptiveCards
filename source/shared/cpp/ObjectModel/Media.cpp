@@ -63,9 +63,10 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
 
 void Media::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
 }
 
 void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -109,9 +110,9 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context,
         }
         else if (mimeBaseType != currentMimeBaseType)
         {
-            context.warnings.push_back(
-                std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::InvalidMediaMix,
-                                                           "Media element containing a mix of audio and video was dropped"));
+            context.warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveCards::WarningStatusCode::InvalidMediaMix,
+                "Media element containing a mix of audio and video was dropped"));
             return nullptr;
         }
     }

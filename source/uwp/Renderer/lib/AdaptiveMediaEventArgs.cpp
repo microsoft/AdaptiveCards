@@ -10,13 +10,19 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    HRESULT AdaptiveMediaEventArgs::RuntimeClassInitialize() { return S_OK; }
-
-    HRESULT AdaptiveMediaEventArgs::RuntimeClassInitialize(_In_ IAdaptiveMedia* media)
-    {
-        m_media = media;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveMediaEventArgs::get_Media(_COM_Outptr_ IAdaptiveMedia** media) { return m_media.CopyTo(media); }
+HRESULT AdaptiveMediaEventArgs::RuntimeClassInitialize()
+{
+    return S_OK;
 }
+
+HRESULT AdaptiveMediaEventArgs::RuntimeClassInitialize(_In_ IAdaptiveMedia* media)
+{
+    m_media = media;
+    return S_OK;
+}
+
+HRESULT AdaptiveMediaEventArgs::get_Media(_COM_Outptr_ IAdaptiveMedia** media)
+{
+    return m_media.CopyTo(media);
+}
+} // namespace AdaptiveCards::Rendering::Uwp

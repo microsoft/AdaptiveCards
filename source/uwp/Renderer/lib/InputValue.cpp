@@ -28,9 +28,7 @@ HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
     return inputValue->Validate(nullptr);
 }
 
-HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInputElement,
-                                           _In_ IUIElement* uiInputElement,
-                                           _In_ IBorder* validationBorder)
+HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInputElement, _In_ IUIElement* uiInputElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveInputElement = adaptiveInputElement;
     m_uiInputElement = uiInputElement;
@@ -70,8 +68,8 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
 {
     ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics;
 
-    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                          &automationPropertiesStatics));
+    RETURN_IF_FAILED(GetActivationFactory(
+        HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationPropertiesStatics));
 
     // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
     // actual element if validations are required. If these properties are set into the border then they are not mentioned.
@@ -81,8 +79,8 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
     RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
 
     ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
-                                                                 uiElementDescribers.GetAddressOf()));
+    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(
+        inputUIElementAsDependencyObject.Get(), uiElementDescribers.GetAddressOf()));
 
     ComPtr<IUIElement> uiValidationError(m_validationError);
     ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
@@ -174,9 +172,7 @@ HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputE
     return m_adaptiveInputElement.CopyTo(inputElement);
 }
 
-HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                              _In_ IUIElement* uiTextBoxElement,
-                                              _In_ IBorder* validationBorder)
+HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput, _In_ IUIElement* uiTextBoxElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveTextInput = adaptiveTextInput;
 
@@ -216,9 +212,7 @@ HRESULT TextInputBase::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                               _In_ ITextBox* uiTextBoxElement,
-                                               _In_ IBorder* validationBorder)
+HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput, _In_ ITextBox* uiTextBoxElement, _In_ IBorder* validationBorder)
 {
     m_textBoxElement = uiTextBoxElement;
 
@@ -235,9 +229,8 @@ HRESULT TextInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     return m_textBoxElement->get_Text(serializedUserInput);
 }
 
-HRESULT PasswordInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                                   _In_ IPasswordBox* uiPasswordElement,
-                                                   _In_ IBorder* validationBorder)
+HRESULT PasswordInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveTextInput* adaptiveTextInput, _In_ IPasswordBox* uiPasswordElement, _In_ IBorder* validationBorder)
 {
     m_passwordElement = uiPasswordElement;
 
@@ -254,9 +247,8 @@ IFACEMETHODIMP AdaptiveCards::Rendering::Uwp::PasswordInputValue::get_CurrentVal
     return m_passwordElement->get_Password(serializedUserInput);
 }
 
-HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adaptiveNumberInput,
-                                                 _In_ ITextBox* uiTextBoxElement,
-                                                 _In_ IBorder* validationBorder)
+HRESULT NumberInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveNumberInput* adaptiveNumberInput, _In_ ITextBox* uiTextBoxElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveNumberInput = adaptiveNumberInput;
     m_textBoxElement = uiTextBoxElement;
@@ -325,9 +317,8 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptiveDateInput,
-                                               _In_ ICalendarDatePicker* uiDatePickerElement,
-                                               _In_ IBorder* validationBorder)
+HRESULT DateInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveDateInput* adaptiveDateInput, _In_ ICalendarDatePicker* uiDatePickerElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveDateInput = adaptiveDateInput;
     m_datePickerElement = uiDatePickerElement;
@@ -370,9 +361,8 @@ HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     return S_OK;
 }
 
-HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptiveTimeInput,
-                                               _In_ ITimePicker* uiTimePickerElement,
-                                               _In_ IBorder* validationBorder)
+HRESULT TimeInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveTimeInput* adaptiveTimeInput, _In_ ITimePicker* uiTimePickerElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveTimeInput = adaptiveTimeInput;
     m_timePickerElement = uiTimePickerElement;
@@ -464,9 +454,8 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adaptiveToggleInput,
-                                                 _In_ ICheckBox* uiCheckBoxElement,
-                                                 _In_ IBorder* validationBorder)
+HRESULT ToggleInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveToggleInput* adaptiveToggleInput, _In_ ICheckBox* uiCheckBoxElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveToggleInput = adaptiveToggleInput;
     m_checkBoxElement = uiCheckBoxElement;
@@ -541,9 +530,8 @@ std::string GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 sele
     return "";
 }
 
-HRESULT CompactChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                           _In_ ISelector* choiceSetSelectorElement,
-                                                           _In_ IBorder* validationBorder)
+HRESULT CompactChoiceSetInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput, _In_ ISelector* choiceSetSelectorElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
     m_selectorElement = choiceSetSelectorElement;
@@ -577,9 +565,8 @@ try
 }
 CATCH_RETURN;
 
-HRESULT ExpandedChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                            _In_ IPanel* choiceSetPanelElement,
-                                                            _In_ IBorder* validationBorder)
+HRESULT ExpandedChoiceSetInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput, _In_ IPanel* choiceSetPanelElement, _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
     m_panelElement = choiceSetPanelElement;
@@ -676,9 +663,8 @@ HRESULT ExpandedChoiceSetInputValue::SetFocus()
     return S_OK;
 }
 
-HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                            _In_ IAutoSuggestBox* autoSuggestBox,
-                                                            _In_ IBorder* validationBorder)
+HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(
+    _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput, _In_ IAutoSuggestBox* autoSuggestBox, _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
     m_autoSuggestBox = autoSuggestBox;
@@ -689,7 +675,8 @@ HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoice
     Microsoft::WRL::ComPtr<IUIElement> autoSuggestBoxAsUIElement;
     RETURN_IF_FAILED(m_autoSuggestBox.As(&autoSuggestBoxAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
+        choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -747,22 +734,19 @@ HRESULT FilteredChoiceSetInputValue::GetSelectedChoice(IAdaptiveChoiceInput** ad
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));
 
     ComPtr<IAdaptiveChoiceInput> selectedChoice;
-    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-        choices.Get(),
-        [&selectedChoice, text](IAdaptiveChoiceInput* choice)
+    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(choices.Get(), [&selectedChoice, text](IAdaptiveChoiceInput* choice) {
+        HString titleHString;
+        RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
+
+        std::string title = HStringToUTF8(titleHString.Get());
+
+        if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
         {
-            HString titleHString;
-            RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
+            selectedChoice = choice;
+        }
 
-            std::string title = HStringToUTF8(titleHString.Get());
-
-            if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
-            {
-                selectedChoice = choice;
-            }
-
-            return S_OK;
-        });
+        return S_OK;
+    });
 
     RETURN_IF_FAILED(selectedChoice.CopyTo(adaptiveChoiceInput));
 

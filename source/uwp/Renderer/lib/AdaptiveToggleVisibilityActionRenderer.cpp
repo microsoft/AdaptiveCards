@@ -11,20 +11,21 @@ using namespace Microsoft::WRL;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    HRESULT AdaptiveToggleVisibilityActionRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleVisibilityActionRenderer::Render(_In_ IAdaptiveActionElement* action,
-                                                           _In_ IAdaptiveRenderContext* renderContext,
-                                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
-    try
-    {
-        return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
-    }
-    CATCH_RETURN;
+HRESULT AdaptiveToggleVisibilityActionRenderer::RuntimeClassInitialize() noexcept
+try
+{
+    return S_OK;
 }
+CATCH_RETURN;
+
+HRESULT AdaptiveToggleVisibilityActionRenderer::Render(
+    _In_ IAdaptiveActionElement* action,
+    _In_ IAdaptiveRenderContext* renderContext,
+    _In_ IAdaptiveRenderArgs* renderArgs,
+    _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+try
+{
+    return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
+}
+CATCH_RETURN;
+} // namespace AdaptiveCards::Rendering::Uwp

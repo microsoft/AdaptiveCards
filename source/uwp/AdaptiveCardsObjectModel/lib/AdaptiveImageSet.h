@@ -7,26 +7,32 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    struct DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, ITypePeek>, AdaptiveCardElementBase
+struct DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, ITypePeek>, AdaptiveCardElementBase
+{
+    AdaptiveImageSet(const std::shared_ptr<::AdaptiveCards::ImageSet>& sharedImageSet = std::make_shared<::AdaptiveCards::ImageSet>());
+
+    property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveImage>> Images;
+    property<Uwp::ImageSize> ImageSize;
+
+    // IAdaptiveCardElement
+    auto ElementType()
     {
-        AdaptiveImageSet(const std::shared_ptr<::AdaptiveCards::ImageSet>& sharedImageSet = std::make_shared<::AdaptiveCards::ImageSet>());
+        return ElementType::ImageSet;
+    }
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveImage>> Images;
-        property<Uwp::ImageSize> ImageSize;
+    virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
-        // IAdaptiveCardElement
-        auto ElementType() { return ElementType::ImageSet; }
-
-        virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
-
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-    };
-}
+    // ITypePeek method
+    void* PeekAt(REFIID riid) override
+    {
+        return PeekHelper(riid, this);
+    }
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-    struct AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, implementation::AdaptiveImageSet>
-    {
-    };
-}
+struct AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, implementation::AdaptiveImageSet>
+{
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

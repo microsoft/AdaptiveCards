@@ -6,8 +6,8 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveCardParseResult::AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card) :
-        AdaptiveCard{card}, Errors{winrt::single_threaded_vector<Uwp::AdaptiveError>()}, Warnings{winrt::single_threaded_vector <Uwp::AdaptiveWarning>()}
-    {
-    }
+AdaptiveCardParseResult::AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card) :
+    AdaptiveCard{card}, Errors{winrt::single_threaded_vector<Uwp::AdaptiveError>()}, Warnings{winrt::single_threaded_vector<Uwp::AdaptiveWarning>()}
+{
 }
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

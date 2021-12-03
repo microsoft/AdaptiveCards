@@ -258,8 +258,8 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const int ch) const
     {
         // non-EOF extended chars (i.e. < 0) are treated as non-space non-punctuation characters
         return (!MarkDownBlockParser::IsSpace(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
+               !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
+               !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
     }
     return false;
 }

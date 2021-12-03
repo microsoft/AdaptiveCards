@@ -3,19 +3,21 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult>
+struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult>
+{
+    AdaptiveCardParseResult() : AdaptiveCardParseResult(nullptr)
     {
-        AdaptiveCardParseResult() : AdaptiveCardParseResult(nullptr) {}
-        AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card);
+    }
+    AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card);
 
-        property<Uwp::AdaptiveCard> AdaptiveCard{nullptr};
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveError>> Errors;
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>> Warnings;
-    };
-}
+    property<Uwp::AdaptiveCard> AdaptiveCard{nullptr};
+    property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveError>> Errors;
+    property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>> Warnings;
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-    struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult, implementation::AdaptiveCardParseResult>
-    {
-    };
-}
+struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult, implementation::AdaptiveCardParseResult>
+{
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

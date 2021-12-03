@@ -7,32 +7,36 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    class DECLSPEC_UUID("34988ccd-4c0d-4043-b53d-3c1d2868860b") AdaptiveFeatureRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
+class DECLSPEC_UUID("34988ccd-4c0d-4043-b53d-3c1d2868860b") AdaptiveFeatureRegistration
+    : public Microsoft::WRL::RuntimeClass<
+          Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+          Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration>,
+          Microsoft::WRL::CloakedIid<ITypePeek>,
+          Microsoft::WRL::FtmBase>
+{
+    AdaptiveRuntime(AdaptiveFeatureRegistration);
+
+public:
+    AdaptiveFeatureRegistration();
+    HRESULT RuntimeClassInitialize() noexcept;
+    HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept;
+
+    // IAdaptiveFeatureRegistration
+    IFACEMETHODIMP Set(_In_ HSTRING name, _In_ HSTRING version) noexcept;
+    IFACEMETHODIMP Get(_In_ HSTRING name, _Outptr_ HSTRING* version) noexcept;
+    IFACEMETHODIMP Remove(_In_ HSTRING name) noexcept;
+
+    // ITypePeek method
+    void* PeekAt(REFIID riid) override
     {
-        AdaptiveRuntime(AdaptiveFeatureRegistration);
+        return PeekHelper(riid, this);
+    }
 
-    public:
-        AdaptiveFeatureRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept;
+    const std::shared_ptr<FeatureRegistration>& GetSharedFeatureRegistration();
 
-        // IAdaptiveFeatureRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING name, _In_ HSTRING version) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING name, _Outptr_ HSTRING* version) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING name) noexcept;
+private:
+    std::shared_ptr<FeatureRegistration> m_sharedFeatureRegistration;
+};
 
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-        const std::shared_ptr<FeatureRegistration>& GetSharedFeatureRegistration();
-
-    private:
-        std::shared_ptr<FeatureRegistration> m_sharedFeatureRegistration;
-    };
-
-    ActivatableClass(AdaptiveFeatureRegistration);
-}
+ActivatableClass(AdaptiveFeatureRegistration);
+} // namespace AdaptiveCards::Rendering::Uwp

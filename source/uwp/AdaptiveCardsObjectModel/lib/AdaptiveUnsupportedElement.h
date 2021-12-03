@@ -7,27 +7,33 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    struct DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
-        : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, ITypePeek>,
-          AdaptiveCardElementBase
+struct DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
+    : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, ITypePeek>,
+      AdaptiveCardElementBase
+{
+    AdaptiveUnsupportedElement(
+        const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedTextBlock = std::make_shared<::AdaptiveCards::UnknownElement>());
+
+    auto ElementType()
     {
-        AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedTextBlock =
-                                       std::make_shared<::AdaptiveCards::UnknownElement>());
+        return ElementType::Unsupported;
+    }
 
-        auto ElementType() { return ElementType::Unsupported; }
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
-        std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
+    // ITypePeek method
+    void* PeekAt(REFIID riid) override
+    {
+        return PeekHelper(riid, this);
+    }
 
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-        std::string m_actualType;
-    };
-}
+    std::string m_actualType;
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-    struct AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, implementation::AdaptiveUnsupportedElement>
-    {
-    };
-}
+struct AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, implementation::AdaptiveUnsupportedElement>
+{
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

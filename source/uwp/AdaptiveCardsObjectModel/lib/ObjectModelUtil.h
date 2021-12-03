@@ -4,21 +4,43 @@
 
 #include <Inline.h>
 
-template<typename TStored> struct property
+template <typename TStored>
+struct property
 {
     TStored m_stored;
 
-    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
-    TStored operator()() { return m_stored; }
+    template <typename T>
+    void operator()(T&& t)
+    {
+        m_stored = std::forward<T>(t);
+    }
+    TStored operator()()
+    {
+        return m_stored;
+    }
 
-    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
-    operator TStored() { return m_stored; }
+    template <typename T>
+    void operator=(T&& t)
+    {
+        m_stored = std::forward<T>(t);
+    }
+    operator TStored()
+    {
+        return m_stored;
+    }
 
-    TStored const& get() const { return m_stored; }
-    auto operator->() { return std::addressof(m_stored); }
+    TStored const& get() const
+    {
+        return m_stored;
+    }
+    auto operator->()
+    {
+        return std::addressof(m_stored);
+    }
 };
 
-template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
+template <typename T, typename Q>
+std::optional<T> opt_cast(std::optional<Q> const& src)
 {
     if (src.has_value())
     {
@@ -30,11 +52,13 @@ template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> cons
     }
 }
 
-template<typename TStored> struct property_opt
+template <typename TStored>
+struct property_opt
 {
     winrt::Windows::Foundation::IReference<TStored> m_stored;
 
-    template<typename T> auto set(T const& t)
+    template <typename T>
+    auto set(T const& t)
     {
         if constexpr (std::is_same_v<T, winrt::Windows::Foundation::IReference<TStored>>)
         {
@@ -56,7 +80,8 @@ template<typename TStored> struct property_opt
         return *this;
     }
 
-    template<typename TOther = TStored> std::optional<TOther> get()
+    template <typename TOther = TStored>
+    std::optional<TOther> get()
     {
         if constexpr (std::is_same_v<TOther, TStored>)
         {
@@ -69,15 +94,32 @@ template<typename TStored> struct property_opt
     };
 
     // C++/WinRT adapters
-    auto operator()() { return m_stored; }
-    template<typename T> auto operator()(T&& t) { return set(std::forward<T>(t)); }
+    auto operator()()
+    {
+        return m_stored;
+    }
+    template <typename T>
+    auto operator()(T&& t)
+    {
+        return set(std::forward<T>(t));
+    }
 
     // Assignment helper
-    template<typename T> auto operator=(T&& t) { return set(std::forward<T>(t)); }
+    template <typename T>
+    auto operator=(T&& t)
+    {
+        return set(std::forward<T>(t));
+    }
 
     // Casting helpers "do you have a value" and "cast to your optional type"
-    operator bool() const { return static_cast<bool>(m_stored); }
-    operator std::optional<TStored>() { return get(); }
+    operator bool() const
+    {
+        return static_cast<bool>(m_stored);
+    }
+    operator std::optional<TStored>()
+    {
+        return get();
+    }
 };
 
 std::string WStringToString(std::wstring_view in);
@@ -94,8 +136,7 @@ std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::Ada
 std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> const& items);
 
-std::shared_ptr<AdaptiveCards::BaseActionElement>
-GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action);
+std::shared_ptr<AdaptiveCards::BaseActionElement> GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action);
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> const& actions);
@@ -106,10 +147,10 @@ std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRe
 std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> const& inlines);
 
-winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement
-GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GenerateElementProjection(
+    const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
 
-template<typename TImpl, typename TShared, typename TCollection>
+template <typename TImpl, typename TShared, typename TCollection>
 std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& cells)
 {
     std::vector<std::shared_ptr<TShared>> shared;
@@ -127,22 +168,22 @@ std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& ce
     return shared;
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>
-GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> GenerateContainedElementsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>
-GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> GenerateActionsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
 
-winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
-GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline>
-GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> GenerateInlinesProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>
-GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement> GenerateRequirementsProjection(
+    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
-template<typename TRtTypeImpl, typename TSharedType, typename TRtType = typename TRtTypeImpl::class_type>
+template <typename TRtTypeImpl, typename TSharedType, typename TRtType = typename TRtTypeImpl::class_type>
 auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& elements)
 {
     std::vector<TRtType> converted;
@@ -176,13 +217,20 @@ void RemoteResourceElementToRemoteResourceInformationVector(
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
 {
     virtual void* PeekAt(REFIID riid) = 0;
-    template<typename Q> void* PeekHelper(REFIID riid, Q* pQ) { return (__uuidof(Q) == riid) ? pQ : nullptr; }
+    template <typename Q>
+    void* PeekHelper(REFIID riid, Q* pQ)
+    {
+        return (__uuidof(Q) == riid) ? pQ : nullptr;
+    }
 
 protected:
-    virtual ~ITypePeek() {}
+    virtual ~ITypePeek()
+    {
+    }
 };
 
-template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
+template <typename D, typename I>
+winrt::com_ptr<D> peek_innards(I&& o)
 {
     winrt::com_ptr<D> out;
     if (auto p = o.try_as<ITypePeek>())
@@ -200,8 +248,8 @@ void SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& toAddTo);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>
-SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> SharedWarningsToAdaptiveWarnings(
+    const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
 void AdaptiveWarningsToSharedWarnings(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings,

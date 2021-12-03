@@ -80,8 +80,9 @@ std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(ParseCont
 
 void ImageSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
 }
 
 void ImageSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

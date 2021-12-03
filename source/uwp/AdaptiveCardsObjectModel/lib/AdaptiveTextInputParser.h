@@ -7,20 +7,20 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    struct AdaptiveTextInputParser : AdaptiveTextInputParserT<AdaptiveTextInputParser>
-    {
-        AdaptiveTextInputParser() = default;
+struct AdaptiveTextInputParser : AdaptiveTextInputParserT<AdaptiveTextInputParser>
+{
+    AdaptiveTextInputParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
-            winrt::Windows::Data::Json::JsonObject const& inputJson,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
-    };
-}
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-    struct AdaptiveTextInputParser : AdaptiveTextInputParserT<AdaptiveTextInputParser, implementation::AdaptiveTextInputParser>
-    {
-    };
-}
+struct AdaptiveTextInputParser : AdaptiveTextInputParserT<AdaptiveTextInputParser, implementation::AdaptiveTextInputParser>
+{
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

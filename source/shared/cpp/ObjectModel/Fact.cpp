@@ -22,9 +22,9 @@ std::shared_ptr<Fact> Fact::Deserialize(ParseContext& context, const Json::Value
 
     if (title.empty() && value.empty())
     {
-        context.warnings.emplace_back(
-            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
-                                                       "non-empty string has to be given for either title or value, none given"));
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+            WarningStatusCode::RequiredPropertyMissing,
+            "non-empty string has to be given for either title or value, none given"));
     }
     auto fact = std::make_shared<Fact>(title, value);
     fact->SetLanguage(context.GetLanguage());

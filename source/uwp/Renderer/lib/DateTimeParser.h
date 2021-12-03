@@ -7,13 +7,13 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    class DateTimeParser
-    {
-    public:
-        DateTimeParser(const std::string& language);
-        std::string GenerateString(const DateTimePreparser& text);
+class DateTimeParser
+{
+public:
+    DateTimeParser(const std::string& language);
+    std::string GenerateString(const DateTimePreparser& text);
 
-    private:
-        std::string m_languageString;
-    };
-}
+private:
+    std::string m_languageString;
+};
+} // namespace AdaptiveCards::Rendering::Uwp

@@ -14,16 +14,15 @@
 
 using namespace std;
 using namespace AdaptiveCards;
-typedef  std::tuple< std::string, std::string> ParserTest;
+typedef std::tuple<std::string, std::string> ParserTest;
 
 int main(int argc, const char* argv[])
 {
-    std::vector<ParserTest> tests =
-    {
-        //std::make_tuple("TestJsonFiles\\imagetest.json", ""),
+    std::vector<ParserTest> tests = {
+        // std::make_tuple("TestJsonFiles\\imagetest.json", ""),
         std::make_tuple("TestJsonFiles\\textblock_noUnicode.json", ""),
-        //std::make_tuple("TestJsonFiles\\nounicode.json", ""),
-        //std::make_tuple("TestJsonFiles\\test1.json", ""),
+        // std::make_tuple("TestJsonFiles\\nounicode.json", ""),
+        // std::make_tuple("TestJsonFiles\\test1.json", ""),
     };
 
     for (size_t i = 0; i < tests.size(); i++)

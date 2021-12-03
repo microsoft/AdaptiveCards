@@ -14,28 +14,31 @@ using namespace ABI::Windows::UI::Xaml;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
-    try
-    {
-        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
-        return strongRenderResult.AsWeak(&m_weakRenderResult);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveMediaEventInvoker::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
-    {
-        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
-        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
-        if (strongRenderResult != nullptr)
-        {
-            ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
-            if (renderResult != nullptr)
-            {
-                RETURN_IF_FAILED(renderResult->SendMediaClickedEvent(mediaElement));
-            }
-        }
-        return S_OK;
-    }
+HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize() noexcept
+{
+    return S_OK;
 }
+
+HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+try
+{
+    ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
+    return strongRenderResult.AsWeak(&m_weakRenderResult);
+}
+CATCH_RETURN;
+
+HRESULT AdaptiveMediaEventInvoker::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
+{
+    ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+    RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+    if (strongRenderResult != nullptr)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+        if (renderResult != nullptr)
+        {
+            RETURN_IF_FAILED(renderResult->SendMediaClickedEvent(mediaElement));
+        }
+    }
+    return S_OK;
+}
+} // namespace AdaptiveCards::Rendering::Uwp

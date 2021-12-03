@@ -4,20 +4,20 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    class AdaptiveNumberInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
-    {
-        AdaptiveRuntime(AdaptiveNumberInputRenderer);
+class AdaptiveNumberInputRenderer
+    : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+{
+    AdaptiveRuntime(AdaptiveNumberInputRenderer);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+public:
+    HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
-    };
+    IFACEMETHODIMP Render(
+        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+        _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+};
 
-    ActivatableClass(AdaptiveNumberInputRenderer);
-}
+ActivatableClass(AdaptiveNumberInputRenderer);
+} // namespace AdaptiveCards::Rendering::Uwp

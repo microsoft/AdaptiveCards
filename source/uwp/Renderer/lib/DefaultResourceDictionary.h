@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-const PCWSTR c_defaultResourceDictionary = L"\
+const PCWSTR c_defaultResourceDictionary =
+    L"\
 <ResourceDictionary \
     xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" \
     xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"> \
@@ -68,7 +69,8 @@ const PCWSTR c_defaultResourceDictionary = L"\
     <Style x:Key=\"Adaptive.Input.Text.InlineAction\" TargetType=\"Button\" BasedOn=\"{StaticResource  Adaptive.TouchTarget}\"/> \
 </ResourceDictionary>";
 
-const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
+const PCWSTR c_defaultActionSentimentResourceDictionary =
+    L"\
 <ResourceDictionary \
     xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" \
     xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" \
@@ -137,7 +139,7 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
         </Setter> \
      </Style> \
 "
-                                                          "<Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\"> \
+    "<Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\"> \
         <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.Foreground}\" /> \
             <Setter Property=\"Template\"> \
                 <Setter.Value> \
