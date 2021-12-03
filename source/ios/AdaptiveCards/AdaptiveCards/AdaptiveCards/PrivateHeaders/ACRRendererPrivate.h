@@ -6,12 +6,12 @@
 //
 //
 
-#import "ACRBaseCardElementRenderer.h"
-#import "ACRIContentHoldingView.h"
-#import "ACRRenderer.h"
-#import "BackgroundImage.h"
-#import "HostConfig.h"
-#import "SharedAdaptiveCard.h"
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRRenderer.h>
+#import <AdaptiveCards/BackgroundImage.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
