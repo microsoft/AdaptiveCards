@@ -113,10 +113,9 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::DeserializeFromString(ParseC
 
 void ToggleInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
 }

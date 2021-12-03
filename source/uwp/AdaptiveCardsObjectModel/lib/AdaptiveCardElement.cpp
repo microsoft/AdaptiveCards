@@ -6,76 +6,75 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-void AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel)
-{
-    Spacing = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::Spacing>(sharedModel->GetSpacing());
-    Separator = sharedModel->GetSeparator();
-    IsVisible = sharedModel->GetIsVisible();
-    Id = UTF8ToHString(sharedModel->GetId());
-    AdditionalProperties = JsonCppToJsonObject(sharedModel->GetAdditionalProperties());
-    ElementTypeString = UTF8ToHString(sharedModel->GetElementTypeString());
-    Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedModel->GetHeight());
-    InternalId = sharedModel->GetInternalId().Hash();
-    m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
-    if (m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+    void AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel)
     {
-        if (auto fallbackObject = sharedModel->GetFallbackContent())
+        Spacing = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::Spacing>(sharedModel->GetSpacing());
+        Separator = sharedModel->GetSeparator();
+        IsVisible = sharedModel->GetIsVisible();
+        Id = UTF8ToHString(sharedModel->GetId());
+        AdditionalProperties = JsonCppToJsonObject(sharedModel->GetAdditionalProperties());
+        ElementTypeString = UTF8ToHString(sharedModel->GetElementTypeString());
+        Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedModel->GetHeight());
+        InternalId = sharedModel->GetInternalId().Hash();
+        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        if (m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
         {
-            m_fallbackContent =
-                GenerateElementProjection(std::static_pointer_cast<::AdaptiveCards::BaseCardElement>(fallbackObject));
+            if (auto fallbackObject = sharedModel->GetFallbackContent())
+            {
+                m_fallbackContent = GenerateElementProjection(std::static_pointer_cast<::AdaptiveCards::BaseCardElement>(fallbackObject));
+            }
+        }
+        Requirements = GenerateRequirementsProjection(sharedModel->GetRequirements());
+    }
+
+    void AdaptiveCardElementBase::FallbackType(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& fallback)
+    {
+        if (fallback != winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        {
+            m_fallbackContent = nullptr;
+        }
+
+        m_fallbackType = fallback;
+    }
+
+    void AdaptiveCardElementBase::FallbackContent(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& content)
+    {
+        m_fallbackContent = content;
+
+        if (content == nullptr && m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        {
+            m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::None;
+        }
+        else if (content != nullptr)
+        {
+            m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content;
         }
     }
-    Requirements = GenerateRequirementsProjection(sharedModel->GetRequirements());
-}
 
-void AdaptiveCardElementBase::FallbackType(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& fallback)
-{
-    if (fallback != winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+    winrt::Windows::Data::Json::JsonObject AdaptiveCardElementBase::ToJson()
     {
-        m_fallbackContent = nullptr;
+        return StringToJsonObject(GetSharedModel()->Serialize());
     }
 
-    m_fallbackType = fallback;
-}
-
-void AdaptiveCardElementBase::FallbackContent(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& content)
-{
-    m_fallbackContent = content;
-
-    if (content == nullptr && m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+    void AdaptiveCardElementBase::CopySharedElementProperties(::AdaptiveCards::BaseCardElement& sharedCardElement)
     {
-        m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::None;
-    }
-    else if (content != nullptr)
-    {
-        m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content;
-    }
-}
+        sharedCardElement.SetId(HStringToUTF8(Id));
+        sharedCardElement.SetSeparator(Separator);
+        sharedCardElement.SetIsVisible(IsVisible);
+        sharedCardElement.SetSpacing(static_cast<::AdaptiveCards::Spacing>(Spacing.get()));
+        sharedCardElement.SetHeight(static_cast<::AdaptiveCards::HeightType>(Height.get()));
+        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
 
-winrt::Windows::Data::Json::JsonObject AdaptiveCardElementBase::ToJson()
-{
-    return StringToJsonObject(GetSharedModel()->Serialize());
-}
+        sharedCardElement.GetRequirements() = GenerateSharedRequirements(Requirements);
 
-void AdaptiveCardElementBase::CopySharedElementProperties(::AdaptiveCards::BaseCardElement& sharedCardElement)
-{
-    sharedCardElement.SetId(HStringToUTF8(Id));
-    sharedCardElement.SetSeparator(Separator);
-    sharedCardElement.SetIsVisible(IsVisible);
-    sharedCardElement.SetSpacing(static_cast<::AdaptiveCards::Spacing>(Spacing.get()));
-    sharedCardElement.SetHeight(static_cast<::AdaptiveCards::HeightType>(Height.get()));
-    sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        if (m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        {
+            sharedCardElement.SetFallbackContent(GenerateSharedElement(m_fallbackContent));
+        }
 
-    sharedCardElement.GetRequirements() = GenerateSharedRequirements(Requirements);
-
-    if (m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
-    {
-        sharedCardElement.SetFallbackContent(GenerateSharedElement(m_fallbackContent));
-    }
-
-    if (AdditionalProperties != nullptr)
-    {
-        sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
+        if (AdditionalProperties != nullptr)
+        {
+            sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
+        }
     }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

@@ -6,9 +6,9 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveRemoteResourceInformation::AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info)
-{
-    Url = UTF8ToHString(info.url);
-    MimeType = UTF8ToHString(info.mimeType);
+    AdaptiveRemoteResourceInformation::AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info)
+    {
+        Url = UTF8ToHString(info.url);
+        MimeType = UTF8ToHString(info.mimeType);
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

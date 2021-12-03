@@ -7,26 +7,26 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveOpenUrlAction::AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
-{
-    if (!sharedOpenUrlAction->GetUrl().empty())
+    AdaptiveOpenUrlAction::AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     {
-        Url = winrt::Windows::Foundation::Uri{UTF8ToHString(sharedOpenUrlAction->GetUrl())};
+        if (!sharedOpenUrlAction->GetUrl().empty())
+        {
+            Url = winrt::Windows::Foundation::Uri{UTF8ToHString(sharedOpenUrlAction->GetUrl())};
+        }
+
+        InitializeBaseElement(sharedOpenUrlAction);
     }
 
-    InitializeBaseElement(sharedOpenUrlAction);
-}
-
-std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveOpenUrlAction::GetSharedModel()
-{
-    auto openUrlAction = std::make_shared<::AdaptiveCards::OpenUrlAction>();
-    CopySharedElementProperties(*openUrlAction);
-
-    if (Url.get())
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveOpenUrlAction::GetSharedModel()
     {
-        openUrlAction->SetUrl(HStringToUTF8(Url->AbsoluteUri()));
-    }
+        auto openUrlAction = std::make_shared<::AdaptiveCards::OpenUrlAction>();
+        CopySharedElementProperties(*openUrlAction);
 
-    return openUrlAction;
+        if (Url.get())
+        {
+            openUrlAction->SetUrl(HStringToUTF8(Url->AbsoluteUri()));
+        }
+
+        return openUrlAction;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

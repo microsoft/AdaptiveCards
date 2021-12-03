@@ -6,34 +6,35 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
-{
-    VerticalCellContentAlignment =
-        opt_cast<Uwp::VerticalContentAlignment>(sharedTableColumnDefinition->GetVerticalCellContentAlignment());
-    HorizontalCellContentAlignment = opt_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
-    Width = sharedTableColumnDefinition->GetWidth();
-    PixelWidth = sharedTableColumnDefinition->GetPixelWidth();
-}
-
-std::shared_ptr<::AdaptiveCards::TableColumnDefinition> AdaptiveTableColumnDefinition::GetSharedModel()
-{
-    auto tableColumnDefinition = std::make_shared<::AdaptiveCards::TableColumnDefinition>();
-
-    if (VerticalCellContentAlignment)
+    AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
     {
-        tableColumnDefinition->SetVerticalCellContentAlignment(
-            VerticalCellContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
+        VerticalCellContentAlignment =
+            opt_cast<Uwp::VerticalContentAlignment>(sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+        HorizontalCellContentAlignment =
+            opt_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+        Width = sharedTableColumnDefinition->GetWidth();
+        PixelWidth = sharedTableColumnDefinition->GetPixelWidth();
     }
 
-    if (HorizontalCellContentAlignment)
+    std::shared_ptr<::AdaptiveCards::TableColumnDefinition> AdaptiveTableColumnDefinition::GetSharedModel()
     {
-        tableColumnDefinition->SetHorizontalCellContentAlignment(
-            HorizontalCellContentAlignment.get<::AdaptiveCards::HorizontalAlignment>());
+        auto tableColumnDefinition = std::make_shared<::AdaptiveCards::TableColumnDefinition>();
+
+        if (VerticalCellContentAlignment)
+        {
+            tableColumnDefinition->SetVerticalCellContentAlignment(
+                VerticalCellContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
+        }
+
+        if (HorizontalCellContentAlignment)
+        {
+            tableColumnDefinition->SetHorizontalCellContentAlignment(
+                HorizontalCellContentAlignment.get<::AdaptiveCards::HorizontalAlignment>());
+        }
+
+        tableColumnDefinition->SetWidth(Width);
+        tableColumnDefinition->SetPixelWidth(PixelWidth);
+
+        return tableColumnDefinition;
     }
-
-    tableColumnDefinition->SetWidth(Width);
-    tableColumnDefinition->SetPixelWidth(PixelWidth);
-
-    return tableColumnDefinition;
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

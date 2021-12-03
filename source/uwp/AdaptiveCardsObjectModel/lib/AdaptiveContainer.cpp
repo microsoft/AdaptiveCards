@@ -9,56 +9,56 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveContainer::AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedContainer)
-{
-    VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
-    Items = GenerateContainedElementsProjection(sharedContainer->GetItems());
-    SelectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
-    Style = static_cast<Uwp::ContainerStyle>(sharedContainer->GetStyle());
-    MinHeight = sharedContainer->GetMinHeight();
-    Bleed = sharedContainer->GetBleed();
-    BleedDirection = static_cast<Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
-    Rtl = sharedContainer->GetRtl();
-
-    auto backgroundImage = sharedContainer->GetBackgroundImage();
-    if (backgroundImage && !backgroundImage->GetUrl().empty())
+    AdaptiveContainer::AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedContainer)
     {
-        BackgroundImage = winrt::make<implementation::AdaptiveBackgroundImage>(backgroundImage);
-    }
+        VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        Items = GenerateContainedElementsProjection(sharedContainer->GetItems());
+        SelectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
+        Style = static_cast<Uwp::ContainerStyle>(sharedContainer->GetStyle());
+        MinHeight = sharedContainer->GetMinHeight();
+        Bleed = sharedContainer->GetBleed();
+        BleedDirection = static_cast<Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
+        Rtl = sharedContainer->GetRtl();
 
-    InitializeBaseElement(sharedContainer);
-}
-
-std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveContainer::GetSharedModel()
-{
-    auto container = std::make_shared<::AdaptiveCards::Container>();
-    CopySharedElementProperties(*container);
-
-    if (SelectAction.get())
-    {
-        container->SetSelectAction(GenerateSharedAction(SelectAction.get()));
-    }
-
-    if (VerticalContentAlignment)
-    {
-        container->SetVerticalContentAlignment(VerticalContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
-    }
-
-    container->SetStyle(static_cast<::AdaptiveCards::ContainerStyle>(Style.get()));
-    container->SetMinHeight(MinHeight);
-
-    if (auto adaptiveBackgroundImage = peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get()))
-    {
-        if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())
+        auto backgroundImage = sharedContainer->GetBackgroundImage();
+        if (backgroundImage && !backgroundImage->GetUrl().empty())
         {
-            container->SetBackgroundImage(sharedBackgroundImage);
+            BackgroundImage = winrt::make<implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
+
+        InitializeBaseElement(sharedContainer);
     }
 
-    container->SetBleed(Bleed);
-    container->SetRtl(Rtl);
-    container->GetItems() = GenerateSharedElements(Items.get());
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveContainer::GetSharedModel()
+    {
+        auto container = std::make_shared<::AdaptiveCards::Container>();
+        CopySharedElementProperties(*container);
 
-    return container;
+        if (SelectAction.get())
+        {
+            container->SetSelectAction(GenerateSharedAction(SelectAction.get()));
+        }
+
+        if (VerticalContentAlignment)
+        {
+            container->SetVerticalContentAlignment(VerticalContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
+        }
+
+        container->SetStyle(static_cast<::AdaptiveCards::ContainerStyle>(Style.get()));
+        container->SetMinHeight(MinHeight);
+
+        if (auto adaptiveBackgroundImage = peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get()))
+        {
+            if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())
+            {
+                container->SetBackgroundImage(sharedBackgroundImage);
+            }
+        }
+
+        container->SetBleed(Bleed);
+        container->SetRtl(Rtl);
+        container->GetItems() = GenerateSharedElements(Items.get());
+
+        return container;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

@@ -8,34 +8,29 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-struct DECLSPEC_UUID("05764D21-0053-4282-A254-10A93BA21D7B") AdaptiveExecuteAction : AdaptiveExecuteActionT<AdaptiveExecuteAction, ITypePeek>, AdaptiveActionElementBase
-{
-public:
-    AdaptiveExecuteAction(const std::shared_ptr<::AdaptiveCards::ExecuteAction>& sharedExecuteAction = std::make_shared<::AdaptiveCards::ExecuteAction>());
-
-    // IAdaptiveActionElement
-    auto ActionType()
+    struct DECLSPEC_UUID("05764D21-0053-4282-A254-10A93BA21D7B") AdaptiveExecuteAction : AdaptiveExecuteActionT < AdaptiveExecuteAction, ITypePeek>, AdaptiveActionElementBase
     {
-        return Uwp::ActionType::Execute;
-    }
+    public:
+        AdaptiveExecuteAction(const std::shared_ptr<::AdaptiveCards::ExecuteAction>& sharedExecuteAction =
+                                  std::make_shared<::AdaptiveCards::ExecuteAction>());
 
-    std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel();
+        // IAdaptiveActionElement
+        auto ActionType() { return Uwp::ActionType::Execute; }
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
+        std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel();
 
-    property<winrt::Windows::Data::Json::JsonValue> DataJson;
-    property<Uwp::AssociatedInputs> AssociatedInputs;
-    property<hstring> Verb;
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+
+        property<winrt::Windows::Data::Json::JsonValue> DataJson;
+        property<Uwp::AssociatedInputs> AssociatedInputs;
+        property<hstring> Verb;
+    };
+}
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-struct AdaptiveExecuteAction : AdaptiveExecuteActionT<AdaptiveExecuteAction, implementation::AdaptiveExecuteAction>
-{
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveExecuteAction : AdaptiveExecuteActionT<AdaptiveExecuteAction, implementation::AdaptiveExecuteAction>
+    {
+    };
+}

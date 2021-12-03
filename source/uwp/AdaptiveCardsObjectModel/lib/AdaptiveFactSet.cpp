@@ -8,17 +8,17 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveFactSet::AdaptiveFactSet(const std::shared_ptr<::AdaptiveCards::FactSet>& sharedFactSet)
-{
-    Facts = GenerateVectorProjection<implementation::AdaptiveFact>(sharedFactSet->GetFacts());
-    InitializeBaseElement(sharedFactSet);
-}
+    AdaptiveFactSet::AdaptiveFactSet(const std::shared_ptr<::AdaptiveCards::FactSet>& sharedFactSet)
+    {
+        Facts = GenerateVectorProjection<implementation::AdaptiveFact>(sharedFactSet->GetFacts());
+        InitializeBaseElement(sharedFactSet);
+    }
 
-std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveFactSet::GetSharedModel()
-{
-    auto factSet = std::make_shared<::AdaptiveCards::FactSet>();
-    CopySharedElementProperties(*factSet);
-    factSet->GetFacts() = GenerateSharedVector<implementation::AdaptiveFact, ::AdaptiveCards::Fact>(Facts.get());
-    return factSet;
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveFactSet::GetSharedModel()
+    {
+        auto factSet = std::make_shared<::AdaptiveCards::FactSet>();
+        CopySharedElementProperties(*factSet);
+        factSet->GetFacts() = GenerateSharedVector<implementation::AdaptiveFact, ::AdaptiveCards::Fact>(Facts.get());
+        return factSet;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

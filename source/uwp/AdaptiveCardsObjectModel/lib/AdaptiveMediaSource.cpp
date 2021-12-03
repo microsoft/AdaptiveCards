@@ -6,17 +6,17 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveMediaSource::AdaptiveMediaSource(const std::shared_ptr<::AdaptiveCards::MediaSource>& sharedMediaSource)
-{
-    MimeType = UTF8ToHString(sharedMediaSource->GetMimeType());
-    Url = UTF8ToHString(sharedMediaSource->GetUrl());
-}
+    AdaptiveMediaSource::AdaptiveMediaSource(const std::shared_ptr<::AdaptiveCards::MediaSource>& sharedMediaSource)
+    {
+        MimeType = UTF8ToHString(sharedMediaSource->GetMimeType());
+        Url = UTF8ToHString(sharedMediaSource->GetUrl());
+    }
 
-std::shared_ptr<::AdaptiveCards::MediaSource> AdaptiveMediaSource::GetSharedModel()
-{
-    auto mediaSource = std::make_shared<::AdaptiveCards::MediaSource>();
-    mediaSource->SetMimeType(HStringToUTF8(MimeType));
-    mediaSource->SetUrl(HStringToUTF8(Url));
-    return mediaSource;
+    std::shared_ptr<::AdaptiveCards::MediaSource> AdaptiveMediaSource::GetSharedModel()
+    {
+        auto mediaSource = std::make_shared<::AdaptiveCards::MediaSource>();
+        mediaSource->SetMimeType(HStringToUTF8(MimeType));
+        mediaSource->SetUrl(HStringToUTF8(Url));
+        return mediaSource;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

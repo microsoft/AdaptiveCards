@@ -105,8 +105,7 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(static_cast<std::wstring_view>(in));
 }
 
-template <typename TImpl, typename TSrc>
-auto GetSharedModel(_In_ TSrc const& item)
+template<typename TImpl, typename TSrc> auto GetSharedModel(_In_ TSrc const& item)
 {
     if (auto adaptiveElement = peek_innards<TImpl>(item))
     {
@@ -322,8 +321,8 @@ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GenerateElementProj
     }
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>
+GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> elements;
     for (auto&& containedElement : containedElements)
@@ -333,8 +332,8 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>(std::move(elements));
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>
+GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> actions;
     for (auto&& containedAction : containedActions)
@@ -344,7 +343,8 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>(std::move(actions));
 }
 
-winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
+GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
 {
     if (!action)
     {
@@ -378,8 +378,8 @@ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement GenerateActionPro
     }
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> GenerateInlinesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline>
+GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> results;
 
@@ -399,8 +399,8 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector(std::move(results));
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement> GenerateRequirementsProjection(
-    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>
+GenerateRequirementsProjection(const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement> results;
     for (const auto& sharedRequirement : sharedRequirements)
@@ -508,8 +508,8 @@ void SharedWarningsToAdaptiveWarnings(
     }
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> SharedWarningsToAdaptiveWarnings(
-    const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>
+SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     auto result = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>();
     SharedWarningsToAdaptiveWarnings(sharedWarnings, result);
@@ -522,8 +522,9 @@ void AdaptiveWarningsToSharedWarnings(
 {
     for (auto&& adaptiveWarning : adaptiveWarnings)
     {
-        sharedWarnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-            static_cast<AdaptiveCards::WarningStatusCode>(adaptiveWarning.StatusCode()), HStringToUTF8(adaptiveWarning.Message())));
+        sharedWarnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(static_cast<AdaptiveCards::WarningStatusCode>(adaptiveWarning.StatusCode()),
+                                                       HStringToUTF8(adaptiveWarning.Message())));
     }
 }
 
@@ -571,8 +572,8 @@ AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(winrt::AdaptiveCards::Obj
     }
 }
 
-winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration)
+winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration
+GetAdaptiveActionParserRegistrationFromSharedModel(const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration)
 {
     // Look up the well known action parser registration to see if we've got a custom action registration to pass
     if (auto sharedActionParser =

@@ -100,9 +100,8 @@ std::shared_ptr<BaseCardElement> DateInputParser::DeserializeFromString(ParseCon
 
 void DateInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)});
 }

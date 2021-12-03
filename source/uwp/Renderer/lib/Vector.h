@@ -35,15 +35,10 @@ class HResultException
     HRESULT m_Hr;
 
 protected:
-    explicit HResultException(HRESULT hr) : m_Hr(hr)
-    {
-    }
+    explicit HResultException(HRESULT hr) : m_Hr(hr) {}
 
 public:
-    HRESULT GetHr() const
-    {
-        return m_Hr;
-    }
+    HRESULT GetHr() const { return m_Hr; }
 
     __declspec(noreturn) friend void ThrowHR(HRESULT);
 };
@@ -91,15 +86,13 @@ inline void ThrowIfFailed(HRESULT hr)
 //
 // Throws if the given pointer is null.
 //
-template <typename T>
-inline void ThrowIfNullPointer(T* ptr, HRESULT hrToThrow)
+template<typename T> inline void ThrowIfNullPointer(T* ptr, HRESULT hrToThrow)
 {
     if (ptr == nullptr)
         ThrowHR(hrToThrow);
 }
 
-template <typename T>
-inline void ThrowIfNegative(T value)
+template<typename T> inline void ThrowIfNegative(T value)
 {
     if (value < 0)
         ThrowHR(E_INVALIDARG);
@@ -118,8 +111,7 @@ inline void ThrowIfZeroOrNegative(uint32_t n)
 // expected to be used at the beginning of methods to validate pointer
 // parameters that are marked as [in].
 //
-template <typename T>
-inline void CheckInPointer(T* ptr)
+template<typename T> inline void CheckInPointer(T* ptr)
 {
     ThrowIfNullPointer(ptr, E_INVALIDARG);
 }
@@ -129,8 +121,7 @@ inline void CheckInPointer(T* ptr)
 // it to null.  This is expected to be used at the beginning of methods to
 // validate out pointer parameters that are marked as [out].
 //
-template <typename T>
-inline void CheckAndClearOutPointer(T** ptr)
+template<typename T> inline void CheckAndClearOutPointer(T** ptr)
 {
     CheckInPointer(ptr);
     *ptr = nullptr;
@@ -178,8 +169,7 @@ __declspec(noinline) inline HRESULT ThrownExceptionToHResult()
     }
 }
 
-template <typename CALLABLE>
-HRESULT ExceptionBoundary(CALLABLE&& fn)
+template<typename CALLABLE> HRESULT ExceptionBoundary(CALLABLE&& fn)
 {
     try
     {
@@ -195,62 +185,35 @@ HRESULT ExceptionBoundary(CALLABLE&& fn)
 // Element traits describe how to store and manipulate the values inside a collection.
 // This default implementation is for value types. The same template is specialized with
 // more interesting versions for reference counted pointer types and strings.
-template <typename T>
-struct ElementTraits
+template<typename T> struct ElementTraits
 {
     typedef T ElementType;
 
-    static ElementType Wrap(T const& value)
-    {
-        return value;
-    }
+    static ElementType Wrap(T const& value) { return value; }
 
-    static void Unwrap(ElementType const& value, _Out_ T* result)
-    {
-        *result = value;
-    }
+    static void Unwrap(ElementType const& value, _Out_ T* result) { *result = value; }
 
-    static bool Equals(T const& value1, T const& value2)
-    {
-        return value1 == value2;
-    }
+    static bool Equals(T const& value1, T const& value2) { return value1 == value2; }
 
-    static void CopyTo(T const& in, ElementType* out)
-    {
-        *out = in;
-    }
+    static void CopyTo(T const& in, ElementType* out) { *out = in; }
 };
 
 // Specialized element traits for reference counted pointer types.
-template <typename T>
-struct ElementTraits<T*>
+template<typename T> struct ElementTraits<T*>
 {
     typedef Microsoft::WRL::ComPtr<T> ElementType;
 
-    static ElementType Wrap(T* value)
-    {
-        return Microsoft::WRL::ComPtr<T>(value);
-    }
+    static ElementType Wrap(T* value) { return Microsoft::WRL::ComPtr<T>(value); }
 
-    static void Unwrap(ElementType const& value, _Out_ T** result)
-    {
-        ThrowIfFailed(value.CopyTo(result));
-    }
+    static void Unwrap(ElementType const& value, _Out_ T** result) { ThrowIfFailed(value.CopyTo(result)); }
 
-    static bool Equals(Microsoft::WRL::ComPtr<T> const& value1, T* value2)
-    {
-        return value1.Get() == value2;
-    }
+    static bool Equals(Microsoft::WRL::ComPtr<T> const& value1, T* value2) { return value1.Get() == value2; }
 
-    static void CopyTo(Microsoft::WRL::ComPtr<T> const& in, ElementType* out)
-    {
-        in.CopyTo(out->GetAddressOf());
-    }
+    static void CopyTo(Microsoft::WRL::ComPtr<T> const& in, ElementType* out) { in.CopyTo(out->GetAddressOf()); }
 };
 
 // Specialized element traits for strings.
-template <>
-struct ElementTraits<HSTRING>
+template<> struct ElementTraits<HSTRING>
 {
     typedef HString ElementType;
 
@@ -261,10 +224,7 @@ struct ElementTraits<HSTRING>
         return hstringValue;
     }
 
-    static void Unwrap(ElementType const& value, _Out_ HSTRING* result)
-    {
-        value.CopyTo(result);
-    }
+    static void Unwrap(ElementType const& value, _Out_ HSTRING* result) { value.CopyTo(result); }
 
     static bool Equals(HString const& value1, HSTRING const& value2)
     {
@@ -273,23 +233,16 @@ struct ElementTraits<HSTRING>
         return compareResult == 0;
     }
 
-    static void CopyTo(HString const& in, ElementType* out)
-    {
-        in.CopyTo(out->GetAddressOf());
-    }
+    static void CopyTo(HString const& in, ElementType* out) { in.CopyTo(out->GetAddressOf()); }
 };
 
 // Vector traits describe how the collection itself is implemented.
 // This default version just uses an STL vector.
-template <typename T>
-struct DefaultVectorTraits : public ElementTraits<T>
+template<typename T> struct DefaultVectorTraits : public ElementTraits<T>
 {
     typedef std::vector<ElementType> InternalVectorType;
 
-    static unsigned GetSize(InternalVectorType const& vector)
-    {
-        return (unsigned)vector.size();
-    };
+    static unsigned GetSize(InternalVectorType const& vector) { return (unsigned)vector.size(); };
 
     static void GetAt(InternalVectorType const& vector, unsigned index, ElementType* element)
     {
@@ -324,19 +277,13 @@ struct DefaultVectorTraits : public ElementTraits<T>
         vector.erase(vector.begin() + index);
     }
 
-    static void Append(InternalVectorType& vector, T const& item)
-    {
-        vector.push_back(Wrap(item));
-    }
+    static void Append(InternalVectorType& vector, T const& item) { vector.push_back(Wrap(item)); }
 
-    static void Clear(InternalVectorType& vector)
-    {
-        vector.clear();
-    }
+    static void Clear(InternalVectorType& vector) { vector.clear(); }
 };
 
 // Implements the WinRT IVector interface.
-template <typename T, template <typename T_abi> class Traits = DefaultVectorTraits>
+template<typename T, template<typename T_abi> class Traits = DefaultVectorTraits>
 class Vector
     : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IVector<T>, ABI::Windows::Foundation::Collections::IIterable<T>>
 {
@@ -358,41 +305,27 @@ private:
 
 public:
     // Constructs an empty vector.
-    Vector() : isFixedSize(false), isChanged(false)
-    {
-    }
+    Vector() : isFixedSize(false), isChanged(false) {}
 
     // Constructs a vector of the specified size.
-    template <typename... Args>
+    template<typename... Args>
     Vector(bool isFixedSize, Args&&... args) :
         mVector(std::forward<Args>(args)...), isFixedSize(isFixedSize), isChanged(false)
     {
     }
 
     // Checks whether this vector is fixed or resizable.
-    bool IsFixedSize() const
-    {
-        return isFixedSize;
-    }
+    bool IsFixedSize() const { return isFixedSize; }
 
     // Checks whether the contents of the vector have changed since the last call to SetChanged(false).
-    bool IsChanged() const
-    {
-        return isChanged;
-    }
+    bool IsChanged() const { return isChanged; }
 
     // Sets or clears the IsChanged flag.
-    void SetChanged(bool changed)
-    {
-        isChanged = changed;
-    }
+    void SetChanged(bool changed) { isChanged = changed; }
 
     // Expose direct access to the internal STL collection. This lets C++ owners
     // bypass the ExceptionBoundary overhead of the public WinRT API surface.
-    typename Traits::InternalVectorType& InternalVector()
-    {
-        return mVector;
-    }
+    typename Traits::InternalVectorType& InternalVector() { return mVector; }
 
     virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned* size)
     {
@@ -559,7 +492,7 @@ public:
 };
 
 // Implements the WinRT IVectorView interface.
-template <typename T, typename TVector>
+template<typename T, typename TVector>
 class VectorView
     : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IVectorView<T>, ABI::Windows::Foundation::Collections::IIterable<T>>
 {
@@ -570,14 +503,9 @@ class VectorView
 
 public:
     // Constructor wraps around an existing Vector<T>.
-    VectorView(TVector* vector) : mVector(vector)
-    {
-    }
+    VectorView(TVector* vector) : mVector(vector) {}
 
-    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned* size)
-    {
-        return mVector->get_Size(size);
-    };
+    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned* size) { return mVector->get_Size(size); };
 
     virtual HRESULT STDMETHODCALLTYPE GetAt(_In_opt_ unsigned index, _Out_ typename TVector::T_abi* item)
     {
@@ -596,7 +524,7 @@ public:
 };
 
 // Implements the WinRT IIterator interface.
-template <typename T, typename TVector>
+template<typename T, typename TVector>
 class VectorIterator : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IIterator<T>>
 {
     InspectableClass(IIterator<T>::z_get_rc_name_impl(), BaseTrust);
@@ -607,9 +535,7 @@ class VectorIterator : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundat
 
 public:
     // Constructor wraps around an existing Vector<T>.
-    VectorIterator(TVector* vector) : mVector(vector), mPosition(0)
-    {
-    }
+    VectorIterator(TVector* vector) : mVector(vector), mPosition(0) {}
 
     virtual HRESULT STDMETHODCALLTYPE get_Current(_Out_ typename TVector::T_abi* current)
     {

@@ -7,18 +7,18 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-AdaptiveUnsupportedElement::AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedUnknown) :
-    m_actualType(sharedUnknown->GetElementTypeString())
-{
-    InitializeBaseElement(sharedUnknown);
-}
+    AdaptiveUnsupportedElement::AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedUnknown) :
+        m_actualType(sharedUnknown->GetElementTypeString())
+    {
+        InitializeBaseElement(sharedUnknown);
+    }
 
-std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveUnsupportedElement::GetSharedModel()
-{
-    auto unknownElement = std::make_shared<::AdaptiveCards::UnknownElement>();
-    unknownElement->SetElementTypeString(m_actualType);
-    CopySharedElementProperties(*unknownElement);
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveUnsupportedElement::GetSharedModel()
+    {
+        auto unknownElement = std::make_shared<::AdaptiveCards::UnknownElement>();
+        unknownElement->SetElementTypeString(m_actualType);
+        CopySharedElementProperties(*unknownElement);
 
-    return unknownElement;
+        return unknownElement;
+    }
 }
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation

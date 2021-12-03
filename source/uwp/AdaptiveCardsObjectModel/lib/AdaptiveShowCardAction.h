@@ -8,31 +8,25 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-struct DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, ITypePeek>, AdaptiveActionElementBase
-{
-    AdaptiveShowCardAction(
-        const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction = std::make_shared<::AdaptiveCards::ShowCardAction>());
-
-    property<Uwp::AdaptiveCard> Card{nullptr};
-
-    auto ActionType()
+    struct DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, ITypePeek>, AdaptiveActionElementBase
     {
-        return ActionType::ShowCard;
-    }
+        AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction =
+                                   std::make_shared<::AdaptiveCards::ShowCardAction>());
 
-    virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
+        property<Uwp::AdaptiveCard> Card{nullptr};
 
-    // ITypePeek method
-    void* PeekAt(REFIID riid) override
-    {
-        return PeekHelper(riid, this);
-    }
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+        auto ActionType() { return ActionType::ShowCard; }
+
+        virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
+
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+    };
+}
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
-struct AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, implementation::AdaptiveShowCardAction>
-{
-};
-} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+    struct AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, implementation::AdaptiveShowCardAction>
+    {
+    };
+}

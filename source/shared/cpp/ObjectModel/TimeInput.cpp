@@ -100,9 +100,8 @@ std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(ParseCon
 
 void TimeInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(
-        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
 }

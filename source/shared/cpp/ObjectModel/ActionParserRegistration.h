@@ -7,50 +7,47 @@
 
 namespace AdaptiveCards
 {
-class BaseActionElement;
-class ParseContext;
+    class BaseActionElement;
+    class ParseContext;
 
-class ActionElementParser
-{
-public:
-    virtual ~ActionElementParser() = default;
-    virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
-    virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
-};
-
-class ActionElementParserWrapper : public ActionElementParser
-{
-public:
-    ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap);
-
-    ActionElementParserWrapper(const ActionElementParserWrapper&) = delete;
-    ActionElementParserWrapper(ActionElementParserWrapper&&) = delete;
-    ActionElementParserWrapper& operator=(const ActionElementParserWrapper&) = delete;
-    ActionElementParserWrapper& operator=(ActionElementParserWrapper&&) = delete;
-    virtual ~ActionElementParserWrapper() = default;
-
-    std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
-    std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& value) override;
-    std::shared_ptr<ActionElementParser> GetActualParser() const
+    class ActionElementParser
     {
-        return m_parser;
-    }
+    public:
+        virtual ~ActionElementParser() = default;
+        virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
+        virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
+    };
 
-private:
-    std::shared_ptr<ActionElementParser> m_parser;
-};
+    class ActionElementParserWrapper : public ActionElementParser
+    {
+    public:
+        ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap);
 
-class ActionParserRegistration
-{
-public:
-    ActionParserRegistration();
+        ActionElementParserWrapper(const ActionElementParserWrapper&) = delete;
+        ActionElementParserWrapper(ActionElementParserWrapper&&) = delete;
+        ActionElementParserWrapper& operator=(const ActionElementParserWrapper&) = delete;
+        ActionElementParserWrapper& operator=(ActionElementParserWrapper&&) = delete;
+        virtual ~ActionElementParserWrapper() = default;
 
-    void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveCards::ActionElementParser> parser);
-    void RemoveParser(std::string const& elementType);
-    std::shared_ptr<AdaptiveCards::ActionElementParser> GetParser(std::string const& elementType) const;
+        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& value) override;
+        std::shared_ptr<ActionElementParser> GetActualParser() const { return m_parser; }
 
-private:
-    std::unordered_set<std::string> m_knownElements;
-    std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
-};
-} // namespace AdaptiveCards
+    private:
+        std::shared_ptr<ActionElementParser> m_parser;
+    };
+
+    class ActionParserRegistration
+    {
+    public:
+        ActionParserRegistration();
+
+        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveCards::ActionElementParser> parser);
+        void RemoveParser(std::string const& elementType);
+        std::shared_ptr<AdaptiveCards::ActionElementParser> GetParser(std::string const& elementType) const;
+
+    private:
+        std::unordered_set<std::string> m_knownElements;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+    };
+}
