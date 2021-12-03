@@ -4,13 +4,8 @@ package io.adaptivecards.uitestapp
 
 import android.widget.DatePicker
 import org.junit.runner.RunWith
-import org.junit.Rule
 import io.adaptivecards.uitestapp.RenderCardUiTestAppActivity
 import kotlin.Throws
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.ViewAssertion
-import androidx.test.espresso.ViewInteraction
 import org.hamcrest.Matchers
 import androidx.test.espresso.action.ViewActions
 import io.adaptivecards.uitestapp.TestHelpers
@@ -23,15 +18,23 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.junit.Assert
-import org.junit.Test
 import java.io.IOException
 import android.R.attr.y
 
 import android.R.attr.x
+import android.content.Context
+import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.*
+import androidx.test.espresso.Espresso.*
+import androidx.test.espresso.base.DefaultFailureHandler
+import androidx.test.espresso.util.HumanReadables
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
-import org.junit.Ignore
+import org.hamcrest.Matcher
+import org.junit.*
 import org.junit.rules.Timeout
 import java.util.concurrent.TimeUnit
 
@@ -52,10 +55,47 @@ class UiTests {
     @get:Rule
     var mTimeout = Timeout(60, TimeUnit.SECONDS)
 
+    @Before
+    @Throws(Exception::class)
+    fun setUp() {
+
+    }
+
+    private class CustomFailureHandler(targetContext: Context, activityRule: ActivityScenarioRule<RenderCardUiTestAppActivity>) : FailureHandler {
+        private val delegate: FailureHandler
+        private val mActivityRule: ActivityScenarioRule<RenderCardUiTestAppActivity>
+
+        init {
+            delegate = DefaultFailureHandler(targetContext)
+            mActivityRule = activityRule
+        }
+
+        override fun handle(error: Throwable, viewMatcher: Matcher<View>) {
+            mActivityRule.scenario.onActivity {
+                var cardLayout : View
+
+                cardLayout = try {
+                    it.findViewById(R.id.test_cases_list_view)
+                } catch (e: java.lang.Exception) {
+                    it.findViewById(R.id.layout_cardContainer)
+                }
+
+                val viewHierarchy: String = HumanReadables.getViewHierarchyErrorMessage(cardLayout, null, "", null)
+
+                Log.e("Error view hierarchy", viewHierarchy)
+            }
+
+            delegate.handle(error, viewMatcher)
+        }
+    }
+
     @Test
     @Throws(IOException::class)
     fun MockTest() {
-        Assert.assertTrue(true)
+        setFailureHandler(CustomFailureHandler(
+            ApplicationProvider.getApplicationContext<Context>(), mActivityRule))
+
+        onData(Matchers.`is`("ActivityUpdateWithLabels.json")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
