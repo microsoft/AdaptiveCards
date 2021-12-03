@@ -1,0 +1,20 @@
+schedules:
+  - cron: "0 0 * * 6"
+    displayName: Check Heartbeat 
+    branches:
+      include:
+        - main
+jobs:
+  - job: specLint
+    displayName: 'check podspec health'
+    pool:
+      vmImage: 'macos-latest'
+    steps:
+        - template: templates/ios-spec-lint-template.yml
+
+  - job: unitTest
+    displayName: 'check code health'
+    pool:
+      vmImage: 'macos-latest'
+    steps:
+        - template: templates/ios-ci-template.yml

@@ -1,10 +1,12 @@
 steps:
 - task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
   inputs:
     workingDirectory: 'source/ios/AdaptiveCards'
     forceRepoUpdate: false
 
 - task: Xcode@5
+  displayName: 'Compilation Test'
   inputs:
     actions: 'build'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
@@ -16,6 +18,7 @@ steps:
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 12'
 - task: Xcode@5
+  displayName: 'Sample App Unit Test'
   inputs:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
@@ -27,6 +30,7 @@ steps:
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 12'
 - task: Xcode@5
+  displayName: 'Framework Unit Test'
   inputs:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'

@@ -211,6 +211,10 @@
                                                 config:nil
                                        widthConstraint:300
                                               delegate:nil];
+
+                    if (!renderResult.succeeded) {
+                        @throw [NSException exceptionWithName:@"RenderingFailed" reason:@"Rendering Failure" userInfo:nil];
+                    }
                     XCTAssertTrue(renderResult.succeeded);
                 }
                 @catch (NSException *exception) {
