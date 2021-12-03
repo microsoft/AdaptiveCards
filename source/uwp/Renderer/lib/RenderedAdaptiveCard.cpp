@@ -284,7 +284,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         uint32_t cardId = card.InternalId();
 
         // Then we get the parent card internal id from the renderArgs
-        uint32_t parentCardId = ::AdaptiveCards::InternalId().Hash();
+        uint32_t parentCardId = ::AdaptiveCards::InternalId::Invalid;
         if (renderArgs)
         {
             if (auto parentCard = renderArgs.ParentCard())

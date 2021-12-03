@@ -35,8 +35,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     Uwp::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::Windows::Data::Json::JsonObject const& hostConfigJson)
     {
-        // TODO: come back to it. There should not be a need for conversion
-        std::string adaptiveJsonString = JsonObjectToString(hostConfigJson.as<winrt::Windows::Data::Json::JsonObject>());
+        std::string adaptiveJsonString = JsonObjectToString(hostConfigJson);
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
     }
 
