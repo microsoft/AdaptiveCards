@@ -31,14 +31,15 @@
 		"release": "npm run build && webpack --mode=production"
 	},
 	"dependencies": {
-		"adaptivecards-controls": "^0.10.0-alpha.0",
+		"adaptivecards-controls": "^0.9.0",
 		"remarkable": "^2.0.1"
 	},
 	"devDependencies": {
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^2.11.0-alpha.0",
+		"adaptivecards": "^2.10.0",
 		"adaptivecards-controls": "^0.9.0",
-		"adaptivecards-templating": "^2.3.0-alpha.0",
-		"cpy-cli": "^3.1.1"
+		"adaptivecards-templating": "^2.2.0",
+		"cpy-cli": "^3.1.1",
+		"webpack-dev-server": "^4.6.0"
 	}
 }
