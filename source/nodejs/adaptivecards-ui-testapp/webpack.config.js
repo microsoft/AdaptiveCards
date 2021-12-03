@@ -79,7 +79,7 @@ module.exports = (env, argv) => {
 			new CopyWebpackPlugin({
 				patterns: [
 				{
-					from: 'node_modules/adaptivecards/dist/adaptivecards.css',
+					from: './node_modules/adaptivecards/dist/adaptivecards.css',
 					to: './[name][ext]',
 					transform(content, absoluteFrom) {
 						// TODO: #6710 - use sass to have a more structured solution here
