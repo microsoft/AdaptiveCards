@@ -130,7 +130,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     bool TextInputBase::IsValueValid()
     {
         // Call the base class to validate isRequired
-        auto isBaseValid = InputValue::IsValueValid();
+
+        if (!InputValue::IsValueValid())
+        {
+            return false;
+        }
 
         // Validate the regex if one exists
         auto regex = m_adaptiveTextInput.Regex();
@@ -148,7 +152,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             isRegexValid = std::regex_match(currentValueStdString, matches, pattern);
         }
 
-        return isBaseValid && isRegexValid;
+        return isRegexValid;
     }
 
     TextInputValue::TextInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
@@ -178,10 +182,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     bool NumberInputValue::IsValueValid()
     {
         // Call the base class to validate isRequired
-        bool isValid = InputValue::IsValueValid();
+        if (!InputValue::IsValueValid())
+        {
+            return false;
+        }
+
         auto max = m_adaptiveNumberInput.Max();
         auto min = m_adaptiveNumberInput.Min();
         auto currentValue = CurrentValue();
+        bool isValid = true;
 
         // If there is a value, confirm that it's a number and within the min/max range
         if (!currentValue.empty())
@@ -194,13 +203,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                 if (max)
                 {
                     double maxDouble = max.Value();
-                    isValid &= (currentDouble <= maxDouble);
+                    isValid = (currentDouble <= maxDouble);
                 }
 
                 if (min)
                 {
                     double minDouble = min.Value();
-                    isValid &= (currentDouble >= minDouble);
+                    isValid = (currentDouble >= minDouble);
                 }
             }
             catch (...)
@@ -272,13 +281,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     bool TimeInputValue::IsValueValid()
     {
         // Call the base class to validate isRequired
-        bool isBaseValid = InputValue::IsValueValid();
+        if (!InputValue::IsValueValid())
+        {
+            return false;
+        }
 
         // If time is set, validate max and min
         bool isMaxMinValid = true;
         auto timeSpanReference = m_timePickerElement.SelectedTime();
 
-        if (isBaseValid && (timeSpanReference != nullptr))
+        if (timeSpanReference != nullptr)
         {
             auto currentTime = timeSpanReference.Value();
 
@@ -306,7 +318,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                 }
             }
         }
-        return isBaseValid && isMaxMinValid;
+        return isMaxMinValid;
     }
 
     ToggleInputValue::ToggleInputValue(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleInput adaptiveToggleInput,
@@ -467,7 +479,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     bool FilteredChoiceSetInputValue::IsValueValid()
     {
-        bool isValid;
+        bool isValid = true;
 
         // Check if there's text in the autoSuggestBox
         auto textHString = m_autoSuggestBox.Text();

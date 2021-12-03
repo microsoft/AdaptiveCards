@@ -96,18 +96,19 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto touchTargetAsButtonBase = touchTargetUIElement.as<rtxaml::Controls::Primitives::ButtonBase>();
 
             // TODO: can we do this? or do we need to return event token? I'm afraid it will revoke momentarily
-            touchTargetAsButtonBase.Click(
-                [touchTargetUIElement, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker](
+            auto renderingEventToken = std::make_shared<winrt::event_token>();
+            *renderingEventToken = touchTargetAsButtonBase.Click(
+                [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker, renderingEventToken](
                     winrt::Windows::Foundation::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
                 {
                     // Turn off the button to prevent extra clicks
-                    if (const auto buttonAsControl = touchTargetUIElement.try_as<rtxaml::Controls::Control>())
-                    {
-                        buttonAsControl.IsEnabled(false);
-                    }
+                    touchTargetAsButtonBase.IsEnabled(false);
 
                     // Handle the click
-                    HandleMediaClick(renderContext, adaptiveMedia, mediaElement, touchTargetUIElement, mediaSourceUrl, mimeType, mediaInvoker);
+                    HandleMediaClick(renderContext, adaptiveMedia, mediaElement, touchTargetAsButtonBase, mediaSourceUrl, mimeType, mediaInvoker);
+
+                    // TODO: unregister the click since button is disabled now. Is this correct approach?
+                    touchTargetAsButtonBase.Click(*renderingEventToken);
                 });
             return mediaStackPanel;
         }
