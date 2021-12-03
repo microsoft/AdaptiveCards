@@ -214,13 +214,17 @@
                     XCTAssertTrue(renderResult.succeeded);
                 }
                 @catch (NSException *exception) {
-                    NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
+                    NSString *exceptionMessage = [NSString stringWithFormat:@"%@", exception];
+                    printf("Render Failed while rendering %s\n%s", [fileName UTF8String], [exceptionMessage UTF8String]);
                     XCTAssertTrue(NO);
                 }
             }
         }
         @catch (NSException *exception) {
-            NSLog(@"Parsing Failed %@\n%@", fileName, exception);
+            printf("Parsing Failed %s\n", [fileName UTF8String]);
+            for (NSError *parseError in cardParseResult.parseErrors) {
+                printf("%s\n", [parseError.userInfo[NSLocalizedDescriptionKey] UTF8String]);
+            }
             XCTAssertTrue(NO);
         }
     }
