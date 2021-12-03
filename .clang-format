@@ -30,7 +30,7 @@ NamespaceIndentation: Inner
 PenaltyExcessCharacter: 1
 PointerAlignment: Left
 SortIncludes: false
-Standard:        Cpp17
+Standard: Cpp11
 StatementMacros: [
   _Acquires_exclusive_lock_,
   _Acquires_lock_,
