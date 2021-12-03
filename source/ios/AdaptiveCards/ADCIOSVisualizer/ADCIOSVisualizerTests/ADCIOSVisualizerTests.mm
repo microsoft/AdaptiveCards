@@ -214,8 +214,8 @@
                     XCTAssertTrue(renderResult.succeeded);
                 }
                 @catch (NSException *exception) {
-                    NSString *exceptionMeassage = [NSString stringWithFormat:@"%@", exception];
-                    printf("Render Failed while rendering %s\n%s", [fileName UTF8String], [exceptionMeassage UTF8String]);
+                    NSString *exceptionMessage = [NSString stringWithFormat:@"%@", exception];
+                    printf("Render Failed while rendering %s\n%s", [fileName UTF8String], [exceptionMessage UTF8String]);
                     XCTAssertTrue(NO);
                 }
             }
