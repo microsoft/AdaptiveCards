@@ -6,87 +6,31 @@ Language:        Cpp
 BasedOnStyle:  Microsoft
 AccessModifierOffset: -4
 AlignAfterOpenBracket: AlwaysBreak
-AlignConsecutiveAssignments: false
 AlignEscapedNewlines: DontAlign
-AlignOperands:   true
-AlignTrailingComments: true
-AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: false
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
-AllowShortIfStatementsOnASingleLine: false
-AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterDefinitionReturnType: None
-AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
 BinPackArguments: false
 BinPackParameters: false
-BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: true
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: false
-  AfterStruct: true
   AfterUnion: true
   AfterExternBlock: false
-  BeforeCatch: true
-  BeforeElse: true
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: AfterColon
-ColumnLimit: 130
-CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
-ConstructorInitializerIndentWidth: 4
-ContinuationIndentWidth: 4
-Cpp11BracedListStyle: true
-DerivePointerAlignment: false
-DisableFormat:   false
-ExperimentalAutoDetectBinPacking: false
-FixNamespaceComments: true
-ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"(stdafx.h|pch.h|precomp.h)"$'
     Priority: -1
-IndentCaseLabels: false
-IndentWidth:     4
-IndentWrappedFunctionNames: false
-KeepEmptyLinesAtTheStartOfBlocks: true
 MacroBlockBegin: '^BEGIN_COM_MAP$|^BEGIN_CONNECTION_POINT_MAP$|^BEGIN_HELPER_NODEMAP$|^BEGIN_MODULE$|^BEGIN_MSG_MAP$|^BEGIN_OBJECT_MAP$|^BEGIN_TEST_CLASS$|^BEGIN_TEST_METHOD$|^BEGIN_TEST_METHOD_PROPERTIES$'
 MacroBlockEnd: '^END_COM_MAP$|^END_CONNECTION_POINT_MAP$|^END_HELPER_NODEMAP$|^END_MODULE$|^END_MSG_MAP$|^END_OBJECT_MAP$|^END_TEST_CLASS$|^END_TEST_METHOD$|^END_TEST_METHOD_PROPERTIES$'
-MaxEmptyLinesToKeep: 1
 NamespaceIndentation: Inner
-ObjCBlockIndentWidth: 2
-ObjCSpaceAfterProperty: false
-ObjCSpaceBeforeProtocolList: true
-PenaltyBreakBeforeFirstCallParameter: 19
-PenaltyBreakComment: 300
-PenaltyBreakFirstLessLess: 120
-PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1
-PenaltyReturnTypeOnItsOwnLine: 1000
 PointerAlignment: Left
 SortIncludes: false
-SpaceAfterCStyleCast: false
-SpaceBeforeAssignmentOperators: true
-SpaceBeforeParens: ControlStatements
-SpaceInEmptyParentheses: false
-SpacesBeforeTrailingComments: 1
-SpacesInAngles:  false
-SpacesInContainerLiterals: true
-SpacesInCStyleCastParentheses: false
-SpacesInParentheses: false
-SpacesInSquareBrackets: false
-Standard:        Cpp11
+Standard:        Cpp17
 StatementMacros: [
   _Acquires_exclusive_lock_,
   _Acquires_lock_,
