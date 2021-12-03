@@ -210,22 +210,27 @@ namespace RendererQml
     {
 		for (const auto& cardElement : elements)
 		{
-			auto uiElement = context->Render(cardElement);
+            try {
+                auto uiElement = context->Render(cardElement);
 
-			if (uiElement != nullptr)
-			{
-				if (!uiContainer->GetChildren().empty())
-				{
-					AddSeparator(uiContainer, cardElement, context);
-				}
+                if (uiElement != nullptr)
+                {
+                    if (!uiContainer->GetChildren().empty())
+                    {
+                        AddSeparator(uiContainer, cardElement, context);
+                    }
 
-				if (cardElement->GetHeight() == AdaptiveCards::HeightType::Stretch && cardElement->GetElementTypeString() != "Image")
-				{
-					uiElement->Property("readonly property bool stretch", "true");
-				}
+                    if (cardElement->GetHeight() == AdaptiveCards::HeightType::Stretch && cardElement->GetElementTypeString() != "Image")
+                    {
+                        uiElement->Property("readonly property bool stretch", "true");
+                    }
 
-				uiContainer->AddChild(uiElement);
-			}
+                    uiContainer->AddChild(uiElement);
+                }
+            }
+            catch (const std::exception& e) {
+                context->AddWarning(AdaptiveWarning(Code::RenderException, e.what()));
+            }
 		}
     }
 
