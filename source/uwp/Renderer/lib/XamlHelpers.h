@@ -187,11 +187,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
-    void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                               _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImage,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-
     void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
                                rtom::AdaptiveBackgroundImage const& backgroundImage,
                                rtrender::AdaptiveRenderContext const& renderContext,

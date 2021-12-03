@@ -12,7 +12,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return StringToJsonObject(GetInputItemsAsJsonString());
     }
 
-    void AdaptiveInputs::AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, _In_ Uwp::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         auto parentCard = renderArgs.ParentCard();
         auto cardId = parentCard.InternalId();

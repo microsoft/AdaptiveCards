@@ -182,7 +182,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return localContainerStyle;
     }
 
-    bool SupportsInteractivity(_In_ rtrender::AdaptiveHostConfig const& hostConfig)
+    bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig)
     {
         return hostConfig.SupportsInteractivity();
     }
@@ -220,7 +220,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return columnWidth;
     }
 
-    void HandleColumnWidth(rtom::AdaptiveColumn const& column, bool isVisible, _In_ rtxaml::Controls::ColumnDefinition const& columnDefinition)
+    void HandleColumnWidth(rtom::AdaptiveColumn const& column, bool isVisible, rtxaml::Controls::ColumnDefinition const& columnDefinition)
     {
         auto adaptiveColumnWidth = column.Width();
         const bool isStretch = adaptiveColumnWidth == L"stretch";

@@ -18,7 +18,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         bool ValidateInputs(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction);
 
-        void AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, _In_ Uwp::AdaptiveRenderArgs const& renderArgs);
+        void AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs);
         void LinkSubmitActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& action, Uwp::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(uint32_t cardId, uint32_t parentCardId);
 
