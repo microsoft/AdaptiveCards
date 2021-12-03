@@ -70,7 +70,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = Utils.parseNumber(obj["maxImageHeight"], 100);
+            this.maxImageHeight = Utils.parseNumber(obj["maxImageHeight"], 100)!;
         }
     }
 
@@ -173,7 +173,7 @@ export class TextStyleSet {
         {
             weight: "Bolder"
         });
-    
+
     constructor(obj?: any) {
         if (obj) {
             this.heading.parse(obj.heading);
@@ -351,7 +351,7 @@ export class ActionsConfig {
             try {
                 const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
-                if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                if (sizeAndUnit.unit === Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
                 }
             }
@@ -639,7 +639,7 @@ export class CarouselConfig {
     toJSON() {
         return {
             maxCarouselPages: this.maxCarouselPages,
-            minAutoplayDelay: this.minAutoplayDelay 
+            minAutoplayDelay: this.minAutoplayDelay
         }
     }
 }
@@ -752,7 +752,7 @@ export class HostConfig {
             return this.fontTypes.getStyleDefinition(style);
         }
         else {
-            return style == Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
+            return style === Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
         }
     }
 
@@ -816,6 +816,7 @@ export class HostConfig {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const defaultHostConfig: HostConfig = new HostConfig(
     {
         supportsInteractivity: true,

@@ -1,10 +1,12 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Utils from "./utils";
 import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityResponse, IActivityRequest, ActivityRequestTrigger, SuccessResponse, ErrorResponse, LoginRequestResponse } from "./activity-request";
 import { Strings } from "./strings";
-import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, Authentication, TokenExchangeResource, AuthCardButton, CardElement } from "./card-elements";
+import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, TokenExchangeResource, AuthCardButton } from "./card-elements";
 import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
 
@@ -14,6 +16,7 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
             GlobalSettings.applets.onLogEvent(level, message, optionalParams);
         }
         else {
+            /* eslint-disable no-console */
             switch (level) {
                 case Enums.LogLevel.Warning:
                     console.warn(message, optionalParams);
@@ -25,6 +28,7 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
                     console.log(message, optionalParams);
                     break;
             }
+            /* eslint-enable no-console */
         }
     }
 }
@@ -41,6 +45,7 @@ class ActivityRequest implements IActivityRequest {
 
     onSend: (sender: ActivityRequest) => void;
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     async retryAsync(): Promise<void> {
         if (this.onSend) {
             this.onSend(this);
@@ -49,8 +54,8 @@ class ActivityRequest implements IActivityRequest {
 }
 
 export class AdaptiveApplet {
-    private static readonly submitMagicCodeActionId = "submitMagicCode";
-    private static readonly cancelMagicCodeAuthActionId = "cancelMagicCodeAuth";
+    private static readonly _submitMagicCodeActionId = "submitMagicCode";
+    private static readonly _cancelMagicCodeAuthActionId = "cancelMagicCodeAuth";
 
     private _card?: AdaptiveCard;
     private _cardPayload: any;
@@ -85,7 +90,7 @@ export class AdaptiveApplet {
             }
             else {
                 let message = Strings.runtime.refreshThisCard();
-                
+
                 if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic) {
                     let autoRefreshPausedMessage = Strings.runtime.automaticRefreshPaused();
 
@@ -122,7 +127,7 @@ export class AdaptiveApplet {
                 card.onExecuteAction = (action: Action) => {
                     if (action.id === "refreshCard") {
                         Utils.clearElementChildren(this._refreshButtonHostElement);
-                        
+
                         this.internalExecuteAction(refreshAction, ActivityRequestTrigger.Automatic, 0);
                     }
                 }
@@ -146,7 +151,7 @@ export class AdaptiveApplet {
             request.onSend = (sender: ActivityRequest) => {
                 sender.attemptNumber++;
 
-                this.internalSendActivityRequestAsync(request);
+                void this.internalSendActivityRequestAsync(request);
             }
 
             const cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, request, action) : false;
@@ -187,12 +192,12 @@ export class AdaptiveApplet {
                     actions: [
                         {
                             type: "Action.Submit",
-                            id: AdaptiveApplet.submitMagicCodeActionId,
+                            id: AdaptiveApplet._submitMagicCodeActionId,
                             title: "Submit"
                         },
                         {
                             type: "Action.Submit",
-                            id: AdaptiveApplet.cancelMagicCodeAuthActionId,
+                            id: AdaptiveApplet._cancelMagicCodeAuthActionId,
                             title: "Cancel"
                         }
                     ]
@@ -250,7 +255,7 @@ export class AdaptiveApplet {
 
                         this.internalExecuteAction(action, ActivityRequestTrigger.Manual, 0);
                     }
-                    this._card.onInputValueChanged = (input: Input) => {
+                    this._card.onInputValueChanged = (_input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
                     }
@@ -319,7 +324,7 @@ export class AdaptiveApplet {
                 const request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
 
                 if (request) {
-                    request.retryAsync();
+                    void request.retryAsync();
                 }
             }
             else {
@@ -357,7 +362,7 @@ export class AdaptiveApplet {
         if (this.onRemoveProgressOverlay) {
             this.onRemoveProgressOverlay(this, request);
         }
-        
+
         if (this._progressOverlay !== undefined) {
             this.renderedElement.removeChild(this._progressOverlay);
 
@@ -384,7 +389,7 @@ export class AdaptiveApplet {
             authCodeInputCard.onExecuteAction = (submitMagicCodeAction: Action) => {
                 if (this.card && submitMagicCodeAction instanceof SubmitAction) {
                     switch (submitMagicCodeAction.id) {
-                        case AdaptiveApplet.submitMagicCodeActionId:
+                        case AdaptiveApplet._submitMagicCodeActionId:
                             let authCode: string | undefined = undefined;
 
                             if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
@@ -395,21 +400,21 @@ export class AdaptiveApplet {
                                 this.displayCard(this.card);
 
                                 request.authCode = authCode;
-                                request.retryAsync();
+                                void request.retryAsync();
                             }
                             else {
                                 alert("Please enter the magic code you received.");
                             }
 
                             break;
-                        case AdaptiveApplet.cancelMagicCodeAuthActionId:
+                        case AdaptiveApplet._cancelMagicCodeAuthActionId:
                             logEvent(Enums.LogLevel.Warning, "Authentication cancelled by user.");
 
                             this.displayCard(this.card);
 
                             break;
                         default:
-                            logEvent(Enums.LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
+                            logEvent(Enums.LogLevel.Error, "Unexpected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
 
                             alert(Strings.magicCodeInputCard.somethingWentWrong());
 
@@ -501,7 +506,7 @@ export class AdaptiveApplet {
                         request.attemptNumber++;
 
                         await new Promise<void>(
-                            (resolve, reject) => {
+                            (resolve, _reject) => {
                                 window.setTimeout(
                                     () => { resolve(); },
                                     retryIn
@@ -533,7 +538,7 @@ export class AdaptiveApplet {
                         if (attemptOAuth) {
                             // Attempt to use OAuth
                             this.removeProgressOverlay(request);
-                            
+
                             if (response.signinButton === undefined) {
                                 throw new Error("internalSendActivityRequestAsync: the login request doesn't contain a valid signin URL.");
                             }
@@ -567,7 +572,7 @@ export class AdaptiveApplet {
                     break;
                 }
                 else {
-                    throw new Error("Unhandled response type: " + response.toString());
+                    throw new Error("Unhandled response type: " + JSON.stringify(response));
                 }
             }
         }
@@ -604,7 +609,7 @@ export class AdaptiveApplet {
         this._cardHostElement = document.createElement("div");
 
         this._refreshButtonHostElement = document.createElement("div");
-        this._refreshButtonHostElement.className = "aaf-refreshButtonHost";    
+        this._refreshButtonHostElement.className = "aaf-refreshButtonHost";
         this._refreshButtonHostElement.style.display = "none";
 
         this.renderedElement.appendChild(this._cardHostElement);

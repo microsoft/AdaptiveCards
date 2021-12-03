@@ -83,10 +83,11 @@ export abstract class CardObject extends SerializableObject {
 
     abstract get hostConfig(): HostConfig;
 
-    preProcessPropertyValue(property: PropertyDefinition, propertyValue?: any): any {
-        const value = propertyValue === undefined ? this.getValue(property) : propertyValue;
+    preProcessPropertyValue(prop: PropertyDefinition, propertyValue?: any): any {
+        const value = propertyValue === undefined ? this.getValue(prop) : propertyValue;
 
         if (GlobalSettings.allowPreProcessingPropertyValues) {
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             let currentObject: CardObject | undefined = this;
 
             while (currentObject && !currentObject.onPreProcessPropertyValue) {
@@ -94,7 +95,7 @@ export abstract class CardObject extends SerializableObject {
             }
 
             if (currentObject && currentObject.onPreProcessPropertyValue) {
-                return currentObject.onPreProcessPropertyValue(this, property, value);
+                return currentObject.onPreProcessPropertyValue(this, prop, value);
             }
         }
 
@@ -114,19 +115,20 @@ export abstract class CardObject extends SerializableObject {
     }
 
     getRootObject(): CardObject {
-        let rootObject: CardObject = this;
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        let currentObject: CardObject = this;
 
-        while (rootObject.parent) {
-            rootObject = rootObject.parent;
+        while (currentObject.parent) {
+            currentObject = currentObject.parent;
         }
 
-        return rootObject;
+        return currentObject;
     }
 
     internalValidateProperties(context: ValidationResults) {
         if (this.id) {
             if (context.allIds.hasOwnProperty(this.id)) {
-                if (context.allIds[this.id] == 1) {
+                if (context.allIds[this.id] === 1) {
                     context.addFailure(
                         this,
                         Enums.ValidationEvent.DuplicateId,

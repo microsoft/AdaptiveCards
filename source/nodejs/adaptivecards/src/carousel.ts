@@ -1,6 +1,6 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { ActionType, CardElement, Container, ContainerBase, SerializationContext, ShowCardAction, ToggleVisibilityAction } from "./card-elements";
+import { ActionType, CardElement, Container, SerializationContext, ShowCardAction, ToggleVisibilityAction } from "./card-elements";
 import * as Enums from "./enums";
 import { NumProperty, property, PropertyBag, SerializableObjectSchema, Versions } from "./serialization";
 import { GlobalRegistry, ElementSingletonBehavior } from "./registry";
@@ -45,7 +45,7 @@ export class CarouselPage extends Container {
         this.setShouldFallback(false);
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
+    protected shouldSerialize(_context: SerializationContext): boolean {
         return true;
     }
 
@@ -283,11 +283,11 @@ export class Carousel extends Container {
 
         this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
 
-        cardLevelContainer.addEventListener("keydown", (event) => {
+        cardLevelContainer.addEventListener("keydown", (_event) => {
             // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
            const activeIndex = this._carousel?.activeIndex;
            this.initializeCarouselControl(carouselContainer, nextElementDiv, prevElementDiv, pagination, this.rtl);
-           if (activeIndex) { 
+           if (activeIndex) {
                this._carousel?.slideTo(activeIndex);
            }
         }, {once : true});
@@ -313,8 +313,8 @@ export class Carousel extends Container {
                 clickable: true
             },
             navigation: {
-                prevEl: rtl == undefined || !rtl ? prevElement : nextElement,
-                nextEl: rtl == undefined || !rtl ? nextElement : prevElement
+                prevEl: rtl === undefined || !rtl ? prevElement : nextElement,
+                nextEl: rtl === undefined || !rtl ? nextElement : prevElement
             },
             a11y: {
                 enabled: true
@@ -335,11 +335,11 @@ export class Carousel extends Container {
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
 
-        carouselContainer.addEventListener("mouseenter", function(event) {
+        carouselContainer.addEventListener("mouseenter", function(_event) {
             carousel.autoplay?.stop();
         });
 
-        carouselContainer.addEventListener("mouseleave", function(event) {
+        carouselContainer.addEventListener("mouseleave", function(_event) {
             carousel.autoplay?.start();
         });
 
@@ -355,7 +355,7 @@ export class Carousel extends Container {
             (typeName: string) => {
                 return !typeName || typeName === "CarouselPage" ? new CarouselPage() : undefined;
             },
-            (typeName: string, errorType: TypeErrorType) => {
+            (typeName: string, _errorType: TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     ValidationEvent.ElementTypeNotAllowed,

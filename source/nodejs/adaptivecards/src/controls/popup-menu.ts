@@ -10,10 +10,6 @@ export class PopupMenu extends PopupControl {
     private _renderedItems: Array<HTMLElement> = [];
     private _selectedIndex: number = -1;
 
-    constructor() {
-        super();
-    }
-
     protected renderContent(): HTMLElement {
         const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
@@ -25,7 +21,7 @@ export class PopupMenu extends PopupControl {
 
             element.appendChild(renderedItem);
 
-            if (i == this.selectedIndex) {
+            if (i === this.selectedIndex) {
                 renderedItem.focus();
             }
 

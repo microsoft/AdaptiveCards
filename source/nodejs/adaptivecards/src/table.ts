@@ -19,9 +19,9 @@ export class TableColumnDefinition extends SerializableObject {
     static readonly widthProperty = new CustomProperty<SizeAndUnit>(
         Versions.v1_5,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            let result: SizeAndUnit = property.defaultValue;
-            const value = source[property.name];
+        (sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let result: SizeAndUnit = prop.defaultValue;
+            const value = source[prop.name];
             let invalidWidth = false;
 
             if (typeof value === "number" && !isNaN(value)) {
@@ -48,7 +48,7 @@ export class TableColumnDefinition extends SerializableObject {
 
             return result;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: SizeAndUnit, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, _property: PropertyDefinition, target: PropertyBag, value: SizeAndUnit, context: BaseSerializationContext) => {
             if (value.unit === SizeUnit.Pixel) {
                 context.serializeValue(target, "width", value.physicalSize + "px");
             }
@@ -88,7 +88,7 @@ export abstract class StylableContainer<T extends CardElement> extends StylableC
             (typeName: string) => {
                 return this.createItemInstance(typeName);
             },
-            (typeName: string, errorType: TypeErrorType) => {
+            (typeName: string, _errorType: TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     ValidationEvent.ElementTypeNotAllowed,
@@ -220,7 +220,7 @@ export class TableCell extends Container {
         return cellElement;
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
+    protected shouldSerialize(_context: SerializationContext): boolean {
         return true;
     }
 
@@ -330,7 +330,10 @@ export class TableRow extends StylableContainer<TableCell> {
 
             if (styleDefinition.backgroundColor) {
                 const bgColor = stringToCssColor(styleDefinition.backgroundColor);
-                this.renderedElement.style.backgroundColor = bgColor;
+
+                if (bgColor) {
+                    this.renderedElement.style.backgroundColor = bgColor;
+                }
             }
         }
     }
@@ -342,7 +345,7 @@ export class TableRow extends StylableContainer<TableCell> {
     protected createItemInstance(typeName: string): TableCell | undefined {
         return !typeName || typeName === "TableCell" ? new TableCell() : undefined;
     }
-    
+
     protected internalRender(): HTMLElement | undefined {
         const isFirstRow = this.getIsFirstRow();
         const cellSpacing = this.hostConfig.table.cellSpacing;
@@ -382,7 +385,7 @@ export class TableRow extends StylableContainer<TableCell> {
         return rowElement.children.length > 0 ? rowElement : undefined;
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
+    protected shouldSerialize(_context: SerializationContext): boolean {
         return true;
     }
 
@@ -424,7 +427,7 @@ export class TableRow extends StylableContainer<TableCell> {
 export class Table extends StylableContainer<TableRow> {
     //#region Schema
 
-    private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", TableColumnDefinition);
+    private static readonly _columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", TableColumnDefinition);
 
     static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_5, "firstRowAsHeaders", true);
     static readonly showGridLinesProperty = new BoolProperty(Versions.v1_5, "showGridLines", true);
@@ -432,7 +435,7 @@ export class Table extends StylableContainer<TableRow> {
     static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
     static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
 
-    @property(Table.columnsProperty)
+    @property(Table._columnsProperty)
     private _columns: TableColumnDefinition[] = [];
 
     @property(Table.firstRowAsHeadersProperty)
@@ -519,7 +522,7 @@ export class Table extends StylableContainer<TableRow> {
 
                 if (styleDefinition.borderColor) {
                     const borderColor = stringToCssColor(styleDefinition.borderColor);
-    
+
                     if (borderColor) {
                         tableElement.style.borderTop = "1px solid " + borderColor;
                         tableElement.style.borderLeft = "1px solid " + borderColor;

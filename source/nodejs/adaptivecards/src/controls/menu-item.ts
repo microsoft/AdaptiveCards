@@ -54,11 +54,11 @@ export class MenuItem {
             }
 
             this._element.setAttribute("aria-selected", "false");
-            this._element.onmouseup = (e) => { this.click(); };
+            this._element.onmouseup = (_e) => { this.click(); };
             this._element.onkeydown = (e) => {
                 if (e.key === Constants.keys.enter) {
                     e.cancelBubble = true;
-                    
+
                     this.click();
                 }
             };

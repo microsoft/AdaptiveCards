@@ -17,17 +17,16 @@ import {
 import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
-import { Carousel } from "./carousel";
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
         const separator = document.createElement("div");
-        separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
+        separator.className = hostConfig.makeCssClassName("ac-" + (orientation === Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
         separator.setAttribute("aria-hidden", "true");
 
         const color = separationDefinition.lineColor ? Utils.stringToCssColor(separationDefinition.lineColor) : "";
 
-        if (orientation == Enums.Orientation.Horizontal) {
+        if (orientation === Enums.Orientation.Horizontal) {
             if (separationDefinition.lineThickness) {
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
@@ -163,7 +162,7 @@ export abstract class CardElement extends CardObject {
             },
             this.separatorOrientation);
 
-        if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+        if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation === Enums.Orientation.Horizontal) {
             // Adjust separator's margins if the option to always bleed separators is turned on
             const parentContainer = this.getParentContainer();
 
@@ -271,7 +270,11 @@ export abstract class CardElement extends CardObject {
         element.style.padding = "4px";
         element.style.minHeight = "32px";
         element.style.fontSize = "10px";
-        element.style.color = foregroundCssColor;
+
+        if (foregroundCssColor) {
+            element.style.color = foregroundCssColor;
+        }
+
         element.innerText = "Empty " + this.getJsonTypeName();
 
         return element;
@@ -320,7 +323,7 @@ export abstract class CardElement extends CardObject {
      * maxHeight will be the amount of space still available on the card (0 if
      * the element is fully off the card).
      */
-    protected truncateOverflow(maxHeight: number): boolean {
+    protected truncateOverflow(_maxHeight: number): boolean {
         // Child implementations should return true if the element handled
         // the truncation request such that its content fits within maxHeight,
         // false if the element should fall back to being hidden
@@ -330,7 +333,7 @@ export abstract class CardElement extends CardObject {
     /*
      * This should reverse any changes performed in truncateOverflow().
      */
-    protected undoOverflowTruncation() { }
+    protected undoOverflowTruncation() { return; }
 
     protected getDefaultPadding(): PaddingDefinition {
         return new PaddingDefinition();
@@ -421,25 +424,25 @@ export abstract class CardElement extends CardObject {
             const effectivePadding = this.parent.getEffectivePadding();
 
             if (effectivePadding) {
-                if (doProcessTop && effectivePadding.top != Enums.Spacing.None) {
+                if (doProcessTop && effectivePadding.top !== Enums.Spacing.None) {
                     result.top = effectivePadding.top;
 
                     doProcessTop = false;
                 }
 
-                if (doProcessRight && effectivePadding.right != Enums.Spacing.None) {
+                if (doProcessRight && effectivePadding.right !== Enums.Spacing.None) {
                     result.right = effectivePadding.right;
 
                     doProcessRight = false;
                 }
 
-                if (doProcessBottom && effectivePadding.bottom != Enums.Spacing.None) {
+                if (doProcessBottom && effectivePadding.bottom !== Enums.Spacing.None) {
                     result.bottom = effectivePadding.bottom;
 
                     doProcessBottom = false;
                 }
 
-                if (doProcessLeft && effectivePadding.left != Enums.Spacing.None) {
+                if (doProcessLeft && effectivePadding.left !== Enums.Spacing.None) {
                     result.left = effectivePadding.left;
 
                     doProcessLeft = false;
@@ -509,12 +512,12 @@ export abstract class CardElement extends CardObject {
         return this._renderedElement;
     }
 
-    updateLayout(processChildren: boolean = true) {
+    updateLayout(_processChildren: boolean = true) {
         this.updateRenderedElementVisibility();
         this.applyPadding();
     }
 
-    indexOf(cardElement: CardElement): number {
+    indexOf(_cardElement: CardElement): number {
         return -1;
     }
 
@@ -524,11 +527,11 @@ export abstract class CardElement extends CardObject {
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
-    isFirstElement(element: CardElement): boolean {
+    isFirstElement(_element: CardElement): boolean {
         return true;
     }
 
-    isLastElement(element: CardElement): boolean {
+    isLastElement(_element: CardElement): boolean {
         return true;
     }
 
@@ -556,11 +559,11 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    isLeftMostElement(element: CardElement): boolean {
+    isLeftMostElement(_element: CardElement): boolean {
         return true;
     }
 
-    isRightMostElement(element: CardElement): boolean {
+    isRightMostElement(_element: CardElement): boolean {
         return true;
     }
 
@@ -573,7 +576,7 @@ export abstract class CardElement extends CardObject {
     }
 
     isHiddenDueToOverflow(): boolean {
-        return this._renderedElement !== undefined && this._renderedElement.style.visibility == 'hidden';
+        return this._renderedElement !== undefined && this._renderedElement.style.visibility === 'hidden';
     }
 
     getRootElement(): CardElement {
@@ -594,7 +597,7 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getAllInputs(processActions: boolean = true): Input[] {
+    getAllInputs(_processActions: boolean = true): Input[] {
         return [];
     }
 
@@ -606,7 +609,7 @@ export abstract class CardElement extends CardObject {
         return this.id === id ? this : undefined;
     }
 
-    getActionById(id: string): Action | undefined {
+    getActionById(_id: string): Action | undefined {
         return undefined;
     }
 
@@ -696,7 +699,7 @@ export class ActionProperty extends PropertyDefinition {
             parent.isDesignMode());
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
+    toJSON(_sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
         context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
     }
 
@@ -846,7 +849,10 @@ export abstract class BaseTextBlock extends CardElement {
 
         const colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
-        targetElement.style.color = Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.subtle : colorDefinition.default);
+        const targetColor = Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.subtle : colorDefinition.default);
+        if (targetColor) {
+            targetElement.style.color = targetColor;
+        }
 
         let fontWeight: number;
 
@@ -939,7 +945,7 @@ export class TextBlock extends BaseTextBlock {
             // account Markdown lists
             const children = this.renderedElement.children;
             const isTextOnly = !children.length;
-            const truncationSupported = isTextOnly || children.length == 1 && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+            const truncationSupported = isTextOnly || children.length === 1 && (<HTMLElement>children[0]).tagName.toLowerCase() === 'p';
 
             if (truncationSupported) {
                 const element = isTextOnly ? this.renderedElement : <HTMLElement>children[0];
@@ -1085,8 +1091,7 @@ export class TextBlock extends BaseTextBlock {
 
             const anchors = element.getElementsByTagName("a");
 
-            for (let i = 0; i < anchors.length; i++) {
-                const anchor = anchors[i];
+            for (const anchor of Array.from(anchors)) {
                 anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
                 anchor.onclick = (e: MouseEvent) => {
@@ -1325,7 +1330,10 @@ export class TextRun extends BaseTextBlock {
         if (this.highlight) {
             const colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
-            targetElement.style.backgroundColor = Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
+            const backgroundColor = Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
+            if (backgroundColor) {
+                targetElement.style.backgroundColor = backgroundColor;
+            }
         }
 
         if (this.underline) {
@@ -1356,7 +1364,7 @@ export class RichTextBlock extends CardElement {
 
         const doAdd: boolean = inline.parent === undefined || forceAdd;
 
-        if (!doAdd && inline.parent != this) {
+        if (!doAdd && inline.parent !== this) {
             throw new Error(Strings.errors.inlineAlreadyParented());
         }
         else {
@@ -1649,7 +1657,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             try {
                 const size = SizeAndUnit.parse(sourceValue, true);
 
-                if (size.unit == Enums.SizeUnit.Pixel) {
+                if (size.unit === Enums.SizeUnit.Pixel) {
                     result = size.physicalSize;
 
                     isValid = true;
@@ -1676,7 +1684,7 @@ class ImageDimensionProperty extends PropertyDefinition {
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
+    toJSON(_sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
         context.serializeValue(
             target,
             this.name,
@@ -1826,10 +1834,10 @@ export class Image extends CardElement {
             }
 
             const imageElement = document.createElement("img");
-            imageElement.onload = (e: Event) => {
+            imageElement.onload = (_e: Event) => {
                 raiseImageLoadedEvent(this);
             }
-            imageElement.onerror = (e: Event) => {
+            imageElement.onerror = (_e: Event) => {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
@@ -1858,7 +1866,7 @@ export class Image extends CardElement {
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 imageElement.onkeypress = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled && (e.code == "Enter" || e.code == "Space")) { // enter or space pressed
+                    if (this.selectAction && this.selectAction.isEnabled && (e.code === "Enter" || e.code === "Space")) { // enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -1890,7 +1898,11 @@ export class Image extends CardElement {
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
 
-            imageElement.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            const backgroundColor = Utils.stringToCssColor(this.backgroundColor);
+            if (backgroundColor) {
+                imageElement.style.backgroundColor = backgroundColor;
+            }
+
             imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
@@ -2035,7 +2047,7 @@ export abstract class CardElementContainer extends CardElement {
                 }
 
                 element.onkeypress = (e) => {
-                    if (this._selectAction && this._selectAction.isEnabled && (e.code == "Enter" || e.code == "Space")) {
+                    if (this._selectAction && this._selectAction.isEnabled && (e.code === "Enter" || e.code === "Space")) {
                         // Enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
@@ -2270,8 +2282,8 @@ export class MediaSource extends SerializableObject {
 
         if (this.isValid()) {
             result = document.createElement("source");
-            result.src = this.url;
-            result.type = this.mimeType;
+            result.src = this.url!;
+            result.type = this.mimeType!;
         }
 
         return result;
@@ -2312,7 +2324,7 @@ export class Media extends CardElement {
         for (const source of this.sources) {
             const mimeComponents = source.mimeType ? source.mimeType.split('/') : [];
 
-            if (mimeComponents.length == 2) {
+            if (mimeComponents.length === 2) {
                 if (!this._selectedMediaType) {
                     const index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
 
@@ -2320,7 +2332,7 @@ export class Media extends CardElement {
                         this._selectedMediaType = Media.supportedMediaTypes[index];
                     }
                 }
-                if (mimeComponents[0] == this._selectedMediaType) {
+                if (mimeComponents[0] === this._selectedMediaType) {
                     this._selectedSources.push(source);
                 }
             }
@@ -2338,7 +2350,7 @@ export class Media extends CardElement {
                 this.renderedElement.innerHTML = "";
                 this.renderedElement.appendChild(mediaPlayerElement);
 
-                mediaPlayerElement.play();
+                void mediaPlayerElement.play();
                 mediaPlayerElement.focus();
             }
         }
@@ -2371,7 +2383,7 @@ export class Media extends CardElement {
             posterImageElement.style.height = "100%";
             posterImageElement.setAttribute("role", "presentation");
 
-            posterImageElement.onerror = (e: Event) => {
+            posterImageElement.onerror = (_e: Event) => {
                 if (posterImageElement.parentNode) {
                     posterImageElement.parentNode.removeChild(posterImageElement);
                 }
@@ -2403,7 +2415,7 @@ export class Media extends CardElement {
             }
 
             playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
-                if (e.code == "Enter" || e.code == "Space") { // space or enter
+                if (e.code === "Enter" || e.code === "Space") { // space or enter
                     this.handlePlayButtonInvoke(e);
                 }
             }
@@ -2444,7 +2456,7 @@ export class Media extends CardElement {
     private renderMediaPlayer(): HTMLMediaElement {
         let mediaElement: HTMLMediaElement;
 
-        if (this._selectedMediaType == "video") {
+        if (this._selectedMediaType === "video") {
             const videoPlayer = document.createElement("video");
 
             const posterUrl = this.getPosterUrl();
@@ -2511,8 +2523,10 @@ export class Media extends CardElement {
             if (mediaSource.isValid()) {
                 result.push(
                     {
-                        url: mediaSource.url,
-                        mimeType: mediaSource.mimeType
+                        /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion -- `mediaSource.url` is of type `string | undefined`, but is validated by `isValid()` call */
+                        url: mediaSource.url!,
+                        mimeType: mediaSource.mimeType!
+                        /* eslint-enable @typescript-eslint/no-unnecessary-type-assertion */
                     }
                 );
             }
@@ -2766,7 +2780,7 @@ export abstract class Input extends CardElement implements IInput {
         return result;
     }
 
-    getAllInputs(processActions: boolean = true): Input[] {
+    getAllInputs(_processActions: boolean = true): Input[] {
         return [this];
     }
 
@@ -2979,8 +2993,8 @@ export class ToggleInput extends Input {
 
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
-    static readonly valueOnProperty = new StringProperty(Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
-    static readonly valueOffProperty = new StringProperty(Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
+    static readonly valueOnProperty = new StringProperty(Versions.v1_0, "valueOn", true, undefined, "true", (_sender: SerializableObject) => { return "true"; });
+    static readonly valueOffProperty = new StringProperty(Versions.v1_0, "valueOff", true, undefined, "false", (_sender: SerializableObject) => { return "false"; });
     static readonly wrapProperty = new BoolProperty(Versions.v1_2, "wrap", false);
 
     @property(ToggleInput.valueProperty)
@@ -3045,7 +3059,7 @@ export class ToggleInput extends Input {
 
         this._checkboxInputElement.tabIndex = 0;
 
-        if (this.defaultValue == this.valueOn) {
+        if (this.defaultValue === this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
 
@@ -3186,12 +3200,12 @@ export class ChoiceSetInput extends Input {
 
     //#endregion
 
-    private static uniqueCategoryCounter = 0;
+    private static _uniqueCategoryCounter = 0;
 
     private static getUniqueCategoryName(): string {
-        const uniqueCategoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
+        const uniqueCategoryName = "__ac-category" + ChoiceSetInput._uniqueCategoryCounter;
 
-        ChoiceSetInput.uniqueCategoryCounter++;
+        ChoiceSetInput._uniqueCategoryCounter++;
 
         return uniqueCategoryName;
     }
@@ -3208,12 +3222,12 @@ export class ChoiceSetInput extends Input {
             const options = this._selectElement.options;
 
             if (options) {
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].selected) {
-                        options[i].setAttribute("aria-current", "true");
+                for (const option of Array.from(options)) {
+                    if (option.selected) {
+                        option.setAttribute("aria-current", "true");
                     }
                     else {
-                        options[i].removeAttribute("aria-current");
+                        option.removeAttribute("aria-current");
                     }
                 }
             }
@@ -3383,8 +3397,10 @@ export class ChoiceSetInput extends Input {
                     const option = document.createElement("option");
                     // To fix https://stackoverflow.com/questions/29882361/show-datalist-labels-but-submit-the-actual-value
                     // value is mapped to choice.title other than choice.value
-                    option.value = choice.title;
-                    option.setAttribute("aria-label", choice.title);
+                    if (choice.title) {
+                        option.value = choice.title;
+                        option.setAttribute("aria-label", choice.title);
+                    }
 
                     dataList.appendChild(option);
                 }
@@ -3401,25 +3417,28 @@ export class ChoiceSetInput extends Input {
                 this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-compact");
                 this._selectElement.style.width = "100%";
 
-                const option = document.createElement("option");
-                option.selected = true;
-                option.disabled = true;
-                option.hidden = true;
-                option.value = "";
+                const placeholderOption = document.createElement("option");
+                placeholderOption.selected = true;
+                placeholderOption.disabled = true;
+                placeholderOption.hidden = true;
+                placeholderOption.value = "";
 
                 if (this.placeholder) {
-                    option.text = this.placeholder;
+                    placeholderOption.text = this.placeholder;
                 }
 
-                Utils.appendChild(this._selectElement, option);
+                Utils.appendChild(this._selectElement, placeholderOption);
 
                 for (const choice of this.choices) {
                     const option = document.createElement("option");
-                    option.value = choice.value;
-                    option.text = choice.title;
-                    option.setAttribute("aria-label", choice.title);
+                    option.value = choice.value!;
 
-                    if (choice.value == this.defaultValue) {
+                    if (choice.title) {
+                        option.text = choice.title;
+                        option.setAttribute("aria-label", choice.title);
+                    }
+
+                    if (choice.value === this.defaultValue) {
                         option.selected = true;
                     }
 
@@ -3459,7 +3478,7 @@ export class ChoiceSetInput extends Input {
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (this.choices.length == 0) {
+        if (this.choices.length === 0) {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.CollectionCantBeEmpty,
@@ -3521,7 +3540,7 @@ export class ChoiceSetInput extends Input {
             return undefined;
         }
         else {
-            if (!this._toggleInputs || this._toggleInputs.length == 0) {
+            if (!this._toggleInputs || this._toggleInputs.length === 0) {
                 return undefined;
             }
 
@@ -3529,7 +3548,7 @@ export class ChoiceSetInput extends Input {
 
             for (const toggleInput of this._toggleInputs) {
                 if (toggleInput.checked) {
-                    if (result != "") {
+                    if (result !== "") {
                         result += this.hostConfig.choiceSetInputValueSeparator;
                     }
 
@@ -3722,8 +3741,8 @@ export class TimeProperty extends CustomProperty<string | undefined> {
         super(
             targetVersion,
             name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-                const value = source[property.name];
+            (_sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, _context: BaseSerializationContext) => {
+                const value = source[prop.name];
 
                 if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
                     return value;
@@ -3731,8 +3750,8 @@ export class TimeProperty extends CustomProperty<string | undefined> {
 
                 return undefined;
             },
-            (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
-                context.serializeValue(target, property.name, value);
+            (_sender: SerializableObject, prop: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
+                context.serializeValue(target, prop.name, value);
             });
     }
 }
@@ -3768,8 +3787,15 @@ export class TimeInput extends Input {
     protected internalRender(): HTMLElement | undefined {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");
-        this._timeInputElement.setAttribute("min", this.min);
-        this._timeInputElement.setAttribute("max", this.max);
+
+        if (this.min) {
+            this._timeInputElement.setAttribute("min", this.min);
+        }
+
+        if (this.max) {
+            this._timeInputElement.setAttribute("max", this.max);
+        }
+
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
         this._timeInputElement.oninput = () => { this.valueChanged(); }
@@ -3885,7 +3911,7 @@ export abstract class Action extends CardObject {
             titleElement.style.overflow = "hidden";
             titleElement.style.textOverflow = "ellipsis";
 
-            if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
+            if (!(hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
                 titleElement.style.whiteSpace = "nowrap";
             }
 
@@ -3904,7 +3930,7 @@ export abstract class Action extends CardObject {
                 iconElement.style.height = hostConfig.actions.iconSize + "px";
                 iconElement.style.flex = "0 0 auto";
 
-                if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
+                if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
                     this.renderedElement.classList.add("iconAbove");
                     this.renderedElement.style.flexDirection = "column";
 
@@ -3959,6 +3985,10 @@ export abstract class Action extends CardObject {
             this.renderedElement.tabIndex = this.isFocusable ? 0 : -1;
 
             switch (this._state) {
+                case ActionButtonState.Normal:
+                    // No additional classes needed
+                    break;
+
                 case ActionButtonState.Expanded:
                     this.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
                     break;
@@ -3986,7 +4016,7 @@ export abstract class Action extends CardObject {
         return {};
     }
 
-    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
+    protected internalPrepareForExecution(_inputs: Dictionary<Input> | undefined) {
         // Do nothing in base implementation
     }
 
@@ -4114,7 +4144,7 @@ export abstract class Action extends CardObject {
         return false;
     }
 
-    getAllInputs(processActions: boolean = true): Input[] {
+    getAllInputs(_processActions: boolean = true): Input[] {
         return [];
     }
 
@@ -4140,7 +4170,7 @@ export abstract class Action extends CardObject {
     }
 
     get isPrimary(): boolean {
-        return this.style == Enums.ActionStyle.Positive;
+        return this.style === Enums.ActionStyle.Positive;
     }
 
     set isPrimary(value: boolean) {
@@ -4148,7 +4178,7 @@ export abstract class Action extends CardObject {
             this.style = Enums.ActionStyle.Positive;
         }
         else {
-            if (this.style == Enums.ActionStyle.Positive) {
+            if (this.style === Enums.ActionStyle.Positive) {
                 this.style = Enums.ActionStyle.Default;
             }
         }
@@ -4194,8 +4224,8 @@ export abstract class SubmitActionBase extends Action {
     static readonly associatedInputsProperty = new CustomProperty(
         Versions.v1_3,
         "associatedInputs",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            const value = source[property.name];
+        (_sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, _context: BaseSerializationContext) => {
+            const value = source[prop.name];
 
             if (value !== undefined && typeof value === "string") {
                 return value.toLowerCase() === "none" ? "none" : "auto";
@@ -4203,8 +4233,8 @@ export abstract class SubmitActionBase extends Action {
 
             return undefined;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
-            context.serializeValue(target, property.name, value);
+        (_sender: SerializableObject, prop: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
+            context.serializeValue(target, prop.name, value);
         });
 
     @property(SubmitActionBase.dataProperty)
@@ -4345,11 +4375,11 @@ export class ToggleVisibilityAction extends Action {
     static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
         Versions.v1_2,
         "targetElements",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, _context: BaseSerializationContext) => {
             const result: PropertyBag = {}
 
-            if (Array.isArray(source[property.name])) {
-                for (const item of source[property.name]) {
+            if (Array.isArray(source[prop.name])) {
+                for (const item of source[prop.name]) {
                     if (typeof item === "string") {
                         result[item] = undefined;
                     }
@@ -4365,7 +4395,7 @@ export class ToggleVisibilityAction extends Action {
 
             return result;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: PropertyBag, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, prop: PropertyDefinition, target: PropertyBag, value: PropertyBag, context: BaseSerializationContext) => {
             const targetElements: any[] = [];
 
             for (const id of Object.keys(value)) {
@@ -4382,10 +4412,10 @@ export class ToggleVisibilityAction extends Action {
                 }
             }
 
-            context.serializeArray(target, property.name, targetElements);
+            context.serializeArray(target, prop.name, targetElements);
         },
         {},
-        (sender: SerializableObject) => { return {}; });
+        (_sender: SerializableObject) => { return {}; });
 
     @property(ToggleVisibilityAction.targetElementsProperty)
     targetElements: { [key: string]: any } = {};
@@ -4462,14 +4492,14 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): StringWithSubstitutions {
+    parse(_sender: SerializableObject, source: PropertyBag, _context: BaseSerializationContext): StringWithSubstitutions {
         const result = new StringWithSubstitutions();
         result.set(Utils.parseString(source[this.name]));
 
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: StringWithSubstitutions, context: BaseSerializationContext): void {
+    toJSON(_sender: SerializableObject, target: PropertyBag, value: StringWithSubstitutions, context: BaseSerializationContext): void {
         context.serializeValue(target, this.name, value.getOriginal());
     }
 
@@ -4576,8 +4606,8 @@ export class HttpAction extends Action {
             for (const header of this.headers) {
                 header.prepareForExecution(inputs);
 
-                if (header.name && header.name.toLowerCase() == "content-type") {
-                    contentType = header.value;
+                if (header.name && header.name.toLowerCase() === "content-type") {
+                    contentType = header.value!;
                 }
             }
 
@@ -4722,15 +4752,17 @@ export class ShowCardAction extends Action {
 
 class OverflowAction extends Action {
     static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
+    private _actions: Action[];
 
-    constructor(private actions: Action[]) {
+    constructor(actions: Action[]) {
         super();
+        this._actions = actions;
 
         this.title = Strings.defaults.overflowButtonText();
     }
 
     getActions(): readonly Action[] {
-        return this.actions;
+        return this._actions;
     }
 
     getJsonTypeName(): string {
@@ -4744,11 +4776,11 @@ class OverflowAction extends Action {
             const contextMenu = new PopupMenu();
             contextMenu.hostConfig = this.hostConfig;
 
-            for (let i = 0; i < this.actions.length; i++) {
-                const menuItem = new MenuItem(i.toString(), this.actions[i].title ?? "");
-                menuItem.isEnabled = this.actions[i].isEnabled;
+            for (let i = 0; i < this._actions.length; i++) {
+                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "");
+                menuItem.isEnabled = this._actions[i].isEnabled;
                 menuItem.onClick = () => {
-                    const actionToExecute = this.actions[i];
+                    const actionToExecute = this._actions[i];
 
                     contextMenu.closePopup(false);
 
@@ -4809,7 +4841,7 @@ class ActionCollection {
             this._actionCard.style.marginLeft = "-" + physicalPadding.left + "px";
             this._actionCard.style.marginRight = "-" + physicalPadding.right + "px";
 
-            if (physicalPadding.bottom != 0 && !this._owner.isDesignMode()) {
+            if (physicalPadding.bottom !== 0 && !this._owner.isDesignMode()) {
                 this._actionCard.style.paddingBottom = physicalPadding.bottom + "px";
                 this._actionCard.style.marginBottom = "-" + physicalPadding.bottom + "px";
             }
@@ -4877,7 +4909,7 @@ class ActionCollection {
                 afterSelectedAction = true;
 
                 if (renderedAction.renderedElement) {
-                    renderedAction.renderedElement.onblur = (e) => {
+                    renderedAction.renderedElement.onblur = (_e) => {
                         for (const ra of this._renderedActions) {
                             ra.isFocusable = true;
                         }
@@ -4985,7 +5017,7 @@ class ActionCollection {
         }
     }
 
-    render(orientation: Enums.Orientation, isDesignMode: boolean): HTMLElement | undefined {
+    render(orientation: Enums.Orientation, _isDesignMode: boolean): HTMLElement | undefined {
         // Cache hostConfig for better perf
         const hostConfig = this._owner.hostConfig;
 
@@ -4999,7 +5031,7 @@ class ActionCollection {
         this._actionCardContainer = document.createElement("div");
         this._renderedActions = [];
 
-        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this._items[0] instanceof ShowCardAction && this.isActionAllowed(this._items[0])) {
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions === 1 && this._items[0] instanceof ShowCardAction && this.isActionAllowed(this._items[0])) {
             this.showActionCard(this._items[0], true);
             this._renderedActions.push(this._items[0]);
         }
@@ -5008,10 +5040,10 @@ class ActionCollection {
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
-            if (orientation == Enums.Orientation.Horizontal) {
+            if (orientation === Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
-                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment !== Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
@@ -5041,7 +5073,7 @@ class ActionCollection {
             else {
                 buttonStrip.style.flexDirection = "column";
 
-                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment !== Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.alignItems = "center";
@@ -5113,7 +5145,7 @@ class ActionCollection {
                 action.render();
 
                 if (action.renderedElement) {
-                    if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+                    if (hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch) {
                         action.renderedElement.style.flex = "0 1 100%";
                     }
                     else {
@@ -5150,7 +5182,7 @@ class ActionCollection {
         Utils.appendChild(element, this._actionCardContainer);
 
         for (const renderedAction of this._renderedActions) {
-            if (renderedAction.state == ActionButtonState.Expanded) {
+            if (renderedAction.state === ActionButtonState.Expanded) {
                 this.expandShowCardAction(<ShowCardAction>renderedAction, false);
 
                 break;
@@ -5180,7 +5212,7 @@ class ActionCollection {
     }
 
     removeAction(action: Action): boolean {
-        if (this.expandedAction && this._expandedAction == action) {
+        if (this.expandedAction && this._expandedAction === action) {
             this.collapseExpandedAction();
         }
 
@@ -5194,7 +5226,7 @@ class ActionCollection {
             action["_actionCollection"] = undefined;
 
             for (let i = 0; i < this._renderedActions.length; i++) {
-                if (this._renderedActions[i] == action) {
+                if (this._renderedActions[i] === action) {
                     this._renderedActions.splice(i, 1);
 
                     break;
@@ -5279,11 +5311,11 @@ export class ActionSet extends CardElement {
     }
 
     isBleedingAtBottom(): boolean {
-        if (this._actionCollection.renderedActionCount == 0) {
+        if (this._actionCollection.renderedActionCount === 0) {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.getActionCount() == 1) {
+            if (this._actionCollection.getActionCount() === 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -5425,7 +5457,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             if (styleDefinition.backgroundColor) {
                 const bgColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
-                this.renderedElement.style.backgroundColor = bgColor;
+                if (bgColor) {
+                    this.renderedElement.style.backgroundColor = bgColor;
+                }
             }
         }
     }
@@ -5464,7 +5498,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 this.renderedElement.style.marginBottom = "-" + surroundingPadding.bottom + "px";
             }
 
-            if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+            if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
                 this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
                 this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
             }
@@ -5489,7 +5523,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             const currentElementHasBackgroundImage = currentElement instanceof Container ? currentElement.backgroundImage.isValid() : false;
 
             if (currentElement instanceof StylableCardElementContainer) {
-                if (this.hasExplicitStyle && (currentElement.getEffectiveStyle() != this.getEffectiveStyle() || currentElementHasBackgroundImage)) {
+                if (this.hasExplicitStyle && (currentElement.getEffectiveStyle() !== this.getEffectiveStyle() || currentElementHasBackgroundImage)) {
                     return true;
                 }
             }
@@ -5646,6 +5680,8 @@ export class BackgroundImage extends SerializableObject {
             }
 
             switch (this.horizontalAlignment) {
+                case Enums.HorizontalAlignment.Left:
+                    break;
                 case Enums.HorizontalAlignment.Center:
                     element.renderedElement.style.backgroundPositionX = "center";
                     break;
@@ -5655,6 +5691,8 @@ export class BackgroundImage extends SerializableObject {
             }
 
             switch (this.verticalAlignment) {
+                case Enums.VerticalAlignment.Top:
+                    break;
                 case Enums.VerticalAlignment.Center:
                     element.renderedElement.style.backgroundPositionY = "center";
                     break;
@@ -5830,8 +5868,8 @@ export class Container extends ContainerBase {
                             }
                             break;
                         case Enums.ContainerFitStatus.Overflowing:
-                            const maxHeight = boundary - elt.offsetTop;
-                            cardElement['handleOverflow'](maxHeight);
+                            const containerMaxHeight = boundary - elt.offsetTop;
+                            cardElement['handleOverflow'](containerMaxHeight);
                             break;
                         case Enums.ContainerFitStatus.FullyOutOfContainer:
                             cardElement['handleOverflow'](0);
@@ -5956,7 +5994,7 @@ export class Container extends ContainerBase {
 
         for (const item of this._items) {
             if (item.isVisible || designMode) {
-                return item == element;
+                return item === element;
             }
         }
 
@@ -5968,7 +6006,7 @@ export class Container extends ContainerBase {
 
         for (let i = this._items.length - 1; i >= 0; i--) {
             if (this._items[i].isVisible || designMode) {
-                return this._items[i] == element;
+                return this._items[i] === element;
             }
         }
 
@@ -5995,7 +6033,7 @@ export class Container extends ContainerBase {
     isBleedingAtBottom(): boolean {
         const lastRenderedItem = this.getLastVisibleRenderedItem();
 
-        return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() == this.getEffectiveStyle() : false);
+        return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() === this.getEffectiveStyle() : false);
     }
 
     indexOf(cardElement: CardElement): number {
@@ -6041,7 +6079,8 @@ export class Container extends ContainerBase {
         if (this.backgroundImage.isValid()) {
             result.push(
                 {
-                    url: this.backgroundImage.url,
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- validated by `isValid()`
+                    url: this.backgroundImage.url!,
                     mimeType: "image"
                 }
             );
@@ -6105,9 +6144,9 @@ export class Column extends Container {
     static readonly widthProperty = new CustomProperty<ColumnWidth>(
         Versions.v1_0,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            let result: ColumnWidth = property.defaultValue;
-            const value = source[property.name];
+        (sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let result: ColumnWidth = prop.defaultValue;
+            const value = source[prop.name];
             let invalidWidth = false;
 
             if (typeof value === "number" && !isNaN(value)) {
@@ -6120,7 +6159,7 @@ export class Column extends Container {
                 try {
                     result = SizeAndUnit.parse(value);
 
-                    if (result.unit === Enums.SizeUnit.Pixel && property.targetVersion.compareTo(context.targetVersion) > 0) {
+                    if (result.unit === Enums.SizeUnit.Pixel && prop.targetVersion.compareTo(context.targetVersion) > 0) {
                         invalidWidth = true;
                     }
                 }
@@ -6143,7 +6182,7 @@ export class Column extends Container {
 
             return result;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: ColumnWidth, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, _property: PropertyDefinition, target: PropertyBag, value: ColumnWidth, context: BaseSerializationContext) => {
             if (value instanceof SizeAndUnit) {
                 if (value.unit === Enums.SizeUnit.Pixel) {
                     context.serializeValue(target, "width", value.physicalSize + "px");
@@ -6187,7 +6226,7 @@ export class Column extends Container {
             renderedElement.style.flex = "1 1 50px";
         }
         else if (this.width instanceof SizeAndUnit) {
-            if (this.width.unit == Enums.SizeUnit.Pixel) {
+            if (this.width.unit === Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 auto";
                 renderedElement.style.width = this.width.physicalSize + "px";
             }
@@ -6197,7 +6236,7 @@ export class Column extends Container {
         }
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
+    protected shouldSerialize(_context: SerializationContext): boolean {
         return true;
     }
 
@@ -6242,7 +6281,7 @@ export class ColumnSet extends ContainerBase {
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
-            (typeName: string, errorType: Enums.TypeErrorType) => {
+            (typeName: string, _errorType: Enums.TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     Enums.ValidationEvent.ElementTypeNotAllowed,
@@ -6281,13 +6320,13 @@ export class ColumnSet extends ContainerBase {
             let totalWeight: number = 0;
 
             for (const column of this._columns) {
-                if (column.width instanceof SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+                if (column.width instanceof SizeAndUnit && (column.width.unit === Enums.SizeUnit.Weight)) {
                     totalWeight += column.width.physicalSize;
                 }
             }
 
             for (const column of this._columns) {
-                if (column.width instanceof SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+                if (column.width instanceof SizeAndUnit && column.width.unit === Enums.SizeUnit.Weight && totalWeight > 0) {
                     const computedWeight = 100 / totalWeight * column.width.physicalSize;
 
                     // Best way to emulate "internal" access I know of
@@ -6362,7 +6401,7 @@ export class ColumnSet extends ContainerBase {
     isFirstElement(element: CardElement): boolean {
         for (const column of this._columns) {
             if (column.isVisible) {
-                return column == element;
+                return column === element;
             }
         }
 
@@ -6492,11 +6531,11 @@ export class ColumnSet extends ContainerBase {
     }
 
     isLeftMostElement(element: CardElement): boolean {
-        return this._columns.indexOf(<Column>element) == 0;
+        return this._columns.indexOf(<Column>element) === 0;
     }
 
     isRightMostElement(element: CardElement): boolean {
-        return this._columns.indexOf(<Column>element) == this._columns.length - 1;
+        return this._columns.indexOf(<Column>element) === this._columns.length - 1;
     }
 
     isTopElement(element: CardElement): boolean {
@@ -6674,10 +6713,10 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected getHasExpandedAction(): boolean {
-        if (this.renderedActionCount == 0) {
+        if (this.renderedActionCount === 0) {
             return false;
         }
-        else if (this.renderedActionCount == 1) {
+        else if (this.renderedActionCount === 1) {
             return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
         }
         else {
@@ -6727,7 +6766,7 @@ export abstract class ContainerWithActions extends Container {
     }
 
     isLastElement(element: CardElement): boolean {
-        return super.isLastElement(element) && this._actionCollection.getActionCount() == 0;
+        return super.isLastElement(element) && this._actionCollection.getActionCount() === 0;
     }
 
     addAction(action: Action) {
@@ -6755,11 +6794,11 @@ export abstract class ContainerWithActions extends Container {
     }
 
     isBleedingAtBottom(): boolean {
-        if (this._actionCollection.renderedActionCount == 0) {
+        if (this._actionCollection.renderedActionCount === 0) {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.getActionCount() == 1) {
+            if (this._actionCollection.getActionCount() === 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -6805,7 +6844,7 @@ export class RefreshActionProperty extends PropertyDefinition {
         return undefined;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
+    toJSON(_sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
         context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
     }
 
@@ -6928,21 +6967,22 @@ export class AdaptiveCard extends ContainerWithActions {
 
     //#region Schema
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     protected static readonly $schemaProperty = new CustomProperty<string>(
         Versions.v1_0,
         "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, _property: PropertyDefinition, _source: PropertyBag, _context: BaseSerializationContext) => {
             return AdaptiveCard.schemaUrl;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
-            context.serializeValue(target, property.name, AdaptiveCard.schemaUrl);
+        (_sender: SerializableObject, prop: PropertyDefinition, target: PropertyBag, _value: Versions | undefined, context: BaseSerializationContext) => {
+            context.serializeValue(target, prop.name, AdaptiveCard.schemaUrl);
         });
 
     static readonly versionProperty = new CustomProperty<Version | undefined>(
         Versions.v1_0,
         "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-            let version = Version.parse(source[property.name], context);
+        (sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let version = Version.parse(source[prop.name], context);
 
             if (version === undefined) {
                 version = Versions.latest;
@@ -6955,9 +6995,9 @@ export class AdaptiveCard extends ContainerWithActions {
 
             return version;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
+        (_sender: SerializableObject, prop: PropertyDefinition, target: PropertyBag, value: Version | undefined, context: BaseSerializationContext) => {
             if (value !== undefined) {
-                context.serializeValue(target, property.name, value.toString());
+                context.serializeValue(target, prop.name, value.toString());
             }
         },
         Versions.v1_0);
@@ -6994,6 +7034,8 @@ export class AdaptiveCard extends ContainerWithActions {
 
     //#endregion
 
+    private static _haveWarnedAboutNoMarkdownProcessing = false;
+
     static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     static onExecuteAction?: (action: Action) => void;
     static onElementVisibilityChanged?: (element: CardElement) => void;
@@ -7008,7 +7050,8 @@ export class AdaptiveCard extends ContainerWithActions {
         throw new Error(Strings.errors.processMarkdownEventRemoved());
     }
 
-    static set processMarkdown(value: (text: string) => string) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    static set processMarkdown(_value: (text: string) => string) {
         throw new Error(Strings.errors.processMarkdownEventRemoved());
     }
 
@@ -7026,8 +7069,10 @@ export class AdaptiveCard extends ContainerWithActions {
             result.outputHtml = markdownIt().render(text);
             result.didProcess = true;
         }
-        else {
-            console.warn(Strings.errors.markdownProcessingNotEnabled)
+        else if (!AdaptiveCard._haveWarnedAboutNoMarkdownProcessing) {
+            // eslint-disable-next-line no-console
+            console.warn(Strings.errors.markdownProcessingNotEnabled);
+            AdaptiveCard._haveWarnedAboutNoMarkdownProcessing = true;
         }
 
         return result;
@@ -7044,7 +7089,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 !this.version ||
                 !this.version.isValid ||
                 (this.maxVersion.major < this.version.major) ||
-                (this.maxVersion.major == this.version.major && this.maxVersion.minor < this.version.minor);
+                (this.maxVersion.major === this.version.major && this.maxVersion.minor < this.version.minor);
 
             return !unsupportedVersion;
         }
@@ -7106,7 +7151,7 @@ export class AdaptiveCard extends ContainerWithActions {
             Enums.Spacing.Padding);
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
+    protected shouldSerialize(_context: SerializationContext): boolean {
         return true;
     }
 
@@ -7209,7 +7254,8 @@ export class AdaptiveCard extends ContainerWithActions {
         if (GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
             const padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Default);
 
-            this['handleOverflow']((this.renderedElement).offsetHeight - padding);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+            this['handleOverflow'](this.renderedElement!.offsetHeight - padding);
         }
     }
 
@@ -7394,7 +7440,7 @@ export class SerializationContext extends BaseSerializationContext {
         source: any,
         forbiddenTypes: string[],
         allowFallback: boolean,
-        parsingSingletonObject: boolean = false): CardElement | undefined {
+        _parsingSingletonObject: boolean = false): CardElement | undefined {
 
         return this.parseCardObject<CardElement>(
             parent,
@@ -7435,7 +7481,7 @@ export class SerializationContext extends BaseSerializationContext {
                 return this.actionRegistry.createInstance(typeName, this.targetVersion);
             },
             (typeName: string, errorType: Enums.TypeErrorType) => {
-                if (errorType == Enums.TypeErrorType.UnknownType) {
+                if (errorType === Enums.TypeErrorType.UnknownType) {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownActionType,

@@ -23,7 +23,7 @@ export abstract class PopupControl {
         }
     }
 
-    render(rootElementBounds: ClientRect): HTMLElement {
+    render(_rootElementBounds: ClientRect): HTMLElement {
         const element = document.createElement("div");
         element.tabIndex = 0;
         element.className = this.hostConfig.makeCssClassName("ac-ctrl", "ac-ctrl-popup-container");
@@ -53,7 +53,7 @@ export abstract class PopupControl {
             this._overlayElement.tabIndex = 0;
             this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
             this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
-            this._overlayElement.onfocus = (e) => { this.closePopup(true); };
+            this._overlayElement.onfocus = (_e) => { this.closePopup(true); };
 
             document.body.appendChild(this._overlayElement);
 
@@ -68,7 +68,7 @@ export abstract class PopupControl {
                     "ac-ctrl-slideTopToBottom",
                     "ac-ctrl-slideRightToLeft"));
 
-            window.addEventListener("resize", (e) => { this.closePopup(true); });
+            window.addEventListener("resize", (_e) => { this.closePopup(true); });
 
             const rootElementLabel = rootElement.getAttribute("aria-label");
             if (rootElementLabel) {
@@ -81,8 +81,7 @@ export abstract class PopupControl {
 
             const availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
             const availableSpaceAbove = rootElementBounds.top;
-            var availableSpaceRight = window.innerWidth - rootElementBounds.left;
-            var availableSpaceRight = window.innerWidth - rootElementBounds.right;
+            const availableSpaceRight = window.innerWidth - rootElementBounds.right;
             const availableSpaceLeft = rootElementBounds.left;
 
             let left = rootElementBounds.left + Utils.getScrollX();

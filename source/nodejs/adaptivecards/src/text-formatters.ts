@@ -30,9 +30,9 @@ abstract class AbstractTextFormatter {
 class DateFormatter extends AbstractTextFormatter {
     protected internalFormat(lang: string | undefined, matches: RegExpExecArray): string {
         const date = new Date(Date.parse(matches[1]));
-        const format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
+        const format = matches[2] !== undefined ? matches[2].toLowerCase() : "compact";
 
-        if (format != "compact") {
+        if (format !== "compact") {
             return date.toLocaleDateString(lang, { day: "numeric", weekday: format, month: format, year: "numeric" } as Intl.DateTimeFormatOptions);
         }
         else {

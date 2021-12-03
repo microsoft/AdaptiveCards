@@ -1,3 +1,5 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { Authentication, AuthCardButton, ExecuteAction, TokenExchangeResource } from "./card-elements";
 
 export enum ActivityRequestTrigger {
@@ -38,10 +40,12 @@ export class ErrorResponse extends ActivityResponse {
 }
 
 export class LoginRequestResponse extends ActivityResponse {
+    private _auth: Authentication;
     readonly signinButton?: AuthCardButton;
 
-    constructor(readonly request: IActivityRequest, private _auth: Authentication) {
+    constructor(readonly request: IActivityRequest, auth: Authentication) {
         super(request);
+        this._auth = auth;
 
         for (const button of this._auth.buttons) {
             if (button.type === "signin" && button.value !== undefined) {

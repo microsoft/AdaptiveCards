@@ -20,6 +20,7 @@ export type AppletsSettings = {
     onLogEvent?: (level: Enums.LogLevel, message?: any, ...optionalParams: any[]) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class GlobalSettings {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
@@ -79,11 +80,13 @@ export class StringWithSubstitutions {
             throw new Error("The referencedInputs parameter cannot be null.")
         }
 
-        for (const input of inputs) {
-            const matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(this._original);
+        if (this._original) {
+            for (const input of inputs) {
+                const matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(this._original);
 
-            if (matches != null && input.id) {
-                referencedInputs[input.id] = input;
+                if (matches != null && input.id) {
+                    referencedInputs[input.id] = input;
+                }
             }
         }
     }
@@ -95,9 +98,9 @@ export class StringWithSubstitutions {
             const regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
             let matches;
 
-            while ((matches = regEx.exec(this._original)) !== null) {
+            while ((matches = regEx.exec(this._original)) !== null && this._processed) {
                 for (const key of Object.keys(inputs)) {
-                    if (key.toLowerCase() == matches[1].toLowerCase()) {
+                    if (key.toLowerCase() === matches[1].toLowerCase()) {
                         const matchedInput = inputs[key];
 
                         let valueForReplace = "";
@@ -198,8 +201,8 @@ export class SizeAndUnit {
             if (matches && matches.length >= expectedMatchCount) {
                 result.physicalSize = parseInt(matches[1]);
 
-                if (matches.length == 3) {
-                    if (matches[2] == "px") {
+                if (matches.length === 3) {
+                    if (matches[2] === "px") {
                         result.unit = Enums.SizeUnit.Pixel;
                     }
                 }
@@ -228,6 +231,7 @@ export interface IResourceInformation {
  * @license MIT license
  * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
  **/
+/* eslint-disable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention, no-bitwise */
 export class UUID {
     private static lut: string[] = [];
 
@@ -251,3 +255,4 @@ export class UUID {
 }
 
 UUID.initialize();
+/* eslint-enable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention, no-bitwise */

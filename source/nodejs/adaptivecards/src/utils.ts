@@ -6,6 +6,7 @@ import * as Shared from "./shared";
 // To work around TypeScript complaining about documentMode not being declared
 // on type Document
 declare global {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     interface Document {
         documentMode?: any;
     }
@@ -62,6 +63,7 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
 }
 
 export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
+    // eslint-disable-next-line guard-for-in
     for (const key in enumType) {
         const keyAsNumber = parseInt(key, 10);
 
@@ -168,7 +170,7 @@ function findBreakableIndices(html: string): number[] {
     let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {
-        if (html[idx] == ' ') {
+        if (html[idx] === ' ') {
             results.push(idx);
         }
 
@@ -183,8 +185,8 @@ function findNextCharacter(html: string, currIdx: number): number {
 
     // If we found the start of an HTML tag, keep advancing until we get
     // past it, so we don't end up truncating in the middle of the tag
-    while (currIdx < html.length && html[currIdx] == '<') {
-        while (currIdx < html.length && html[currIdx++] != '>'){;}
+    while (currIdx < html.length && html[currIdx] === '<') {
+        while (currIdx < html.length && html[currIdx++] !== '>'){continue;}
     }
 
     return currIdx;

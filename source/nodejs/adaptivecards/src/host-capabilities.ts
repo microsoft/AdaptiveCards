@@ -13,17 +13,18 @@ export class HostCapabilities extends SerializableObject {
         super.internalParse(source, context);
 
         if (source) {
+            // eslint-disable-next-line guard-for-in
             for (const name in source) {
                 const jsonVersion = source[name];
 
                 if (typeof jsonVersion === "string") {
-                    if (jsonVersion == "*") {
+                    if (jsonVersion === "*") {
                         this.addCapability(name, "*");
                     }
                     else {
                         const version = Version.parse(jsonVersion, context);
 
-                        if (version && version.isValid) {
+                        if (version?.isValid) {
                             this.addCapability(name, version);
                         }
                     }
@@ -35,6 +36,7 @@ export class HostCapabilities extends SerializableObject {
     protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
         super.internalToJSON(target, context);
 
+        // eslint-disable-next-line guard-for-in
         for (const key in this._capabilities) {
             target[key] = this._capabilities[key];
         }
@@ -54,7 +56,7 @@ export class HostCapabilities extends SerializableObject {
 
     hasCapability(name: string, version: TargetVersion): boolean {
         if (this._capabilities.hasOwnProperty(name)) {
-            if (version == "*" || this._capabilities[name] == "*") {
+            if (version === "*" || this._capabilities[name] === "*") {
                 return true;
             }
 
