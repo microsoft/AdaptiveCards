@@ -75,6 +75,7 @@ namespace RendererQml
 		context->setCardRootElement(uiCard);
 		uiCard->Property("readonly property int margins", std::to_string(margin));
         uiCard->AddFunctions("signal buttonClicked(var title, var type, var data)");
+        uiCard->AddFunctions("signal sendCardHeight(var cardHeight)");
 		//1px extra height to accomodate the border of a showCard if present at the bottom
         uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
 		uiCard->Property("Layout.fillWidth", "true");
@@ -172,6 +173,7 @@ namespace RendererQml
             clipRectangle->Property("border.width", "1");
             clipRectangle->Property("color", "'transparent'");
             clipRectangle->Property("z", "1");
+            uiCard->AddChild(clipRectangle);
 
             uiCard->Property("activeFocusOnTab", "true");
             clipRectangle->Property("activeFocusOnTab", "true");
@@ -179,7 +181,16 @@ namespace RendererQml
             clipRectangle->Property("Keys.onTabPressed", "{event.accepted = true}");
             clipRectangle->Property("Accessible.name", "To go out of Adaptive Card press escape", true);
 
-            uiCard->AddChild(clipRectangle);
+            const auto isChildCardString = isChildCard ? "true" : "false";
+            bodyLayout->Property("onImplicitHeightChanged", Formatter() << "{"
+                << context->getCardRootId() << ".generateStretchHeight(children," << int(card->GetMinHeight()) - tempMargin << ");"
+                << "var cardHeight = " << context->getCardRootId() << ".getCardHeight(" << bodyLayout->GetId() << ".children);"
+                << context->getCardRootId() << ".sendCardHeight(cardHeight + 2 * " << context->getCardRootId() << ".margins);"
+                << "}");
+        }
+        else
+        {
+            bodyLayout->Property("onImplicitHeightChanged", Formatter() << "{" << context->getCardRootId() << ".generateStretchHeight(children," << int(card->GetMinHeight()) - tempMargin << ")}");
         }
 
 		bodyLayout->Property("onImplicitHeightChanged", Formatter() << "{" << context->getCardRootId() << ".generateStretchHeight(children," << int(card->GetMinHeight()) - tempMargin << ")}");
@@ -203,6 +214,12 @@ namespace RendererQml
         uiCard->AddFunctions(AdaptiveCardQmlRenderer::getMinWidthActionSet());
 		uiCard->AddFunctions(AdaptiveCardQmlRenderer::getMinWidthFactSet());
 		uiCard->AddFunctions(AdaptiveCardQmlRenderer::getSelectLinkFunction());
+
+        if (!isChildCard)
+        {
+            uiCard->AddFunctions(AdaptiveCardQmlRenderer::getCardHeightFunction());
+        }
+
 		return uiCard;
 	}
 
@@ -4111,6 +4128,25 @@ namespace RendererQml
         selectLinkFunction.erase(std::remove(selectLinkFunction.begin(), selectLinkFunction.end(), '\t'), selectLinkFunction.end());
 
         return selectLinkFunction;
+    }
+
+    const std::string RendererQml::AdaptiveCardQmlRenderer::getCardHeightFunction()
+    {
+        std::string cardHeightFunction = R"(function getCardHeight(childrens){
+            var cardHeight = 0
+            for(var i=0;i<childrens.length;i++)
+            {
+                if(childrens[i].visible === true)
+                {
+                    cardHeight += childrens[i].height;
+                }
+            }
+            return cardHeight;
+        })";
+
+        cardHeightFunction.erase(std::remove(cardHeightFunction.begin(), cardHeightFunction.end(), '\t'), cardHeightFunction.end());
+
+        return cardHeightFunction;
     }
 
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetIconTag(std::shared_ptr<AdaptiveRenderContext> context)
