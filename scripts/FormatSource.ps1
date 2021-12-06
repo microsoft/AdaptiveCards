@@ -282,6 +282,9 @@ else
     Write-Host -ForegroundColor Red "Errors found (see output). Please make sure to resolve all issues before opening a Pull Request."
     Write-Host -ForegroundColor Red "Formatting can be applied by running:"
     Write-Host -ForegroundColor Red "   PowerShell.exe -ExecutionPolicy Bypass $PSCommandPath -ModifiedOnly `$False` [-Path <path to file or directory>]"
+	Write-Host -ForegroundColor Red "or  run below command in source/nodejs "
+	Write-Host -ForegroundColor Red "   npm run format"
+
     if ($NoFail)
     {
         exit 0  # do not prevent commit when used in pre-commit hook
