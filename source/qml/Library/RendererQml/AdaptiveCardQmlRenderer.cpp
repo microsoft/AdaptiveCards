@@ -3019,6 +3019,9 @@ namespace RendererQml
         uiContainer->Property("id", id);
         uiColumnLayout->Property("id", "clayout_" + id);
         uiColumn->Property("id", "column_" + id);
+        uiColumn->Property("id", "column_" + id);
+        uiColumn->Property("clip", "true");
+        
 
         uiColumnLayout->Property("anchors.fill", "parent");
 
