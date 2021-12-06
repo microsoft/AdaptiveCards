@@ -437,7 +437,7 @@ namespace AdaptiveCards
         IdCollision,
         CustomError,
     };
-    // No mapping to string needed
+    DECLARE_ADAPTIVECARD_ENUM(ErrorStatusCode);
 
     enum class WarningStatusCode
     {
