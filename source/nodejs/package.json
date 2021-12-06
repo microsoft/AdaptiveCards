@@ -6,7 +6,9 @@
 		"start:designer": "lerna run start --scope=adaptivecards-designer --stream",
 		"start:designer-app": "lerna run start --scope=adaptivecards-designer-app --stream",
 		"start:all": "lerna run --parallel watch && lerna run --parallel start",
-		"audit-all": "lerna-audit"
+		"audit-all": "lerna-audit",
+		"format": "clang-format-launcher --verbose",
+		"verify": "clang-format-launcher -verify --verbose"
 	},
 	"devDependencies": {
 		"@types/jest": "^27.0.2",
@@ -38,6 +40,8 @@
 		"webpack": "^5.60.0",
 		"webpack-cli": "^4.9.1",
 		"webpack-concat-files-plugin": "^0.5.2",
-		"webpack-dev-server": "^4.3.1"
+		"webpack-dev-server": "^4.3.1",
+		"clang-format": "^1.5.0",
+		"clang-format-launcher": "^0.1.1"
 	}
 }
