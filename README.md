@@ -33,11 +33,45 @@ PS: Latest Build Status is against `main` branch.
 
 We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.
 
-### Setup Git hooks
-This is a one time setup. When you `git commit`, it will automatically do the format check and ask you to correct it if format error detected.
+Make sure clang-format version 12.0.0 and above version are used.
+
+### IDE integration
+ClangFormat describes a set of tools that are built on top of LibFormat. It can support your workflow in a variety of ways including a standalone tool and editor integrations. For details, refer to https://clang.llvm.org/docs/ClangFormat.html
+
+### Format with scripts
+Two scripts are provided to help you format files.
+- Windows only user: use FormatSource.ps1. This script use clang-format.exe which is built into Visual Studio by default.
+
+	Execute below command in the root folder of the project
+
+	```
+	PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False
+	```
+
+If it's the first time to run the script, make sure clang-format version 12.0.0 or above in the output. Otherwise you may need to upgrade Visual Studio or use your own clang-format binaries.
+```
+[clang-format] Version is:
+clang-format version 12.0.0
+```
+
+- Both Windows and MAC user: Use clang-format npmjs package
+
+	Execute below command in source/nodejs
+
+	```
+	npm run format
+	``` 
+
+Make sure `npm install` is run before.
+
+#### Setup Git hooks
+This is an optional process and a one time setup for Windows user only. When you `git commit` or `git push`, it will automatically do the format check and ask you to correct it if format error detected.
+
 ```
 scripts\SetupClangFormat.bat
 ```
+
+then choose `scripts/hooks/pre-commit.txt` or `scripts/hooks/pre-commit.txt` and remove the `.txt` to enable that hook.
 
 ### Two ways to format the files
 
@@ -49,14 +83,6 @@ or
 
 `PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False -Path yourfolder`
 
-#### 2) clang-format and IDE integration, and use the IDE to format it
-- Use Visual Studio:
-1. Configure your [clang-format tools](https://devblogs.microsoft.com/cppblog/clangformat-support-in-visual-studio-2017-15-7-preview-1/).
-2. Open the modified file.
-3. Use shortcut keys Ctrl+K, Ctrl+D to format the current file.
-
-- Use Visual Studio Code and other IDE
-Check the IDE integration in https://clang.llvm.org/docs/ClangFormat.html
 
 #### End User License Agreement for our binary packages
 Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:

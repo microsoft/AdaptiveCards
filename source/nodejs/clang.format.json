@@ -1,7 +1,7 @@
 {
   "includeEndsWith": [".h",".cpp", ".hpp", ".c"],
   "excludePathContains": ["/PerfApp/", "/experimental/", "/dotnet/", "/community/", "/vscode/","/pic2card/","/ios/", "/nodejs/", "/android/"],
-  "excludePathEndsWith": [".g.h",".g.cpp"],
+  "excludePathEndsWith": [".g.h",".g.cpp", "ObjectModel/jsoncpp.cpp"],
   "excludePathStartsWith": ["specs/", "samples", "assets/", "scripts"],
   "folder": "../../",
   "style": "--style=file"
