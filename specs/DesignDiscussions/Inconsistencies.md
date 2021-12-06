@@ -177,6 +177,7 @@ Rendering presents another avenue by which inconsistencies can sneak into Adapti
 * [3364](https://github.com/microsoft/AdaptiveCards/issues/3364) - [JavaScript] actionAligment doesn't default to stretch
 * [3365](https://github.com/microsoft/AdaptiveCards/issues/3365) - [.NET WPF] testVarientHostConfig returns an error
 
+<<<<<<< HEAD
 ## Mobile Inconsistecies
 
 ### Abstract
@@ -401,3 +402,5 @@ https://github.com/microsoft/AdaptiveCards/issues/4687
 	• Background Image is squashed.
 https://github.com/microsoft/AdaptiveCards/issues/4484
 	• Not all inputs honor placeholder text.
+=======
+>>>>>>> b98f56f73d9aae0ace4cc63bf2d944959c7b4298
