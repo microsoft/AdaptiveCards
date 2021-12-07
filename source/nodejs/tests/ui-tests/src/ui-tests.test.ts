@@ -15,6 +15,7 @@ describe("Mock function", function() {
     const delayForCarouselArrows: number = 1000;
     const delayForCarouselTimer: number = 5500;
     const timeOutValueForCarousel: number = 9000;
+    const timeOutValueForSuddenJumpTest: number = 20000;
 
     // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
     // usually takes between 1 to 2 minutes but we have no way to determine when the server
@@ -158,7 +159,7 @@ describe("Mock function", function() {
         const secondCarouselPageVisibility: string =
             await testUtils.getCssPropertyValueForElementWithId("theSecondCarouselPage", "visibility");
         Assert.strictEqual("visible", secondCarouselPageVisibility);
-    }), 9000);
+    }), timeOutValueForCarousel);
 
     test("Test click on navigation does not cause sudden jump", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel");
@@ -167,8 +168,8 @@ describe("Mock function", function() {
 
         Assert.strictEqual("visible", firstCarouselPageVisibility);
 
-        // wait for 3 pages to turn
-        await testUtils.delay(delayForCarouselTimer * 3);
+        // wait for 2 pages to turn
+        await testUtils.delay(delayForCarouselTimer * 2);
 
         firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
@@ -185,19 +186,18 @@ describe("Mock function", function() {
         // make sure firstCarouselPage is hidden
         firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
+    }), timeOutValueForSuddenJumpTest);
 
-    }), timeOutValueForCarousel);
     test("Test rtl on carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.rtl");
 
         let firstCarouselPageVisibility = await testUtils.getElementWithId("firstCarouselPage");
-        Assert.strictEqual(firstCarouselPageVisibility.getAttribute('dir'), 'rtl');
+        Assert.strictEqual(firstCarouselPageVisibility.getAttribute("dir"), "rtl");
 
         let secondCarouselPageVisibility = await testUtils.getElementWithId("secondCarouselPage");
-        Assert.strictEqual(secondCarouselPageVisibility.getAttribute('dir'), 'ltr');
+        Assert.strictEqual(secondCarouselPageVisibility.getAttribute("dir"), "ltr");
 
         let thirdCarouselPageVisibility = await testUtils.getElementWithId("thirdCarouselPage");
-        Assert.strictEqual(thirdCarouselPageVisibility.getAttribute('dir'), 'rtl');
-
+        Assert.strictEqual(thirdCarouselPageVisibility.getAttribute("dir"), "rtl");
     }), timeOutValueForCarousel);
 });
