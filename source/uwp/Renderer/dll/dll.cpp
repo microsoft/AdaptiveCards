@@ -2,12 +2,12 @@
 //    Copyright (C) Microsoft.  All rights reserved.
 //
 #include "pch.h"
-#include <wrl.H>
+#include <wrl.h>
 #include <module.g.cpp>
 
 using namespace Microsoft::WRL;
 
-STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory** factory)
+STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId,  ::IActivationFactory** factory)
 {
     return WINRT_GetActivationFactory(activatableClassId, reinterpret_cast<void**>(factory));
 }

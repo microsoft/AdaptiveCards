@@ -109,7 +109,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                     // TODO: unregister the click since button is disabled now. Is this correct approach?
                     // TODO: not sure about this:) Do we still want this to work afterwards? button is disabled tho..
-                    touchTargetAsButtonBase.Click(*renderingEventToken);
+                    //touchTargetAsButtonBase.Click(*renderingEventToken);
                 });
             return mediaStackPanel;
         }

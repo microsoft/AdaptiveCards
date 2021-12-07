@@ -49,11 +49,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         rtxaml::Automation::AutomationProperties::SetFullDescription(dependencyObject, description);
     }
 
-    template<typename T> auto to_ref(T const& t)
-    {
-        return winrt::box_value(t).as<winrt::Windows::Foundation::IReference<T>>();
-    }
-
     void ArrangeButtonContent(winrt::hstring const& actionTitle,
                               winrt::hstring const& actionIconUrl,
                               winrt::hstring const& actionTooltip,
@@ -100,10 +95,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // TODO: is it correct substitution to HString != nullptr?
         if (!iconUrl.empty())
         {
-            // Get icon configs
-            rtrender::IconPlacement iconPlacement = actionsConfig.IconPlacement();
-            uint32_t iconSize = actionsConfig.IconSize();
-
             // Define the alignment for the button contents
             rtxaml::Controls::StackPanel buttonContentsStackPanel{};
 
@@ -117,16 +108,13 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             rtxaml::UIElement buttonIcon{nullptr};
 
-            auto childRenderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, buttonContentsStackPanel, nullptr);
-
-            auto elementRenderers = renderContext.ElementRenderers();
-
-            auto elementRenderer = elementRenderers.Get(L"Image");
-            if (elementRenderer != nullptr)
+            if (const auto elementRenderer = renderContext.ElementRenderers().Get(L"Image"))
             {
-                // TODO: no need to cast adaptiveImage to element right?
-                buttonIcon = elementRenderer.Render(adaptiveImage, renderContext, childRenderArgs);
+                buttonIcon = elementRenderer.Render(adaptiveImage,
+                                                    renderContext,
+                                                    winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle,
+                                                                                                              buttonContentsStackPanel,
+                                                                                                              nullptr));
                 if (buttonIcon == nullptr)
                 {
                     XamlHelpers::SetContent(button, title);
@@ -144,11 +132,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             auto buttonIconAsFrameworkElement = buttonIcon.as<rtxaml::FrameworkElement>();
 
             // Set icon height to iconSize(aspect ratio is automatically maintained)
-            buttonIconAsFrameworkElement.Height(iconSize);
+            buttonIconAsFrameworkElement.Height(actionsConfig.IconSize());
 
             rtxaml::UIElement separator{nullptr};
 
-            if (iconPlacement == rtrender::IconPlacement::AboveTitle && allActionsHaveIcons)
+            if (actionsConfig.IconPlacement() == rtrender::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 buttonContentsStackPanel.Orientation(rtxaml::Controls::Orientation::Vertical);
             }
@@ -161,6 +149,17 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                 // TODO: We're p
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, {0}, false);
             }
+
+            XamlHelpers::AppendXamlElementToPanel(buttonIcon, buttonContentsStackPanel);
+
+            // Add separator to stack panel
+            if (separator)
+            {
+                XamlHelpers::AppendXamlElementToPanel(separator, buttonContentsStackPanel);
+            }
+
+            // Finally, put the stack panel inside the final button
+            button.Content(buttonContentsStackPanel);
         }
         else
         {
@@ -180,7 +179,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             actionSentiment = adaptiveActionElement.Style();
         }
 
-        int32_t isSentimentPositive, isSentimentDestructive{}, isSentimentDefault{};
+        int32_t isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
 
         auto resourceDictionary = renderContext.OverrideStyles();
 
@@ -208,7 +207,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             else
             {
                 // By default, set the action background color to accent color
-
                 auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
                 if (const auto style =
@@ -456,8 +454,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             [actionUIElement, textBoxContainerAsFrameworkElement](winrt::Windows::Foundation::IInspectable const& /*sender*/,
                                                                   rtxaml::RoutedEventArgs const& /*args*/) -> void
             {
-                auto actionFrameworkElement = actionUIElement.as<rtxaml::FrameworkElement>();
-                ActionHelpers::SetMatchingHeight(actionFrameworkElement, textBoxContainerAsFrameworkElement);
+                if (const auto actionFrameworkElement = actionUIElement.as<rtxaml::FrameworkElement>())
+                {
+                    actionFrameworkElement.Height(textBoxContainerAsFrameworkElement.ActualHeight());
+                    actionFrameworkElement.Visibility(rtxaml::Visibility::Visible);
+                }
             });
 
         // Wrap the action in a button
@@ -598,7 +599,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return button;
     }
 
-    void WireButtonClickToAction(rtxaml::Controls::Button const& button, rtom::IAdaptiveActionElement const& action, rtrender::AdaptiveRenderContext const& renderContext)
+    void WireButtonClickToAction(rtxaml::Controls::Button const& button,
+                                 rtom::IAdaptiveActionElement const& action,
+                                 rtrender::AdaptiveRenderContext const& renderContext)
     {
         // TODO: is this a valid way to do it?
         auto actionInvoker = renderContext.ActionInvoker();
