@@ -25,11 +25,11 @@ steps:
   workingDirectory: source/nodejs
 
 - bash: |
-    echo "##[group]How to fix the format problem"
+    echo "##[command]Three ways to fix the format problem"
     echo '##[command]1. powershell -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False'
     echo "##[command]2. or cd source\nodejs, then npm run format --verbse"
-    echo "##[command]3. or download format.patch from pippeline, then git am format.patch"
-    echo "##[endgroup]"
+    echo "##[command]3. or download format.patch from pippeline, then git apply format.patch"
+  displayName: 'How to fix the format problem'
   condition: failed()
 
 - script: |
