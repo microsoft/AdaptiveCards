@@ -17,7 +17,7 @@ trigger:
 
 pool:
   name: Azure Pipelines
-  vmImage: macOS-10.14
+  vmImage: macOS-latest
 
 steps:
 - task: Gradle@2
