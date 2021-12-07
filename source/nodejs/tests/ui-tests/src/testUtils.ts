@@ -83,6 +83,10 @@ export class TestUtils {
         Assert.strictEqual(0, elementList.length);
     }
 
+    async getElementsWithId(id: string): Promise<Webdriver.WebElement[]> {
+        return this.driver.findElements(Webdriver.By.id(id));
+    }
+
     async getElementWithId(id: string): Promise<Webdriver.WebElement> {
         return this.driver.findElement(Webdriver.By.id(id));
     }

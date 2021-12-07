@@ -174,8 +174,14 @@ describe("Mock function", function() {
         firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
 
+        // Due to how the swiper library is made, the first and last pages are duplicated, if we were to use the regular
+        // getElementWithId method we would retrieve the duplicated slide, so we have to get the second element with that id
+
+        const lastPages = await testUtils.getElementsWithId("last-carousel-page");
+        Assert.strictEqual(lastPages.length, 2);
+
         const thirdCarouselPageVisibility: string =
-            await testUtils.getCssPropertyValueForElementWithId("theThirdCarouselPage", "visibility");
+            await testUtils.getCssPropertyValueForElement(lastPages[1], "visibility");
         Assert.strictEqual("visible", thirdCarouselPageVisibility);
 
         // cause the page to go the 2nd page
@@ -191,13 +197,19 @@ describe("Mock function", function() {
     test("Test rtl on carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.rtl");
 
-        let firstCarouselPageVisibility = await testUtils.getElementWithId("firstCarouselPage");
-        Assert.strictEqual(firstCarouselPageVisibility.getAttribute("dir"), "rtl");
+        const firstPage = await testUtils.getElementWithId("firstCarouselPage");
+        const firstPageContainer = firstPage.findElement(Webdriver.By.xpath("./*"));
+        const firstPageDirection: string = await firstPageContainer.getAttribute("dir");
+        Assert.strictEqual(firstPageDirection, "rtl");
 
-        let secondCarouselPageVisibility = await testUtils.getElementWithId("secondCarouselPage");
-        Assert.strictEqual(secondCarouselPageVisibility.getAttribute("dir"), "ltr");
+        const secondPage = await testUtils.getElementWithId("secondCarouselPage");
+        const secondPageContainer = secondPage.findElement(Webdriver.By.xpath("./*"));
+        const secondPageDirection: string = await secondPageContainer.getAttribute("dir");
+        Assert.strictEqual(secondPageDirection, "ltr");
 
-        let thirdCarouselPageVisibility = await testUtils.getElementWithId("thirdCarouselPage");
-        Assert.strictEqual(thirdCarouselPageVisibility.getAttribute("dir"), "rtl");
+        const thirdPage = await testUtils.getElementWithId("thirdCarouselPage");
+        const thirdPageContainer = thirdPage.findElement(Webdriver.By.xpath("./*"));
+        const thirdPageDirection: string = await thirdPageContainer.getAttribute("dir");
+        Assert.strictEqual(thirdPageDirection, "rtl");
     }), timeOutValueForCarousel);
 });
