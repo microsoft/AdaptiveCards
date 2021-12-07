@@ -3,7 +3,6 @@
 import { CardElement, Action } from "./card-elements";
 import { SerializableObject, Version, Versions } from "./serialization";
 
-
 /**
  * Describes whether a certain element can be parsed in a "singleton" context.
  * Specifically, is the element allowed to exist as an object in a context where the
@@ -29,10 +28,10 @@ export enum ElementSingletonBehavior {
 }
 
 export interface ITypeRegistration<T extends SerializableObject> {
-    typeName: string,
-    objectType: { new(): T },
-    schemaVersion: Version,
-    singletonBehavior: ElementSingletonBehavior
+    typeName: string;
+    objectType: { new (): T };
+    schemaVersion: Version;
+    singletonBehavior: ElementSingletonBehavior;
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
@@ -52,23 +51,32 @@ export class CardObjectRegistry<T extends SerializableObject> {
         for (const key of keys) {
             const typeRegistration = this._items[key];
 
-            target.register(typeRegistration.typeName, typeRegistration.objectType, typeRegistration.schemaVersion, typeRegistration.singletonBehavior);
+            target.register(
+                typeRegistration.typeName,
+                typeRegistration.objectType,
+                typeRegistration.schemaVersion,
+                typeRegistration.singletonBehavior
+            );
         }
     }
 
-    register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0, singletonBehavior: ElementSingletonBehavior = ElementSingletonBehavior.NotAllowed) {
+    register(
+        typeName: string,
+        objectType: { new (): T },
+        schemaVersion: Version = Versions.v1_0,
+        singletonBehavior: ElementSingletonBehavior = ElementSingletonBehavior.NotAllowed
+    ) {
         let registrationInfo = this.findByName(typeName);
 
         if (registrationInfo !== undefined) {
             registrationInfo.objectType = objectType;
-        }
-        else {
+        } else {
             registrationInfo = {
                 typeName: typeName,
                 objectType: objectType,
                 schemaVersion: schemaVersion,
                 singletonBehavior: singletonBehavior
-            }
+            };
         }
 
         this._items[typeName] = registrationInfo;
@@ -81,7 +89,9 @@ export class CardObjectRegistry<T extends SerializableObject> {
     createInstance(typeName: string, targetVersion: Version): T | undefined {
         const registrationInfo = this.findByName(typeName);
 
-        return (registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0) ? new registrationInfo.objectType() : undefined;
+        return registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0
+            ? new registrationInfo.objectType()
+            : undefined;
     }
 
     getItemCount(): number {
@@ -89,7 +99,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     getItemAt(index: number): ITypeRegistration<T> {
-        return Object.keys(this._items).map(e => this._items[e])[index];
+        return Object.keys(this._items).map((e) => this._items[e])[index];
     }
 }
 

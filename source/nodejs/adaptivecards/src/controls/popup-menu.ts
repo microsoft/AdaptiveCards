@@ -54,8 +54,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.up:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
-                }
-                else {
+                } else {
                     selectedItemIndex--;
 
                     if (selectedItemIndex < 0) {
@@ -71,8 +70,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.down:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
-                }
-                else {
+                } else {
                     selectedItemIndex++;
 
                     if (selectedItemIndex >= this._renderedItems.length) {

@@ -1,10 +1,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Authentication, AuthCardButton, ExecuteAction, TokenExchangeResource } from "./card-elements";
+import {
+    Authentication,
+    AuthCardButton,
+    ExecuteAction,
+    TokenExchangeResource
+} from "./card-elements";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
-    Manual = "manual",
+    Manual = "manual"
 }
 
 export interface IActivityRequest {
@@ -20,11 +25,11 @@ export interface IActivityRequest {
 }
 
 export class ActivityRequestError {
-    constructor(readonly code?: string, readonly message?: string) { }
+    constructor(readonly code?: string, readonly message?: string) {}
 }
 
 export abstract class ActivityResponse {
-    constructor(readonly request: IActivityRequest) { }
+    constructor(readonly request: IActivityRequest) {}
 }
 
 export class SuccessResponse extends ActivityResponse {
@@ -55,8 +60,7 @@ export class LoginRequestResponse extends ActivityResponse {
                     this.signinButton = button;
 
                     break;
-                }
-                catch (e) {
+                } catch (e) {
                     // Ignore parsing error
                 }
             }

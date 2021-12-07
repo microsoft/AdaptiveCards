@@ -1,11 +1,34 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { CardElement, StylableCardElementContainer, SerializationContext, Container, ContainerStyleProperty } from "./card-elements";
-import { HorizontalAlignment, VerticalAlignment, SizeUnit, ValidationEvent, TypeErrorType, Spacing } from "./enums";
+import {
+    CardElement,
+    StylableCardElementContainer,
+    SerializationContext,
+    Container,
+    ContainerStyleProperty
+} from "./card-elements";
+import {
+    HorizontalAlignment,
+    VerticalAlignment,
+    SizeUnit,
+    ValidationEvent,
+    TypeErrorType,
+    Spacing
+} from "./enums";
 import { TextStyleDefinition } from "./host-config";
 import { GlobalRegistry } from "./registry";
-import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property, PropertyBag,
-    PropertyDefinition, SerializableObject, SerializableObjectCollectionProperty, Versions } from "./serialization";
+import {
+    BaseSerializationContext,
+    BoolProperty,
+    CustomProperty,
+    EnumProperty,
+    property,
+    PropertyBag,
+    PropertyDefinition,
+    SerializableObject,
+    SerializableObjectCollectionProperty,
+    Versions
+} from "./serialization";
 import { SizeAndUnit, PaddingDefinition } from "./shared";
 import { Strings } from "./strings";
 import { stringToCssColor } from "./utils";
@@ -13,29 +36,39 @@ import { stringToCssColor } from "./utils";
 export class TableColumnDefinition extends SerializableObject {
     //#region Schema
 
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "horizontalCellContentAlignment",
+        HorizontalAlignment
+    );
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "verticalCellContentAlignment",
+        VerticalAlignment
+    );
 
     static readonly widthProperty = new CustomProperty<SizeAndUnit>(
         Versions.v1_5,
         "width",
-        (sender: SerializableObject, prop: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
             let result: SizeAndUnit = prop.defaultValue;
             const value = source[prop.name];
             let invalidWidth = false;
 
             if (typeof value === "number" && !isNaN(value)) {
                 result = new SizeAndUnit(value, SizeUnit.Weight);
-            }
-            else if (typeof value === "string") {
+            } else if (typeof value === "string") {
                 try {
                     result = SizeAndUnit.parse(value);
-                }
-                catch (e) {
+                } catch (e) {
                     invalidWidth = true;
                 }
-            }
-            else {
+            } else {
                 invalidWidth = true;
             }
 
@@ -43,20 +76,27 @@ export class TableColumnDefinition extends SerializableObject {
                 context.logParseEvent(
                     sender,
                     ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidColumnWidth(value));
+                    Strings.errors.invalidColumnWidth(value)
+                );
             }
 
             return result;
         },
-        (_sender: SerializableObject, _property: PropertyDefinition, target: PropertyBag, value: SizeAndUnit, context: BaseSerializationContext) => {
+        (
+            _sender: SerializableObject,
+            _property: PropertyDefinition,
+            target: PropertyBag,
+            value: SizeAndUnit,
+            context: BaseSerializationContext
+        ) => {
             if (value.unit === SizeUnit.Pixel) {
                 context.serializeValue(target, "width", value.physicalSize + "px");
-            }
-            else {
+            } else {
                 context.serializeNumber(target, "width", value.physicalSize);
             }
         },
-        new SizeAndUnit(1, SizeUnit.Weight));
+        new SizeAndUnit(1, SizeUnit.Weight)
+    );
 
     @property(TableColumnDefinition.horizontalCellContentAlignmentProperty)
     horizontalCellContentAlignment?: HorizontalAlignment;
@@ -76,7 +116,9 @@ export class TableColumnDefinition extends SerializableObject {
     computedWidth: SizeAndUnit;
 }
 
-export abstract class StylableContainer<T extends CardElement> extends StylableCardElementContainer {
+export abstract class StylableContainer<
+    T extends CardElement
+> extends StylableCardElementContainer {
     private _items: T[] = [];
 
     private parseItem(source: any, context: SerializationContext): T | undefined {
@@ -92,8 +134,10 @@ export abstract class StylableContainer<T extends CardElement> extends StylableC
                 context.logParseEvent(
                     undefined,
                     ValidationEvent.ElementTypeNotAllowed,
-                    Strings.errors.elementTypeNotAllowed(typeName));
-            });
+                    Strings.errors.elementTypeNotAllowed(typeName)
+                );
+            }
+        );
     }
 
     protected abstract getCollectionPropertyName(): string;
@@ -104,8 +148,7 @@ export abstract class StylableContainer<T extends CardElement> extends StylableC
             this._items.push(item);
 
             item.setParent(this);
-        }
-        else {
+        } else {
             throw new Error(Strings.errors.elementAlreadyParented());
         }
     }
@@ -183,7 +226,9 @@ export class TableCell extends Container {
 
     protected applyBorder() {
         if (this.renderedElement && this.getHasBorder()) {
-            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.parentRow.parentTable.gridStyle);
+            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(
+                this.parentRow.parentTable.gridStyle
+            );
 
             if (styleDefinition.borderColor) {
                 const borderColor = stringToCssColor(styleDefinition.borderColor);
@@ -197,12 +242,9 @@ export class TableCell extends Container {
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        return this.getHasBackground() || this.getHasBorder() ?
-            new PaddingDefinition(
-                Spacing.Small,
-                Spacing.Small,
-                Spacing.Small,
-                Spacing.Small) : super.getDefaultPadding();
+        return this.getHasBackground() || this.getHasBorder()
+            ? new PaddingDefinition(Spacing.Small, Spacing.Small, Spacing.Small, Spacing.Small)
+            : super.getDefaultPadding();
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -246,7 +288,9 @@ export class TableCell extends Container {
         }
 
         if (this.columnIndex >= 0) {
-            const horizontalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).horizontalCellContentAlignment;
+            const horizontalAlignment = this.parentRow.parentTable.getColumnAt(
+                this.columnIndex
+            ).horizontalCellContentAlignment;
 
             if (horizontalAlignment !== undefined) {
                 return horizontalAlignment;
@@ -270,7 +314,9 @@ export class TableCell extends Container {
         }
 
         if (this.columnIndex >= 0) {
-            const verticalAlignment = this.parentRow.parentTable.getColumnAt(this.columnIndex).verticalCellContentAlignment;
+            const verticalAlignment = this.parentRow.parentTable.getColumnAt(
+                this.columnIndex
+            ).verticalCellContentAlignment;
 
             if (verticalAlignment !== undefined) {
                 return verticalAlignment;
@@ -305,8 +351,16 @@ export class TableRow extends StylableContainer<TableCell> {
     //#region Schema
 
     static readonly styleProperty = new ContainerStyleProperty(Versions.v1_5, "style");
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "horizontalCellContentAlignment",
+        HorizontalAlignment
+    );
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "verticalCellContentAlignment",
+        VerticalAlignment
+    );
 
     @property(TableRow.horizontalCellContentAlignmentProperty)
     horizontalCellContentAlignment?: HorizontalAlignment;
@@ -317,16 +371,15 @@ export class TableRow extends StylableContainer<TableCell> {
     //#endregion
 
     protected getDefaultPadding(): PaddingDefinition {
-        return new PaddingDefinition(
-            Spacing.None,
-            Spacing.None,
-            Spacing.None,
-            Spacing.None);
+        return new PaddingDefinition(Spacing.None, Spacing.None, Spacing.None, Spacing.None);
     }
 
     protected applyBackground() {
         if (this.renderedElement) {
-            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
+            const styleDefinition = this.hostConfig.containerStyles.getStyleByName(
+                this.style,
+                this.hostConfig.containerStyles.getStyleByName(this.defaultStyle)
+            );
 
             if (styleDefinition.backgroundColor) {
                 const bgColor = stringToCssColor(styleDefinition.backgroundColor);
@@ -360,7 +413,8 @@ export class TableRow extends StylableContainer<TableCell> {
 
             // Cheating a bit in order to keep cellType read-only
             cell["_columnIndex"] = i;
-            cell["_cellType"] = (this.parentTable.firstRowAsHeaders && isFirstRow) ? "header" : "data";
+            cell["_cellType"] =
+                this.parentTable.firstRowAsHeaders && isFirstRow ? "header" : "data";
 
             const renderedCell = cell.render();
 
@@ -369,8 +423,7 @@ export class TableRow extends StylableContainer<TableCell> {
 
                 if (column.computedWidth.unit === SizeUnit.Pixel) {
                     renderedCell.style.flex = "0 0 " + column.computedWidth.physicalSize + "px";
-                }
-                else {
+                } else {
                     renderedCell.style.flex = "1 1 " + column.computedWidth.physicalSize + "%";
                 }
 
@@ -427,13 +480,29 @@ export class TableRow extends StylableContainer<TableCell> {
 export class Table extends StylableContainer<TableRow> {
     //#region Schema
 
-    private static readonly _columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", TableColumnDefinition);
+    private static readonly _columnsProperty = new SerializableObjectCollectionProperty(
+        Versions.v1_5,
+        "columns",
+        TableColumnDefinition
+    );
 
-    static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_5, "firstRowAsHeaders", true);
+    static readonly firstRowAsHeadersProperty = new BoolProperty(
+        Versions.v1_5,
+        "firstRowAsHeaders",
+        true
+    );
     static readonly showGridLinesProperty = new BoolProperty(Versions.v1_5, "showGridLines", true);
     static readonly gridStyleProperty = new ContainerStyleProperty(Versions.v1_5, "gridStyle");
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "horizontalCellContentAlignment",
+        HorizontalAlignment
+    );
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(
+        Versions.v1_5,
+        "verticalCellContentAlignment",
+        VerticalAlignment
+    );
 
     @property(Table._columnsProperty)
     private _columns: TableColumnDefinition[] = [];
@@ -505,10 +574,15 @@ export class Table extends StylableContainer<TableRow> {
 
             for (const column of this._columns) {
                 if (column.width.unit === SizeUnit.Pixel) {
-                    column.computedWidth = new SizeAndUnit(column.width.physicalSize, SizeUnit.Pixel);
-                }
-                else {
-                    column.computedWidth = new SizeAndUnit(100 / totalWeights * column.width.physicalSize, SizeUnit.Weight);
+                    column.computedWidth = new SizeAndUnit(
+                        column.width.physicalSize,
+                        SizeUnit.Pixel
+                    );
+                } else {
+                    column.computedWidth = new SizeAndUnit(
+                        (100 / totalWeights) * column.width.physicalSize,
+                        SizeUnit.Weight
+                    );
                 }
             }
 
@@ -518,7 +592,9 @@ export class Table extends StylableContainer<TableRow> {
             tableElement.style.flexDirection = "column";
 
             if (this.showGridLines) {
-                const styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
+                const styleDefinition = this.hostConfig.containerStyles.getStyleByName(
+                    this.gridStyle
+                );
 
                 if (styleDefinition.borderColor) {
                     const borderColor = stringToCssColor(styleDefinition.borderColor);
