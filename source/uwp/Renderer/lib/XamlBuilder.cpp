@@ -119,7 +119,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             xamlTreeRoot = rootAsFrameworkElement;
 
-            if (!isInShowCard && (xamlBuilder != nullptr))
+            if (!isInShowCard && xamlBuilder)
             {
                 // TODO: do we need to check if m_listeners is nullptr?
                 if (xamlBuilder->m_listeners.size() == 0)
@@ -302,7 +302,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             rtxaml::UIElement newControl{nullptr};
             rtom::IAdaptiveCardElement renderedElement;
-            if (!shouldFallback && elementRenderer != nullptr)
+            if (!shouldFallback && elementRenderer)
             {
                 newControl = elementRenderer.Render(element, renderContext, renderArgs);
                 renderedElement = element;
@@ -316,7 +316,7 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
-            if (newControl != nullptr)
+            if (newControl)
             {
                 auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 

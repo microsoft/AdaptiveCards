@@ -80,7 +80,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 mediaTransportControls.IsCompact(true);
                 mediaTransportControls.IsZoomButtonVisible(false);
 
-                if (posterImage != nullptr)
+                if (posterImage)
                 {
                     // Set the poster on the media element
                     auto posterImageSource = posterImage.Source();

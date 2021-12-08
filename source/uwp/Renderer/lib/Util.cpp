@@ -648,7 +648,7 @@ bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::
 bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage)
 {
     // TODO: is this correct here? the logic?
-    if (backgroundImage != nullptr)
+    if (backgroundImage)
     {
         // TODO: is this a proper check? instead of HString.isValid()?
         return !backgroundImage.Url().empty();
@@ -721,7 +721,7 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
 
 rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement)
 {
-    if (textElement != nullptr)
+    if (textElement)
     {
         rtom::AdaptiveTextRun textRun;
 

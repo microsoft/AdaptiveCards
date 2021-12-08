@@ -45,7 +45,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 auto selectAction = adaptiveTextRun.SelectAction();
 
                 bool selectActionIsEnabled = false;
-                if (selectAction != nullptr)
+                if (selectAction)
                 {
                     // If the select action is disabled we won't render this as a link
                     selectActionIsEnabled = selectAction.IsEnabled();
@@ -58,7 +58,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 bool isUnderline = adaptiveTextRun.Underline();
                 uint32_t inlineLength{0};
 
-                if (selectAction != nullptr && selectActionIsEnabled)
+                if (selectAction && selectActionIsEnabled)
                 {
                     // If there's a select action, create a hyperlink that triggers the action
                     rtxaml::Documents::Hyperlink hyperlink{};

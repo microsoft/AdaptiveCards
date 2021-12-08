@@ -145,7 +145,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     {
         rtxaml::Controls::RelativePanel posterRelativePanel{};
 
-        if (posterImage != nullptr)
+        if (posterImage)
         {
             XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
         }
@@ -181,7 +181,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                 }
             }
         }
-        if (selectedSource != nullptr)
+        if (selectedSource)
         {
             mediaSourceUrl = GetUrlFromString(hostConfig, selectedSource.Url());
             mimeType = selectedSource.MimeType();
@@ -214,7 +214,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                           winrt::hstring const& mimeType,
                           rtrender::AdaptiveMediaEventInvoker const& mediaInvoker)
     {
-        if (mediaElement != nullptr)
+        if (mediaElement)
         {
             posterContainer.Visibility(rtxaml::Visibility::Collapsed);
             mediaElement.Visibility(rtxaml::Visibility::Visible);

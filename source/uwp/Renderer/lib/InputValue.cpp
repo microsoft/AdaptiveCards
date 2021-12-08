@@ -235,7 +235,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         auto dateRef = m_datePickerElement.Date();
 
         winrt::hstring formattedDate{};
-        if (dateRef != nullptr)
+        if (dateRef)
         {
             auto date = dateRef.Value();
 
@@ -262,7 +262,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
         char buffer[6] = {0};
 
-        if (timeSpanReference != nullptr)
+        if (timeSpanReference)
         {
             // timeSpan here is std::chrono::duration<int64_t, 100 * std::nano>, so count will give the same value as duration before
             auto timeSpan = timeSpanReference.Value();
@@ -290,7 +290,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         bool isMaxMinValid = true;
         auto timeSpanReference = m_timePickerElement.SelectedTime();
 
-        if (timeSpanReference != nullptr)
+        if (timeSpanReference)
         {
             auto currentTime = timeSpanReference.Value();
 
@@ -467,7 +467,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     {
         auto choices = m_adaptiveChoiceSetInput.Choices();
         auto selectedChoice = GetSelectedChoice();
-        if (selectedChoice != nullptr)
+        if (selectedChoice)
 
         {
             return selectedChoice.Value();

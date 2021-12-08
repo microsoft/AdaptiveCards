@@ -97,9 +97,9 @@ void SetXamlInlinesWithTextStyleConfig(rtrender::AdaptiveRenderContext const& re
     winrt::Windows::Foundation::IReference<rtom::FontType> fontTypeToSet{textStyle.FontType()};
     winrt::Windows::Foundation::IReference<bool> isSubtleToSet{textStyle.IsSubtle()};
 
-    if (textElement != nullptr)
+    if (textElement)
     {
-        // TODO: is it better then: weightToSet = textElement.Weigth() != nullptr ? textElement.Weight() : weightToSet;
+        // TODO: is it better then: weightToSet = textElement.Weigth() ? textElement.Weight() : weightToSet;
         // TODO: may be create a helper for this purpose?
         // TODO: I'm using references instead of the values here so we don't have to go from ref -> value and then from
         // value -> ref again when using the resulting values
@@ -219,7 +219,7 @@ uint32_t AddListInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
 
     // TODO: should we leave unsigned long? can we use uint64_t = unsigned long long?
     unsigned long iteration = 1;
-    if (startNode != nullptr)
+    if (startNode)
     {
         // Get the starting value for this list
         auto start = GetTextFromXmlNode(startNode);
@@ -251,7 +251,7 @@ uint32_t AddListInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
 
     uint32_t totalCharacterLength = 0;
     bool isFirstListElement = true;
-    while (listChild != nullptr)
+    while (listChild)
     {
         std::wstring listElementString = isFirstListElement ? L"" : L"\n";
         if (!isListOrdered)
@@ -367,7 +367,7 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     auto childNode = node.FirstChild();
 
     uint32_t totalCharacterLength = 0;
-    while (childNode != nullptr)
+    while (childNode)
     {
         winrt::hstring nodeName = childNode.NodeName();
 
@@ -448,7 +448,7 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     }
 
     uint32_t totalCharacterLength = 0;
-    while (childNode != nullptr)
+    while (childNode)
     {
         auto nodeName = childNode.NodeName();
 

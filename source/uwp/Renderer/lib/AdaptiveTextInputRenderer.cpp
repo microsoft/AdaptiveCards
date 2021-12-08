@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // If this input has an inline action, render it next to the input
         auto inlineAction = adaptiveTextInput.InlineAction();
 
-        if (inlineAction != nullptr)
+        if (inlineAction)
         {
             bool isMultiline = adaptiveTextInput.IsMultiline();
             rtom::TextInputStyle style = adaptiveTextInput.TextInputStyle();

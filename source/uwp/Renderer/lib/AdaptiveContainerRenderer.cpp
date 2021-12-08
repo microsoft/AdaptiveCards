@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto containerRtl = adaptiveContainer.Rtl();
 
             bool updatedRtl = false;
-            if (containerRtl != nullptr)
+            if (containerRtl)
             {
                 currentRtl = containerRtl;
                 renderContext.Rtl(currentRtl);

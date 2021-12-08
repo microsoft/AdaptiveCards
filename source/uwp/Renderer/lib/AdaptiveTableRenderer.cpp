@@ -143,7 +143,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto rowVerticalContentAlignment = row.VerticalCellContentAlignment();
 
         // If there's no row vertical alignment, use the passed in value
-        if (rowVerticalContentAlignment == nullptr)
+        if (!rowVerticalContentAlignment)
         {
             rowVerticalContentAlignment = verticalContentAlignment;
         }
@@ -161,14 +161,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto columnHorizontalAlignment = columnDefinition.HorizontalCellContentAlignment();
 
             // Use row if present, then column, then table (which was passed in from the context)
-            if (rowHorizontalAlignment != nullptr)
+            if (rowHorizontalAlignment)
             {
                 renderContext.HorizontalContentAlignment(rowHorizontalAlignment);
             }
             else
             {
                 // TODO: it's okay to pass the enum instead of ref, right? constructor will be invoked?
-                renderContext.HorizontalContentAlignment(columnHorizontalAlignment != nullptr ? columnHorizontalAlignment :
+                renderContext.HorizontalContentAlignment(columnHorizontalAlignment ? columnHorizontalAlignment :
                                                                                                 contextHorizontalAlignment);
             }
 
@@ -207,7 +207,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Save the current horizontal content alignment from the context, and replace it with the one
             // from the table if present
             auto contextHorizontalAlignment = renderContext.HorizontalContentAlignment();
-            if (tableHorizontalAlignment != nullptr)
+            if (tableHorizontalAlignment)
             {
                 renderContext.HorizontalContentAlignment(tableHorizontalAlignment);
             }

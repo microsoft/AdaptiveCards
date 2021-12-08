@@ -92,7 +92,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         SetTooltip(tooltip, button);
 
         // Check if the button has an iconurl
-        // TODO: is it correct substitution to HString != nullptr?
+        // TODO: is it correct substitution to HString?
         if (!iconUrl.empty())
         {
             // Define the alignment for the button contents
@@ -174,7 +174,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                              rtrender::AdaptiveRenderContext const& renderContext)
     {
         winrt::hstring actionSentiment{};
-        if (adaptiveActionElement != nullptr)
+        if (adaptiveActionElement)
         {
             actionSentiment = adaptiveActionElement.Style();
         }
@@ -529,7 +529,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing
         // below. For now, we'll simply assume the bottom spacing is the same as the top. NOTE: Only apply spacings
         // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
-        if (adaptiveCardElement != nullptr)
+        if (adaptiveCardElement)
         {
             auto elementSpacing = adaptiveCardElement.Spacing();
             uint32_t spacingSize = GetSpacingSizeFromSpacing(hostConfig, elementSpacing);
@@ -550,7 +550,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
         // Determine tooltip, automation name, and automation description
         winrt::hstring tooltip{}, name{}, description{};
-        if (action != nullptr)
+        if (action)
         {
             // If we have an action, get it's title and tooltip.
             winrt::hstring title = action.Title();
@@ -591,7 +591,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         SetTooltip(tooltip, button);
 
         // can we do explicit check? or need to call check_pointer()?
-        if (action != nullptr)
+        if (action)
         {
             WireButtonClickToAction(button, action, renderContext);
         }
@@ -620,7 +620,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                          bool supportsInteractivity,
                                          bool fullWidthTouchTarget)
     {
-        if (selectAction != nullptr && supportsInteractivity)
+        if (selectAction && supportsInteractivity)
         {
             // TODO: Fix all instances of checking c_str of hstring to .empty()
             // TODO: Does this pass empty hstring or hstring with null c_str?
@@ -629,7 +629,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         }
         else
         {
-            if (selectAction != nullptr)
+            if (selectAction)
             {
                 renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
                                          {L"SelectAction present, but Interactivity is not supported"});
@@ -962,10 +962,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         }
 
         // Lastly add the overflow button itself to the action panel
-        if (overflowButton != nullptr)
+        if (overflowButton)
         {
             // If using equal width columns, add another column and assign the it to the overflow button
-            if (columnDefinitions != nullptr)
+            if (columnDefinitions)
             {
                 rtxaml::Controls::ColumnDefinition columnDefinition{};
                 columnDefinition.Width({1.0, rtxaml::GridUnitType::Star});
@@ -982,7 +982,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
-            if (adaptiveActionSet != nullptr)
+            if (adaptiveActionSet)
             {
                 // TODO: no need to .as<rtxaml::UIElement> for overflowButton, correct?
                 contextImpl->AddOverflowButton(adaptiveActionSet, overflowButton);

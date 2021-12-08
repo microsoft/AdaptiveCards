@@ -299,11 +299,11 @@ namespace AdaptiveCards::Rendering::Uwp
         winrt::hstring schemeName = imageUrl.SchemeName();
 
         // Get the resolver for the image
-        if (resolvers != nullptr)
+        if (resolvers)
         {
             auto resolver = resolvers.Get(schemeName);
             // If we have a resolver
-            if (resolver != nullptr)
+            if (resolver)
             {
                 // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
@@ -331,7 +331,7 @@ namespace AdaptiveCards::Rendering::Uwp
                         if (status == winrt::Windows::Foundation::AsyncStatus::Completed)
                         {
                             auto randomAccessStream = operation.GetResults();
-                            if (randomAccessStream != nullptr)
+                            if (randomAccessStream)
                             {
                                 // TODO: gotta work on this m_imageLoadTracker
                                 this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
@@ -500,7 +500,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                            bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-        if (parentElement != nullptr && m_enableXamlImageHandling)
+        if (parentElement && m_enableXamlImageHandling)
         {
             auto ellipseAsShape = imageContainer.as<rtxaml::Shapes::Shape>();
 
@@ -539,7 +539,7 @@ namespace AdaptiveCards::Rendering::Uwp
                             auto lambdaParentElement = weakParent.get();
                             // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will
                             // be successfull if ellipseAsShape is not null
-                            if (ellipseAsShape != nullptr && lambdaParentElement != nullptr)
+                            if (ellipseAsShape && lambdaParentElement)
                             {
                                 rtxaml::FrameworkElement k{nullptr};
                                 rtxaml::Media::Imaging::BitmapSource as{nullptr};
@@ -563,7 +563,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                   bool isVisible,
                                   bool imageFiresOpenEvent)
     {
-        if (parentElement != nullptr && m_enableXamlImageHandling)
+        if (parentElement && m_enableXamlImageHandling)
         {
             // TODO: am I doing this right? or need to create new object and pass destination in constructor?
             auto xamlImage = destination.as<rtxaml::Controls::Image>();

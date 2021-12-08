@@ -66,7 +66,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     /* if (hr == E_PERFORM_FALLBACK)*/
 
                     // TODO: figure out how to do fallback properly
-                    if (xamlColumn == nullptr)
+                    if (!xamlColumn)
                     {
                         // TODO: am I doing this right?
                         std::tie(xamlColumn, std::ignore) =
@@ -75,7 +75,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     newRenderArgs.AncestorHasFallback(ancestorHasFallback);
 
                     // Check the column for nullptr as it may have been dropped due to fallback
-                    if (xamlColumn != nullptr)
+                    if (xamlColumn)
                     {
                         // If not the first column
                         rtxaml::UIElement separator{nullptr};

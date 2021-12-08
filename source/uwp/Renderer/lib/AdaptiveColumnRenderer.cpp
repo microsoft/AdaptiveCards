@@ -30,14 +30,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             bool updatedRtl = false;
 
-            if (containerRtl != nullptr)
+            if (containerRtl)
             {
                 currentRtl = containerRtl;
                 renderContext.Rtl(currentRtl);
                 updatedRtl = true;
             }
 
-            if (currentRtl != nullptr)
+            if (currentRtl)
             {
                 columnPanel.FlowDirection(currentRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
             }

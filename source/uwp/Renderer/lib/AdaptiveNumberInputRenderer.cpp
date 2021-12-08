@@ -35,7 +35,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto value = adaptiveNumberInput.Value();
 
-            if (value != nullptr)
+            if (value)
             {
                 // TODO: why do we need to check if retrieval of value was successful? ref is not nullptr
                 // TODO: what if it's 0? then if (const auto boxValue = value.Value()) won't work

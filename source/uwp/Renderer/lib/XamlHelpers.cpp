@@ -256,9 +256,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         rtom::AdaptiveImage adaptiveImage;
         adaptiveImage.Url(backgroundImage.Url());
 
-        auto elementRenderer = renderContext.ElementRenderers().Get(L"Image");
-
-        if (elementRenderer != nullptr)
+        if (const auto elementRenderer = renderContext.ElementRenderers().Get(L"Image"))
         {
             auto background = elementRenderer.Render(adaptiveImage, renderContext, renderArgs);
             if (background == nullptr)
@@ -407,7 +405,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                             rtxaml::Controls::ColumnDefinition const& columnDefinition,
                             std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
     {
-        if (newControl != nullptr)
+        if (newControl)
         {
             bool isVisible = element.IsVisible();
 
@@ -579,7 +577,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // Retrieve if the input is required so we can file a warning if the label is empty
         bool isRequired = adaptiveInputElement.IsRequired();
 
-        // TOOD: is this correct way instead of != nullptr? should I check for data?
+        // TOOD: is this correct way instead of? should I check for data?
         if (!inputLabel.empty())
         {
             // Create a rich text block for the label
@@ -709,7 +707,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto label = XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs);
         XamlHelpers::AppendXamlElementToPanel(label, inputStackPanel);
 
-        if (label != nullptr)
+        if (label)
         {
             auto labelConfig = inputsConfig.Label();
             rtom::Spacing labelSpacing = labelConfig.InputSpacing();
@@ -762,7 +760,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // Add the error message if there's validation and one exists
         auto errorMessageControl = XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext);
 
-        if (errorMessageControl != nullptr)
+        if (errorMessageControl)
         {
             // Render the spacing between the input and the error message
             auto errorMessageConfig = inputsConfig.ErrorMessage();
@@ -774,7 +772,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, winrt::Windows::UI::Color{});
             auto inputValue = renderContext.GetInputValue(adaptiveInput);
 
-            if (inputValue != nullptr)
+            if (inputValue)
             {
                 inputValue.ErrorMessage(errorMessageControl);
             }
@@ -792,7 +790,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         /*  ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
           RETURN_IF_FAILED(actualUIElement.As(&inputUIElementAsDependencyObject));*/
 
-        if (label != nullptr)
+        if (label)
         {
             rtxaml::Automation::AutomationProperties::SetLabeledBy(actualUIElement, label);
         }
