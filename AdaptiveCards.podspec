@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
   
   spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'ios-v2.8.3' }
 
-  spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/*.{h,m,mm}'
+#  spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/*.{h,m,mm}'
 
   spec.subspec 'ObjectModel' do | sspec |
     sspec.source_files = 'source/shared/cpp/ObjectModel/**/*.{h,cpp}'
@@ -24,6 +24,11 @@ Pod::Spec.new do |spec|
          'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
          'CLANG_CXX_LIBRARY' => 'libc++'
     }
+  end
+
+  spec.subspec 'Public' do | sspec |
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/*.h'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/'
   end
 
   spec.subspec 'Fluent_Dependent' do | sspec |
