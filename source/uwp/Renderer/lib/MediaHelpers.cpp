@@ -7,6 +7,7 @@ const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;
 const double c_playIconOpacity = .5;
 const double c_audioHeight = 100;
+const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
 
 namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 {
@@ -159,7 +160,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     {
         winrt::Windows::Foundation::Uri mediaSourceUrl{nullptr};
         winrt::hstring mimeType{};
-        winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
 
         auto sources = adaptiveMedia.Sources();
 

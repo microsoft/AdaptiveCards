@@ -81,9 +81,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     rtxaml::Automation::Peers::AutomationHeadingLevel
     AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(rtrender::AdaptiveRenderContext const& renderContext)
     {
-        auto hostConfig = renderContext.HostConfig();
         // TODO: why is it called textBlock if it's a config? :D
-        auto textBlockConfig = hostConfig.TextBlock();
+        auto textBlockConfig = renderContext.HostConfig().TextBlock();
 
         switch (textBlockConfig.HeadingLevel())
         {
