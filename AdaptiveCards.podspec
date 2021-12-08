@@ -26,6 +26,12 @@ Pod::Spec.new do |spec|
     }
   end
 
+  spec.subspec 'Fluent_Dependent' do | sspec |
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Fluent_Dependent/*.h'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Fluent_Dependent/'
+    sspec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
+  end
+
   spec.subspec 'AdaptiveCardsPrivate' do | sspec |
     sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
     sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/'
@@ -42,6 +48,5 @@ Pod::Spec.new do |spec|
 
   spec.exclude_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/include/**/*'
 
-  spec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
 end
 
