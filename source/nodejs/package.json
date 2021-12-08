@@ -42,6 +42,38 @@
 		"webpack-concat-files-plugin": "^0.5.2",
 		"webpack-dev-server": "^4.3.1",
 		"clang-format": "^1.5.0",
-		"clang-format-launcher": "^0.1.1"
+		"clang-format-launcher": "^0.1.2"
+	},
+	"clang-format-launcher": {
+		"includeEndsWith": [
+			".h",
+			".cpp",
+			".hpp",
+			".c"
+		],
+		"excludePathContains": [
+			"/PerfApp/",
+			"/experimental/",
+			"/dotnet/",
+			"/community/",
+			"/vscode/",
+			"/pic2card/",
+			"/ios/",
+			"/nodejs/",
+			"/android/"
+		],
+		"excludePathEndsWith": [
+			".g.h",
+			".g.cpp",
+			"ObjectModel/jsoncpp.cpp"
+		],
+		"excludePathStartsWith": [
+			"specs/",
+			"samples",
+			"assets/",
+			"scripts"
+		],
+		"gitRoot": "../../",
+		"style": "--style=file"
 	}
 }
