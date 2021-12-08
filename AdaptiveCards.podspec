@@ -28,7 +28,9 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'Public' do | sspec |
     sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/*.h'
+    sspec.public_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/*.h'
     sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/'
+    sspec.dependency 'Fluent_Dependent'
   end
 
   spec.subspec 'Fluent_Dependent' do | sspec |
