@@ -187,6 +187,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (inputsAreValid)
             {
                 Action(*this, winrt::make<implementation::AdaptiveActionEventArgs>(actionElement, gatheredInputs));
+                return;
             }
             else
             {
