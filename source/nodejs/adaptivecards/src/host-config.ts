@@ -5,16 +5,18 @@ import * as Utils from "./utils";
 import * as Shared from "./shared";
 import { HostCapabilities } from "./host-capabilities";
 
-function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
+function parseHostConfigEnum(
+    targetEnum: { [s: number]: string },
+    value: string | number,
+    defaultValue: number
+): number {
     if (typeof value === "string") {
-        let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
+        const parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
 
         return parsedValue !== undefined ? parsedValue : defaultValue;
-    }
-    else if (typeof value === "number") {
+    } else if (typeof value === "number") {
         return value;
-    }
-    else {
+    } else {
         return defaultValue;
     }
 }
@@ -70,7 +72,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = <number>Utils.parseNumber(obj["maxImageHeight"], 100);
+            this.maxImageHeight = Utils.parseNumber(obj["maxImageHeight"], 100)!;
         }
     }
 
@@ -78,7 +80,7 @@ export class ImageSetConfig {
         return {
             imageSize: Enums.Size[this.imageSize],
             maxImageHeight: this.maxImageHeight
-        }
+        };
     }
 }
 
@@ -97,7 +99,7 @@ export class MediaConfig {
         return {
             defaultPoster: this.defaultPoster,
             allowInlinePlayback: this.allowInlinePlayback
-        }
+        };
     }
 }
 
@@ -106,20 +108,23 @@ export class TableConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.cellSpacing = obj.cellSpacing && typeof obj.cellSpacing === "number" ? obj.cellSpacing : this.cellSpacing;
+            this.cellSpacing =
+                obj.cellSpacing && typeof obj.cellSpacing === "number"
+                    ? obj.cellSpacing
+                    : this.cellSpacing;
         }
     }
 
     toJSON() {
         return {
             cellSpacing: this.cellSpacing
-        }
+        };
     }
 }
 
 export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
-    color: Enums.TextColor = Enums.TextColor.Default;;
+    color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
@@ -131,8 +136,15 @@ export class BaseTextDefinition {
         if (obj) {
             this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
             this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
-            this.isSubtle = obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean" ? obj.isSubtle : this.isSubtle;
-            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
+            this.isSubtle =
+                obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean"
+                    ? obj.isSubtle
+                    : this.isSubtle;
+            this.weight = parseHostConfigEnum(
+                Enums.TextWeight,
+                obj["weight"],
+                this.getDefaultWeight()
+            );
         }
     }
 
@@ -146,7 +158,7 @@ export class BaseTextDefinition {
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
             weight: Enums.TextWeight[this.weight]
-        }
+        };
     }
 }
 
@@ -164,16 +176,14 @@ export class TextStyleDefinition extends BaseTextDefinition {
 
 export class TextStyleSet {
     readonly default: TextStyleDefinition = new TextStyleDefinition();
-    readonly heading: TextStyleDefinition = new TextStyleDefinition(
-        {
-            size: "Large",
-            weight: "Bolder"
-        });
-    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition(
-        {
-            weight: "Bolder"
-        });
-    
+    readonly heading: TextStyleDefinition = new TextStyleDefinition({
+        size: "Large",
+        weight: "Bolder"
+    });
+    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition({
+        weight: "Bolder"
+    });
+
     constructor(obj?: any) {
         if (obj) {
             this.heading.parse(obj.heading);
@@ -212,12 +222,16 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
         if (obj) {
             this.suffix = obj["suffix"] || this.suffix;
-            this.suffixColor = parseHostConfigEnum(Enums.TextColor, obj["suffixColor"], this.suffixColor);
+            this.suffixColor = parseHostConfigEnum(
+                Enums.TextColor,
+                obj["suffixColor"],
+                this.suffixColor
+            );
         }
     }
 
     toJSON(): any {
-        let result = super.toJSON();
+        const result = super.toJSON();
         result["suffix"] = this.suffix;
         result["suffixColor"] = Enums.TextColor[this.suffixColor];
 
@@ -227,12 +241,17 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
 export class InputLabelConfig {
     inputSpacing: Enums.Spacing = Enums.Spacing.Small;
-    readonly requiredInputs: RequiredInputLabelTextDefinition = new RequiredInputLabelTextDefinition();
+    readonly requiredInputs: RequiredInputLabelTextDefinition =
+        new RequiredInputLabelTextDefinition();
     readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
 
     constructor(obj?: any) {
         if (obj) {
-            this.inputSpacing = parseHostConfigEnum(Enums.Spacing, obj["inputSpacing"], this.inputSpacing);
+            this.inputSpacing = parseHostConfigEnum(
+                Enums.Spacing,
+                obj["inputSpacing"],
+                this.inputSpacing
+            );
             this.requiredInputs = new RequiredInputLabelTextDefinition(obj["requiredInputs"]);
             this.optionalInputs = new BaseTextDefinition(obj["optionalInputs"]);
         }
@@ -241,7 +260,9 @@ export class InputLabelConfig {
 
 export class InputConfig {
     readonly label: InputLabelConfig = new InputLabelConfig();
-    readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({ color: Enums.TextColor.Attention });
+    readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({
+        color: Enums.TextColor.Attention
+    });
 
     constructor(obj?: any) {
         if (obj) {
@@ -263,7 +284,7 @@ export class FactTextDefinition extends BaseTextDefinition {
     }
 
     toJSON(): any {
-        let result = super.toJSON();
+        const result = super.toJSON();
         result["wrap"] = this.wrap;
 
         return result;
@@ -279,7 +300,11 @@ export class FactTitleDefinition extends FactTextDefinition {
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
-            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
+            this.weight = parseHostConfigEnum(
+                Enums.TextWeight,
+                obj["weight"],
+                Enums.TextWeight.Bolder
+            );
         }
     }
 
@@ -297,7 +322,8 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
+            this.spacing =
+                obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
         }
     }
 }
@@ -309,9 +335,17 @@ export class ShowCardActionConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.actionMode = parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
-            this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
-            this.style = obj["style"] && typeof obj["style"] === "string" ? obj["style"] : Enums.ContainerStyle.Emphasis;
+            this.actionMode = parseHostConfigEnum(
+                Enums.ShowCardActionMode,
+                obj["actionMode"],
+                Enums.ShowCardActionMode.Inline
+            );
+            this.inlineTopMargin =
+                obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
+            this.style =
+                obj["style"] && typeof obj["style"] === "string"
+                    ? obj["style"]
+                    : Enums.ContainerStyle.Emphasis;
         }
     }
 
@@ -320,7 +354,7 @@ export class ShowCardActionConfig {
             actionMode: Enums.ShowCardActionMode[this.actionMode],
             inlineTopMargin: this.inlineTopMargin,
             style: this.style
-        }
+        };
     }
 }
 
@@ -339,23 +373,43 @@ export class ActionsConfig {
     constructor(obj?: any) {
         if (obj) {
             this.maxActions = obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
-            this.spacing = parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
-            this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
+            this.spacing = parseHostConfigEnum(
+                Enums.Spacing,
+                obj.spacing && obj.spacing,
+                Enums.Spacing.Default
+            );
+            this.buttonSpacing =
+                obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
-            this.preExpandSingleShowCardAction = Utils.parseBool(obj["preExpandSingleShowCardAction"], false);
-            this.actionsOrientation = parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
-            this.actionAlignment = parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
-            this.iconPlacement = parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
-            this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.preExpandSingleShowCardAction = Utils.parseBool(
+                obj["preExpandSingleShowCardAction"],
+                false
+            );
+            this.actionsOrientation = parseHostConfigEnum(
+                Enums.Orientation,
+                obj["actionsOrientation"],
+                Enums.Orientation.Horizontal
+            );
+            this.actionAlignment = parseHostConfigEnum(
+                Enums.ActionAlignment,
+                obj["actionAlignment"],
+                Enums.ActionAlignment.Left
+            );
+            this.iconPlacement = parseHostConfigEnum(
+                Enums.ActionIconPlacement,
+                obj["iconPlacement"],
+                Enums.ActionIconPlacement.LeftOfTitle
+            );
+            this.allowTitleToWrap =
+                obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
-                let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
+                const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
-                if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                if (sizeAndUnit.unit === Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 // Swallow this, keep default icon size
             }
         }
@@ -370,7 +424,7 @@ export class ActionsConfig {
             preExpandSingleShowCardAction: this.preExpandSingleShowCardAction,
             actionsOrientation: Enums.Orientation[this.actionsOrientation],
             actionAlignment: Enums.ActionAlignment[this.actionAlignment]
-        }
+        };
     }
 }
 
@@ -409,17 +463,15 @@ export class ColorSetDefinition {
 export class ContainerStyleDefinition {
     backgroundColor?: string;
 
-    readonly foregroundColors: ColorSetDefinition = new ColorSetDefinition(
-        {
-            "default": { default: "#333333", subtle: "#EE333333" },
-            "dark": { default: "#000000", subtle: "#66000000" },
-            "light": { default: "#FFFFFF", subtle: "#33000000" },
-            "accent": { default: "#2E89FC", subtle: "#882E89FC" },
-            "good": { default: "#028A02", subtle: "#DD027502" },
-            "warning": { default: "#E69500", subtle: "#DDE69500" },
-            "attention": { default: "#CC3300", subtle: "#DDCC3300" }
-        }
-    );
+    readonly foregroundColors: ColorSetDefinition = new ColorSetDefinition({
+        "default": { default: "#333333", subtle: "#EE333333" },
+        "dark": { default: "#000000", subtle: "#66000000" },
+        "light": { default: "#FFFFFF", subtle: "#33000000" },
+        "accent": { default: "#2E89FC", subtle: "#882E89FC" },
+        "good": { default: "#028A02", subtle: "#DD027502" },
+        "warning": { default: "#E69500", subtle: "#DDE69500" },
+        "attention": { default: "#CC3300", subtle: "#DDCC3300" }
+    });
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
@@ -474,25 +526,30 @@ export class ContainerStyleSet {
 
         if (obj) {
             this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
-            this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+            this._allStyles[Enums.ContainerStyle.Emphasis].parse(
+                obj[Enums.ContainerStyle.Emphasis]
+            );
             this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
             this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
-            this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+            this._allStyles[Enums.ContainerStyle.Attention].parse(
+                obj[Enums.ContainerStyle.Attention]
+            );
             this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
             const customStyleArray = obj["customStyles"];
 
             if (customStyleArray && Array.isArray(customStyleArray)) {
-                for (let customStyle of customStyleArray) {
+                for (const customStyle of customStyleArray) {
                     if (customStyle) {
-                        let styleName = customStyle["name"];
+                        const styleName = customStyle["name"];
 
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
                                 this._allStyles[styleName].parse(customStyle["style"]);
-                            }
-                            else {
-                                this._allStyles[styleName] = new ContainerStyleDefinition(customStyle["style"]);
+                            } else {
+                                this._allStyles[styleName] = new ContainerStyleDefinition(
+                                    customStyle["style"]
+                                );
                             }
                         }
                     }
@@ -502,22 +559,21 @@ export class ContainerStyleSet {
     }
 
     toJSON() {
-        let customStyleArray: any[] = [];
+        const customStyleArray: any[] = [];
 
-        Object.keys(this._allStyles).forEach(
-            (key) => {
-                if (!this._allStyles[key].isBuiltIn) {
-                    customStyleArray.push({
-                        name: key,
-                        style: this._allStyles[key]
-                    });
-                }
-            });
+        Object.keys(this._allStyles).forEach((key) => {
+            if (!this._allStyles[key].isBuiltIn) {
+                customStyleArray.push({
+                    name: key,
+                    style: this._allStyles[key]
+                });
+            }
+        });
 
-        let result: any = {
+        const result: any = {
             default: this.default,
             emphasis: this.emphasis
-        }
+        };
 
         if (customStyleArray.length > 0) {
             result.customStyles = customStyleArray;
@@ -526,11 +582,13 @@ export class ContainerStyleSet {
         return result;
     }
 
-    getStyleByName(name: string | undefined, defaultValue?: ContainerStyleDefinition): ContainerStyleDefinition {
+    getStyleByName(
+        name: string | undefined,
+        defaultValue?: ContainerStyleDefinition
+    ): ContainerStyleDefinition {
         if (name && this._allStyles.hasOwnProperty(name)) {
             return this._allStyles[name];
-        }
-        else {
+        } else {
             return defaultValue ? defaultValue : this._allStyles[Enums.ContainerStyle.Default];
         }
     }
@@ -586,16 +644,16 @@ export class FontTypeDefinition {
     parse(obj?: any) {
         this.fontFamily = obj["fontFamily"] || this.fontFamily;
         this.fontSizes = {
-            small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-            default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-            medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-            large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-            extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+            small: (obj.fontSizes && obj.fontSizes["small"]) || this.fontSizes.small,
+            default: (obj.fontSizes && obj.fontSizes["default"]) || this.fontSizes.default,
+            medium: (obj.fontSizes && obj.fontSizes["medium"]) || this.fontSizes.medium,
+            large: (obj.fontSizes && obj.fontSizes["large"]) || this.fontSizes.large,
+            extraLarge: (obj.fontSizes && obj.fontSizes["extraLarge"]) || this.fontSizes.extraLarge
         };
         this.fontWeights = {
-            lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-            default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-            bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
+            lighter: (obj.fontWeights && obj.fontWeights["lighter"]) || this.fontWeights.lighter,
+            default: (obj.fontWeights && obj.fontWeights["default"]) || this.fontWeights.default,
+            bolder: (obj.fontWeights && obj.fontWeights["bolder"]) || this.fontWeights.bolder
         };
     }
 }
@@ -631,16 +689,18 @@ export class CarouselConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.maxCarouselPages = obj["maxCarouselPages"] != null ? obj["maxCarouselPages"] : this.maxCarouselPages;
-            this.minAutoplayDelay = obj["minAutoplayDelay"] != null ? obj["minAutoplayDelay"] : this.minAutoplayDelay;
+            this.maxCarouselPages =
+                obj["maxCarouselPages"] != null ? obj["maxCarouselPages"] : this.maxCarouselPages;
+            this.minAutoplayDelay =
+                obj["minAutoplayDelay"] != null ? obj["minAutoplayDelay"] : this.minAutoplayDelay;
         }
     }
 
     toJSON() {
         return {
             maxCarouselPages: this.maxCarouselPages,
-            minAutoplayDelay: this.minAutoplayDelay 
-        }
+            minAutoplayDelay: this.minAutoplayDelay
+        };
     }
 }
 
@@ -695,8 +755,14 @@ export class HostConfig {
                 obj = JSON.parse(obj as string);
             }
 
-            this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
-            this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
+            this.choiceSetInputValueSeparator =
+                obj && typeof obj["choiceSetInputValueSeparator"] === "string"
+                    ? obj["choiceSetInputValueSeparator"]
+                    : this.choiceSetInputValueSeparator;
+            this.supportsInteractivity =
+                obj && typeof obj["supportsInteractivity"] === "boolean"
+                    ? obj["supportsInteractivity"]
+                    : this.supportsInteractivity;
 
             this._legacyFontType = new FontTypeDefinition();
             this._legacyFontType.parse(obj);
@@ -713,28 +779,30 @@ export class HostConfig {
                     large: obj.lineHeights["large"],
                     extraLarge: obj.lineHeights["extraLarge"]
                 };
-            };
+            }
 
             this.imageSizes = {
-                small: obj.imageSizes && obj.imageSizes["small"] || this.imageSizes.small,
-                medium: obj.imageSizes && obj.imageSizes["medium"] || this.imageSizes.medium,
-                large: obj.imageSizes && obj.imageSizes["large"] || this.imageSizes.large,
+                small: (obj.imageSizes && obj.imageSizes["small"]) || this.imageSizes.small,
+                medium: (obj.imageSizes && obj.imageSizes["medium"]) || this.imageSizes.medium,
+                large: (obj.imageSizes && obj.imageSizes["large"]) || this.imageSizes.large
             };
 
             this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
             this.spacing = {
-                small: obj.spacing && obj.spacing["small"] || this.spacing.small,
-                default: obj.spacing && obj.spacing["default"] || this.spacing.default,
-                medium: obj.spacing && obj.spacing["medium"] || this.spacing.medium,
-                large: obj.spacing && obj.spacing["large"] || this.spacing.large,
-                extraLarge: obj.spacing && obj.spacing["extraLarge"] || this.spacing.extraLarge,
-                padding: obj.spacing && obj.spacing["padding"] || this.spacing.padding
+                small: (obj.spacing && obj.spacing["small"]) || this.spacing.small,
+                default: (obj.spacing && obj.spacing["default"]) || this.spacing.default,
+                medium: (obj.spacing && obj.spacing["medium"]) || this.spacing.medium,
+                large: (obj.spacing && obj.spacing["large"]) || this.spacing.large,
+                extraLarge: (obj.spacing && obj.spacing["extraLarge"]) || this.spacing.extraLarge,
+                padding: (obj.spacing && obj.spacing["padding"]) || this.spacing.padding
             };
 
             this.separator = {
-                lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
-                lineColor: obj.separator && obj.separator["lineColor"] || this.separator.lineColor
-            }
+                lineThickness:
+                    (obj.separator && obj.separator["lineThickness"]) ||
+                    this.separator.lineThickness,
+                lineColor: (obj.separator && obj.separator["lineColor"]) || this.separator.lineColor
+            };
 
             this.inputs = new InputConfig(obj.inputs || this.inputs);
             this.actions = new ActionsConfig(obj.actions || this.actions);
@@ -750,9 +818,10 @@ export class HostConfig {
     getFontTypeDefinition(style?: Enums.FontType): FontTypeDefinition {
         if (this.fontTypes) {
             return this.fontTypes.getStyleDefinition(style);
-        }
-        else {
-            return style == Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
+        } else {
+            return style === Enums.FontType.Monospace
+                ? FontTypeDefinition.monospace
+                : this._legacyFontType;
         }
     }
 
@@ -775,18 +844,21 @@ export class HostConfig {
         }
     }
 
-    paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
+    paddingDefinitionToSpacingDefinition(
+        paddingDefinition: Shared.PaddingDefinition
+    ): Shared.SpacingDefinition {
         return new Shared.SpacingDefinition(
             this.getEffectiveSpacing(paddingDefinition.top),
             this.getEffectiveSpacing(paddingDefinition.right),
             this.getEffectiveSpacing(paddingDefinition.bottom),
-            this.getEffectiveSpacing(paddingDefinition.left));
+            this.getEffectiveSpacing(paddingDefinition.left)
+        );
     }
 
     makeCssClassNames(...classNames: string[]): string[] {
-        let result: string[] = [];
+        const result: string[] = [];
 
-        for (let className of classNames) {
+        for (const className of classNames) {
             result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
         }
 
@@ -794,7 +866,7 @@ export class HostConfig {
     }
 
     makeCssClassName(...classNames: string[]): string {
-        let result = this.makeCssClassNames(...classNames).join(" ");
+        const result = this.makeCssClassNames(...classNames).join(" ");
 
         return result ? result : "";
     }
@@ -816,312 +888,312 @@ export class HostConfig {
     }
 }
 
-export const defaultHostConfig: HostConfig = new HostConfig(
-    {
-        supportsInteractivity: true,
-        spacing: {
-            small: 10,
-            default: 20,
-            medium: 30,
-            large: 40,
-            extraLarge: 50,
-            padding: 20
-        },
-        separator: {
-            lineThickness: 1,
-            lineColor: "#EEEEEE"
-        },
-        fontTypes: {
-            default: {
-                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                }
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const defaultHostConfig: HostConfig = new HostConfig({
+    supportsInteractivity: true,
+    spacing: {
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20
+    },
+    separator: {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    },
+    fontTypes: {
+        default: {
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            fontSizes: {
+                small: 12,
+                default: 14,
+                medium: 17,
+                large: 21,
+                extraLarge: 26
             },
-            monospace: {
-                fontFamily: "'Courier New', Courier, monospace",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
+            fontWeights: {
+                lighter: 200,
+                default: 400,
+                bolder: 600
+            }
+        },
+        monospace: {
+            fontFamily: "'Courier New', Courier, monospace",
+            fontSizes: {
+                small: 12,
+                default: 14,
+                medium: 17,
+                large: 21,
+                extraLarge: 26
+            },
+            fontWeights: {
+                lighter: 200,
+                default: 400,
+                bolder: 600
+            }
+        }
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160
+    },
+    containerStyles: {
+        default: {
+            backgroundColor: "#FFFFFF",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
                 },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
                 }
             }
         },
-        imageSizes: {
-            small: 40,
-            medium: 80,
-            large: 160
-        },
-        containerStyles: {
-            default: {
-                backgroundColor: "#FFFFFF",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            emphasis: {
-                backgroundColor: "#08000000",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            accent: {
-                backgroundColor: "#C7DEF9",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            good: {
-                backgroundColor: "#CCFFCC",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            attention: {
-                backgroundColor: "#FFC5B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            warning: {
-                backgroundColor: "#FFE2B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#028A02",
-                        subtle: "#DD027502"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
+        emphasis: {
+            backgroundColor: "#08000000",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
                 }
             }
         },
-        inputs: {
-            label: {
-                requiredInputs: {
-                    weight: Enums.TextWeight.Bolder,
-                    suffix: " *",
-                    suffixColor: Enums.TextColor.Attention
+        accent: {
+            backgroundColor: "#C7DEF9",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
                 },
-                optionalInputs: {
-                    weight: Enums.TextWeight.Bolder
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
                 }
+            }
+        },
+        good: {
+            backgroundColor: "#CCFFCC",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        },
+        attention: {
+            backgroundColor: "#FFC5B2",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        },
+        warning: {
+            backgroundColor: "#FFE2B2",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#028A02",
+                    subtle: "#DD027502"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
+        }
+    },
+    inputs: {
+        label: {
+            requiredInputs: {
+                weight: Enums.TextWeight.Bolder,
+                suffix: " *",
+                suffixColor: Enums.TextColor.Attention
             },
-            errorMessage: {
-                color: Enums.TextColor.Attention,
+            optionalInputs: {
                 weight: Enums.TextWeight.Bolder
             }
         },
-        actions: {
-            maxActions: 5,
-            spacing: Enums.Spacing.Default,
-            buttonSpacing: 10,
-            showCard: {
-                actionMode: Enums.ShowCardActionMode.Inline,
-                inlineTopMargin: 16
-            },
-            actionsOrientation: Enums.Orientation.Horizontal,
-            actionAlignment: Enums.ActionAlignment.Left
-        },
-        adaptiveCard: {
-            allowCustomStyle: false
-        },
-        imageSet: {
-            imageSize: Enums.Size.Medium,
-            maxImageHeight: 100
-        },
-        factSet: {
-            title: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Bolder,
-                wrap: true,
-                maxWidth: 150,
-            },
-            value: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Default,
-                wrap: true,
-            },
-            spacing: 10
-        },
-        carousel: {
-            maxCarouselPages : 10,
-            minAutoplayDuration : 5000
+        errorMessage: {
+            color: Enums.TextColor.Attention,
+            weight: Enums.TextWeight.Bolder
         }
-    });
+    },
+    actions: {
+        maxActions: 5,
+        spacing: Enums.Spacing.Default,
+        buttonSpacing: 10,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.Inline,
+            inlineTopMargin: 16
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.ActionAlignment.Left
+    },
+    adaptiveCard: {
+        allowCustomStyle: false
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        maxImageHeight: 100
+    },
+    factSet: {
+        title: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder,
+            wrap: true,
+            maxWidth: 150
+        },
+        value: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Default,
+            wrap: true
+        },
+        spacing: 10
+    },
+    carousel: {
+        maxCarouselPages: 10,
+        minAutoplayDuration: 5000
+    }
+});

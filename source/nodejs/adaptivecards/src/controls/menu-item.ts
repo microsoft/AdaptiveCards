@@ -17,10 +17,14 @@ export class MenuItem {
 
     private updateCssClasses() {
         if (this._element) {
-            let effectiveHostConfig = this._hostConfig ? this._hostConfig : defaultHostConfig;
+            const effectiveHostConfig = this._hostConfig ? this._hostConfig : defaultHostConfig;
 
             this._element.className = effectiveHostConfig.makeCssClassName("ac-ctrl");
-            this._element.classList.add(effectiveHostConfig.makeCssClassName(this.isEnabled ? "ac-ctrl-dropdown-item" : "ac-ctrl-dropdown-item-disabled"));
+            this._element.classList.add(
+                effectiveHostConfig.makeCssClassName(
+                    this.isEnabled ? "ac-ctrl-dropdown-item" : "ac-ctrl-dropdown-item-disabled"
+                )
+            );
 
             if (!this.isEnabled) {
                 this._element.classList.add(effectiveHostConfig.makeCssClassName("ac-disabled"));
@@ -54,11 +58,13 @@ export class MenuItem {
             }
 
             this._element.setAttribute("aria-selected", "false");
-            this._element.onmouseup = (e) => { this.click(); };
+            this._element.onmouseup = (_e) => {
+                this.click();
+            };
             this._element.onkeydown = (e) => {
                 if (e.key === Constants.keys.enter) {
                     e.cancelBubble = true;
-                    
+
                     this.click();
                 }
             };
