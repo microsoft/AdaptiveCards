@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
   
   spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'ios-v2.8.3' }
 
-#  spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/*.{h,m,mm}'
+  spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.{h,m,mm}'
 
   spec.subspec 'ObjectModel' do | sspec |
     sspec.source_files = 'source/shared/cpp/ObjectModel/**/*.{h,cpp}'
@@ -26,23 +26,23 @@ Pod::Spec.new do |spec|
     }
   end
 
-  spec.subspec 'Fluent_Dependent' do | sspec |
-    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Fluent_Dependent/*.h'
-    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Fluent_Dependent/'
-    sspec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
-  end
-  
-  spec.subspec 'Public' do | sspec |
-    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/*.h'
-    sspec.public_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/*.h'
-    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Public/'
-  end
-
-
-  spec.subspec 'AdaptiveCardsPrivate' do | sspec |
+  spec.subspec 'Private' do | sspec |
     sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
     sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/'
     sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
+  end
+  
+  spec.subspec 'Public' do | sspec |
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.h'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/'
+    sspec.public_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.h'
+  end
+
+  spec.subspec 'UIProviders' do | sspec |
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/'
+    sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'3
+    spec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
   end
 
   spec.platform         = :ios, '14'

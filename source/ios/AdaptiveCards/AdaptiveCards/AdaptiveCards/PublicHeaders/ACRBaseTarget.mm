@@ -6,7 +6,7 @@
 //
 
 #import "ACRBaseTarget.h"
-#import <FluentUI/FluentUI-Swift.h>
+#import <AdaptiveCards/UIProviderRegistrar.h>
 #import <UIKit/UIKit.h>
 
 @implementation ACRBaseTarget {
@@ -36,7 +36,7 @@
 - (void)showToolTip:(UILongPressGestureRecognizer *)recognizer
 {
     if (recognizer.state == UIGestureRecognizerStateBegan && _toolTip && recognizer.view) {
-        [MSFTooltip.shared showWith:_toolTip for:recognizer.view preferredArrowDirection:MSFTooltipArrowDirectionUp offset:CGPointZero screenMargins:MSFTooltip.defaultScreenMargins dismissOn:MSFTooltipDismissModeTapAnywhere onTap:nil];
+        [[UIProviderRegistrar sharedInstance].tooltipProvider showToolTipWithMessage:_toolTip recognizer:recognizer];
     }
 }
 
