@@ -8,6 +8,7 @@ apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 30
+    ndkVersion "21.4.7075529"
 
     defaultConfig {
         minSdkVersion 19
