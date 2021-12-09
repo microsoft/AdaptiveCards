@@ -16,6 +16,13 @@ Pod::Spec.new do |spec|
 
   spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.{h,m,mm}'
 
+  spec.subspec 'UIProviders' do | sspec |
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/'
+    sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'
+    spec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
+  end
+  
   spec.subspec 'ObjectModel' do | sspec |
     sspec.source_files = 'source/shared/cpp/ObjectModel/**/*.{h,cpp}'
     sspec.header_mappings_dir = 'source/shared/cpp/ObjectModel/'
@@ -38,7 +45,7 @@ Pod::Spec.new do |spec|
     sspec.public_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.h'
   end
 
-  
+
 
   spec.platform         = :ios, '14'
 
