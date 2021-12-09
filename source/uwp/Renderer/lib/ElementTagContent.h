@@ -5,7 +5,7 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-	// clang-format off
+    // clang-format off
     interface __declspec(uuid("0331D653-957C-4385-A327-D326750C10B6")) IElementTagContent : IInspectable
     {
     public:
@@ -22,7 +22,7 @@ namespace AdaptiveCards::Rendering::Uwp
         virtual HRESULT get_IsStretchable(_Outptr_ boolean * isStretchable) = 0;
         virtual HRESULT put_IsStretchable(boolean isStretchable) = 0;
     };
-	// clang-format on
+    // clang-format on
 
     class ElementTagContent
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, IElementTagContent>

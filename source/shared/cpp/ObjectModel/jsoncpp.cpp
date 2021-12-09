@@ -68,6 +68,8 @@ license you like.
 // End of content of file: LICENSE
 // //////////////////////////////////////////////////////////////////////
 
+// clang-format off
+
 #include "pch.h"
 
 #ifdef USE_CPPCORECHECK
@@ -3315,13 +3317,11 @@ double Value::asDouble() const {
   case intValue:
     return static_cast<double>(value_.int_);
   case uintValue:
-// clang-format off
 #if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
     return static_cast<double>(value_.uint_);
 #else  // if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
     return integerToDouble(value_.uint_);
 #endif // if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
-// clang-format on
   case realValue:
     return value_.real_;
   case nullValue:
@@ -3339,14 +3339,12 @@ float Value::asFloat() const {
   case intValue:
     return static_cast<float>(value_.int_);
   case uintValue:
-// clang-format off
 #if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
     return static_cast<float>(value_.uint_);
 #else  // if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
     // This can fail (silently?) if the value is bigger than MAX_FLOAT.
     return static_cast<float>(integerToDouble(value_.uint_));
 #endif // if !defined(JSON_USE_INT64_DOUBLE_CONVERSION)
-// clang-format on
   case realValue:
     return static_cast<float>(value_.real_);
   case nullValue:
@@ -5398,3 +5396,5 @@ JSONCPP_OSTREAM& operator<<(JSONCPP_OSTREAM& sout, Value const& root) {
 #ifdef USE_CPPCORECHECK
 #pragma warning(pop)
 #endif
+
+// clang-format on
