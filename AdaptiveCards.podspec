@@ -41,7 +41,7 @@ Pod::Spec.new do |spec|
   spec.subspec 'UIProviders' do | sspec |
     sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'
     sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/'
-    sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'3
+    sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/UIProviders/*.h'
     spec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
   end
 
