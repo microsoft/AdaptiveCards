@@ -1,0 +1,19 @@
+steps:
+- task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
+
+- task: Xcode@5
+  displayName: 'Compiling...'
+  inputs:
+    actions: 'build'
+    xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
+    scheme: 'ADCIOSVisualizer'
+    xcodeVersion: '12'
+    packageApp: false
+    signingOption: 'default'
+    sdk: 'iphonesimulator'
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 12'

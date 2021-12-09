@@ -5,9 +5,22 @@ steps:
     certSecureFile: 'Certificates_Nov_19_B.p12' 
     certPwd: '$(P12password)'
     keychain: 'temp'
+
 - task: InstallAppleProvisioningProfile@1
   displayName: 'Install Provisioning Profile'
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: 'a5e2ba07-6d9f-4254-abf0-ad59b7effefa.mobileprovision'
+    provProfileSecureFile: '77d4677d-5374-4545-9548-bf27b2ca0f32.mobileprovision'
 
+- template: ios-build-template.yml
+
+- task: AppCenterDistribute@3
+  inputs:
+    serverEndpoint: 'Microsoft App Center'
+    appSlug: 'Adaptive-Cards/Adaptive-Cards-iOS-Visualizer'
+    appFile: '**/*.ipa'
+    symbolsIncludeParentDirectory: true
+    releaseNotesOption: 'input'
+    releaseNotesInput: 'nightly build'
+    destinationType: 'groups'
+    distributionGroupId: '025b393e-fc23-43be-953d-8563cd9f4740,86a86fdf-17f6-4a41-a805-a98058f19e45'
