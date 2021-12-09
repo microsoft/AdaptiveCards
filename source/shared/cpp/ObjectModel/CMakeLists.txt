@@ -10,7 +10,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #   Builders might need to manually clean/regenerate when new files are added.
 file(GLOB ObjectModel_SRC CONFIGURE_DEPENDS "*.cpp")
 
+find_package(jsoncpp CONFIG REQUIRED)
+
 add_library(ObjectModel STATIC ${ObjectModel_SRC})
+
+target_link_libraries(ObjectModel PRIVATE jsoncpp_object jsoncpp_static JsonCpp::JsonCpp)
 
 target_precompile_headers(ObjectModel
   PUBLIC
