@@ -1,6 +1,6 @@
 schedules:
-  - cron: "0 0 * * 6"
-    displayName: Check Heartbeat 
+  - cron: "1 7 1,15 * *"
+    displayName: Send Heartbeat 
     branches:
       include:
         - main
