@@ -84,13 +84,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             // Add Separator to the columnSet
                             // TODO: do I need to cast?
                             auto needsSeparator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::NeedsSeparator(column);
+                            // TODO: separator thickness can be 0 in many cases
+                            // TODO: is it wise to insert an additional element into the tree just for spacing?
 
                             if (needsSeparator)
                             {
-                                auto separatorConfig = hostConfig.Separator();
-                                auto spacing = GetSpacingSizeFromSpacing(hostConfig, column.Spacing());
-                                auto separatorThickness = separatorConfig.LineThickness();
-                                auto separatorColor = separatorConfig.LineColor();
+                                auto separatorParams =
+                                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSeparatorParameters(column, hostConfig);
 
                                 // Create a new ColumnDefinition for the separator
 
@@ -99,7 +99,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                 columnDefinitions.Append(separatorColumnDefinition);
 
                                 separator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateSeparator(
-                                    renderContext, spacing, separatorThickness, separatorColor, false);
+                                    renderContext, separatorParams.spacing, separatorParams.thickness, separatorParams.color, false);
                                 // TODO: is this the right logic?
                                 if (const auto separatorAsFrameworkElement = separator.try_as<rtxaml::FrameworkElement>())
                                 {

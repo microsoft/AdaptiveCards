@@ -19,9 +19,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                       bool isHorizontal)
     {
         rtxaml::Controls::Grid separator;
-        auto separatorAsFrameworkElement = separator.as<rtxaml::FrameworkElement>();
-        auto seperatorPanel = separator.as<rtxaml::Controls::IPanel>();
-        seperatorPanel.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
+        separator.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
 
         const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
         rtxaml::Thickness margin{};
@@ -29,17 +27,17 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (isHorizontal)
         {
             margin.Top = margin.Bottom = separatorMarginValue;
-            separatorAsFrameworkElement.Height(separatorThickness);
+            separator.Height(separatorThickness);
         }
         else
         {
             margin.Left = margin.Right = separatorMarginValue;
-            separatorAsFrameworkElement.Width(separatorThickness);
+            separator.Width(separatorThickness);
         }
 
-        separatorAsFrameworkElement.Margin(margin);
+        separator.Margin(margin);
 
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Separator", separatorAsFrameworkElement);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Separator", separator);
 
         return separator;
     }
@@ -56,11 +54,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 frameworkElement.Style(style);
             }
         }
-        catch(...)
+        catch (...)
         {
             // TODO: lookup will throw if it cannot find a resource
         }
-       
     }
 
     void XamlHelpers::SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel)
@@ -506,11 +503,11 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             if (NeedsSeparator(element))
             {
-                auto separatorConfig = hostConfig.Separator();
-                auto separatorColor = separatorConfig.LineColor();
-                auto separatorThickness = separatorConfig.LineThickness();
-                uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, element.Spacing());
-                auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
+                auto separatorParams = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSeparatorParameters(element, hostConfig);
+                auto separator = XamlHelpers::CreateSeparator(renderContext,
+                                                              separatorParams.spacing,
+                                                              separatorParams.thickness,
+                                                              separatorParams.color);
                 XamlHelpers::AppendXamlElementToPanel(separator, parentPanel);
                 return separator;
             }
@@ -908,5 +905,21 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
 
         return {inputStackPanel, validationBorder};
+    }
+
+    SeparatorParemeters XamlHelpers::GetSeparatorParameters(rtom::IAdaptiveCardElement const& element,
+                                                            rtrender::AdaptiveHostConfig const& hostConfig)
+    {
+        auto spacing = GetSpacingSizeFromSpacing(hostConfig, element.Spacing());
+        winrt::Windows::UI::Color lineColor{0};
+        uint32_t lineThickness{0};
+        if (element.Separator())
+        {
+            auto separatorConfig = hostConfig.Separator();
+            lineColor = separatorConfig.LineColor();
+            lineThickness = separatorConfig.LineThickness();
+        }
+
+        return {lineColor, spacing, lineThickness};
     }
 }

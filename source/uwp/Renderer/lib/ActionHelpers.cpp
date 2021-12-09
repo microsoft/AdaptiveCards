@@ -651,7 +651,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         if (insertSeparator)
         {
             auto spacingSize = GetSpacingSizeFromSpacing(hostConfig, actionsConfig.Spacing());
-            auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0u, winrt::Windows::UI::Color{}, false);
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0u, winrt::Windows::UI::Color{0});
             XamlHelpers::AppendXamlElementToPanel(separator, bodyPanel);
         }
 
@@ -879,16 +879,15 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             // We do NOT remove the margin from the individual button itself, since that would cause
             // the equal columns stretch behavior to not have equal columns (since the first and last
             // button would be narrower without the same margins as its peers).
-            actionsPanel.Margin({buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0});
+            actionsPanel.Margin({-buttonMargin.Left, 0, -buttonMargin.Right, 0});
         }
         else
         {
             // Negate the spacing on the top and bottom so the first and last buttons don't have extra padding
-            actionsPanel.Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1});
+            actionsPanel.Margin({0, -buttonMargin.Top, 0, -buttonMargin.Bottom});
         }
 
         // Get the max number of actions and check the host config to confirm whether we render actions beyond the max in the overflow menu
-
         auto maxActions = actionsConfig.MaxActions();
 
         auto hostConfigImpl = peek_innards<rtrender::implementation::AdaptiveHostConfig>(hostConfig);
@@ -896,26 +895,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
         bool allActionsHaveIcons{true};
 
-        for (auto child : children)
-        {
-            winrt::hstring iconUrl = child.IconUrl();
-
-            if (iconUrl.empty())
-            {
-                allActionsHaveIcons = false;
-                // TODO: will this break from the for loop?
-                // TODO: move this to the later loop/
-                break;
-            }
-        }
-
-        renderArgs.AllowAboveTitleIconPlacement(allActionsHaveIcons);
-
         rtxaml::Controls::StackPanel showCardsStackPanel{};
-        rtxaml::Controls::Panel showCardsPanel = showCardsStackPanel.as<rtxaml::Controls::Panel>();
-
-        uint32_t currentButtonIndex = 0;
-        rtxaml::Controls::Button overflowButton;
+        rtxaml::Controls::Button overflowButton{nullptr};
+        uint32_t currentButtonIndex{0};
 
         for (auto action : children)
         {
@@ -925,11 +907,25 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             rtxaml::UIElement actionControl{nullptr};
 
+            if (action.IconUrl().empty())
+            {
+                // TODO: is this cheaper than iterating through actions first?
+                // TODO: should I create a bool to track if allowAboveTitleIconPlacement has been set and not enter this if clause then?
+                renderArgs.AllowAboveTitleIconPlacement(false);
+            }
+
             if (currentButtonIndex < maxActions && mode == rtom::ActionMode::Primary)
             {
                 // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                actionControl = CreateActionButtonInActionSet(
-                    adaptiveCard, adaptiveActionSet, action, currentButtonIndex, actionsPanel, showCardsPanel, columnDefinitions, renderContext, renderArgs);
+                actionControl = CreateActionButtonInActionSet(adaptiveCard,
+                                                              adaptiveActionSet,
+                                                              action,
+                                                              currentButtonIndex,
+                                                              actionsPanel,
+                                                              showCardsStackPanel,
+                                                              columnDefinitions,
+                                                              renderContext,
+                                                              renderArgs);
 
                 currentButtonIndex++;
             }
@@ -950,7 +946,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                 }
 
                 // Add a flyout item to the overflow menu
-                AddOverflowFlyoutItem(action, overflowButton, adaptiveCard, adaptiveActionSet, showCardsPanel, renderContext, renderArgs);
+                AddOverflowFlyoutItem(action, overflowButton, adaptiveCard, adaptiveActionSet, showCardsStackPanel, renderContext, renderArgs);
 
                 // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
                 if (mode == rtom::ActionMode::Primary)

@@ -218,6 +218,14 @@ struct ShowCardInfo
     winrt::Windows::UI::Xaml::UIElement cardUIElement{nullptr};
 };
 
+
+struct SeparatorParemeters
+{
+    winrt::Windows::UI::Color color{0};
+    uint32_t spacing;
+    uint32_t thickness;
+};
+
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
 {

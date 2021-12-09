@@ -189,6 +189,7 @@ uint32_t SetXamlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
         xmlDocument.LoadXml(htmlHString);
 
         characterLength = AddHtmlInlines(adaptiveTextElement, renderContext, renderArgs, xmlDocument, isInHyperlink, inlines);
+        handledAsHtml = true;
     }
 
     if (!handledAsHtml)
@@ -457,7 +458,7 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
         auto isParagraphResult = nodeName == L"p";
 
         uint32_t nodeCharacterLength = 0;
-        if (isOrderedListResult || isUnorderedListResult == 0)
+        if (isOrderedListResult || isUnorderedListResult)
         {
             nodeCharacterLength =
                 AddListInlines(adaptiveTextElement, renderContext, renderArgs, childNode, isOrderedListResult, isInHyperlink, inlines);

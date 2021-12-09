@@ -239,4 +239,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig const& hostConfig,
                                   winrt::Windows::UI::Xaml::IFrameworkElement const& element);
+
+    SeparatorParemeters GetSeparatorParameters(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& element,
+                                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
 }
