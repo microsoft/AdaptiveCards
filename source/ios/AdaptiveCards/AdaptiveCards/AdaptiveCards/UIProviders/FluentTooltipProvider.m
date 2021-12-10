@@ -15,12 +15,14 @@
 
 @implementation FluentTooltipProvider
 
-+ (void)load {
++ (void)load
+{
     FluentTooltipProvider *selfProvider = [[FluentTooltipProvider alloc] init];
     [[UIProviderRegistrar sharedInstance] setTooltipProvider:selfProvider];
 }
 
-- (void)showToolTipWithMessage:(NSString * _Nullable)message recognizer:(UILongPressGestureRecognizer * _Nullable)recognizer {
+- (void)showToolTipWithMessage:(NSString * _Nullable)message recognizer:(UILongPressGestureRecognizer * _Nullable)recognizer
+{
     [MSFTooltip.shared showWith:message for:recognizer.view preferredArrowDirection:MSFTooltipArrowDirectionUp offset:CGPointZero screenMargins:MSFTooltip.defaultScreenMargins dismissOn:MSFTooltipDismissModeTapAnywhere onTap:nil];
 }
 

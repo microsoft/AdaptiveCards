@@ -35,7 +35,7 @@
 
 - (void)showToolTip:(UILongPressGestureRecognizer *)recognizer
 {
-    if (recognizer.state == UIGestureRecognizerStateBegan && _toolTip && recognizer.view) {
+    if (recognizer.state == UIGestureRecognizerStateBegan && _toolTip && recognizer.view && [UIProviderRegistrar sharedInstance].tooltipProvider) {
         [[UIProviderRegistrar sharedInstance].tooltipProvider showToolTipWithMessage:_toolTip recognizer:recognizer];
     }
 }
