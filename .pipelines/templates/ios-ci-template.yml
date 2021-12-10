@@ -13,6 +13,7 @@ steps:
     sdk: 'iphonesimulator'
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 12'
+
 - task: Xcode@5
 
   displayName: 'Framework Unit Test'
