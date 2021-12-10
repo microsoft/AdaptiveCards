@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
   
   spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'ios-v2.8.2' }
 
-  spec.default_subspecs = 'AdaptiveCardsPublic', 'AdaptiveCardsPrivate', 'ObjectModel'
+  spec.default_subspecs = :none #'AdaptiveCardsPublic', 'AdaptiveCardsPrivate', 'ObjectModel'
 
   spec.subspec 'AdaptiveCardsPublic' do | sspec |
     sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PublicHeaders/*.{h,m,mm}'
