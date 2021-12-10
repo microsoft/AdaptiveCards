@@ -359,44 +359,53 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return S_OK;
     }
 
+    void CreateBackgroundImage(_In_ IAdaptiveRenderContext* renderContext, _In_ HSTRING url, _Outptr_ IImage** backgroundImage)
+    {
+        ComPtr<IImage> image = XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+
+        ComPtr<IDependencyObject> imageAsDependencyObject;
+        THROW_IF_FAILED(image.As(&imageAsDependencyObject));
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IUriRuntimeClass> imageUrl;
+        GetUrlFromString(hostConfig.Get(), url, imageUrl.GetAddressOf());
+
+        ComPtr<IBitmapImage> bitmapImage =
+            XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+        THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl.Get()));
+
+        ComPtr<IImageSource> bitmapImageSource;
+        THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+
+        ComPtr<IUIElement> imageAsUIElement;
+        THROW_IF_FAILED(image.As(&imageAsUIElement));
+        THROW_IF_FAILED(image->put_Source(bitmapImageSource.Get()));
+        THROW_IF_FAILED(image.CopyTo(backgroundImage));
+    }
+
     void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
                                _In_ IAdaptiveBackgroundImage* backgroundImage,
-                               _In_ IAdaptiveRenderContext* renderContext,
-                               _In_ IAdaptiveRenderArgs* renderArgs)
+                               _In_ IAdaptiveRenderContext* renderContext)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
-        ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+        //ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+            //HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
 
         HString url;
         THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
-        THROW_IF_FAILED(adaptiveImage->put_Url(url.Get()));
-
-        ComPtr<IAdaptiveCardElement> adaptiveCardElement;
-        THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-
-        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-
-        ComPtr<IAdaptiveElementRenderer> elementRenderer;
-        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
-
-        ComPtr<IUIElement> background;
-        if (elementRenderer != nullptr)
-        {
-            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, renderArgs, &background);
-            if (background == nullptr)
-            {
-                return;
-            }
-        }
 
         ComPtr<IImage> xamlImage;
-        THROW_IF_FAILED(background.As(&xamlImage));
+        CreateBackgroundImage(renderContext, url.Get(), &xamlImage);
+        if (!xamlImage)
+        {
+            return;
+        }
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode fillMode;
-        THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
+        ComPtr<IUIElement> xamlImageAsUIElement;
+        THROW_IF_FAILED(xamlImage.As(&xamlImageAsUIElement));
 
         // Creates the background image for all fill modes
         ComPtr<TileControl> tileControl;
@@ -413,7 +422,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
         THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
 
-        THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+        THROW_IF_FAILED(tileControl->LoadImageBrush(xamlImageAsUIElement.Get()));
 
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
         THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));

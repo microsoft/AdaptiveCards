@@ -128,7 +128,7 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IPanel> rootAsPanel;
             RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
 
-            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
+            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext);
 
             // Add rootElement to containerBorder
             ComPtr<IUIElement> rootAsUIElement;
