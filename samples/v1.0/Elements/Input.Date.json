@@ -9,6 +9,7 @@
 		},
 		{
 			"type": "Input.Date",
+			"id": "date",
 			"placeholder": "Enter a date",
 			"value": "2017-10-12"
 		}
