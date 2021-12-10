@@ -7,7 +7,7 @@ export type Refresh = {
     timeBetweenAutomaticRefreshes: number;
     maximumConsecutiveAutomaticRefreshes: number;
     allowManualRefreshesAfterAutomaticRefreshes: boolean;
-}
+};
 
 export type AppletsSettings = {
     logEnabled: boolean;
@@ -18,8 +18,9 @@ export type AppletsSettings = {
     authPromptHeight: number;
     readonly refresh: Refresh;
     onLogEvent?: (level: Enums.LogLevel, message?: any, ...optionalParams: any[]) => void;
-}
+};
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class GlobalSettings {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
@@ -47,18 +48,18 @@ export class GlobalSettings {
             maximumConsecutiveAutomaticRefreshes: 3,
             allowManualRefreshesAfterAutomaticRefreshes: true
         }
-    }
+    };
 }
 
 export const ContentTypes = {
     applicationJson: "application/json",
     applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
-}
+};
 
 export interface ISeparationDefinition {
-    spacing: number,
-    lineThickness?: number,
-    lineColor?: string
+    spacing: number;
+    lineThickness?: number;
+    lineColor?: string;
 }
 
 export interface IInput {
@@ -76,14 +77,18 @@ export class StringWithSubstitutions {
 
     getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
         if (!referencedInputs) {
-            throw new Error("The referencedInputs parameter cannot be null.")
+            throw new Error("The referencedInputs parameter cannot be null.");
         }
 
-        for (let input of inputs) {
-            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(<string>this._original);
+        if (this._original) {
+            for (const input of inputs) {
+                const matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(
+                    this._original
+                );
 
-            if (matches != null && input.id) {
-                referencedInputs[input.id] = input;
+                if (matches != null && input.id) {
+                    referencedInputs[input.id] = input;
+                }
             }
         }
     }
@@ -92,13 +97,13 @@ export class StringWithSubstitutions {
         this._processed = this._original;
 
         if (this._original) {
-            let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+            const regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
             let matches;
 
-            while ((matches = regEx.exec(<string>this._original)) !== null) {
-                for (let key of Object.keys(inputs)) {
-                    if (key.toLowerCase() == matches[1].toLowerCase()) {
-                        let matchedInput = inputs[key];
+            while ((matches = regEx.exec(this._original)) !== null && this._processed) {
+                for (const key of Object.keys(inputs)) {
+                    if (key.toLowerCase() === matches[1].toLowerCase()) {
+                        const matchedInput = inputs[key];
 
                         let valueForReplace = "";
 
@@ -109,12 +114,11 @@ export class StringWithSubstitutions {
                         if (contentType === ContentTypes.applicationJson) {
                             valueForReplace = JSON.stringify(valueForReplace);
                             valueForReplace = valueForReplace.slice(1, -1);
-                        }
-                        else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
+                        } else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
                             valueForReplace = encodeURIComponent(valueForReplace);
                         }
 
-                        this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
+                        this._processed = this._processed.replace(matches[0], valueForReplace);
 
                         break;
                     }
@@ -132,8 +136,7 @@ export class StringWithSubstitutions {
     get(): string | undefined {
         if (!this._isProcessed) {
             return this._original;
-        }
-        else {
+        } else {
             return this._processed;
         }
     }
@@ -150,10 +153,7 @@ export class SpacingDefinition {
     right: number = 0;
     bottom: number = 0;
 
-    constructor(top: number = 0,
-        right: number = 0,
-        bottom: number = 0,
-        left: number = 0) {
+    constructor(top: number = 0, right: number = 0, bottom: number = 0, left: number = 0) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -167,10 +167,12 @@ export class PaddingDefinition {
     bottom: Enums.Spacing = Enums.Spacing.None;
     left: Enums.Spacing = Enums.Spacing.None;
 
-    constructor(top: Enums.Spacing = Enums.Spacing.None,
+    constructor(
+        top: Enums.Spacing = Enums.Spacing.None,
         right: Enums.Spacing = Enums.Spacing.None,
         bottom: Enums.Spacing = Enums.Spacing.None,
-        left: Enums.Spacing = Enums.Spacing.None) {
+        left: Enums.Spacing = Enums.Spacing.None
+    ) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -183,23 +185,22 @@ export class SizeAndUnit {
     unit: Enums.SizeUnit;
 
     static parse(input: string, requireUnitSpecifier: boolean = false): SizeAndUnit {
-        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+        const result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
         if (typeof input === "number") {
             result.physicalSize = input;
 
             return result;
-        }
-        else if (typeof input === "string") {
-            let regExp = /^([0-9]+)(px|\*)?$/g;
-            let matches = regExp.exec(input);
-            let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
+        } else if (typeof input === "string") {
+            const regExp = /^([0-9]+)(px|\*)?$/g;
+            const matches = regExp.exec(input);
+            const expectedMatchCount = requireUnitSpecifier ? 3 : 2;
 
             if (matches && matches.length >= expectedMatchCount) {
                 result.physicalSize = parseInt(matches[1]);
 
-                if (matches.length == 3) {
-                    if (matches[2] == "px") {
+                if (matches.length === 3) {
+                    if (matches[2] === "px") {
                         result.unit = Enums.SizeUnit.Pixel;
                     }
                 }
@@ -228,26 +229,46 @@ export interface IResourceInformation {
  * @license MIT license
  * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
  **/
+/* eslint-disable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention, no-bitwise */
 export class UUID {
     private static lut: string[] = [];
 
     static generate(): string {
-        let d0 = Math.random() * 0xffffffff | 0;
-        let d1 = Math.random() * 0xffffffff | 0;
-        let d2 = Math.random() * 0xffffffff | 0;
-        let d3 = Math.random() * 0xffffffff | 0;
+        const d0 = (Math.random() * 0xffffffff) | 0;
+        const d1 = (Math.random() * 0xffffffff) | 0;
+        const d2 = (Math.random() * 0xffffffff) | 0;
+        const d3 = (Math.random() * 0xffffffff) | 0;
 
-        return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
-            UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
-            UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
-            UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
+        return (
+            UUID.lut[d0 & 0xff] +
+            UUID.lut[(d0 >> 8) & 0xff] +
+            UUID.lut[(d0 >> 16) & 0xff] +
+            UUID.lut[(d0 >> 24) & 0xff] +
+            "-" +
+            UUID.lut[d1 & 0xff] +
+            UUID.lut[(d1 >> 8) & 0xff] +
+            "-" +
+            UUID.lut[((d1 >> 16) & 0x0f) | 0x40] +
+            UUID.lut[(d1 >> 24) & 0xff] +
+            "-" +
+            UUID.lut[(d2 & 0x3f) | 0x80] +
+            UUID.lut[(d2 >> 8) & 0xff] +
+            "-" +
+            UUID.lut[(d2 >> 16) & 0xff] +
+            UUID.lut[(d2 >> 24) & 0xff] +
+            UUID.lut[d3 & 0xff] +
+            UUID.lut[(d3 >> 8) & 0xff] +
+            UUID.lut[(d3 >> 16) & 0xff] +
+            UUID.lut[(d3 >> 24) & 0xff]
+        );
     }
 
     static initialize() {
         for (let i = 0; i < 256; i++) {
-            UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
+            UUID.lut[i] = (i < 16 ? "0" : "") + i.toString(16);
         }
     }
 }
 
 UUID.initialize();
+/* eslint-enable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention, no-bitwise */

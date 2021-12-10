@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+cd source/nodejs
+NODEJS_FILES_CHANGED=`git status . --short | wc -l`
+if [ $NODEJS_FILES_CHANGED != "0" ]; then
+    npx lint-staged
+fi
+
