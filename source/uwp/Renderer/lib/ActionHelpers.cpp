@@ -1,4 +1,4 @@
- // Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
 
@@ -8,7 +8,7 @@
 #include "LinkButton.h"
 #include "AdaptiveHostConfig.h"
 
-using namespace Microsoft::WRL; 
+using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
