@@ -237,8 +237,11 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTex
     RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(
         Microsoft::WRL::Wrappers::HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
 
+    HSTRING myFamily;
+    UTF8ToHString("Segoe UI", &myFamily);
+
     RETURN_IF_FAILED(
-        fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
+        fontFamilyFactory->CreateInstanceWithName(myFamily, nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
     RETURN_IF_FAILED(xamlTextElement->put_FontFamily(fontFamily.Get()));
 
     return S_OK;

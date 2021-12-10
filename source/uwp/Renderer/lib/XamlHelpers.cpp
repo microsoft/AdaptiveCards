@@ -389,11 +389,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                _In_ IAdaptiveBackgroundImage* backgroundImage,
                                _In_ IAdaptiveRenderContext* renderContext)
     {
-        // In order to reuse the image creation code paths, we simply create an adaptive card
-        // image element and then build that into xaml and apply to the root.
-        //ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-            //HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
-
         HString url;
         THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
 
