@@ -1,0 +1,32 @@
+#!/bin/sh
+
+endWith='\.(cpp|cc|h|hpp)$'
+ignoreFolder='/(PerfApp|android|ios|nodejs|vscode|community|dotnet)/'
+
+function checkFormat() {
+	if [ -z "$clangFormat" ]; then
+		echo '$clangFormat is not set correct in clangFormatCheck'
+		return 1
+	fi
+
+	for file in $(git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}"); do
+		"$clangFormat" --style=file -Werror --dry-run --verbose "$file"
+		if [ $? -ne 0 ]; then
+			echo "Bad format for $file"
+			return 1
+		fi
+	done
+	return 0
+}
+
+function fixFormat() {
+	for file in $(git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}"); do
+		"$clangFormat" --style=file -Werror -i --verbose "$file"
+		if [ $? -ne 0 ]; then
+			echo "clang-format auto fix failed for $file, please run below command manually:"
+			echo "  \"$clangFormat\" --style=file -Werror -i --verbose \"$file\""
+			return 1
+		fi
+	done
+	return 0
+}

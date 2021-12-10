@@ -33,14 +33,14 @@ PS: Latest Build Status is against `main` branch.
 
 We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.
 
-Make sure clang-format version 12.0.0 and above version are used.
+Make sure clang-format version 12.0.0 and above version is used.
 
 ### IDE integration
 ClangFormat describes a set of tools that are built on top of LibFormat. It can support your workflow in a variety of ways including a standalone tool and editor integrations. For details, refer to https://clang.llvm.org/docs/ClangFormat.html
 
-### Format with scripts
+### Format with script
 Two scripts are provided to help you format files.
-- Windows only user: use FormatSource.ps1. This script use clang-format.exe which is built into Visual Studio by default.
+- Windows user only: use FormatSource.ps1. This script use clang-format.exe which is built into Visual Studio by default.
 
 	Execute below command in the root folder of the project
 
@@ -54,7 +54,7 @@ If it's the first time to run the script, make sure clang-format version 12.0.0 
 clang-format version 12.0.0
 ```
 
-- Both Windows and MAC user: Use clang-format npmjs package
+- Both Windows and MAC users: Use clang-format npmjs package
 
 	Execute below command in source/nodejs
 
@@ -64,27 +64,20 @@ clang-format version 12.0.0
 
 Make sure `npm install` is run before.
 
-#### Setup Git hooks
-This is an optional process and a one time setup for Windows user only. When you `git commit` or `git push`, it will automatically do the format check and ask you to correct it if format error detected.
+### Use Git pre-commit hook
+`git pre-commit hook` is an optional process. When you run `git commit`, it will automatically do the format check and auto fix the format if error detected.
 
-```
-scripts\SetupClangFormat.bat
-```
+First make sure clang-format binary is installed in your dev enviroment.
+Then modify scripts/hooks/pre-commit to make sure clangFormat is point to the correct path.
+And finally setup the git hook.
+
+Two ways to setup the hook:
+1. Copy `scripts/hooks/pre-commit` to `.git/hooks`
+2. `git config --local core.hooksPath scripts/hooks`
 
 then choose `scripts/hooks/pre-commit.txt` or `scripts/hooks/pre-commit.txt` and remove the `.txt` to enable that hook.
 
-### Two ways to format the files
-
-### 1) Use script to format files before you submit the change 
-
-`PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False`
-
-or
-
-`PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False -Path yourfolder`
-
-
-#### End User License Agreement for our binary packages
+## End User License Agreement for our binary packages
 Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:
 - [UWP/.NET](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Windows.txt)
 - [Android/iOS](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Non-Windows.txt)
