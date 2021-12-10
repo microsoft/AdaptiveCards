@@ -210,8 +210,8 @@
                     [self assertRendering:renderResult fileName:fileName];
                 }
                 @catch (NSException *exception) {
-                    XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:@"Rendering Exception"];
-                    [self attachDataToIssueAndRecord:fileName issue:issue];
+                    XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Exception in %@", fileName]];
+                    [self recordIssue:issue];
                 }
             }
         }
@@ -221,32 +221,23 @@
     }
 }
 
-- (void)attachDataToIssueAndRecord:(NSString *)fileName issue:(XCTMutableIssue *)issue
-{
-    NSData *data = [fileName dataUsingEncoding:NSUTF8StringEncoding];
-    [issue addAttachment:[XCTAttachment attachmentWithData:data]];
-    [self recordIssue:issue];
-}
-
 - (void)assertParsing:(ACOAdaptiveCardParseResult *)parseResult fileName:(NSString *)fileName
 {
     if (!parseResult.isValid) {
-        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:@"Object Model Parsing Failure"];
-
         NSMutableArray<NSString *> *errorMsgs = [[NSMutableArray alloc] init];
         for (NSError *parseError in parseResult.parseErrors) {
             [errorMsgs addObject:parseError.userInfo[NSLocalizedDescriptionKey]];
         }
-
-        [self attachDataToIssueAndRecord:[NSString stringWithFormat:@" %@ in %@", [errorMsgs componentsJoinedByString:@", "], fileName] issue:issue];
+        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@" %@ in %@", [errorMsgs componentsJoinedByString:@", "], fileName]];
+        [self recordIssue:issue];
     }
 }
 
 - (void)assertRendering:(ACRRenderResult *)renderResult fileName:(NSString *)fileName
 {
     if (!renderResult.succeeded) {
-        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:@"Rendering Failure"];
-        [self attachDataToIssueAndRecord:fileName issue:issue];
+        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Failure in %@", fileName]];
+        [self recordIssue:issue];
     }
 }
 
