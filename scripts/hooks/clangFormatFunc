@@ -9,14 +9,9 @@ function checkFormat() {
 		return 1
 	fi
 
-	for file in $(git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}"); do
-		"$clangFormat" --style=file -Werror --dry-run --verbose "$file"
-		if [ $? -ne 0 ]; then
-			echo "Bad format for $file"
-			return 1
-		fi
-	done
-	return 0
+	GIT_ROOT=`git rev-parse --show-toplevel`
+	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 clang-format --dry-run -Werror "$GIT_ROOT/_"
+	return $?
 }
 
 function fixFormat() {
