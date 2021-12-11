@@ -476,8 +476,8 @@
 		0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ACRActionOverflowRenderer.h; path = PublicHeaders/ACRActionOverflowRenderer.h; sourceTree = "<group>"; };
 		0E46B8FBE57A09301765F779 /* Pods-Fluent-AdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fluent-AdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-Fluent-AdaptiveCardsTests/Pods-Fluent-AdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0FFDCEA85BBFF936BE8D0383 /* Pods-AdaptiveCardsTests-AdaptiveCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCardsTests-AdaptiveCards.debug.xcconfig"; path = "Target Support Files/Pods-AdaptiveCardsTests-AdaptiveCards/Pods-AdaptiveCardsTests-AdaptiveCards.debug.xcconfig"; sourceTree = "<group>"; };
-		1BA347E92762F12400E55E24 /* UIProviderRegistrar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIProviderRegistrar.h; path = PublicHeaders/UIProviderRegistrar.h; sourceTree = "<group>"; };
-		1BA347EA2762F12400E55E24 /* UIProviderRegistrar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIProviderRegistrar.m; path = PublicHeaders/UIProviderRegistrar.m; sourceTree = "<group>"; };
+		1BA347E92762F12400E55E24 /* UIProviderRegistrar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIProviderRegistrar.h; path = ProjectHeaders/UIProviderRegistrar.h; sourceTree = "<group>"; };
+		1BA347EA2762F12400E55E24 /* UIProviderRegistrar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIProviderRegistrar.m; path = ProjectHeaders/UIProviderRegistrar.m; sourceTree = "<group>"; };
 		1BA347ED2762F19700E55E24 /* ACRTargetBuilderDirector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ACRTargetBuilderDirector.mm; path = PublicHeaders/ACRTargetBuilderDirector.mm; sourceTree = "<group>"; };
 		1BA347EF2762F22A00E55E24 /* AdaptiveCards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveCards.h; path = AdaptiveCards/PublicHeaders/AdaptiveCards.h; sourceTree = "<group>"; };
 		1BA347F22762F2F400E55E24 /* FluentTooltipProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FluentTooltipProvider.h; path = UIProviders/FluentTooltipProvider.h; sourceTree = "<group>"; };
@@ -1878,6 +1878,7 @@
 					F423C0B41EE1FBA900905679 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = UBF8T346G9;
+						LastSwiftMigration = 1300;
 						ProvisioningStyle = Automatic;
 					};
 					F423C0BD1EE1FBAA00905679 = {
@@ -2382,6 +2383,7 @@
 			baseConfigurationReference = 777DD1173C03E3F4EC695141 /* Pods-AdaptiveCards.debug.xcconfig */;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
@@ -2414,6 +2416,8 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -2424,6 +2428,7 @@
 			baseConfigurationReference = 4B0881019D2B9BA6009F1B94 /* Pods-AdaptiveCards.release.xcconfig */;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
@@ -2456,6 +2461,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};

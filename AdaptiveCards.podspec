@@ -31,9 +31,10 @@ Pod::Spec.new do |spec|
   end
 
   spec.subspec 'AdaptiveCardsPrivate' do | sspec |
-    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
-    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/'
+    sspec.source_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h', 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/ProjectHeaders/*.{h,m,mm}'
+    sspec.header_mappings_dir = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/', 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/ProjectHeaders/'
     sspec.private_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
+    sspec.project_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/ProjectHeaders/*.h'
   end
   
   spec.subspec 'UIProviders' do | sspec |
