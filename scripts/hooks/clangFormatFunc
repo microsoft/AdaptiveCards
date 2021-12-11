@@ -1,27 +1,20 @@
 #!/bin/sh
 
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 endWith='\.(cpp|cc|h|hpp)$'
 ignoreFolder='/(PerfApp|android|ios|nodejs|vscode|community|dotnet)/'
 
 function checkFormat() {
-	if [ -z "$clangFormat" ]; then
-		echo '$clangFormat is not set correct in clangFormatCheck'
-		return 1
-	fi
-
 	GIT_ROOT=`git rev-parse --show-toplevel`
-	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 clang-format --dry-run -Werror "$GIT_ROOT/_"
+	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 "$clangFormat" --dry-run -Werror --verbose "$GIT_ROOT/_"
 	return $?
 }
 
 function fixFormat() {
-	for file in $(git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}"); do
-		"$clangFormat" --style=file -Werror -i --verbose "$file"
-		if [ $? -ne 0 ]; then
-			echo "clang-format auto fix failed for $file, please run below command manually:"
-			echo "  \"$clangFormat\" --style=file -Werror -i --verbose \"$file\""
-			return 1
-		fi
-	done
-	return 0
+
+	GIT_ROOT=`git rev-parse --show-toplevel`
+	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 "$clangFormat" --style=file -Werror -i --verbose "$GIT_ROOT/_"
+	return $?
 }

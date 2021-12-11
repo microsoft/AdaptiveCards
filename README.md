@@ -75,8 +75,6 @@ Two ways to setup the hook:
 1. Copy `scripts/hooks/pre-commit` to `.git/hooks`
 2. `git config --local core.hooksPath scripts/hooks`
 
-then choose `scripts/hooks/pre-commit.txt` or `scripts/hooks/pre-commit.txt` and remove the `.txt` to enable that hook.
-
 ## End User License Agreement for our binary packages
 Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:
 - [UWP/.NET](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Windows.txt)
