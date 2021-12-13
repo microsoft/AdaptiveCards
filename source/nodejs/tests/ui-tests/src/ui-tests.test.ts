@@ -68,6 +68,8 @@ describe("Mock function", function() {
     test("Test actions are rendered and active below carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
 
+        testUtils.delay(1000);
+
         await testUtils.clickOnActionWithTitle("See more");
 
         await testUtils.delay(delayForInputRetrieval);
