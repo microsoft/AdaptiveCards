@@ -197,7 +197,7 @@ describe("Mock function", function() {
     test("Test rtl on carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.rtl");
 
-        for (const page in [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
+        for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
             const pageElement = await testUtils.getElementWithId(page[0]);
             const pageContainer = pageElement.findElement(Webdriver.By.xpath("./*"));
             const pageDirection: string = await pageContainer.getAttribute("dir");
