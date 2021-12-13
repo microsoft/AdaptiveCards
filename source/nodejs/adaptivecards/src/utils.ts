@@ -6,6 +6,7 @@ import * as Shared from "./shared";
 // To work around TypeScript complaining about documentMode not being declared
 // on type Document
 declare global {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     interface Document {
         documentMode?: any;
     }
@@ -17,9 +18,11 @@ export function isInternetExplorer(): boolean {
 }
 
 export function isMobileOS(): boolean {
-    let userAgent = window.navigator.userAgent;
+    const userAgent = window.navigator.userAgent;
 
-    return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
+    return (
+        !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i)
+    );
 }
 
 /**
@@ -46,8 +49,7 @@ export function parseNumber(obj: any, defaultValue?: number): number | undefined
 export function parseBool(value: any, defaultValue?: boolean): boolean | undefined {
     if (typeof value === "boolean") {
         return value;
-    }
-    else if (typeof value === "string") {
+    } else if (typeof value === "string") {
         switch (value.toLowerCase()) {
             case "true":
                 return true;
@@ -61,12 +63,16 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
     return defaultValue;
 }
 
-export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
-    for (let key in enumType) {
-        let keyAsNumber = parseInt(key, 10);
+export function getEnumValueByName(
+    enumType: { [s: number]: string },
+    name: string
+): number | undefined {
+    // eslint-disable-next-line guard-for-in
+    for (const key in enumType) {
+        const keyAsNumber = parseInt(key, 10);
 
         if (keyAsNumber >= 0) {
-            let value = enumType[key];
+            const value = enumType[key];
 
             if (value && typeof value === "string" && value.toLowerCase() === name.toLowerCase()) {
                 return keyAsNumber;
@@ -77,26 +83,30 @@ export function getEnumValueByName(enumType: { [s: number]: string }, name: stri
     return undefined;
 }
 
-export function parseEnum(enumType: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
+export function parseEnum(
+    enumType: { [s: number]: string },
+    name: string,
+    defaultValue?: number
+): number | undefined {
     if (!name) {
         return defaultValue;
     }
 
-    let enumValue = getEnumValueByName(enumType, name);
+    const enumValue = getEnumValueByName(enumType, name);
 
     return enumValue !== undefined ? enumValue : defaultValue;
 }
 
 export function stringToCssColor(color: string | undefined): string | undefined {
     if (color) {
-        let regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
-        let matches = regEx.exec(color);
+        const regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+        const matches = regEx.exec(color);
 
         if (matches && matches[4]) {
-            let a = parseInt(matches[1], 16) / 255;
-            let r = parseInt(matches[2], 16);
-            let g = parseInt(matches[3], 16);
-            let b = parseInt(matches[4], 16);
+            const a = parseInt(matches[1], 16) / 255;
+            const r = parseInt(matches[2], 16);
+            const g = parseInt(matches[3], 16);
+            const b = parseInt(matches[4], 16);
 
             return "rgba(" + r + "," + g + "," + b + "," + a + ")";
         }
@@ -105,37 +115,36 @@ export function stringToCssColor(color: string | undefined): string | undefined 
     return color;
 }
 
-export function truncate(element: HTMLElement,
-    maxHeight: number,
-    lineHeight?: number) {
-    let fits = () => {
+export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: number) {
+    const fits = () => {
         // Allow a one pixel overflow to account for rounding differences
         // between browsers
         return maxHeight - element.scrollHeight >= -1.0;
     };
 
-    if (fits()) return;
-
-    let fullText = element.innerHTML;
-    let truncateAt = (idx: any) => {
-        element.innerHTML = fullText.substring(0, idx) + '...';
+    if (fits()) {
+        return;
     }
 
-    let breakableIndices = findBreakableIndices(fullText);
+    const fullText = element.innerHTML;
+    const truncateAt = (idx: any) => {
+        element.innerHTML = fullText.substring(0, idx) + "...";
+    };
+
+    const breakableIndices = findBreakableIndices(fullText);
     let lo = 0;
     let hi = breakableIndices.length;
     let bestBreakIdx = 0;
 
     // Do a binary search for the longest string that fits
     while (lo < hi) {
-        let mid = Math.floor((lo + hi) / 2);
+        const mid = Math.floor((lo + hi) / 2);
         truncateAt(breakableIndices[mid]);
 
         if (fits()) {
             bestBreakIdx = breakableIndices[mid];
             lo = mid + 1;
-        }
-        else {
+        } else {
             hi = mid;
         }
     }
@@ -153,8 +162,7 @@ export function truncate(element: HTMLElement,
             if (fits()) {
                 bestBreakIdx = idx;
                 idx = findNextCharacter(fullText, idx);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -164,11 +172,11 @@ export function truncate(element: HTMLElement,
 }
 
 function findBreakableIndices(html: string): number[] {
-    let results: number[] = [];
+    const results: number[] = [];
     let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {
-        if (html[idx] == ' ') {
+        if (html[idx] === " ") {
             results.push(idx);
         }
 
@@ -183,24 +191,24 @@ function findNextCharacter(html: string, currIdx: number): number {
 
     // If we found the start of an HTML tag, keep advancing until we get
     // past it, so we don't end up truncating in the middle of the tag
-    while (currIdx < html.length && html[currIdx] == '<') {
-        while (currIdx < html.length && html[currIdx++] != '>');
+    while (currIdx < html.length && html[currIdx] === "<") {
+        while (currIdx < html.length && html[currIdx++] !== ">") {
+            continue;
+        }
     }
 
     return currIdx;
 }
 
 export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
-    let start = element.offsetTop;
-    let end = start + element.clientHeight;
+    const start = element.offsetTop;
+    const end = start + element.clientHeight;
 
     if (end <= containerEnd) {
         return Enums.ContainerFitStatus.FullyInContainer;
-    }
-    else if (start < containerEnd) {
+    } else if (start < containerEnd) {
         return Enums.ContainerFitStatus.Overflowing;
-    }
-    else {
+    } else {
         return Enums.ContainerFitStatus.FullyOutOfContainer;
     }
 }
