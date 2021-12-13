@@ -22,7 +22,7 @@ export class TestUtils {
     }
 
     async getActionWithTitle(actionTitle: string): Promise<Webdriver.WebElement> {
-        const button: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.xpath(`//*[@aria-label='${actionTitle}']`));
+        const button: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.xpath(`//*[@title='${actionTitle}']`));
 
         return button;
     }
