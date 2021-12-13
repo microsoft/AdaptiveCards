@@ -261,7 +261,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
         if (backgroundImageIsValid)
         {
-            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
+            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext);
         }
 
         ComPtr<IAdaptiveSpacingConfig> spacingConfig;
