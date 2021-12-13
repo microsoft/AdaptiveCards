@@ -5,7 +5,7 @@ import * as Assert from "assert";
 
 export class TestUtils {
     driver: Webdriver.WebDriver;
-    delayForAfterCardRendering: number = 1000;
+    timeoutForCardRendering: number = 10000;
 
     constructor(driver: Webdriver.WebDriver) {
         this.driver = driver;
@@ -14,7 +14,10 @@ export class TestUtils {
     async goToTestCase(testCaseName: string): Promise<void> {
         const elementLinkText: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.id(testCaseName));
         await elementLinkText.click();
-        await this.delay(this.delayForAfterCardRendering);
+
+        const renderedCardContainer: Webdriver.WebElement = await this.getElementWithId("renderedCardSpace");
+
+        await this.driver.wait(Webdriver.until.elementIsVisible(renderedCardContainer), this.timeoutForCardRendering);
     }
 
     async tryGetActionWithTitle(actionTitle: string): Promise<Webdriver.WebElement | null> {

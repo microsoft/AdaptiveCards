@@ -68,8 +68,6 @@ describe("Mock function", function() {
     test("Test actions are rendered and active below carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
 
-        testUtils.delay(1000);
-
         await testUtils.clickOnActionWithTitle("See more");
 
         await testUtils.delay(delayForInputRetrieval);
@@ -199,19 +197,12 @@ describe("Mock function", function() {
     test("Test rtl on carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.rtl");
 
-        const firstPage = await testUtils.getElementWithId("firstCarouselPage");
-        const firstPageContainer = firstPage.findElement(Webdriver.By.xpath("./*"));
-        const firstPageDirection: string = await firstPageContainer.getAttribute("dir");
-        Assert.strictEqual(firstPageDirection, "rtl");
-
-        const secondPage = await testUtils.getElementWithId("secondCarouselPage");
-        const secondPageContainer = secondPage.findElement(Webdriver.By.xpath("./*"));
-        const secondPageDirection: string = await secondPageContainer.getAttribute("dir");
-        Assert.strictEqual(secondPageDirection, "ltr");
-
-        const thirdPage = await testUtils.getElementWithId("thirdCarouselPage");
-        const thirdPageContainer = thirdPage.findElement(Webdriver.By.xpath("./*"));
-        const thirdPageDirection: string = await thirdPageContainer.getAttribute("dir");
-        Assert.strictEqual(thirdPageDirection, "rtl");
+        for (const page in [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
+            const pageElement = await testUtils.getElementWithId(page[0]);
+            const pageContainer = pageElement.findElement(Webdriver.By.xpath("./*"));
+            const pageDirection: string = await pageContainer.getAttribute("dir");
+            Assert.strictEqual(pageDirection, page[1]);
+        }
+        
     }), timeOutValueForCarousel);
 });

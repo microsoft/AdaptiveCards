@@ -3,7 +3,6 @@
 import { getTestCasesList } from "./file-retriever-utils";
 import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
-import { useContext } from "react";
 
 export function listAllFiles(): HTMLLIElement[] {
     const testCasesList: HTMLLIElement[] = [];
@@ -34,6 +33,9 @@ export function listAllFiles(): HTMLLIElement[] {
 }
 
 export async function readAndRenderCard(fileName: string, callbackFunction: Function) {
+    const retrievedInputsDiv: HTMLElement = document.getElementById("renderedCardSpace");
+    retrievedInputsDiv.style.visibility = "hidden";
+    
     const response = await fetch(`samples/${fileName}`);
 
     let jsonToRender: any;
@@ -57,6 +59,8 @@ export async function readAndRenderCard(fileName: string, callbackFunction: Func
     }
 
     renderCard(jsonToRender, callbackFunction);
+
+    retrievedInputsDiv.style.visibility = "visible";
 }
 
 export function renderCard(cardJson: any, callbackFunction: Function): void {
