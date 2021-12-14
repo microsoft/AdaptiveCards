@@ -27,5 +27,5 @@ PenaltyExcessCharacter: 1
 PointerAlignment: Left
 SortIncludes: false
 Standard: Cpp11
-UseTab:          Never
+UseTab: Never
 ...
