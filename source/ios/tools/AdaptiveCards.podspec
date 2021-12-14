@@ -39,7 +39,7 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'UIProviders' do | sspec |
     sspec.dependency 'MicrosoftFluentUI/Tooltip_ios', '~> 0.3.6'
-    sspec.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'ADAPTIVECARDS_APP_EXTENSION=1' }
+    sspec.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'ADAPTIVECARDS_USE_FLUENT_TOOLTIPS=1' }
   end
 
   spec.platform         = :ios, '14'
