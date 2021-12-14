@@ -6,11 +6,11 @@
 //
 
 #import "CustomTextBlockRenderer.h"
-#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRContentHoldingUIView.h>
 #import <AdaptiveCards/ACRTextBlockRenderer.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/HostConfig.h>
 #import <AdaptiveCards/MarkDownParser.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>

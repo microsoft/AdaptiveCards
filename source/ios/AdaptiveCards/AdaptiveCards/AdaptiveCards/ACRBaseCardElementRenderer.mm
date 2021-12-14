@@ -17,9 +17,9 @@
 /* not implemented ATM */
 - (void)setSeparationConfig:(UIView *)viewGroup
 {
-    //SeparationStyle separationStyle,
-    //SeparationConfig defaultSeparationConfig,
-    //SeparationConfig strongSeparationConfig,
+    // SeparationStyle separationStyle,
+    // SeparationConfig defaultSeparationConfig,
+    // SeparationConfig strongSeparationConfig,
     //(Boolean) horizontalLine)
 }
 
