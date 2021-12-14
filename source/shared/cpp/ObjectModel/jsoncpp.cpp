@@ -68,6 +68,8 @@ license you like.
 // End of content of file: LICENSE
 // //////////////////////////////////////////////////////////////////////
 
+// clang-format off
+
 #include "pch.h"
 
 #ifdef USE_CPPCORECHECK
@@ -5394,3 +5396,5 @@ JSONCPP_OSTREAM& operator<<(JSONCPP_OSTREAM& sout, Value const& root) {
 #ifdef USE_CPPCORECHECK
 #pragma warning(pop)
 #endif
+
+// clang-format on
