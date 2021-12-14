@@ -12,8 +12,8 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
 #import "ACRViewPrivate.h"
-#import "SubmitAction.h"
 #import "ExecuteAction.h"
+#import "SubmitAction.h"
 #import <UIKit/UIKit.h>
 
 NSString *const ACRAggregateTargetActionType = @"actiontype";
@@ -32,7 +32,7 @@ NSString *const ACRAggregateTargetFirstResponder = @"firstResponder";
             auto adaptiveSubmitAction = std::dynamic_pointer_cast<SubmitAction>(actionElement.element);
             _doValidation = adaptiveSubmitAction->GetAssociatedInputs() == AssociatedInputs::Auto;
         }
-        
+
         if (actionElement.type == ACRExecute) {
             auto adaptiveExecuteAction = std::dynamic_pointer_cast<ExecuteAction>(actionElement.element);
             _doValidation = adaptiveExecuteAction->GetAssociatedInputs() == AssociatedInputs::Auto;

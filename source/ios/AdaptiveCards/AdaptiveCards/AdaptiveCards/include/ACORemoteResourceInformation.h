@@ -1,1 +1,1 @@
-../ACORemoteResourceInformation.h
+../ ACORemoteResourceInformation.h

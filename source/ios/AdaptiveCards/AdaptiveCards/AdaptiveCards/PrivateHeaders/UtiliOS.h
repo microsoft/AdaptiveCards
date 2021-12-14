@@ -11,8 +11,8 @@
 #import <AdaptiveCards/ACRSeparator.h>
 #import <AdaptiveCards/ACRViewPrivate.h>
 #import <AdaptiveCards/BaseCardElement.h>
-#import <AdaptiveCards/StyledCollectionElement.h>
 #import <AdaptiveCards/RichTextElementProperties.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/TextRun.h>
 #import <AdaptiveCards/UnknownAction.h>

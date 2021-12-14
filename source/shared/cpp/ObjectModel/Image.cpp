@@ -9,8 +9,12 @@
 using namespace AdaptiveCards;
 
 Image::Image() :
-    BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
-    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(std::nullopt)
+    BaseCardElement(CardElementType::Image),
+    m_imageStyle(ImageStyle::Default),
+    m_imageSize(ImageSize::None),
+    m_pixelWidth(0),
+    m_pixelHeight(0),
+    m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -215,15 +219,16 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(Par
 
 void Image::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
 }
 
 void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

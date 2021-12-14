@@ -189,7 +189,7 @@ NSString *const ACROverflowTargetIsRootLevelKey = @"isAtRootLevel";
     BOOL shouldDisplay = YES;
     if ([_rootView.acrActionDelegate
             respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:additionalData:)]) {
-        NSDictionary *additionalData = @{ACROverflowTargetIsRootLevelKey: [NSNumber numberWithBool:_isAtRootLevel]};
+        NSDictionary *additionalData = @{ACROverflowTargetIsRootLevelKey : [NSNumber numberWithBool:_isAtRootLevel]};
         shouldDisplay = ![_rootView.acrActionDelegate onDisplayOverflowActionMenu:_menuItems
                                                                   alertController:_alert
                                                                    additionalData:additionalData];

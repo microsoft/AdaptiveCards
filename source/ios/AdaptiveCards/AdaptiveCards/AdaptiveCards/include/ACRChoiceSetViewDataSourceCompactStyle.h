@@ -1,1 +1,1 @@
-../PrivateHeaders/ACRChoiceSetViewDataSourceCompactStyle.h
+../ PrivateHeaders / ACRChoiceSetViewDataSourceCompactStyle.h

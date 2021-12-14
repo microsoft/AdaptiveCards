@@ -7,8 +7,8 @@
 //
 
 #import "AdaptiveFileBrowserSource.h"
-#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/Fact.h>
 #import <AdaptiveCards/FactSet.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>

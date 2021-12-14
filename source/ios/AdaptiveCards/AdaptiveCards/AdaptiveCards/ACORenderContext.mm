@@ -198,7 +198,7 @@
         [_verticalAlignmentContext addObject:[NSNumber numberWithInt:(int)(*properties.verticalAlignment)]];
         [contexts addObject:_verticalAlignmentContext];
     }
-    
+
     if (properties.style != ContainerStyle::None) {
         shouldPush = YES;
         [_styleContext addObject:[NSNumber numberWithInt:(int)(properties.style)]];
@@ -260,7 +260,7 @@
             if (cell->GetSelectAction()) {
                 properties.hasSelectAction = YES;
             }
-            
+
             properties.verticalAlignment = cell->GetVerticalContentAlignment();
             properties.style = cell->GetStyle();
         }
