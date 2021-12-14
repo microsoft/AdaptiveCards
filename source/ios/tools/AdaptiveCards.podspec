@@ -1,4 +1,4 @@
-od::Spec.new do |spec|
+Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
   spec.version          = '2.8.3'
