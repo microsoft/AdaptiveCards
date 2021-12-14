@@ -1,0 +1,31 @@
+---
+# this file work is a derivative of .clang-format which follows
+# https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md
+#
+Language:        Cpp
+BasedOnStyle:  Microsoft
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AlignEscapedNewlines: DontAlign
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterUnion: true
+  AfterExternBlock: false
+BreakConstructorInitializers: AfterColon
+CompactNamespaces: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^"(stdafx.h|pch.h|precomp.h)"$'
+    Priority: -1
+NamespaceIndentation: Inner
+PenaltyExcessCharacter: 1
+PointerAlignment: Left
+SortIncludes: false
+Standard: Cpp11
+UseTab: Never
+...

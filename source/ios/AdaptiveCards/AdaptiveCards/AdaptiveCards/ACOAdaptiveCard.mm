@@ -7,6 +7,7 @@
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOAuthenticationPrivate.h"
+#import "ACOBundle.h"
 #import "ACORefreshPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
@@ -78,11 +79,15 @@ using namespace AdaptiveCards;
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
-
+            NSBundle *adaptiveCardsBundle = [[ACOBundle getInstance] getBundle];
+            NSString *localizedFormat = NSLocalizedStringFromTableInBundle(@"AdaptiveCards.Parsing", nil, adaptiveCardsBundle, "Parsing Error Messages");
+            NSString *objectModelErrorCodeInString = [NSString stringWithCString:ErrorStatusCodeToString(errorStatusCode).c_str() encoding:NSUTF8StringEncoding];
+            NSDictionary<NSErrorUserInfoKey, id> *userInfo = @{NSLocalizedDescriptionKey : [NSString localizedStringWithFormat:localizedFormat, objectModelErrorCodeInString]};
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
-                                                  userInfo:nil];
+                                                  userInfo:userInfo];
             NSArray<NSError *> *errors = @[ parseError ];
+
             result = [[ACOAdaptiveCardParseResult alloc] init:nil errors:errors warnings:nil];
         }
     }

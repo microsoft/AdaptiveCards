@@ -68,6 +68,7 @@
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
 		6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B3A23192755A3EF00764971 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6B3A231B2755A3EF00764971 /* Localizable.strings */; };
 		6B421CC02101503E002F401A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		6B421CC121015EDD002F401A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */; };
 		6B5BA8BF2707BBD000719853 /* ACOWarning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BA8BE2707BBD000719853 /* ACOWarning.mm */; };
@@ -523,6 +524,7 @@
 		6B377283260194000024E527 /* ACRActionExecuteRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionExecuteRenderer.mm; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
+		6B3A231A2755A3EF00764971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6B5BA8BE2707BBD000719853 /* ACOWarning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOWarning.mm; sourceTree = "<group>"; };
 		6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
@@ -1038,6 +1040,7 @@
 				6B8C767726461F1A009548FA /* ACRTextUrlField.xib */,
 				6B8C767A26461F1A009548FA /* ACRToggleInputView.xib */,
 				6B8C766C26461F1A009548FA /* Images */,
+				6B3A231B2755A3EF00764971 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1874,6 +1877,7 @@
 				English,
 				en,
 				global,
+				Base,
 			);
 			mainGroup = F423C0AB1EE1FBA900905679;
 			productRefGroup = F423C0B61EE1FBA900905679 /* Products */;
@@ -1909,6 +1913,7 @@
 				6B8C768326461F1A009548FA /* ACRTextTelelphoneField.xib in Resources */,
 				6B8C768226461F1A009548FA /* ACRButtonExpandable.xib in Resources */,
 				6B92A7F22679750D00CAE3BF /* chevronup.svg in Resources */,
+				6B3A23192755A3EF00764971 /* Localizable.strings in Resources */,
 				6B8C768E26461F1A009548FA /* ACRChoiceSetCellChecked.xib in Resources */,
 				6B92A7F32679750D00CAE3BF /* chevrondown.svg in Resources */,
 				6B8C768A26461F1A009548FA /* ACRTextEmailField.xib in Resources */,
@@ -2216,6 +2221,17 @@
 			targetProxy = F423C0C01EE1FBAA00905679 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6B3A231B2755A3EF00764971 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6B3A231A2755A3EF00764971 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		F423C0C71EE1FBAA00905679 /* Debug */ = {

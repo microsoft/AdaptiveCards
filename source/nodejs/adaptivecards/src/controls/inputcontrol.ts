@@ -3,11 +3,11 @@
 export abstract class InputControl {
     private _rootElement: HTMLElement;
 
-    protected validateRootElement(rootElement: HTMLElement) {
+    protected validateRootElement(_rootElement: HTMLElement) {
         // Do nothing - all root element types are valid.
     }
 
-    protected keyDown(e: KeyboardEvent) {
+    protected keyDown(_e: KeyboardEvent) {
         // Do nothing in base implementation
     }
 
@@ -19,6 +19,8 @@ export abstract class InputControl {
         this.validateRootElement(rootElement);
 
         this._rootElement = rootElement;
-        this._rootElement.onkeydown = (e) => { this.keyDown(e); };
+        this._rootElement.onkeydown = (e) => {
+            this.keyDown(e);
+        };
     }
 }
