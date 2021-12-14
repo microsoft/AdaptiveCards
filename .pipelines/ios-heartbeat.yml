@@ -47,7 +47,7 @@ jobs:
     steps:
       - task: PkgESSendMail@10
         inputs:
-          to: 'joswo@microsoft.com'
+          to: 'adaptivecardscore@microsoft.com'
           subject: 'iOS Release Pipeline Health Check'
           bodyType: 'string'
           body: |
