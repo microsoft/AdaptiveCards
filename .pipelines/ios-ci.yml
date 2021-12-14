@@ -3,6 +3,15 @@
 # Add steps that install certificates, test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
 
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+
 schedules:
   - cron: "0 0 * * 6"
     displayName: testing
