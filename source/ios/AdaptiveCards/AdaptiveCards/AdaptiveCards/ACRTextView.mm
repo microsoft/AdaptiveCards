@@ -103,8 +103,7 @@
     dictionary[self.id] = _isShowingPlaceholder ? @"" : self.text;
 }
 
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *_Nullable)view
-{
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view {
     [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
@@ -129,11 +128,11 @@
     if (!_maxLength) {
         return YES;
     }
-
+    
     if (range.length + range.location > textView.text.length) {
         return NO;
     }
-
+    
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return newLength <= _maxLength;
 }
@@ -173,7 +172,7 @@
     CGRect boundingrect = [self.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
     boundingrect.size.height *= 4;
     self.frame = boundingrect;
-
+    
     if (bRemove) {
         self.text = @"";
     }

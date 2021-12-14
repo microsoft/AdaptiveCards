@@ -1,1 +1,1 @@
-../ AdaptiveCards.h
+../AdaptiveCards.h

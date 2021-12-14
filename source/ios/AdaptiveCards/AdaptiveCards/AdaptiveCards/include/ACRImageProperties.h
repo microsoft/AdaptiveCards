@@ -1,1 +1,1 @@
-../ ACRImageProperties.h
+../ACRImageProperties.h
