@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# clangFormat="c:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\x64\bin\clang-format.exe"
+if [ -z "$clangFormat" ]; then
+	clangFormat="clang-format"
+else
+	if [[ ! -f "$clangFormat" ]]; then
+		echo "Can't find the binary $clangFormat"
+		exit 1
+	fi
+fi
+
+"$clangFormat" --version
+if [ "$?" -ne "0" ]; then
+	echo "'git commit' aborted! Please make sure clangFormat is set correctly in pre-commit."
+	exit 1
+fi
+
+. "scripts/hooks/clangFormatFunc"
+
+checkFormat
+
+if [ "$?" -ne "0" ]; then
+	echo "start auto fix clang-format"
+	fixFormat
+	if [ "$?" -ne "0" ]; then
+		echo "'git commit' aborted! Clang-format auto fix failed, and you have to manually fix the format issue."
+	else
+		echo "'git commit' aborted! But clang-format auto fix success, please re-run 'git add' and 'git commit'."
+	fi
+	exit 1
+else
+	echo "clang-format check passed, and will continue the commit"
+fi
