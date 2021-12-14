@@ -200,35 +200,47 @@
             if ([_setOfExpectedToFailFiles containsObject:fileName]) {
                 XCTAssertFalse(cardParseResult.isValid);
             } else {
-                if (!cardParseResult.isValid) {
-                    NSException *e = [NSException exceptionWithName:@"ParseFailed" reason:@"Parsing Failed" userInfo:nil];
-                    @throw e;
-                }
-                XCTAssertTrue(cardParseResult.isValid);
+                [self assertParsing:cardParseResult fileName:fileName];
                 ACRRenderResult *renderResult;
                 @try {
                     renderResult = [ACRRenderer render:cardParseResult.card
                                                 config:nil
                                        widthConstraint:300
                                               delegate:nil];
-                    XCTAssertTrue(renderResult.succeeded);
+                    [self assertRendering:renderResult fileName:fileName];
                 }
                 @catch (NSException *exception) {
-                    NSString *exceptionMessage = [NSString stringWithFormat:@"%@", exception];
-                    printf("Render Failed while rendering %s\n%s", [fileName UTF8String], [exceptionMessage UTF8String]);
-                    XCTAssertTrue(NO);
+                    XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Exception in %@", fileName]];
+                    [self recordIssue:issue];
                 }
             }
         }
         @catch (NSException *exception) {
-            printf("Parsing Failed %s\n", [fileName UTF8String]);
-            for (NSError *parseError in cardParseResult.parseErrors) {
-                printf("%s\n", [parseError.userInfo[NSLocalizedDescriptionKey] UTF8String]);
-            }
-            XCTAssertTrue(NO);
+            [self assertParsing:cardParseResult fileName:fileName];
         }
     }
 }
+
+- (void)assertParsing:(ACOAdaptiveCardParseResult *)parseResult fileName:(NSString *)fileName
+{
+    if (!parseResult.isValid) {
+        NSMutableArray<NSString *> *errorMsgs = [[NSMutableArray alloc] init];
+        for (NSError *parseError in parseResult.parseErrors) {
+            [errorMsgs addObject:parseError.userInfo[NSLocalizedDescriptionKey]];
+        }
+        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@" %@ in %@", [errorMsgs componentsJoinedByString:@", "], fileName]];
+        [self recordIssue:issue];
+    }
+}
+
+- (void)assertRendering:(ACRRenderResult *)renderResult fileName:(NSString *)fileName
+{
+    if (!renderResult.succeeded) {
+        XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Failure in %@", fileName]];
+        [self recordIssue:issue];
+    }
+}
+
 - (void)testParsingAndRenderingAllCards
 {
     NSBundle *main = [NSBundle mainBundle];
