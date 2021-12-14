@@ -1,0 +1,56 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'npm install'
+  workingDirectory: source/nodejs
+
+- script: |
+    npm run verify --verbose
+  displayName: 'npm run verify --verbose'
+  workingDirectory: source/nodejs
+
+- bash: |
+    echo "##[command]Three ways to fix the format problem"
+    echo '##[command]1. powershell -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False'
+    echo "##[command]2. or cd source\nodejs, then npm run format --verbse"
+    echo "##[command]3. or download format.patch from pippeline, then git apply format.patch"
+  displayName: 'How to fix the format problem'
+  condition: failed()
+
+- script: |
+    npm run format --verbose
+  displayName: 'npm run format --verbose'
+  workingDirectory: source/nodejs
+  condition: failed()
+
+- script: |
+    git diff > format.patch
+  displayName: 'create format.patch'
+  condition: failed()
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'format.patch'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+  condition: failed()
+  
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: drop
+  condition: failed()
