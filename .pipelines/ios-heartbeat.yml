@@ -1,0 +1,65 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+trigger: none
+
+schedules:
+  - cron: "1 7 1,15 * *"
+    displayName: Send Heartbeat 
+    branches:
+      include:
+        - main
+jobs:
+  - job: specLint
+    displayName: 'check podspec health'
+    pool:
+      vmImage: 'macos-latest'
+    steps:
+        - template: templates/ios-spec-lint-template.yml
+
+  - job: unitTest
+    displayName: 'check code health'
+    pool:
+      vmImage: 'macos-latest'
+    steps:
+        - template: templates/ios-ci-template.yml
+
+  - job: certificateCheck
+    displayName: 'check certificate health'
+    pool:
+      vmImage: 'macos-latest'
+    steps:
+        - template: templates/ios-install-cert-template.yml
+
+  - job: 
+    pool: 
+      vmImage: 'windows-latest'
+    displayName: 'collect result'
+    dependsOn: 
+    - specLint
+    - unitTest
+    - certificateCheck
+    condition: always() 
+    variables:
+        j1: $[dependencies.specLint.result]
+        j2: $[dependencies.unitTest.result]
+        j3: $[dependencies.certificateCheck.result]
+    steps:
+      - task: PkgESSendMail@10
+        inputs:
+          to: 'adaptivecardscore@microsoft.com'
+          subject: 'iOS Release Pipeline Health Check'
+          bodyType: 'string'
+          body: |
+            <!DOCTYPE html>
+            <html>
+            <body>
+            <h2>iOS Release Pipeline Health Check Report</h2>
+            <ol>
+            <li>spec linting check has $(j1)</li>
+            <li>code health check has $(j2)</li>
+            <li>certificate check has $(j3)</li>
+            </ol>
+            </body>
+            </html>
+          isHtml: true
