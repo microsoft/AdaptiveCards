@@ -171,7 +171,5 @@ void StyleTextElement(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     xamlTextElement.FontWeight(xamlFontWeight);
 
     // Apply font family
-    // TODO: I can just pass hstring to fontFamily setter, it should construct the object right?
-    rtxaml::Media::FontFamily fontFamily{fontFamilyName};
-    xamlTextElement.FontFamily(fontFamily);
+    xamlTextElement.FontFamily(rtxaml::Media::FontFamily{fontFamilyName});
 }
