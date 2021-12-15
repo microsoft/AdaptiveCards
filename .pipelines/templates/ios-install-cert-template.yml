@@ -1,0 +1,20 @@
+steps:
+- task: InstallAppleCertificate@2
+  displayName: 'Install Certificates'
+  inputs:
+    certSecureFile: 'Certificates_Nov_19_B.p12' 
+    certPwd: '$(P12password)'
+    keychain: 'temp'
+
+- task: InstallAppleProvisioningProfile@1
+  displayName: 'Install Provisioning Profile'
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'a5e2ba07-6d9f-4254-abf0-ad59b7effefa.mobileprovision'
+
+- template: ios-build-template.yml
+  parameters:
+    sdk: iphoneos
+    signingOption: auto
+    packageApp: true
+    configuration: Release
