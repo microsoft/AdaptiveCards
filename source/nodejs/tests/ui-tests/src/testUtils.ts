@@ -5,6 +5,7 @@ import * as Assert from "assert";
 
 export class TestUtils {
     driver: Webdriver.WebDriver;
+    timeoutForCardRendering: number = 10000;
 
     constructor(driver: Webdriver.WebDriver) {
         this.driver = driver;
@@ -13,6 +14,10 @@ export class TestUtils {
     async goToTestCase(testCaseName: string): Promise<void> {
         const elementLinkText: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.id(testCaseName));
         await elementLinkText.click();
+
+        const renderedCardContainer: Webdriver.WebElement = await this.getElementWithId("renderedCardSpace");
+
+        await this.driver.wait(Webdriver.until.elementIsVisible(renderedCardContainer), this.timeoutForCardRendering);
     }
 
     async tryGetActionWithTitle(actionTitle: string): Promise<Webdriver.WebElement | null> {
@@ -22,7 +27,7 @@ export class TestUtils {
     }
 
     async getActionWithTitle(actionTitle: string): Promise<Webdriver.WebElement> {
-        const button: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.xpath(`//*[@aria-label='${actionTitle}']`));
+        const button: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.xpath(`//*[@title='${actionTitle}']`));
 
         return button;
     }
@@ -81,6 +86,10 @@ export class TestUtils {
     async assertElementWithIdDoesNotExist(id: string): Promise<void> {
         const elementList = await this.driver.findElements(Webdriver.By.id(id));
         Assert.strictEqual(0, elementList.length);
+    }
+
+    async getElementsWithId(id: string): Promise<Webdriver.WebElement[]> {
+        return this.driver.findElements(Webdriver.By.id(id));
     }
 
     async getElementWithId(id: string): Promise<Webdriver.WebElement> {
