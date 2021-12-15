@@ -29,6 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         if (!regex.empty() || isRequired)
         {
             validationBorder = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
+            textBoxParentContainer = validationBorder;
         }
 
         // If this input has an inline action, render it next to the input
@@ -55,7 +56,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         rtxaml::UIElement inputLayout{nullptr};
 
         std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
-            adaptiveTextInput, inputUIElement, !regex.empty(), renderContext, false);
+            adaptiveTextInput, textBoxParentContainer, !regex.empty(), renderContext, false);
 
         return {inputLayout, validationBorder};
     }
