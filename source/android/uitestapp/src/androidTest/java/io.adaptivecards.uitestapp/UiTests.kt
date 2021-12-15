@@ -71,6 +71,7 @@ class UiTests {
         }
 
         override fun handle(error: Throwable, viewMatcher: Matcher<View>) {
+            /*
             mActivityRule.scenario.onActivity {
                 var cardLayout : View
 
@@ -84,6 +85,7 @@ class UiTests {
 
                 Log.e("Error view hierarchy", viewHierarchy)
             }
+             */
 
             delegate.handle(error, viewMatcher)
         }
@@ -101,38 +103,38 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun SmokeTestActivityUpdate() {
-        Espresso.onData(Matchers.`is`("ActivityUpdateWithLabels.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("ActivityUpdateWithLabels.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
-        Espresso.onView(ViewMatchers.withText("SET DUE DATE")).perform(ViewActions.click())
+        onView(ViewMatchers.withText("SET DUE DATE")).perform(ViewActions.click())
 
         // Set dueDate
-        Espresso.onView(ViewMatchers.withTagValue(Matchers.`is`(TagContent("dueDate")))).perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.click())
-        Espresso.onView(ViewMatchers.isAssignableFrom(DatePicker::class.java)).perform(PickerActions.setDate(2021, 2, 4))
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        onView(ViewMatchers.withTagValue(Matchers.`is`(TagContent("dueDate")))).perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.click())
+        onView(ViewMatchers.isAssignableFrom(DatePicker::class.java)).perform(PickerActions.setDate(2021, 2, 4))
+        onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
 
         // Click ok submit action
-        Espresso.onView(Matchers.allOf(ViewMatchers.withText("OK"), ViewMatchers.isDisplayed())).perform(ViewActions.scrollTo(), ViewActions.click())
+        onView(Matchers.allOf(ViewMatchers.withText("OK"), ViewMatchers.isDisplayed())).perform(ViewActions.scrollTo(), ViewActions.click())
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("dueDate", "2021-02-04"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onData(Matchers.`is`(RetrievedInput("dueDate", "2021-02-04"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     @Throws(Exception::class)
     fun RenderedMarkdownStartsWithRightNumber() {
-        Espresso.onData(Matchers.`is`("TextBlock.Markdown.NumberStart.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("TextBlock.Markdown.NumberStart.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
-        Espresso.onView(ViewMatchers.withText("1. First item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("2. Second item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("3. Third item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(ViewMatchers.withText("1. First item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(ViewMatchers.withText("2. Second item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(ViewMatchers.withText("3. Third item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withText("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(ViewMatchers.withText("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetCanFindSubstrings() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
@@ -149,7 +151,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetIgnoresCase() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
@@ -166,7 +168,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetCanFindPrefix() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "braz" to try to find brazillian
@@ -185,7 +187,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetCanFindSuffix() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "cuda" to try to find barracuda
@@ -202,7 +204,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetShowsAllElementsWhenEmpty() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text
@@ -221,7 +223,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetShowsAllElementsOnClick() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset and delete all text
@@ -248,7 +250,7 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun TestFilteredChoiceSetMaintainsAllChoices() {
-        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset and type "parrot"
@@ -257,12 +259,10 @@ class UiTests {
         // Select and option to remove popup
         TestHelpers.selectPopupOption("Mexican Parrotlet")
 
-        Thread.sleep(3000)
-
         // Click again on the choiceset and type "stygobromid", as there's only one result it
         // should have not appeared in the "parrot" query but it should still show up to verify
         // that options are not accidentally deleted when searching
-        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "stygobromid");
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "stygobromid", true);
 
         TestHelpers.selectPopupOption("Alabama stygobromid")
 

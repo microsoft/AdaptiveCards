@@ -2,59 +2,85 @@
 // Licensed under the MIT License.
 package io.adaptivecards.uitestapp
 
+import android.util.Log
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.util.HumanReadables
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 
 import io.adaptivecards.renderer.TagContent
 import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput
+import org.hamcrest.CoreMatchers.anything
 import org.hamcrest.Matchers
+import java.util.concurrent.TimeUnit
 
 object TestHelpers {
     internal fun goToTestCasesScreen() {
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_test_cases)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.navigation_test_cases)).perform(ViewActions.click())
     }
 
     internal fun goToRenderedCardScreen() {
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_rendered_card)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.navigation_rendered_card)).perform(ViewActions.click())
     }
 
     internal fun goToInputsScreen() {
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_inputs)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.navigation_inputs)).perform(ViewActions.click())
     }
 
     internal fun findInputInValidatedContainer(validatedContainerTagId : String) : ViewInteraction {
-        return Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent(validatedContainerTagId)))));
+        // wait during 15 seconds for a view
+        onView(isRoot()).perform(waitTagId(validatedContainerTagId, TimeUnit.SECONDS.toMillis(15)));
+
+        return onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent(validatedContainerTagId)))));
     }
 
     internal fun clearTextInInput(input : ViewInteraction) {
         input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText());
     }
 
-    internal fun setTextInInput(input : ViewInteraction, text : String) {
-        input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText(), ViewActions.typeText(text));
+    internal fun setTextInInput(input : ViewInteraction, text : String, inputAlreadyHasFocus : Boolean = false) {
+        input.perform(ViewActions.scrollTo())
+        if (!inputAlreadyHasFocus)
+        {
+            input.perform(ViewActions.click())
+        }
+
+        input.perform(ViewActions.clearText(), ViewActions.typeText(text));
     }
 
     internal fun selectPopupOption(optionText : String) {
         var success = false
+        var e2 = Exception("Failed to click");
         for (i in 0 .. 5) {
             try {
-                Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup())
+                Espresso.onData(anything())
+                    .atPosition(0)
+                    .inRoot(RootMatchers.isPlatformPopup())
+                    .check(ViewAssertions.matches(isDisplayed()));
+
+                Espresso.onData(Matchers.`is`(optionText))
+                    .inRoot(RootMatchers.isPlatformPopup())
                     .perform(ViewActions.scrollTo(), ViewActions.click())
+
+                Thread.sleep(1000);
+
                 success = true
                 return
             }
             catch (e: Exception) {
+                e2 = e;
+                Log.println(Log.ERROR, "Not found", e.toString());
                 Thread.sleep(1000);
             }
         }
 
         if (!success){
-            throw Exception("Failed to click on action");
+            throw e2;
         }
     }
 
@@ -63,6 +89,6 @@ object TestHelpers {
     }
 
     internal fun assertInputValuePairExists(inputId : String, value : String) {
-        Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value))).check(ViewAssertions.matches(isDisplayed()))
     }
 }
