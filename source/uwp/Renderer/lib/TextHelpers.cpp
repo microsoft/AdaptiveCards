@@ -327,6 +327,8 @@ uint32_t AddLinkInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                                           node,
                                           TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, true),
                                           hyperlinkInlines);
+
+    inlines.Append(hyperlink);
     return characterLength;
 }
 
@@ -372,7 +374,7 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     {
         winrt::hstring nodeName = childNode.NodeName();
 
-        bool isLinkResult = nodeName == L"A";
+        bool isLinkResult = nodeName == L"a";
         bool isBoldResult = nodeName == L"strong";
         bool isItalicResult = nodeName == L"em";
         bool isTextResult = nodeName == L"#text";
