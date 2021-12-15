@@ -30,11 +30,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto xamlBlocks = xamlRichTextBlock.Blocks();
 
             rtxaml::Documents::Paragraph xamlParagraph{};
+            xamlBlocks.Append(xamlParagraph);
 
             // Add the Inlines
             uint32_t currentOffset = 0;
 
             auto xamlInlines = xamlParagraph.Inlines();
+
 
             auto adaptiveInlines = adaptiveRichTextBlock.Inlines();
 
