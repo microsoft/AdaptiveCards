@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { getTestCasesList } from "./file-retriever-utils";
-import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SubmitAction } from "adaptivecards";
+import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
 export function listAllFiles(): HTMLLIElement[] {
@@ -33,6 +33,9 @@ export function listAllFiles(): HTMLLIElement[] {
 }
 
 export async function readAndRenderCard(fileName: string, callbackFunction: Function) {
+    const retrievedInputsDiv: HTMLElement = document.getElementById("renderedCardSpace");
+    retrievedInputsDiv.style.visibility = "hidden";
+    
     const response = await fetch(`samples/${fileName}`);
 
     let jsonToRender: any;
@@ -56,6 +59,8 @@ export async function readAndRenderCard(fileName: string, callbackFunction: Func
     }
 
     renderCard(jsonToRender, callbackFunction);
+
+    retrievedInputsDiv.style.visibility = "visible";
 }
 
 export function renderCard(cardJson: any, callbackFunction: Function): void {
@@ -104,7 +109,10 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
     };
 
     // Parse the card payload
-    adaptiveCard.parse(cardJson);
+    const context: SerializationContext = new SerializationContext();
+    context.targetVersion = Versions.v1_6;
+
+    adaptiveCard.parse(cardJson, context);
 
     // Render the card to an HTML element:
     callbackFunction(adaptiveCard.render());
