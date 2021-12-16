@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
+import androidx.test.espresso.idling.CountingIdlingResource;
+
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -502,6 +504,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                     FilterResults filterResults = new FilterResults();
 
+                    CountingIdlingResource idlingResource = CardRendererRegistration.getInstance().getIdlingResource();
+                    if (idlingResource != null) {
+                        idlingResource.increment();
+                    }
+
                     // Due to the time it takes for evaluating all options, this part of the code has
                     // to be synchronized, otherwise the worker thread that calls the publishResults
                     // function will throw an illegalstateexception or a concurrentmodificationexception
@@ -537,6 +544,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                         filterResults.values = filteredSuggestions;
                         filterResults.count = filteredSuggestions.size();
+
+                        if (idlingResource != null)
+                        {
+                            idlingResource.decrement();
+                        }
 
                         return filterResults;
                     }

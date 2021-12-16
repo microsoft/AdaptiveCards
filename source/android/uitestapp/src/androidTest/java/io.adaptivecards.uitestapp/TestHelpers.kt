@@ -4,6 +4,7 @@ package io.adaptivecards.uitestapp
 
 import android.util.Log
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
@@ -34,23 +35,27 @@ object TestHelpers {
 
     internal fun findInputInValidatedContainer(validatedContainerTagId : String) : ViewInteraction {
         // wait during 15 seconds for a view
-        onView(isRoot()).perform(waitTagId(validatedContainerTagId, TimeUnit.SECONDS.toMillis(15)));
+        onView(isRoot()).perform(waitTagId(validatedContainerTagId, TimeUnit.SECONDS.toMillis(10)));
 
         return onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent(validatedContainerTagId)))));
     }
 
-    internal fun clearTextInInput(input : ViewInteraction) {
-        input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText());
-    }
-
-    internal fun setTextInInput(input : ViewInteraction, text : String, inputAlreadyHasFocus : Boolean = false) {
+    private fun moveToTextInput(input: ViewInteraction, inputAlreadyHasFocus: Boolean = false) {
         input.perform(ViewActions.scrollTo())
         if (!inputAlreadyHasFocus)
         {
             input.perform(ViewActions.click())
         }
+    }
 
-        input.perform(ViewActions.clearText(), ViewActions.typeText(text));
+    internal fun clearTextInInput(input : ViewInteraction, inputAlreadyHasFocus: Boolean = false) {
+        moveToTextInput(input, inputAlreadyHasFocus);
+        input.perform(ViewActions.clearText());
+    }
+
+    internal fun setTextInInput(input : ViewInteraction, text : String, inputAlreadyHasFocus : Boolean = false) {
+        clearTextInInput(input, inputAlreadyHasFocus);
+        input.perform(ViewActions.typeText(text));
     }
 
     internal fun selectPopupOption(optionText : String) {
@@ -58,16 +63,16 @@ object TestHelpers {
         var e2 = Exception("Failed to click");
         for (i in 0 .. 5) {
             try {
-                Espresso.onData(anything())
+                onData(anything())
                     .atPosition(0)
                     .inRoot(RootMatchers.isPlatformPopup())
                     .check(ViewAssertions.matches(isDisplayed()));
 
-                Espresso.onData(Matchers.`is`(optionText))
+                onData(Matchers.`is`(optionText))
                     .inRoot(RootMatchers.isPlatformPopup())
                     .perform(ViewActions.scrollTo(), ViewActions.click())
 
-                Thread.sleep(1000);
+                Thread.sleep(TimeUnit.SECONDS.toMillis(1));
 
                 success = true
                 return
@@ -75,7 +80,7 @@ object TestHelpers {
             catch (e: Exception) {
                 e2 = e;
                 Log.println(Log.ERROR, "Not found", e.toString());
-                Thread.sleep(1000);
+                Thread.sleep(TimeUnit.SECONDS.toMillis(1))
             }
         }
 
@@ -85,10 +90,10 @@ object TestHelpers {
     }
 
     internal fun clickOnElementWithText(text : String) {
-        Espresso.onView(ViewMatchers.withText(text)).perform(ViewActions.click())
+        onView(ViewMatchers.withText(text)).perform(ViewActions.click())
     }
 
     internal fun assertInputValuePairExists(inputId : String, value : String) {
-        Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value))).check(ViewAssertions.matches(isDisplayed()))
+        onData(Matchers.`is`(RetrievedInput(inputId, value))).check(ViewAssertions.matches(isDisplayed()))
     }
 }

@@ -14,6 +14,7 @@ import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.AdaptiveCardRenderer
 import io.adaptivecards.renderer.RenderedAdaptiveCard
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler
+import io.adaptivecards.renderer.registration.CardRendererRegistration
 import io.adaptivecards.uitestapp.R
 import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput
 import io.adaptivecards.uitestapp.ui.test_cases.TestCasesViewModel
@@ -26,6 +27,7 @@ class RenderedCardFragment : Fragment(), ICardActionHandler {
     private var mRenderedCardViewModel: RenderedCardViewModel? = null
     private var mTestCasesViewModel: TestCasesViewModel? = null
     private var mCardContainer: LinearLayout? = null
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mRenderedCardViewModel = ViewModelProvider(requireActivity()).get(RenderedCardViewModel::class.java)
@@ -63,6 +65,10 @@ class RenderedCardFragment : Fragment(), ICardActionHandler {
                 val parseResult = AdaptiveCard.DeserializeFromString(adaptiveCardContents,
                         AdaptiveCardRenderer.VERSION)
                 mCardContainer!!.removeAllViews()
+
+                // Register the idling resource for testing filtered choicesets
+                CardRendererRegistration.getInstance().registerIdlingResource(mRenderedCardViewModel!!.idlingResource.value);
+
                 val renderedCard = AdaptiveCardRenderer.getInstance().render(context,
                         activity!!.supportFragmentManager,
                         parseResult.GetAdaptiveCard(),

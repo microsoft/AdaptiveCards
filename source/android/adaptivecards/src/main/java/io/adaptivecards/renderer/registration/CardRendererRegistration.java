@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -613,6 +614,16 @@ public class CardRendererRegistration
         return null;
     }
 
+    public void registerIdlingResource(CountingIdlingResource countingIdlingResource)
+    {
+        m_idlingResource = countingIdlingResource;
+    }
+
+    public CountingIdlingResource getIdlingResource()
+    {
+        return m_idlingResource;
+    }
+
     private static CardRendererRegistration s_instance = null;
     private IInputWatcher m_InputWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
@@ -624,4 +635,5 @@ public class CardRendererRegistration
     private FeatureRegistration m_featureRegistration = null;
     private IOverflowActionRenderer m_overflowActionRenderer =null;
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
+    private CountingIdlingResource m_idlingResource = null;
 }
