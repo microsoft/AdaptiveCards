@@ -410,13 +410,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         {
             // For multiselect, gather all the inputs in a comma delimited list
             std::string multiSelectValues;
-
             for (auto element : panelChildren)
             {
                 if (XamlHelpers::GetToggleValue(element))
                 {
-                    multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index++) + ",";
+                    multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index) + ",";
                 }
+                index++;
             }
 
             if (!multiSelectValues.empty())
@@ -428,17 +428,19 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         else
         {
             // Look for the single selected choice
+            uint32_t selectedIndex = -1;
             for (auto element : panelChildren)
             {
                 if (XamlHelpers::GetToggleValue(element))
                 {
+                    selectedIndex = index;
                     break;
                 }
                 index++;
             }
 
             // TODO: Bad readability right?
-            return UTF8ToHString(GetChoiceValue(m_adaptiveChoiceSetInput, index));
+            return UTF8ToHString(GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex));
         }
     }
 
