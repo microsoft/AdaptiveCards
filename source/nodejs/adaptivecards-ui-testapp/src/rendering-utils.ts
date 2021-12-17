@@ -33,8 +33,8 @@ export function listAllFiles(): HTMLLIElement[] {
 }
 
 export async function readAndRenderCard(fileName: string, callbackFunction: Function) {
-    const retrievedInputsDiv: HTMLElement = document.getElementById("renderedCardSpace");
-    retrievedInputsDiv.style.visibility = "hidden";
+    const renderedCardSpaceDiv: HTMLElement = document.getElementById("renderedCardSpace");
+    renderedCardSpaceDiv.style.visibility = "hidden";
     
     const response = await fetch(`samples/${fileName}`);
 
@@ -59,8 +59,6 @@ export async function readAndRenderCard(fileName: string, callbackFunction: Func
     }
 
     renderCard(jsonToRender, callbackFunction);
-
-    retrievedInputsDiv.style.visibility = "visible";
 }
 
 export function renderCard(cardJson: any, callbackFunction: Function): void {
@@ -98,6 +96,7 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
 
         const retrievedInputsDiv: HTMLElement = document.getElementById("retrievedInputsDiv");
         retrievedInputsDiv.innerHTML = inputsAsJson;
+        retrievedInputsDiv.style.visibility = "visible";
     };
 
     // For markdown support you need a third-party library
@@ -122,4 +121,5 @@ export function cardRenderedCallback(renderedCard: HTMLElement) {
     const renderedCardDiv = document.getElementById("renderedCardSpace");
     renderedCardDiv.innerHTML = "";
     renderedCardDiv.appendChild(renderedCard);
+    renderedCardDiv.style.visibility = "visible";
 }

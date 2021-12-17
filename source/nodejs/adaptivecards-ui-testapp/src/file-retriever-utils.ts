@@ -3,7 +3,9 @@
 const v10TestCases: string[] = ['Scenarios/ActivityUpdate'];
 const v11TestCases: string[] = [];
 const v12TestCases: string[] = [];
-const v13TestCases: string[] = ['Elements/Input.Text.ErrorMessage'];
+const v13TestCases: string[] = [
+    'Elements/Input.Text.ErrorMessage', 'Elements/Input.Number.ErrorMessage'
+];
 const v14TestCases: string[] = [];
 const v15TestCases: string[] = [];
 const v16TestCases: string[] = [

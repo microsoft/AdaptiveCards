@@ -2,19 +2,20 @@
 // Licensed under the MIT License.
 import * as Assert from "assert";
 import { assert } from "console";
-import * as Webdriver from "selenium-webdriver";
-import * as TestUtils from "./testUtils";
+import { util } from "prettier";
+import { By, WebElement } from "selenium-webdriver";
+import { Action, Carousel, InputDate, InputText } from "./card-element-utils";
+import { TestUtils } from "./test-utils";
 
 describe("Mock function", function() {
-    let driver: Webdriver.WebDriver;
-    let testUtils: TestUtils.TestUtils;
+    let utils: TestUtils;
 
     // This is a constant value for the wait time between pressing an action and retrieving
     // the input value. Only use this if you see some test flakiness. Value is given in ms
     const delayForInputRetrieval: number = 500;
     const delayForCarouselArrows: number = 1000;
     const delayForCarouselTimer: number = 5500;
-    const timeOutValueForCarousel: number = 9000;
+    const timeOutValueForCarousel: number = 30000;
     const timeOutValueForSuddenJumpTest: number = 20000;
 
     // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
@@ -23,184 +24,174 @@ describe("Mock function", function() {
     const timeoutForServerStartupInCIBuild: number = 600000;
 
     beforeAll(async() => {
-        driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
-        await driver.get("http://127.0.0.1:8080/");
-
-        testUtils = new TestUtils.TestUtils(driver);
+        utils = TestUtils.getInstance();
+        utils.initializeDriver();
     }, timeoutForServerStartupInCIBuild);
 
     afterAll(async() => {
-        if (driver) {
-            await driver.quit();
-        }
+        await utils.stopDriver();
     });
 
     test("Test ActivityUpdate submit", (async() => {
-        await testUtils.goToTestCase("v1.0/ActivityUpdate");
+        await utils.goToTestCase("v1.0/ActivityUpdate");
 
-        await testUtils.clickOnActionWithTitle("Set due date");
+        await utils.clickOnActionWithTitle("Set due date");
 
-        await testUtils.setDateOnDateInput("dueDate", "02041993");
-        await testUtils.setTextOnTextInput("comment", "A comment");
+        let dueDateInput = await InputDate.getInputWithId("dueDate");
+        await dueDateInput.setData("02041993");
 
-        await testUtils.clickOnActionWithTitle("OK");
+        let commentInput = await InputText.getInputWithId("comment");
+        await commentInput.setData("A comment");
 
-        const dueDateRetrievedValue: string = await testUtils.getInputFor("dueDate");
-        Assert.strictEqual("1993-02-04", dueDateRetrievedValue);
+        let okAction = await Action.getActionWithTitle("OK");
+        await okAction.click();
 
-        const commentRetrievedValue: string = await testUtils.getInputFor("comment");
-        Assert.strictEqual("A comment", commentRetrievedValue);
+        const dueDateRetrievedValue: string = await utils.getInputFor("dueDate");
+        Assert.strictEqual(dueDateRetrievedValue, "1993-02-04");
+
+        const commentRetrievedValue: string = await utils.getInputFor("comment");
+        Assert.strictEqual(commentRetrievedValue, "A comment");
     }));
 
     test("Test TextInput get focus on invalid submit", (async() => {
-        await testUtils.goToTestCase("v1.3/Input.Text.ErrorMessage");
+        await utils.goToTestCase("v1.3/Input.Text.ErrorMessage");
 
-        await testUtils.clickOnActionWithTitle("Submit");
+        let commentInput = await InputText.getInputWithId("id1");
 
-        const firstInput: Webdriver.WebElement = await testUtils.getTextInput("id1");
+        let commentInputIsFocused = await commentInput.isFocused()
 
-        const firstInputId: string = await firstInput.getAttribute("id");
-        const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");
+        Assert.strictEqual(commentInputIsFocused, false);
 
-        Assert.strictEqual(firstInputId, activeElementId);
+        let submitAction = await Action.getActionWithTitle("Submit");
+        await submitAction.click();
+
+        commentInputIsFocused = await commentInput.isFocused()
+
+        Assert.strictEqual(commentInputIsFocused, true);
     }));
 
     test("Test actions are rendered and active below carousel", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
+        await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
-        await testUtils.clickOnActionWithTitle("See more");
+        let seeMoreAction = await Action.getActionWithTitle("See more");
+        await seeMoreAction.click();
 
-        await testUtils.delay(delayForInputRetrieval);
-
-        const url: string = await testUtils.getInputFor("url");
-        Assert.strictEqual("https://adaptivecards.io", url);
+        const url: string = await utils.getInputFor("url");
+        Assert.strictEqual(url, "https://adaptivecards.io");
     }));
 
     test("Test page limit is honoured", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
+        await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
-        await testUtils.assertElementWithIdDoesNotExist("page10");
+        await utils.assertElementWithIdDoesNotExist("page10");
     }));
 
     test("Unsupported elements are not rendered", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.ForbiddenElements");
+        await utils.goToTestCase("v1.6/Carousel.ForbiddenElements");
 
-        await testUtils.assertElementWithIdDoesNotExist("id1");
-        await testUtils.assertElementWithIdDoesNotExist("id2");
-        await testUtils.assertElementWithIdDoesNotExist("id3");
-        await testUtils.assertElementWithIdDoesNotExist("id4");
-        await testUtils.assertElementWithIdDoesNotExist("id5");
-        await testUtils.assertElementWithIdDoesNotExist("id6");
-        await testUtils.assertElementWithIdDoesNotExist("id7");
+        await utils.assertElementWithIdDoesNotExist("id1");
+        await utils.assertElementWithIdDoesNotExist("id2");
+        await utils.assertElementWithIdDoesNotExist("id3");
+        await utils.assertElementWithIdDoesNotExist("id4");
+        await utils.assertElementWithIdDoesNotExist("id5");
+        await utils.assertElementWithIdDoesNotExist("id6");
+        await utils.assertElementWithIdDoesNotExist("id7");
     }));
 
     test("Verify left and right buttons in carousel work", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards");
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstCarouselPageVisibility: string = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
+        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
 
-        const rightArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-right"));
-        await rightArrow.click();
+        await Carousel.clickOnRightArrow();
 
-        await testUtils.delay(delayForCarouselArrows);
+        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage", 6000);
 
-        const secondCarouselPageVisibility: string =
-            await testUtils.getCssPropertyValueForElementWithId("theSecondCarouselPage", "visibility");
-        Assert.strictEqual("visible", secondCarouselPageVisibility);
+        let secondPageIsVisible = await Carousel.isPageVisible("theSecondCarouselPage");
+        Assert.strictEqual(secondPageIsVisible, true);
 
-        const leftArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-left"));
-        await leftArrow.click();
+        await Carousel.waitForAnimationsToEnd();
+        await Carousel.clickOnLeftArrow();
 
-        await testUtils.delay(delayForCarouselArrows);
+        await utils.waitUntilElementIsCssVisible("firstCarouselPage");
 
-        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
-    }));
+        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+    }), timeOutValueForSuddenJumpTest);
 
     test("Unsupported actions are not rendered", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.ForbiddenActions");
+        await utils.goToTestCase("v1.6/Carousel.ForbiddenActions");
 
-        const showCardAction = await testUtils.tryGetActionWithTitle("Action.ShowCard");
-        Assert.strictEqual(null, showCardAction);
+        let showCardAction = await Action.getActionWithTitle("Action.ShowCard");
+        Assert.strictEqual(showCardAction.elementWasFound(), false);
 
-        const toggleVisibilityAction = await testUtils.tryGetActionWithTitle("Action.ToggleVisibility");
-        Assert.strictEqual(null, toggleVisibilityAction);
+        let toggleVisibilityAction = await Action.getActionWithTitle("Action.ToggleVisibility");
+        Assert.strictEqual(toggleVisibilityAction.elementWasFound(), false);
     }));
 
     // Giving this test 7 seconds to run
     test("Test autoplay is disabled", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards");
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstCarouselPageVisibility: string = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
+        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify no change happened
-        await testUtils.delay(5000);
+        await utils.delay(5000);
 
-        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
+        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
     }), 7000);
 
     // Giving this test 9 seconds to run
     test("Test autoplay is applied", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
-        let firstCarouselPageVisibility: string = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
+        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify the first page is now hidden
-        await testUtils.delay(7000);
+        await utils.waitUntilElementIsNotVisible("firstCarouselPage");
 
-        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("hidden", firstCarouselPageVisibility);
+        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
 
-        const secondCarouselPageVisibility: string =
-            await testUtils.getCssPropertyValueForElementWithId("theSecondCarouselPage", "visibility");
-        Assert.strictEqual("visible", secondCarouselPageVisibility);
+        let secondPageIsVisible = await Carousel.isPageVisible("theSecondCarouselPage");
+        Assert.strictEqual(secondPageIsVisible, true);
     }), timeOutValueForCarousel);
 
     test("Test click on navigation does not cause sudden jump", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel");
+        await utils.goToTestCase("v1.6/Carousel");
 
-        let firstCarouselPageVisibility: string = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-
-        Assert.strictEqual("visible", firstCarouselPageVisibility);
+        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
 
         // wait for 2 pages to turn
-        await testUtils.delay(delayForCarouselTimer * 2);
+        await utils.waitUntilElementIsCssVisible("last-carousel-page", 12000);
 
-        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("hidden", firstCarouselPageVisibility);
+        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
 
-        // Due to how the swiper library is made, the first and last pages are duplicated, if we were to use the regular
-        // getElementWithId method we would retrieve the duplicated slide, so we have to get the second element with that id
-
-        const lastPages = await testUtils.getElementsWithId("last-carousel-page");
-        Assert.strictEqual(lastPages.length, 2);
-
-        const thirdCarouselPageVisibility: string =
-            await testUtils.getCssPropertyValueForElement(lastPages[1], "visibility");
-        Assert.strictEqual("visible", thirdCarouselPageVisibility);
+        let lastPageIsVisible = await Carousel.isPageVisible("last-carousel-page");
+        Assert.strictEqual(lastPageIsVisible, true);
 
         // cause the page to go the 2nd page
-        const leftArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-left"));
-        await leftArrow.click();
-        await testUtils.delay(delayForCarouselArrows);
+        await Carousel.waitForAnimationsToEnd();
+        await Carousel.clickOnLeftArrow();
+
+        await utils.waitUntilElementIsVisible("theSecondCarouselPage");
 
         // make sure firstCarouselPage is hidden
-        firstCarouselPageVisibility = await testUtils.getCssPropertyValueForElementWithId("firstCarouselPage", "visibility");
-        Assert.strictEqual("hidden", firstCarouselPageVisibility);
+        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
     }), timeOutValueForSuddenJumpTest);
 
     test("Test rtl on carousel", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.rtl");
+        await utils.goToTestCase("v1.6/Carousel.rtl");
 
         for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
-            const pageElement = await testUtils.getElementWithId(page[0]);
-            const pageContainer = pageElement.findElement(Webdriver.By.xpath("./*"));
-            const pageDirection: string = await pageContainer.getAttribute("dir");
+            const pageDirection = await Carousel.getPageDirection(page[0])
             Assert.strictEqual(pageDirection, page[1]);
         }
         
