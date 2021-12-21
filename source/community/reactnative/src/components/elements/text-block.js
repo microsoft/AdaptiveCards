@@ -45,7 +45,6 @@ export class TextBlock extends React.Component {
 
 const styles = StyleSheet.create({
 	textContainer: {
-		width: Constants.FullWidth,
 		alignItems: Constants.CenterString,
 		backgroundColor: 'transparent',
 	},

@@ -58,7 +58,143 @@ export default class Renderer extends React.Component {
             medium: 17,
             large: 21,
             extraLarge: 26
-        }
+        },
+        spacing: {
+            small: 3,
+            default: 8,
+            medium: 20,
+            large: 30,
+            extraLarge: 40,
+            padding: 10
+        },
+        "separator": {
+            "lineThickness": 1,
+            "lineColor": "#EEEEEE"
+        },
+        "containerStyles": {
+            "default": {
+                "foregroundColors": {
+                    "default": {
+                        "default": "#000000",
+                        "subtle": "#6f6f6f",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "dark": {
+                        "default": "#000000",
+                        "subtle": "#66000000",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "light": {
+                        "default": "#646464",
+                        "subtle": "#767676",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "accent": {
+                        "default": "#0063B1",
+                        "subtle": "#0063B1",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "good": {
+                        "default": "#028A02",
+                        "subtle": "#DD028A02",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "warning": {
+                        "default": "#B75C00",
+                        "subtle": "#DDB75C00",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "attention": {
+                        "default": "#EC130E",
+                        "subtle": "#DDEC130E",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    }
+                },
+                "backgroundColor": "#FFFFFF"
+            },
+            "emphasis": {
+                "foregroundColors": {
+                    "default": {
+                        "default": "#000000",
+                        "subtle": "#6f6f6f",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "dark": {
+                        "default": "#000000",
+                        "subtle": "#66000000",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "light": {
+                        "default": "#737373",
+                        "subtle": "#DD737373",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "accent": {
+                        "default": "#1F6BF1",
+                        "subtle": "#881F6BF1",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "good": {
+                        "default": "#0D860A",
+                        "subtle": "#DD0D860A",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "warning": {
+                        "default": "#BD5400",
+                        "subtle": "#DDBD5400",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    },
+                    "attention": {
+                        "default": "#E31B13",
+                        "subtle": "#DDE31B13",
+                        "highlightColors": {
+                            "default": "#22000000",
+                            "subtle": "#11000000"
+                        }
+                    }
+                },
+                "backgroundColor": "#F9F9F9"
+            }
+        },
     }
 
     customThemeConfig = {

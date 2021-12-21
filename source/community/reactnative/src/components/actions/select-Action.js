@@ -62,11 +62,13 @@ export class SelectAction extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
+					opacity={this.props.opacity}
 					onPress={() => { this.onClickHandle() }}
-					disabled={this.payload.isEnabled == undefined ? false : !this.payload.isEnabled} //isEnabled defaults to true
+					disabled={this.payload.isEnabled === undefined ? false : !this.payload.isEnabled}
 					accessible={true}
 					accessibilityLabel={this.payload.altText}
 					accessibilityRole={Constants.Button}
+					accessibilityState={{ disabled: this.payload.isEnabled === undefined ? false : !this.payload.isEnabled }}
 					style={this.props.style}>
 					<React.Fragment>{this.props.children}</React.Fragment>
 				</ButtonComponent>

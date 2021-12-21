@@ -6,8 +6,6 @@
 
 import React from 'react';
 import {
-	StyleSheet,
-	View,
 	Text
 } from 'react-native';
 
@@ -15,7 +13,6 @@ import { Registry } from '../registration/registry';
 import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
-import * as Enums from '../../utils/enums';
 import { InputContext } from '../../utils/context';
 import { ContainerWrapper } from './';
 
@@ -61,12 +58,11 @@ export class Container extends React.Component {
 		const minHeight = Utils.convertStringToNumber(payload.minHeight);
 		//We will pass the style as array, since it can be updated in the container wrapper if required.
 		const containerStyle = typeof minHeight === "number" ? [{ minHeight }] : [];
-
+		const { isFirst, isLast } = this.props;
 		const showValidationText = this.props.isError && this.context.showErrors;
 
 		var containerContent = (
-			<ContainerWrapper configManager={this.props.configManager} json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
-				{(payload.spacing || payload.separator) && this.getSpacingElement()}
+			<ContainerWrapper configManager={this.props.configManager} json={payload} style={containerStyle} isFirst={isFirst} isLast={isLast} containerStyle={this.props.containerStyle}>
 				{this.parsePayload()}
 				{showValidationText && this.getValidationText()}
 			</ContainerWrapper>
@@ -79,29 +75,6 @@ export class Container extends React.Component {
 				{containerContent}
 			</SelectAction>;
 		}
-	}
-
-	/**
-		 * @description Return the element for spacing and/or separator
-		 * @returns {object} View element with spacing based on `spacing` and `separator` prop
-		 */
-	getSpacingElement = () => {
-		const spacingEnumValue = Utils.parseHostConfigEnum(
-			Enums.Spacing,
-			this.payload.spacing,
-			Enums.Spacing.Default);
-		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-
-		// separator and spacing styles
-		const separatorStyles = [{ height: spacing }];
-		
-		const { isFirst } = this.props; //isFirst represent, it is first element
-		// separator styles
-		this.payload.separator && !isFirst && separatorStyles.push(this.styleConfig.separatorStyle);
-
-		// spacing styles
-		this.payload.spacing && separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
-		return <View style={separatorStyles}></View>
 	}
 
 	/**
@@ -130,9 +103,3 @@ export class Container extends React.Component {
 		return containerRender;
 	}
 };
-
-const styles = StyleSheet.create({
-	defaultBGStyle: {
-		backgroundColor: Constants.TransparentString,
-	},
-});

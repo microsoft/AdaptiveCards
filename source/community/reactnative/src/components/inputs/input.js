@@ -11,7 +11,7 @@ import {
 	Image,
 	Text,
 	View,
-	TouchableOpacity,
+	Platform,
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -20,6 +20,7 @@ import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import InputLabel from "./input-label";
+import { SelectAction } from '../actions';
 
 const ERROR_MESSAGE = "Inline ShowCard is not supported as of now";
 
@@ -242,24 +243,21 @@ export class Input extends React.Component {
 								}}
 								value={this.props.value}
 							/>
-							<TouchableOpacity
-								style={styles.inlineAction}
-								disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
-								opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
-								onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}
-								accessible={true}
-								accessibilityLabel={inlineAction.title}
-								accessibilityState={{ disabled: inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled }}
-								accessibilityRole={'button'}
+							<SelectAction
+								opacity={inlineAction.isEnabled === undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
+								style={[styles.inlineAction, this.styleConfig.inlineAction]}
+								configManager={this.props.configManager}
+								selectActionData={inlineAction}
+								altText={inlineAction.title}
 							>
 								{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
-									<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
+									<Text numberOfLines={1} style={[styles.inlineActionText, opacityStyle, this.styleConfig.inlineActionText]}>{inlineAction.title}</Text> :
 									<Image
 										style={[styles.inlineActionImage, opacityStyle]}
 										source=
 										{{ uri: inlineAction.iconUrl }} />
 								}
-							</TouchableOpacity>
+							</SelectAction>
 						</View>
 					</ElementWrapper>
 					{this.props.isError && (this.state.showInlineActionErrors || showErrors) && this.showErrorMessage()}
@@ -314,38 +312,43 @@ export class Input extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	inlineActionText: {
-		color: Constants.LightBlack
-	},
-	multiLineHeight: {
-		height: 88,
-	},
-	singleLineHeight: {
-		height: 44,
-	},
-	elementWrapper: {
-		flex: 1,
-		marginVertical: 3
-	},
-	input: {
-		width: Constants.FullWidth,
-		padding: 5,
-		marginTop: 3
-	},
-	inlineActionInput: {
-		flex: 1,
-	},
-	inlineActionWrapper: {
-		flexDirection: Constants.FlexRow,
-		backgroundColor: Constants.TransparentString,
-		borderRadius: 5
-	},
-	inlineAction: {
-		marginLeft: 10
-	},
-	inlineActionImage: {
-		width: 40,
-		height: 40,
-		backgroundColor: Constants.TransparentString
-	},
+    inlineActionText: {
+        color: Constants.LightBlack,
+        ...Platform.select({
+            android: {
+                fontFamily: '',
+            },
+        }),
+    },
+    multiLineHeight: {
+        height: 88
+    },
+    singleLineHeight: {
+        height: 44
+    },
+    elementWrapper: {
+        flex: 1,
+        marginVertical: 3
+    },
+    input: {
+        width: Constants.FullWidth,
+        padding: 5,
+        marginTop: 3
+    },
+    inlineActionInput: {
+        flex: 1
+    },
+    inlineActionWrapper: {
+        flexDirection: Constants.FlexRow,
+        backgroundColor: Constants.TransparentString,
+        borderRadius: 5
+    },
+    inlineAction: {
+        marginLeft: 10
+    },
+    inlineActionImage: {
+        width: 40,
+        height: 40,
+        backgroundColor: Constants.TransparentString
+    },
 });

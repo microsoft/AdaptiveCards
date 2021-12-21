@@ -53,6 +53,7 @@ export class ColumnSet extends React.PureComponent {
 	internalRenderer() {
 		const payload = this.payload;
 		const { hostConfig } = this.props.configManager;
+		const { isFirst, isLast } = this.props;
 
 		// padding
         const spacingEnumValue = Utils.parseHostConfigEnum(
@@ -66,7 +67,7 @@ export class ColumnSet extends React.PureComponent {
 		const containerStyle = typeof minHeight === "number" ? { minHeight } : {};
 		
 		var columnSetContent = (
-			<ContainerWrapper configManager={this.props.configManager} style={[{ flex: this.payload.columns.length, marginTop: padding }, containerStyle]} json={payload} containerStyle={this.props.containerStyle}>
+			<ContainerWrapper configManager={this.props.configManager} style={[{ flex: this.payload.columns.length}, containerStyle]} json={payload} isFirst={isFirst} isLast={isLast} containerStyle={this.props.containerStyle}>
 				<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>

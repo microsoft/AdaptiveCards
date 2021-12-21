@@ -113,20 +113,34 @@ export class ActionWrapper extends React.Component {
 	}
 
 	render() {
-		return (<InputContextConsumer>
-			{({ onExecuteAction, onParseError }) =>
-				<View>
-					<View style={[styles.actionButtonContainer, this.getActionOrientation(), this.getActionAlignment()]}>
-						{this.parseActionsArray(onParseError)}
-					</View>
-					{this.hasShowCard ? ((this.state.isShowCard) ?
-						<AdaptiveCard
-							payload={this.state.cardJson}
-							configManager={this.props.configManager}
-							onExecuteAction={onExecuteAction} isActionShowCard={true} /> : null) : null}
-				</View>
-			}
-		</InputContextConsumer>);
+		return (
+            <InputContextConsumer>
+                {({onExecuteAction, onParseError}) => (
+                    <View>
+                        <View
+                            style={[
+                                styles.actionButtonContainer,
+                                this.getActionOrientation(),
+                                this.getActionAlignment(),
+                                this.props.style,
+                            ]}>
+                            {this.parseActionsArray(onParseError)}
+                        </View>
+                        {this.hasShowCard ? (
+                            this.state.isShowCard ? (
+                                <AdaptiveCard
+                                    payload={this.state.cardJson}
+                                    configManager={this.props.configManager}
+                                    onExecuteAction={onExecuteAction}
+                                    isActionShowCard={true}
+									containerStyle={{paddingVertical: 0}}
+                                />
+                            ) : null
+                        ) : null}
+                    </View>
+                )}
+            </InputContextConsumer>
+        );
 	}
 }
 

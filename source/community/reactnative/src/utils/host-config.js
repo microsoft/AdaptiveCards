@@ -413,7 +413,7 @@ export class HostConfig {
 	};
 	separator = {
 		lineThickness: 1,
-		lineColor: "#A9A9A9"
+		lineColor: "#EEEEEE"
 	};
 
 	horizontalAlignment = {
@@ -553,7 +553,7 @@ export class HostConfig {
 			case Enums.Spacing.Padding:
 				return this.spacing.padding;
 			default:
-				return this.spacing.small;
+				return this.spacing.default;
 		}
 	}
 
@@ -834,7 +834,7 @@ export const defaultHostConfig = {
 	},
 	separator: {
 		lineThickness: 1,
-		lineColor: "#D9D9D9"
+		lineColor: "#EEEEEE"
 	},
 	imageSizes: {
 		small: 40,

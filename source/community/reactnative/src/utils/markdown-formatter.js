@@ -166,6 +166,15 @@ export default class MarkdownFormatter extends React.PureComponent {
 		// non-matching strings are captured with the help of (?!) negative lookahead
 		let unorderedRegExp = new RegExp('[\\n\\r](?!-\\s)(.*)', 'igm');
 		let orderedRegExp = new RegExp('[\\n\\r](?!\\d.\\s)(.*)', 'igm');
+		let spaceRegExp = /[ \t]+/g;
+		let newLineRegExp = /[\n\r][\n\r]+/g;
+
+		// Remove space and new lines at start and at end.
+		this.text = this.text && this.text.trim();
+		// Replace multiple spaces with single space and update the text.
+		this.text = this.text && this.text.replace(spaceRegExp, ' ');
+		// Replace more than one line with double line and update the text.
+		this.text = this.text && this.text.replace(newLineRegExp, '\n\n');
 
 		// holds the strings that begin with (\n or \r) that neither match unordered nor ordered patters.
 		let matched = [];
@@ -177,13 +186,6 @@ export default class MarkdownFormatter extends React.PureComponent {
 				matched.push(parsed);
 			}
 		}
-
-		// slice the new line character and update the text
-		matched.forEach(value => {
-			if (this.text[value.index] === '\n' || this.text[value.index] === '\r') {
-				this.text = this.text.slice(0, value.index) + " " + this.text.slice(value.index + 1);
-			}
-		});
 	}
 
 	/**

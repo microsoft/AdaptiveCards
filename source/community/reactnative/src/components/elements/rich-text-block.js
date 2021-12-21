@@ -142,7 +142,6 @@ export class RichTextBlock extends React.Component {
 
 const styles = StyleSheet.create({
     textContainer: {
-        width: Constants.FullWidth,
         backgroundColor: Constants.TransparentString,
     },
     text: {

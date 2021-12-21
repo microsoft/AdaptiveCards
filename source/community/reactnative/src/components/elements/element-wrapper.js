@@ -36,11 +36,10 @@ export default class ElementWrapper extends React.Component {
 		this.styleConfig = this.props.configManager.styleConfig;
 		const computedStyles = this.getComputedStyles();
 		const showValidationText = this.props.isError && this.context.showErrors && Utils.isNullOrEmpty(this.props.json.inlineAction);
-		const { isFirst } = this.props; //isFirst represent, it is first element
 		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
 			<React.Fragment>
-				{!isColumnSet ? !isFirst && this.getSpacingElement() : this.props.json.separator && !isFirst && this.getSeparatorElement()}
+				{!this.props.isFirst && !isColumnSet && this.getSpacingElement()}
 				<View style={computedStyles} onLayout={this.props.onPageLayout}>
 					{this.props.children}
 					{showValidationText && this.getValidationText()}
@@ -88,6 +87,12 @@ export default class ElementWrapper extends React.Component {
 			}
 		}
 
+		// padding
+        if(payload.parent && payload.parent.type === Constants.TypeAdaptiveCard) {
+            const padding = this.props.configManager.hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+            computedStyles.push({marginHorizontal: padding});
+        }
+
 		return computedStyles;
 	}
 
@@ -112,35 +117,26 @@ export default class ElementWrapper extends React.Component {
 	getSpacingElement = () => {
 		const payload = this.props.json;
 		const spacingEnumValue = Utils.parseHostConfigEnum(
-			Enums.Spacing,
-			payload.spacing,
-			Enums.Spacing.Default);
-		const spacing = this.props.configManager.hostConfig.getEffectiveSpacing(spacingEnumValue);
-		const separator = payload.separator || false;
-
+            Enums.Spacing,
+            payload.spacing,
+            Enums.Spacing.Default,
+        );
+        const spacing = this.props.configManager.hostConfig.getEffectiveSpacing(spacingEnumValue);
+        
+		let computedStyles = [{flex: 1}];
+		if(payload.parent && payload.parent.type === Constants.TypeAdaptiveCard) {
+            const padding = this.props.configManager.hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+            computedStyles.push({marginHorizontal: padding});
+        }
+		
 		// spacing styles
-		const separatorStyles = [{ height: spacing }];
-
-		// separator styles
-		if (separator) {
-			separatorStyles.push(this.styleConfig.separatorStyle);
-			separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
-		}
-
-		return <View style={separatorStyles}></View>
-	}
-
-	/**
-	 * @description Return the element for separator
-	 * @returns {object} View element with `separator` prop
-	 */
-	getSeparatorElement = () => {
-		const spacingEnumValue = Utils.parseHostConfigEnum(
-			Enums.Spacing,
-			this.props.json.spacing,
-			Enums.Spacing.Default);
-		const spacing = this.props.configManager.hostConfig.getEffectiveSpacing(spacingEnumValue);
-		return <View style={[this.styleConfig.separatorStyle, { height: 3, marginBottom: spacing }]}></View>
+        return (
+            <View style={computedStyles}>
+                {<View style={{height: spacing/2}}/>}
+                {payload.separator && <View style={this.props.configManager.styleConfig.separatorStyle} />}
+				{<View style={{height: spacing/2}}/>}
+            </View>
+        );
 	}
 }
 

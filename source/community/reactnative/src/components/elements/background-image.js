@@ -164,7 +164,7 @@ export class BackgroundImage extends React.Component {
                         accessible={this.backgroundImage.altText ? true : false}
                         accessibilityLabel={this.backgroundImage.altText}
                         onError={() => { this.onError(onParseError) }}
-                        style={{ width: Constants.FullWidth, height: Constants.FullWidth, resizeMode: Constants.AlignStretch }}
+                        style={{ width: Constants.FullWidth, height: Constants.FullWidth, resizeMode: Constants.Cover }}
                     />
                 );
                 break;

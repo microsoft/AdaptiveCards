@@ -348,6 +348,10 @@ export default payloads = [
     "json": require('./TextBlock.MaxLines.json')
   },
   {
+    "title": "TextBlock.NewLines.json",
+    "json": require('./TextBlock.NewLines.json')
+  },
+  {
     "title": "TextBlock.Size.json",
     "json": require('./TextBlock.Size.json')
   },
