@@ -121,7 +121,9 @@ exports[`renders correctly 1`] = `
                 Object {
                   "justifyContent": "flex-start",
                 },
-                undefined,
+                Object {
+                  "marginHorizontal": 5,
+                },
               ]
             }
           />

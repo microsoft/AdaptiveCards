@@ -231,6 +231,7 @@ export default class AdaptiveCard extends React.Component {
                 style={containerStyles}
                 json={this.state.cardModel}>
                 <ScrollView
+                    ref={this.scrollView}
                     contentContainerStyle={this.props.contentContainerStyle}
                     showsHorizontalScrollIndicator={true}
                     showsVerticalScrollIndicator={true}
