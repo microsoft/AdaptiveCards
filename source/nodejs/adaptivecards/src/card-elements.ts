@@ -1205,13 +1205,13 @@ export class TextBlock extends BaseTextBlock {
                 anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
                 anchor.onclick = (e: MouseEvent) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
+                    if (raiseAnchorClickedEvent(this, anchor, e)) {
                         e.preventDefault();
                         e.cancelBubble = true;
                     }
                 };
                 anchor.oncontextmenu = (e: MouseEvent) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
+                    if (raiseAnchorClickedEvent(this, anchor, e)) {
                         e.preventDefault();
                         e.cancelBubble = true;
 

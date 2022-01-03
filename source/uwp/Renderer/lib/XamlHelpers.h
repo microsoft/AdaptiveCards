@@ -299,8 +299,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
                                _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImage,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext);
 
     HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
                                _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
