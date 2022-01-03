@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { getTestCasesList } from "./file-retriever-utils";
-import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
+import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, PropertyBag, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
 export function listAllFiles(): HTMLLIElement[] {
@@ -86,6 +86,16 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
             inputs.forEach((input) => {
                 inputsMap[input.id] = input.value;
             });
+
+            if (actionType === SubmitAction.JsonTypeName)
+            {
+                const submitAction: SubmitAction = action as SubmitAction;
+
+                for (let [key, value] of Object.entries(submitAction.data))
+                {
+                    inputsMap[key] = value;
+                }
+            }
 
             inputsAsJson = JSON.stringify(inputsMap);
         }

@@ -4,7 +4,7 @@ import * as Assert from "assert";
 import { assert } from "console";
 import { util } from "prettier";
 import { By, WebElement } from "selenium-webdriver";
-import { Action, Carousel, InputDate, InputText } from "./card-element-utils";
+import { Action, Carousel, Container, InputChoiceSet, InputDate, InputText, InputTime, InputToggle } from "./card-element-utils";
 import { TestUtils } from "./test-utils";
 
 describe("Mock function", function() {
@@ -41,8 +41,7 @@ describe("Mock function", function() {
         let commentInput = await InputText.getInputWithId("comment");
         await commentInput.setData("A comment");
 
-        let okAction = await Action.getActionWithTitle("OK");
-        await okAction.click();
+        await Action.clickOnActionWithTitle("OK");
 
         const dueDateRetrievedValue: string = await utils.getInputFor("dueDate");
         Assert.strictEqual(dueDateRetrievedValue, "1993-02-04");
@@ -71,19 +70,71 @@ describe("Mock function", function() {
     test("Test interaction with Input.ChoiceSet", (async() => {
         await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
 
-        let compactChoiceSet = await utils.getElementWithId("requiredCompactId");
-        let actualElement = await compactChoiceSet.findElement(By.className("ac-choiceSetInput-compact"));
-        await actualElement.click();
+        let compactChoiceSet = await InputChoiceSet.getInputWithId("requiredCompactId", false, false);
+        await compactChoiceSet.setData("Option 1");
         
-        await (await actualElement.findElement(By.xpath(`//*[@aria-label='Option 1']`))).click();
+        let expandedChoiceSet = await InputChoiceSet.getInputWithId("requiredExpandedId", true, false);
+        await expandedChoiceSet.setData("Option 2");
 
-        let expandedChoiceSet = await utils.getElementsWithName("requiredExpandedId");
-        Assert.strictEqual(await expandedChoiceSet[0].getAttribute("value"), "1");
-        Assert.strictEqual(await expandedChoiceSet[1].getAttribute("value"), "2");
+        let multiselectChoiceSet = await InputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
+        await multiselectChoiceSet.setData("Option 1,Option 2");
 
-        let multiselectChoiceSet = await utils.getElementsWithName("requiredMultiselectId");
-        Assert.strictEqual(await multiselectChoiceSet[0].getAttribute("value"), "1");
-        Assert.strictEqual(await multiselectChoiceSet[1].getAttribute("value"), "2");
+        await Action.clickOnActionWithTitle("OK");
+
+        const compactValue: string = await utils.getInputFor("requiredCompactId");
+        Assert.strictEqual(compactValue, "1");
+
+        const expandedValue: string = await utils.getInputFor("requiredExpandedId");
+        Assert.strictEqual(expandedValue, "2");
+
+        const multiselectValue: string = await utils.getInputFor("requiredMultiselectId");
+        Assert.strictEqual(multiselectValue, "1,2");
+    }));
+
+    test("Test interaction with Input.Time", (async() => {
+        await utils.goToTestCase("v1.3/Input.Time.ErrorMessage");
+
+        let dueDateInput = await InputTime.getInputWithId("input1");
+        await dueDateInput.setData("0109AM");
+
+        let commentInput = await InputTime.getInputWithId("input4");
+        await commentInput.setData("0230PM");
+
+        await Action.clickOnActionWithTitle("OK");
+
+        const dueDateRetrievedValue: string = await utils.getInputFor("input1");
+        Assert.strictEqual(dueDateRetrievedValue, "01:09");
+
+        const commentRetrievedValue: string = await utils.getInputFor("input4");
+        Assert.strictEqual(commentRetrievedValue, "14:30");
+    }));
+
+    test("Test interaction with Input.Toggle", (async() => {
+        await utils.goToTestCase("v1.3/Input.Toggle.ErrorMessage");
+
+        let toggleInput = await InputToggle.getInputWithId("input2");
+        await toggleInput.setData("set");
+
+        await Action.clickOnActionWithTitle("OK");
+
+        const dueDateRetrievedValue: string = await utils.getInputFor("input2");
+        Assert.strictEqual(dueDateRetrievedValue, "true");
+    }));
+
+    test("Test container select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Container.SelectAction");
+
+        let submitContainer = await Container.getContainerWithAction("Submit action");
+        await submitContainer.click();
+        
+        const submitActionInfo: string = await utils.getInputFor("info");
+        Assert.strictEqual(submitActionInfo, "My submit action data");
+
+        let emphasisContainer = await Container.getContainerWithAction("Go to a different url");
+        await emphasisContainer.click();
+        
+        const emphasisContainerUrl: string = await utils.getInputFor("url");
+        Assert.strictEqual(emphasisContainerUrl, "https://msn.com");
     }));
 
     test("Test actions are rendered and active below carousel", (async() => {

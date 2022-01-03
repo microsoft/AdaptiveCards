@@ -3,7 +3,6 @@
 import { Builder, By, Capabilities, until, WebDriver, WebElement } from "selenium-webdriver";
 import * as Assert from "assert";
 import { WaitUntil } from "./wait-utils";
-import { elementIsVisible } from "selenium-webdriver/lib/until";
 
 export class TestUtils {
     timeoutForCardRendering: number = 10000;
@@ -62,18 +61,28 @@ export class TestUtils {
         return this.hideInputsButton!;
     }
 
-    async hideInputsDiv() : Promise<void> 
+    async clearInputs(): Promise<void>
     {
         this.inputs = undefined;
-        await (await this.getHideInputsButton()).click();
+        await this.hideInputsDiv();
+    }
+
+    async hideInputsDiv(): Promise<void> 
+    {
+        const hideInputsButton = await this.getHideInputsButton(); 
+        await hideInputsButton.click();
     }
 
     async getInputFor(inputId: string): Promise<string> {
-        const inputs = await this.getRetrievedInputs();
-        return inputs[inputId];
+        if (this.inputs === undefined)
+        {
+            await this.getRetrievedInputs();
+        }
+
+        return this.inputs[inputId];
     }
 
-    async getRetrievedInputs(): Promise<any> {
+    async getRetrievedInputs(): Promise<void> {
         if (this.inputs === undefined)
         {
             const retrievedInputsDiv: WebElement = await this.getElementWithId("retrievedInputsDiv");
@@ -83,14 +92,18 @@ export class TestUtils {
 
             this.inputs = JSON.parse(retrievedInputs)
         }
-
-        return this.inputs;
     }
 
     async tryGetActionWithTitle(actionTitle: string): Promise<WebElement | undefined> {
         const buttonList: WebElement[] = await this.driver.findElements(By.xpath(`//*[@aria-label='${actionTitle}']`));
 
         return (buttonList.length > 0) ? buttonList[0] : undefined;
+    }
+
+    async tryGetContainerWithAction(tooltip: string): Promise<WebElement | undefined> {
+        const containerList: WebElement[] = await this.driver.findElements(By.xpath(`//*[@aria-description='${tooltip}']`));
+
+        return (containerList.length > 0) ? containerList[0] : undefined;
     }
 
     async getActionWithTitle(actionTitle: string): Promise<WebElement> {
@@ -133,8 +146,6 @@ export class TestUtils {
         const elementToWaitFor: WebElement = await this.getElementWithId(id);
         await this.driver.wait(until.elementIsNotVisible(elementToWaitFor), this.timeoutForCardRendering);
     }
-
-   
 
     async getInput(inputId: string, className: string): Promise<WebElement> {
         const inputDiv: WebElement = await this.driver.findElement(By.id(inputId));
