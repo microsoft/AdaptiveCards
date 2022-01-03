@@ -199,20 +199,24 @@
     constraints[1].priority = priority;
 
 
+    //Round off to 2 decimals
+    CGFloat heightByWidth = round(100 * (cgsize.height / cgsize.width)) / 100;
+    CGFloat widthByHeight = round(100 * (cgsize.width / cgsize.height)) / 100;
+    
     [constraints addObjectsFromArray:@[
         [NSLayoutConstraint constraintWithItem:imageView
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:imageView
                                      attribute:NSLayoutAttributeWidth
-                                    multiplier:cgsize.height / cgsize.width
+                                    multiplier:heightByWidth
                                       constant:0],
         [NSLayoutConstraint constraintWithItem:imageView
                                      attribute:NSLayoutAttributeWidth
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:imageView
                                      attribute:NSLayoutAttributeHeight
-                                    multiplier:cgsize.width / cgsize.height
+                                    multiplier:widthByHeight
                                       constant:0]
     ]];
 
