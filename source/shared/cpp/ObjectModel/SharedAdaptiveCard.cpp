@@ -60,16 +60,9 @@ AdaptiveCard::AdaptiveCard(
     HeightType height,
     unsigned int minHeight) :
     m_version(version),
-    m_fallbackText(fallbackText),
-    m_backgroundImage(backgroundImage),
-    m_speak(speak),
-    m_style(style),
-    m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment),
-    m_height(height),
-    m_minHeight(minHeight),
-    m_internalId{InternalId::Next()},
-    m_additionalProperties{}
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
+    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_additionalProperties{}
 {
     PopulateKnownPropertiesSet();
 }
@@ -118,20 +111,10 @@ AdaptiveCard::AdaptiveCard(
     std::vector<std::shared_ptr<BaseCardElement>>& body,
     std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
-    m_fallbackText(fallbackText),
-    m_backgroundImage(backgroundImage),
-    m_refresh(refresh),
-    m_authentication(authentication),
-    m_speak(speak),
-    m_style(style),
-    m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment),
-    m_height(height),
-    m_minHeight(minHeight),
-    m_internalId{InternalId::Next()},
-    m_body(body),
-    m_actions(actions),
-    m_additionalProperties{}
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_refresh(refresh),
+    m_authentication(authentication), m_speak(speak), m_style(style), m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions), m_additionalProperties{}
 {
     PopulateKnownPropertiesSet();
 }

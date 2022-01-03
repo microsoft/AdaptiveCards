@@ -9,12 +9,9 @@
 namespace AdaptiveCards
 {
 TableRow::TableRow() :
-    BaseCardElement(CardElementType::TableRow),
-    m_style(ContainerStyle::None),
+    BaseCardElement(CardElementType::TableRow), m_style(ContainerStyle::None),
     m_horizontalCellContentAlignment(HorizontalAlignment::Left),
-    m_verticalCellContentAlignment(VerticalContentAlignment::Top),
-    m_cells({}),
-    m_rtl({})
+    m_verticalCellContentAlignment(VerticalContentAlignment::Top), m_cells({}), m_rtl({})
 {
     PopulateKnownPropertiesSet();
 }

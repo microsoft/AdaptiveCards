@@ -7,12 +7,8 @@
 namespace AdaptiveCards
 {
 Table::Table() :
-    CollectionCoreElement(CardElementType::Table),
-    m_columnDefinitions({}),
-    m_rows({}),
-    m_gridStyle(ContainerStyle::None),
-    m_showGridLines(true),
-    m_firstRowAsHeaders(true)
+    CollectionCoreElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}),
+    m_gridStyle(ContainerStyle::None), m_showGridLines(true), m_firstRowAsHeaders(true)
 {
     PopulateKnownPropertiesSet();
 }

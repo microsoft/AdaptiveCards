@@ -9,7 +9,8 @@
 using namespace AdaptiveCards;
 
 ChoiceSetInput::ChoiceSetInput() :
-    BaseInputElement(CardElementType::ChoiceSetInput), m_wrap(false), m_isMultiSelect(false), m_choiceSetStyle(ChoiceSetStyle::Compact)
+    BaseInputElement(CardElementType::ChoiceSetInput), m_wrap(false), m_isMultiSelect(false),
+    m_choiceSetStyle(ChoiceSetStyle::Compact)
 {
     PopulateKnownPropertiesSet();
 }

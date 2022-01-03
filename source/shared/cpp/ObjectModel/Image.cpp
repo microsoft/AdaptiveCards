@@ -9,12 +9,8 @@
 using namespace AdaptiveCards;
 
 Image::Image() :
-    BaseCardElement(CardElementType::Image),
-    m_imageStyle(ImageStyle::Default),
-    m_imageSize(ImageSize::None),
-    m_pixelWidth(0),
-    m_pixelHeight(0),
-    m_hAlignment(std::nullopt)
+    BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
+    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }

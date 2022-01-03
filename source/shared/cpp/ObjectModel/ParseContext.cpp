@@ -10,19 +10,14 @@ namespace AdaptiveCards
 {
 ParseContext::ParseContext() :
     elementParserRegistration{std::make_shared<ElementParserRegistration>()},
-    actionParserRegistration{std::make_shared<ActionParserRegistration>()},
-    warnings{},
-    m_elementIds{},
-    m_idStack{},
-    m_parentalContainerStyles{},
-    m_parentalPadding{},
-    m_parentalBleedDirection{},
-    m_canFallbackToAncestor(false)
+    actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_elementIds{}, m_idStack{},
+    m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}, m_canFallbackToAncestor(false)
 {
 }
 
 ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-    warnings{}, m_elementIds{}, m_idStack{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}, m_canFallbackToAncestor(false)
+    warnings{}, m_elementIds{}, m_idStack{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{},
+    m_canFallbackToAncestor(false)
 {
     elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
     actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();

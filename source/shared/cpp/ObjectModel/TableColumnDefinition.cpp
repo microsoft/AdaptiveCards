@@ -8,7 +8,8 @@
 namespace AdaptiveCards
 {
 TableColumnDefinition::TableColumnDefinition() :
-    m_horizontalCellContentAlignment(HorizontalAlignment::Left), m_verticalCellContentAlignment(VerticalContentAlignment::Top), m_pixelWidth{}, m_width{}
+    m_horizontalCellContentAlignment(HorizontalAlignment::Left),
+    m_verticalCellContentAlignment(VerticalContentAlignment::Top), m_pixelWidth{}, m_width{}
 {
 }
 

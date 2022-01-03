@@ -22,13 +22,8 @@ class BaseElement
 {
 public:
     BaseElement() :
-        m_typeString{},
-        m_additionalProperties{},
-        m_requires{},
-        m_fallbackContent(nullptr),
-        m_id{},
-        m_internalId{InternalId::Current()},
-        m_fallbackType(FallbackType::None),
+        m_typeString{}, m_additionalProperties{}, m_requires{},
+        m_fallbackContent(nullptr), m_id{}, m_internalId{InternalId::Current()}, m_fallbackType(FallbackType::None),
         m_canFallbackToAncestor(false)
     {
         PopulateKnownPropertiesSet();

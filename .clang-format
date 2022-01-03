@@ -17,7 +17,6 @@ BraceWrapping:
   AfterExternBlock: false
 BreakConstructorInitializers: AfterColon
 CompactNamespaces: true
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"(stdafx.h|pch.h|precomp.h)"$'
@@ -25,7 +24,7 @@ IncludeCategories:
 NamespaceIndentation: Inner
 PenaltyExcessCharacter: 1
 PointerAlignment: Left
-SortIncludes: false
+SortIncludes: Never
 Standard: Cpp11
 UseTab: Never
 ...

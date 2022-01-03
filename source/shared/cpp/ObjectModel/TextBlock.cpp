@@ -14,10 +14,7 @@
 using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
-    BaseCardElement(CardElementType::TextBlock),
-    m_wrap(false),
-    m_maxLines(0),
-    m_hAlignment(std::nullopt),
+    BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(std::nullopt),
     m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
