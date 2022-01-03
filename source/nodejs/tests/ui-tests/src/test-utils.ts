@@ -186,4 +186,9 @@ export class TestUtils {
 
         return this.getCssPropertyValueForElement(element, cssProperty);
     }
+
+    async getElementsWithName(id: string): Promise<WebElement[]>
+    {
+        return await this.driver.findElements(By.name(id));
+    }
 }

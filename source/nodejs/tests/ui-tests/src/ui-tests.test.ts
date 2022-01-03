@@ -12,9 +12,7 @@ describe("Mock function", function() {
 
     // This is a constant value for the wait time between pressing an action and retrieving
     // the input value. Only use this if you see some test flakiness. Value is given in ms
-    const delayForInputRetrieval: number = 500;
-    const delayForCarouselArrows: number = 1000;
-    const delayForCarouselTimer: number = 5500;
+    const delayForCarouselTimer: number = 6000;
     const timeOutValueForCarousel: number = 30000;
     const timeOutValueForSuddenJumpTest: number = 20000;
 
@@ -70,6 +68,24 @@ describe("Mock function", function() {
         Assert.strictEqual(commentInputIsFocused, true);
     }));
 
+    test("Test interaction with Input.ChoiceSet", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        let compactChoiceSet = await utils.getElementWithId("requiredCompactId");
+        let actualElement = await compactChoiceSet.findElement(By.className("ac-choiceSetInput-compact"));
+        await actualElement.click();
+        
+        await (await actualElement.findElement(By.xpath(`//*[@aria-label='Option 1']`))).click();
+
+        let expandedChoiceSet = await utils.getElementsWithName("requiredExpandedId");
+        Assert.strictEqual(await expandedChoiceSet[0].getAttribute("value"), "1");
+        Assert.strictEqual(await expandedChoiceSet[1].getAttribute("value"), "2");
+
+        let multiselectChoiceSet = await utils.getElementsWithName("requiredMultiselectId");
+        Assert.strictEqual(await multiselectChoiceSet[0].getAttribute("value"), "1");
+        Assert.strictEqual(await multiselectChoiceSet[1].getAttribute("value"), "2");
+    }));
+
     test("Test actions are rendered and active below carousel", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
@@ -106,7 +122,7 @@ describe("Mock function", function() {
 
         await Carousel.clickOnRightArrow();
 
-        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage", 6000);
+        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
 
         let secondPageIsVisible = await Carousel.isPageVisible("theSecondCarouselPage");
         Assert.strictEqual(secondPageIsVisible, true);
@@ -168,7 +184,7 @@ describe("Mock function", function() {
         Assert.strictEqual(firstPageIsVisible, true);
 
         // wait for 2 pages to turn
-        await utils.waitUntilElementIsCssVisible("last-carousel-page", 12000);
+        await utils.waitUntilElementIsCssVisible("last-carousel-page", delayForCarouselTimer * 2);
 
         firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, false);
@@ -180,7 +196,7 @@ describe("Mock function", function() {
         await Carousel.waitForAnimationsToEnd();
         await Carousel.clickOnLeftArrow();
 
-        await utils.waitUntilElementIsVisible("theSecondCarouselPage");
+        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage");
 
         // make sure firstCarouselPage is hidden
         firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");

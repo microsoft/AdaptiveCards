@@ -83,14 +83,33 @@ export class InputNumber extends Input {
     static async getInputWithId(id: string): Promise<InputNumber>
     {
         let input = new InputNumber();
-        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-dateInput");
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-numberInput");
         return input;
     }
 
     override async setData(data: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.underlyingElement?.click();
+        await this.underlyingElement?.sendKeys(data);
     }
-    
+}
+
+export class InputChoiceSet extends Input 
+{
+    private constructor() {
+        super();
+    }
+
+    static async getInputWithId(id: string, isExpanded: boolean, isMultiSelect: boolean): Promise<InputChoiceSet>
+    {
+        let input = new InputChoiceSet();
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-choiceSetInput-expanded");
+        return input;
+    }
+
+    override async setData(data: string): Promise<void> {
+        await this.underlyingElement?.click();
+        await this.underlyingElement?.sendKeys(data);
+    }
 }
 
 export class Action extends Element {
@@ -158,6 +177,8 @@ export class Carousel {
         return pageDirection;
     }
 
+    // This is a helper method to handle the odd scenario of the carousel not behaving correctly
+    // when clicking an arrow while the carousel is moving
     static async waitForAnimationsToEnd(): Promise<void>
     {
         await TestUtils.getInstance().delay(1000); 
