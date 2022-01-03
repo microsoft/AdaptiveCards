@@ -24,7 +24,7 @@ IncludeCategories:
 NamespaceIndentation: Inner
 PenaltyExcessCharacter: 1
 PointerAlignment: Left
-SortIncludes: Never
+SortIncludes: false
 Standard: Cpp11
 UseTab: Never
 ...
