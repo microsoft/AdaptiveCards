@@ -218,21 +218,37 @@ export class InputToggle extends Input {
     override async setData(data: string): Promise<void> {
         if (this.elementWasFound())
         {
-            const isInputSelected: boolean = await this.underlyingElement!.isSelected();
-            let mustClick: boolean = true;
-
             if (data === "set") {
-                mustClick = !isInputSelected; 
+                await this.set();                
             } else if (data === "unset") {
-                mustClick = isInputSelected;
-            }
-
-            if (mustClick)
-            {
-                this.underlyingElement?.click();
+                await this.unset();
+            } else {
+                await this.toggle();
             }
         }
     }
+
+    async set(): Promise<void> {
+        const isInputSelected: boolean = await this.underlyingElement!.isSelected();
+
+        if (!isInputSelected) {
+            await this.toggle();
+        }
+    }
+
+    async unset(): Promise<void> {
+        const isInputSelected: boolean = await this.underlyingElement!.isSelected();
+
+        if (isInputSelected) {
+            await this.toggle();
+        }
+    }
+
+    async toggle(): Promise<void> {
+        await this.underlyingElement?.click();
+    }
+
+
 }
 
 export class Container extends Element 

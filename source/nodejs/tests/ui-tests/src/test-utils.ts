@@ -112,11 +112,6 @@ export class TestUtils {
         return button;
     }
 
-    async clickOnActionWithTitle(actionTitle: string): Promise<void> {
-        const button: WebElement = await this.getActionWithTitle(actionTitle);
-        await button.click();
-    }
-
     async waitUntilElementIsCssVisible(id: string, timeoutInMs?: number)
     {
         const elementsToWaitFor: WebElement[] = await this.getElementsWithId(id);
