@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  AdaptiveCards
+
+  Copyright © 2021 Microsoft. All rights reserved.
+*/
+
+
+"AdaptiveCards.Parsing" = "Parse Error: %@";
+

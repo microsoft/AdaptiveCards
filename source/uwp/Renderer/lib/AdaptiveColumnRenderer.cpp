@@ -93,7 +93,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 rtxaml::Controls::Grid rootElement{};
 
                 // TODO:No need to cast right? Winrt will call QueryInterface and cast Grid to Panel?
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext, newRenderArgs);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 // TODO: why is it called height if it's HeightType?
                 auto columnHeightType = cardElement.Height();

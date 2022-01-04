@@ -5,8 +5,8 @@
 //
 
 #import <AdaptiveCards/ACORenderContext.h>
-#import "ACOVisibilityManager.h"
-#import "ACRErrors.h"
+#import <AdaptiveCards/ACOVisibilityManager.h>
+#import <AdaptiveCards/ACRErrors.h>
 #import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
 #import <AdaptiveCards/ACRSeparator.h>
 #import <AdaptiveCards/ACRViewPrivate.h>

@@ -12,25 +12,9 @@ $v1scenariosPath = $samplesPath + "\v1.0\scenarios"
 
 Write-Host Running unit tests...
 dotnet test .\test\AdaptiveCards.Test
-dotnet test .\test\AdaptiveCards.Rendering.Html.Test
-
-Write-Host Running HTML tests...
-Set-Location .\Samples\AdaptiveCards.Sample.Html
-
-Write-Host SupportsInteractivity = false...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\StandardNonInteractive.html
-
-Write-Host SupportsInteractivity = true...
-dotnet run $v1scenariosPath -- -r -i -o $testResultsPath\HTML\Standard.html
-
-Write-Host Windows notification config...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\WindowsNotification.html --host-config $samplesPath\hostconfig\windows-notification.json
-
-Write-Host Timeline config...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\WindowsTimeline.html --host-config $samplesPath\hostconfig\windows-timeline.json
 
 Write-Host Running WPF tests...
-Set-Location ..\AdaptiveCards.Sample.ImageRender
+Set-Location .\Samples\AdaptiveCards.Sample.ImageRender
 
 Write-Host SupportsInteractivity = false...
 dotnet run $v1scenariosPath -- -r -o $testResultsPath\WPF\StandardNonInteractive

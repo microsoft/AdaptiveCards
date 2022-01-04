@@ -241,59 +241,61 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
     }
 
+    rtxaml::Controls::Image CreateBackgroundImage(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
+    {
+        // TODO: if url is invalid, it will bitmapImage.UriSource(nullptr) will throw, right?
+        rtxaml::Controls::Image backgroundImage;
+
+        // GetUrlFromString will throw if url is not in correct format
+        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
+
+        rtxaml::Media::Imaging::BitmapImage bitmapImage{};
+        bitmapImage.UriSource(imageUrl);
+
+        backgroundImage.Source(bitmapImage);
+
+        return backgroundImage;
+    }
+
     void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
-                               rtom::AdaptiveBackgroundImage const& backgroundImage,
-                               rtrender::AdaptiveRenderContext const& renderContext,
-                               rtrender::AdaptiveRenderArgs const& renderArgs)
+                               rtom::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
+                               rtrender::AdaptiveRenderContext const& renderContext)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         // TODO: it might be an overkill to render apdativeImage for background image
         // TODO: we should probably create a routine to do that without adaptive image. Should be simple enough.
-        rtom::AdaptiveImage adaptiveImage;
-        adaptiveImage.Url(backgroundImage.Url());
-
-        if (const auto elementRenderer = renderContext.ElementRenderers().Get(L"Image"))
+        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
         {
-            auto background = elementRenderer.Render(adaptiveImage, renderContext, renderArgs);
-            if (background == nullptr)
+            rtom::BackgroundImageFillMode fillMode = adaptiveBackgroundImage.FillMode();
+
+            // Creates the background image for all fill modes
+            auto tileControl = winrt::make<rtrender::implementation::TileControl>();
+
+            // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+            tileControl.IsEnabled(false);
+
+            // THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+            tileControl.BackgroundImage(adaptiveBackgroundImage);
+
+            // TODO: I don't see this rootelement being used anywhere, a bug?
+            // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+            // tileControl.RootElement(rootPanel);
+
+            tileControl.LoadImageBrush(backgroundImage);
+
+            XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
+
+            // The overlay applied to the background image is determined by a resouce, so create
+            // the overlay if that resources exists
+            auto resourceDictionary = renderContext.OverrideStyles();
+            if (const auto backgroundOverlayBrush =
+                    XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Media::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
             {
-                return;
-            }
-            else
-            {
-                auto xamlImage = background.as<rtxaml::Controls::Image>();
+                rtxaml::Shapes::Rectangle overlayRectangle;
+                overlayRectangle.Fill(backgroundOverlayBrush);
 
-                rtom::BackgroundImageFillMode fillMode = backgroundImage.FillMode();
-
-                // Creates the background image for all fill modes
-                auto tileControl = winrt::make<rtrender::implementation::TileControl>();
-
-                // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
-                tileControl.IsEnabled(false);
-
-                // THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
-                tileControl.BackgroundImage(backgroundImage);
-
-                // TODO: I don't see this rootelement being used anywhere, a bug?
-                // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
-                // tileControl.RootElement(rootPanel);
-
-                tileControl.LoadImageBrush(background);
-
-                XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
-
-                // The overlay applied to the background image is determined by a resouce, so create
-                // the overlay if that resources exists
-                auto resourceDictionary = renderContext.OverrideStyles();
-                if (const auto backgroundOverlayBrush =
-                        XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Media::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
-                {
-                    rtxaml::Shapes::Rectangle overlayRectangle;
-                    overlayRectangle.Fill(backgroundOverlayBrush);
-
-                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
-                }
+                XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
             }
         }
     }

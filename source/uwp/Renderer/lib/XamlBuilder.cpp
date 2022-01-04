@@ -207,7 +207,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isBackgroundImageValid)
             {
-                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext, renderArgs);
+                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
             }
 
             auto spacingConfig = hostConfig.Spacing();
