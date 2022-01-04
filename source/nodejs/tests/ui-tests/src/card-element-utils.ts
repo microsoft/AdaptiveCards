@@ -237,7 +237,7 @@ export class InputToggle extends Input {
 
 export class Container extends Element 
 {
-    private constructor()
+    protected constructor()
     {
         super();
     }
@@ -260,6 +260,12 @@ export class Container extends Element
         await this.underlyingElement?.click();
     }
 }
+
+// Currently Column and ColumnSet behave just as container (except columnset having a different class name),
+// leaving the empty classes for code clarity when used
+export class Column extends Container {}
+
+export class ColumnSet extends Container {}
 
 export class Action extends Element {
     private constructor()

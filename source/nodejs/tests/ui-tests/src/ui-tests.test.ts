@@ -4,7 +4,7 @@ import * as Assert from "assert";
 import { assert } from "console";
 import { util } from "prettier";
 import { By, WebElement } from "selenium-webdriver";
-import { Action, Carousel, Container, InputChoiceSet, InputDate, InputText, InputTime, InputToggle } from "./card-element-utils";
+import { Action, Carousel, Column, ColumnSet, Container, InputChoiceSet, InputDate, InputNumber, InputText, InputTime, InputToggle } from "./card-element-utils";
 import { TestUtils } from "./test-utils";
 
 describe("Mock function", function() {
@@ -33,7 +33,7 @@ describe("Mock function", function() {
     test("Test ActivityUpdate submit", (async() => {
         await utils.goToTestCase("v1.0/ActivityUpdate");
 
-        await utils.clickOnActionWithTitle("Set due date");
+        await Action.clickOnActionWithTitle("Set due date");
 
         let dueDateInput = await InputDate.getInputWithId("dueDate");
         await dueDateInput.setData("02041993");
@@ -59,12 +59,41 @@ describe("Mock function", function() {
 
         Assert.strictEqual(commentInputIsFocused, false);
 
-        let submitAction = await Action.getActionWithTitle("Submit");
-        await submitAction.click();
+        await Action.clickOnActionWithTitle("Submit");
 
         commentInputIsFocused = await commentInput.isFocused()
 
         Assert.strictEqual(commentInputIsFocused, true);
+    }));
+
+    test("Test interaction with Input.Number", (async() => {
+        await utils.goToTestCase("v1.3/Input.Number.ErrorMessage");
+
+        let input1 = await InputNumber.getInputWithId("input1");
+        await input1.setData("1");
+
+        let input2 = await InputNumber.getInputWithId("input2");
+        await input2.setData("5");
+
+        let input3 = await InputNumber.getInputWithId("input3");
+        await input3.setData("10");
+
+        let input4 = await InputNumber.getInputWithId("input4");
+        await input4.setData("50");
+
+        await Action.clickOnActionWithTitle("Submit");
+
+        const input1Value: string = await utils.getInputFor("input1");
+        Assert.strictEqual(input1Value, "1");
+
+        const input2Value: string = await utils.getInputFor("input2");
+        Assert.strictEqual(input2Value, "5");
+
+        const input3Value: string = await utils.getInputFor("input3");
+        Assert.strictEqual(input3Value, "10");
+
+        const input4Value: string = await utils.getInputFor("input4");
+        Assert.strictEqual(input4Value, "50");
     }));
 
     test("Test interaction with Input.ChoiceSet", (async() => {
@@ -121,7 +150,27 @@ describe("Mock function", function() {
         Assert.strictEqual(dueDateRetrievedValue, "true");
     }));
 
-    test("Test container select action can be clicked", (async() => {
+    test("Column: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Column.SelectAction");
+
+        let firstColumn = await Column.getContainerWithAction("cool link");
+        await firstColumn.click();
+        
+        const firstColumnUrl: string = await utils.getInputFor("url");
+        Assert.strictEqual(firstColumnUrl, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    }));
+
+    test("ColumnSet: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/ColumnSet.SelectAction");
+
+        let secondColumnSet = await ColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
+        await secondColumnSet.click();
+        
+        const secondColumnSetUrl: string = await utils.getInputFor("url");
+        Assert.strictEqual(secondColumnSetUrl, "https://www.AdaptiveCards.io");
+    }));
+
+    test("Container: Test select action can be clicked", (async() => {
         await utils.goToTestCase("v1.0/Container.SelectAction");
 
         let submitContainer = await Container.getContainerWithAction("Submit action");
@@ -135,25 +184,24 @@ describe("Mock function", function() {
         
         const emphasisContainerUrl: string = await utils.getInputFor("url");
         Assert.strictEqual(emphasisContainerUrl, "https://msn.com");
-    }));
+    }));    
 
-    test("Test actions are rendered and active below carousel", (async() => {
+    test("Carousel: Test actions are rendered and active", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
-        let seeMoreAction = await Action.getActionWithTitle("See more");
-        await seeMoreAction.click();
+        await Action.clickOnActionWithTitle("See more");
 
         const url: string = await utils.getInputFor("url");
         Assert.strictEqual(url, "https://adaptivecards.io");
     }));
 
-    test("Test page limit is honoured", (async() => {
+    test("Carousel: Test page limit is honoured", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
         await utils.assertElementWithIdDoesNotExist("page10");
     }));
 
-    test("Unsupported elements are not rendered", (async() => {
+    test("Carousel: Unsupported elements are not rendered", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ForbiddenElements");
 
         await utils.assertElementWithIdDoesNotExist("id1");
@@ -165,7 +213,7 @@ describe("Mock function", function() {
         await utils.assertElementWithIdDoesNotExist("id7");
     }));
 
-    test("Verify left and right buttons in carousel work", (async() => {
+    test("Carousel: Verify left and right buttons work", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
         let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
@@ -187,7 +235,7 @@ describe("Mock function", function() {
         Assert.strictEqual(firstPageIsVisible, true);
     }), timeOutValueForSuddenJumpTest);
 
-    test("Unsupported actions are not rendered", (async() => {
+    test("Carousel: Unsupported actions are not rendered", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ForbiddenActions");
 
         let showCardAction = await Action.getActionWithTitle("Action.ShowCard");
@@ -198,7 +246,7 @@ describe("Mock function", function() {
     }));
 
     // Giving this test 7 seconds to run
-    test("Test autoplay is disabled", (async() => {
+    test("Carousel: Test autoplay is disabled", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
         let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
@@ -212,7 +260,7 @@ describe("Mock function", function() {
     }), 7000);
 
     // Giving this test 9 seconds to run
-    test("Test autoplay is applied", (async() => {
+    test("Carousel: Test autoplay is applied", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
         let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
@@ -228,7 +276,7 @@ describe("Mock function", function() {
         Assert.strictEqual(secondPageIsVisible, true);
     }), timeOutValueForCarousel);
 
-    test("Test click on navigation does not cause sudden jump", (async() => {
+    test("Carousel: Test click on navigation does not cause sudden jump", (async() => {
         await utils.goToTestCase("v1.6/Carousel");
 
         let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
@@ -254,7 +302,7 @@ describe("Mock function", function() {
         Assert.strictEqual(firstPageIsVisible, false);
     }), timeOutValueForSuddenJumpTest);
 
-    test("Test rtl on carousel", (async() => {
+    test("Carousel: Test rtl", (async() => {
         await utils.goToTestCase("v1.6/Carousel.rtl");
 
         for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
