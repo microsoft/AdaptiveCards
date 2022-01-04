@@ -311,12 +311,10 @@ winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hos
             else
             {
                 // fallback to deprecated FontFamily
-                /* RETURN_IF_FAILED(hostConfig->get_FontFamily(result.GetAddressOf()));*/
                 fontFamily = hostConfig.FontFamily();
                 if (fontFamily.empty())
                 {
                     // fallback to system default FontFamily
-                    /*RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));*/
                     fontFamily = UTF8ToHString("Segoe UI");
                 }
             }
