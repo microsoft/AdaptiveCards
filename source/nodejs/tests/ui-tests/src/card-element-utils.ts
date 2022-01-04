@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { WebElement, By } from "selenium-webdriver";
+import { WebElement, By, Locator } from "selenium-webdriver";
 import { TestUtils } from "./test-utils";
 import * as Assert from "assert";
 
@@ -9,11 +9,35 @@ export class Element {
 
     protected constructor() {}
 
-    elementWasFound(): boolean
-    {
+    elementWasFound(): boolean {
         return (this.underlyingElement !== undefined);
     }
+
+    async getCssPropertyValue(propertyName: string): Promise<string | undefined> {
+        if (this.elementWasFound()) {
+            return await TestUtils.getInstance().getCssPropertyValueForElement(this.underlyingElement!, propertyName);
+        } else {
+            return undefined;
+        }
+    }
+
+    async elementIsVisible(): Promise<boolean> {
+        return (await this.underlyingElement?.getAttribute("visible") === "true") || (await this.underlyingElement!.isDisplayed());
+    }
+
+    async elementIsCssVisible(): Promise<boolean> {
+        return (await this.getCssPropertyValue("visibility") === "visible");
+    }
 }
+
+export class ActionableElement extends Element {
+
+    async click() 
+    {
+        await TestUtils.getInstance().clearInputs();
+        await this.underlyingElement?.click();
+    }
+} 
 
 export abstract class Input extends Element {
     protected constructor() {
@@ -23,17 +47,7 @@ export abstract class Input extends Element {
     abstract setData(data: string): Promise<void>;
 }
 
-export class InputText extends Input {
-    private constructor(){
-        super();
-    }
-
-    static async getInputWithId(id: string): Promise<InputText>
-    {
-        let input = new InputText();
-        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-textInput");
-        return input;
-    }
+export class TypeableInput extends Input {
 
     override async setData(data: string): Promise<void>
     {
@@ -41,10 +55,8 @@ export class InputText extends Input {
         await this.underlyingElement?.sendKeys(data);
     }
 
-    async isFocused(): Promise<boolean>
-    {
-        if (this.elementWasFound())
-        {
+    async isFocused(): Promise<boolean> {
+        if (this.elementWasFound()) {
             const inputId: string = await this.underlyingElement!.getAttribute("id");
             const activeElementId: string = await TestUtils.getInstance().getDriver().switchTo().activeElement().getAttribute("id");
 
@@ -55,61 +67,55 @@ export class InputText extends Input {
     }
 }
 
-export class InputDate extends Input {
-    private constructor(){
+export class InputText extends TypeableInput {
+    private constructor() {
         super();
     }
 
-    static async getInputWithId(id: string): Promise<InputDate>
-    {
-        let input = new InputDate();
-        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-dateInput");
+    static async getInputWithId(id: string, container?: Container): Promise<InputText> {
+        let input = new InputText();
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-textInput", container);
         return input;
-    }
-
-    override async setData(data: string): Promise<void> 
-    {
-        await this.underlyingElement?.click();
-        await this.underlyingElement?.sendKeys(data);
     }
 }
 
-export class InputTime extends Input {
+export class InputDate extends TypeableInput {
+    private constructor() {
+        super();
+    }
+
+    static async getInputWithId(id: string, container?: Container): Promise<InputDate> {
+        let input = new InputDate();
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-dateInput", container);
+        return input;
+    }
+}
+
+export class InputTime extends TypeableInput {
     
     private constructor(){
         super();
     }
 
-    static async getInputWithId(id: string): Promise<InputTime>
+    static async getInputWithId(id: string, container?: Container): Promise<InputTime>
     {
         let input = new InputTime();
-        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-timeInput");
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-timeInput", container);
         return input;
-    }
-    
-    override async setData(data: string): Promise<void> {
-        await this.underlyingElement?.click();
-        await this.underlyingElement?.sendKeys(data);
-    }
-    
+    }  
 }
 
-export class InputNumber extends Input {
+export class InputNumber extends TypeableInput {
 
     private constructor(){
         super();
     }
 
-    static async getInputWithId(id: string): Promise<InputNumber>
+    static async getInputWithId(id: string, container?: Container): Promise<InputNumber>
     {
         let input = new InputNumber();
-        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-numberInput");
+        input.underlyingElement = await TestUtils.getInstance().getInput(id, "ac-numberInput", container);
         return input;
-    }
-
-    override async setData(data: string): Promise<void> {
-        await this.underlyingElement?.click();
-        await this.underlyingElement?.sendKeys(data);
     }
 }
 
@@ -117,7 +123,7 @@ export class InputChoiceSet extends Input
 {
     isExpanded: boolean = false;
     isMultiSelect: boolean = false;
-    underlyingElements: WebElement[];
+    underlyingExpandedElements: WebElement[];
 
     private constructor(isExpanded: boolean, isMultiSelect: boolean) {
         super();
@@ -126,29 +132,29 @@ export class InputChoiceSet extends Input
         this.isMultiSelect = isMultiSelect;
     }
 
-    private async getCompactChoiceSet(id: string): Promise<WebElement>
+    private async getCompactChoiceSet(id: string, container?: Container): Promise<WebElement | undefined>
     {
-        let compactChoiceSet = await TestUtils.getInstance().getElementWithId(id);
-        let actualElement = await compactChoiceSet.findElement(By.className("ac-choiceSetInput-compact"));
+        let compactChoiceSet = await TestUtils.getInstance().getElementWithId(id, container);
+        let actualElement = await compactChoiceSet?.findElement(By.className("ac-choiceSetInput-compact"));
         return actualElement;
     }
 
-    private async getExpandedChoiceSet(id: string): Promise<WebElement[]>
+    private async getExpandedChoiceSet(id: string, container?: Container): Promise<WebElement[]>
     {
-        return await TestUtils.getInstance().getElementsWithName(id);
+        return await TestUtils.getInstance().getElementsWithName(id, container);
     }
 
-    static async getInputWithId(id: string, isExpanded: boolean, isMultiSelect: boolean): Promise<InputChoiceSet>
+    static async getInputWithId(id: string, isExpanded: boolean, isMultiSelect: boolean, container?: Container): Promise<InputChoiceSet>
     {
         let input = new InputChoiceSet(isExpanded, isMultiSelect);
 
         if (!isExpanded)
         {
-            input.underlyingElement = await input.getCompactChoiceSet(id);
+            input.underlyingElement = await input.getCompactChoiceSet(id, container);
         }
         else
         {
-            input.underlyingElements = await input.getExpandedChoiceSet(id);
+            input.underlyingExpandedElements = await input.getExpandedChoiceSet(id, container);
         }
         return input;
     }
@@ -159,7 +165,7 @@ export class InputChoiceSet extends Input
             if (this.isExpanded) {
                 if (this.isMultiSelect) {
                     const options: string[] = data.split(",");
-                    for (const choice of this.underlyingElements) 
+                    for (const choice of this.underlyingExpandedElements) 
                     {
                         const choiceValue = await choice.getAttribute("aria-label");
                         const choiceIsSelected: boolean = await choice.isSelected();
@@ -174,7 +180,7 @@ export class InputChoiceSet extends Input
                 }
                 else
                 {
-                    for (const choice of this.underlyingElements)
+                    for (const choice of this.underlyingExpandedElements)
                     {
                         const choiceValue = await choice.getAttribute("aria-label");
                         if (choiceValue === data) {
@@ -195,7 +201,7 @@ export class InputChoiceSet extends Input
 
     override elementWasFound(): boolean {
         if (this.isExpanded) {
-            return this.underlyingElements.length > 0;
+            return this.underlyingExpandedElements.length > 0;
         }
         else {
             return super.elementWasFound();
@@ -251,8 +257,7 @@ export class InputToggle extends Input {
 
 }
 
-export class Container extends Element 
-{
+export class Container extends ActionableElement {
     protected constructor()
     {
         super();
@@ -263,17 +268,11 @@ export class Container extends Element
         return new Container();
     }
 
-    static async getContainerWithAction(tooltip: string): Promise<Container> 
+    static async getContainerWithAction(tooltip: string, parentContainer?: Container): Promise<Container> 
     {
         let container = new Container();
-        container.underlyingElement = await TestUtils.getInstance().tryGetContainerWithAction(tooltip);
+        container.underlyingElement = await TestUtils.getInstance().tryGetContainerWithAction(tooltip, parentContainer);
         return container;
-    }
-
-    async click() 
-    {
-        await TestUtils.getInstance().clearInputs();
-        await this.underlyingElement?.click();
     }
 }
 
@@ -283,7 +282,20 @@ export class Column extends Container {}
 
 export class ColumnSet extends Container {}
 
-export class Action extends Element {
+export class Image extends ActionableElement {
+    private constructor(){
+        super();
+    }
+
+    static async getImage(title: string, container?: Container): Promise<Image>
+    {
+        let input = new Image();
+        input.underlyingElement = await TestUtils.getInstance().getImageWithTitle(title, "ac-image", container);
+        return input;
+    }
+}
+
+export class Action extends ActionableElement {
     private constructor()
     {
         super();
@@ -302,11 +314,7 @@ export class Action extends Element {
         return action;
     }
 
-    async click() 
-    {
-        await TestUtils.getInstance().clearInputs();
-        await this.underlyingElement?.click();
-    }
+    
 }
 
 // As currently there's only one carousel per card is supported then this tests are simpler

@@ -4,7 +4,7 @@ import * as Assert from "assert";
 import { assert } from "console";
 import { util } from "prettier";
 import { By, WebElement } from "selenium-webdriver";
-import { Action, Carousel, Column, ColumnSet, Container, InputChoiceSet, InputDate, InputNumber, InputText, InputTime, InputToggle } from "./card-element-utils";
+import { Action, Carousel, Column, ColumnSet, Container, InputChoiceSet, InputDate, InputNumber, InputText, InputTime, InputToggle, Image, Element } from "./card-element-utils";
 import { TestUtils } from "./test-utils";
 
 describe("Mock function", function() {
@@ -148,6 +148,35 @@ describe("Mock function", function() {
 
         const dueDateRetrievedValue: string = await utils.getInputFor("input2");
         Assert.strictEqual(dueDateRetrievedValue, "true");
+    }));
+
+    test("Action.ShowCard: Test hidden card is shown", (async() => {
+        await utils.goToTestCase("v1.0/Action.ShowCard");
+
+        await Action.clickOnActionWithTitle("Action.ShowCard");
+
+        const neatAction: Action = await Action.getActionWithTitle("Neat!");
+        const neatActionIsVisible = async (params: any) => {
+            let elements = params as Element[];
+            return (await elements[0].elementIsVisible()) || (await elements[0].elementIsCssVisible());
+        };
+
+        await utils.waitUntilPredicateIsTrue([neatAction], neatActionIsVisible);
+
+        await neatAction.click();
+
+        const neatValue: string = await utils.getInputFor("neat");
+        Assert.strictEqual(neatValue, "true");
+    }));
+
+    test("Image: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Image.SelectAction");
+
+        let image = await Image.getImage("cool link");
+        await image.click();
+        
+        const imageUrl: string = await utils.getInputFor("url");
+        Assert.strictEqual(imageUrl, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     }));
 
     test("Column: Test select action can be clicked", (async() => {

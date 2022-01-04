@@ -4,7 +4,9 @@ const v10TestCases: string[] = [
     'Scenarios/ActivityUpdate', 
     'Elements/Container.SelectAction',
     'Elements/Column.SelectAction',
-    'Elements/ColumnSet.SelectAction'];
+    'Elements/ColumnSet.SelectAction',
+    'Elements/Image.SelectAction',
+    'Elements/Action.ShowCard'];
 const v11TestCases: string[] = [];
 const v12TestCases: string[] = [];
 const v13TestCases: string[] = [

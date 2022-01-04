@@ -15,10 +15,9 @@ function renderTestCasesList() {
     });
 }
 
-function hideInputsDiv()
-{
-    let testCaseListElement = document.getElementById("retrievedInputsDiv");
-    testCaseListElement.style.visibility = "hidden";
+function hideInputsDiv() {
+    let retrievedInputsDiv = document.getElementById("retrievedInputsDiv");
+    retrievedInputsDiv.style.visibility = "hidden";
 }
 
 window.onload = () => {
@@ -55,5 +54,5 @@ window.onload = () => {
     renderCard(card, cardRenderedCallback);
 
     const hideInputsButton = document.getElementById("hideInputsBtn");
-    hideInputsButton.click = () => { hideInputsDiv(); };
+    hideInputsButton.addEventListener("click", (e: Event) => { hideInputsDiv() });
 }
