@@ -79,7 +79,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    winrt::Windows::UI::Xaml::UIElement
+    winrt::UIElement
     AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
                                                                winrt::AdaptiveRenderArgs const& renderArgs,
                                                                winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)

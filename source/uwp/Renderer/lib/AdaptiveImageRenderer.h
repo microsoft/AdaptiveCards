@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveImageRenderer(){};
         AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
                                                    winrt::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
 

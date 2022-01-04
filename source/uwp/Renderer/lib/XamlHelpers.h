@@ -155,33 +155,33 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    winrt::Windows::UI::Xaml::UIElement
+    winrt::UIElement
     RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                      winrt::AdaptiveRenderContext const& renderContext,
                      winrt::AdaptiveRenderArgs const& renderArgs);
 
-    winrt::Windows::UI::Xaml::UIElement
+    winrt::UIElement
     RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                             winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::Border
-    CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
+    CreateValidationBorder(winrt::UIElement const& childElement,
                            winrt::AdaptiveRenderContext const& renderContext);
 
-    winrt::Windows::UI::Xaml::UIElement
+    winrt::UIElement
     HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
                                winrt::AdaptiveRenderContext const& renderContext,
                                winrt::AdaptiveRenderArgs const& renderArgs,
-                               winrt::Windows::UI::Xaml::UIElement const& inputLayout);
+                               winrt::UIElement const& inputLayout);
 
-    std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Border>
+    std::tuple<winrt::UIElement, winrt::Border>
     HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                   winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                                   winrt::UIElement const& inputUIElement,
                                    bool hasTypeSpecificValidation,
                                    winrt::AdaptiveRenderContext const& renderContext,
                                    bool ifValidationBorderIsNeeded = true);
 
-    void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
+    void AddHandledTappedEvent(winrt::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel, winrt::AdaptiveBackgroundImage const& backgroundImage, winrt::AdaptiveRenderContext const& renderContext);
 
@@ -218,20 +218,20 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
 
-    winrt::Windows::UI::Xaml::UIElement
+    winrt::UIElement
     AddSeparatorIfNeeded(int& currentElement,
                          winrt::IAdaptiveCardElement const& element,
                          winrt::AdaptiveHostConfig const& hostConfig,
                          winrt::AdaptiveRenderContext const& renderContext,
                          winrt::Panel const& parentPanel);
 
-    void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
+    void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
                           winrt::BitmapSource const& imageSource,
                           bool setVisible);
 
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig,
-                                  winrt::Windows::UI::Xaml::IFrameworkElement const& element);
+                                  winrt::IFrameworkElement const& element);
 
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
                                                winrt::AdaptiveHostConfig const& hostConfig);

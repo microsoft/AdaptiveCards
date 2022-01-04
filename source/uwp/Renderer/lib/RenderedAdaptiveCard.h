@@ -42,24 +42,24 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                               winrt::UIElement const& showCardUIElement,
                                Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                               winrt::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 
-        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement);
 
         void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs);
         Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
-        void SetFrameworkElement(winrt::Windows::UI::Xaml::FrameworkElement const& value);
+        void SetFrameworkElement(winrt::FrameworkElement const& value);
         void SetOriginatingCard(winrt::AdaptiveCard const& value);
         void SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value);
         void SendActionEvent(winrt::IAdaptiveActionElement const& eventArgs);
@@ -70,20 +70,20 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         void AddInlineShowCardHelper(uint32_t internalId,
                                      winrt::IAdaptiveShowCardAction const& showCardAction,
-                                     winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                     winrt::UIElement const& showCardUIElement,
                                      Uwp::AdaptiveRenderArgs const& renderArgs);
 
         winrt::AdaptiveCard m_originatingCard;
         Rendering::Uwp::AdaptiveHostConfig m_originatingHostConfig;
         winrt::com_ptr<winrt::implementation::AdaptiveInputs> m_inputs;
-        winrt::Windows::UI::Xaml::FrameworkElement m_frameworkElement;
+        winrt::FrameworkElement m_frameworkElement;
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is the ShowCardInfo structure for that show card
         std::unordered_map<uint32_t, std::shared_ptr<ShowCardInfo>> m_showCards;
 
         // Map of the rendered overflow buttons keyed on action set Id. This is needed to move buttons around when a
         // show card from an overflow menu needs to be moved to a primary button in the action set
-        std::unordered_map<uint32_t, winrt::Windows::UI::Xaml::UIElement> m_overflowButtons;
+        std::unordered_map<uint32_t, winrt::UIElement> m_overflowButtons;
     };
 }
 

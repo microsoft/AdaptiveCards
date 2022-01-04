@@ -35,9 +35,9 @@ namespace AdaptiveCards::Rendering::Uwp
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 
         void TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
-                                      winrt::Windows::UI::Xaml::RoutedEventArgs const& eventArgs);
+                                      winrt::RoutedEventArgs const& eventArgs);
         void TrackedImage_ImageFailed(winrt::IInspectable const& sender,
-                                      winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& eventArgs);
+                                      winrt::ExceptionRoutedEventArgs const& eventArgs);
         void ImageLoadResultReceived(winrt::IInspectable const& sender);
 
         // TODO: Do I need a const ref here? or just ref?

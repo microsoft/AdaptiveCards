@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveSubmitActionRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
+        winrt::UIElement Render(winrt::IAdaptiveActionElement const& action,
                                                    winrt::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
     };

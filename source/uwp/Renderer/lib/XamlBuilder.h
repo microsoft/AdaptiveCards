@@ -20,7 +20,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void AllImagesLoaded() override;
         void ImagesLoadingHadError() override;
 
-        static winrt::Windows::UI::Xaml::FrameworkElement
+        static winrt::FrameworkElement
         BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
                                       winrt::AdaptiveRenderContext const& renderContext,
                                       XamlBuilder* xamlBuilder,
@@ -41,7 +41,7 @@ namespace AdaptiveCards::Rendering::Uwp
             winrt::AdaptiveRenderArgs renderArgs,
             std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
-        winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+        winrt::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
     winrt::AdaptiveRenderContext const& renderContext,
     winrt::AdaptiveRenderArgs const& renderArgs);
 
@@ -59,7 +59,7 @@ namespace AdaptiveCards::Rendering::Uwp
         bool m_enableXamlImageHandling = false;
 
         // TODO: can we move word static to the function name?
-        static std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
+        static std::pair<winrt::Panel, winrt::UIElement>
         CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                               winrt::AdaptiveRenderContext const& renderContext,
                               winrt::AdaptiveRenderArgs const& renderArgs,

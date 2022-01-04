@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     }
 
     InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                           winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
+                           winrt::UIElement const& uiInputElement,
                            winrt::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
         m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)

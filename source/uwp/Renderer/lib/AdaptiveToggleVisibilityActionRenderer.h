@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveToggleVisibilityActionRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& actionElement,
+        winrt::UIElement Render(winrt::IAdaptiveActionElement const& actionElement,
                                                    winrt::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
     };

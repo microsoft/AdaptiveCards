@@ -11,15 +11,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     {
     public:
         InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                   winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
+                   winrt::UIElement const& uiInputElement,
                    winrt::Border const& validationBorder);
         InputValue();
 
         // TODO: getting compile errors with this for some reason...
-        // property<winrt::Windows::UI::Xaml::UIElement> ErrorMessage;
+        // property<winrt::UIElement> ErrorMessage;
         winrt::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
-        winrt::Windows::UI::Xaml::UIElement ErrorMessage() { return m_validationError; };
-        void ErrorMessage(winrt::Windows::UI::Xaml::UIElement const& errorMessage)
+        winrt::UIElement ErrorMessage() { return m_validationError; };
+        void ErrorMessage(winrt::UIElement const& errorMessage)
         {
             m_validationError = errorMessage;
         };
@@ -34,9 +34,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         virtual void SetValidation(bool isValid);
 
         winrt::IAdaptiveInputElement m_adaptiveInputElement;
-        winrt::Windows::UI::Xaml::UIElement m_uiInputElement;
+        winrt::UIElement m_uiInputElement;
         winrt::Border m_validationBorder;
-        winrt::Windows::UI::Xaml::UIElement m_validationError;
+        winrt::UIElement m_validationError;
     };
 
     // Base class for AdaptiveTextInput
@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     {
     public:
         TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                      winrt::Windows::UI::Xaml::UIElement const& uiTextInputElement,
+                      winrt::UIElement const& uiTextInputElement,
                       winrt::Border const& validationBorder);
 
     protected:

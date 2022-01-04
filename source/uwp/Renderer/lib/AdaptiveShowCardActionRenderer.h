@@ -9,11 +9,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     struct AdaptiveShowCardActionRenderer : AdaptiveShowCardActionRendererT<AdaptiveShowCardActionRenderer>
     {
     public:
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
+        winrt::UIElement Render(winrt::IAdaptiveActionElement const& action,
                                                    winrt::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
 
-        static winrt::Windows::UI::Xaml::UIElement BuildShowCard(winrt::AdaptiveCard const& showCard,
+        static winrt::UIElement BuildShowCard(winrt::AdaptiveCard const& showCard,
                                                                  winrt::AdaptiveRenderContext const& renderContext,
                                                                  winrt::AdaptiveRenderArgs const& renderArgs,
                                                                  bool isBottomActionBar);

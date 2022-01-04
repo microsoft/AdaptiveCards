@@ -10,7 +10,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::Windows::UI::Xaml::UIElement AdaptiveActionSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveActionSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                                           winrt::AdaptiveRenderContext const& renderContext,
                                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {

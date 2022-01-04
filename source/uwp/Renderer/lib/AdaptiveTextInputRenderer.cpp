@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     std::tuple<winrt::UIElement, winrt::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
         winrt::AdaptiveTextInput const& adaptiveTextInput,
-        winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+        winrt::UIElement const& inputUIElement,
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
     {

@@ -5,16 +5,16 @@
 
 namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 {
-    winrt::Windows::UI::Xaml::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
+    winrt::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
                                                     winrt::AdaptiveRenderContext const& renderContext,
                                                     winrt::AdaptiveRenderArgs const& renderArgs,
                                                     bool isOverflowActionButton);
 
-    winrt::Windows::UI::Xaml::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig);
+    winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig);
 
-    void SetTooltip(winrt::hstring const& toolTipText, winrt::Windows::UI::Xaml::DependencyObject const& tooltipTarget);
+    void SetTooltip(winrt::hstring const& toolTipText, winrt::DependencyObject const& tooltipTarget);
 
-    void SetAutomationNameAndDescription(winrt::Windows::UI::Xaml::DependencyObject const& dependencyObject,
+    void SetAutomationNameAndDescription(winrt::DependencyObject const& dependencyObject,
                                          winrt::hstring const& name,
                                          winrt::hstring const& description);
 
@@ -29,11 +29,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                               bool allActionsHaveIcons,
                               winrt::Button const& button);
 
-    void SetMatchingHeight(winrt::Windows::UI::Xaml::FrameworkElement const& elementToChange,
-                           winrt::Windows::UI::Xaml::FrameworkElement const& elementToMatch);
+    void SetMatchingHeight(winrt::FrameworkElement const& elementToChange,
+                           winrt::FrameworkElement const& elementToMatch);
 
     void HandleActionStyling(winrt::IAdaptiveActionElement const& adaptiveActionElement,
-                             winrt::Windows::UI::Xaml::FrameworkElement const& buttonFrameworkElement,
+                             winrt::FrameworkElement const& buttonFrameworkElement,
                              bool isOverflowActionButton,
                              winrt::AdaptiveRenderContext const& renderContext);
 
@@ -45,10 +45,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                       winrt::AdaptiveActionInvoker const& actionInvoker,
                                       winrt::IAdaptiveActionElement const& inlineAction);
 
-    winrt::Windows::UI::Xaml::UIElement HandleInlineAction(winrt::AdaptiveRenderContext const& renderContext,
+    winrt::UIElement HandleInlineAction(winrt::AdaptiveRenderContext const& renderContext,
                                                            winrt::AdaptiveRenderArgs const& renderArgs,
-                                                           winrt::Windows::UI::Xaml::UIElement const& textInputUIElement,
-                                                           winrt::Windows::UI::Xaml::UIElement const& textBoxParentContainer,
+                                                           winrt::UIElement const& textInputUIElement,
+                                                           winrt::UIElement const& textBoxParentContainer,
                                                            bool isMultilineTextBox,
                                                            winrt::IAdaptiveActionElement const& inlineAction);
 
@@ -56,8 +56,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                  winrt::IAdaptiveActionElement const& action,
                                  winrt::AdaptiveRenderContext const& renderContext);
 
-    winrt::Windows::UI::Xaml::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                          winrt::Windows::UI::Xaml::UIElement const& elementToWrap,
+    winrt::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                                          winrt::UIElement const& elementToWrap,
                                                           winrt::IAdaptiveActionElement const& action,
                                                           winrt::AdaptiveRenderContext const& renderContext,
                                                           bool fullWidth,
@@ -65,14 +65,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                                           winrt::hstring const& altText,
                                                           bool allowTitleAsTooltip);
 
-    winrt::Windows::UI::Xaml::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+    winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                            winrt::IAdaptiveActionElement const& selectAction,
                                                            winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::Windows::UI::Xaml::UIElement const& uiElement,
+                                                           winrt::UIElement const& uiElement,
                                                            bool supportsInteractivity,
                                                            bool fullWidthTouchTarget);
 
-    winrt::Windows::UI::Xaml::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
+    winrt::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
                                                              winrt::AdaptiveActionSet const& adaptiveActionSet,
                                                              winrt::IVector<winrt::IAdaptiveActionElement> const& children,
                                                              winrt::AdaptiveRenderContext const& renderContext,
@@ -92,7 +92,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                              winrt::AdaptiveRenderContext const& renderContext,
                              winrt::AdaptiveRenderArgs const& renderArgs);
 
-    winrt::Windows::UI::Xaml::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
+    winrt::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
                                                              winrt::AdaptiveActionSet const& adaptiveActionSet,
                                                              winrt::IVector<winrt::IAdaptiveActionElement> const& children,
                                                              winrt::AdaptiveRenderContext const& renderContext,

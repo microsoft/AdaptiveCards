@@ -211,7 +211,7 @@ bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage backgroundImage);
 struct ShowCardInfo
 {
     uint32_t actionSetId;
-    winrt::Windows::UI::Xaml::UIElement cardUIElement{nullptr};
+    winrt::UIElement cardUIElement{nullptr};
 };
 
 

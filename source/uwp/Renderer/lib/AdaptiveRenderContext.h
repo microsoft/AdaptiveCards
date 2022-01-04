@@ -20,8 +20,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                               Rendering::Uwp::AdaptiveElementRendererRegistration const& elementRendererRegistration,
                               Rendering::Uwp::AdaptiveActionRendererRegistration const& actionRendererRegistration,
                               Rendering::Uwp::AdaptiveCardResourceResolvers const& resourceResolvers,
-                              winrt::Windows::UI::Xaml::ResourceDictionary const& overrideStyles,
-                              winrt::Windows::UI::Xaml::ResourceDictionary const& defaultActionSentimentStyles,
+                              winrt::ResourceDictionary const& overrideStyles,
+                              winrt::ResourceDictionary const& defaultActionSentimentStyles,
                               winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult);
 
         property<winrt::AdaptiveHostConfig> HostConfig;
@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property_opt<winrt::TextStyle> TextStyle;
         property_opt<winrt::HAlignment> HorizontalContentAlignment;
         property<winrt::AdaptiveCardResourceResolvers> ResourceResolvers;
-        property<winrt::Windows::UI::Xaml::ResourceDictionary> OverrideStyles;
+        property<winrt::ResourceDictionary> OverrideStyles;
 
         Uwp::AdaptiveInputs UserInputs();
 
@@ -49,26 +49,26 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                winrt::AdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                               winrt::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                winrt::AdaptiveShowCardAction const& showCardAction,
-                               winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                               winrt::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 
-        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement);
 
         winrt::com_ptr<implementation::RenderedAdaptiveCard> GetRenderResult();
-        winrt::Windows::UI::Xaml::ResourceDictionary GetDefaultActionSentimentDictionary();
+        winrt::ResourceDictionary GetDefaultActionSentimentDictionary();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
         winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
-        winrt::Windows::UI::Xaml::ResourceDictionary m_actionSentimentDefaultDictionary;
+        winrt::ResourceDictionary m_actionSentimentDefaultDictionary;
     };
 }
 
