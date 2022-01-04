@@ -198,11 +198,14 @@
     constraints[0].priority = priority;
     constraints[1].priority = priority;
 
+    // keeping all precisions are not necessary, and 744W X 84H and its multiples cause a crash.
+    // rounding off to 100th points.
+    // To make the constraints work, the rounded value has to become 1 when the two ratios are multiplied
+    const CGFloat precision = 100;
+    // MAX is necessary to prevent heightByWidth becoming zero.
+    CGFloat heightByWidth = MAX(round(precision * (cgsize.height / cgsize.width)) / precision, 1 / precision);
+    CGFloat widthByHeight = 1 / heightByWidth;
 
-    //Round off to 2 decimals
-    CGFloat heightByWidth = round(100 * (cgsize.height / cgsize.width)) / 100;
-    CGFloat widthByHeight = round(100 * (cgsize.width / cgsize.height)) / 100;
-    
     [constraints addObjectsFromArray:@[
         [NSLayoutConstraint constraintWithItem:imageView
                                      attribute:NSLayoutAttributeHeight
