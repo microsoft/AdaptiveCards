@@ -108,7 +108,6 @@
     // To make the constraints work, the rounded value has to become 1 when the two ratios are multiplied
     const CGFloat precision = 100;
     // MAX is necessary to prevent heightByWidth becoming zero.
-    NSLog(@"%f", round(precision * (cgsize.height / cgsize.width)) / precision);
     ACRAspectRatio aspectRatio;
     aspectRatio.heightToWidth = MAX(round(precision * (cgsize.height / cgsize.width)) / precision, 1 / precision);
     aspectRatio.widthToHeight = 1 / aspectRatio.heightToWidth;
