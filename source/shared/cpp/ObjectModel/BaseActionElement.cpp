@@ -139,12 +139,13 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
 
 void BaseActionElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -163,8 +164,7 @@ void BaseActionElement::ParseJsonObject(AdaptiveCards::ParseContext& context, co
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }
 
-std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBasePropertiesFromString(ParseContext& context,
-                                                                                          const std::string& jsonString)
+std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
 {
     return BaseActionElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

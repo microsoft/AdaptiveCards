@@ -5,9 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#import "ACOHostConfig.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
-#import "ACOHostConfig.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRChoiceSetCompactStyleView : UITextField <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
@@ -60,7 +60,7 @@
 @property NSString *placeHolder;
 @property (readonly, copy) NSString *userInitialChoice;
 
-- (instancetype)init:(ACOBaseCardElement *)acoElem  dataSource:(ACOFilteredDataSource *)dataSource;
+- (instancetype)init:(ACOBaseCardElement *)acoElem dataSource:(ACOFilteredDataSource *)dataSource;
 
 - (BOOL)isValid:(NSString *)input;
 

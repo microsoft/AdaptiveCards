@@ -9,7 +9,7 @@
 #import "ACRTextView.h"
 #import <UIKit/UIKit.h>
 @protocol ACRIQuickReply
-- (ACRButton *) getButton;
+- (ACRButton *)getButton;
 @end
 
 @interface ACRQuickReplyMultilineView : UIView <ACRIQuickReply>

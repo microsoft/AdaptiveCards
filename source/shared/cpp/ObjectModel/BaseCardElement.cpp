@@ -27,11 +27,12 @@ BaseCardElement::BaseCardElement(CardElementType type) :
 
 void BaseCardElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)});
 }
 
 bool BaseCardElement::GetSeparator() const

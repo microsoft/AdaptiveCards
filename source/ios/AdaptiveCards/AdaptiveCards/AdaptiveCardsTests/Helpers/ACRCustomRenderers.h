@@ -10,18 +10,19 @@
 
 @protocol ACRIUnitTest
 
-@property void (^fetchActualRenderedView) (UIView *view, NSDictionary *props);
+@property void (^fetchActualRenderedView)(UIView *view, NSDictionary *props);
 
 @end
 
-@interface ACRCustomColumnRenderer : ACRColumnRenderer<ACRIUnitTest>
+@interface ACRCustomColumnRenderer : ACRColumnRenderer <ACRIUnitTest>
 
 + (ACRCustomColumnRenderer *)getInstance;
 
 @end
 
-@interface ACRCustomContainerRenderer : ACRContainerRenderer<ACRIUnitTest>
+@interface ACRCustomContainerRenderer : ACRContainerRenderer <ACRIUnitTest>
 
-+ (ACRCustomContainerRenderer *)getInstance;;
++ (ACRCustomContainerRenderer *)getInstance;
+;
 
 @end

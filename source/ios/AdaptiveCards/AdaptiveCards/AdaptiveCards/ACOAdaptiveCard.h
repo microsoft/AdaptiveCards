@@ -6,10 +6,10 @@
 //
 
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
+#import <AdaptiveCards/ACOAuthentication.h>
+#import <AdaptiveCards/ACORefresh.h>
 #import <AdaptiveCards/ACORemoteResourceInformation.h>
 #import <AdaptiveCards/ACRIBaseInputHandler.h>
-#import <AdaptiveCards/ACORefresh.h>
-#import <AdaptiveCards/ACOAuthentication.h>
 #import <Foundation/Foundation.h>
 
 @interface ACOAdaptiveCard : NSObject

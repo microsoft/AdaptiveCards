@@ -17,7 +17,6 @@ BraceWrapping:
   AfterExternBlock: false
 BreakConstructorInitializers: AfterColon
 CompactNamespaces: true
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"(stdafx.h|pch.h|precomp.h)"$'
