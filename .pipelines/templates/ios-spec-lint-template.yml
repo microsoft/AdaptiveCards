@@ -1,0 +1,8 @@
+steps:
+- task: Bash@3
+  displayName: 'Spec Lint'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      pod spec lint  ./source/ios/tools/AdaptiveCards.podspec --allow-warnings

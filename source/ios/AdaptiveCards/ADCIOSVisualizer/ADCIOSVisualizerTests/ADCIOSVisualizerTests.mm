@@ -351,22 +351,22 @@
 - (void)testChoiceSetInputCanGatherDefaultValues
 {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Input.ChoiceSet" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    NSDictionary<NSString *, NSString *> *expectedValue = @{
+    NSDictionary<NSString *, NSString *> *expected = @{
         @"myColor" : @"1",
         @"myColor3" : @"1,3",
         @"myColor2" : @"1",
         @"myColor1" : @"1",
         @"myColor4" : @"1"
     };
-    NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
+    
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     XCTAssertTrue(cardParseResult.isValid);
     [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:100.0];
     // manually call input gather function
     NSData *output = [cardParseResult.card inputs];
-    NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
-    XCTAssertTrue([str isEqualToString:expectedString]);
+    NSDictionary *actual = [NSJSONSerialization JSONObjectWithData:output options:0 error:nil];
+
+    XCTAssertTrue([expected isEqual:actual]);
 }
 
 - (void)testMaxActionConfig

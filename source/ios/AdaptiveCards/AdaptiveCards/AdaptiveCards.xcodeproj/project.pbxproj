@@ -70,6 +70,8 @@
 		6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B421CC02101503E002F401A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		6B421CC121015EDD002F401A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */; };
+		6B4C05BF27864B0800882387 /* ACRImagePropertiesTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */; };
+		6B4C05C12786AFD800882387 /* Action.ToggleVisibilityExhaustive.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B4C05C02786AFD800882387 /* Action.ToggleVisibilityExhaustive.json */; };
 		6B5BA8BF2707BBD000719853 /* ACOWarning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BA8BE2707BBD000719853 /* ACOWarning.mm */; };
 		6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B5D240E212C89E70010EB07 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */; };
@@ -77,7 +79,6 @@
 		6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */; };
 		6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B616C4421CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */; };
-		6B654C752708168D00DF6A5F /* Action.ToggleVisibilityExhaustive.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B654C742708168D00DF6A5F /* Action.ToggleVisibilityExhaustive.json */; };
 		6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */; };
 		6B696CD923202B1B00E1D607 /* ACRTargetBuilderDirector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */; };
 		6B74403925BA71B60051F2A1 /* ACRImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B74403725BA71B60051F2A1 /* ACRImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -521,6 +522,8 @@
 		6B377283260194000024E527 /* ACRActionExecuteRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionExecuteRenderer.mm; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
+		6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImagePropertiesTests.mm; sourceTree = "<group>"; };
+		6B4C05C02786AFD800882387 /* Action.ToggleVisibilityExhaustive.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.ToggleVisibilityExhaustive.json; sourceTree = "<group>"; };
 		6B5BA8BE2707BBD000719853 /* ACOWarning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOWarning.mm; sourceTree = "<group>"; };
 		6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
@@ -528,7 +531,6 @@
 		6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionToggleVisibilityRenderer.h; sourceTree = "<group>"; };
 		6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionToggleVisibilityRenderer.mm; sourceTree = "<group>"; };
 		6B654C722708153100DF6A5F /* FluentUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FluentUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B654C742708168D00DF6A5F /* Action.ToggleVisibilityExhaustive.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.ToggleVisibilityExhaustive.json; sourceTree = "<group>"; };
 		6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputChoiceSetRenderer.h; sourceTree = "<group>"; };
 		6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputChoiceSetRenderer.mm; sourceTree = "<group>"; };
 		6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTargetBuilderDirector.mm; sourceTree = "<group>"; };
@@ -1160,7 +1162,7 @@
 		6BE6C79F26E17077009E9171 /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
-				6B654C742708168D00DF6A5F /* Action.ToggleVisibilityExhaustive.json */,
+				6B4C05C02786AFD800882387 /* Action.ToggleVisibilityExhaustive.json */,
 				6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */,
 				6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */,
 				6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */,
@@ -1272,14 +1274,15 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
-				6BE6C79F26E17077009E9171 /* TestFiles */,
-				6BE6C79426E1560A009E9171 /* Helpers */,
-				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
+				6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
-				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
 				30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */,
+				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
+				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
+				6BE6C79426E1560A009E9171 /* Helpers */,
 				6B124C9226B8AE3B007E9641 /* Mocks */,
+				6BE6C79F26E17077009E9171 /* TestFiles */,
 			);
 			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
@@ -1923,7 +1926,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B654C752708168D00DF6A5F /* Action.ToggleVisibilityExhaustive.json in Resources */,
+				6B4C05C12786AFD800882387 /* Action.ToggleVisibilityExhaustive.json in Resources */,
 				6BE6C7C526E7CDD0009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
 				6BE6C7BA26E2E30A009E9171 /* Container.VerticalContentAlignment.json in Resources */,
 				6BE6C7BE26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json in Resources */,
@@ -2200,6 +2203,7 @@
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 				6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */,
 				6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */,
+				6B4C05BF27864B0800882387 /* ACRImagePropertiesTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
