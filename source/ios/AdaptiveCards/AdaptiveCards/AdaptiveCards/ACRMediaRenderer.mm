@@ -11,6 +11,7 @@
 #import "ACOMediaEventPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRImageProperties.h"
 #import "ACRMediaTarget.h"
 #import "ACRTapGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
@@ -164,14 +165,12 @@
 - (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     ACRContentHoldingUIView *contentholdingview = (ACRContentHoldingUIView *)imageView.superview;
-    CGFloat heightToWidthRatio = 0.0f;
+    CGFloat heightToWidthRatio = 0.75f;
 
-    if (!image) {
-        heightToWidthRatio = .75;
-    } else {
+    if (image) {
         imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
         if (image.size.width > 0) {
-            heightToWidthRatio = image.size.height / image.size.width;
+            heightToWidthRatio = [ACRImageProperties convertToAspectRatio:image.size].heightToWidth;
         }
     }
 
