@@ -113,7 +113,7 @@
     }
 
     ACRTextInputHandler *textInputHandler = [[ACRTextInputHandler alloc] init:acoElem];
-    
+
     BOOL isMultiline = (inputBlck->GetTextInputStyle() != TextInputStyle::Password) && inputBlck->GetIsMultiline();
     if (isMultiline) {
         if (renderAction) {

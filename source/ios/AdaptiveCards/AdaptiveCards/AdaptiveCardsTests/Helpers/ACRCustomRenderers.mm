@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACRCustomRenderers.h"
+#import <Foundation/Foundation.h>
 
 @implementation ACRCustomColumnRenderer
 
@@ -44,10 +44,10 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     UIView *view = [super render:viewGroup rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:acoConfig];
     if (acoElem.additionalProperty) {

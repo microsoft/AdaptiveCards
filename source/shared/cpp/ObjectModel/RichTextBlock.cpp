@@ -13,8 +13,7 @@
 
 using namespace AdaptiveCards;
 
-RichTextBlock::RichTextBlock() :
-    BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(std::nullopt)
+RichTextBlock::RichTextBlock() : BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -67,8 +66,8 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::Deserialize(ParseContext& 
     richTextBlock->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
-    auto inlines =
-        ParseUtil::GetElementCollectionOfSingleType<Inline>(context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, false);
+    auto inlines = ParseUtil::GetElementCollectionOfSingleType<Inline>(
+        context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, false);
     richTextBlock->m_inlines = std::move(inlines);
 
     return richTextBlock;
@@ -81,6 +80,7 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::DeserializeFromString(Pars
 
 void RichTextBlock::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines)});
 }

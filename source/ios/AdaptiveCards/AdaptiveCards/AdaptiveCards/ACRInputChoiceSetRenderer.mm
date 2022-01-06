@@ -9,11 +9,11 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
-#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
+#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 
 @implementation ACRInputChoiceSetRenderer
 

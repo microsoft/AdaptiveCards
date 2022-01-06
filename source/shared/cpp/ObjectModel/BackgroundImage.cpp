@@ -117,7 +117,8 @@ std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value&
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
-    image->SetFillMode(ParseUtil::GetEnumValue<ImageFillMode>(json, AdaptiveCardSchemaKey::FillMode, ImageFillMode::Cover, ImageFillModeFromString));
+    image->SetFillMode(ParseUtil::GetEnumValue<ImageFillMode>(
+        json, AdaptiveCardSchemaKey::FillMode, ImageFillMode::Cover, ImageFillModeFromString));
 
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

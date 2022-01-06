@@ -5,9 +5,9 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
 #import <AdaptiveCards/ACOEnums.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import <UIKit/UIKit.h>
 
 @interface ACRInputLabelView : UIView <ACRIBaseInputHandler>
 @property (weak, nonatomic) IBOutlet UILabel *errorMessage;
@@ -16,7 +16,7 @@
 @property (weak, nonatomic) UIView *inputAccessibilityItem;
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
 @property (weak, nonatomic) UIView *inputView;
-@property (strong, nonatomic) NSObject <ACRIBaseInputHandler> *dataSource;
+@property (strong, nonatomic) NSObject<ACRIBaseInputHandler> *dataSource;
 @property BOOL isRequired;
 @property BOOL hasErrorMessage;
 @property IBInspectable UIColor *validationFailBorderColor;

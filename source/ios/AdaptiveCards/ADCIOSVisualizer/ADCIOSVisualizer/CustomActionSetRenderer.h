@@ -9,7 +9,7 @@
 
 #import <AdaptiveCards/AdaptiveCards.h>
 
-@interface CustomActionSetRenderer :  ACRActionSetRenderer
+@interface CustomActionSetRenderer : ACRActionSetRenderer
 
 + (CustomActionSetRenderer *)getInstance;
 

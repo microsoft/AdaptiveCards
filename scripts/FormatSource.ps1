@@ -39,10 +39,10 @@ param (
 )
 
 # Only check source files
-$FilePatterns = "\.(h|cpp|hpp|c)$"
+$FilePatterns = "\.(h|cpp|hpp|c|m|mm)$"
 
 #PerfApp is C++/Cx project and not supported
-$IgnoreFolders = "(Generated Files|PerfApp|android|ios|nodejs|vscode|community|dotnet|node_modules|out|.git|.vs|.vscode|bin|CMakeFiles|generated|debug|x64)$"
+$IgnoreFolders = "(Generated Files|include|PerfApp|pic2card|android|uwp|nodejs|vscode|community|dotnet|node_modules|out|.git|.vs|.vscode|bin|CMakeFiles|generated|debug|x64)$"
 
 $RepoRoot = (Resolve-Path "$PSScriptRoot\..")
 

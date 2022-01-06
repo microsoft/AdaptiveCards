@@ -22,15 +22,11 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
 
     result._imageBaseUrl = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
-    result._factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(json,
-                                                                                    AdaptiveCardSchemaKey::FactSet,
-                                                                                    result._factSet,
-                                                                                    FactSetConfig::Deserialize);
+    result._factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(
+        json, AdaptiveCardSchemaKey::FactSet, result._factSet, FactSetConfig::Deserialize);
 
-    result._fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(json,
-                                                                                        AdaptiveCardSchemaKey::FontSizes,
-                                                                                        result._fontSizes,
-                                                                                        FontSizesConfig::Deserialize);
+    result._fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(
+        json, AdaptiveCardSchemaKey::FontSizes, result._fontSizes, FontSizesConfig::Deserialize);
 
     result._fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
         json, AdaptiveCardSchemaKey::FontWeights, result._fontWeights, FontWeightsConfig::Deserialize);
@@ -41,57 +37,41 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result._containerStyles, ContainerStylesDefinition::Deserialize);
 
-    result._image =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageConfig>(json, AdaptiveCardSchemaKey::Image, result._image, ImageConfig::Deserialize);
+    result._image = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageConfig>(
+        json, AdaptiveCardSchemaKey::Image, result._image, ImageConfig::Deserialize);
 
-    result._imageSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSetConfig>(json,
-                                                                                      AdaptiveCardSchemaKey::ImageSet,
-                                                                                      result._imageSet,
-                                                                                      ImageSetConfig::Deserialize);
+    result._imageSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSetConfig>(
+        json, AdaptiveCardSchemaKey::ImageSet, result._imageSet, ImageSetConfig::Deserialize);
 
-    result._imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(json,
-                                                                                          AdaptiveCardSchemaKey::ImageSizes,
-                                                                                          result._imageSizes,
-                                                                                          ImageSizesConfig::Deserialize);
+    result._imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(
+        json, AdaptiveCardSchemaKey::ImageSizes, result._imageSizes, ImageSizesConfig::Deserialize);
 
-    result._separator = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparatorConfig>(json,
-                                                                                        AdaptiveCardSchemaKey::Separator,
-                                                                                        result._separator,
-                                                                                        SeparatorConfig::Deserialize);
+    result._separator = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparatorConfig>(
+        json, AdaptiveCardSchemaKey::Separator, result._separator, SeparatorConfig::Deserialize);
 
-    result._spacing = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingConfig>(json,
-                                                                                    AdaptiveCardSchemaKey::Spacing,
-                                                                                    result._spacing,
-                                                                                    SpacingConfig::Deserialize);
+    result._spacing = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingConfig>(
+        json, AdaptiveCardSchemaKey::Spacing, result._spacing, SpacingConfig::Deserialize);
 
     result._adaptiveCard = ParseUtil::ExtractJsonValueAndMergeWithDefault<AdaptiveCardConfig>(
         json, AdaptiveCardSchemaKey::AdaptiveCard, result._adaptiveCard, AdaptiveCardConfig::Deserialize);
 
-    result._actions = ParseUtil::ExtractJsonValueAndMergeWithDefault<ActionsConfig>(json,
-                                                                                    AdaptiveCardSchemaKey::Actions,
-                                                                                    result._actions,
-                                                                                    ActionsConfig::Deserialize);
+    result._actions = ParseUtil::ExtractJsonValueAndMergeWithDefault<ActionsConfig>(
+        json, AdaptiveCardSchemaKey::Actions, result._actions, ActionsConfig::Deserialize);
 
-    result._media =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<MediaConfig>(json, AdaptiveCardSchemaKey::Media, result._media, MediaConfig::Deserialize);
+    result._media = ParseUtil::ExtractJsonValueAndMergeWithDefault<MediaConfig>(
+        json, AdaptiveCardSchemaKey::Media, result._media, MediaConfig::Deserialize);
 
-    result._inputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputsConfig>(json,
-                                                                                  AdaptiveCardSchemaKey::Inputs,
-                                                                                  result._inputs,
-                                                                                  InputsConfig::Deserialize);
+    result._inputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputsConfig>(
+        json, AdaptiveCardSchemaKey::Inputs, result._inputs, InputsConfig::Deserialize);
 
-    result._textBlock = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextBlockConfig>(json,
-                                                                                        AdaptiveCardSchemaKey::TextBlock,
-                                                                                        result._textBlock,
-                                                                                        TextBlockConfig::Deserialize);
+    result._textBlock = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextBlockConfig>(
+        json, AdaptiveCardSchemaKey::TextBlock, result._textBlock, TextBlockConfig::Deserialize);
 
-    result._textStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStylesConfig>(json,
-                                                                                          AdaptiveCardSchemaKey::TextStyles,
-                                                                                          result._textStyles,
-                                                                                          TextStylesConfig::Deserialize);
+    result._textStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStylesConfig>(
+        json, AdaptiveCardSchemaKey::TextStyles, result._textStyles, TextStylesConfig::Deserialize);
 
-    result._table =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<TableConfig>(json, AdaptiveCardSchemaKey::Table, result._table, TableConfig::Deserialize);
+    result._table = ParseUtil::ExtractJsonValueAndMergeWithDefault<TableConfig>(
+        json, AdaptiveCardSchemaKey::Table, result._table, TableConfig::Deserialize);
 
     return result;
 }
@@ -114,15 +94,11 @@ FontTypeDefinition FontTypeDefinition::Deserialize(const Json::Value& json, cons
     const std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
     result.fontFamily = (fontFamily == "") ? defaultValue.fontFamily : fontFamily;
 
-    result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(json,
-                                                                                       AdaptiveCardSchemaKey::FontSizes,
-                                                                                       defaultValue.fontSizes,
-                                                                                       FontSizesConfig::Deserialize);
+    result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(
+        json, AdaptiveCardSchemaKey::FontSizes, defaultValue.fontSizes, FontSizesConfig::Deserialize);
 
-    result.fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(json,
-                                                                                           AdaptiveCardSchemaKey::FontWeights,
-                                                                                           defaultValue.fontWeights,
-                                                                                           FontWeightsConfig::Deserialize);
+    result.fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
+        json, AdaptiveCardSchemaKey::FontWeights, defaultValue.fontWeights, FontWeightsConfig::Deserialize);
 
     return result;
 }
@@ -169,40 +145,26 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
 {
     ColorsConfig result;
 
-    result.defaultColor = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                      AdaptiveCardSchemaKey::Default,
-                                                                                      defaultValue.defaultColor,
-                                                                                      &ColorConfig::Deserialize);
+    result.defaultColor = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultColor, &ColorConfig::Deserialize);
 
-    result.accent = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                AdaptiveCardSchemaKey::Accent,
-                                                                                defaultValue.accent,
-                                                                                &ColorConfig::Deserialize);
+    result.accent = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Accent, defaultValue.accent, &ColorConfig::Deserialize);
 
-    result.dark = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Dark,
-                                                                              defaultValue.dark,
-                                                                              &ColorConfig::Deserialize);
+    result.dark = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Dark, defaultValue.dark, &ColorConfig::Deserialize);
 
-    result.light = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                               AdaptiveCardSchemaKey::Light,
-                                                                               defaultValue.light,
-                                                                               &ColorConfig::Deserialize);
+    result.light = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Light, defaultValue.light, &ColorConfig::Deserialize);
 
-    result.good = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Good,
-                                                                              defaultValue.good,
-                                                                              &ColorConfig::Deserialize);
+    result.good = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Good, defaultValue.good, &ColorConfig::Deserialize);
 
-    result.warning = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                 AdaptiveCardSchemaKey::Warning,
-                                                                                 defaultValue.warning,
-                                                                                 &ColorConfig::Deserialize);
+    result.warning = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Warning, defaultValue.warning, &ColorConfig::Deserialize);
 
-    result.attention = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                   AdaptiveCardSchemaKey::Attention,
-                                                                                   defaultValue.attention,
-                                                                                   &ColorConfig::Deserialize);
+    result.attention = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(
+        json, AdaptiveCardSchemaKey::Attention, defaultValue.attention, &ColorConfig::Deserialize);
     return result;
 }
 
@@ -236,15 +198,11 @@ FactSetTextConfig FactSetTextConfig::Deserialize(const Json::Value& json, const 
 TextStylesConfig TextStylesConfig::Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue)
 {
     TextStylesConfig result;
-    result.heading = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
-                                                                                     AdaptiveCardSchemaKey::Heading,
-                                                                                     defaultValue.heading,
-                                                                                     TextStyleConfig::Deserialize);
+    result.heading = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(
+        json, AdaptiveCardSchemaKey::Heading, defaultValue.heading, TextStyleConfig::Deserialize);
 
-    result.columnHeader = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
-                                                                                          AdaptiveCardSchemaKey::ColumnHeader,
-                                                                                          defaultValue.columnHeader,
-                                                                                          TextStyleConfig::Deserialize);
+    result.columnHeader = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(
+        json, AdaptiveCardSchemaKey::ColumnHeader, defaultValue.columnHeader, TextStyleConfig::Deserialize);
 
     return result;
 }
@@ -283,15 +241,11 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     FactSetConfig result;
 
     result.spacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing);
-    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
-                                                                                     AdaptiveCardSchemaKey::Title,
-                                                                                     defaultValue.title,
-                                                                                     FactSetTextConfig::Deserialize);
+    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(
+        json, AdaptiveCardSchemaKey::Title, defaultValue.title, FactSetTextConfig::Deserialize);
 
-    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
-                                                                                     AdaptiveCardSchemaKey::Value,
-                                                                                     defaultValue.value,
-                                                                                     FactSetTextConfig::Deserialize);
+    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(
+        json, AdaptiveCardSchemaKey::Value, defaultValue.value, FactSetTextConfig::Deserialize);
 
     // Value doesn't support maxWidth, so reset to the default value.
     result.value.maxWidth = defaultValue.value.maxWidth;
@@ -314,13 +268,11 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 {
     ActionsConfig result;
 
-    result.actionsOrientation = ParseUtil::GetEnumValue<ActionsOrientation>(json,
-                                                                            AdaptiveCardSchemaKey::ActionsOrientation,
-                                                                            defaultValue.actionsOrientation,
-                                                                            ActionsOrientationFromString);
+    result.actionsOrientation = ParseUtil::GetEnumValue<ActionsOrientation>(
+        json, AdaptiveCardSchemaKey::ActionsOrientation, defaultValue.actionsOrientation, ActionsOrientationFromString);
 
-    result.actionAlignment =
-        ParseUtil::GetEnumValue<ActionAlignment>(json, AdaptiveCardSchemaKey::ActionAlignment, defaultValue.actionAlignment, ActionAlignmentFromString);
+    result.actionAlignment = ParseUtil::GetEnumValue<ActionAlignment>(
+        json, AdaptiveCardSchemaKey::ActionAlignment, defaultValue.actionAlignment, ActionAlignmentFromString);
 
     result.buttonSpacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ButtonSpacing, defaultValue.buttonSpacing);
 
@@ -331,8 +283,8 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 
     result.spacing = ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing, SpacingFromString);
 
-    result.iconPlacement =
-        ParseUtil::GetEnumValue<IconPlacement>(json, AdaptiveCardSchemaKey::IconPlacement, defaultValue.iconPlacement, IconPlacementFromString);
+    result.iconPlacement = ParseUtil::GetEnumValue<IconPlacement>(
+        json, AdaptiveCardSchemaKey::IconPlacement, defaultValue.iconPlacement, IconPlacementFromString);
 
     result.iconSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::IconSize, defaultValue.iconSize);
 
@@ -392,10 +344,8 @@ InputsConfig InputsConfig::Deserialize(const Json::Value& json, const InputsConf
     result.errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(
         json, AdaptiveCardSchemaKey::ErrorMessage, defaultValue.errorMessage, ErrorMessageConfig::Deserialize);
 
-    result.label = ParseUtil::ExtractJsonValueAndMergeWithDefault<LabelConfig>(json,
-                                                                               AdaptiveCardSchemaKey::Label,
-                                                                               defaultValue.label,
-                                                                               LabelConfig::Deserialize);
+    result.label = ParseUtil::ExtractJsonValueAndMergeWithDefault<LabelConfig>(
+        json, AdaptiveCardSchemaKey::Label, defaultValue.label, LabelConfig::Deserialize);
 
     return result;
 }
@@ -738,7 +688,8 @@ std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
     return GetContainerStyle(style).backgroundColor;
 }
 
-template<typename T> std::string GetColorFromColorConfig(T colorConfig, bool isSubtle)
+template <typename T>
+std::string GetColorFromColorConfig(T colorConfig, bool isSubtle)
 {
     return (isSubtle) ? (colorConfig.subtleColor) : (colorConfig.defaultColor);
 }

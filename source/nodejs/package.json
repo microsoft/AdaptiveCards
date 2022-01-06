@@ -54,7 +54,9 @@
 			".h",
 			".cpp",
 			".hpp",
-			".c"
+			".c",
+			".m",
+			".mm"
 		],
 		"excludePathContains": [
 			"/PerfApp/",
@@ -62,7 +64,8 @@
 			"/dotnet/",
 			"/community/",
 			"/pic2card/",
-			"/ios/",
+			"/uwp/",
+			"/include/",
 			"/nodejs/",
 			"/android/"
 		],
