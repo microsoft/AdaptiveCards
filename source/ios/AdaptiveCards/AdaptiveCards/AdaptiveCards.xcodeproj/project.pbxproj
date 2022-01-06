@@ -71,6 +71,7 @@
 		6B3A23192755A3EF00764971 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6B3A231B2755A3EF00764971 /* Localizable.strings */; };
 		6B421CC02101503E002F401A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		6B421CC121015EDD002F401A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */; };
+		6B4C05BF27864B0800882387 /* ACRImagePropertiesTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */; };
 		6B5BA8BF2707BBD000719853 /* ACOWarning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BA8BE2707BBD000719853 /* ACOWarning.mm */; };
 		6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B5D240E212C89E70010EB07 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */; };
@@ -525,6 +526,7 @@
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
 		6B3A231A2755A3EF00764971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImagePropertiesTests.mm; sourceTree = "<group>"; };
 		6B5BA8BE2707BBD000719853 /* ACOWarning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOWarning.mm; sourceTree = "<group>"; };
 		6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
@@ -1277,14 +1279,15 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
-				6BE6C79F26E17077009E9171 /* TestFiles */,
-				6BE6C79426E1560A009E9171 /* Helpers */,
-				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
+				6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
-				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
 				30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */,
+				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
+				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
+				6BE6C79426E1560A009E9171 /* Helpers */,
 				6B124C9226B8AE3B007E9641 /* Mocks */,
+				6BE6C79F26E17077009E9171 /* TestFiles */,
 			);
 			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
@@ -2209,6 +2212,7 @@
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 				6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */,
 				6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */,
+				6B4C05BF27864B0800882387 /* ACRImagePropertiesTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

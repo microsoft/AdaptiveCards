@@ -2,7 +2,6 @@
 //  AdaptiveCardsTests.mm
 //  AdaptiveCardsTests
 //
-//  Created by almedina on 6/22/21.
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
