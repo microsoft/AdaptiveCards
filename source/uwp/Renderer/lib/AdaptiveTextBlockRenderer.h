@@ -11,12 +11,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     public:
         AdaptiveTextBlockRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        winrt::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel
+        winrt::AutomationHeadingLevel
         GetHeadingLevelFromContext(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
     };
 }

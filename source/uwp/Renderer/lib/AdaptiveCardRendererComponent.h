@@ -72,7 +72,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         Uwp::RenderedAdaptiveCard RenderAdaptiveCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard);
         Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
-        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson);
+        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
 
         Uwp::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
         Uwp::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
@@ -91,7 +91,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
-                                                            winrt::Windows::Foundation::IInspectable const& value);
+                                                            winrt::IInspectable const& value);
         void SetMergedDictionary();
 
         winrt::Windows::UI::Xaml::ResourceDictionary m_defaultResourceDictionary;

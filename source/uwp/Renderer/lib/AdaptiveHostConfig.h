@@ -41,7 +41,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         // TODO: weird stuff here
         static Uwp::AdaptiveHostConfigParseResult FromJsonString(hstring const& hostConfigJson);
-        static Uwp::AdaptiveHostConfigParseResult FromJson(winrt::Windows::Data::Json::JsonObject const& hostConfigJson);
+        static Uwp::AdaptiveHostConfigParseResult FromJson(winrt::JsonObject const& hostConfigJson);
 
     private:
         static Uwp::AdaptiveHostConfigParseResult _FromJsonString(const std::string& jsonString);

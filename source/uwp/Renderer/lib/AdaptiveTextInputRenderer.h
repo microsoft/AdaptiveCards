@@ -11,23 +11,23 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     public:
         AdaptiveTextInputRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement,
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInput const& adaptiveTextInput,
+            winrt::AdaptiveTextInput const& adaptiveTextInput,
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
         winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(
-            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInput const& adaptiveTextInput,
+            winrt::AdaptiveTextInput const& adaptiveTextInput,
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
-        HandleLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInput const& adaptiveTextInput,
+        std::tuple<rtxaml::UIElement, winrt::Border>
+        HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                   winrt::Windows::UI::Xaml::UIElement const& textBox,
                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);

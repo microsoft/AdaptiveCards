@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveExecuteActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
-                                                            rtrender::AdaptiveRenderContext const& renderContext,
-                                                            rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveExecuteActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

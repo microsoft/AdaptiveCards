@@ -10,11 +10,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig const& inputLabelConfig = {});
 
-        property<winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor> Color;
+        property<winrt::ForegroundColor> Color;
         property<bool> IsSubtle;
-        property<winrt::AdaptiveCards::ObjectModel::Uwp::TextSize> Size;
+        property<winrt::TextSize> Size;
         property<hstring> Suffix;
-        property<winrt::AdaptiveCards::ObjectModel::Uwp::TextWeight> Weight;
+        property<winrt::TextWeight> Weight;
     };
 }
 

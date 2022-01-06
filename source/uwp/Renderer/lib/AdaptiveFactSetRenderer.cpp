@@ -8,18 +8,18 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveFactSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                      rtrender::AdaptiveRenderContext const& renderContext,
-                                                      rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveFactSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                      winrt::AdaptiveRenderContext const& renderContext,
+                                                      winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveFactSet = cardElement.as<rtom::AdaptiveFactSet>();
+            auto adaptiveFactSet = cardElement.as<winrt::AdaptiveFactSet>();
 
-            rtxaml::Controls::Grid xamlGrid{};
+            winrt::Grid xamlGrid{};
 
-            rtxaml::Controls::ColumnDefinition titleColumn{};
-            rtxaml::Controls::ColumnDefinition valueColumn{};
+            winrt::ColumnDefinition titleColumn{};
+            winrt::ColumnDefinition valueColumn{};
 
             // TODO: does value(0 in this case) matter when type=Auto?
             rtxaml::GridLength factSetGridTitleLength{0, rtxaml::GridUnitType::Auto};
@@ -36,7 +36,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto heightType = cardElement.Height();
 
-            if (heightType == rtom::HeightType::Stretch)
+            if (heightType == winrt::HeightType::Stretch)
             {
                 factSetGridHeight = {1, rtxaml::GridUnitType::Star};
             }
@@ -47,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             for (auto fact : facts)
             {
-                rtxaml::Controls::RowDefinition factRow{};
+                winrt::RowDefinition factRow{};
                 factRow.Height(factSetGridHeight);
 
                 auto rowDefinitions = xamlGrid.RowDefinitions();
@@ -61,7 +61,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                 // Create the title xaml textblock and style it from Host options
                 auto titleTextConfig = factSetConfig.Title();
-                rtxaml::Controls::TextBlock titleTextBlock{};
+                winrt::TextBlock titleTextBlock{};
 
                 winrt::hstring factTitle = fact.Title();
 
@@ -69,7 +69,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                 // Create the value xaml textblock and style it from Host options
                 auto valueTextConfig = factSetConfig.Value();
-                rtxaml::Controls::TextBlock valueTextBlock{};
+                winrt::TextBlock valueTextBlock{};
 
                 winrt::hstring factValue = fact.Value();
 
@@ -90,11 +90,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                                                                  L"Adaptive.Fact.Value",
                                                                                                  valueTextBlock);
 
-                    rtxaml::Controls::Grid::SetColumn(titleTextBlock, 0);
-                    rtxaml::Controls::Grid::SetRow(titleTextBlock, currentFact);
+                    winrt::Grid::SetColumn(titleTextBlock, 0);
+                    winrt::Grid::SetRow(titleTextBlock, currentFact);
 
-                    rtxaml::Controls::Grid::SetColumn(valueTextBlock, 1);
-                    rtxaml::Controls::Grid::SetRow(valueTextBlock, currentFact);
+                    winrt::Grid::SetColumn(valueTextBlock, 1);
+                    winrt::Grid::SetRow(valueTextBlock, currentFact);
 
                     // Finally add the column container to the grid, and increment the column count
 

@@ -140,7 +140,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson)
+    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson)
     {
         return RenderAdaptiveCardFromJsonString(JsonObjectToHString(adaptiveJson));
     }
@@ -161,17 +161,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        auto resourceDictionary = rtxaml::Markup::XamlReader::Load(c_defaultResourceDictionary).as<rtxaml::ResourceDictionary>();
+        auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<rtxaml::ResourceDictionary>();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
         auto actionSentimentResourceDictionary =
-            rtxaml::Markup::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<rtxaml::ResourceDictionary>();
+            winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<rtxaml::ResourceDictionary>();
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
 
     void AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
-                                                                              winrt::Windows::Foundation::IInspectable const& value)
+                                                                              winrt::IInspectable const& value)
     {
         m_actionSentimentResourceDictionary.Insert(winrt::box_value(resourceName), value);
     }
@@ -179,9 +179,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
     {
         auto accentColor =
-            GetColorFromAdaptiveColor(m_hostConfig, rtom::ForegroundColor::Accent, rtom::ContainerStyle::Default, false, false);
+            GetColorFromAdaptiveColor(m_hostConfig, winrt::ForegroundColor::Accent, winrt::ContainerStyle::Default, false, false);
         auto attentionColor =
-            GetColorFromAdaptiveColor(m_hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
+            GetColorFromAdaptiveColor(m_hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
         auto hoverAccentColor = GenerateLHoverColor(accentColor);
         auto hoverAttentionColor = GenerateLHoverColor(attentionColor);

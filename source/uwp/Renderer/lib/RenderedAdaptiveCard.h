@@ -10,7 +10,7 @@
 
 template<typename TSrc, typename TPayload> struct auto_event
 {
-    using handler = winrt::Windows::Foundation::TypedEventHandler<TSrc, TPayload>;
+    using handler = winrt::TypedEventHandler<TSrc, TPayload>;
     winrt::event<handler> m_event;
     auto operator()(handler const& t) { return m_event.add(t); }
     void operator()(winrt::event_token const& t) { return m_event.remove(t); }
@@ -23,8 +23,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         : RenderedAdaptiveCardT<RenderedAdaptiveCard, ITypePeek>
     {
         RenderedAdaptiveCard();
-        RenderedAdaptiveCard(winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
-                             winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+        RenderedAdaptiveCard(winrt::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
+                             winrt::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings);
 
         // IRenderedAdaptiveCard
         auto OriginatingCard() { return m_originatingCard; }
@@ -34,8 +34,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         auto_event<Uwp::RenderedAdaptiveCard, Uwp::AdaptiveActionEventArgs> Action;
         auto_event<Uwp::RenderedAdaptiveCard, Uwp::AdaptiveMediaEventArgs> MediaClicked;
-        property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
-        property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveWarning>> Warnings;
+        property<winrt::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
+        property<winrt::IVector<ObjectModel::Uwp::AdaptiveWarning>> Warnings;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

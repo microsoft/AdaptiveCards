@@ -10,9 +10,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::Windows::UI::Xaml::UIElement AdaptiveActionSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                                          Uwp::AdaptiveRenderContext const& renderContext,
-                                                                          Uwp::AdaptiveRenderArgs const& renderArgs)
+    winrt::Windows::UI::Xaml::UIElement AdaptiveActionSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                                          winrt::AdaptiveRenderContext const& renderContext,
+                                                                          winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -20,14 +20,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"ActionSet was stripped from card because interactivity is not supported");
 
                 return nullptr;
             }
             else
             {
-                auto adaptiveActionSet = cardElement.as<rtom::AdaptiveActionSet>();
+                auto adaptiveActionSet = cardElement.as<winrt::AdaptiveActionSet>();
                 auto actions = adaptiveActionSet.Actions();
 
                 return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildActionSetHelper(

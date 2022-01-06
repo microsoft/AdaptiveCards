@@ -33,7 +33,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
     }
 
-    Uwp::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::Windows::Data::Json::JsonObject const& hostConfigJson)
+    Uwp::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::JsonObject const& hostConfigJson)
     {
         std::string adaptiveJsonString = JsonObjectToString(hostConfigJson);
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);

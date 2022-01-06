@@ -8,23 +8,23 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveDateInputRenderer::Render(rtom::IAdaptiveCardElement const& adaptiveCardElement,
-                                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Date input was stripped from card because interactivity is not supported");
                 return nullptr;
             }
 
-            auto adaptiveDateInput = adaptiveCardElement.as<rtom::AdaptiveDateInput>();
+            auto adaptiveDateInput = adaptiveCardElement.as<winrt::AdaptiveDateInput>();
 
-            rtxaml::Controls::CalendarDatePicker datePicker{};
+            winrt::CalendarDatePicker datePicker{};
             datePicker.PlaceholderText(adaptiveDateInput.Placeholder());
 
             // Make the picker stretch full width
@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Min date
             std::string min = HStringToUTF8(adaptiveDateInput.Min());
-            winrt::Windows::Foundation::DateTime minDate{};
+            winrt::DateTime minDate{};
             boolean isMinValid = ::AdaptiveCards::DateTimePreparser::TryParseSimpleDate(min, year, month, day);
             if (isMinValid)
             {
@@ -63,7 +63,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     }
                     else
                     {
-                        renderContext.AddWarning(rtom::WarningStatusCode::InvalidValue, L"Min value must be less than max in Input.Date");
+                        renderContext.AddWarning(winrt::WarningStatusCode::InvalidValue, L"Min value must be less than max in Input.Date");
                     }
                 }
                 else
@@ -78,7 +78,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
 
             // TODO: come back to inputs here.
-            auto input = winrt::make_self<rtrender::DateInputValue>(adaptiveDateInput, datePicker, validationBorder);
+            auto input = winrt::make_self<winrt::DateInputValue>(adaptiveDateInput, datePicker, validationBorder);
             renderContext.AddInputValue(*input, renderArgs);
 
             return inputLayout;

@@ -13,7 +13,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::TrackBitmapImage(rtxaml::Media::Imaging::BitmapImage const& bitmapImage)
+    void ImageLoadTracker::TrackBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
         // TODO: Am I doing this right?
         auto trackedImageDetails = winrt::make_self<TrackedImageDetails>();
@@ -39,7 +39,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::MarkFailedLoadBitmapImage(rtxaml::Media::Imaging::BitmapImage const& bitmapImage)
+    void ImageLoadTracker::MarkFailedLoadBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
         // Record failure
         m_hasFailure = true;
@@ -112,19 +112,19 @@ namespace AdaptiveCards::Rendering::Uwp
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender,
+    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
                                                     rtxaml::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender,
+    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::IInspectable const& sender,
                                                     rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender)
+    void ImageLoadTracker::ImageLoadResultReceived(winrt::IInspectable const& sender)
     {
         std::unique_lock lock {m_mutex};
 
@@ -140,7 +140,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage,
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::IInspectable const& bitmapImage,
                                                  winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
         // TODO: this is the right way to do it, correct?

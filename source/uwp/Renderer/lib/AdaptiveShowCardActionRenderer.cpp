@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveShowCardActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
-                                                             rtrender::AdaptiveRenderContext const& renderContext,
-                                                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -22,9 +22,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             return nullptr;
         }
     }
-    rtxaml::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(rtom::AdaptiveCard const& showCard,
-                                                                    rtrender::AdaptiveRenderContext const& renderContext,
-                                                                    rtrender::AdaptiveRenderArgs const& renderArgs,
+    rtxaml::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
+                                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                                    winrt::AdaptiveRenderArgs const& renderArgs,
                                                                     bool isBottomActionBar)
     {
         try
@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto spacingConfig = hostConfig.Spacing();
             uint32_t padding = spacingConfig.Padding();
 
-            rtrender::ActionMode showCardActionmode = showCardActionConfig.ActionMode();
+            winrt::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionmode = showCardActionConfig.ActionMode();
 
             // Set the top margin
             uint32_t inlineTopMargin = showCardActionConfig.InlineTopMargin();

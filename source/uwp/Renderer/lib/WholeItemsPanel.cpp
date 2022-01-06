@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     uint32_t WholeItemsPanel::s_bleedMargin = 0;
 
     // IFrameworkElementOverrides
-    winrt::Windows::Foundation::Size WholeItemsPanel::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
+    winrt::Size WholeItemsPanel::MeasureOverride(winrt::Size const& availableSize)
     {
         unsigned int count{};
         float currentHeight{};
@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto children = this->Children();
         count = children.Size();
 
-        const winrt::Windows::Foundation::Size noVerticalLimit{availableSize.Width, std::numeric_limits<float>::infinity()};
+        const winrt::Size noVerticalLimit{availableSize.Width, std::numeric_limits<float>::infinity()};
         auto measuredAvailableSize{availableSize};
 
         m_visibleCount = count;
@@ -41,7 +41,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (visible)
             {
-                winrt::Windows::Foundation::Size childSize = child.DesiredSize();
+                winrt::Size childSize = child.DesiredSize();
 
                 float newHeight = currentHeight + childSize.Height;
 
@@ -57,7 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     //    1) 2.3 If the child is a image or a shape (circular cropped image):
                     //            - stretched images might be resized
 
-                    if (auto childAsPanel = child.try_as<rtxaml::Controls::Panel>())
+                    if (auto childAsPanel = child.try_as<winrt::Panel>())
                     {
                         m_isTruncated = true;
 
@@ -65,7 +65,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
                         if (!keepItem)
                         {
-                            winrt::Windows::Foundation::Size remainingSpace = {measuredAvailableSize.Width,
+                            winrt::Size remainingSpace = {measuredAvailableSize.Width,
                                                                                static_cast<float>(availableHeightForItem)};
 
                             child.Measure(remainingSpace);
@@ -73,7 +73,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             m_isTruncated = IsAnySubgroupTruncated(childAsPanel);
                         }
                     }
-                    if (auto childAsTextBlock = child.try_as<rtxaml::Controls::TextBlock>())
+                    if (auto childAsTextBlock = child.try_as<winrt::TextBlock>())
                     {
                         rtxaml::TextWrapping currentWrap = rtxaml::TextWrapping::Wrap;
                         if (childAsTextBlock.TextWrapping() == rtxaml::TextWrapping::NoWrap)
@@ -88,7 +88,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            winrt::Windows::Foundation::Size noLimit{std::numeric_limits<float>::infinity(),
+                            winrt::Size noLimit{std::numeric_limits<float>::infinity(),
                                                                      std::numeric_limits<float>::infinity()};
                             childAsTextBlock.TextWrapping(rtxaml::TextWrapping::NoWrap);
                             childAsTextBlock.Measure(noLimit);
@@ -123,11 +123,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             m_isTruncated = !keepItem;
                         }
                     }
-                    if (auto childAsImage = child.try_as<rtxaml::Controls::Image>())
+                    if (auto childAsImage = child.try_as<winrt::Image>())
                     {
                         if (!HasExplicitSize(childAsImage))
                         {
-                            childAsImage.Stretch(rtxaml::Media::Stretch::Uniform);
+                            childAsImage.Stretch(winrt::Stretch::Uniform);
                             keepItem = true;
                             m_isTruncated = false;
                         }
@@ -136,7 +136,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             m_isTruncated = true;
                         }
                     }
-                    if (auto childAsShape = child.try_as<winrt::Windows::UI::Xaml::Shapes::Shape>())
+                    if (auto childAsShape = child.try_as<winrt::Shape>())
                     {
                         if (!HasExplicitSize(childAsShape))
                         {
@@ -197,7 +197,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    winrt::Windows::Foundation::Size WholeItemsPanel::ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize)
+    winrt::Size WholeItemsPanel::ArrangeOverride(winrt::Size const& finalSize)
     {
         float currentHeight{0.0f};
         float extraPaddingPerItem{0.0f};
@@ -211,11 +211,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         else
         {
-            if (m_verticalContentAlignment == rtom::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == winrt::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == rtom::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == winrt::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -241,7 +241,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
                 }
-                const winrt::Windows::Foundation::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width
+                const winrt::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width
                                                                                                                  // does not respect Text alignment
 
                 child.Arrange(rc);
@@ -251,7 +251,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             else
             {
                 // Arrange the child outside the panel
-                const winrt::Windows::Foundation::Rect rc = {0.0f,
+                const winrt::Rect rc = {0.0f,
                                                              OutsidePanelY - childSize.Height,
                                                              childSize.Width,
                                                              childSize.Height};
@@ -265,7 +265,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // sides as specified by s_bleedMargin.
 
         rtxaml::Thickness margin = this->Margin();
-        rtxaml::Media::RectangleGeometry clip;
+        winrt::RectangleGeometry clip;
 
         const double bleedMargin = static_cast<double>(s_bleedMargin);
         float x0 = static_cast<float>(-std::max(margin.Left, bleedMargin));
@@ -329,14 +329,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
                 // TODO: do we want to peek_innards here to make sure it's our own implementation?
-                if (const auto tagAsElementTagContent = tag.try_as<rtrender::ElementTagContent>())
+                if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
                 {
                     tagAsElementTagContent.IsStretchable(true);
                 }
                 else
                 {
                     // TODO: should we call winrt::make to skip overhead of projection?
-                    rtrender::ElementTagContent tagContent{};
+                    winrt::ElementTagContent tagContent{};
                     tagContent.IsStretchable(true);
                     elementAsFrameworkElement.Tag(tagContent);
                 }
@@ -352,7 +352,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
                 // TODO: do I need peek_innards for this?
-                if (const auto tagAsElementTagContent = tag.try_as<rtrender::ElementTagContent>())
+                if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
                 {
                     return tagAsElementTagContent.IsStretchable();
                 }
@@ -364,7 +364,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return false;
     }
 
-    bool WholeItemsPanel::IsAnySubgroupTruncated(rtxaml::Controls::Panel panel)
+    bool WholeItemsPanel::IsAnySubgroupTruncated(winrt::Panel panel)
     {
         bool childTruncated = false;
         auto children = panel.Children();
@@ -373,7 +373,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         for (auto child : children)
         {
             // Subgroups (columns) are implemented with WholeItemsPanel
-            if (auto childAsWholeItemPanel = child.as<rtrender::WholeItemsPanel>())
+            if (auto childAsWholeItemPanel = child.as<winrt::WholeItemsPanel>())
             {
                 if (childAsWholeItemPanel.IsTruncated())
                 {
@@ -387,7 +387,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     // As shapes (used for circular cropping) don't resize as a stretched image, we need do to more
     // things manually. Here, we'll resize the shape to fit the smallest dimension
     // (ideally, we should inherit from Ellipse but it is not possible)
-    void WholeItemsPanel::LayoutCroppedImage(rtxaml::Shapes::Shape const& shape, double availableWidth, double availableHeight)
+    void WholeItemsPanel::LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight)
     {
         rtxaml::Thickness margins = shape.Margin();
         const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
@@ -410,7 +410,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         if (const auto dependencyObject = element.try_as<rtxaml::DependencyObject>())
         {
-            return rtxaml::Automation::AutomationProperties::GetName(dependencyObject);
+            return winrt::AutomationProperties::GetName(dependencyObject);
         }
 
         // TODO: We shouldn't reach here. What do we do? throw or return empty string?
@@ -420,15 +420,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     // Creates the Alt Text
     void WholeItemsPanel::AppendAltTextToUIElement(rtxaml::UIElement const& element, std::wstring& buffer)
     {
-        if (const auto textBlock = element.try_as<rtxaml::Controls::TextBlock>())
+        if (const auto textBlock = element.try_as<winrt::TextBlock>())
         {
             AppendText(textBlock.Text(), buffer);
         }
-        else if (const auto wholeItemsPanel = element.try_as<rtrender::implementation::WholeItemsPanel>())
+        else if (const auto wholeItemsPanel = element.try_as<winrt::implementation::WholeItemsPanel>())
         {
             wholeItemsPanel->AppendAltText(buffer);
         }
-        else if (const auto image = element.try_as<rtxaml::Controls::Image>())
+        else if (const auto image = element.try_as<winrt::Image>())
         {
             auto altText = GetAltAsString(element);
             if (!altText.empty())
@@ -436,7 +436,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 AppendText(altText, buffer);
             }
         }
-        else if (const auto shape = element.try_as<rtxaml::Shapes::Shape>())
+        else if (const auto shape = element.try_as<winrt::Shape>())
         {
             auto altText = GetAltAsString(element);
             if (!altText.empty())
@@ -444,14 +444,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 AppendText(altText, buffer);
             }
         }
-        else if (const auto panel = element.try_as<rtxaml::Controls::Panel>())
+        else if (const auto panel = element.try_as<winrt::Panel>())
         {
             for (auto child : panel.Children())
             {
                 AppendAltTextToUIElement(child, buffer);
             }
         }
-        else if (const auto border = element.try_as<rtxaml::Controls::Border>())
+        else if (const auto border = element.try_as<winrt::Border>())
         {
             if (const auto child = border.Child())
             {

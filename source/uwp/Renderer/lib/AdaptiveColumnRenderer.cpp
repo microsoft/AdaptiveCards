@@ -10,17 +10,17 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveColumnRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                     rtrender::AdaptiveRenderContext const& renderContext,
-                                                     rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                     winrt::AdaptiveRenderContext const& renderContext,
+                                                     winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveColumn = cardElement.as<rtom::AdaptiveColumn>();
+            auto adaptiveColumn = cardElement.as<winrt::AdaptiveColumn>();
 
-            rtxaml::Controls::Border columnBorder{};
+            winrt::Border columnBorder{};
 
-            auto columnPanel = winrt::make<rtrender::implementation::WholeItemsPanel>();
+            auto columnPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
 
             columnBorder.Child(columnPanel);
 
@@ -42,13 +42,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 columnPanel.FlowDirection(currentRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
             }
 
-            rtom::ContainerStyle containerStyle =
+            winrt::ContainerStyle containerStyle =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumn, columnBorder, renderContext, renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
 
             auto newRenderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
+                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
 
             auto childItems = adaptiveColumn.Items();
 
@@ -63,8 +63,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto verticalContentAlignmentReference = adaptiveColumn.VerticalContentAlignment();
 
-            rtom::VerticalContentAlignment verticalContentAlignment =
-                GetValueFromRef(verticalContentAlignmentReference, rtom::VerticalContentAlignment::Top);
+            winrt::VerticalContentAlignment verticalContentAlignment =
+                GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel, verticalContentAlignment);
 
@@ -75,7 +75,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             uint32_t columnMinHeight = adaptiveColumn.MinHeight();
 
-            // TODO: Do I need to cast adaptiveColumn to rtom::ContainerBase?
+            // TODO: Do I need to cast adaptiveColumn to winrt::ContainerBase?
             if (columnMinHeight > 0)
             {
                 columnPanel.MinHeight(columnMinHeight);
@@ -90,7 +90,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (IsBackgroundImageValid(backgroundImage))
             {
-                rtxaml::Controls::Grid rootElement{};
+                winrt::Grid rootElement{};
 
                 // TODO:No need to cast right? Winrt will call QueryInterface and cast Grid to Panel?
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);

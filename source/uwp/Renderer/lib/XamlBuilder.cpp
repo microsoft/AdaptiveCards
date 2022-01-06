@@ -29,10 +29,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void XamlBuilder::ImagesLoadingHadError() { FireImagesLoadingHadError(); }
 
-    rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(rtom::AdaptiveCard const& adaptiveCard,
-                                                                        rtrender::AdaptiveRenderContext const& renderContext,
+    rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
+                                                                        winrt::AdaptiveRenderContext const& renderContext,
                                                                         XamlBuilder* xamlBuilder,
-                                                                        rtom::ContainerStyle defaultContainerStyle)
+                                                                        winrt::ContainerStyle defaultContainerStyle)
     {
         try
         {
@@ -52,13 +52,13 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 auto cardStyle = adaptiveCard.Style();
 
-                if (cardStyle != rtom::ContainerStyle::None)
+                if (cardStyle != winrt::ContainerStyle::None)
                 {
                     containerStyle = cardStyle;
                 }
             }
             auto renderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, adaptiveCard, nullptr);
+                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, adaptiveCard, nullptr);
 
             auto& [bodyElementContainer, rootElement] =
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder);
@@ -83,11 +83,11 @@ namespace AdaptiveCards::Rendering::Uwp
             // Enumerate the child items of the card and build xaml for them
             auto body = adaptiveCard.Body();
             auto bodyRenderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, adaptiveCard, nullptr);
+                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, adaptiveCard, nullptr);
 
             BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](rtxaml::UIElement) {});
 
-            rtom::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
+            winrt::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
 
             XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer, verticalContentAlignment);
 
@@ -101,7 +101,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 }
                 else
                 {
-                    renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                    renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                              L"Actions collection was present in card, but interactivity is not supported");
                 }
             }
@@ -174,8 +174,8 @@ namespace AdaptiveCards::Rendering::Uwp
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>
-    XamlBuilder::CreateRootCardElement(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard const& adaptiveCard,
+    std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
+    XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                                        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
                                        XamlBuilder* xamlBuilder)
@@ -188,10 +188,10 @@ namespace AdaptiveCards::Rendering::Uwp
         // StackPanel - The container for all the card's body elements
         try
         {
-            rtxaml::Controls::Panel bodyElementContainer{nullptr};
+            winrt::Panel bodyElementContainer{nullptr};
             rtxaml::UIElement rootElementResult{nullptr};
 
-            rtxaml::Controls::Grid rootElement{};
+            winrt::Grid rootElement{};
 
             auto hostConfig = renderContext.HostConfig();
             auto adaptiveHostConfig = hostConfig.AdaptiveCard();
@@ -224,7 +224,7 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
 
             // TODO: why is it called height if it's height type?
-            rtom::HeightType adaptiveCardHeightType = adaptiveCard.Height();
+            winrt::HeightType adaptiveCardHeightType = adaptiveCard.Height();
 
             XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
             // TODO: I should be able to cast here directly, right? *bodyElementHostImpl?
@@ -237,7 +237,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 rootElement.MaxHeight(xamlBuilder->m_fixedHeight);
             }
 
-            if (adaptiveCardHeightType == rtom::HeightType::Stretch)
+            if (adaptiveCardHeightType == winrt::HeightType::Stretch)
             {
                 rootElement.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
             }
@@ -277,21 +277,21 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     void XamlBuilder::BuildPanelChildren(
-        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> const& children,
-        rtxaml::Controls::Panel parentPanel,
-        rtrender::AdaptiveRenderContext renderContext,
-        rtrender::AdaptiveRenderArgs renderArgs,
+        winrt::IVector<winrt::IAdaptiveCardElement> const& children,
+        winrt::Panel parentPanel,
+        winrt::AdaptiveRenderContext renderContext,
+        winrt::AdaptiveRenderArgs renderArgs,
         std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
     {
         int iElement = 0;
         uint32_t childrenSize = children.Size();
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
-        rtrender::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
+        winrt::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
         for (auto element : children)
         {
             // Get fallback state
-            rtom::FallbackType elementFallback = element.FallbackType();
-            renderArgs.AncestorHasFallback(elementFallback != rtom::FallbackType::None || ancestorHasFallback);
+            winrt::FallbackType elementFallback = element.FallbackType();
+            renderArgs.AncestorHasFallback(elementFallback != winrt::FallbackType::None || ancestorHasFallback);
 
             // Check to see if element's requirements are being met
             bool shouldFallback = !MeetsRequirements(element, featureRegistration);
@@ -301,7 +301,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto hostConfig = renderContext.HostConfig();
 
             rtxaml::UIElement newControl{nullptr};
-            rtom::IAdaptiveCardElement renderedElement;
+            winrt::IAdaptiveCardElement renderedElement;
             if (!shouldFallback && elementRenderer)
             {
                 newControl = elementRenderer.Render(element, renderContext, renderArgs);
@@ -321,7 +321,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 // If the renderedElement was an input, render the label and error message
-                if (auto const inputElement = renderedElement.try_as<rtom::IAdaptiveInputElement>())
+                if (auto const inputElement = renderedElement.try_as<winrt::IAdaptiveInputElement>())
                 {
                     newControl = XamlHelpers::HandleLabelAndErrorMessage(inputElement, renderContext, renderArgs, newControl);
                 }

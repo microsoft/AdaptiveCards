@@ -11,16 +11,16 @@ using namespace AdaptiveCards::Rendering::Uwp;
 namespace winrt::AdaptiveCards::Rendering::Uwp
 {
     // TODO: what is this function?
-    void ValidateIfNeeded(rtrender::IAdaptiveInputValue const& inputValue)
+    void ValidateIfNeeded(winrt::IAdaptiveInputValue const& inputValue)
     {
         auto currentValue = inputValue.CurrentValue();
 
         inputValue.Validate();
     }
 
-    InputValue::InputValue(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInputElement,
+    InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                            winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
-                           winrt::Windows::UI::Xaml::Controls::Border const& validationBorder) :
+                           winrt::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
         m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)
 
@@ -40,7 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     // TODO: should we return a bool?
     void InputValue::SetFocus()
     {
-        if (const auto inputAsControl = m_uiInputElement.try_as<rtxaml::Controls::Control>())
+        if (const auto inputAsControl = m_uiInputElement.try_as<winrt::Control>())
         {
             inputAsControl.Focus(rtxaml::FocusState::Programmatic);
         }
@@ -52,7 +52,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
         auto inputUIElementAsDependencyObject = m_uiInputElement.as<rtxaml::DependencyObject>();
 
-        auto uiElementDescribers = rtxaml::Automation::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
+        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
 
         auto uiValidationErrorAsDependencyObject = m_validationError.as<rtxaml::DependencyObject>();
 
@@ -69,7 +69,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             uiElementDescribers.RemoveAt(index);
         }
 
-        rtxaml::Automation::AutomationProperties::SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
+        winrt::AutomationProperties::SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
     }
 
     bool InputValue::IsValueValid()
@@ -118,9 +118,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         }
     }
 
-    TextInputBase::TextInputBase(rtom::AdaptiveTextInput const& adaptiveTextInput,
+    TextInputBase::TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                  rtxaml::UIElement const& uiTextInputElement,
-                                 rtxaml::Controls::Border const& validationBorder) :
+                                 winrt::Border const& validationBorder) :
         // TODO: is this the proper way for calling base ctor? Do I need to cast the first argument?
         InputValue(adaptiveTextInput, uiTextInputElement, validationBorder),
         m_adaptiveTextInput(adaptiveTextInput)
@@ -155,25 +155,25 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return isRegexValid;
     }
 
-    TextInputValue::TextInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
-                                   rtxaml::Controls::TextBox const& uiTextBoxElement,
-                                   rtxaml::Controls::Border const& validationBorder) :
+    TextInputValue::TextInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                   winrt::TextBox const& uiTextBoxElement,
+                                   winrt::Border const& validationBorder) :
         TextInputBase(adaptiveTextInput, uiTextBoxElement, validationBorder),
         m_textBoxElement(uiTextBoxElement)
     {
     }
 
-    PasswordInputValue::PasswordInputValue(rtom::AdaptiveTextInput const& adaptiveTextInput,
-                                           rtxaml::Controls::PasswordBox const& uiPasswordElement,
-                                           rtxaml::Controls::Border const& validationBorder) :
+    PasswordInputValue::PasswordInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                           winrt::PasswordBox const& uiPasswordElement,
+                                           winrt::Border const& validationBorder) :
         TextInputBase(adaptiveTextInput, uiPasswordElement, validationBorder),
         m_passwordElement(uiPasswordElement)
     {
     }
 
-    NumberInputValue::NumberInputValue(rtom::AdaptiveNumberInput const& adaptiveNumberInput,
-                                       rtxaml::Controls::TextBox const& uiInputTextBoxElement,
-                                       rtxaml::Controls::Border const& validationBorder) :
+    NumberInputValue::NumberInputValue(winrt::AdaptiveNumberInput const& adaptiveNumberInput,
+                                       winrt::TextBox const& uiInputTextBoxElement,
+                                       winrt::Border const& validationBorder) :
         InputValue(adaptiveNumberInput, uiInputTextBoxElement, validationBorder),
         m_adaptiveNumberInput(adaptiveNumberInput), m_textBoxElement(uiInputTextBoxElement)
     {
@@ -222,9 +222,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return isValid;
     }
 
-    DateInputValue::DateInputValue(rtom::AdaptiveDateInput const& adaptiveDateInput,
-                                   rtxaml::Controls::CalendarDatePicker const& uiDatePickerElement,
-                                   rtxaml::Controls::Border const& validationBorder) :
+    DateInputValue::DateInputValue(winrt::AdaptiveDateInput const& adaptiveDateInput,
+                                   winrt::CalendarDatePicker const& uiDatePickerElement,
+                                   winrt::Border const& validationBorder) :
         InputValue(adaptiveDateInput, uiDatePickerElement, validationBorder),
         m_adaptiveDateInput(adaptiveDateInput), m_datePickerElement(uiDatePickerElement)
     {
@@ -240,7 +240,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             auto date = dateRef.Value();
 
             // TODO: is this correct?
-            winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter dateTimeFormatter{
+            winrt::DateTimeFormatter dateTimeFormatter{
                 L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
             formattedDate = dateTimeFormatter.Format(date);
         }
@@ -248,9 +248,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return formattedDate;
     }
 
-    TimeInputValue::TimeInputValue(rtom::AdaptiveTimeInput adaptiveTimeInput,
-                                   rtxaml::Controls::TimePicker uiTimePickerElement,
-                                   rtxaml::Controls::Border validationBorder) :
+    TimeInputValue::TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput,
+                                   winrt::TimePicker uiTimePickerElement,
+                                   winrt::Border validationBorder) :
         InputValue(adaptiveTimeInput, uiTimePickerElement, validationBorder),
         m_adaptiveTimeInput(adaptiveTimeInput), m_timePickerElement(uiTimePickerElement)
     {
@@ -301,7 +301,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                 unsigned int minHours, minMinutes;
                 if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
                 {
-                    winrt::Windows::Foundation::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 1000000 * 60};
+                    winrt::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 1000000 * 60};
                     isMaxMinValid &= currentTime.count() >= minTime.count();
                 }
             }
@@ -313,7 +313,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                 unsigned int maxHours, maxMinutes;
                 if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(maxTimeStdString, maxHours, maxMinutes))
                 {
-                    winrt::Windows::Foundation::TimeSpan maxTime{(int64_t)(maxHours * 60 + maxMinutes) * 10000000 * 60};
+                    winrt::TimeSpan maxTime{(int64_t)(maxHours * 60 + maxMinutes) * 10000000 * 60};
                     isMaxMinValid &= currentTime.count() <= maxTime.count();
                 }
             }
@@ -321,9 +321,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return isMaxMinValid;
     }
 
-    ToggleInputValue::ToggleInputValue(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleInput adaptiveToggleInput,
-                                       winrt::Windows::UI::Xaml::Controls::CheckBox uiCheckBoxElement,
-                                       winrt::Windows::UI::Xaml::Controls::Border validationBorder) :
+    ToggleInputValue::ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput,
+                                       winrt::CheckBox uiCheckBoxElement,
+                                       winrt::Border validationBorder) :
         InputValue(adaptiveToggleInput, uiCheckBoxElement, validationBorder),
         m_adaptiveToggleInput(adaptiveToggleInput), m_checkBoxElement(uiCheckBoxElement)
     {
@@ -359,7 +359,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return meetsRequirement;
     }
 
-    std::string GetChoiceValue(rtom::AdaptiveChoiceSetInput const& choiceInput, uint32_t selectedIndex)
+    std::string GetChoiceValue(winrt::AdaptiveChoiceSetInput const& choiceInput, uint32_t selectedIndex)
     {
         if (selectedIndex != -1)
         {
@@ -373,9 +373,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return "";
     }
 
-    CompactChoiceSetInputValue::CompactChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                           rtxaml::Controls::Primitives::Selector choiceSetSelector,
-                                                           rtxaml::Controls::Border validationBorder) :
+    CompactChoiceSetInputValue::CompactChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                                           winrt::Selector choiceSetSelector,
+                                                           winrt::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, choiceSetSelector, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_selectorElement(choiceSetSelector)
     {
@@ -391,9 +391,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return UTF8ToHString(choiceValue);
     }
 
-    ExpandedChoiceSetInputValue::ExpandedChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                             rtxaml::Controls::Panel choiceSetPanelElement,
-                                                             rtxaml::Controls::Border validationBorder) :
+    ExpandedChoiceSetInputValue::ExpandedChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                                             winrt::Panel choiceSetPanelElement,
+                                                             winrt::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, choiceSetPanelElement, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_panelElement(choiceSetPanelElement)
     {
@@ -450,16 +450,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         auto panelChildren = m_panelElement.Children();
         auto firstChoice = panelChildren.GetAt(0);
 
-        if (const auto choiceAsControl = firstChoice.try_as<rtxaml::Controls::Control>())
+        if (const auto choiceAsControl = firstChoice.try_as<winrt::Control>())
         {
             // TODO: do we need to return bool indicating whether focus was set?
             choiceAsControl.Focus(rtxaml::FocusState::Programmatic);
         }
     }
 
-    FilteredChoiceSetInputValue::FilteredChoiceSetInputValue(rtom::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                             rtxaml::Controls::AutoSuggestBox autoSuggestBox,
-                                                             rtxaml::Controls::Border validationBorder) :
+    FilteredChoiceSetInputValue::FilteredChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                                             winrt::AutoSuggestBox autoSuggestBox,
+                                                             winrt::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, autoSuggestBox, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_autoSuggestBox(autoSuggestBox)
     {
@@ -502,13 +502,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return isValid;
     }
 
-    rtom::AdaptiveChoiceInput FilteredChoiceSetInputValue::GetSelectedChoice()
+    winrt::AdaptiveChoiceInput FilteredChoiceSetInputValue::GetSelectedChoice()
     {
         auto textHString = m_autoSuggestBox.Text();
         std::string text = HStringToUTF8(textHString);
         auto choices = m_adaptiveChoiceSetInput.Choices();
 
-        rtom::AdaptiveChoiceInput selectedChoice{nullptr};
+        winrt::AdaptiveChoiceInput selectedChoice{nullptr};
         for (auto choice : choices)
         {
             auto titleHString = choice.Title();

@@ -8,9 +8,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     struct AdaptiveCardGetResourceStreamArgs : AdaptiveCardGetResourceStreamArgsT<AdaptiveCardGetResourceStreamArgs>
     {
-        AdaptiveCardGetResourceStreamArgs(winrt::Windows::Foundation::Uri const& url = nullptr) : Url{url} {}
+        AdaptiveCardGetResourceStreamArgs(winrt::Uri const& url = nullptr) : Url{url} {}
 
-        property<winrt::Windows::Foundation::Uri> Url;
+        property<winrt::Uri> Url;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

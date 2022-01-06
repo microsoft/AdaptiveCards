@@ -8,8 +8,8 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInput const& adaptiveTextInput,
+    std::tuple<rtxaml::UIElement, winrt::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
+        winrt::AdaptiveTextInput const& adaptiveTextInput,
         winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
 
-        rtxaml::Controls::Border validationBorder{nullptr};
+        winrt::Border validationBorder{nullptr};
 
         if (!regex.empty() || isRequired)
         {
@@ -38,8 +38,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         if (inlineAction)
         {
             bool isMultiline = adaptiveTextInput.IsMultiline();
-            rtom::TextInputStyle style = adaptiveTextInput.TextInputStyle();
-            isMultiline &= style != rtom::TextInputStyle::Password;
+            winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
+            isMultiline &= style != winrt::TextInputStyle::Password;
             // TODO: not sure why inputUIElement is passed twice here.. (as textBoxParentContainer)
             textBoxParentContainer = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
@@ -61,12 +61,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return {inputLayout, validationBorder};
     }
 
-    // TODO: should it be rtom::IAdaptiveTextInput for first arg?
-    rtxaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(rtom::AdaptiveTextInput const& adaptiveTextInput,
-                                                               rtrender::AdaptiveRenderContext const& renderContext,
-                                                               rtrender::AdaptiveRenderArgs const& renderArgs)
+    // TODO: should it be winrt::IAdaptiveTextInput for first arg?
+    rtxaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        rtxaml::Controls::TextBox textBox{};
+        winrt::TextBox textBox{};
 
         if (adaptiveTextInput.IsMultiline())
         {
@@ -78,27 +78,27 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         textBox.MaxLength(adaptiveTextInput.MaxLength());
         textBox.PlaceholderText(adaptiveTextInput.Placeholder());
 
-        rtom::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
+        winrt::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
 
-        rtxaml::Input::InputScopeName inputScopeName{};
+        winrt::InputScopeName inputScopeName{};
 
         switch (textInputStyle)
         {
-        case rtom::TextInputStyle::Email:
+        case winrt::TextInputStyle::Email:
             // TODO: why smtp instead of name/email?
-            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::EmailSmtpAddress);
+            inputScopeName.NameValue(winrt::InputScopeNameValue::EmailSmtpAddress);
             break;
 
-        case rtom::TextInputStyle::Tel:
-            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::TelephoneNumber);
+        case winrt::TextInputStyle::Tel:
+            inputScopeName.NameValue(winrt::InputScopeNameValue::TelephoneNumber);
             break;
 
-        case rtom::TextInputStyle::Url:
-            inputScopeName.NameValue(rtxaml::Input::InputScopeNameValue::Url);
+        case winrt::TextInputStyle::Url:
+            inputScopeName.NameValue(winrt::InputScopeNameValue::Url);
             break;
         }
 
-        rtxaml::Input::InputScope inputScope{};
+        winrt::InputScope inputScope{};
         inputScope.Names().Append(inputScopeName);
 
         textBox.InputScope(inputScope);
@@ -107,18 +107,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         // TODO: come back here, not sure if this is correct?
-        auto inputValue = winrt::make_self<rtrender::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
+        auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
 
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;
     }
 
-    rtxaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(rtom::AdaptiveTextInput const& adaptiveTextInput,
-                                                                   rtrender::AdaptiveRenderContext const& renderContext,
-                                                                   rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        rtxaml::Controls::PasswordBox passwordBox{};
+        winrt::PasswordBox passwordBox{};
 
         passwordBox.Password(adaptiveTextInput.Value());
         passwordBox.MaxLength(adaptiveTextInput.MaxLength());
@@ -128,29 +128,29 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             HandleLayoutAndValidation(adaptiveTextInput, passwordBox, renderContext, renderArgs);
 
         // TODO: come back to inputs, not sure if it's correct
-        auto inputValue = winrt::make_self<rtrender::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
+        auto inputValue = winrt::make_self<winrt::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
         // TODO: no custom style for passwordBox I guess?
         return textInputControl;
     }
 
-    rtxaml::UIElement AdaptiveTextInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveTextInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Text Input was stripped from card because interactivity is not supported");
                 return nullptr;
             }
 
-            auto adaptiveTextInput = cardElement.as<rtom::AdaptiveTextInput>();
-            rtom::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
-            if (textInputStyle == rtom::TextInputStyle::Password)
+            auto adaptiveTextInput = cardElement.as<winrt::AdaptiveTextInput>();
+            winrt::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
+            if (textInputStyle == winrt::TextInputStyle::Password)
             {
                 return RenderPasswordBox(adaptiveTextInput, renderContext, renderArgs);
             }

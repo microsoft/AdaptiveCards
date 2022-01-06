@@ -8,10 +8,10 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    ElementTagContent::ElementTagContent(rtom::IAdaptiveCardElement const& cardElement,
-                                         rtxaml::Controls::Panel const& parentPanel,
+    ElementTagContent::ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
+                                         winrt::Panel const& parentPanel,
                                          rtxaml::UIElement const& separator,
-                                         rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                                         winrt::ColumnDefinition const& columnDefinition,
                                          boolean expectedVisibility,
                                          boolean isStretchable)
     {

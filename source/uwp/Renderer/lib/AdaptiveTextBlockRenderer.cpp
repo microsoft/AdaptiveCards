@@ -9,24 +9,24 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveTextBlockRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveTextBlock = cardElement.as<rtom::AdaptiveTextBlock>();
+            auto adaptiveTextBlock = cardElement.as<winrt::AdaptiveTextBlock>();
             winrt::hstring text = adaptiveTextBlock.Text();
 
             // If the text is null, return immediately without constructing a text block
             if (text.empty())
             {
-                renderContext.AddError(rtom::ErrorStatusCode::RequiredPropertyMissing,
+                renderContext.AddError(winrt::ErrorStatusCode::RequiredPropertyMissing,
                                        L"Required property, \"text\", is missing from TextBlock");
                 return nullptr;
             }
 
-            rtxaml::Controls::TextBlock xamlTextBlock{};
+            winrt::TextBlock xamlTextBlock{};
 
             // NOTE: Style must be applied BEFORE we set any actual values in code.
             // TODO: Does it matter though? Even if we apply style before, the values that were set will be overriden by the
@@ -39,17 +39,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Check if this text block has a style and if so apply the appropriate styling from the host config
             auto textStyleRef = adaptiveTextBlock.Style() == nullptr ? renderContext.TextStyle() : adaptiveTextBlock.Style();
-            rtom::TextStyle textStyle = GetValueFromRef(textStyleRef, rtom::TextStyle::Default);
+            winrt::TextStyle textStyle = GetValueFromRef(textStyleRef, winrt::TextStyle::Default);
 
             auto hostConfig = renderContext.HostConfig();
             auto textStylesConfig = hostConfig.TextStyles();
 
-            if (textStyle == rtom::TextStyle::Heading)
+            if (textStyle == winrt::TextStyle::Heading)
             {
                 auto headingTextStyleConfig = textStylesConfig.Heading();
                 SetXamlInlinesWithTextStyleConfig(adaptiveTextBlock, renderContext, renderArgs, headingTextStyleConfig, xamlTextBlock);
             }
-            else if (textStyle == rtom::TextStyle::ColumnHeader)
+            else if (textStyle == winrt::TextStyle::ColumnHeader)
             {
                 auto columnHeaderTextStyleConfig = textStylesConfig.ColumnHeader();
                 SetXamlInlinesWithTextStyleConfig(adaptiveTextBlock, renderContext, renderArgs, columnHeaderTextStyleConfig, xamlTextBlock);
@@ -64,9 +64,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             xamlTextBlock.OpticalMarginAlignment(rtxaml::OpticalMarginAlignment::TrimSideBearings);
 
             // If this text block has a heading style, set the corresponding automation property
-            if (textStyle == rtom::TextStyle::Heading)
+            if (textStyle == winrt::TextStyle::Heading)
             {
-                rtxaml::Automation::AutomationProperties::SetHeadingLevel(xamlTextBlock, GetHeadingLevelFromContext(renderContext));
+                winrt::AutomationProperties::SetHeadingLevel(xamlTextBlock, GetHeadingLevelFromContext(renderContext));
             }
 
             return xamlTextBlock;
@@ -78,8 +78,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    rtxaml::Automation::Peers::AutomationHeadingLevel
-    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(rtrender::AdaptiveRenderContext const& renderContext)
+    winrt::Peers::AutomationHeadingLevel
+    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
     {
         // TODO: why is it called textBlock if it's a config? :D
         auto textBlockConfig = renderContext.HostConfig().TextBlock();
@@ -88,32 +88,32 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
         case 0:
         case 1:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level1;
+            return winrt::Peers::AutomationHeadingLevel::Level1;
             break;
         case 2:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level2;
+            return winrt::Peers::AutomationHeadingLevel::Level2;
             break;
         case 3:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level3;
+            return winrt::Peers::AutomationHeadingLevel::Level3;
             break;
         case 4:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level4;
+            return winrt::Peers::AutomationHeadingLevel::Level4;
             break;
         case 5:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level5;
+            return winrt::Peers::AutomationHeadingLevel::Level5;
             break;
         case 6:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level6;
+            return winrt::Peers::AutomationHeadingLevel::Level6;
             break;
         case 7:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level7;
+            return winrt::Peers::AutomationHeadingLevel::Level7;
             break;
         case 8:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level8;
+            return winrt::Peers::AutomationHeadingLevel::Level8;
             break;
         case 9:
         default:
-            return rtxaml::Automation::Peers::AutomationHeadingLevel::Level9;
+            return winrt::Peers::AutomationHeadingLevel::Level9;
             break;
         }
     }

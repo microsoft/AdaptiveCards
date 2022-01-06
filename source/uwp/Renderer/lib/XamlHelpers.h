@@ -2,28 +2,32 @@
 // Licensed under the MIT License.
 #pragma once
 
+#include "pch.h"
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "WholeItemsPanel.h"
 #include <type_traits>
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
-    namespace rtrender = winrt::AdaptiveCards::Rendering::Uwp;
-    namespace rtom = winrt::AdaptiveCards::ObjectModel::Uwp;
+ /*   namespace winrt
+    {
+        namespace rendering = ::winrt::AdaptiveCards::Rendering::Uwp;
+    };*/
+
     namespace rtxaml = winrt::Windows::UI::Xaml;
 
-    inline rtxaml::Media::Brush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
+    inline winrt::SolidColorBrush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
     {
-        rtxaml::Media::SolidColorBrush solidColorBrush;
+        winrt::SolidColorBrush solidColorBrush;
         solidColorBrush.Color(color);
         return solidColorBrush;
     }
 
-    void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
+    void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
                                         rtxaml::FrameworkElement const& frameworkElement);
 
-    rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
+    rtxaml::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
                                       uint32_t spacing,
                                       uint32_t separatorThickness,
                                       winrt::Windows::UI::Color const& separatorColor,
@@ -58,19 +62,19 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName));
     }
 
-    void SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel);
+    void SetSeparatorVisibility(winrt::Panel const& parentPanel);
 
-    void HandleColumnWidth(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn const& column,
+    void HandleColumnWidth(winrt::AdaptiveColumn const& column,
                            bool isVisible,
-                           winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
+                           winrt::ColumnDefinition const& columnDefinition);
 
-    void HandleTableColumnWidth(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition const& column,
-                                winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
+    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column,
+                                winrt::ColumnDefinition const& columnDefinition);
 
     template<typename T>
     void AppendXamlElementToPanel(T const& xamlElement,
-                                  rtxaml::Controls::Panel const& panel,
-                                  rtom::HeightType heightType = rtom::HeightType::Auto)
+                                  winrt::Panel const& panel,
+                                  winrt::HeightType heightType = winrt::HeightType::Auto)
     {
         if (!xamlElement)
         {
@@ -80,13 +84,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto elementToAppend = xamlElement.as<rtxaml::UIElement>();
         panel.Children().Append(elementToAppend);
 
-        if (heightType == rtom::HeightType::Stretch)
+        if (heightType == winrt::HeightType::Stretch)
         {
             // TODO: is this the right way?
             // TODO: can we peek innards right away?
-            if (const auto wholeItemsPanel = panel.try_as<rtrender::WholeItemsPanel>())
+            if (const auto wholeItemsPanel = panel.try_as<winrt::WholeItemsPanel>())
             {
-                auto wholeItemsPanelImpl = peek_innards<rtrender::implementation::WholeItemsPanel>(wholeItemsPanel);
+                auto wholeItemsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(wholeItemsPanel);
                 wholeItemsPanelImpl->AddElementToStretchablesList(elementToAppend);
             }
         }
@@ -95,12 +99,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     template<typename T> void SetToggleValue(T const& item, bool isChecked)
     {
         // TODO: compiling fails at AdaptiveToggleInputRenderer.cpp(66)
-        // static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>, T > ::value, "T
+        // static_assert(std::is_base_of<winrt::ToggleButton>, T > ::value, "T
         // must inherit from ToggleButton");
         // TODO: do we want static asserts? or is it fine with compilers catching misusages?
 
         auto toggleButton =
-            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
+            item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
                                                                                      // toggleButton descendabts have isChecked() exposed, right?
         toggleButton.IsChecked(isChecked);
     }
@@ -108,9 +112,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     template<typename T> bool GetToggleValue(T const& item)
     {
         // TODO: InputValue613 failes to compile, why?
-        /*static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
+        /*static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
         auto toggleButton =
-            item.as<winrt::Windows::UI::Xaml::Controls::Primitives::ToggleButton>(); // TODO: I don't think we need this cast, all
+            item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
                                                                                      // toggleButton descendants have isChecked() exposed, right?
 
         return GetValueFromRef(toggleButton.IsChecked(), false);
@@ -119,15 +123,15 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
         // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
-        /* static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ContenControl");*/
+        /* static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ContenControl");*/
         SetContent(item, contentString, false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
         // TODO: compiling failing as ToggleInputRenderer(52)
-        /*  static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
-        rtxaml::Controls::TextBlock content{};
+        /*  static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
+        winrt::TextBlock content{};
         content.Text(contentString);
 
         if (wrap)
@@ -135,51 +139,51 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords);
         }
 
-        if (const auto contentControl = item.try_as<rtxaml::Controls::ContentControl>())
+        if (const auto contentControl = item.try_as<winrt::ContentControl>())
         {
             contentControl.Content(content);
         }
     }
 
-    rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
-                                                 rtxaml::Controls::Border const& containerBorder,
-                                                 rtrender::AdaptiveRenderContext const& renderContext,
-                                                 rtrender::AdaptiveRenderArgs renderArgs);
+    winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
+                                                 winrt::Border const& containerBorder,
+                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                 winrt::AdaptiveRenderArgs renderArgs);
 
-    bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig);
+    bool SupportsInteractivity(winrt::AdaptiveHostConfig const& hostConfig);
 
     template<typename T>
-    void SetVerticalContentAlignmentToChildren(T const& container, rtom::VerticalContentAlignment verticalContentAlignment)
+    void SetVerticalContentAlignmentToChildren(T const& container, winrt::VerticalContentAlignment verticalContentAlignment)
     {
-        if (const auto containerAsPanel = container.try_as<rtrender::WholeItemsPanel>())
+        if (const auto containerAsPanel = container.try_as<winrt::WholeItemsPanel>())
         {
             // TODO: can we peek innards right away?
-            auto containerAsPanelImpl = peek_innards<rtrender::implementation::WholeItemsPanel>(containerAsPanel);
+            auto containerAsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(containerAsPanel);
             containerAsPanelImpl->SetVerticalContentAlignment(verticalContentAlignment);
         }
     }
 
     winrt::Windows::UI::Xaml::UIElement
-    RenderInputLabel(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInputElement,
+    RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
     winrt::Windows::UI::Xaml::UIElement
-    RenderInputErrorMessage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInputElement,
+    RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                             winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
 
-    winrt::Windows::UI::Xaml::Controls::Border
+    winrt::Border
     CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
                            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
 
     winrt::Windows::UI::Xaml::UIElement
-    HandleLabelAndErrorMessage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInput,
+    HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
                                winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
                                winrt::Windows::UI::Xaml::UIElement const& inputLayout);
 
-    std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Windows::UI::Xaml::Controls::Border>
-    HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement const& adaptiveInput,
+    std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Border>
+    HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
                                    winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
                                    bool hasTypeSpecificValidation,
                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
@@ -187,28 +191,28 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
-    void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel, rtom::AdaptiveBackgroundImage const& backgroundImage, rtrender::AdaptiveRenderContext const& renderContext);
+    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel, winrt::AdaptiveBackgroundImage const& backgroundImage, winrt::AdaptiveRenderContext const& renderContext);
 
     void AddRenderedControl(rtxaml::UIElement const& newControl,
-                            rtom::IAdaptiveCardElement const& element,
-                            rtxaml::Controls::Panel const& parentPanel,
+                            winrt::IAdaptiveCardElement const& element,
+                            winrt::Panel const& parentPanel,
                             rtxaml::UIElement const& separator,
-                            rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                            winrt::ColumnDefinition const& columnDefinition,
                             std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
 
     // TODO: come back to this function
-    std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                                                                             rtrender::AdaptiveRenderContext const& renderContext,
-                                                                             rtrender::AdaptiveRenderArgs const& renderArgs);
+    std::tuple<rtxaml::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
+                                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                                             winrt::AdaptiveRenderArgs const& renderArgs);
 
-    bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement);
+    bool NeedsSeparator(winrt::IAdaptiveCardElement const& cardElement);
 
-    inline void WarnFallbackString(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
+    inline void WarnFallbackString(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
     {
-        renderContext.AddWarning(rtom::WarningStatusCode::PerformingFallback, warning);
+        renderContext.AddWarning(winrt::WarningStatusCode::PerformingFallback, warning);
     }
 
-    inline void WarnForFallbackContentElement(rtrender::AdaptiveRenderContext const& renderContext,
+    inline void WarnForFallbackContentElement(winrt::AdaptiveRenderContext const& renderContext,
                                               winrt::hstring const& parentElementType,
                                               winrt::hstring const& fallbackElementType)
     {
@@ -217,26 +221,26 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         WarnFallbackString(renderContext, warning);
     }
 
-    inline void WarnForFallbackDrop(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
+    inline void WarnForFallbackDrop(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
     {
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
 
     winrt::Windows::UI::Xaml::UIElement
     AddSeparatorIfNeeded(int& currentElement,
-                         winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& element,
+                         winrt::IAdaptiveCardElement const& element,
                          winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
                          winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                         winrt::Windows::UI::Xaml::Controls::Panel const& parentPanel);
+                         winrt::Panel const& parentPanel);
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
-                          winrt::Windows::Foundation::IInspectable const& parentElement,
-                          winrt::Windows::UI::Xaml::Media::Imaging::BitmapSource const& imageSource,
+                          winrt::IInspectable const& parentElement,
+                          winrt::BitmapSource const& imageSource,
                           bool setVisible);
 
     void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig const& hostConfig,
                                   winrt::Windows::UI::Xaml::IFrameworkElement const& element);
 
-    SeparatorParemeters GetSeparatorParameters(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& element,
+    SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
                                                winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
 }

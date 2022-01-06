@@ -13,8 +13,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveInputs() = default;
 
         // IAdaptiveInputs
-        winrt::Windows::Data::Json::JsonObject AsJson();
-        winrt::Windows::Foundation::Collections::ValueSet AsValueSet();
+        winrt::JsonObject AsJson();
+        winrt::ValueSet AsValueSet();
 
         bool ValidateInputs(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction);
 

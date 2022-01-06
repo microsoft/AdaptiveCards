@@ -21,8 +21,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     RenderedAdaptiveCard::RenderedAdaptiveCard(
-        winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
-        winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings) :
+        winrt::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
+        winrt::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings) :
         Errors{errors},
         Warnings{warnings}, m_inputs{winrt::make_self<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
     {
@@ -68,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                      ObjectModel::Uwp::IAdaptiveActionElement const& action)
     {
         auto toggleAction = action.as<ObjectModel::Uwp::AdaptiveToggleVisibilityAction>();
-        std::vector<rtxaml::Controls::Panel> parentPanels;
+        std::vector<winrt::Panel> parentPanels;
         for (auto&& currentTarget : toggleAction.TargetElements())
         {
             auto toggleId = currentTarget.ElementId();
@@ -79,8 +79,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
                 // TODO: we need to peek to make sure it's our own class, right? because it's coming from the Tag
-                // auto elementTagContent = peek_innards<rtrender::implementation::ElementTagContent>(toggleElementAsFrameworkElement);
-                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<rtrender::ElementTagContent>();
+                // auto elementTagContent = peek_innards<winrt::implementation::ElementTagContent>(toggleElementAsFrameworkElement);
+                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<winrt::ElementTagContent>();
 
                 winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
                 if (toggle == ObjectModel::Uwp::IsVisible::IsVisibleTrue)

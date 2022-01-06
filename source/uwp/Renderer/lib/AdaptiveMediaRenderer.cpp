@@ -12,14 +12,14 @@ using namespace AdaptiveCards::Rendering::Uwp::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveMediaRenderer::Render(rtom::IAdaptiveCardElement const& adaptiveCardElement,
-                                                    rtrender::AdaptiveRenderContext const& renderContext,
-                                                    rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             // TODO: what is the need for the local object? only to use ComPtr.as later? or for something else as well?
-            auto adaptiveMedia = adaptiveCardElement.as<rtom::AdaptiveMedia>();
+            auto adaptiveMedia = adaptiveCardElement.as<winrt::AdaptiveMedia>();
             auto hostConfig = renderContext.HostConfig();
 
             // Get the poster image
@@ -28,7 +28,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // If the host doesn't support interactivity we're done here, just return the poster image
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
 
                 // TODO: we gotta return something here, so even if it's null we do return it regardless, right?
@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 adaptiveCardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
-            rtxaml::Controls::StackPanel mediaStackPanel{};
+            winrt::StackPanel mediaStackPanel{};
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
 
@@ -56,19 +56,19 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto mediaInvoker = renderContext.MediaEventInvoker();
 
             winrt::hstring mimeType{};
-            winrt::Windows::Foundation::Uri mediaSourceUrl{nullptr};
-            rtxaml::Controls::MediaElement mediaElement{nullptr};
+            winrt::Uri mediaSourceUrl{nullptr};
+            winrt::MediaElement mediaElement{nullptr};
 
             if (allowInlinePlayback)
             {
                 // Create a media element and set it's source
-                mediaElement = rtxaml::Controls::MediaElement{};
+                mediaElement = winrt::MediaElement{};
 
                 std::tie(mediaSourceUrl, mimeType) = GetMediaSource(hostConfig, adaptiveMedia);
 
                 if (mediaSourceUrl == nullptr)
                 {
-                    renderContext.AddWarning(rtom::WarningStatusCode::UnsupportedMediaType, L"Unsupported media element dropped");
+                    renderContext.AddWarning(winrt::WarningStatusCode::UnsupportedMediaType, L"Unsupported media element dropped");
                     // TODO: is this correct? do we just return null here?
                     return nullptr;
                 }
@@ -93,13 +93,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
             }
 
-            auto touchTargetAsButtonBase = touchTargetUIElement.as<rtxaml::Controls::Primitives::ButtonBase>();
+            auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::ButtonBase>();
 
             // TODO: can we do this? or do we need to return event token? I'm afraid it will revoke momentarily
             auto renderingEventToken = std::make_shared<winrt::event_token>();
             *renderingEventToken = touchTargetAsButtonBase.Click(
                 [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker, renderingEventToken](
-                    winrt::Windows::Foundation::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
+                    winrt::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
                 {
                     // Turn off the button to prevent extra clicks
                     touchTargetAsButtonBase.IsEnabled(false);

@@ -7,12 +7,12 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::FrameworkElement AdaptiveTableRenderer::RenderCell(rtom::AdaptiveTableCell const& cell,
-                                                               rtrender::AdaptiveRenderContext const& renderContext,
-                                                               rtrender::AdaptiveRenderArgs const& renderArgs,
-                                                               winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
+    rtxaml::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs,
+                                                               winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
                                                                boolean showGridLines,
-                                                               rtom::ContainerStyle gridStyle,
+                                                               winrt::ContainerStyle gridStyle,
                                                                uint32_t rowNumber,
                                                                uint32_t columnNumber)
     {
@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         if (showGridLines)
         {
             // If we're showing grid lines put the cell in a border
-            rtxaml::Controls::Border cellBorder{};
+            winrt::Border cellBorder{};
 
             auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
             cellBorder.BorderBrush(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
@@ -101,19 +101,19 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return cellFrameworkElement;
     }
 
-    void AdaptiveTableRenderer::RenderRow(rtom::AdaptiveTableRow const& row,
-                                          winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveTableColumnDefinition> const& columns,
-                                          rtrender::AdaptiveRenderContext const& renderContext,
-                                          rtrender::AdaptiveRenderArgs const& renderArgs,
-                                          winrt::Windows::Foundation::IReference<rtom::VerticalContentAlignment> const& verticalContentAlignment,
+    void AdaptiveTableRenderer::RenderRow(winrt::AdaptiveTableRow const& row,
+                                          winrt::IVector<winrt::AdaptiveTableColumnDefinition> const& columns,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::AdaptiveRenderArgs const& renderArgs,
+                                          winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
                                           boolean firstRowAsHeaders,
                                           boolean showGridLines,
-                                          rtom::ContainerStyle gridStyle,
+                                          winrt::ContainerStyle gridStyle,
                                           uint32_t rowNumber,
-                                          rtxaml::Controls::Grid const& xamlGrid)
+                                          winrt::Grid const& xamlGrid)
     {
         // Create the row definition and add it to the grid
-        rtxaml::Controls::RowDefinition xamlRowDefinition{};
+        winrt::RowDefinition xamlRowDefinition{};
 
         xamlGrid.RowDefinitions().Append(xamlRowDefinition);
 
@@ -127,7 +127,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Set the text style to TextStyle::ColumnHeader
             // TODO: it will create IReference automatically, right?
             // TODO: fix firstRowAsHeader(s) variable name
-            renderContext.TextStyle(rtom::TextStyle::ColumnHeader);
+            renderContext.TextStyle(winrt::TextStyle::ColumnHeader);
             /*winrt::box_value(ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::ColumnHeader)
                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>>()
                 .get()));*/
@@ -177,8 +177,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 RenderCell(cell, renderContext, renderArgs, rowVerticalContentAlignment, showGridLines, gridStyle, rowNumber, columnNumber);
 
             // Set the row and column numbers on the cell
-            rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, columnNumber);
-            rtxaml::Controls::Grid::SetColumn(cellFrameworkElement, rowNumber);
+            winrt::Grid::SetColumn(cellFrameworkElement, columnNumber);
+            winrt::Grid::SetColumn(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
@@ -190,16 +190,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         renderContext.HorizontalContentAlignment(contextHorizontalAlignment);
     }
 
-    rtxaml::UIElement AdaptiveTableRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                    rtrender::AdaptiveRenderContext const& renderContext,
-                                                    rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveTable = cardElement.as<rtom::AdaptiveTable>();
+            auto adaptiveTable = cardElement.as<winrt::AdaptiveTable>();
 
             // Create a grid to represent the table
-            rtxaml::Controls::Grid xamlGrid{};
+            winrt::Grid xamlGrid{};
 
             // Get the vertical content alignment from the table
             auto tableHorizontalAlignment = adaptiveTable.HorizontalCellContentAlignment();
@@ -222,7 +222,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // TODO: how do we handle failure here? is there going to be any?
             for (auto column : columns)
             {
-                rtxaml::Controls::ColumnDefinition xamlColumnDefinition{};
+                winrt::ColumnDefinition xamlColumnDefinition{};
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
                 xamlColumnDefinitions.Append(xamlColumnDefinition);
             }

@@ -7,31 +7,31 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveToggleInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                          rtrender::AdaptiveRenderContext const& renderContext,
-                                                          rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveToggleInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                          winrt::AdaptiveRenderContext const& renderContext,
+                                                          winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Toggle Input was stripped from card because interactivity is not supported");
                 return nullptr;
             }
 
-            auto adaptiveToggleInput = cardElement.as<rtom::AdaptiveToggleInput>();
+            auto adaptiveToggleInput = cardElement.as<winrt::AdaptiveToggleInput>();
 
-            rtxaml::Controls::CheckBox checkBox{};
+            winrt::CheckBox checkBox{};
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetContent(checkBox,
                                                                      adaptiveToggleInput.Title(),
                                                                      adaptiveToggleInput.Wrap());
 
             checkBox.IsChecked(adaptiveToggleInput.ValueOn() == adaptiveToggleInput.Value());
-            checkBox.Tapped([](winrt::Windows::Foundation::IInspectable const& /* sender */,
-                               rtxaml::Input::TappedRoutedEventArgs const& args) { return args.Handled(true); });
+            checkBox.Tapped([](winrt::IInspectable const& /* sender */,
+                               winrt::TappedRoutedEventArgs const& args) { return args.Handled(true); });
 
             checkBox.VerticalAlignment(rtxaml::VerticalAlignment::Top);
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // TODO: come back here, not sure if this is right
             // TODO: should it be make self? should I put all input values under ::implementation namespace? Help needed here
-            auto input = winrt::make<rtrender::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
+            auto input = winrt::make<winrt::ToggleInputValue>(adaptiveToggleInput, checkBox, nullptr);
             renderContext.AddInputValue(input, renderArgs);
             return inputLayout;
         }

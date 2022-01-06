@@ -21,11 +21,11 @@ namespace AdaptiveCards::Rendering::Uwp
         void ImagesLoadingHadError() override;
 
         static winrt::Windows::UI::Xaml::FrameworkElement
-        BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& adaptiveCard,
+        BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                       XamlBuilder* xamlBuilder,
-                                      winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle defaultContainerStyle =
-                                          winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Default);
+                                      winrt::ContainerStyle defaultContainerStyle =
+                                          winrt::ContainerStyle::Default);
 
         // TODO: not sure what we need this for? Are they for public?
         // TODO: I think these methods are created so people from outside can listen to images loading?
@@ -35,13 +35,13 @@ namespace AdaptiveCards::Rendering::Uwp
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
         static void BuildPanelChildren(
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> const& children,
-            rtxaml::Controls::Panel ParentPanel,
-            rtrender::AdaptiveRenderContext context,
-            rtrender::AdaptiveRenderArgs renderArgs,
+            winrt::IVector<winrt::IAdaptiveCardElement> const& children,
+            winrt::Panel ParentPanel,
+            winrt::AdaptiveRenderContext context,
+            winrt::AdaptiveRenderArgs renderArgs,
             std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
 
-        winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& adaptiveCardElement,
+        winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                                                        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
@@ -49,9 +49,9 @@ namespace AdaptiveCards::Rendering::Uwp
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
         // TODO: why do we need this?
         std::set<IXamlBuilderListener*> m_listeners;
-        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream, winrt::Windows::Web::Http::HttpProgress>> m_getStreamOperations;
-        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
-        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t>> m_writeAsyncOperations;
+        std::vector<winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress>> m_getStreamOperations;
+        std::vector<winrt::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
+        std::vector<winrt::IAsyncOperationWithProgress<uint32_t, uint32_t>> m_writeAsyncOperations;
         uint32_t m_fixedWidth = 0;
         uint32_t m_fixedHeight = 0;
 
@@ -59,37 +59,37 @@ namespace AdaptiveCards::Rendering::Uwp
         bool m_enableXamlImageHandling = false;
 
         // TODO: can we move word static to the function name?
-        static std::pair<winrt::Windows::UI::Xaml::Controls::Panel, winrt::Windows::UI::Xaml::UIElement>
-        CreateRootCardElement(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard const& adaptiveCard,
+        static std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
+        CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
                               XamlBuilder* xamlBuilder);
 
         template<typename T>
         void SetAutoSize(T const& destination,
-                         winrt::Windows::Foundation::IInspectable const& parentElement,
-                         winrt::Windows::Foundation::IInspectable const& imageContainer,
+                         winrt::IInspectable const& parentElement,
+                         winrt::IInspectable const& imageContainer,
                          bool isVisible,
                          bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T const& destination,
-                            winrt::Windows::UI::Xaml::Media::ImageSource const& imageSource,
-                            winrt::Windows::UI::Xaml::Media::Stretch stretch = winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
+                            winrt::ImageSource const& imageSource,
+                            winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
         // TODO: do we want to return bool to indicate success/failure?
         template<typename T>
-        void SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+        void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,
                                  winrt::AdaptiveCards::Rendering::Uwp::AdaptiveCardResourceResolvers const& resolvers,
                                  bool isAutoSize,
-                                 winrt::Windows::Foundation::IInspectable const& parentElement,
-                                 winrt::Windows::Foundation::IInspectable const& imageContainer,
+                                 winrt::IInspectable const& parentElement,
+                                 winrt::IInspectable const& imageContainer,
                                  bool isVisible,
-                                 winrt::Windows::UI::Xaml::Media::Stretch stretch = winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
+                                 winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
         template<typename T>
-        void PopulateImageFromUrlAsync(winrt::Windows::Foundation::Uri const& imageUrl, T const& imageControl);
+        void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();

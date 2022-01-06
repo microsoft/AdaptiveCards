@@ -12,13 +12,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
-    rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
+    rtxaml::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
                                       uint32_t spacing,
                                       uint32_t separatorThickness,
                                       winrt::Windows::UI::Color const& separatorColor,
                                       bool isHorizontal)
     {
-        rtxaml::Controls::Grid separator;
+        winrt::Grid separator;
         separator.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
 
         const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
@@ -42,7 +42,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return separator;
     }
 
-    void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
+    void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
                                         rtxaml::FrameworkElement const& frameworkElement)
     {
@@ -60,7 +60,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    void XamlHelpers::SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel)
+    void XamlHelpers::SetSeparatorVisibility(winrt::Panel const& parentPanel)
     {
         // Iterate over the elements in a container and ensure that the correct separators are marked as visible
 
@@ -76,7 +76,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 if (tag)
                 {
                     // TODDO: do we wanto to peek_innards to make sure this is our implementation?
-                    if (const auto elementTagContent = tag.try_as<rtrender::ElementTagContent>())
+                    if (const auto elementTagContent = tag.try_as<winrt::ElementTagContent>())
                     {
                         auto separator = elementTagContent.Separator();
                         auto visibility = child.Visibility();
@@ -105,10 +105,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
-                                                 rtxaml::Controls::Border const& containerBorder,
-                                                 rtrender::AdaptiveRenderContext const& renderContext,
-                                                 rtrender::AdaptiveRenderArgs renderArgs)
+    winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
+                                                 winrt::Border const& containerBorder,
+                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                 winrt::AdaptiveRenderArgs renderArgs)
     {
         rtxaml::UIElement elem{nullptr};
 
@@ -116,7 +116,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto parentContainerStyle = renderArgs.ContainerStyle();
 
         bool hasExplicitContainerStyle{true};
-        if (localContainerStyle == rtom::ContainerStyle::None)
+        if (localContainerStyle == winrt::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             localContainerStyle = parentContainerStyle;
@@ -152,24 +152,24 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto bleedDirection = adaptiveContainer.BleedDirection();
 
         rtxaml::Thickness marginThickness{0};
-        if (bleedDirection != rtom::BleedDirection::None)
+        if (bleedDirection != winrt::BleedDirection::None)
         {
-            if ((bleedDirection & rtom::BleedDirection::Left) != rtom::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Left) != winrt::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Right) != rtom::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Right) != winrt::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Up) != rtom::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Up) != winrt::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Down) != rtom::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Down) != winrt::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
@@ -179,7 +179,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return localContainerStyle;
     }
 
-    bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig)
+    bool SupportsInteractivity(winrt::AdaptiveHostConfig const& hostConfig)
     {
         return hostConfig.SupportsInteractivity();
     }
@@ -217,7 +217,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return columnWidth;
     }
 
-    void HandleColumnWidth(rtom::AdaptiveColumn const& column, bool isVisible, rtxaml::Controls::ColumnDefinition const& columnDefinition)
+    void HandleColumnWidth(winrt::AdaptiveColumn const& column, bool isVisible, winrt::ColumnDefinition const& columnDefinition)
     {
         auto adaptiveColumnWidth = column.Width();
         const bool isStretch = adaptiveColumnWidth == L"stretch";
@@ -228,7 +228,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
     }
 
-    void HandleTableColumnWidth(rtom::AdaptiveTableColumnDefinition const& column, rtxaml::Controls::ColumnDefinition const& columnDefinition)
+    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column, winrt::ColumnDefinition const& columnDefinition)
     {
         auto widthRef = column.Width();
         auto pixelWidthRef = column.PixelWidth();
@@ -241,15 +241,15 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
     }
 
-    rtxaml::Controls::Image CreateBackgroundImage(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
+    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
     {
         // TODO: if url is invalid, it will bitmapImage.UriSource(nullptr) will throw, right?
-        rtxaml::Controls::Image backgroundImage;
+        winrt::Image backgroundImage;
 
         // GetUrlFromString will throw if url is not in correct format
         auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
 
-        rtxaml::Media::Imaging::BitmapImage bitmapImage{};
+        winrt::BitmapImage bitmapImage{};
         bitmapImage.UriSource(imageUrl);
 
         backgroundImage.Source(bitmapImage);
@@ -257,9 +257,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return backgroundImage;
     }
 
-    void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
-                               rtom::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
-                               rtrender::AdaptiveRenderContext const& renderContext)
+    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
+                               winrt::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
+                               winrt::AdaptiveRenderContext const& renderContext)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
@@ -267,10 +267,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // TODO: we should probably create a routine to do that without adaptive image. Should be simple enough.
         if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
         {
-            rtom::BackgroundImageFillMode fillMode = adaptiveBackgroundImage.FillMode();
+            winrt::BackgroundImageFillMode fillMode = adaptiveBackgroundImage.FillMode();
 
             // Creates the background image for all fill modes
-            auto tileControl = winrt::make<rtrender::implementation::TileControl>();
+            auto tileControl = winrt::make<winrt::implementation::TileControl>();
 
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
@@ -290,9 +290,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             // the overlay if that resources exists
             auto resourceDictionary = renderContext.OverrideStyles();
             if (const auto backgroundOverlayBrush =
-                    XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Media::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
+                    XamlHelpers::TryGetResourceFromResourceDictionaries<winrt::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
             {
-                rtxaml::Shapes::Rectangle overlayRectangle;
+                winrt::Rectangle overlayRectangle;
                 overlayRectangle.Fill(backgroundOverlayBrush);
 
                 XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
@@ -300,9 +300,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                                                                             rtrender::AdaptiveRenderContext const& renderContext,
-                                                                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    std::tuple<rtxaml::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
+                                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // TODO: come back to this routine later
         // TODO: still not sure I'm doing this right...
@@ -313,12 +313,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         bool fallbackHandled = false;
         /*winrt::com_ptr<rtxaml::UIElement> fallbackControl;*/
         rtxaml::UIElement fallbackControl{nullptr};
-        rtom::IAdaptiveCardElement renderedElement;
+        winrt::IAdaptiveCardElement renderedElement;
         rtxaml::UIElement result{nullptr};
 
         switch (elementFallback)
         {
-        case rtom::FallbackType::Content:
+        case winrt::FallbackType::Content:
         {
             auto fallbackElement = currentElement.FallbackContent();
 
@@ -357,13 +357,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             fallbackHandled = true;
             break;
         }
-        case rtom::FallbackType::Drop:
+        case winrt::FallbackType::Drop:
         {
             XamlHelpers::WarnForFallbackDrop(renderContext, elementType);
             fallbackHandled = true;
             break;
         }
-        case rtom::FallbackType::None:
+        case winrt::FallbackType::None:
         default:
         {
             break;
@@ -379,7 +379,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             if (!renderArgs.AncestorHasFallback())
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
+                renderContext.AddWarning(winrt::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
             }
             else
             {
@@ -389,19 +389,19 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return std::tuple(result, renderedElement);
     }
 
-    bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement)
+    bool NeedsSeparator(winrt::IAdaptiveCardElement const& cardElement)
     {
         auto elementSpacing = cardElement.Spacing();
         auto hasSeparator = cardElement.Separator();
 
-        return hasSeparator || (elementSpacing != rtom::Spacing::None);
+        return hasSeparator || (elementSpacing != winrt::Spacing::None);
     }
 
     void AddRenderedControl(rtxaml::UIElement const& newControl,
-                            rtom::IAdaptiveCardElement const& element,
-                            rtxaml::Controls::Panel const& parentPanel,
+                            winrt::IAdaptiveCardElement const& element,
+                            winrt::Panel const& parentPanel,
                             rtxaml::UIElement const& separator,
-                            rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                            winrt::ColumnDefinition const& columnDefinition,
                             std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
     {
         if (newControl)
@@ -427,8 +427,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
             auto heightType = element.Height();
 
-            auto tagContent = winrt::make<rtrender::implementation::ElementTagContent>(
-                element, parentPanel, separator, columnDefinition, isVisible, heightType == rtom::HeightType::Stretch);
+            auto tagContent = winrt::make<winrt::implementation::ElementTagContent>(
+                element, parentPanel, separator, columnDefinition, isVisible, heightType == winrt::HeightType::Stretch);
             newControlAsFrameworkElement.Tag(tagContent);
 
             XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
@@ -446,13 +446,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
         // TODO: Don't we need a revoker?
         // TODO: no need to save a token, right?
-        uiElement.Tapped([](winrt::Windows::Foundation::IInspectable const&, rtxaml::Input::TappedRoutedEventArgs const& args)
+        uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args)
                          { args.Handled(true); });
     }
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
-                          winrt::Windows::Foundation::IInspectable const& parentElement,
-                          winrt::Windows::UI::Xaml::Media::Imaging::BitmapSource const& imageSource,
+                          winrt::IInspectable const& parentElement,
+                          winrt::BitmapSource const& imageSource,
                           bool setVisible)
     {
         int32_t pixelHeight = imageSource.PixelHeight();
@@ -461,7 +461,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         double maxHeight = imageControl.MaxHeight();
         double maxWidth = imageControl.MaxWidth();
 
-        if (const auto parentAsColumnDefinition = parentElement.try_as<rtxaml::Controls::ColumnDefinition>())
+        if (const auto parentAsColumnDefinition = parentElement.try_as<winrt::ColumnDefinition>())
         {
             double parentWidth = parentAsColumnDefinition.ActualWidth();
             if (parentWidth >= pixelWidth)
@@ -475,7 +475,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        if (const auto localElementAsEllipse = imageControl.try_as<rtxaml::Shapes::Ellipse>())
+        if (const auto localElementAsEllipse = imageControl.try_as<winrt::Ellipse>())
         {
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
@@ -495,10 +495,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     rtxaml::UIElement AddSeparatorIfNeeded(int& currentElement,
-                                           rtom::IAdaptiveCardElement const& element,
-                                           rtrender::AdaptiveHostConfig const& hostConfig,
-                                           rtrender::AdaptiveRenderContext const& renderContext,
-                                           winrt::Windows::UI::Xaml::Controls::Panel const& parentPanel)
+                                           winrt::IAdaptiveCardElement const& element,
+                                           winrt::AdaptiveHostConfig const& hostConfig,
+                                           winrt::AdaptiveRenderContext const& renderContext,
+                                           winrt::Panel const& parentPanel)
     {
         // First element does not need a separator added
         if (currentElement++ > 0)
@@ -526,31 +526,31 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         element.Margin({(double)padding, (double)padding, (double)padding, (double)padding});
     }
 
-    void FormatLabelRunWithHostConfig(rtrender::AdaptiveHostConfig const& hostConfig,
-                                      rtrender::AdaptiveInputLabelConfig const& inputLabelConfig,
+    void FormatLabelRunWithHostConfig(winrt::AdaptiveHostConfig const& hostConfig,
+                                      winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
                                       bool isHint,
-                                      rtxaml::Documents::Run const& labelRun)
+                                      winrt::Run const& labelRun)
     {
         // If we're formatting a hint then use attention color
-        rtom::ForegroundColor textColor = isHint ? rtom::ForegroundColor::Attention : inputLabelConfig.Color();
+        winrt::ForegroundColor textColor = isHint ? winrt::ForegroundColor::Attention : inputLabelConfig.Color();
 
-        auto color = GetColorFromAdaptiveColor(hostConfig, textColor, rtom::ContainerStyle::Default, false, false);
+        auto color = GetColorFromAdaptiveColor(hostConfig, textColor, winrt::ContainerStyle::Default, false, false);
 
         labelRun.Foreground(XamlHelpers::GetSolidColorBrush(color));
 
-        rtom::TextSize textSize = inputLabelConfig.Size();
+        winrt::TextSize textSize = inputLabelConfig.Size();
 
-        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, rtom::FontType::Default, textSize);
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, winrt::FontType::Default, textSize);
 
         labelRun.FontSize(resultSize);
     }
 
-    void AddRequiredHintInline(rtrender::AdaptiveHostConfig const& hostConfig,
-                               rtrender::AdaptiveInputLabelConfig const& inputLabelConfig,
-                               winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines)
+    void AddRequiredHintInline(winrt::AdaptiveHostConfig const& hostConfig,
+                               winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
+                               winrt::IVector<winrt::Inline> const& inlines)
     {
         // Create an inline for the suffix
-        rtxaml::Documents::Run hintRun{};
+        winrt::Run hintRun{};
 
         winrt::hstring suffix = inputLabelConfig.Suffix();
         // If no suffix was defined, use * as default
@@ -568,9 +568,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         inlines.Append(hintRun);
     }
 
-    rtxaml::UIElement RenderInputLabel(rtom::IAdaptiveInputElement const& adaptiveInputElement,
-                                       rtrender::AdaptiveRenderContext const& renderContext,
-                                       rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::hstring inputLabel = adaptiveInputElement.Label();
         // Retrieve if the input is required so we can file a warning if the label is empty
@@ -580,12 +580,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (!inputLabel.empty())
         {
             // Create a rich text block for the label
-            rtxaml::Controls::RichTextBlock xamlRichTextBlock{};
+            winrt::RichTextBlock xamlRichTextBlock{};
 
             // Add a paragraph for the inlines
             auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-            rtxaml::Documents::Paragraph xamlParagraph{};
+            winrt::Paragraph xamlParagraph{};
 
             xamlBlocks.Append(xamlParagraph);
 
@@ -593,7 +593,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto xamlInlines = xamlParagraph.Inlines();
 
             // First inline is the label from the card
-            rtxaml::Documents::Run labelRun{};
+            winrt::Run labelRun{};
             labelRun.Text(inputLabel);
 
             xamlInlines.Append(labelRun);
@@ -602,7 +602,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto hostConfig = renderContext.HostConfig();
             auto inputsConfig = hostConfig.Inputs();
             auto labelConfig = inputsConfig.Label();
-            rtrender::AdaptiveInputLabelConfig inputLabelConfig =
+            winrt::AdaptiveInputLabelConfig inputLabelConfig =
                 isRequired ? labelConfig.RequiredInputs() : labelConfig.OptionalInputs();
 
             if (isRequired)
@@ -616,7 +616,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
         else if (isRequired)
         {
-            renderContext.AddWarning(rtom::WarningStatusCode::EmptyLabelInRequiredInput,
+            renderContext.AddWarning(winrt::WarningStatusCode::EmptyLabelInRequiredInput,
                                      L"Input is required but there's no label for required hint rendering");
         }
         // TODO: is this correct here?
@@ -624,26 +624,26 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
-    void FormatErrorMessageWithHostConfig(rtrender::AdaptiveRenderContext const& renderContext,
-                                          rtxaml::Controls::TextBlock const& errorMessage)
+    void FormatErrorMessageWithHostConfig(winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::TextBlock const& errorMessage)
     {
         auto hostConfig = renderContext.HostConfig();
         auto inputsConfig = hostConfig.Inputs();
         auto errorMessageConfig = inputsConfig.ErrorMessage();
 
         // Set size defined in host config
-        rtom::TextSize textSize = errorMessageConfig.Size();
-        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, rtom::FontType::Default, textSize);
+        winrt::TextSize textSize = errorMessageConfig.Size();
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, winrt::FontType::Default, textSize);
         errorMessage.FontSize(resultSize);
 
         // Set weight defined in host config
-        rtom::TextWeight textWeight = errorMessageConfig.Weight();
-        auto resultWeight = GetFontWeightFromStyle(hostConfig, rtom::FontType::Default, textWeight);
+        winrt::TextWeight textWeight = errorMessageConfig.Weight();
+        auto resultWeight = GetFontWeightFromStyle(hostConfig, winrt::FontType::Default, textWeight);
         errorMessage.FontWeight(resultWeight);
     }
 
-    rtxaml::UIElement RenderInputErrorMessage(rtom::IAdaptiveInputElement const& adaptiveInputElement,
-                                              rtrender::AdaptiveRenderContext const& renderContext)
+    rtxaml::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                              winrt::AdaptiveRenderContext const& renderContext)
     {
         // Add the error message if present
         winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
@@ -651,14 +651,14 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // TODO: is this correct in this scenario instead of .IsValid()?
         if (!errorMessage.empty())
         {
-            rtxaml::Controls::TextBlock errorMessageTextBlock{};
+            winrt::TextBlock errorMessageTextBlock{};
             errorMessageTextBlock.Text(errorMessage);
 
             // Set the color to Attention color
             auto hostConfig = renderContext.HostConfig();
 
             auto attentionColor =
-                GetColorFromAdaptiveColor(hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
+                GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
             errorMessageTextBlock.Foreground(XamlHelpers::GetSolidColorBrush(attentionColor));
 
@@ -673,30 +673,30 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return nullptr;
     }
 
-    rtxaml::Controls::Border XamlHelpers::CreateValidationBorder(rtxaml::UIElement const& childElement,
-                                                                 rtrender::AdaptiveRenderContext const& renderContext)
+    winrt::Border XamlHelpers::CreateValidationBorder(rtxaml::UIElement const& childElement,
+                                                                 winrt::AdaptiveRenderContext const& renderContext)
     {
         auto hostConfig = renderContext.HostConfig();
 
         auto attentionColor =
-            GetColorFromAdaptiveColor(hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
+            GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
         // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
-        rtxaml::Controls::Border validationBorder{};
+        winrt::Border validationBorder{};
         validationBorder.BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor));
         validationBorder.Child(childElement);
 
         return validationBorder;
     }
 
-    rtxaml::UIElement HandleLabelAndErrorMessage(rtom::IAdaptiveInputElement const& adaptiveInput,
-                                                 rtrender::AdaptiveRenderContext const& renderContext,
-                                                 rtrender::AdaptiveRenderArgs const& renderArgs,
+    rtxaml::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                 winrt::AdaptiveRenderArgs const& renderArgs,
                                                  rtxaml::UIElement const& inputLayout)
     {
         // Create a new stack panel to add the label and error message
         // The contents from the input panel will be copied to the new panel
-        rtxaml::Controls::StackPanel inputStackPanel{};
+        winrt::StackPanel inputStackPanel{};
 
         auto hostConfig = renderContext.HostConfig();
         // TOOD: rename Inputs to something more meaningful
@@ -709,7 +709,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (label)
         {
             auto labelConfig = inputsConfig.Label();
-            rtom::Spacing labelSpacing = labelConfig.InputSpacing();
+            winrt::Spacing labelSpacing = labelConfig.InputSpacing();
 
             uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, labelSpacing);
 
@@ -720,7 +720,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         rtxaml::UIElement actualUIElement{nullptr};
 
         // Copy the contents into the new panel and get the rendered element to set acessibility properties
-        if (const auto inputPanel = inputLayout.try_as<rtxaml::Controls::Panel>())
+        if (const auto inputPanel = inputLayout.try_as<winrt::Panel>())
         {
             auto panelChildren = inputPanel.Children();
             uint32_t childrenCount = panelChildren.Size();
@@ -730,7 +730,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             {
                 auto onlyElement = panelChildren.GetAt(0);
                 // We enclose multiple items using a border, so we try to check for it
-                if (const auto inputBorder = onlyElement.try_as<rtxaml::Controls::Border>())
+                if (const auto inputBorder = onlyElement.try_as<winrt::Border>())
                 {
                     actualUIElement = inputBorder.Child();
                 }
@@ -764,7 +764,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             // Render the spacing between the input and the error message
             auto errorMessageConfig = inputsConfig.ErrorMessage();
 
-            rtom::Spacing errorSpacing = errorMessageConfig.Spacing();
+            winrt::Spacing errorSpacing = errorMessageConfig.Spacing();
 
             uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, errorSpacing);
 
@@ -791,21 +791,21 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (label)
         {
-            rtxaml::Automation::AutomationProperties::SetLabeledBy(actualUIElement, label);
+            winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
         }
 
         return inputStackPanel;
     }
 
-    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
-    XamlHelpers::HandleInputLayoutAndValidation(rtom::IAdaptiveInputElement const& adaptiveInput,
+    std::tuple<rtxaml::UIElement, winrt::Border>
+    XamlHelpers::HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
                                                 rtxaml::UIElement const& inputUIElement,
                                                 bool hasTypeSpecificValidation,
-                                                rtrender::AdaptiveRenderContext const& renderContext,
+                                                winrt::AdaptiveRenderContext const& renderContext,
                                                 bool ifValidationBorderIsNeeded)
     {
         // TODO: Make sure this function works properly
-        rtxaml::Controls::StackPanel inputStackPanel{};
+        winrt::StackPanel inputStackPanel{};
 
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
@@ -829,12 +829,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             // TODO: what if the user just wants an empty error message? do we allow that?
             if (errorMessage.empty())
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::MissingValidationErrorMessage,
+                renderContext.AddWarning(winrt::WarningStatusCode::MissingValidationErrorMessage,
                                          L"Inputs with validation should include an errorMessage");
             }
         }
 
-        rtxaml::Controls::Border validationBorder{nullptr};
+        winrt::Border validationBorder{nullptr};
         if (hasValidation && ifValidationBorderIsNeeded)
         {
             validationBorder = XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
@@ -865,7 +865,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                  {
                      RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
                  }*/
-                if (const auto containerAsBorder = inputUIElementParentContainer.try_as<rtxaml::Controls::Border>())
+                if (const auto containerAsBorder = inputUIElementParentContainer.try_as<winrt::Border>())
                 {
                     actualInputUIElement = containerAsBorder.Child();
                 }
@@ -888,18 +888,18 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
-        rtxaml::Automation::AutomationProperties::SetIsRequiredForForm(actualInputUIElement, isRequired);
+        winrt::AutomationProperties::SetIsRequiredForForm(actualInputUIElement, isRequired);
 
         // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
-        if (const auto adaptiveToggleInput = adaptiveInput.try_as<rtom::AdaptiveToggleInput>())
+        if (const auto adaptiveToggleInput = adaptiveInput.try_as<winrt::AdaptiveToggleInput>())
         {
-            if (const auto uiInputElementAsContentControl = actualInputUIElement.try_as<rtxaml::Controls::ContentControl>())
+            if (const auto uiInputElementAsContentControl = actualInputUIElement.try_as<winrt::ContentControl>())
             {
                 if (const auto content = uiInputElementAsContentControl.Content())
                 {
                     if (const auto contentAsDependencyObject = content.try_as<rtxaml::DependencyObject>())
                     {
-                        auto uiElementDescribers = rtxaml::Automation::AutomationProperties::GetDescribedBy(actualInputUIElement);
+                        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(actualInputUIElement);
                         uiElementDescribers.Append(contentAsDependencyObject);
                     }
                 }
@@ -909,8 +909,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return {inputStackPanel, validationBorder};
     }
 
-    SeparatorParemeters XamlHelpers::GetSeparatorParameters(rtom::IAdaptiveCardElement const& element,
-                                                            rtrender::AdaptiveHostConfig const& hostConfig)
+    SeparatorParemeters XamlHelpers::GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
+                                                            winrt::AdaptiveHostConfig const& hostConfig)
     {
         auto spacing = GetSpacingSizeFromSpacing(hostConfig, element.Spacing());
         winrt::Windows::UI::Color lineColor{0};

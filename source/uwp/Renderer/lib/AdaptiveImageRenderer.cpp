@@ -18,9 +18,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     }
 
-    rtxaml::UIElement AdaptiveImageRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                    rtrender::AdaptiveRenderContext const& renderContext,
-                                                    rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -44,11 +44,11 @@ namespace AdaptiveCards::Rendering::Uwp
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    rtxaml::UIElement XamlBuilder::BuildImage(rtom::IAdaptiveCardElement const& adaptiveCardElement,
-                                              rtrender::AdaptiveRenderContext const& renderContext,
-                                              rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                              winrt::AdaptiveRenderContext const& renderContext,
+                                              winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        auto adaptiveImage = adaptiveCardElement.as<rtom::AdaptiveImage>();
+        auto adaptiveImage = adaptiveCardElement.as<winrt::AdaptiveImage>();
 
         auto hostConfig = renderContext.HostConfig();
         auto url = adaptiveImage.Url();
@@ -58,7 +58,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (imageUrl == nullptr)
         {
             // TODO: is this right?
-            renderContext.AddWarning(rtom::WarningStatusCode::AssetLoadFailed, L"Image not found");
+            renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed, L"Image not found");
             return nullptr;
         }
 
@@ -69,13 +69,13 @@ namespace AdaptiveCards::Rendering::Uwp
         bool isAspectRatioNeeded = (pixelWidth && pixelHeight);
 
         // Get the image's size and style
-        rtom::ImageSize size = rtom::ImageSize::None;
+        winrt::ImageSize size = winrt::ImageSize::None;
         if (!hasExplicitMeasurements)
         {
             size = adaptiveImage.Size();
         }
 
-        if (size == rtom::ImageSize::None && !hasExplicitMeasurements)
+        if (size == winrt::ImageSize::None && !hasExplicitMeasurements)
         {
             size = hostConfig.Image().ImageSize();
         }
@@ -89,26 +89,26 @@ namespace AdaptiveCards::Rendering::Uwp
         rtxaml::FrameworkElement frameworkElement{nullptr};
 
         // TODO: Not sure why it's been done this way
-        if (imageStyle == rtom::ImageStyle::Person)
+        if (imageStyle == winrt::ImageStyle::Person)
         {
-            rtxaml::Shapes::Ellipse ellipse{};
-            rtxaml::Shapes::Ellipse backgroundEllipse{};
+            winrt::Ellipse ellipse{};
+            winrt::Ellipse backgroundEllipse{};
 
-            rtxaml::Media::Stretch imageStretch =
-                (isAspectRatioNeeded) ? rtxaml::Media::Stretch::Fill : rtxaml::Media::Stretch::UniformToFill;
+            winrt::Stretch imageStretch =
+                (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
 
             // bool mustHideElement{true};
 
             auto parentElement = renderArgs.ParentElement();
 
-            auto ellipseAsShape = ellipse.as<rtxaml::Shapes::Shape>();
-            auto backgrondEllipseAsShape = backgroundEllipse.as<rtxaml::Shapes::Shape>();
+            auto ellipseAsShape = ellipse.as<winrt::Shape>();
+            auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
 
             // TODO: I don't see this mustHideElement being used for anything. Was it intended to be used when we can't set image so we collapse the visual?
             /* auto mustHideElement = */
-            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
+            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
 
-            if (size == rtom::ImageSize::None || size == rtom::ImageSize::Stretch || size == rtom::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == winrt::ImageSize::None || size == winrt::ImageSize::Stretch || size == winrt::ImageSize::Auto || hasExplicitMeasurements)
             {
                 ellipse.Stretch(imageStretch);
                 backgroundEllipse.Stretch(imageStretch);
@@ -117,8 +117,8 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 // Set the stretch for the ellipse - this is different to the stretch used for the image brush
                 // above. This will force the ellipse to conform to fit within the confines of its parent.
-                ellipse.Stretch(rtxaml::Media::Stretch::UniformToFill);
-                backgroundEllipse.Stretch(rtxaml::Media::Stretch::UniformToFill);
+                ellipse.Stretch(winrt::Stretch::UniformToFill);
+                backgroundEllipse.Stretch(winrt::Stretch::UniformToFill);
             }
 
             if (!backgroundColor.empty())
@@ -129,7 +129,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
 
                 // Create a grid to contain the background color ellipse and the image ellipse
-                rtxaml::Controls::Grid imageGrid{};
+                winrt::Grid imageGrid{};
                 XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
                 XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
@@ -143,12 +143,12 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            rtxaml::Controls::Image xamlImage{};
+            winrt::Image xamlImage{};
 
             if (!backgroundColor.empty())
             {
                 // Create a surrounding border with solid color background to contain the image
-                rtxaml::Controls::Border border{};
+                winrt::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
                 auto backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
                 border.Background(backgroundColorBrush);
@@ -164,14 +164,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isAspectRatioNeeded)
             {
-                xamlImage.Stretch(rtxaml::Media::Stretch::Fill);
+                xamlImage.Stretch(winrt::Stretch::Fill);
             }
 
             auto parentElement = renderArgs.ParentElement();
             // TODO: I don't see this mustHideElement being used anywhere. Was it inteended to be used when image was
             // not set? so we don't waste lasyout space?
             /*bool mustHideElement =*/
-            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, frameworkElement, isVisible);
+            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
         }
 
         auto sizeOptions = hostConfig.ImageSizes();
@@ -180,7 +180,7 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             if (pixelWidth)
             {
-                if (imageStyle == rtom::ImageStyle::Person)
+                if (imageStyle == winrt::ImageStyle::Person)
                 {
                     frameworkElement.Width(pixelWidth);
                 }
@@ -192,7 +192,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (pixelHeight)
             {
-                if (imageStyle == rtom::ImageStyle::Person)
+                if (imageStyle == winrt::ImageStyle::Person)
                 {
                     frameworkElement.Height(pixelHeight);
                 }
@@ -204,24 +204,24 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            if (size == rtom::ImageSize::Small || size == rtom::ImageSize::Medium || size == rtom::ImageSize::Large)
+            if (size == winrt::ImageSize::Small || size == winrt::ImageSize::Medium || size == winrt::ImageSize::Large)
             {
                 uint32_t imageSize;
                 switch (size)
                 {
-                case rtom::ImageSize::Small:
+                case winrt::ImageSize::Small:
                 {
                     imageSize = sizeOptions.Small();
                     break;
                 }
 
-                case rtom::ImageSize::Medium:
+                case winrt::ImageSize::Medium:
                 {
                     imageSize = sizeOptions.Medium();
                     break;
                 }
 
-                case rtom::ImageSize::Large:
+                case winrt::ImageSize::Large:
                 {
                     imageSize = sizeOptions.Large();
                     break;
@@ -238,7 +238,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
                 // aspect ratio when constrained on both axes.
-                if (imageStyle != rtom::ImageStyle::Person)
+                if (imageStyle != winrt::ImageStyle::Person)
                 {
                     frameworkElement.MaxHeight(imageSize);
                 }
@@ -253,17 +253,17 @@ namespace AdaptiveCards::Rendering::Uwp
             adaptiveHorizontalAlignmentReference = renderContext.HorizontalContentAlignment();
         }
 
-        auto adaptiveHorizontalAlignment = GetValueFromRef(adaptiveHorizontalAlignmentReference, rtom::HAlignment::Left);
+        auto adaptiveHorizontalAlignment = GetValueFromRef(adaptiveHorizontalAlignmentReference, winrt::HAlignment::Left);
 
         switch (adaptiveHorizontalAlignment)
         {
-        case rtom::HAlignment::Left:
+        case winrt::HAlignment::Left:
             frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Left);
             break;
-        case rtom::HAlignment::Right:
+        case winrt::HAlignment::Right:
             frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Right);
             break;
-        case rtom::HAlignment::Center:
+        case winrt::HAlignment::Center:
             frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
             break;
         }
@@ -275,21 +275,21 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::hstring altText = adaptiveImage.AltText();
 
-        rtxaml::Automation::AutomationProperties::SetName(frameworkElement, altText);
+        winrt::AutomationProperties::SetName(frameworkElement, altText);
 
         return ActionHelpers::HandleSelectAction(
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
     template<typename T>
-    void XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+    void XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
                                           T const& uiElement,
-                                          rtrender::AdaptiveCardResourceResolvers const& resolvers,
+                                          winrt::AdaptiveCardResourceResolvers const& resolvers,
                                           bool isAutoSize,
-                                          winrt::Windows::Foundation::IInspectable const& parentElement,
-                                          winrt::Windows::Foundation::IInspectable const& imageContainer,
+                                          winrt::IInspectable const& parentElement,
+                                          winrt::IInspectable const& imageContainer,
                                           bool isVisible,
-                                          winrt::Windows::UI::Xaml::Media::Stretch stretch)
+                                          winrt::Stretch stretch)
     {
         // TODO: not sure how it's being used..
         bool mustHideElement = true;
@@ -307,14 +307,14 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
-                rtxaml::Media::Imaging::BitmapImage bitmapImage{};
+                winrt::BitmapImage bitmapImage{};
 
                 if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
                     this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
                 }
 
-                bitmapImage.CreateOptions(rtxaml::Media::Imaging::BitmapCreateOptions::None);
+                bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
                 // Create the arguments to pass to the resolver
                 auto args =
@@ -325,10 +325,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 getResourceStreamOperation.Completed(
                     [this, uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
-                        winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> const& operation,
-                        winrt::Windows::Foundation::AsyncStatus status) -> void // TODO: should it be void?
+                        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
+                        winrt::AsyncStatus status) -> void // TODO: should it be void?
                     {
-                        if (status == winrt::Windows::Foundation::AsyncStatus::Completed)
+                        if (status == winrt::AsyncStatus::Completed)
                         {
                             auto randomAccessStream = operation.GetResults();
                             if (randomAccessStream)
@@ -343,9 +343,9 @@ namespace AdaptiveCards::Rendering::Uwp
 
                             setSourceAction.Completed(
                                 [this, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                    winrt::Windows::Foundation::IAsyncAction const&, winrt::Windows::Foundation::AsyncStatus status)
+                                    winrt::IAsyncAction const&, winrt::AsyncStatus status)
                                 {
-                                    if (status == winrt::Windows::Foundation::AsyncStatus::Completed && isAutoSize)
+                                    if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                     {
                                         SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                                     }
@@ -369,7 +369,7 @@ namespace AdaptiveCards::Rendering::Uwp
             std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
 
             // TODO: is this correct way to create buffer?
-            winrt::Windows::Storage::Streams::Buffer buffer{static_cast<uint32_t>(decodedData.size())};
+            winrt::Buffer buffer{static_cast<uint32_t>(decodedData.size())};
 
             /*ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
             THROW_IF_FAILED(buffer.As(&bufferByteAccess));*/
@@ -382,17 +382,17 @@ namespace AdaptiveCards::Rendering::Uwp
 
             buffer.Length(static_cast<uint32_t>(decodedData.size()));
 
-            rtxaml::Media::Imaging::BitmapImage bitmapImage{};
-            bitmapImage.CreateOptions(rtxaml::Media::Imaging::BitmapCreateOptions::IgnoreImageCache);
+            winrt::BitmapImage bitmapImage{};
+            bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
 
             // TODO: Do I need to cast to output stream?
-            winrt::Windows::Storage::Streams::InMemoryRandomAccessStream randomAccessStream{};
+            winrt::InMemoryRandomAccessStream randomAccessStream{};
             auto bufferWriteOperation = randomAccessStream.WriteAsync(buffer);
 
             bufferWriteOperation.Completed(
                 [this, bitmapImage, randomAccessStream, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    winrt::Windows::Foundation::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/,
-                    winrt::Windows::Foundation::AsyncStatus /*status*/) -> void // TODO: should it be void?)
+                    winrt::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/,
+                    winrt::AsyncStatus /*status*/) -> void // TODO: should it be void?)
                 {
                     randomAccessStream.Seek(0);
                     SetImageSource(uiElement, bitmapImage);
@@ -401,9 +401,9 @@ namespace AdaptiveCards::Rendering::Uwp
 
                     setSourceAction.Completed(
                         [this, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                            winrt::Windows::Foundation::IAsyncAction const& /*operation*/, winrt::Windows::Foundation::AsyncStatus status)
+                            winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
                         {
-                            if (status == winrt::Windows::Foundation::AsyncStatus::Completed & isAutoSize)
+                            if (status == winrt::AsyncStatus::Completed & isAutoSize)
                             {
                                 SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                             }
@@ -418,7 +418,7 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
-            rtxaml::Media::Imaging::BitmapImage bitmapImage{};
+            winrt::BitmapImage bitmapImage{};
             bitmapImage.UriSource(imageUrl);
 
             SetImageSource(uiElement, bitmapImage, stretch);
@@ -435,57 +435,57 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Windows::Foundation::Uri const& imageUrl, T const& imageControl)
+    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl)
     {
-        winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter httpBaseProtocolFilter{};
+        winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
 
-        winrt::Windows::Web::Http::HttpClient httpClient{httpBaseProtocolFilter};
+        winrt::HttpClient httpClient{httpBaseProtocolFilter};
 
         // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
-        rtxaml::Media::Imaging::BitmapImage bitmapImage{};
+        winrt::BitmapImage bitmapImage{};
         this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
-        bitmapImage.CreateOptions(rtxaml::Media::Imaging::BitmapCreateOptions::None);
+        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
 
         getStreamOperation.Completed(
             [this, bitmapImage, imageControl](
-                winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Windows::Storage::Streams::IInputStream,
-                                                                        winrt::Windows::Web::Http::HttpProgress> const& operation,
-                winrt::Windows::Foundation::AsyncStatus status) -> void // TODO: should it be void?)))
+                winrt::IAsyncOperationWithProgress<winrt::IInputStream,
+                                                                        winrt::HttpProgress> const& operation,
+                winrt::AsyncStatus status) -> void // TODO: should it be void?)))
             {
-                if (status == winrt::Windows::Foundation::AsyncStatus::Completed)
+                if (status == winrt::AsyncStatus::Completed)
                 {
                     auto imageStream = operation.GetResults();
                     // TODO: not totally sure about all this stream stuf...
-                    winrt::Windows::Storage::Streams::InMemoryRandomAccessStream randomAccessStream{};
+                    winrt::InMemoryRandomAccessStream randomAccessStream{};
                     auto copyStreamOperation =
-                        winrt::Windows::Storage::Streams::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
+                        winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
                     m_copyStreamOperations.push_back(copyStreamOperation);
 
                     copyStreamOperation.Completed(
                         [this, bitmapImage, randomAccessStream, imageControl](
-                            winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
-                            winrt::Windows::Foundation::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
+                            winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
+                            winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
                 }
             });
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
     template<typename T>
-    void XamlBuilder::SetImageSource(T const& destination, rtxaml::Media::ImageSource const& imageSource, rtxaml::Media::Stretch stretch /*stretch*/)
+    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
 
     template<>
-    void XamlBuilder::SetImageSource<rtxaml::Shapes::Ellipse>(rtxaml::Shapes::Ellipse const& destination,
-                                                              rtxaml::Media::ImageSource const& imageSource,
-                                                              rtxaml::Media::Stretch stretch)
+    void XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
+                                                              winrt::ImageSource const& imageSource,
+                                                              winrt::Stretch stretch)
     {
-        rtxaml::Media::ImageBrush imageBrush{};
+        winrt::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
 
         imageBrush.Stretch(stretch);
@@ -493,23 +493,23 @@ namespace AdaptiveCards::Rendering::Uwp
     };
 
     template<>
-    void XamlBuilder::SetAutoSize<rtxaml::Shapes::Ellipse>(rtxaml::Shapes::Ellipse const& destination,
-                                                           winrt::Windows::Foundation::IInspectable const& parentElement,
-                                                           winrt::Windows::Foundation::IInspectable const& imageContainer,
+    void XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& destination,
+                                                           winrt::IInspectable const& parentElement,
+                                                           winrt::IInspectable const& imageContainer,
                                                            bool isVisible,
                                                            bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement && m_enableXamlImageHandling)
         {
-            auto ellipseAsShape = imageContainer.as<rtxaml::Shapes::Shape>();
+            auto ellipseAsShape = imageContainer.as<winrt::Shape>();
 
             auto ellipseBrush = ellipseAsShape.Fill();
 
-            auto brushAsImageBrush = ellipseBrush.as<rtxaml::Media::ImageBrush>();
+            auto brushAsImageBrush = ellipseBrush.as<winrt::ImageBrush>();
 
             auto imageSource = brushAsImageBrush.ImageSource();
-            auto imageSourceAsBitmap = imageSource.as<rtxaml::Media::Imaging::BitmapSource>();
+            auto imageSourceAsBitmap = imageSource.as<winrt::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
@@ -526,15 +526,15 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // TODO: do we need a revoker/token?
                 brushAsImageBrush.ImageOpened(
-                    [ellipseAsShape, weakParent, isVisible](winrt::Windows::Foundation::IInspectable const& sender,
+                    [ellipseAsShape, weakParent, isVisible](winrt::IInspectable const& sender,
                                                             rtxaml::RoutedEventArgs /*args*/) -> void
                     {
                         if (isVisible)
                         {
-                            auto lambdaBrushAsImageBrush = sender.as<rtxaml::Media::ImageBrush>();
+                            auto lambdaBrushAsImageBrush = sender.as<winrt::ImageBrush>();
 
                             auto lambdaImageSource = lambdaBrushAsImageBrush.ImageSource();
-                            auto lamdaImageSourceAsBitmap = lambdaImageSource.as<rtxaml::Media::Imaging::BitmapSource>();
+                            auto lamdaImageSourceAsBitmap = lambdaImageSource.as<winrt::BitmapSource>();
 
                             auto lambdaParentElement = weakParent.get();
                             // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will
@@ -542,7 +542,7 @@ namespace AdaptiveCards::Rendering::Uwp
                             if (ellipseAsShape && lambdaParentElement)
                             {
                                 rtxaml::FrameworkElement k{nullptr};
-                                rtxaml::Media::Imaging::BitmapSource as{nullptr};
+                                winrt::BitmapSource as{nullptr};
 
                                 XamlHelpers::SetAutoImageSize(ellipseAsShape, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
                             }
@@ -558,17 +558,17 @@ namespace AdaptiveCards::Rendering::Uwp
 
     template<typename T>
     void XamlBuilder::SetAutoSize(T const& destination,
-                                  winrt::Windows::Foundation::IInspectable const& parentElement,
-                                  winrt::Windows::Foundation::IInspectable const&, /* imageContainer */
+                                  winrt::IInspectable const& parentElement,
+                                  winrt::IInspectable const&, /* imageContainer */
                                   bool isVisible,
                                   bool imageFiresOpenEvent)
     {
         if (parentElement && m_enableXamlImageHandling)
         {
             // TODO: am I doing this right? or need to create new object and pass destination in constructor?
-            auto xamlImage = destination.as<rtxaml::Controls::Image>();
+            auto xamlImage = destination.as<winrt::Image>();
             auto imageSource = xamlImage.Source();
-            auto imageSourceAsBitmapSource = imageSource.as<rtxaml::Media::Imaging::BitmapSource>();
+            auto imageSourceAsBitmapSource = imageSource.as<winrt::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
@@ -584,7 +584,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto weakImage = winrt::make_weak(xamlImage);
 
                 xamlImage.ImageOpened(
-                    [weakImage, weakParent, imageSourceAsBitmapSource, isVisible](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                    [weakImage, weakParent, imageSourceAsBitmapSource, isVisible](winrt::IInspectable const& /*sender*/,
                                                                                   rtxaml::RoutedEventArgs const&
                                                                                   /*args*/) -> void
                     {

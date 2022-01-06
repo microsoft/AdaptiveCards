@@ -9,16 +9,16 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveContainerRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveContainer = cardElement.as<rtom::AdaptiveContainer>();
+            auto adaptiveContainer = cardElement.as<winrt::AdaptiveContainer>();
 
             // TODO: revisit wholeitemPanel
-            auto containerPanel = winrt::make<rtrender::implementation::WholeItemsPanel>();
+            auto containerPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
 
             // Get any RTL setting set on either the current context or on this container. Any value set on the
             // container should be set on the context to apply to all children
@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
             auto containerHeightType = cardElement.Height();
-            if (containerHeightType == rtom::HeightType::Auto)
+            if (containerHeightType == winrt::HeightType::Auto)
             {
                 containerPanel.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
             }
@@ -54,7 +54,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 containerPanel.MinHeight(containerMinHeight);
             }
 
-            rtxaml::Controls::Border containerBorder{};
+            winrt::Border containerBorder{};
 
             auto containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveContainer,
                                                                                                         containerBorder,
@@ -65,7 +65,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto childItems = adaptiveContainer.Items();
             ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
-                childItems, containerPanel.as<rtxaml::Controls::Panel>(), renderContext, renderArgs, [](rtxaml::UIElement) {});
+                childItems, containerPanel.as<winrt::Panel>(), renderContext, renderArgs, [](rtxaml::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
@@ -74,8 +74,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             auto verticalContentAlignmentReference = adaptiveContainer.VerticalContentAlignment();
-            rtom::VerticalContentAlignment verticalContentAlignment =
-                GetValueFromRef(verticalContentAlignmentReference, rtom::VerticalContentAlignment::Top);
+            winrt::VerticalContentAlignment verticalContentAlignment =
+                GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel, verticalContentAlignment);
 
@@ -84,7 +84,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (IsBackgroundImageValid(backgroundImage))
             {
-                rtxaml::Controls::Grid rootElement{};
+                winrt::Grid rootElement{};
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 // Add rootElement to containerBorder

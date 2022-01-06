@@ -59,11 +59,11 @@ template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> cons
 
 template<typename TStored> struct property_opt
 {
-    winrt::Windows::Foundation::IReference<TStored> m_stored;
+    winrt::IReference<TStored> m_stored;
 
     template<typename T> auto set(T const& t)
     {
-        if constexpr (std::is_same_v<T, winrt::Windows::Foundation::IReference<TStored>>)
+        if constexpr (std::is_same_v<T, winrt::IReference<TStored>>)
         {
             m_stored = t;
         }
@@ -107,8 +107,6 @@ template<typename TStored> struct property_opt
     operator std::optional<TStored>() { return get(); }
 };
 
-namespace rtom = winrt::AdaptiveCards::ObjectModel::Uwp;
-namespace rtrender = winrt::AdaptiveCards::Rendering::Uwp;
 namespace rtxaml = winrt::Windows::UI::Xaml;
 
 std::string WStringToString(std::wstring_view in);
@@ -129,7 +127,7 @@ inline bool Boolify(const boolean value) noexcept
 
 // TODO: we don't need this, right?
 template<typename T, typename TInterface, typename C>
-void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
+void IterateOverVector(winrt::IVector<T> vector, C iterationCallback)
 {
     for (T item : vector)
     {
@@ -138,7 +136,7 @@ void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vecto
 }
 
 template<typename T, typename C>
-void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
+void IterateOverVector(winrt::IVector<T> vector, C iterationCallback)
 {
     IterateOverVector<T, T, C>(vector, iterationCallback);
 }
@@ -147,62 +145,62 @@ winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
 // TODO: const& for enums?
 winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
-                                                    winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
-                                                    winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
+                                                    winrt::ForegroundColor adaptiveColor,
+                                                    winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
                                                     bool highlight);
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle const& style,
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style,
                                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style,
                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
 
-winrt::Windows::UI::Xaml::Documents::TextHighlighter
-GetHighlighter(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement const& adaptiveTextElement,
+winrt::TextHighlighter
+GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
                winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
-winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
+winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
-uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
-                                 rtom::FontType const& fontType,
-                                 rtom::TextSize const& desiredSize);
+uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig,
+                                 winrt::FontType const& fontType,
+                                 winrt::TextSize const& desiredSize);
 
-winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHostConfig const& hostConfig,
-                                                            rtom::FontType const& fontType,
-                                                            rtom::TextWeight const& desiredWeight);
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostConfig const& hostConfig,
+                                                            winrt::FontType const& fontType,
+                                                            winrt::TextWeight const& desiredWeight);
 
-rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
+winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
-uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom::TextSize const& desiredSize);
+uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize);
 
-uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig, rtom::TextWeight const& desiredWeight);
+uint16_t GetFontWeight(winrt::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight);
 
-uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing);
+uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing);
 
-winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
-winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
-winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson);
-std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inputJson);
+winrt::JsonObject StringToJsonObject(const std::string& inputString);
+winrt::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
+winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson);
+std::string JsonObjectToString(winrt::JsonObject const& inputJson);
 
 // TODO: these functions live in ObjectModelUtil now if I'm correct? we don't need them here?
-// HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-// HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-// HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
-// HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
+// HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::winrt::IJsonValue** result);
+// HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::winrt::IJsonValue** result);
+// HRESULT JsonValueToHString(_In_ ABI::winrt::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
+// HRESULT JsonValueToString(_In_ ABI::winrt::IJsonValue* inputJsonValue, std::string& result);
 
-// HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-// HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
+// HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::winrt::IJsonObject** result);
+// HRESULT JsonObjectToJsonCpp(_In_ ABI::winrt::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
 // HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedActionType,
 //                                     _Outptr_ HSTRING* result);
 // HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedElementType,
 //                                      _Outptr_ HSTRING* result);
 
-bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::AdaptiveFeatureRegistration const& featureRegistration);
+bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration);
 
-bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage);
+bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage backgroundImage);
 
 // TODO: I don't see this typedef being used anywhere
 // typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
@@ -250,18 +248,18 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-winrt::Windows::Foundation::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+winrt::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
                                                  winrt::hstring const& urlString);
 
 winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor);
 
-winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
+winrt::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
-winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year,
+winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year,
                                                                                                   unsigned int month,
                                                                                                   unsigned int day);
 
-rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement);
+winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& textElement);
 
 // TODO: rethink this perhaps?
 template<typename T> inline T EnumBitwiseOR(T a, T b)
@@ -270,7 +268,7 @@ template<typename T> inline T EnumBitwiseOR(T a, T b)
 }
 
 // TODO: Helper to extract value from a ref. if will handle ref = nullptr as well.
-template<typename T> inline T GetValueFromRef(winrt::Windows::Foundation::IReference<T> const& ref, T defaultValue)
+template<typename T> inline T GetValueFromRef(winrt::IReference<T> const& ref, T defaultValue)
 {
     if (ref != nullptr)
     {
@@ -284,8 +282,8 @@ namespace AdaptiveCards::Rendering::Uwp
     struct XamlBuilder;
 
     // TODO: is this the correct way to do it? Should we also simply accept XamlBuilder* ?
-    void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
+    void RegisterDefaultElementRenderers(winrt::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder);
 
-    void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration);
+    void RegisterDefaultActionRenderers(winrt::implementation::AdaptiveActionRendererRegistration* registration);
 }

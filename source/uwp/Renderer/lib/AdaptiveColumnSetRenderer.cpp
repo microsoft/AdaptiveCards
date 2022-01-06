@@ -10,28 +10,28 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveColumnSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                        rtrender::AdaptiveRenderContext const& renderContext,
-                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveColumnSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveColumnSet = cardElement.as<rtom::AdaptiveColumnSet>();
+            auto adaptiveColumnSet = cardElement.as<winrt::AdaptiveColumnSet>();
 
-            rtxaml::Controls::Border columnSetBorder{};
+            winrt::Border columnSetBorder{};
 
-            auto gridContainer = winrt::make<rtrender::implementation::WholeItemsPanel>();
+            auto gridContainer = winrt::make<winrt::implementation::WholeItemsPanel>();
 
             columnSetBorder.Child(gridContainer);
 
-            rtom::ContainerStyle containerStyle =
+            winrt::ContainerStyle containerStyle =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumnSet, columnSetBorder, renderContext, renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
             auto newRenderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
+                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
 
-            rtxaml::Controls::Grid xamlGrid{};
+            winrt::Grid xamlGrid{};
 
             auto columns = adaptiveColumnSet.Columns();
 
@@ -40,7 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (columnRenderer == nullptr)
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No renderer found for type: Column");
+                renderContext.AddWarning(winrt::WarningStatusCode::NoRendererForType, L"No renderer found for type: Column");
                 return nullptr;
             }
 
@@ -52,14 +52,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 try
                 {
-                    auto columnAsCardElement = column.as<rtom::IAdaptiveCardElement>();
+                    auto columnAsCardElement = column.as<winrt::IAdaptiveCardElement>();
 
                     auto columnDefinitions = xamlGrid.ColumnDefinitions();
 
-                    rtom::FallbackType fallbackType = column.FallbackType();
+                    winrt::FallbackType fallbackType = column.FallbackType();
 
                     // Build the Column
-                    newRenderArgs.AncestorHasFallback(ancestorHasFallback || fallbackType != rtom::FallbackType::None);
+                    newRenderArgs.AncestorHasFallback(ancestorHasFallback || fallbackType != winrt::FallbackType::None);
 
                     // TODO: look at the BuildPanel children and callBack in XamlBuilder, ColumnRenderer
                     auto xamlColumn = columnRenderer.Render(column, renderContext, newRenderArgs);
@@ -94,7 +94,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                                 // Create a new ColumnDefinition for the separator
 
-                                rtxaml::Controls::ColumnDefinition separatorColumnDefinition{};
+                                winrt::ColumnDefinition separatorColumnDefinition{};
                                 separatorColumnDefinition.Width({1.0, rtxaml::GridUnitType::Auto});
                                 columnDefinitions.Append(separatorColumnDefinition);
 
@@ -103,14 +103,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                 // TODO: is this the right logic?
                                 if (const auto separatorAsFrameworkElement = separator.try_as<rtxaml::FrameworkElement>())
                                 {
-                                    rtxaml::Controls::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
+                                    winrt::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
                                 }
                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
                             }
                         }
 
                         // Determine if the column is auto, stretch, or percentage width, and set the column width
-                        rtxaml::Controls::ColumnDefinition columnDefinition{};
+                        winrt::ColumnDefinition columnDefinition{};
 
                         auto isVisible = column.IsVisible();
 
@@ -121,7 +121,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                         // Mark the column container with the current column
                         if (const auto columnAsFrameworkElement = xamlColumn.try_as<rtxaml::FrameworkElement>())
                         {
-                            rtxaml::Controls::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
+                            winrt::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
                         }
 
                         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddRenderedControl(

@@ -8,15 +8,15 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     // TODO: we don't really need it in the idl, right? we can just do this:
-    // WholeItemsPanel: winrt::Windows::UI::Xaml::Controls::PanelT<WholeItemsPanel, ITypePeek>
+    // WholeItemsPanel: winrt::PanelT<WholeItemsPanel, ITypePeek>
     // TODO: I don't think we want to expose this type..
     struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
     {
     public:
         WholeItemsPanel() = default;
 
-        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size const& availableSize);
-        winrt::Windows::Foundation::Size ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize);
+        winrt::Size MeasureOverride(winrt::Size const& availableSize);
+        winrt::Size ArrangeOverride(winrt::Size const& finalSize);
 
         virtual void OnApplyTemplate(void);
 
@@ -65,9 +65,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
-        bool IsAnySubgroupTruncated(rtxaml::Controls::Panel pPanel);
+        bool IsAnySubgroupTruncated(winrt::Panel pPanel);
 
-        static void LayoutCroppedImage(rtxaml::Shapes::Shape const& shape, double availableWidth, double availableHeight);
+        static void LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight);
 
         static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 

@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveDateInputRenderer() = default;
 
-        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& element,
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& element,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& context,
                                                    winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
     };

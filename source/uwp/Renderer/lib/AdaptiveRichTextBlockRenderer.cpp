@@ -9,16 +9,16 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveRichTextBlockRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                            rtrender::AdaptiveRenderContext const& renderContext,
-                                                            rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             // Create the top level rich text block and set it's properties
-            rtxaml::Controls::RichTextBlock xamlRichTextBlock{};
+            winrt::RichTextBlock xamlRichTextBlock{};
 
-            auto adaptiveRichTextBlock = cardElement.as<rtom::AdaptiveRichTextBlock>();
+            auto adaptiveRichTextBlock = cardElement.as<winrt::AdaptiveRichTextBlock>();
 
             // Set the horizontal Alingment
             SetHorizontalAlignment(adaptiveRichTextBlock, renderContext, xamlRichTextBlock);
@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Add a paragraph for the inlines
             auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-            rtxaml::Documents::Paragraph xamlParagraph{};
+            winrt::Paragraph xamlParagraph{};
             xamlBlocks.Append(xamlParagraph);
 
             // Add the Inlines
@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             for (auto adaptiveInline : adaptiveInlines)
             {
                 // We only support TextRun inlines for now
-                auto adaptiveTextRun = adaptiveInline.as<rtom::AdaptiveTextRun>();
+                auto adaptiveTextRun = adaptiveInline.as<winrt::AdaptiveTextRun>();
                 auto selectAction = adaptiveTextRun.SelectAction();
 
                 bool selectActionIsEnabled = false;
@@ -53,7 +53,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     selectActionIsEnabled = selectAction.IsEnabled();
                 }
 
-                auto adaptiveTextElement = adaptiveInline.as<rtom::IAdaptiveTextElement>();
+                auto adaptiveTextElement = adaptiveInline.as<winrt::IAdaptiveTextElement>();
                 winrt::hstring text = adaptiveTextRun.Text();
                 bool isStrikethrough = adaptiveTextRun.Strikethrough();
                 bool isItalic = adaptiveTextRun.Italic();
@@ -63,7 +63,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 if (selectAction && selectActionIsEnabled)
                 {
                     // If there's a select action, create a hyperlink that triggers the action
-                    rtxaml::Documents::Hyperlink hyperlink{};
+                    winrt::Hyperlink hyperlink{};
 
                     auto actionInvoker = renderContext.ActionInvoker();
 
@@ -72,11 +72,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                     if (!actionTitle.empty())
                     {
-                        rtxaml::Automation::AutomationProperties::SetName(hyperlink, actionTitle);
+                        winrt::AutomationProperties::SetName(hyperlink, actionTitle);
                     }
 
-                    hyperlink.Click([selectAction, actionInvoker](winrt::Windows::Foundation::IInspectable const& /* sender */,
-                                                                  rtxaml::Documents::HyperlinkClickEventArgs const& /* args*/) -> void
+                    hyperlink.Click([selectAction, actionInvoker](winrt::IInspectable const& /* sender */,
+                                                                  winrt::HyperlinkClickEventArgs const& /* args*/) -> void
                                     { actionInvoker.SendActionEvent(selectAction); });
 
                     // Add the run text to the hyperlink's inlines

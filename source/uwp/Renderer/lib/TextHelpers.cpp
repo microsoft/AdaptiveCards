@@ -13,10 +13,10 @@ using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace std::string_literals;
 
-void StyleXamlTextBlockProperties(rtom::AdaptiveTextBlock const& adaptiveTextBlock,
-                                  rtrender::AdaptiveRenderContext const& renderContext,
-                                  rtrender::AdaptiveRenderArgs const& renderArgs,
-                                  rtxaml::Controls::TextBlock const& xamlTextBlock)
+void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBlock,
+                                  winrt::AdaptiveRenderContext const& renderContext,
+                                  winrt::AdaptiveRenderArgs const& renderArgs,
+                                  winrt::TextBlock const& xamlTextBlock)
 {
     SetWrapProperties(xamlTextBlock, adaptiveTextBlock.Wrap());
 
@@ -32,7 +32,7 @@ void StyleXamlTextBlockProperties(rtom::AdaptiveTextBlock const& adaptiveTextBlo
 }
 
 // TODO: should it be const TextRunStyleParameters&?
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, rtxaml::Controls::TextBlock const& textBlock)
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock)
 {
     winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
     if (styleProperties.IsStrikethrough())
@@ -52,7 +52,7 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
 
 // TODO: this function repeats - shoudl I template it?
 void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
-                                  winrt::Windows::UI::Xaml::Documents::TextElement const& textElement)
+                                  winrt::TextElement const& textElement)
 {
     winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
     if (styleProperties.IsStrikethrough())
@@ -67,35 +67,35 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
     textElement.TextDecorations(textDecorations);
 }
 
-void SetXamlInlinesWithTextStyleConfig(rtom::IAdaptiveTextElement const& textElement,
-                                       rtrender::AdaptiveRenderContext const& renderContext,
-                                       rtrender::AdaptiveRenderArgs const& renderArgs,
-                                       rtrender::AdaptiveTextStyleConfig const& textStyleConfig,
-                                       rtxaml::Controls::TextBlock const& textBlock)
+void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textElement,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       winrt::AdaptiveTextStyleConfig const& textStyleConfig,
+                                       winrt::TextBlock const& textBlock)
 {
     SetXamlInlinesWithTextStyleConfig(
         renderContext, renderArgs, textStyleConfig, textElement, textElement.Language(), textElement.Text(), textBlock);
 }
 
-void SetXamlInlinesWithTextStyleConfig(rtrender::AdaptiveRenderContext const& renderContext,
-                                       rtrender::AdaptiveRenderArgs const& renderArgs,
-                                       rtrender::AdaptiveTextStyleConfig const& textStyle,
-                                       rtom::IAdaptiveTextElement const& textElement, // TODO: optional?
+void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       winrt::AdaptiveTextStyleConfig const& textStyle,
+                                       winrt::IAdaptiveTextElement const& textElement, // TODO: optional?
                                        winrt::hstring const& language,
                                        winrt::hstring const& text,
-                                       rtxaml::Controls::TextBlock const& textBlock)
+                                       winrt::TextBlock const& textBlock)
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
-    rtom::AdaptiveTextRun textRun{};
+    winrt::AdaptiveTextRun textRun{};
     textRun.Text(text);
     textRun.Language(language);
 
     // For weight, color, size, fontType, and isSubtle, use the value from the text element if there is one, otherwise use the value from the text style
-    winrt::Windows::Foundation::IReference<rtom::TextWeight> weightToSet{textStyle.Weight()};
-    winrt::Windows::Foundation::IReference<rtom::ForegroundColor> colorToSet{textStyle.Color()};
-    winrt::Windows::Foundation::IReference<rtom::TextSize> sizeToSet{textStyle.Size()};
-    winrt::Windows::Foundation::IReference<rtom::FontType> fontTypeToSet{textStyle.FontType()};
-    winrt::Windows::Foundation::IReference<bool> isSubtleToSet{textStyle.IsSubtle()};
+    winrt::IReference<winrt::TextWeight> weightToSet{textStyle.Weight()};
+    winrt::IReference<winrt::ForegroundColor> colorToSet{textStyle.Color()};
+    winrt::IReference<winrt::TextSize> sizeToSet{textStyle.Size()};
+    winrt::IReference<winrt::FontType> fontTypeToSet{textStyle.FontType()};
+    winrt::IReference<bool> isSubtleToSet{textStyle.IsSubtle()};
 
     if (textElement)
     {
@@ -144,14 +144,14 @@ void SetXamlInlinesWithTextStyleConfig(rtrender::AdaptiveRenderContext const& re
     SetXamlInlines(textRun, renderContext, renderArgs, false, inlines);
 }
 
-void SetXamlInlinesWithFactSetTextConfig(rtrender::AdaptiveRenderContext const& renderContext,
-                                         rtrender::AdaptiveRenderArgs const& renderArgs,
-                                         rtrender::AdaptiveFactSetTextConfig const& factSetTextConfig,
+void SetXamlInlinesWithFactSetTextConfig(winrt::AdaptiveRenderContext const& renderContext,
+                                         winrt::AdaptiveRenderArgs const& renderArgs,
+                                         winrt::AdaptiveFactSetTextConfig const& factSetTextConfig,
                                          winrt::hstring const& language,
                                          winrt::hstring const& text,
-                                         rtxaml::Controls::TextBlock const& textBlock)
+                                         winrt::TextBlock const& textBlock)
 {
-    auto factSetTextConfigAsTextStyleConfig = factSetTextConfig.as<rtrender::AdaptiveTextStyleConfig>();
+    auto factSetTextConfigAsTextStyleConfig = factSetTextConfig.as<winrt::AdaptiveTextStyleConfig>();
 
     SetXamlInlinesWithTextStyleConfig(renderContext, renderArgs, factSetTextConfigAsTextStyleConfig, nullptr, language, text, textBlock);
 
@@ -160,18 +160,18 @@ void SetXamlInlinesWithFactSetTextConfig(rtrender::AdaptiveRenderContext const& 
     textBlock.MaxWidth(factSetTextConfig.MaxWidth());
 }
 
-void SetWrapProperties(rtxaml::Controls::TextBlock const& xamlTextBlock, bool wrap)
+void SetWrapProperties(winrt::TextBlock const& xamlTextBlock, bool wrap)
 {
     // Set whether the text wraps
     xamlTextBlock.TextWrapping(wrap ? rtxaml::TextWrapping::Wrap : rtxaml::TextWrapping::NoWrap);
     xamlTextBlock.TextTrimming(rtxaml::TextTrimming::CharacterEllipsis);
 }
 
-uint32_t SetXamlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
+uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                        winrt::AdaptiveRenderContext const& renderContext,
+                        winrt::AdaptiveRenderArgs const& renderArgs,
                         bool isInHyperlink,
-                        winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines)
+                        winrt::IVector<winrt::Inline> const& inlines)
 {
     // auto langugae = adaptiveTextElement.Language();
     auto text = adaptiveTextElement.Text();
@@ -185,7 +185,7 @@ uint32_t SetXamlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
         // wrap html in <root></root> in case there's more than one toplevel element.
         winrt::hstring htmlHString = UTF8ToHString("<root>"s + htmlString + "</root>"s);
 
-        winrt::Windows::Data::Xml::Dom::XmlDocument xmlDocument{};
+        winrt::XmlDocument xmlDocument{};
         xmlDocument.LoadXml(htmlHString);
 
         characterLength = AddHtmlInlines(adaptiveTextElement, renderContext, renderArgs, xmlDocument, isInHyperlink, inlines);
@@ -201,19 +201,19 @@ uint32_t SetXamlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     return characterLength;
 }
 
-static winrt::hstring GetTextFromXmlNode(winrt::Windows::Data::Xml::Dom::IXmlNode const& node)
+static winrt::hstring GetTextFromXmlNode(winrt::IXmlNode const& node)
 {
     // TODO: is this correct?
     return node.InnerText();
 }
 
-uint32_t AddListInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                        winrt::Windows::Data::Xml::Dom::IXmlNode const& node,
+uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                        winrt::AdaptiveRenderContext const& renderContext,
+                        winrt::AdaptiveRenderArgs const& renderArgs,
+                        winrt::IXmlNode const& node,
                         bool isListOrdered,
                         bool isInHyperlink,
-                        winrt::Windows::Foundation::Collections::IVector<winrt::Windows::UI::Xaml::Documents::Inline> const& inlines)
+                        winrt::IVector<winrt::Inline> const& inlines)
 {
     auto attributeMap = node.Attributes();
     auto startNode = attributeMap.GetNamedItem(L"start");
@@ -269,7 +269,7 @@ uint32_t AddListInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
         winrt::hstring listElementHString{listElementString};
         totalCharacterLength = listElementHString.size();
 
-        rtxaml::Documents::Run run{};
+        winrt::Run run{};
         run.Text(listElementHString);
 
         // Make sure the bullet or list number is styled correctly
@@ -294,14 +294,14 @@ uint32_t AddListInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     return totalCharacterLength;
 }
 
-uint32_t AddLinkInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                       rtrender::AdaptiveRenderContext const& renderContext,
-                       rtrender::AdaptiveRenderArgs const& renderArgs,
-                       winrt::Windows::Data::Xml::Dom::IXmlNode const& node,
+uint32_t AddLinkInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                       winrt::AdaptiveRenderContext const& renderContext,
+                       winrt::AdaptiveRenderArgs const& renderArgs,
+                       winrt::IXmlNode const& node,
                        bool isStrikethrough,
                        bool isItalic,
                        bool isUnderline,
-                       winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> inlines)
+                       winrt::IVector<winrt::Inline> inlines)
 {
     auto attributeMap = node.Attributes();
     auto hrefNode = attributeMap.GetNamedItem(L"href");
@@ -314,9 +314,9 @@ uint32_t AddLinkInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
 
     auto href = GetTextFromXmlNode(hrefNode);
 
-    winrt::Windows::Foundation::Uri uri{href};
+    winrt::Uri uri{href};
 
-    rtxaml::Documents::Hyperlink hyperlink{};
+    winrt::Hyperlink hyperlink{};
     hyperlink.NavigateUri(uri);
 
     auto hyperlinkInlines = hyperlink.Inlines();
@@ -332,15 +332,15 @@ uint32_t AddLinkInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     return characterLength;
 }
 
-uint32_t AddSingleTextInline(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs,
+uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                             winrt::AdaptiveRenderContext const& renderContext,
+                             winrt::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
                              // TODO: should it be const TextRunStyleParameters& ?
                              TextRunStyleParameters const& styleParameters,
-                             winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines)
+                             winrt::IVector<winrt::Inline> const& inlines)
 {
-    rtxaml::Documents::Run run{};
+    winrt::Run run{};
 
     winrt::hstring language = adaptiveTextElement.Language();
 
@@ -359,13 +359,13 @@ uint32_t AddSingleTextInline(rtom::IAdaptiveTextElement const& adaptiveTextEleme
     return stringToParse.size();
 }
 
-uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                        winrt::Windows::Data::Xml::Dom::IXmlNode const& node,
+uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                        winrt::AdaptiveRenderContext const& renderContext,
+                        winrt::AdaptiveRenderArgs const& renderArgs,
+                        winrt::IXmlNode const& node,
                         // TODO: should it be const& or const TextRunStyleParameters&??
                         TextRunStyleParameters const& styleParameters,
-                        winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines)
+                        winrt::IVector<winrt::Inline> const& inlines)
 {
     auto childNode = node.FirstChild();
 
@@ -400,7 +400,7 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
         }
         else
         {
-            rtom::IAdaptiveTextElement textElementToUse = adaptiveTextElement;
+            winrt::IAdaptiveTextElement textElementToUse = adaptiveTextElement;
             if (isBoldResult || isItalicResult)
             {
                 // Make a copy of the element so we can apply bold or italics
@@ -410,7 +410,7 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                 if (isBoldResult)
                 {
                     // TODO: no need to box it, right?
-                    textElementToUse.Weight(rtom::TextWeight::Bolder);
+                    textElementToUse.Weight(winrt::TextWeight::Bolder);
                 }
             }
             nodeCharacterLength = AddTextInlines(textElementToUse,
@@ -430,12 +430,12 @@ uint32_t AddTextInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
     return totalCharacterLength;
 }
 
-uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                        winrt::Windows::Data::Xml::Dom::IXmlNode const& node,
+uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                        winrt::AdaptiveRenderContext const& renderContext,
+                        winrt::AdaptiveRenderArgs const& renderArgs,
+                        winrt::IXmlNode const& node,
                         bool isInHyperlink,
-                        winrt::Windows::Foundation::Collections::IVector<winrt::Windows::UI::Xaml::Documents::Inline> inlines)
+                        winrt::IVector<winrt::Inline> inlines)
 {
     auto childNode = node.FirstChild();
 
@@ -480,7 +480,7 @@ uint32_t AddHtmlInlines(rtom::IAdaptiveTextElement const& adaptiveTextElement,
                 // there's more content... need a linebreak.
                 // TODO: Can I do it this way?
                 // TODO: Do we need to check for presnence of the API?
-                inlines.Append(rtxaml::Documents::LineBreak{});
+                inlines.Append(winrt::LineBreak{});
             }
         }
         else

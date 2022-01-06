@@ -11,7 +11,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveHostConfigParseResult(Uwp::AdaptiveHostConfig const& hostConfig = nullptr);
 
         property<Uwp::AdaptiveHostConfig> HostConfig;
-        property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
+        property<winrt::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

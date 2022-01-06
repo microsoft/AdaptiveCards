@@ -11,10 +11,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         : public ElementTagContentT<ElementTagContent, ITypePeek>
     {
         ElementTagContent() = default;
-        ElementTagContent(rtom::IAdaptiveCardElement const& cardElement,
-                          rtxaml::Controls::Panel const& parentPanel,
+        ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
+                          winrt::Panel const& parentPanel,
                           rtxaml::UIElement const& separator,
-                          rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                          winrt::ColumnDefinition const& columnDefinition,
                           boolean expectedVisibility,
                           boolean isStretchable);
 
@@ -22,18 +22,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<bool> IsStretchable;
 
         rtxaml::UIElement Separator() { return m_separator; }
-        rtxaml::Controls::Panel ParentPanel() { return m_parentPanel; }
-        rtxaml::Controls::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
-        rtom::IAdaptiveCardElement CardElement() { return m_cardElement; }
+        winrt::Panel ParentPanel() { return m_parentPanel; }
+        winrt::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
+        winrt::IAdaptiveCardElement CardElement() { return m_cardElement; }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         rtxaml::UIElement m_separator{nullptr};
-        rtxaml::Controls::Panel m_parentPanel{nullptr};
-        rtxaml::Controls::ColumnDefinition m_columnDefinition;
-        rtom::IAdaptiveCardElement m_cardElement;
+        winrt::Panel m_parentPanel{nullptr};
+        winrt::ColumnDefinition m_columnDefinition;
+        winrt::IAdaptiveCardElement m_cardElement;
     };
 }
 

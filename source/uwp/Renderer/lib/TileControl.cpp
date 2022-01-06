@@ -11,8 +11,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     TileControl::TileControl()
     {
-        m_containerElement = rtxaml::Controls::Canvas{};
-        m_brushXaml = rtxaml::Media::ImageBrush{};
+        m_containerElement = winrt::Canvas{};
+        m_brushXaml = winrt::ImageBrush{};
         this->Content(m_containerElement);
     }
 
@@ -21,11 +21,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto uiElement = m_resolvedImage;
 
         // Do we need to throw/log if we fail here?
-        if (const auto image = m_resolvedImage.try_as<rtxaml::Controls::Image>())
+        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
         {
             if (const auto imageSource = image.Source())
             {
-                if (const auto bitmapSource = imageSource.try_as<rtxaml::Media::Imaging::BitmapSource>())
+                if (const auto bitmapSource = imageSource.try_as<winrt::BitmapSource>())
                 {
                     m_imageSize = {(float)bitmapSource.PixelWidth(), (float)bitmapSource.PixelHeight()};
                     RefreshContainerTile();
@@ -37,11 +37,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         m_resolvedImage = uielement;
 
-        if (const auto image = m_resolvedImage.try_as<rtxaml::Controls::Image>())
+        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
         {
             if (const auto imageSource = image.Source())
             {
-                if (const auto bitmapImage = imageSource.try_as<rtxaml::Media::Imaging::BitmapImage>())
+                if (const auto bitmapImage = imageSource.try_as<winrt::BitmapImage>())
                 {
                     m_imageOpenedRevoker.revoke();
                     m_imageOpenedRevoker = bitmapImage.ImageOpened(winrt::auto_revoke, {this, &TileControl::ImageOpened});
@@ -53,20 +53,20 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     void TileControl::OnApplyTemplate() { TileControl_base::OnApplyTemplate(); }
 
-    winrt::Windows::Foundation::Size TileControl::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
+    winrt::Size TileControl::MeasureOverride(winrt::Size const& availableSize)
     {
         return TileControl_base::MeasureOverride(availableSize);
     }
 
-    winrt::Windows::Foundation::Size TileControl::ArrangeOverride(winrt::Windows::Foundation::Size const& arrangeBounds)
+    winrt::Size TileControl::ArrangeOverride(winrt::Size const& arrangeBounds)
     {
         // TODO: am I doing this right?
         m_containerSize = TileControl_base::ArrangeOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
-        winrt::Windows::Foundation::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
+        winrt::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
 
-        rtxaml::Media::RectangleGeometry clip;
+        winrt::RectangleGeometry clip;
         clip.Rect(rect);
         if (const auto containerAsUIElement = m_containerElement.try_as<rtxaml::UIElement>())
         {
@@ -79,9 +79,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     void TileControl::RefreshContainerTile()
     {
-        rtom::BackgroundImageFillMode fillMode = m_adaptiveBackgroundImage.FillMode();
-        rtom::HAlignment hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();
-        rtom::VAlignment vAlignment = m_adaptiveBackgroundImage.VerticalAlignment();
+        winrt::BackgroundImageFillMode fillMode = m_adaptiveBackgroundImage.FillMode();
+        winrt::HAlignment hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();
+        winrt::VAlignment vAlignment = m_adaptiveBackgroundImage.VerticalAlignment();
 
         int numberSpriteToInstanciate{1};
         int numberImagePerColumn{1};
@@ -96,48 +96,48 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             switch (fillMode)
             {
-            case rtom::BackgroundImageFillMode::RepeatHorizontally:
+            case winrt::BackgroundImageFillMode::RepeatHorizontally:
                 numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 numberImagePerColumn = 1;
 
                 switch (vAlignment)
                 {
-                case rtom::VAlignment::Bottom:
+                case winrt::VAlignment::Bottom:
                     offsetVerticalAlignment = m_containerSize.Height - m_imageSize.Height;
                     break;
-                case rtom::VAlignment::Center:
+                case winrt::VAlignment::Center:
                     offsetVerticalAlignment = static_cast<float>((m_containerSize.Height - m_imageSize.Height) / 2.0f);
                     break;
-                case rtom::VAlignment::Top:
+                case winrt::VAlignment::Top:
                 default:
                     break;
                 }
                 break;
 
-            case rtom::BackgroundImageFillMode::RepeatVertically:
+            case winrt::BackgroundImageFillMode::RepeatVertically:
                 numberImagePerRow = 1;
                 numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
 
                 switch (hAlignment)
                 {
-                case rtom::HAlignment::Right:
+                case winrt::HAlignment::Right:
                     offsetHorizontalAlignment = m_containerSize.Width - m_imageSize.Width;
                     break;
-                case rtom::HAlignment::Center:
+                case winrt::HAlignment::Center:
                     offsetHorizontalAlignment = static_cast<float>((m_containerSize.Width - m_imageSize.Width) / 2.0f);
                     break;
-                case rtom::HAlignment::Left:
+                case winrt::HAlignment::Left:
                 default:
                     break;
                 }
                 break;
 
-            case rtom::BackgroundImageFillMode::Repeat:
+            case winrt::BackgroundImageFillMode::Repeat:
                 numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
                 numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 break;
 
-            case rtom::BackgroundImageFillMode::Cover:
+            case winrt::BackgroundImageFillMode::Cover:
             default:
                 numberImagePerColumn = 1;
                 numberImagePerRow = 1;
@@ -151,9 +151,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         // Get containerElement.Children
 
-        winrt::Windows::Foundation::Collections::IVector<rtxaml::UIElement> children{};
+        winrt::IVector<rtxaml::UIElement> children{};
         // Not sure what is the need to convert to xaml::controls::Panel?
-        if (const auto containerElementAsPanel = m_containerElement.try_as<rtxaml::Controls::Panel>())
+        if (const auto containerElementAsPanel = m_containerElement.try_as<winrt::Panel>())
         {
             children = containerElementAsPanel.Children();
         }
@@ -163,7 +163,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // instanciate all elements not created yet
             for (int x = 0; x < (numberSpriteToInstanciate - count); x++)
             {
-                rtxaml::Shapes::Rectangle rectangle;
+                winrt::Rectangle rectangle;
 
                 children.Append(rectangle.as<rtxaml::UIElement>());
 
@@ -181,7 +181,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
 
         // TODO: do we need this cast?
-        // m_brushXaml to rtxaml::Media::Brush?
+        // m_brushXaml to winrt::Brush?
         // Change positions+brush for all actives elements
         for (int x = 0, index = 0; x < numberImagePerRow; x++)
         {
@@ -195,18 +195,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 rectangle.Fill(m_brushXaml);
 
                 double originPositionX{0.0}, originPositionY{0.0};
-                if (fillMode != rtom::BackgroundImageFillMode::Cover)
+                if (fillMode != winrt::BackgroundImageFillMode::Cover)
                 {
                     originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
                     originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
                 }
 
                 // Set Left and Top for rectangle
-                rtxaml::Controls::Canvas::SetLeft(rectangle, originPositionX);
-                rtxaml::Controls::Canvas::SetTop(rectangle, originPositionY);
+                winrt::Canvas::SetLeft(rectangle, originPositionX);
+                winrt::Canvas::SetTop(rectangle, originPositionY);
 
                 double imageWidth{0.0}, imageHeight{0.0};
-                if (fillMode == rtom::BackgroundImageFillMode::Cover)
+                if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
                     imageWidth = m_containerSize.Width;
                     imageHeight = m_containerSize.Height;
@@ -221,14 +221,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 rectangle.Width(imageWidth);
                 rectangle.Height(imageHeight);
 
-                if (fillMode == rtom::BackgroundImageFillMode::Cover)
+                if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
                     // TODO: do we ened to convert it to tile brush? not really, right?
-                    m_brushXaml.Stretch(rtxaml::Media::Stretch::UniformToFill);
+                    m_brushXaml.Stretch(winrt::Stretch::UniformToFill);
 
                     // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
-                    m_brushXaml.AlignmentX(static_cast<rtxaml::Media::AlignmentX>(hAlignment));
-                    m_brushXaml.AlignmentY(static_cast<rtxaml::Media::AlignmentY>(vAlignment));
+                    m_brushXaml.AlignmentX(static_cast<winrt::AlignmentX>(hAlignment));
+                    m_brushXaml.AlignmentY(static_cast<winrt::AlignmentY>(vAlignment));
                 }
             }
         }

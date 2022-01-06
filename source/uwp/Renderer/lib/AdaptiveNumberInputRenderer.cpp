@@ -8,28 +8,28 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveNumberInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                          rtrender::AdaptiveRenderContext const& renderContext,
-                                                          rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                          winrt::AdaptiveRenderContext const& renderContext,
+                                                          winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
             if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Number input was stripped from card because interactivity is not supported");
                 return nullptr;
             }
 
-            auto adaptiveNumberInput = cardElement.as<rtom::AdaptiveNumberInput>();
+            auto adaptiveNumberInput = cardElement.as<winrt::AdaptiveNumberInput>();
 
-            rtxaml::Controls::TextBox textBox{};
-            rtxaml::Input::InputScopeName inputScopeName{rtxaml::Input::InputScopeNameValue::Number};
+            winrt::TextBox textBox{};
+            winrt::InputScopeName inputScopeName{winrt::InputScopeNameValue::Number};
 
-            rtxaml::Input::InputScope inputScope{};
+            winrt::InputScope inputScope{};
             // TODO: we can do this, right?
-            inputScope.Names().Append(rtxaml::Input::InputScopeName{rtxaml::Input::InputScopeNameValue::Number});
+            inputScope.Names().Append(winrt::InputScopeName{winrt::InputScopeNameValue::Number});
 
             textBox.InputScope(inputScope);
 
@@ -70,7 +70,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Create the InputValue and add it to the context
             // TODO: is this the right way to do it?
             // TODO: do we need private IDL for these scenarios?
-            auto input = winrt::make_self<rtrender::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
+            auto input = winrt::make_self<winrt::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
             renderContext.AddInputValue(*input, renderArgs);
 

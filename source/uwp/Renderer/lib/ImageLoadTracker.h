@@ -9,16 +9,16 @@ namespace AdaptiveCards::Rendering::Uwp
     struct TrackedImageDetails : winrt::implements<TrackedImageDetails, ::IInspectable>
     {
         // TODO: add {} for initialization?
-        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
-        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
+        winrt::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
+        winrt::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
     };
 
     struct ImageLoadTracker : winrt::implements<ImageLoadTracker, ::IInspectable>
     {
     public:
         ~ImageLoadTracker();
-        void TrackBitmapImage(winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage const& bitmapImage);
-        void MarkFailedLoadBitmapImage(winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage const& bitmapImage);
+        void TrackBitmapImage(winrt::BitmapImage const& bitmapImage);
+        void MarkFailedLoadBitmapImage(winrt::BitmapImage const& bitmapImage);
 
         void AbandonOutstandingImages();
         void AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener);
@@ -31,17 +31,17 @@ namespace AdaptiveCards::Rendering::Uwp
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
         // TODO: can I just hold a naked pointer *? instead of com_ptr?
-        std::unordered_map<winrt::Windows::Foundation::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
+        std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 
-        void TrackedImage_ImageLoaded(winrt::Windows::Foundation::IInspectable const& sender,
+        void TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
                                       winrt::Windows::UI::Xaml::RoutedEventArgs const& eventArgs);
-        void TrackedImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender,
+        void TrackedImage_ImageFailed(winrt::IInspectable const& sender,
                                       winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& eventArgs);
-        void ImageLoadResultReceived(winrt::Windows::Foundation::IInspectable const& sender);
+        void ImageLoadResultReceived(winrt::IInspectable const& sender);
 
         // TODO: Do I need a const ref here? or just ref?
-        void UnsubscribeFromEvents(winrt::Windows::Foundation::IInspectable const& bitmapImage,
+        void UnsubscribeFromEvents(winrt::IInspectable const& bitmapImage,
                                    winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();

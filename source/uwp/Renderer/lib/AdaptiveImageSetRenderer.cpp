@@ -8,23 +8,23 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveImageSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
-                                                       rtrender::AdaptiveRenderContext const& renderContext,
-                                                       rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveImageSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            auto adaptiveImageSet = cardElement.as<rtom::AdaptiveImageSet>();
+            auto adaptiveImageSet = cardElement.as<winrt::AdaptiveImageSet>();
 
-            rtxaml::Controls::VariableSizedWrapGrid xamlGrid{};
-            xamlGrid.Orientation(rtxaml::Controls::Orientation::Horizontal);
+            winrt::VariableSizedWrapGrid xamlGrid{};
+            xamlGrid.Orientation(winrt::Orientation::Horizontal);
 
             auto images = adaptiveImageSet.Images();
             auto hostConfig = renderContext.HostConfig();
             auto imageSetConfig = hostConfig.ImageSet();
             auto imageSize = adaptiveImageSet.ImageSize();
 
-            if (imageSize == rtom::ImageSize::None)
+            if (imageSize == winrt::ImageSize::None)
             {
                 imageSize = imageSetConfig.ImageSize();
             }
@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 auto containerStyle = renderArgs.ContainerStyle();
 
                 auto childRenderArgs =
-                    winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, xamlGrid, renderArgs);
+                    winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, xamlGrid, renderArgs);
 
                 for (auto adaptiveImage : images)
                 {
@@ -53,7 +53,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
             else
             {
-                renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No renderer found for type: Image");
+                renderContext.AddWarning(winrt::WarningStatusCode::NoRendererForType, L"No renderer found for type: Image");
                 return nullptr;
             }
 

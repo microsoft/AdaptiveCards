@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::Windows::Data::Json::JsonObject AdaptiveInputs::AsJson()
+    winrt::JsonObject AdaptiveInputs::AsJson()
     {
         return StringToJsonObject(GetInputItemsAsJsonString());
     }
@@ -80,11 +80,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return outStream.str();
     }
 
-    winrt::Windows::Foundation::Collections::ValueSet AdaptiveInputs::AsValueSet()
+    winrt::ValueSet AdaptiveInputs::AsValueSet()
     {
-        winrt::Windows::Foundation::Collections::ValueSet valueSet;
+        winrt::ValueSet valueSet;
         auto propertySetMap =
-            valueSet.as<winrt::Windows::Foundation::Collections::IMap<hstring, winrt::Windows::Foundation::IInspectable>>();
+            valueSet.as<winrt::IMap<hstring, winrt::IInspectable>>();
 
         for (auto&& inputValue : m_lastRetrievedValues)
         {

@@ -23,33 +23,7 @@
 #define ERRORBASE_ADAPTIVECARDS 0x1000
 #define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
 
-#include <windows.foundation.h>
-#include <windows.foundation.collections.h>
-#include <windows.ui.xaml.shapes.h>
-#include <windows.ui.xaml.markup.h>
-
-#include <winrt/base.h>
-#include <winrt/Windows.Globalization.DateTimeFormatting.h>
-#include <winrt/Windows.Storage.Streams.h>
-#include <winrt/Windows.System.h>
-#include <winrt/Windows.Web.Http.Filters.h>
-#include <winrt/Windows.UI.Core.h>
-#include <winrt/Windows.UI.Xaml.Automation.h>
-#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
-#include <winrt/Windows.UI.Xaml.Controls.h>
-#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
-#include <winrt/Windows.UI.Xaml.Input.h>
-#include <winrt/Windows.UI.Xaml.Markup.h>
-#include <winrt/Windows.UI.Xaml.Media.h>
-#include <winrt/Windows.UI.Xaml.Shapes.h>
-#include <winrt/Windows.UI.Xaml.Documents.h>
-#include <winrt/Windows.UI.Xaml.Media.Imaging.h>
-#include <winrt/Windows.Data.Json.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.Data.Xml.Dom.h>
-#include <winrt/AdaptiveCards.Rendering.Uwp.h>
-#include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#include "CppWinRTIncludes.h"
 
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it
@@ -62,7 +36,6 @@
 #include "HostConfig.h"
 
 // Commonly-used AdaptiveCardRenderer headers
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"

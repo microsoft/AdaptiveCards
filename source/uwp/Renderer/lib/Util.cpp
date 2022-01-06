@@ -155,31 +155,31 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
     return color;
 }
 
-rtrender::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(rtom::ContainerStyle const& style,
-                                                                       rtrender::AdaptiveHostConfig const& hostConfig)
+winrt::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::ContainerStyle const& style,
+                                                                       winrt::AdaptiveHostConfig const& hostConfig)
 {
     auto containerStyles = hostConfig.ContainerStyles();
 
     switch (style)
     {
-    case rtom::ContainerStyle::Accent:
+    case winrt::ContainerStyle::Accent:
         return containerStyles.Accent();
-    case rtom::ContainerStyle::Attention:
+    case winrt::ContainerStyle::Attention:
         return containerStyles.Attention();
-    case rtom::ContainerStyle::Emphasis:
+    case winrt::ContainerStyle::Emphasis:
         return containerStyles.Emphasis();
-    case rtom::ContainerStyle::Good:
+    case winrt::ContainerStyle::Good:
         return containerStyles.Good();
-    case rtom::ContainerStyle::Warning:
+    case winrt::ContainerStyle::Warning:
         return containerStyles.Warning();
-    case rtom::ContainerStyle::Default:
+    case winrt::ContainerStyle::Default:
     default:
         return containerStyles.Default();
     }
 }
 winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
-                                                    winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
-                                                    winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
+                                                    winrt::ForegroundColor adaptiveColor,
+                                                    winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
                                                     bool highlight)
 {
@@ -187,28 +187,28 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Render
 
     auto colorsConfig = styleDefinition.ForegroundColors();
 
-    rtrender::AdaptiveColorConfig colorConfig{};
+    winrt::AdaptiveColorConfig colorConfig{};
     switch (adaptiveColor)
     {
-    case rtom::ForegroundColor::Accent:
+    case winrt::ForegroundColor::Accent:
         colorConfig = colorsConfig.Accent();
         break;
-    case rtom::ForegroundColor::Dark:
+    case winrt::ForegroundColor::Dark:
         colorConfig = colorsConfig.Dark();
         break;
-    case rtom::ForegroundColor::Light:
+    case winrt::ForegroundColor::Light:
         colorConfig = colorsConfig.Light();
         break;
-    case rtom::ForegroundColor::Good:
+    case winrt::ForegroundColor::Good:
         colorConfig = colorsConfig.Good();
         break;
-    case rtom::ForegroundColor::Warning:
+    case winrt::ForegroundColor::Warning:
         colorConfig = colorsConfig.Warning();
         break;
-    case rtom::ForegroundColor::Attention:
+    case winrt::ForegroundColor::Attention:
         colorConfig = colorsConfig.Attention();
         break;
-    case rtom::ForegroundColor::Default:
+    case winrt::ForegroundColor::Default:
     default:
         colorConfig = colorsConfig.Default();
         break;
@@ -225,11 +225,11 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Render
     }
 }
 
-rtxaml::Documents::TextHighlighter GetHighlighter(rtom::IAdaptiveTextElement const& adaptiveTextElement,
-                                                  rtrender::AdaptiveRenderContext const& renderContext,
-                                                  rtrender::AdaptiveRenderArgs const& renderArgs)
+winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                  winrt::AdaptiveRenderArgs const& renderArgs)
 {
-    rtxaml::Documents::TextHighlighter textHighlighter{};
+    winrt::TextHighlighter textHighlighter{};
 
     auto hostConfig = renderContext.HostConfig();
 
@@ -237,7 +237,7 @@ rtxaml::Documents::TextHighlighter GetHighlighter(rtom::IAdaptiveTextElement con
 
     // TODO: do we need to do it? Won't it default to 'Default' by default?
     // TODO: should I create a helper to extract a value from refs? GetValueFromRef(... const& ref, ... defaultValue); ?
-    rtom::ForegroundColor adaptiveForegroundColor = GetValueFromRef(adaptiveTextElement.Color(), rtom::ForegroundColor::Default);
+    winrt::ForegroundColor adaptiveForegroundColor = GetValueFromRef(adaptiveTextElement.Color(), winrt::ForegroundColor::Default);
     bool isSubtle = GetValueFromRef(adaptiveTextElement.IsSubtle(), false);
 
     auto containerStyle = renderArgs.ContainerStyle();
@@ -252,38 +252,38 @@ rtxaml::Documents::TextHighlighter GetHighlighter(rtom::IAdaptiveTextElement con
 }
 
 // TODO: do we want try/catch here?
-uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing)
+uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing)
 {
     auto spacingConfig = hostConfig.Spacing();
 
     switch (spacing)
     {
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::None:
+    case winrt::Spacing::None:
         return 0;
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::Small:
+    case winrt::Spacing::Small:
         return spacingConfig.Small();
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::Medium:
+    case winrt::Spacing::Medium:
         return spacingConfig.Medium();
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::Large:
+    case winrt::Spacing::Large:
         return spacingConfig.Large();
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::ExtraLarge:
+    case winrt::Spacing::ExtraLarge:
         return spacingConfig.ExtraLarge();
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::Padding:
+    case winrt::Spacing::Padding:
         return spacingConfig.Padding();
-    case winrt::AdaptiveCards::ObjectModel::Uwp::Spacing::Default:
+    case winrt::Spacing::Default:
     default:
         return spacingConfig.Default();
     }
 }
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(rtom::ContainerStyle const& style, rtrender::AdaptiveHostConfig const& hostConfig)
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::AdaptiveHostConfig const& hostConfig)
 {
     // TODO: how do I handle errors here? are there gonna be any?
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BackgroundColor();
 }
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style, rtrender::AdaptiveHostConfig const& hostConfig)
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::AdaptiveHostConfig const& hostConfig)
 
 {
     // TODO: how do I handle error here?
@@ -293,7 +293,7 @@ winrt::Windows::UI::Color GetBorderColorFromStyle(rtom::ContainerStyle style, rt
 }
 
 // TODO: do we want try/catch here?
-winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType)
+winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
     try
     {
@@ -303,7 +303,7 @@ winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hos
         auto fontFamily = typeDefinition.FontFamily();
         if (fontFamily.empty())
         {
-            if (fontType == rtom::FontType::Monospace)
+            if (fontType == winrt::FontType::Monospace)
             {
                 // fallback to system default monospace FontFamily
                 fontFamily = UTF8ToHString("Courier New");
@@ -328,19 +328,19 @@ winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hos
     }
 }
 
-uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType, rtom::TextSize const& desiredSize)
+uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType, winrt::TextSize const& desiredSize)
 {
     try
     {
-        rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-        rtrender::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
+        winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+        winrt::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
         uint32_t result = GetFontSize(sizesConfig, desiredSize);
 
         // TODO: can we still use MAXUINT32?
         if (result == MAXUINT32)
         {
             // Get FontSize from Default style
-            fontTypeDefinition = GetFontType(hostConfig, rtom::FontType::Default);
+            fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
             sizesConfig = fontTypeDefinition.FontSizes();
             result = GetFontSize(sizesConfig, desiredSize);
 
@@ -355,19 +355,19 @@ uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
                     // set system default FontSize based on desired style
                     switch (desiredSize)
                     {
-                    case rtom::TextSize::Small:
+                    case winrt::TextSize::Small:
                         result = 10;
                         break;
-                    case rtom::TextSize::Medium:
+                    case winrt::TextSize::Medium:
                         result = 14;
                         break;
-                    case rtom::TextSize::Large:
+                    case winrt::TextSize::Large:
                         result = 17;
                         break;
-                    case rtom::TextSize::ExtraLarge:
+                    case winrt::TextSize::ExtraLarge:
                         result = 20;
                         break;
-                    case rtom::TextSize::Default:
+                    case winrt::TextSize::Default:
                     default:
                         result = 12;
                         break;
@@ -384,21 +384,21 @@ uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
     }
 }
 
-winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHostConfig const& hostConfig,
-                                                            rtom::FontType const& fontType,
-                                                            rtom::TextWeight const& desiredWeight)
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostConfig const& hostConfig,
+                                                            winrt::FontType const& fontType,
+                                                            winrt::TextWeight const& desiredWeight)
 {
     try
     {
-        rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-        rtrender::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+        winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+        winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
         uint16_t result = GetFontWeight(weightConfig, desiredWeight);
 
         if (result == MAXUINT16)
         {
             // get FontWeight from Default style
-            rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, rtom::FontType::Default);
-            rtrender::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+            winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
+            winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
             result = GetFontWeight(weightConfig, desiredWeight);
 
             if (result == MAXUINT16)
@@ -412,13 +412,13 @@ winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHo
                     // set system default FontWeight based on desired style
                     switch (desiredWeight)
                     {
-                    case rtom::TextWeight::Lighter:
+                    case winrt::TextWeight::Lighter:
                         result = 200;
                         break;
-                    case rtom::TextWeight::Bolder:
+                    case winrt::TextWeight::Bolder:
                         result = 800;
                         break;
-                    case rtom::TextWeight::Default:
+                    case winrt::TextWeight::Default:
                     default:
                         result = 400;
                         break;
@@ -435,17 +435,17 @@ winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHo
     }
 }
 
-rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType)
+winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
     try
     {
         auto fontTypes = hostConfig.FontTypes();
         switch (fontType)
         {
-        case rtom::FontType::Monospace:
+        case winrt::FontType::Monospace:
             return fontTypes.Monospace();
             break;
-        case rtom::FontType::Default:
+        case winrt::FontType::Default:
         default:
             return fontTypes.Default();
             break;
@@ -458,25 +458,25 @@ rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig co
     }
 }
 
-uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom::TextSize const& desiredSize)
+uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize)
 {
     try
     {
         switch (desiredSize)
         {
-        case rtom::TextSize::Small:
+        case winrt::TextSize::Small:
             return sizesConfig.Small();
             break;
-        case rtom::TextSize::Medium:
+        case winrt::TextSize::Medium:
             return sizesConfig.Medium();
             break;
-        case rtom::TextSize::Large:
+        case winrt::TextSize::Large:
             return sizesConfig.Large();
             break;
-        case rtom::TextSize::ExtraLarge:
+        case winrt::TextSize::ExtraLarge:
             return sizesConfig.ExtraLarge();
             break;
-        case rtom::TextSize::Default:
+        case winrt::TextSize::Default:
         default:
             return sizesConfig.Default();
             break;
@@ -489,7 +489,7 @@ uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom:
     }
 }
 
-uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig, rtom::TextWeight const& desiredWeight)
+uint16_t GetFontWeight(winrt::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight)
 {
     try
     {
@@ -497,13 +497,13 @@ uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig,
         // TODO: so we don't have to do if/else all the time?
         switch (desiredWeight)
         {
-        case rtom::TextWeight::Lighter:
+        case winrt::TextWeight::Lighter:
             return weightsConfig.Lighter();
             break;
-        case rtom::TextWeight::Bolder:
+        case winrt::TextWeight::Bolder:
             return weightsConfig.Bolder();
             break;
-        case rtom::TextWeight::Default:
+        case winrt::TextWeight::Default:
         default:
             return weightsConfig.Default();
             break;
@@ -516,16 +516,16 @@ uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig,
     }
 }
 
-winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString)
+winrt::JsonObject StringToJsonObject(const std::string& inputString)
 {
     return HStringToJsonObject(UTF8ToHString(inputString));
 }
 
-winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString)
+winrt::JsonObject HStringToJsonObject(winrt::hstring const& inputHString)
 {
-    winrt::Windows::Data::Json::JsonObject obj{nullptr};
+    winrt::JsonObject obj{nullptr};
 
-    if (!winrt::Windows::Data::Json::JsonObject::TryParse(inputHString, obj))
+    if (!winrt::JsonObject::TryParse(inputHString, obj))
     {
         obj = {};
     }
@@ -533,12 +533,12 @@ winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const&
     return obj;
 }
 
-std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inputJson)
+std::string JsonObjectToString(winrt::JsonObject const& inputJson)
 {
     return HStringToUTF8(JsonObjectToHString(inputJson));
 }
 
-winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson)
+winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson)
 {
     // TODO: do we want to check for null here?
     return inputJson.Stringify();
@@ -589,7 +589,7 @@ winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const&
 //     return StringToJsonObject(jsonString, result);
 // }
 
-// HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue)
+// HRESULT JsonObjectToJsonCpp(_In_ ABI::winrt::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue)
 // {
 //     std::string jsonString;
 //     RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
@@ -611,9 +611,9 @@ winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const&
 //     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 //}
 
-bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::AdaptiveFeatureRegistration const& featureRegistration)
+bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration)
 {
-    winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveRequirement> requirements = cardElement.Requirements();
+    winrt::IVector<winrt::AdaptiveRequirement> requirements = cardElement.Requirements();
     bool meetsRequirementsLocal = true;
 
     for (auto req : requirements)
@@ -643,7 +643,7 @@ bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::
     return meetsRequirementsLocal;
 }
 
-bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage)
+bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage backgroundImage)
 {
     // TODO: is this correct here? the logic?
     if (backgroundImage)
@@ -654,12 +654,12 @@ bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImage)
     return false;
 }
 
-winrt::Windows::Foundation::Uri GetUrlFromString(rtrender::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
+winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
 {
-    winrt::Windows::Foundation::Uri uri{nullptr};
+    winrt::Uri uri{nullptr};
 
     // TODO: We can also use the factory, but we don't need to, right? This will try to make absolute uri?
-    if (const auto uriFromAbsoluteUri = winrt::Windows::Foundation::Uri{urlString})
+    if (const auto uriFromAbsoluteUri = winrt::Uri{urlString})
     {
         return uriFromAbsoluteUri;
     }
@@ -667,7 +667,7 @@ winrt::Windows::Foundation::Uri GetUrlFromString(rtrender::AdaptiveHostConfig co
     {
         winrt::hstring imageBaseUrl = hostConfig.ImageBaseUrl();
 
-        if (const auto uriFromRelativeUri = winrt::Windows::Foundation::Uri{imageBaseUrl, urlString})
+        if (const auto uriFromRelativeUri = winrt::Uri{imageBaseUrl, urlString})
         {
             return uriFromRelativeUri;
         }
@@ -687,7 +687,7 @@ winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& o
     return hoverColor;
 }
 
-winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
+winrt::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
 {
     // TODO: investigate the midnight bug. If the timezone will be ahead of UTC we can do -1 day when converting
     SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
@@ -709,7 +709,7 @@ winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int
     return winrt::clock::from_FILETIME({fileTime});
 }
 
-winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year,
+winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year,
                                                                                                   unsigned int month,
                                                                                                   unsigned int day)
 {
@@ -717,11 +717,11 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
     return GetDateTime(year, month, day);
 }
 
-rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement)
+winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& textElement)
 {
     if (textElement)
     {
-        rtom::AdaptiveTextRun textRun;
+        winrt::AdaptiveTextRun textRun;
 
         // TODO: is this the right way to do it? Or do we need to .Value()?
         // TODO: does IReference has copy constructor that will extract .Value() and copy it? (at least for primitifves)?
@@ -741,37 +741,37 @@ rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& tex
 // TODO: Can I just pass com_ptr of implementation? Can I just pass projection here?
 namespace AdaptiveCards::Rendering::Uwp
 {
-    void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
+    void RegisterDefaultElementRenderers(winrt::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder)
     {
         // TODO: I don't need implementation of registration here, right? Or for safety reasons I do need it? (if
         // somebody implements interface and passes it in)
-        registration->Set(L"ActionSet", winrt::make<rtrender::implementation::AdaptiveActionSetRenderer>());
-        registration->Set(L"Column", winrt::make<rtrender::implementation::AdaptiveColumnRenderer>());
-        registration->Set(L"ColumnSet", winrt::make<rtrender::implementation::AdaptiveColumnSetRenderer>());
-        registration->Set(L"Container", winrt::make<rtrender::implementation::AdaptiveContainerRenderer>());
-        registration->Set(L"FactSet", winrt::make<rtrender::implementation::AdaptiveFactSetRenderer>());
-        registration->Set(L"Image", winrt::make<rtrender::implementation::AdaptiveImageRenderer>(xamlBuilder));
-        registration->Set(L"ImageSet", winrt::make<rtrender::implementation::AdaptiveImageSetRenderer>());
-        registration->Set(L"Input.ChoiceSet", winrt::make<rtrender::implementation::AdaptiveChoiceSetInputRenderer>());
-        registration->Set(L"Input.Date", winrt::make<rtrender::implementation::AdaptiveDateInputRenderer>());
-        registration->Set(L"Input.Number", winrt::make<rtrender::implementation::AdaptiveNumberInputRenderer>());
-        registration->Set(L"Input.Text", winrt::make<rtrender::implementation::AdaptiveTextInputRenderer>());
-        registration->Set(L"Input.Time", winrt::make<rtrender::implementation::AdaptiveTimeInputRenderer>());
-        registration->Set(L"Input.Toggle", winrt::make<rtrender::implementation::AdaptiveToggleInputRenderer>());
-        registration->Set(L"Media", winrt::make<rtrender::implementation::AdaptiveMediaRenderer>());
-        registration->Set(L"RichTextBlock", winrt::make<rtrender::implementation::AdaptiveRichTextBlockRenderer>());
-        registration->Set(L"Table", winrt::make<rtrender::implementation::AdaptiveTableRenderer>());
-        registration->Set(L"TextBlock", winrt::make<rtrender::implementation::AdaptiveTextBlockRenderer>());
+        registration->Set(L"ActionSet", winrt::make<winrt::implementation::AdaptiveActionSetRenderer>());
+        registration->Set(L"Column", winrt::make<winrt::implementation::AdaptiveColumnRenderer>());
+        registration->Set(L"ColumnSet", winrt::make<winrt::implementation::AdaptiveColumnSetRenderer>());
+        registration->Set(L"Container", winrt::make<winrt::implementation::AdaptiveContainerRenderer>());
+        registration->Set(L"FactSet", winrt::make<winrt::implementation::AdaptiveFactSetRenderer>());
+        registration->Set(L"Image", winrt::make<winrt::implementation::AdaptiveImageRenderer>(xamlBuilder));
+        registration->Set(L"ImageSet", winrt::make<winrt::implementation::AdaptiveImageSetRenderer>());
+        registration->Set(L"Input.ChoiceSet", winrt::make<winrt::implementation::AdaptiveChoiceSetInputRenderer>());
+        registration->Set(L"Input.Date", winrt::make<winrt::implementation::AdaptiveDateInputRenderer>());
+        registration->Set(L"Input.Number", winrt::make<winrt::implementation::AdaptiveNumberInputRenderer>());
+        registration->Set(L"Input.Text", winrt::make<winrt::implementation::AdaptiveTextInputRenderer>());
+        registration->Set(L"Input.Time", winrt::make<winrt::implementation::AdaptiveTimeInputRenderer>());
+        registration->Set(L"Input.Toggle", winrt::make<winrt::implementation::AdaptiveToggleInputRenderer>());
+        registration->Set(L"Media", winrt::make<winrt::implementation::AdaptiveMediaRenderer>());
+        registration->Set(L"RichTextBlock", winrt::make<winrt::implementation::AdaptiveRichTextBlockRenderer>());
+        registration->Set(L"Table", winrt::make<winrt::implementation::AdaptiveTableRenderer>());
+        registration->Set(L"TextBlock", winrt::make<winrt::implementation::AdaptiveTextBlockRenderer>());
     }
 
-    void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration)
+    void RegisterDefaultActionRenderers(winrt::implementation::AdaptiveActionRendererRegistration* registration)
     {
-        registration->Set(L"Action.OpenUrl", winrt::make<rtrender::implementation::AdaptiveOpenUrlActionRenderer>());
-        registration->Set(L"Action.ShowCard", winrt::make<rtrender::implementation::AdaptiveShowCardActionRenderer>());
-        registration->Set(L"Action.Submit", winrt::make<rtrender::implementation::AdaptiveSubmitActionRenderer>());
+        registration->Set(L"Action.OpenUrl", winrt::make<winrt::implementation::AdaptiveOpenUrlActionRenderer>());
+        registration->Set(L"Action.ShowCard", winrt::make<winrt::implementation::AdaptiveShowCardActionRenderer>());
+        registration->Set(L"Action.Submit", winrt::make<winrt::implementation::AdaptiveSubmitActionRenderer>());
         registration->Set(L"Action.ToggleVisibility",
-                          winrt::make<rtrender::implementation::AdaptiveToggleVisibilityActionRenderer>());
-        registration->Set(L"Action.Execute", winrt::make<rtrender::implementation::AdaptiveExecuteActionRenderer>());
+                          winrt::make<winrt::implementation::AdaptiveToggleVisibilityActionRenderer>());
+        registration->Set(L"Action.Execute", winrt::make<winrt::implementation::AdaptiveExecuteActionRenderer>());
     }
 }
