@@ -18,6 +18,8 @@ parameters:
   - adaptivecards-controls
   - adaptivecards-designer
   - adaptivecards-templating
+  - adaptivecards-react
+
 - name: dry_run
   displayName: "Dry run without pushing to npmjs"
   type: object

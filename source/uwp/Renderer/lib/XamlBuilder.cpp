@@ -261,7 +261,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
         if (backgroundImageIsValid)
         {
-            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
+            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext);
         }
 
         ComPtr<IAdaptiveSpacingConfig> spacingConfig;
@@ -304,6 +304,18 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
             rootAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Stretch);
+        }
+
+        ComPtr<IReference<bool>> contextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&contextRtl));
+
+        if (contextRtl != nullptr)
+        {
+            boolean rtlValue;
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            RETURN_IF_FAILED(contextRtl->get_Value(&rtlValue));
+            rootAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft : FlowDirection_LeftToRight);
         }
 
         ComPtr<IUIElement> rootUIElement;

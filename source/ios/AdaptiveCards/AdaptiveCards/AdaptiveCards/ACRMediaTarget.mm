@@ -36,7 +36,7 @@ const int posterTag = 0x504F5354;
         _url = url;
         _view = rootView;
         _containingview = containingview;
-        isInline = [config getHostConfig] -> GetMedia().allowInlinePlayback;
+        isInline = [config getHostConfig]->GetMedia().allowInlinePlayback;
     }
     return self;
 }
@@ -119,15 +119,13 @@ const int posterTag = 0x504F5354;
                     [overlayview addSubview:poster];
 
                     // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
-                    CGFloat heightToWidthRatio = 0.0f;
+                    CGFloat heightToWidthRatio = 0.75f;
                     UIImage *image = poster.image;
 
-                    if (!image) {
-                        heightToWidthRatio = .75;
-                    } else {
+                    if (image) {
                         poster.frame = CGRectMake(0, 0, image.size.width, image.size.height);
                         if (image.size.width > 0) {
-                            heightToWidthRatio = image.size.height / image.size.width;
+                            heightToWidthRatio = [ACRImageProperties convertToAspectRatio:image.size].heightToWidth;
                         }
                     }
 

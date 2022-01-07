@@ -95,6 +95,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedAdaptiveCard->GetHeight());
         MinHeight = sharedAdaptiveCard->GetMinHeight();
 
+        auto rtl = sharedAdaptiveCard->GetRtl();
+        if (rtl.has_value())
+        {
+            Rtl = rtl.value();
+        }
+
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage && !backgroundImage->GetUrl().empty())
         {
@@ -130,6 +136,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         adaptiveCard->SetHeight(static_cast<::AdaptiveCards::HeightType>(Height.get()));
         adaptiveCard->SetLanguage(HStringToUTF8(Language));
         adaptiveCard->SetMinHeight(MinHeight);
+        if (const auto rtl = Rtl.get())
+        {
+            adaptiveCard->SetRtl(rtl.Value());
+        }
 
         auto adaptiveBackgroundImage =
             peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get());

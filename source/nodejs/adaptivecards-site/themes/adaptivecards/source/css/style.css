@@ -320,7 +320,7 @@ ul.action-list {
 
 .toc-todo li,
 .toc-todo a {
-  padding-left: 30px;
+  padding-left: 15px;
   padding-top: 3px;
   padding-bottom: 3px;
   margin: 0;
@@ -702,4 +702,24 @@ button .fa-check {
 input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
+}
+
+h2.ac-schema-version-1-6::after {
+  content: "Preview Feature";
+  display: inline-flex;
+  padding: 1px 12px 1px 12px;
+  margin: 0px 0px 0px 12px;
+  align-self: center;
+}
+
+.ac-schema-version-1-6::after {
+  content: "Preview";
+  color: White;
+  display: inline;
+  background-color: #0050c5;
+  padding: 1px 7px 2px 7px;
+  margin: 0px 0px 0px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  align-self: center;
 }

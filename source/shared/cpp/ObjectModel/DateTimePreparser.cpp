@@ -91,7 +91,7 @@ bool DateTimePreparser::IsValidTime(const int hours, const int minutes, const in
 bool DateTimePreparser::IsValidTimeAndDate(const struct tm& parsedTm, const int hours, const int minutes)
 {
     return IsValidDate(parsedTm.tm_year, parsedTm.tm_mon, parsedTm.tm_mday) &&
-        IsValidTime(parsedTm.tm_hour, parsedTm.tm_min, parsedTm.tm_sec) && IsValidTime(hours, minutes, 0);
+           IsValidTime(parsedTm.tm_hour, parsedTm.tm_min, parsedTm.tm_sec) && IsValidTime(hours, minutes, 0);
 }
 
 constexpr time_t IntToTimeT(int timeToConvert)
@@ -108,7 +108,8 @@ void DateTimePreparser::ParseDateTime(const std::string& in)
     if (in.find("{{") != std::string::npos)
     {
         static const std::regex pattern(
-            "\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+            "\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}"
+            "):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
         std::smatch matches;
         std::string text = in;
         enum MatchIndex

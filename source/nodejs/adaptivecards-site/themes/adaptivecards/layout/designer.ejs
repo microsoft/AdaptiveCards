@@ -7,7 +7,7 @@
 <%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
 
 <style type="text/css">
-    @media all and (min-width: 651px) {
+	@media all and (min-width: 651px) {
 		.content {
 			height: calc(100vh - 97px) !important;
 		}
@@ -192,62 +192,62 @@
 				designer.setCard({
 					"type": "AdaptiveCard",
 					"body": [{
-							"type": "TextBlock",
-							"size": "Medium",
-							"weight": "Bolder",
-							"text": "${title}"
-						},
-						{
-							"type": "ColumnSet",
-							"columns": [
-								{
-									"type": "Column",
-									"items": [
-										{
-											"type": "Image",
-											"style": "Person",
-											"url": "${creator.profileImage}",
-											"size": "Small"
-										}
-									],
-									"width": "auto"
-								},
-								{
-									"type": "Column",
-									"items": [
-										{
-											"type": "TextBlock",
-											"weight": "Bolder",
-											"text": "${creator.name}",
-											"wrap": true
-										},
-										{
-											"type": "TextBlock",
-											"spacing": "None",
-											"text": "Created {{DATE(${createdUtc},SHORT)}}",
-											"isSubtle": true,
-											"wrap": true
-										}
-									],
-									"width": "stretch"
-								}
-							]
-						},
-						{
-							"type": "TextBlock",
-							"text": "${description}",
-							"wrap": true
-						},
-						{
-							"type": "FactSet",
-							"facts": [
-								{
-									"$data": "${properties}",
-									"title": "${key}:",
-									"value": "${value}"
-								}
-							]
-						}
+						"type": "TextBlock",
+						"size": "Medium",
+						"weight": "Bolder",
+						"text": "${title}"
+					},
+					{
+						"type": "ColumnSet",
+						"columns": [
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Image",
+										"style": "Person",
+										"url": "${creator.profileImage}",
+										"size": "Small"
+									}
+								],
+								"width": "auto"
+							},
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "TextBlock",
+										"weight": "Bolder",
+										"text": "${creator.name}",
+										"wrap": true
+									},
+									{
+										"type": "TextBlock",
+										"spacing": "None",
+										"text": "Created {{DATE(${createdUtc},SHORT)}}",
+										"isSubtle": true,
+										"wrap": true
+									}
+								],
+								"width": "stretch"
+							}
+						]
+					},
+					{
+						"type": "TextBlock",
+						"text": "${description}",
+						"wrap": true
+					},
+					{
+						"type": "FactSet",
+						"facts": [
+							{
+								"$data": "${properties}",
+								"title": "${key}:",
+								"value": "${value}"
+							}
+						]
+					}
 					],
 					"actions": [
 						{
@@ -299,12 +299,12 @@
 
 		<% if (page.previewFeaturesEnabled) { %>
 
-        <% } %>
+		<% } %>
 
 
-        if (getParameterByName("preview") === "1") {
+		if (getParameterByName("preview") === "1") {
 
-        }
+		}
 
 		require.config({
 			paths: {

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+endWith='\.(cpp|cc|h|hpp)$'
+ignoreFolder='/(PerfApp|android|ios|nodejs|vscode|community|dotnet)/'
+
+function checkFormat() {
+	GIT_ROOT=`git rev-parse --show-toplevel`
+	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 "$clangFormat" --dry-run -Werror --ferror-limit=1 --verbose "$GIT_ROOT/_"
+	return $?
+}
+
+function fixFormat() {
+
+	GIT_ROOT=`git rev-parse --show-toplevel`
+	git diff-index --cached --name-only HEAD | grep -iE "${endWith}" | grep -iE -v "${ignoreFolder}" | xargs -I _ -P 0 "$clangFormat" --style=file -Werror -i --verbose "$GIT_ROOT/_"
+	return $?
+}

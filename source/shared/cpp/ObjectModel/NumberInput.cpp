@@ -101,8 +101,9 @@ std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(ParseC
 
 void NumberInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)});
 }

@@ -62,4 +62,4 @@ These features are available today for you to test in our designer! We will keep
 
 ## Learn more
 
-Check out the [full release notes](https://github.com/microsoft/AdaptiveCards/releases/tag/21.10) to learn more and get started!
+Check out the [full release notes](https://github.com/microsoft/AdaptiveCards/releases/tag/21.09) to learn more and get started!

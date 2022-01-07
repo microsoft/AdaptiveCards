@@ -9,7 +9,7 @@
 #import "ACOAuthenticationPrivate.h"
 #import "ACOTokenExchangeResourcePrivate.h"
 
-@implementation ACOAuthentication {    
+@implementation ACOAuthentication {
     std::shared_ptr<Authentication> _adaptiveAuthentication;
 }
 
@@ -58,7 +58,7 @@
         }
     }
 
-    return [self init:std::make_shared<Authentication>(ctext, cconnectionName, tokenExchangeResourcePtr, adaptiveButtons)];    
+    return [self init:std::make_shared<Authentication>(ctext, cconnectionName, tokenExchangeResourcePtr, adaptiveButtons)];
 }
 
 - (instancetype)init

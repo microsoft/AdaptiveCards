@@ -8,7 +8,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRActionSetRenderer : ACRBaseCardElementRenderer<ACRIBaseActionSetRenderer>
+@interface ACRActionSetRenderer : ACRBaseCardElementRenderer <ACRIBaseActionSetRenderer>
 
 + (ACRActionSetRenderer *)getInstance;
 

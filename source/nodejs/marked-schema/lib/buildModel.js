@@ -17,7 +17,7 @@ function buildModel(options) {
         const rawSchema = JSON.parse(rawSchemaFile);
 
         const tocFile = fs.readFileSync(options.toc);
-        const toc = yaml.safeLoad(tocFile);
+        const toc = yaml.load(tocFile);
 
         const rootDefinition = defaultValue(options.rootDefinition, null);
 

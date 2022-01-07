@@ -50,13 +50,11 @@ module.exports = (env, argv) => {
 			new CopyWebpackPlugin({
 				patterns: [{
 					from: 'src/adaptivecards-controls.css',
-					to: '../lib/',
-                	flatten:true
+					to: '../lib/[name][ext]'
 				},
 				{
 					from: 'src/adaptivecards-controls.css',
-					to: '../dist/',
-                	flatten:true
+					to: '../dist/[name][ext]'
 				}],
 				options: {
 				  concurrency: 8

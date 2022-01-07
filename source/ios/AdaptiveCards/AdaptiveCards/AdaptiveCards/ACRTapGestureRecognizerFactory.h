@@ -4,10 +4,10 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import <AdaptiveCards/ACRBaseTarget.h>
-#import <AdaptiveCards/ACRIContentHoldingView.h>
 #import "ACRTapGestureRecognizerEventHandler.h"
 #import "ACRView.h"
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -15,10 +15,10 @@
 /// instantiates a target for UITapGestureRecognizer object
 /// and instantiate a tap gesture reconginizer with target, and return it
 + (ACRBaseTarget *_Nullable)addTapGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *_Nonnull)viewGroup
-                                          rootView:(ACRView *_Nonnull)rootView
-                                     recipientView:(UIView *_Nonnull)receipientView
-                                     actionElement:(ACOBaseActionElement *_Nonnull)action
-                                        hostConfig:(ACOHostConfig *_Nonnull)config;
+                                                   rootView:(ACRView *_Nonnull)rootView
+                                              recipientView:(UIView *_Nonnull)receipientView
+                                              actionElement:(ACOBaseActionElement *_Nonnull)action
+                                                 hostConfig:(ACOHostConfig *_Nonnull)config;
 
 + (UITapGestureRecognizer *_Nullable)getGestureRecognizer:(UIView<ACRIContentHoldingView> *_Nonnull)viewGroup
                                                    target:(NSObject<ACRSelectActionDelegate> *_Nonnull)target;
