@@ -5,7 +5,6 @@ import { ByExtended, XpathBuilder } from "./selenium-utils";
 import { TestUtils } from "./test-utils";
 import { WaitUtils } from "./wait-utils";
 import * as Assert from "assert";
-import { titleIs } from "selenium-webdriver/lib/until";
 
 export abstract class ACElement {
     private _id: string;
@@ -38,6 +37,8 @@ export abstract class ACElement {
         return this._container;
     }
 
+    abstract ensureUnderlyingElement(className?: string): Promise<void>;
+
     elementWasFound(): boolean {
         return (this.underlyingElement !== undefined);
     }
@@ -58,8 +59,6 @@ export abstract class ACElement {
         return (await this.getCssPropertyValue("visibility") === "visible");
     }
 
-    abstract ensureUnderlyingElement(className?: string): Promise<void>;
-
     async getChildrenHtml(): Promise<string> {
         return (await this.underlyingElement!.getAttribute("innerHtml"));
     }
@@ -77,7 +76,7 @@ export abstract class ACActionableElement extends ACElement {
     }
 } 
 
-export abstract class Input extends ACElement {
+export class Input extends ACElement {
     protected div: WebElement;
     protected label?: WebElement;
     protected errorMessage?: WebElement;
@@ -138,7 +137,7 @@ export abstract class Input extends ACElement {
         let labels: string[] = ariaLabeledBy.split(" ");
         Assert.strictEqual(labels.length, 2, `Labels contains more than two labels ${labels}`);
         
-        labels = labels.splice(labels.indexOf(await this.label!.getAttribute("id")), 1);
+        labels.splice(labels.indexOf(await this.label!.getAttribute("id")), 1);
         Assert.strictEqual(labels.length, 1, `Labels contains more than one label ${labels}`);
 
         return labels[0];
