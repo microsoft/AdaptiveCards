@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Assert from "assert";
-import { assert } from "console";
-import { util } from "prettier";
-import { By, WebElement } from "selenium-webdriver";
-import { Action, Carousel, Column, ColumnSet, Container, InputChoiceSet, InputDate, InputNumber, InputText, InputTime, InputToggle, Image, Element } from "./card-element-utils";
+import { ACAction, ACCarousel, ACColumn, ACColumnSet, ACContainer, ACInputChoiceSet, ACInputDate, ACInputNumber, ACInputText, ACInputTime, ACInputToggle, ACImage, ACElement } from "./card-element-utils";
 import { TestUtils } from "./test-utils";
+import { WaitUtils } from "./wait-utils";
 
 describe("Mock function", function() {
     let utils: TestUtils;
@@ -33,15 +31,15 @@ describe("Mock function", function() {
     test("Test ActivityUpdate submit", (async() => {
         await utils.goToTestCase("v1.0/ActivityUpdate");
 
-        await Action.clickOnActionWithTitle("Set due date");
+        await ACAction.clickOnActionWithTitle("Set due date");
 
-        let dueDateInput = await InputDate.getInputWithId("dueDate");
+        let dueDateInput = await ACInputDate.getInputWithId("dueDate");
         await dueDateInput.setData("02041993");
 
-        let commentInput = await InputText.getInputWithId("comment");
+        let commentInput = await ACInputText.getInputWithId("comment");
         await commentInput.setData("A comment");
 
-        await Action.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("OK");
 
         const dueDateRetrievedValue: string = await utils.getInputFor("dueDate");
         Assert.strictEqual(dueDateRetrievedValue, "1993-02-04");
@@ -53,13 +51,13 @@ describe("Mock function", function() {
     test("Test TextInput get focus on invalid submit", (async() => {
         await utils.goToTestCase("v1.3/Input.Text.ErrorMessage");
 
-        let commentInput = await InputText.getInputWithId("id1");
+        let commentInput = await ACInputText.getInputWithId("id1");
 
         let commentInputIsFocused = await commentInput.isFocused()
 
         Assert.strictEqual(commentInputIsFocused, false);
 
-        await Action.clickOnActionWithTitle("Submit");
+        await ACAction.clickOnActionWithTitle("Submit");
 
         commentInputIsFocused = await commentInput.isFocused()
 
@@ -69,19 +67,19 @@ describe("Mock function", function() {
     test("Test interaction with Input.Number", (async() => {
         await utils.goToTestCase("v1.3/Input.Number.ErrorMessage");
 
-        let input1 = await InputNumber.getInputWithId("input1");
+        let input1 = await ACInputNumber.getInputWithId("input1");
         await input1.setData("1");
 
-        let input2 = await InputNumber.getInputWithId("input2");
+        let input2 = await ACInputNumber.getInputWithId("input2");
         await input2.setData("5");
 
-        let input3 = await InputNumber.getInputWithId("input3");
+        let input3 = await ACInputNumber.getInputWithId("input3");
         await input3.setData("10");
 
-        let input4 = await InputNumber.getInputWithId("input4");
+        let input4 = await ACInputNumber.getInputWithId("input4");
         await input4.setData("50");
 
-        await Action.clickOnActionWithTitle("Submit");
+        await ACAction.clickOnActionWithTitle("Submit");
 
         const input1Value: string = await utils.getInputFor("input1");
         Assert.strictEqual(input1Value, "1");
@@ -99,16 +97,16 @@ describe("Mock function", function() {
     test("Test interaction with Input.ChoiceSet", (async() => {
         await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
 
-        let compactChoiceSet = await InputChoiceSet.getInputWithId("requiredCompactId", false, false);
+        let compactChoiceSet = await ACInputChoiceSet.getInputWithId("requiredCompactId", false, false);
         await compactChoiceSet.setData("Option 1");
         
-        let expandedChoiceSet = await InputChoiceSet.getInputWithId("requiredExpandedId", true, false);
+        let expandedChoiceSet = await ACInputChoiceSet.getInputWithId("requiredExpandedId", true, false);
         await expandedChoiceSet.setData("Option 2");
 
-        let multiselectChoiceSet = await InputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
+        let multiselectChoiceSet = await ACInputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
         await multiselectChoiceSet.setData("Option 1,Option 2");
 
-        await Action.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("OK");
 
         const compactValue: string = await utils.getInputFor("requiredCompactId");
         Assert.strictEqual(compactValue, "1");
@@ -123,13 +121,13 @@ describe("Mock function", function() {
     test("Test interaction with Input.Time", (async() => {
         await utils.goToTestCase("v1.3/Input.Time.ErrorMessage");
 
-        let dueDateInput = await InputTime.getInputWithId("input1");
+        let dueDateInput = await ACInputTime.getInputWithId("input1");
         await dueDateInput.setData("0109AM");
 
-        let commentInput = await InputTime.getInputWithId("input4");
+        let commentInput = await ACInputTime.getInputWithId("input4");
         await commentInput.setData("0230PM");
 
-        await Action.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("OK");
 
         const dueDateRetrievedValue: string = await utils.getInputFor("input1");
         Assert.strictEqual(dueDateRetrievedValue, "01:09");
@@ -141,10 +139,10 @@ describe("Mock function", function() {
     test("Test interaction with Input.Toggle", (async() => {
         await utils.goToTestCase("v1.3/Input.Toggle.ErrorMessage");
 
-        let toggleInput = await InputToggle.getInputWithId("input2");
+        let toggleInput = await ACInputToggle.getInputWithId("input2");
         await toggleInput.setData("set");
 
-        await Action.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("OK");
 
         const dueDateRetrievedValue: string = await utils.getInputFor("input2");
         Assert.strictEqual(dueDateRetrievedValue, "true");
@@ -153,15 +151,15 @@ describe("Mock function", function() {
     test("Action.ShowCard: Test hidden card is shown", (async() => {
         await utils.goToTestCase("v1.0/Action.ShowCard");
 
-        await Action.clickOnActionWithTitle("Action.ShowCard");
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
 
-        const neatAction: Action = await Action.getActionWithTitle("Neat!");
+        const neatAction: ACAction = await ACAction.getActionWithTitle("Neat!");
         const neatActionIsVisible = async (params: any) => {
-            let elements = params as Element[];
+            let elements = params as ACElement[];
             return (await elements[0].elementIsVisible()) || (await elements[0].elementIsCssVisible());
         };
 
-        await utils.waitUntilPredicateIsTrue([neatAction], neatActionIsVisible);
+        await WaitUtils.waitUntilPredicateIsTrue([neatAction], neatActionIsVisible);
 
         await neatAction.click();
 
@@ -172,7 +170,7 @@ describe("Mock function", function() {
     test("Image: Test select action can be clicked", (async() => {
         await utils.goToTestCase("v1.0/Image.SelectAction");
 
-        let image = await Image.getImage("cool link");
+        let image = await ACImage.getImage("cool link");
         await image.click();
         
         const imageUrl: string = await utils.getInputFor("url");
@@ -182,7 +180,7 @@ describe("Mock function", function() {
     test("Column: Test select action can be clicked", (async() => {
         await utils.goToTestCase("v1.0/Column.SelectAction");
 
-        let firstColumn = await Column.getContainerWithAction("cool link");
+        let firstColumn = await ACColumn.getContainerWithAction("cool link");
         await firstColumn.click();
         
         const firstColumnUrl: string = await utils.getInputFor("url");
@@ -192,7 +190,7 @@ describe("Mock function", function() {
     test("ColumnSet: Test select action can be clicked", (async() => {
         await utils.goToTestCase("v1.0/ColumnSet.SelectAction");
 
-        let secondColumnSet = await ColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
+        let secondColumnSet = await ACColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
         await secondColumnSet.click();
         
         const secondColumnSetUrl: string = await utils.getInputFor("url");
@@ -202,13 +200,13 @@ describe("Mock function", function() {
     test("Container: Test select action can be clicked", (async() => {
         await utils.goToTestCase("v1.0/Container.SelectAction");
 
-        let submitContainer = await Container.getContainerWithAction("Submit action");
+        let submitContainer = await ACContainer.getContainerWithAction("Submit action");
         await submitContainer.click();
         
         const submitActionInfo: string = await utils.getInputFor("info");
         Assert.strictEqual(submitActionInfo, "My submit action data");
 
-        let emphasisContainer = await Container.getContainerWithAction("Go to a different url");
+        let emphasisContainer = await ACContainer.getContainerWithAction("Go to a different url");
         await emphasisContainer.click();
         
         const emphasisContainerUrl: string = await utils.getInputFor("url");
@@ -218,7 +216,7 @@ describe("Mock function", function() {
     test("Carousel: Test actions are rendered and active", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");
 
-        await Action.clickOnActionWithTitle("See more");
+        await ACAction.clickOnActionWithTitle("See more");
 
         const url: string = await utils.getInputFor("url");
         Assert.strictEqual(url, "https://adaptivecards.io");
@@ -245,32 +243,32 @@ describe("Mock function", function() {
     test("Carousel: Verify left and right buttons work", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
 
-        await Carousel.clickOnRightArrow();
+        await ACCarousel.clickOnRightArrow();
 
-        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
+        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
 
-        let secondPageIsVisible = await Carousel.isPageVisible("theSecondCarouselPage");
+        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
         Assert.strictEqual(secondPageIsVisible, true);
 
-        await Carousel.waitForAnimationsToEnd();
-        await Carousel.clickOnLeftArrow();
+        await ACCarousel.waitForAnimationsToEnd();
+        await ACCarousel.clickOnLeftArrow();
 
-        await utils.waitUntilElementIsCssVisible("firstCarouselPage");
+        await WaitUtils.waitUntilElementIsCssVisible("firstCarouselPage");
 
-        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
     }), timeOutValueForSuddenJumpTest);
 
     test("Carousel: Unsupported actions are not rendered", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ForbiddenActions");
 
-        let showCardAction = await Action.getActionWithTitle("Action.ShowCard");
+        let showCardAction = await ACAction.getActionWithTitle("Action.ShowCard");
         Assert.strictEqual(showCardAction.elementWasFound(), false);
 
-        let toggleVisibilityAction = await Action.getActionWithTitle("Action.ToggleVisibility");
+        let toggleVisibilityAction = await ACAction.getActionWithTitle("Action.ToggleVisibility");
         Assert.strictEqual(toggleVisibilityAction.elementWasFound(), false);
     }));
 
@@ -278,13 +276,13 @@ describe("Mock function", function() {
     test("Carousel: Test autoplay is disabled", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify no change happened
-        await utils.delay(5000);
+        await WaitUtils.waitFor(5000);
 
-        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
     }), 7000);
 
@@ -292,42 +290,42 @@ describe("Mock function", function() {
     test("Carousel: Test autoplay is applied", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
-        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify the first page is now hidden
-        await utils.waitUntilElementIsNotVisible("firstCarouselPage");
+        await WaitUtils.waitUntilElementIsNotVisible("firstCarouselPage");
 
-        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, false);
 
-        let secondPageIsVisible = await Carousel.isPageVisible("theSecondCarouselPage");
+        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
         Assert.strictEqual(secondPageIsVisible, true);
     }), timeOutValueForCarousel);
 
     test("Carousel: Test click on navigation does not cause sudden jump", (async() => {
         await utils.goToTestCase("v1.6/Carousel");
 
-        let firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, true);
 
         // wait for 2 pages to turn
-        await utils.waitUntilElementIsCssVisible("last-carousel-page", delayForCarouselTimer * 2);
+        await WaitUtils.waitUntilElementIsCssVisible("last-carousel-page", delayForCarouselTimer * 2);
 
-        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, false);
 
-        let lastPageIsVisible = await Carousel.isPageVisible("last-carousel-page");
+        let lastPageIsVisible = await ACCarousel.isPageVisible("last-carousel-page");
         Assert.strictEqual(lastPageIsVisible, true);
 
         // cause the page to go the 2nd page
-        await Carousel.waitForAnimationsToEnd();
-        await Carousel.clickOnLeftArrow();
+        await ACCarousel.waitForAnimationsToEnd();
+        await ACCarousel.clickOnLeftArrow();
 
-        await utils.waitUntilElementIsCssVisible("theSecondCarouselPage");
+        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage");
 
         // make sure firstCarouselPage is hidden
-        firstPageIsVisible = await Carousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
         Assert.strictEqual(firstPageIsVisible, false);
     }), timeOutValueForSuddenJumpTest);
 
@@ -335,7 +333,7 @@ describe("Mock function", function() {
         await utils.goToTestCase("v1.6/Carousel.rtl");
 
         for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
-            const pageDirection = await Carousel.getPageDirection(page[0])
+            const pageDirection = await ACCarousel.getPageDirection(page[0])
             Assert.strictEqual(pageDirection, page[1]);
         }
         

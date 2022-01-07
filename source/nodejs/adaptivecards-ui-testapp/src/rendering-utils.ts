@@ -89,9 +89,9 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
 
             if (actionType === SubmitAction.JsonTypeName)
             {
-                const submitAction: SubmitAction = action as SubmitAction;
+                const submitAction = action as SubmitAction;
 
-                for (let [key, value] of Object.entries(submitAction.data))
+                for (const [key, value] of Object.entries(submitAction.data))
                 {
                     inputsMap[key] = value;
                 }
