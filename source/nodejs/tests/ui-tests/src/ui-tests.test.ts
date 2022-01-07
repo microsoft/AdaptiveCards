@@ -34,7 +34,7 @@ describe("Mock function", function() {
         await ACAction.clickOnActionWithTitle("Set due date");
 
         let dueDateInput = await ACInputDate.getInputWithId("dueDate");
-        await dueDateInput.setData("02041993");
+        await dueDateInput.setDate(1993, 2, 4);
 
         let commentInput = await ACInputText.getInputWithId("comment");
         await commentInput.setData("A comment");
@@ -51,17 +51,17 @@ describe("Mock function", function() {
     test("Test TextInput get focus on invalid submit", (async() => {
         await utils.goToTestCase("v1.3/Input.Text.ErrorMessage");
 
-        let commentInput = await ACInputText.getInputWithId("id1");
+        const commentInput = await ACInputText.getInputWithId("id1");
 
-        let commentInputIsFocused = await commentInput.isFocused()
-
-        Assert.strictEqual(commentInputIsFocused, false);
+        Assert.strictEqual(await commentInput.getLabel(), "Required Input.Text *");
+        Assert.strictEqual(await commentInput.isRequired(), true);
+        Assert.strictEqual(await commentInput.getErrorMessage(), undefined);
+        Assert.strictEqual(await commentInput.isFocused(), false);
 
         await ACAction.clickOnActionWithTitle("Submit");
 
-        commentInputIsFocused = await commentInput.isFocused()
-
-        Assert.strictEqual(commentInputIsFocused, true);
+        Assert.strictEqual(await commentInput.getErrorMessage(), "This is a required input");
+        Assert.strictEqual(await commentInput.isFocused(), true);
     }));
 
     test("Test interaction with Input.Number", (async() => {
@@ -81,20 +81,13 @@ describe("Mock function", function() {
 
         await ACAction.clickOnActionWithTitle("Submit");
 
-        const input1Value: string = await utils.getInputFor("input1");
-        Assert.strictEqual(input1Value, "1");
-
-        const input2Value: string = await utils.getInputFor("input2");
-        Assert.strictEqual(input2Value, "5");
-
-        const input3Value: string = await utils.getInputFor("input3");
-        Assert.strictEqual(input3Value, "10");
-
-        const input4Value: string = await utils.getInputFor("input4");
-        Assert.strictEqual(input4Value, "50");
+        Assert.strictEqual(await utils.getInputFor("input1"), "1");
+        Assert.strictEqual(await utils.getInputFor("input2"), "5");
+        Assert.strictEqual(await utils.getInputFor("input3"), "10");
+        Assert.strictEqual(await utils.getInputFor("input4"), "50");
     }));
 
-    test("Test interaction with Input.ChoiceSet", (async() => {
+    test("Input.ChoiceSet: Test input interaction", (async() => {
         await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
 
         let compactChoiceSet = await ACInputChoiceSet.getInputWithId("requiredCompactId", false, false);
@@ -108,44 +101,77 @@ describe("Mock function", function() {
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        const compactValue: string = await utils.getInputFor("requiredCompactId");
-        Assert.strictEqual(compactValue, "1");
+        Assert.strictEqual(await utils.getInputFor("requiredCompactId"), "1");
+        Assert.strictEqual(await utils.getInputFor("requiredExpandedId"), "2");
+        Assert.strictEqual(await utils.getInputFor("requiredMultiselectId"), "1,2");
+    }));
 
-        const expandedValue: string = await utils.getInputFor("requiredExpandedId");
-        Assert.strictEqual(expandedValue, "2");
+    test("Input.ChoiceSet: Test compact required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
 
-        const multiselectValue: string = await utils.getInputFor("requiredMultiselectId");
-        Assert.strictEqual(multiselectValue, "1,2");
+        const compactChoiceSet = await ACInputChoiceSet.getInputWithId("requiredCompactId", false, false);
+        Assert.strictEqual(await compactChoiceSet.getLabel(), "Required Input.ChoiceSet label (compact) *");
+        Assert.strictEqual(await compactChoiceSet.isRequired(), true);
+        Assert.strictEqual(await compactChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await compactChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await compactChoiceSet.getErrorMessage(), "This is a required input");
+    }));
+
+    test("Input.ChoiceSet: Test expanded required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        const expandedChoiceSet = await ACInputChoiceSet.getInputWithId("requiredExpandedId", true, false);
+        Assert.strictEqual(await expandedChoiceSet.getLabel(), "Required Input.ChoiceSet label (expanded) *");
+        Assert.strictEqual(await expandedChoiceSet.isRequired(), true);
+        Assert.strictEqual(await expandedChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await expandedChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await expandedChoiceSet.getErrorMessage(), "This is a required input");
+    }));
+
+    test("Input.ChoiceSet: Test multiselect required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        const multiselectChoiceSet = await ACInputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
+        Assert.strictEqual(await multiselectChoiceSet.getLabel(), "Required Input.ChoiceSet label (expanded, multiselect) *");
+        Assert.strictEqual(await multiselectChoiceSet.isRequired(), true);
+        Assert.strictEqual(await multiselectChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await multiselectChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await multiselectChoiceSet.getErrorMessage(), "This is a required input");
     }));
 
     test("Test interaction with Input.Time", (async() => {
         await utils.goToTestCase("v1.3/Input.Time.ErrorMessage");
 
-        let dueDateInput = await ACInputTime.getInputWithId("input1");
-        await dueDateInput.setData("0109AM");
+        let timeInput1 = await ACInputTime.getInputWithId("input1");
+        await timeInput1.setTime(1, 9);
 
-        let commentInput = await ACInputTime.getInputWithId("input4");
-        await commentInput.setData("0230PM");
+        let timeInput4 = await ACInputTime.getInputWithId("input4");
+        await timeInput4.setTime(14, 30);
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        const dueDateRetrievedValue: string = await utils.getInputFor("input1");
-        Assert.strictEqual(dueDateRetrievedValue, "01:09");
-
-        const commentRetrievedValue: string = await utils.getInputFor("input4");
-        Assert.strictEqual(commentRetrievedValue, "14:30");
+        Assert.strictEqual(await utils.getInputFor("input1"), "01:09");
+        Assert.strictEqual(await utils.getInputFor("input4"), "14:30");
     }));
 
     test("Test interaction with Input.Toggle", (async() => {
         await utils.goToTestCase("v1.3/Input.Toggle.ErrorMessage");
 
         let toggleInput = await ACInputToggle.getInputWithId("input2");
-        await toggleInput.setData("set");
+        await toggleInput.set();
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        const dueDateRetrievedValue: string = await utils.getInputFor("input2");
-        Assert.strictEqual(dueDateRetrievedValue, "true");
+        Assert.strictEqual(await utils.getInputFor("input2"), "true");
     }));
 
     test("Action.ShowCard: Test hidden card is shown", (async() => {
@@ -163,8 +189,7 @@ describe("Mock function", function() {
 
         await neatAction.click();
 
-        const neatValue: string = await utils.getInputFor("neat");
-        Assert.strictEqual(neatValue, "true");
+        Assert.strictEqual(await utils.getInputFor("neat"), "true");
     }));
 
     test("Image: Test select action can be clicked", (async() => {
@@ -173,8 +198,7 @@ describe("Mock function", function() {
         let image = await ACImage.getImage("cool link");
         await image.click();
         
-        const imageUrl: string = await utils.getInputFor("url");
-        Assert.strictEqual(imageUrl, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     }));
 
     test("Column: Test select action can be clicked", (async() => {
@@ -183,8 +207,7 @@ describe("Mock function", function() {
         let firstColumn = await ACColumn.getContainerWithAction("cool link");
         await firstColumn.click();
         
-        const firstColumnUrl: string = await utils.getInputFor("url");
-        Assert.strictEqual(firstColumnUrl, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     }));
 
     test("ColumnSet: Test select action can be clicked", (async() => {
@@ -193,8 +216,7 @@ describe("Mock function", function() {
         let secondColumnSet = await ACColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
         await secondColumnSet.click();
         
-        const secondColumnSetUrl: string = await utils.getInputFor("url");
-        Assert.strictEqual(secondColumnSetUrl, "https://www.AdaptiveCards.io");
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.AdaptiveCards.io");
     }));
 
     test("Container: Test select action can be clicked", (async() => {
@@ -203,14 +225,12 @@ describe("Mock function", function() {
         let submitContainer = await ACContainer.getContainerWithAction("Submit action");
         await submitContainer.click();
         
-        const submitActionInfo: string = await utils.getInputFor("info");
-        Assert.strictEqual(submitActionInfo, "My submit action data");
+        Assert.strictEqual(await utils.getInputFor("info"), "My submit action data");
 
         let emphasisContainer = await ACContainer.getContainerWithAction("Go to a different url");
         await emphasisContainer.click();
         
-        const emphasisContainerUrl: string = await utils.getInputFor("url");
-        Assert.strictEqual(emphasisContainerUrl, "https://msn.com");
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://msn.com");
     }));    
 
     test("Carousel: Test actions are rendered and active", (async() => {
@@ -218,8 +238,7 @@ describe("Mock function", function() {
 
         await ACAction.clickOnActionWithTitle("See more");
 
-        const url: string = await utils.getInputFor("url");
-        Assert.strictEqual(url, "https://adaptivecards.io");
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://adaptivecards.io");
     }));
 
     test("Carousel: Test page limit is honoured", (async() => {

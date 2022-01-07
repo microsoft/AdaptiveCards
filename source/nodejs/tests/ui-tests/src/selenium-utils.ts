@@ -16,6 +16,10 @@ export class ByExtended extends By {
         return this.getXpathProperty("title", title);
     }
 
+    static containsClass(className: string, tagName?: string): By {
+        return By.xpath(new XpathBuilder().addAttributeContains(className, "class").buildXpath());
+    }
+
     static getXpathProperty(propertyName: string, propertyValue: string, tagName?:string): By {
         const tag = tagName? tagName: '*';
         return By.xpath(new XpathBuilder().setTagName(tag).addAttributeEquals(propertyName, propertyValue).buildXpath());
@@ -77,9 +81,9 @@ export class XpathBuilder {
     }
 
     buildXpath(): string {
-        const tagName = (this.tagName === undefined) ? this.tagName : "*";
+        const tagName = (this.tagName !== undefined) ? this.tagName : "*";
         const expressions = this.concatenateExpressions();
-        return `//${this.tagName}[${expressions}]`;
+        return `//${tagName}[${expressions}]`;
     }
 
 }

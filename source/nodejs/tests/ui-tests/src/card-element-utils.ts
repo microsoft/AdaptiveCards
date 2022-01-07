@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { WebElement, By, Locator } from "selenium-webdriver";
-import { XpathBuilder } from "./selenium-utils";
+import { ByExtended, XpathBuilder } from "./selenium-utils";
 import { TestUtils } from "./test-utils";
 import { WaitUtils } from "./wait-utils";
 import * as Assert from "assert";
+import { titleIs } from "selenium-webdriver/lib/until";
 
 export abstract class ACElement {
     private _id: string;
@@ -77,9 +78,9 @@ export abstract class ACActionableElement extends ACElement {
 } 
 
 export abstract class Input extends ACElement {
-    private div: WebElement;
-    private label?: WebElement;
-    private errorMessage?: WebElement;
+    protected div: WebElement;
+    protected label?: WebElement;
+    protected errorMessage?: WebElement;
 
     abstract setData(data: string): Promise<void>;
 
@@ -128,12 +129,14 @@ export abstract class Input extends ACElement {
         }
     }
 
-    private async getErrorMessageId(): Promise<string> {
+    protected async getErrorMessageId(): Promise<string> {
         const ariaLabeledBy = await this.underlyingElement!.getAttribute("aria-labelledby");
 
         let labels: string[] = ariaLabeledBy.split(" ");
-        Assert.strictEqual(labels.length, 2, `Input contains more than two classes ${labels}`);
-        labels.splice(labels.indexOf(await this.label!.getAttribute("id"), 1));
+        Assert.strictEqual(labels.length, 2, `Labels contains more than two labels ${labels}`);
+        
+        labels = labels.splice(labels.indexOf(await this.label!.getAttribute("id")), 1);
+        Assert.strictEqual(labels.length, 1, `Labels contains more than one label ${labels}`);
 
         return labels[0];
     }
@@ -180,8 +183,8 @@ export class ACInputDate extends ACTypeableInput {
         return input; 
     }
 
-    setDate(year: number, month: number, day: number) { 
-        this.setData(day.toString().padStart(2, "0") + month.toString().padStart(2, "0") + year.toString());
+    async setDate(year: number, month: number, day: number) { 
+        await this.setData(month.toString().padStart(2, "0") + day.toString().padStart(2, "0") + year.toString());
     }
 }
 
@@ -192,9 +195,9 @@ export class ACInputTime extends ACTypeableInput {
         return input;
     }
 
-    setTime(hour: number, minute: number) {
+    async setTime(hour: number, minute: number) {
         const meridian: string = (hour >= 12) ? "PM" : "AM";
-        this.setData(hour.toString().padStart(2, "0") + minute.toString().padStart(2, "0") + meridian);
+        await this.setData(hour.toString().padStart(2, "0") + minute.toString().padStart(2, "0") + meridian);
     }
 }
 
@@ -220,6 +223,8 @@ export class ACInputChoiceSet extends Input
     }
 
     override async ensureUnderlyingElement(className?: string): Promise<void> {
+        this.div = await TestUtils.getInstance().getInputContainer(this.id, this.container);
+
         if (!this.isExpanded) {
             await this.getCompactChoiceSet(this.id, this.container);
         }
@@ -229,11 +234,15 @@ export class ACInputChoiceSet extends Input
     }
 
     private async getCompactChoiceSet(id: string, container?: ACContainer): Promise<void> {
-        const compactChoiceSet = await TestUtils.getInstance().getElementWithId(id, container);
-        this.underlyingElement = await compactChoiceSet?.findElement(By.className("ac-choiceSetInput-compact"));
+        this.underlyingElement = await this.div.findElement(By.className("ac-choiceSetInput-compact"));
     }
 
     private async getExpandedChoiceSet(id: string, container?: ACContainer): Promise<void> {
+        if (this.isMultiSelect) {
+            this.underlyingElement = await this.div.findElement(ByExtended.containsClass("ac-choiceSetInput-multiSelect"));
+        } else {
+            this.underlyingElement = await this.div.findElement(ByExtended.containsClass("ac-choiceSetInput-expanded"));
+        }
         this.underlyingExpandedElements = await TestUtils.getInstance().getElementsWithName(id, container);
     }
 
@@ -290,6 +299,29 @@ export class ACInputChoiceSet extends Input
         else {
             return super.elementWasFound();
         }
+    }
+
+    override async getErrorMessageId(): Promise<string> {
+        if (this.isExpanded) {
+            const ariaLabeledBy = await this.underlyingExpandedElements[0].getAttribute("aria-labelledby");
+            const choiceId = await this.underlyingExpandedElements[0].getAttribute("id");
+
+            let labels: string[] = ariaLabeledBy.split(" ");
+            Assert.strictEqual(labels.length, 3, `Labels contains more than three labels ${labels}`);
+            
+            labels.splice(labels.indexOf(await this.label!.getAttribute("id")), 1);
+            labels.splice(labels.indexOf(await this.getIdOfLabel(choiceId)), 1);
+            Assert.strictEqual(labels.length, 1, `Labels contains more than one label ${labels}`);
+
+            return labels[0];
+        } else {
+            return super.getErrorMessageId();
+        }
+    }
+
+    private async getIdOfLabel(choiceId: string): Promise<string> {
+        const label: WebElement = await this.div.findElement(By.xpath(new XpathBuilder().setTagName("label").addAttributeEquals("for", choiceId).buildXpath()));
+        return await label.getAttribute("id");
     }
 }
 
