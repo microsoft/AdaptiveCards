@@ -14,8 +14,8 @@ The following topics are covered in this month’s community call: **FactSet + A
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zr8TiZZB5_k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Agenda:
-- FactSet + Adaptive Cards :handshake:- Matt Pineau (FactSet) and Andrew Curtice (FactSet) – [00:29](https://youtu.be/zr8TiZZB5_k?t=29)
-- v1.5 Release :loudspeaker: - [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) | @jpthepm – [23:42](https://youtu.be/zr8TiZZB5_k?t=1422)
+- FactSet + Adaptive Cards 🤝- Matt Pineau (FactSet) and Andrew Curtice (FactSet) – [00:29](https://youtu.be/zr8TiZZB5_k?t=29)
+- v1.5 Release 📢 - [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) | @jpthepm – [23:42](https://youtu.be/zr8TiZZB5_k?t=1422)
 - Q&A :white_question_mark: - with members of Microsoft Developer and PM teams – [26:58](https://youtu.be/zr8TiZZB5_k?t=1618)
 
 ### Demo:
