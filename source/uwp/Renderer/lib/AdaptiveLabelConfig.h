@@ -11,9 +11,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveLabelConfig(::AdaptiveCards::LabelConfig const& labelConfig = {});
 
-        property<ObjectModel::Uwp::Spacing> InputSpacing;
-        property<Uwp::AdaptiveInputLabelConfig> RequiredInputs;
-        property<Uwp::AdaptiveInputLabelConfig> OptionalInputs;
+        property<winrt::Spacing> InputSpacing;
+        property<winrt::AdaptiveInputLabelConfig> RequiredInputs;
+        property<winrt::AdaptiveInputLabelConfig> OptionalInputs;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

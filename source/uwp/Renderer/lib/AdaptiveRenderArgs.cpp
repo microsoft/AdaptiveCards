@@ -8,7 +8,7 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     // This constructor is kept so all elements keep working as expected
-    AdaptiveRenderArgs::AdaptiveRenderArgs(ObjectModel::Uwp::ContainerStyle const& containerStyle,
+    AdaptiveRenderArgs::AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                                            winrt::IInspectable const& parentElement,
                                            Uwp::AdaptiveRenderArgs const& renderArgs) :
         ContainerStyle{containerStyle},
@@ -21,9 +21,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    AdaptiveRenderArgs::AdaptiveRenderArgs(ObjectModel::Uwp::ContainerStyle const& containerStyle,
+    AdaptiveRenderArgs::AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                                            winrt::IInspectable const& parentElement,
-                                           ObjectModel::Uwp::AdaptiveCard const& parentCard,
+                                           winrt::AdaptiveCard const& parentCard,
                                            Uwp::AdaptiveRenderArgs const& renderArgs) :
         ContainerStyle{containerStyle},
         ParentElement{parentElement}, ParentCard{parentCard}

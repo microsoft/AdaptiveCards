@@ -10,13 +10,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveColorsConfig(::AdaptiveCards::ColorsConfig colorsConfig = {});
 
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Default;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Accent;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Dark;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Light;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Good;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Warning;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorConfig> Attention;
+        property<winrt::AdaptiveColorConfig> Default;
+        property<winrt::AdaptiveColorConfig> Accent;
+        property<winrt::AdaptiveColorConfig> Dark;
+        property<winrt::AdaptiveColorConfig> Light;
+        property<winrt::AdaptiveColorConfig> Good;
+        property<winrt::AdaptiveColorConfig> Warning;
+        property<winrt::AdaptiveColorConfig> Attention;
     };
 }
 

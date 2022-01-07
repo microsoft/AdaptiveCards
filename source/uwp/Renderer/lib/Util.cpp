@@ -177,7 +177,7 @@ winrt::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::Conta
         return containerStyles.Default();
     }
 }
-winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig const& hostConfig,
                                                     winrt::ForegroundColor adaptiveColor,
                                                     winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
@@ -245,8 +245,8 @@ winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiv
     auto backgroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, true);
     auto foregroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, false);
 
-    textHighlighter.Background(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
-    textHighlighter.Foreground(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(foregroundColor));
+    textHighlighter.Background( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
+    textHighlighter.Foreground( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(foregroundColor));
 
     return textHighlighter;
 }
@@ -599,13 +599,13 @@ winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson)
 //     return S_OK;
 // }
 
-// HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedActionType, _Outptr_ HSTRING* result)
+// HRESULT ProjectedActionTypeToHString(ABI::winrt::ElementType projectedActionType, _Outptr_ HSTRING* result)
 // {
 //     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
 //     return UTF8ToHString(ActionTypeToString(sharedActionType), result);
 // }
 
-// HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedElementType, _Outptr_ HSTRING* result)
+// HRESULT ProjectedElementTypeToHString(ABI::winrt::ElementType projectedElementType, _Outptr_ HSTRING* result)
 // {
 //     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
 //     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);

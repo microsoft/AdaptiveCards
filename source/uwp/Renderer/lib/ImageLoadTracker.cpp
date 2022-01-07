@@ -113,13 +113,13 @@ namespace AdaptiveCards::Rendering::Uwp
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
     void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
-                                                    rtxaml::RoutedEventArgs const& /*eventArgs*/)
+                                                    winrt::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
     void ImageLoadTracker::TrackedImage_ImageFailed(winrt::IInspectable const& sender,
-                                                    rtxaml::ExceptionRoutedEventArgs const& /*eventArgs*/)
+                                                    winrt::ExceptionRoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }

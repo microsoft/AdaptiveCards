@@ -66,7 +66,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         // Set it's fill and opacity
         winrt::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
 
-        auto rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
+        auto rectangleBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(whiteBrushColor);
         rectangle.Fill(rectangleBrush);
         rectangle.Opacity(c_playIconOpacity);
 
@@ -74,7 +74,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         auto containerStyle = renderArgs.ContainerStyle();
 
         auto darkBrushColor = GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Dark, containerStyle, false, false);
-        auto darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
+        auto darkBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(darkBrushColor);
         rectangle.Stroke(darkBrush);
 
         // Create a play symbol icon
@@ -85,11 +85,11 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         winrt::RelativePanel relativePanelStatics{};
 
         // TODO: should we just set property directly on rectangle and playIcon?
-        XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
+         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
         relativePanelStatics.SetAlignHorizontalCenterWithPanel(rectangle, true);
         relativePanelStatics.SetAlignVerticalCenterWithPanel(rectangle, true);
 
-        XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
+         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
         relativePanelStatics.SetAlignHorizontalCenterWithPanel(playIcon, true);
         relativePanelStatics.SetAlignVerticalCenterWithPanel(playIcon, true);
     }
@@ -99,7 +99,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                            winrt::AdaptiveRenderContext const& renderContext,
                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        // TOOD: this may not be the best idea. We can probably add a simpler method to generate an rtxaml::Image.
+        // TOOD: this may not be the best idea. We can probably add a simpler method to generate an winrt::Image.
         // Render the custom play icon using the image renderer
         winrt::AdaptiveImage playIconAdaptiveImage{};
         playIconAdaptiveImage.Url(playIconString);
@@ -109,12 +109,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         auto playIconUIElement = imageRenderer.Render(playIconAdaptiveImage, renderContext, renderArgs);
 
         // TODO: is this the correct way? what if it's nullptr? what do we do? Do we throw? Do we ignore?
-        if (const auto playIconAsFrameworkElement = playIconUIElement.try_as<rtxaml::FrameworkElement>())
+        if (const auto playIconAsFrameworkElement = playIconUIElement.try_as<winrt::FrameworkElement>())
         {
             playIconAsFrameworkElement.Height(c_playIconSize);
 
             // Add it to the panel and center it
-            XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
             winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
             winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIconUIElement, true);
         }
@@ -140,7 +140,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         }
     }
 
-    rtxaml::UIElement CreatePosterContainerWithPlayButton(winrt::Image const& posterImage,
+    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::Image const& posterImage,
                                                           winrt::AdaptiveRenderContext const& renderContext,
                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -148,7 +148,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
         if (posterImage)
         {
-            XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
         }
         AddPlayIcon(posterRelativePanel, renderContext, renderArgs);
 
@@ -209,15 +209,15 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
                           winrt::MediaElement const& mediaElement,
-                          rtxaml::UIElement const& posterContainer,
+                          winrt::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
                           winrt::AdaptiveMediaEventInvoker const& mediaInvoker)
     {
         if (mediaElement)
         {
-            posterContainer.Visibility(rtxaml::Visibility::Collapsed);
-            mediaElement.Visibility(rtxaml::Visibility::Visible);
+            posterContainer.Visibility(winrt::Visibility::Collapsed);
+            mediaElement.Visibility(winrt::Visibility::Visible);
 
             winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
             if (const auto resourceResolvers = renderContext.ResourceResolvers())
@@ -232,7 +232,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             else
             {
                 auto args =
-                    winrt::make<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveCardGetResourceStreamArgs>(mediaSourceUrl);
+                    winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(mediaSourceUrl);
 
                 auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
 
@@ -246,7 +246,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             // EventRegistrationToken mediaOpenedToken;
             mediaElement.MediaOpened(
                 // TODO: is it correct to capture by value here? Is media element captured by default? do we need = sign in lambda capture?
-                [=](winrt::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
+                [=](winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
                     bool audioOnly = mediaElement.IsAudioOnly();
                     auto posterSource = mediaElement.PosterSource();

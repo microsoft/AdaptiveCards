@@ -23,61 +23,61 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         : RenderedAdaptiveCardT<RenderedAdaptiveCard, ITypePeek>
     {
         RenderedAdaptiveCard();
-        RenderedAdaptiveCard(winrt::IVector<ObjectModel::Uwp::AdaptiveError> const& errors,
-                             winrt::IVector<ObjectModel::Uwp::AdaptiveWarning> const& warnings);
+        RenderedAdaptiveCard(winrt::IVector<winrt::AdaptiveError> const& errors,
+                             winrt::IVector<winrt::AdaptiveWarning> const& warnings);
 
         // IRenderedAdaptiveCard
         auto OriginatingCard() { return m_originatingCard; }
         auto OriginatingHostConfig() { return m_originatingHostConfig; }
         auto FrameworkElement() { return m_frameworkElement; }
-        auto UserInputs() { return static_cast<Uwp::AdaptiveInputs>(*m_inputs); }
+        auto UserInputs() { return static_cast<winrt::AdaptiveInputs>(*m_inputs); }
 
-        auto_event<Uwp::RenderedAdaptiveCard, Uwp::AdaptiveActionEventArgs> Action;
-        auto_event<Uwp::RenderedAdaptiveCard, Uwp::AdaptiveMediaEventArgs> MediaClicked;
-        property<winrt::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
-        property<winrt::IVector<ObjectModel::Uwp::AdaptiveWarning>> Warnings;
+        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveActionEventArgs> Action;
+        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveMediaEventArgs> MediaClicked;
+        property<winrt::IVector<winrt::AdaptiveError>> Errors;
+        property<winrt::IVector<winrt::AdaptiveWarning>> Warnings;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        void AddInlineShowCard(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
-                               ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+        void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
+                               winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddInlineShowCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard,
-                               ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+        void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
+                               winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddOverflowButton(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet,
                                winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
-        void AddOverflowButton(ObjectModel::Uwp::AdaptiveCard const& actionCard,
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard,
                                winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
-        void AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs);
-        void LinkActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction, Uwp::AdaptiveRenderArgs const& renderArgs);
-        void LinkCardToParent(ObjectModel::Uwp::AdaptiveCard const& card, Uwp::AdaptiveRenderArgs const& renderArgs);
-        Uwp::IAdaptiveInputValue GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement);
+        void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
+        void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs);
+        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
         void SetFrameworkElement(winrt::Windows::UI::Xaml::FrameworkElement const& value);
-        void SetOriginatingCard(ObjectModel::Uwp::AdaptiveCard const& value);
+        void SetOriginatingCard(winrt::AdaptiveCard const& value);
         void SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value);
-        void SendActionEvent(ObjectModel::Uwp::IAdaptiveActionElement const& eventArgs);
-        void SendMediaClickedEvent(ObjectModel::Uwp::AdaptiveMedia const& eventArgs);
+        void SendActionEvent(winrt::IAdaptiveActionElement const& eventArgs);
+        void SendMediaClickedEvent(winrt::AdaptiveMedia const& eventArgs);
 
     private:
-        void HandleInlineShowCardEvent(ObjectModel::Uwp::IAdaptiveActionElement const& actionElement);
+        void HandleInlineShowCardEvent(winrt::IAdaptiveActionElement const& actionElement);
 
         void AddInlineShowCardHelper(uint32_t internalId,
-                                     ObjectModel::Uwp::IAdaptiveShowCardAction const& showCardAction,
+                                     winrt::IAdaptiveShowCardAction const& showCardAction,
                                      winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                      Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        ObjectModel::Uwp::AdaptiveCard m_originatingCard;
+        winrt::AdaptiveCard m_originatingCard;
         Rendering::Uwp::AdaptiveHostConfig m_originatingHostConfig;
-        winrt::com_ptr<Uwp::implementation::AdaptiveInputs> m_inputs;
+        winrt::com_ptr<winrt::implementation::AdaptiveInputs> m_inputs;
         winrt::Windows::UI::Xaml::FrameworkElement m_frameworkElement;
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is the ShowCardInfo structure for that show card

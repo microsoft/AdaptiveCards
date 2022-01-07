@@ -10,9 +10,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveErrorMessageConfig(::AdaptiveCards::ErrorMessageConfig errorMessageConfig = {});
 
-        property<ObjectModel::Uwp::TextSize> Size;
-        property<ObjectModel::Uwp::Spacing> Spacing;
-        property<ObjectModel::Uwp::TextWeight> Weight;
+        property<winrt::TextSize> Size;
+        property<winrt::Spacing> Spacing;
+        property<winrt::TextWeight> Weight;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

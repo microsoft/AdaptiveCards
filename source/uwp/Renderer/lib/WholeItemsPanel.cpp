@@ -4,11 +4,9 @@
 //  Copyright (c) 2014  Microsoft Corporation
 //
 #include "pch.h"
-
 #include "WholeItemsPanel.h"
 #include "WholeItemsPanel.g.cpp"
 
-#include "XamlHelpers.h"
 #include "ElementTagContent.h"
 
 static const float OutsidePanelY = -1000.0f;
@@ -75,8 +73,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     }
                     if (auto childAsTextBlock = child.try_as<winrt::TextBlock>())
                     {
-                        rtxaml::TextWrapping currentWrap = rtxaml::TextWrapping::Wrap;
-                        if (childAsTextBlock.TextWrapping() == rtxaml::TextWrapping::NoWrap)
+                        winrt::TextWrapping currentWrap = winrt::TextWrapping::Wrap;
+                        if (childAsTextBlock.TextWrapping() == winrt::TextWrapping::NoWrap)
                         {
                             // If the text already does not wrap, it should not be displayed
                             // Unless it is the first item of the group
@@ -90,7 +88,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
                             winrt::Size noLimit{std::numeric_limits<float>::infinity(),
                                                                      std::numeric_limits<float>::infinity()};
-                            childAsTextBlock.TextWrapping(rtxaml::TextWrapping::NoWrap);
+                            childAsTextBlock.TextWrapping(winrt::TextWrapping::NoWrap);
                             childAsTextBlock.Measure(noLimit);
                             childSize = childAsTextBlock.DesiredSize();
                             currentWrap = childAsTextBlock.TextWrapping();
@@ -109,7 +107,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                                     // Text did not reach its minHeight property and we have to clear it otherwise
                                     // ellipses won't be displayed correctly...
-                                    rtxaml::IFrameworkElementStatics frameworkElementStatics;
+                                    winrt::IFrameworkElementStatics frameworkElementStatics;
                                     child.ClearValue(frameworkElementStatics.MinHeightProperty());
                                 }
                                 else
@@ -264,7 +262,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // margins for text on the first line of a tile. Additionally, leave at least as much space on all
         // sides as specified by s_bleedMargin.
 
-        rtxaml::Thickness margin = this->Margin();
+        winrt::Thickness margin = this->Margin();
         winrt::RectangleGeometry clip;
 
         const double bleedMargin = static_cast<double>(s_bleedMargin);
@@ -322,9 +320,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     void WholeItemsPanel::SetMainPanel(bool value) { m_isMainPanel = value; }
 
     // Not sure if I did everything right here..
-    void WholeItemsPanel::AddElementToStretchablesList(rtxaml::UIElement const& element)
+    void WholeItemsPanel::AddElementToStretchablesList(winrt::UIElement const& element)
     {
-        if (const auto elementAsFrameworkElement = element.try_as<rtxaml::FrameworkElement>())
+        if (const auto elementAsFrameworkElement = element.try_as<winrt::FrameworkElement>())
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
@@ -345,9 +343,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         ++m_stretchableItemCount;
     }
 
-    bool WholeItemsPanel::IsUIElementInStretchableList(rtxaml::UIElement const& element)
+    bool WholeItemsPanel::IsUIElementInStretchableList(winrt::UIElement const& element)
     {
-        if (const auto elementAsFrameworkElement = element.try_as<rtxaml::FrameworkElement>())
+        if (const auto elementAsFrameworkElement = element.try_as<winrt::FrameworkElement>())
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
@@ -389,7 +387,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     // (ideally, we should inherit from Ellipse but it is not possible)
     void WholeItemsPanel::LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight)
     {
-        rtxaml::Thickness margins = shape.Margin();
+        winrt::Thickness margins = shape.Margin();
         const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
         const double effectiveAvailableHeight = availableHeight - margins.Top - margins.Bottom;
         const double minSize = std::min(effectiveAvailableWidth, effectiveAvailableHeight);
@@ -406,9 +404,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         buffer.append(text.c_str());
     }
 
-    winrt::hstring WholeItemsPanel::GetAltAsString(rtxaml::UIElement const& element)
+    winrt::hstring WholeItemsPanel::GetAltAsString(winrt::UIElement const& element)
     {
-        if (const auto dependencyObject = element.try_as<rtxaml::DependencyObject>())
+        if (const auto dependencyObject = element.try_as<winrt::DependencyObject>())
         {
             return winrt::AutomationProperties::GetName(dependencyObject);
         }
@@ -418,7 +416,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     // Creates the Alt Text
-    void WholeItemsPanel::AppendAltTextToUIElement(rtxaml::UIElement const& element, std::wstring& buffer)
+    void WholeItemsPanel::AppendAltTextToUIElement(winrt::UIElement const& element, std::wstring& buffer)
     {
         if (const auto textBlock = element.try_as<winrt::TextBlock>())
         {
@@ -460,7 +458,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    bool WholeItemsPanel::HasExplicitSize(rtxaml::FrameworkElement const& element)
+    bool WholeItemsPanel::HasExplicitSize(winrt::FrameworkElement const& element)
     {
         return !isnan(element.Height()) || !isnan(element.Width());
     }

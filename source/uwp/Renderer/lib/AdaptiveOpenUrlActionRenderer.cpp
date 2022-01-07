@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveOpenUrlActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+    winrt::UIElement AdaptiveOpenUrlActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
                                                             winrt::AdaptiveRenderContext const& renderContext,
                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {

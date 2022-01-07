@@ -8,10 +8,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveTextStyleConfigBase(::AdaptiveCards::TextStyleConfig const& textStyleConfig);
 
-        property<ObjectModel::Uwp::TextWeight> Weight;
-        property<ObjectModel::Uwp::TextSize> Size;
-        property<ObjectModel::Uwp::ForegroundColor> Color;
+        property<winrt::TextWeight> Weight;
+        property<winrt::TextSize> Size;
+        property<winrt::ForegroundColor> Color;
         property<bool> IsSubtle;
-        property<ObjectModel::Uwp::FontType> FontType;
+        property<winrt::FontType> FontType;
     };
 }

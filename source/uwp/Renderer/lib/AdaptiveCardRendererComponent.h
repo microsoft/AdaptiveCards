@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         winrt::Windows::UI::Xaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
-        void HostConfig(Uwp::AdaptiveHostConfig const& hostConfig)
+        void HostConfig(winrt::AdaptiveHostConfig const& hostConfig)
         {
             m_hostConfig = hostConfig;
             UpdateActionSentimentResourceDictionary();
@@ -45,7 +45,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         Uwp::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
 
-        void FeatureRegistration(Uwp::AdaptiveFeatureRegistration const& featureRegistration)
+        void FeatureRegistration(winrt::AdaptiveFeatureRegistration const& featureRegistration)
         {
             m_featureRegistration = featureRegistration;
         }
@@ -70,7 +70,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             return GetHostConfig()->OverflowButtonAccessibilityText = text;
         }
 
-        Uwp::RenderedAdaptiveCard RenderAdaptiveCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard);
+        Uwp::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
         Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
         Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
 

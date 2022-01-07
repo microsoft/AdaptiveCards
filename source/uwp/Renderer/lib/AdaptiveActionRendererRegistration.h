@@ -9,13 +9,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     struct AdaptiveActionRendererRegistration : AdaptiveActionRendererRegistrationT<AdaptiveActionRendererRegistration>
     {
         using RegistrationMap =
-            std::unordered_map<hstring, Uwp::IAdaptiveActionRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+            std::unordered_map<winrt::hstring, winrt::IAdaptiveActionRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
         AdaptiveActionRendererRegistration() = default;
 
-        Uwp::IAdaptiveActionRenderer Get(hstring const& type);
-        void Set(hstring const& type, Uwp::IAdaptiveActionRenderer const& renderer);
-        void Remove(hstring const& type);
+        Uwp::IAdaptiveActionRenderer Get(winrt::hstring const& type);
+        void Set(winrt::hstring const& type, winrt::IAdaptiveActionRenderer const& renderer);
+        void Remove(winrt::hstring const& type);
 
         RegistrationMap m_registration;
     };

@@ -12,14 +12,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveTableRenderer() = default;
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+winrt::AdaptiveRenderContext const& renderContext,
+winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::Windows::UI::Xaml::FrameworkElement RenderCell(
             winrt::AdaptiveTableCell const& cell,
-            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveRenderArgs const& renderArgs,
             winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
             boolean showGridLines,
             winrt::ContainerStyle gridStyle,
@@ -28,8 +28,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         void RenderRow(winrt::AdaptiveTableRow const& row,
                        winrt::IVector<winrt::AdaptiveTableColumnDefinition> const& columns,
-                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                       winrt::AdaptiveRenderContext const& renderContext,
+                       winrt::AdaptiveRenderArgs const& renderArgs,
                        winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
                        boolean firstRowAsHeaders,
                        boolean showGridLines,

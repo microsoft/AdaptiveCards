@@ -8,7 +8,7 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveLabelConfig::AdaptiveLabelConfig(::AdaptiveCards::LabelConfig const& labelConfig) :
-        InputSpacing{static_cast<ObjectModel::Uwp::Spacing>(labelConfig.inputSpacing)},
+        InputSpacing{static_cast<winrt::Spacing>(labelConfig.inputSpacing)},
         RequiredInputs{winrt::make<implementation::AdaptiveInputLabelConfig>(labelConfig.requiredInputs)},
         OptionalInputs{winrt::make<implementation::AdaptiveInputLabelConfig>(labelConfig.optionalInputs)}
     {

@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     void AdaptiveActionInvoker::SendActionEvent(winrt::IAdaptiveActionElement const& actionElement)
     {
-        if (auto strong = peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))
+        if (auto strong = peek_innards<winrt::implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))
         {
             strong->SendActionEvent(actionElement);
         }

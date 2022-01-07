@@ -7,14 +7,14 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveTimeInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveTimeInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                         winrt::AdaptiveRenderContext const& renderContext,
                                                         winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
-            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (! ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Time Input was stripped from card because interactivity is not supported");
@@ -24,10 +24,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::TimePicker timePicker{};
 
             // Make the picker stretch full width
-            timePicker.HorizontalAlignment(rtxaml::HorizontalAlignment::Stretch);
-            timePicker.VerticalAlignment(rtxaml::VerticalAlignment::Top);
+            timePicker.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
+            timePicker.VerticalAlignment(winrt::VerticalAlignment::Top);
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePicker);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePicker);
 
             auto adaptiveTimeInput = cardElement.as<winrt::AdaptiveTimeInput>();
 
@@ -45,7 +45,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::hstring min = adaptiveTimeInput.Min();
             winrt::hstring max = adaptiveTimeInput.Max();
 
-            auto& [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+            auto& [inputLayout, validationBorder] =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
                 adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext);
 
             // TODO: come back to all the inputs, not sure if this is right

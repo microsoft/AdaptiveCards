@@ -6,12 +6,12 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    void AdaptiveActionRendererRegistration::Set(hstring const& type, Uwp::IAdaptiveActionRenderer const& renderer)
+    void AdaptiveActionRendererRegistration::Set(winrt::hstring const& type, winrt::IAdaptiveActionRenderer const& renderer)
     {
         m_registration[type] = renderer;
     }
 
-    Uwp::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(hstring const& type)
+    winrt::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(winrt::hstring const& type)
     {
         if (const auto found = m_registration.find(type); found != m_registration.end())
         {
@@ -23,5 +23,5 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveActionRendererRegistration::Remove(hstring const& type) { m_registration.erase(type); }
+    void AdaptiveActionRendererRegistration::Remove(winrt::hstring const& type) { m_registration.erase(type); }
 }

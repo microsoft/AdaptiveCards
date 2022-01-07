@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveImageConfig(::AdaptiveCards::ImageConfig const& ImageConfig = {});
 
-        property<ObjectModel::Uwp::ImageSize> ImageSize;
+        property<winrt::ImageSize> ImageSize;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

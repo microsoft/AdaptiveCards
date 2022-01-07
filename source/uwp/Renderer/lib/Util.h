@@ -107,8 +107,6 @@ template<typename TStored> struct property_opt
     operator std::optional<TStored>() { return get(); }
 };
 
-namespace rtxaml = winrt::Windows::UI::Xaml;
-
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
 
@@ -144,22 +142,22 @@ void IterateOverVector(winrt::IVector<T> vector, C iterationCallback)
 winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
 // TODO: const& for enums?
-winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig const& hostConfig,
                                                     winrt::ForegroundColor adaptiveColor,
                                                     winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
                                                     bool highlight);
 
 winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style,
-                                                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
+   winrt::AdaptiveHostConfig const& hostConfig);
 
 winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style,
-                                                  winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
+                                                  winrt::AdaptiveHostConfig const& hostConfig);
 
 winrt::TextHighlighter
 GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
-               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+               winrt::AdaptiveRenderContext const& renderContext,
+               winrt::AdaptiveRenderArgs const& renderArgs);
 
 winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
@@ -193,9 +191,9 @@ std::string JsonObjectToString(winrt::JsonObject const& inputJson);
 // HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::winrt::IJsonObject** result);
 // HRESULT JsonObjectToJsonCpp(_In_ ABI::winrt::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
-// HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedActionType,
+// HRESULT ProjectedActionTypeToHString(ABI::winrt::ElementType projectedActionType,
 //                                     _Outptr_ HSTRING* result);
-// HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedElementType,
+// HRESULT ProjectedElementTypeToHString(ABI::winrt::ElementType projectedElementType,
 //                                      _Outptr_ HSTRING* result);
 
 bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration);
@@ -248,7 +246,7 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-winrt::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig,
                                                  winrt::hstring const& urlString);
 
 winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor);

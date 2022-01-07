@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveMediaRenderer() = default;
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+winrt::AdaptiveRenderContext const& renderContext,
+winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 

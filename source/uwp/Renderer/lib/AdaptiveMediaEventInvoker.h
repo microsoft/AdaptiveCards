@@ -11,11 +11,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveMediaEventInvoker() {}
 
-        AdaptiveMediaEventInvoker(Uwp::RenderedAdaptiveCard const& renderResult);
+        AdaptiveMediaEventInvoker(winrt::RenderedAdaptiveCard const& renderResult);
 
         void SendMediaClickedEvent(winrt::AdaptiveMedia const& mediaElement);
 
-        winrt::weak_ref<Uwp::RenderedAdaptiveCard> m_weakRenderResult;
+        winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
     };
 }
 

@@ -10,8 +10,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveFontTypesDefinition(::AdaptiveCards::FontTypesDefinition const& fontTypesDefinition = {});
 
-        property<Uwp::AdaptiveFontTypeDefinition> Default;
-        property<Uwp::AdaptiveFontTypeDefinition> Monospace;
+        property<winrt::AdaptiveFontTypeDefinition> Default;
+        property<winrt::AdaptiveFontTypeDefinition> Monospace;
     };
 }
 

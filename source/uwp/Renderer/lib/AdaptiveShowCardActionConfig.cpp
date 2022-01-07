@@ -9,8 +9,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveShowCardActionConfig::AdaptiveShowCardActionConfig(::AdaptiveCards::ShowCardActionConfig const& sharedShowCardActionConfig)
     {
-        ActionMode = static_cast<Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
-        Style = static_cast<ObjectModel::Uwp::ContainerStyle>(sharedShowCardActionConfig.style);
+        ActionMode = static_cast<winrt::AdaptiveCards::Rendering::Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
+        Style = static_cast<winrt::ContainerStyle>(sharedShowCardActionConfig.style);
         InlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
     }
 }

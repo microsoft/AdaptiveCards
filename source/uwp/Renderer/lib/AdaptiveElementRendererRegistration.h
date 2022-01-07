@@ -10,11 +10,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     struct AdaptiveElementRendererRegistration : AdaptiveElementRendererRegistrationT<AdaptiveElementRendererRegistration>
     {
         using RegistrationMap =
-            std::unordered_map<hstring, Uwp::IAdaptiveElementRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+            std::unordered_map<hstring, winrt::IAdaptiveElementRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
         AdaptiveElementRendererRegistration() = default;
 
-        void Set(hstring const& type, Uwp::IAdaptiveElementRenderer const& renderer)
+        void Set(hstring const& type, winrt::IAdaptiveElementRenderer const& renderer)
         {
             m_registration[type] = renderer;
         }

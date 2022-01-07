@@ -34,6 +34,7 @@ namespace winrt
     using namespace ::winrt::Windows::Storage::Streams;
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
+	using namespace ::winrt::Windows::UI::Xaml;
     using namespace ::winrt::Windows::UI::Xaml::Controls;
     using namespace ::winrt::Windows::UI::Xaml::Controls::Primitives;
     using namespace ::winrt::Windows::UI::Xaml::Automation;
@@ -45,23 +46,6 @@ namespace winrt
     using namespace ::winrt::Windows::UI::Xaml::Shapes;
 	using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
     
-    //namespace Microsoft::UI::Xaml::Controls
-    //{
-    //}
-    //using namespace ::winrt::Microsoft::UI::Xaml::Controls;
-    //namespace Microsoft::UI::Xaml::Controls::Primitives
-    //{
-    //}
-    //using namespace ::winrt::Microsoft::UI::Xaml::Controls::Primitives;
-    //namespace Microsoft::UI::Xaml::Media
-    //{
-    //}
-    //using namespace ::winrt::Microsoft::UI::Xaml::Media;
-    //namespace Microsoft::UI::Xaml::Automation::Peers
-    //{
-    //}
-    //using namespace ::winrt::Microsoft::UI::Xaml::Automation::Peers;
-
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
 	namespace AdaptiveCards::Rendering::Uwp{}
 	using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
@@ -289,4 +273,6 @@ namespace winrt
 
 	// using namespace winrt::Windows::Web::Http::HttpFilters
 	using HttpBaseProtocolFilter = ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter;
+
+	// TODO: all headers need to include pch.h
 }

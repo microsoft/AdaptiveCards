@@ -163,8 +163,8 @@ void SetXamlInlinesWithFactSetTextConfig(winrt::AdaptiveRenderContext const& ren
 void SetWrapProperties(winrt::TextBlock const& xamlTextBlock, bool wrap)
 {
     // Set whether the text wraps
-    xamlTextBlock.TextWrapping(wrap ? rtxaml::TextWrapping::Wrap : rtxaml::TextWrapping::NoWrap);
-    xamlTextBlock.TextTrimming(rtxaml::TextTrimming::CharacterEllipsis);
+    xamlTextBlock.TextWrapping(wrap ? winrt::TextWrapping::Wrap : winrt::TextWrapping::NoWrap);
+    xamlTextBlock.TextTrimming(winrt::TextTrimming::CharacterEllipsis);
 }
 
 uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,

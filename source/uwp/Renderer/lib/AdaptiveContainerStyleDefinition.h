@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         property<winrt::Windows::UI::Color> BackgroundColor;
         property<winrt::Windows::UI::Color> BorderColor;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorsConfig> ForegroundColors;
-        property<winrt::AdaptiveCards::Rendering::Uwp::AdaptiveColorsConfig> HighlightColors;
+        property<winrt::AdaptiveColorsConfig> ForegroundColors;
+        property<winrt::AdaptiveColorsConfig> HighlightColors;
     };
 }
 

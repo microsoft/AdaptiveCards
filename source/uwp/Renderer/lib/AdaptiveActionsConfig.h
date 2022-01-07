@@ -10,13 +10,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig const& actionsConfig = {});
 
-        property<Uwp::AdaptiveShowCardActionConfig> ShowCard;
-        property<Uwp::ActionsOrientation> ActionsOrientation;
-        property<Uwp::ActionAlignment> ActionAlignment;
+        property<winrt::AdaptiveShowCardActionConfig> ShowCard;
+        property<winrt::ActionsOrientation> ActionsOrientation;
+        property<winrt::ActionAlignment> ActionAlignment;
         property<uint32_t> ButtonSpacing;
         property<uint32_t> MaxActions;
-        property<ObjectModel::Uwp::Spacing> Spacing;
-        property<Uwp::IconPlacement> IconPlacement;
+        property<winrt::Spacing> Spacing;
+        property<winrt::IconPlacement> IconPlacement;
         property<uint32_t> IconSize;
     };
 }

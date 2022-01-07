@@ -11,8 +11,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveOpenUrlActionRenderer() = default;
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+winrt::AdaptiveRenderContext const& renderContext,
+winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

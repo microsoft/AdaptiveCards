@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
+    winrt::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
                                                                winrt::AdaptiveRenderContext const& renderContext,
                                                                winrt::AdaptiveRenderArgs const& renderArgs,
                                                                winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
@@ -40,18 +40,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // Handle Grid Lines or Cell Spacing
         auto hostConfig = renderContext.HostConfig();
 
-        rtxaml::FrameworkElement cellFrameworkElement{nullptr};
+        winrt::FrameworkElement cellFrameworkElement{nullptr};
         if (showGridLines)
         {
             // If we're showing grid lines put the cell in a border
             winrt::Border cellBorder{};
 
             auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
-            cellBorder.BorderBrush(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
+            cellBorder.BorderBrush( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
 
             // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
             // cells respectively in order to avoid double-thickness borders
-            rtxaml::Thickness borderThickness = {0, 0, 1, 1};
+            winrt::Thickness borderThickness = {0, 0, 1, 1};
             if (columnNumber == 0)
             {
                 borderThickness.Left = 1;
@@ -71,7 +71,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         else
         {
             // If we're not showing gridlines, use the rendered cell as the frameworkElement, and add the cell spacing
-            cellFrameworkElement = cellRenderedAsContainer.as<rtxaml::FrameworkElement>();
+            cellFrameworkElement = cellRenderedAsContainer.as<winrt::FrameworkElement>();
 
             auto tableConfig = hostConfig.Table();
 
@@ -79,7 +79,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
             // or leftmost cells to avoid creating margin outside the table.
-            rtxaml::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+            winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
             if (columnNumber == 0)
             {
                 marginThickness.Left = 0;
@@ -128,8 +128,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // TODO: it will create IReference automatically, right?
             // TODO: fix firstRowAsHeader(s) variable name
             renderContext.TextStyle(winrt::TextStyle::ColumnHeader);
-            /*winrt::box_value(ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::ColumnHeader)
-                .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>>()
+            /*winrt::box_value(ABI::winrt::TextStyle::ColumnHeader)
+                .as<ABI::Windows::Foundation::IReference<ABI::winrt::TextStyle>>()
                 .get()));*/
         }
 
@@ -181,7 +181,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::Grid::SetColumn(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
             columnNumber++;
         }
 
@@ -190,7 +190,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         renderContext.HorizontalContentAlignment(contextHorizontalAlignment);
     }
 
-    rtxaml::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                     winrt::AdaptiveRenderContext const& renderContext,
                                                     winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -223,7 +223,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             for (auto column : columns)
             {
                 winrt::ColumnDefinition xamlColumnDefinition{};
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
                 xamlColumnDefinitions.Append(xamlColumnDefinition);
             }
 

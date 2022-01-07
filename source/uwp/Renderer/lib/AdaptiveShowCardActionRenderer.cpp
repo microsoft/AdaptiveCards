@@ -8,7 +8,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+    winrt::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
                                                              winrt::AdaptiveRenderContext const& renderContext,
                                                              winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             return nullptr;
         }
     }
-    rtxaml::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
+    winrt::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
                                                                     winrt::AdaptiveRenderContext const& renderContext,
                                                                     winrt::AdaptiveRenderArgs const& renderArgs,
                                                                     bool isBottomActionBar)
@@ -46,8 +46,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto spacingConfig = hostConfig.Spacing();
             uint32_t padding = spacingConfig.Padding();
 
-            winrt::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionmode = showCardActionConfig.ActionMode();
-
             // Set the top margin
             uint32_t inlineTopMargin = showCardActionConfig.InlineTopMargin();
 
@@ -59,7 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             localUiShowCard.Margin({sideMargin, topMargin, sideMargin, bottomMargin});
 
             // Set the visibility as Collapsed until the action is triggered
-            localUiShowCard.Visibility(rtxaml::Visibility::Collapsed);
+            localUiShowCard.Visibility(winrt::Visibility::Collapsed);
 
             return localUiShowCard;
         }

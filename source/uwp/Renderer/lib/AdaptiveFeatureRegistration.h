@@ -12,9 +12,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveFeatureRegistration(std::shared_ptr<::AdaptiveCards::FeatureRegistration> sharedParserRegistration =
                                         std::make_shared<::AdaptiveCards::FeatureRegistration>());
 
-        void Set(hstring const& name, hstring const& version);
-        hstring Get(hstring const& name);
-        void Remove(hstring const& name);
+        void Set(winrt::hstring const& name, winrt::hstring const& version);
+        winrt::hstring Get(winrt::hstring const& name);
+        void Remove(winrt::hstring const& name);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

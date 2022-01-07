@@ -10,18 +10,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveRenderArgs() = default;
 
-        AdaptiveRenderArgs(ObjectModel::Uwp::ContainerStyle const& containerStyle,
+        AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                            winrt::IInspectable const& parentElement,
                            Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        AdaptiveRenderArgs(ObjectModel::Uwp::ContainerStyle const& containerStyle,
+        AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                            winrt::IInspectable const& parentElement,
-                           ObjectModel::Uwp::AdaptiveCard const& parentCard,
+                           winrt::AdaptiveCard const& parentCard,
                            Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        property<ObjectModel::Uwp::ContainerStyle> ContainerStyle;
+        property<winrt::ContainerStyle> ContainerStyle;
         property<winrt::IInspectable> ParentElement;
-        property<ObjectModel::Uwp::AdaptiveCard> ParentCard;
+        property<winrt::AdaptiveCard> ParentCard;
         property<bool> IsInShowCard{false};
         property<bool> AllowAboveTitleIconPlacement{false};
         property<bool> AncestorHasFallback{false};

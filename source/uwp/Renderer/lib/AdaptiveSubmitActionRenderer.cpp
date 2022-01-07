@@ -8,7 +8,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveSubmitActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+    winrt::UIElement AdaptiveSubmitActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
                                                            winrt::AdaptiveRenderContext const& renderContext,
                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {

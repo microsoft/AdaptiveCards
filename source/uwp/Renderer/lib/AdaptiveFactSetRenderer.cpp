@@ -8,7 +8,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveFactSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveFactSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                       winrt::AdaptiveRenderContext const& renderContext,
                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -22,8 +22,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::ColumnDefinition valueColumn{};
 
             // TODO: does value(0 in this case) matter when type=Auto?
-            rtxaml::GridLength factSetGridTitleLength{0, rtxaml::GridUnitType::Auto};
-            rtxaml::GridLength factSetGridValueLength{1, rtxaml::GridUnitType::Star};
+            winrt::GridLength factSetGridTitleLength{0, winrt::GridUnitType::Auto};
+            winrt::GridLength factSetGridValueLength{1, winrt::GridUnitType::Star};
 
             titleColumn.Width(factSetGridTitleLength);
             valueColumn.Width(factSetGridValueLength);
@@ -32,13 +32,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             columnDefinitions.Append(titleColumn);
             columnDefinitions.Append(valueColumn);
 
-            rtxaml::GridLength factSetGridHeight{0, rtxaml::GridUnitType::Auto};
+            winrt::GridLength factSetGridHeight{0, winrt::GridUnitType::Auto};
 
             auto heightType = cardElement.Height();
 
             if (heightType == winrt::HeightType::Stretch)
             {
-                factSetGridHeight = {1, rtxaml::GridUnitType::Star};
+                factSetGridHeight = {1, winrt::GridUnitType::Star};
             }
 
             auto facts = adaptiveFactSet.Facts();
@@ -82,11 +82,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     auto spacing = factSetConfig.Spacing();
                     titleTextBlock.Margin({0, 0, (double)spacing, 0});
 
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
                                                                                                  L"Adaptive.Fact.Title",
                                                                                                  titleTextBlock);
 
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
                                                                                                  L"Adaptive.Fact.Value",
                                                                                                  valueTextBlock);
 
@@ -98,8 +98,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                     // Finally add the column container to the grid, and increment the column count
 
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(titleTextBlock, xamlGrid);
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(valueTextBlock, xamlGrid);
+                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(titleTextBlock, xamlGrid);
+                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(valueTextBlock, xamlGrid);
                     ++currentFact;
                     ++validFacts;
                 }
@@ -111,7 +111,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 return nullptr;
             }
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", xamlGrid);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", xamlGrid);
 
             return xamlGrid;
         }

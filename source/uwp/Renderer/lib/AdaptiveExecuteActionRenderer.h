@@ -10,9 +10,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveExecuteActionRenderer() = default;
 
-        Windows::UI::Xaml::UIElement Render(AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action,
-                                            AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                            AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+        Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
+                                            winrt::AdaptiveRenderContext const& renderContext,
+                                            winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

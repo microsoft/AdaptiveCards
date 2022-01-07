@@ -20,15 +20,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::AdaptiveBackgroundImage BackgroundImage() { return m_adaptiveBackgroundImage; }
 
         // TODO: couldn't see rootElement being used anywhere?
-        /*  void RootElement(rtxaml::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
-                  rtxaml::FrameworkElement RootElement() { return m_rootElement;}*/
+        /*  void RootElement(winrt::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
+                  winrt::FrameworkElement RootElement() { return m_rootElement;}*/
 
-        rtxaml::UIElement ResolvedImage() { return m_resolvedImage; }
+        winrt::UIElement ResolvedImage() { return m_resolvedImage; }
         // TODO: convert to property?
         void ImageSize(winrt::Size const& imageSize) { m_imageSize = imageSize; }
         winrt::Size ImageSize() { return m_imageSize; }
 
-        void LoadImageBrush(rtxaml::UIElement const& image);
+        void LoadImageBrush(winrt::UIElement const& image);
 
         void OnApplyTemplate();
         winrt::Size MeasureOverride(winrt::Size const& availableSize);
@@ -39,11 +39,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     private:
         void RefreshContainerTile();
-        void ImageOpened(const IInspectable& sender, const rtxaml::RoutedEventArgs& args);
+        void ImageOpened(const IInspectable& sender, const winrt::RoutedEventArgs& args);
 
         // Fields
-        /* rtxaml::FrameworkElement m_rootElement;*/
-        rtxaml::UIElement m_resolvedImage{nullptr};
+        /* winrt::FrameworkElement m_rootElement;*/
+        winrt::UIElement m_resolvedImage{nullptr};
         winrt::Canvas m_containerElement;
         winrt::ImageBrush m_brushXaml;
 

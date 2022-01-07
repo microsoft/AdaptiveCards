@@ -12,12 +12,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return StringToJsonObject(GetInputItemsAsJsonString());
     }
 
-    void AdaptiveInputs::AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto parentCard = renderArgs.ParentCard();
         auto cardId = parentCard.InternalId();
-        auto inputElement = inputValue.InputElement().as<ObjectModel::Uwp::IAdaptiveInputElement>();
-        auto inputElementAsCardElement = inputElement.as<ObjectModel::Uwp::IAdaptiveCardElement>();
+        auto inputElement = inputValue.InputElement().as<winrt::IAdaptiveInputElement>();
+        auto inputElementAsCardElement = inputElement.as<winrt::IAdaptiveCardElement>();
         auto inputId = inputElementAsCardElement.Id();
         auto id = HStringToUTF8(inputId);
 
@@ -25,17 +25,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_inputValues[id] = inputValue;
     }
 
-    uint32_t AdaptiveInputs::GetInternalIdFromAction(ObjectModel::Uwp::IAdaptiveActionElement const& action)
+    uint32_t AdaptiveInputs::GetInternalIdFromAction(winrt::IAdaptiveActionElement const& action)
     {
         auto actionType = action.ActionType();
 
-        if (actionType == ObjectModel::Uwp::ActionType::Execute)
+        if (actionType == winrt::ActionType::Execute)
         {
-            return action.as<ObjectModel::Uwp::AdaptiveExecuteAction>().InternalId();
+            return action.as<winrt::AdaptiveExecuteAction>().InternalId();
         }
-        else if (actionType == ObjectModel::Uwp::ActionType::Submit)
+        else if (actionType == winrt::ActionType::Submit)
         {
-            return action.as<ObjectModel::Uwp::AdaptiveSubmitAction>().InternalId();
+            return action.as<winrt::AdaptiveSubmitAction>().InternalId();
         }
         else
         {
@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveInputs::LinkSubmitActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& action,
+    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action,
                                                 Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         uint32_t actionId = GetInternalIdFromAction(action);
@@ -56,9 +56,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_parentCard[cardId] = parentCardId;
     }
 
-    Uwp::IAdaptiveInputValue AdaptiveInputs::GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement)
+    Uwp::IAdaptiveInputValue AdaptiveInputs::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
-        hstring elementId = inputElement.as<ObjectModel::Uwp::IAdaptiveCardElement>().Id();
+        hstring elementId = inputElement.as<winrt::IAdaptiveCardElement>().Id();
         return m_inputValues[HStringToUTF8(elementId)];
     }
 
@@ -68,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         for (auto& inputValue : m_lastRetrievedValues)
         {
-            auto cardElement = inputValue.InputElement().as<ObjectModel::Uwp::IAdaptiveCardElement>();
+            auto cardElement = inputValue.InputElement().as<winrt::IAdaptiveCardElement>();
             std::string key = HStringToUTF8(cardElement.Id());
             jsonValue[key] = HStringToUTF8(inputValue.CurrentValue());
         }
@@ -88,14 +88,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         for (auto&& inputValue : m_lastRetrievedValues)
         {
-            auto cardElement = inputValue.InputElement().as<ObjectModel::Uwp::IAdaptiveCardElement>();
+            auto cardElement = inputValue.InputElement().as<winrt::IAdaptiveCardElement>();
             propertySetMap.Insert(cardElement.Id(), winrt::box_value(inputValue.CurrentValue()));
         }
 
         return valueSet;
     }
 
-    bool AdaptiveInputs::ValidateInputs(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction)
+    bool AdaptiveInputs::ValidateInputs(winrt::IAdaptiveActionElement const& submitAction)
     {
         bool allInputsValid = true;
         auto inputsToValidate = GetInputsToValidate(submitAction);
@@ -126,9 +126,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return allInputsValid;
     }
 
-    std::vector<Uwp::IAdaptiveInputValue> AdaptiveInputs::GetInputsToValidate(ObjectModel::Uwp::IAdaptiveActionElement const& action)
+    std::vector<winrt::IAdaptiveInputValue> AdaptiveInputs::GetInputsToValidate(winrt::IAdaptiveActionElement const& action)
     {
-        std::vector<Uwp::IAdaptiveInputValue> inputsToValidate;
+        std::vector<winrt::IAdaptiveInputValue> inputsToValidate;
 
         uint32_t actionId = GetInternalIdFromAction(action);
         std::size_t card = m_containerCardForAction[actionId];

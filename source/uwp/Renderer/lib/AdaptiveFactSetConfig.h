@@ -10,8 +10,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveFactSetConfig(::AdaptiveCards::FactSetConfig const& factSetConfig = {});
 
-        property<Uwp::AdaptiveFactSetTextConfig> Title;
-        property<Uwp::AdaptiveFactSetTextConfig> Value;
+        property<winrt::AdaptiveFactSetTextConfig> Title;
+        property<winrt::AdaptiveFactSetTextConfig> Value;
         property<uint32_t> Spacing;
     };
 }

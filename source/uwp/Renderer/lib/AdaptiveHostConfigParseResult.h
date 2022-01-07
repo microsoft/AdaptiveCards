@@ -8,10 +8,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     struct AdaptiveHostConfigParseResult : AdaptiveHostConfigParseResultT<AdaptiveHostConfigParseResult>
     {
-        AdaptiveHostConfigParseResult(Uwp::AdaptiveHostConfig const& hostConfig = nullptr);
+        AdaptiveHostConfigParseResult(winrt::AdaptiveHostConfig const& hostConfig = nullptr);
 
-        property<Uwp::AdaptiveHostConfig> HostConfig;
-        property<winrt::IVector<ObjectModel::Uwp::AdaptiveError>> Errors;
+        property<winrt::AdaptiveHostConfig> HostConfig;
+        property<winrt::IVector<winrt::AdaptiveError>> Errors;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

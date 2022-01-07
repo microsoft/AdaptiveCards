@@ -39,45 +39,45 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     Uwp::AdaptiveInputs AdaptiveRenderContext::UserInputs() { return GetRenderResult()->UserInputs(); }
 
-    void AdaptiveRenderContext::AddError(ObjectModel::Uwp::ErrorStatusCode statusCode, hstring const& message)
+    void AdaptiveRenderContext::AddError(winrt::ErrorStatusCode statusCode, hstring const& message)
     {
         GetRenderResult()->Errors().Append({statusCode, message});
     }
 
-    void AdaptiveRenderContext::AddWarning(ObjectModel::Uwp::WarningStatusCode statusCode, hstring const& message)
+    void AdaptiveRenderContext::AddWarning(winrt::WarningStatusCode statusCode, hstring const& message)
     {
         GetRenderResult()->Warnings().Append({statusCode, message});
     }
 
-    void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
-                                                  ObjectModel::Uwp::AdaptiveShowCardAction const& showCardAction,
+    void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
+                                                  winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                                   Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(actionSet, showCardAction, showCardUIElement, renderArgs);
     }
 
-    void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard,
-                                                  ObjectModel::Uwp::AdaptiveShowCardAction const& showCardAction,
+    void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
+                                                  winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                                   Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(ObjectModel::Uwp::AdaptiveActionSet const& actionSet,
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet,
                                                   winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionSet, actionUIElement);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(ObjectModel::Uwp::AdaptiveCard const& actionCard,
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveCard const& actionCard,
                                                   winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionCard, actionUIElement);
     }
 
-    void AdaptiveRenderContext::AddInputValue(Uwp::IAdaptiveInputValue const& inputValue, Uwp::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveRenderContext::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -85,7 +85,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveRenderContext::LinkSubmitActionToCard(ObjectModel::Uwp::IAdaptiveActionElement const& submitAction,
+    void AdaptiveRenderContext::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction,
                                                        Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         if (auto renderResult = GetRenderResult())
@@ -94,7 +94,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveRenderContext::LinkCardToParent(ObjectModel::Uwp::AdaptiveCard const& card, Uwp::AdaptiveRenderArgs const& args)
+    void AdaptiveRenderContext::LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& args)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -102,7 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    Uwp::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(ObjectModel::Uwp::IAdaptiveInputElement const& inputElement)
+    Uwp::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         if (auto renderResult = GetRenderResult())
         {

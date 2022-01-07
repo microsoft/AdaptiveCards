@@ -22,7 +22,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         static winrt::Windows::UI::Xaml::FrameworkElement
         BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderContext const& renderContext,
                                       XamlBuilder* xamlBuilder,
                                       winrt::ContainerStyle defaultContainerStyle =
                                           winrt::ContainerStyle::Default);
@@ -39,11 +39,11 @@ namespace AdaptiveCards::Rendering::Uwp
             winrt::Panel ParentPanel,
             winrt::AdaptiveRenderContext context,
             winrt::AdaptiveRenderArgs renderArgs,
-            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
+            std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
         winrt::Windows::UI::Xaml::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+    winrt::AdaptiveRenderContext const& renderContext,
+    winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
@@ -61,8 +61,8 @@ namespace AdaptiveCards::Rendering::Uwp
         // TODO: can we move word static to the function name?
         static std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
         CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                              winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                              winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                              winrt::AdaptiveRenderContext const& renderContext,
+                              winrt::AdaptiveRenderArgs const& renderArgs,
                               XamlBuilder* xamlBuilder);
 
         template<typename T>
@@ -81,7 +81,7 @@ namespace AdaptiveCards::Rendering::Uwp
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,
-                                 winrt::AdaptiveCards::Rendering::Uwp::AdaptiveCardResourceResolvers const& resolvers,
+                                 winrt::AdaptiveCardResourceResolvers const& resolvers,
                                  bool isAutoSize,
                                  winrt::IInspectable const& parentElement,
                                  winrt::IInspectable const& imageContainer,

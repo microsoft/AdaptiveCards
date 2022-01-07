@@ -105,16 +105,16 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
         // text block stretches to both ends of its parent horizontally if its horizontal alignment is not set,
         // this can lead to unexpected behavior such as hyper link being active in the streched space
         // setting the horizontal alignment, aligns the textblock instead of stretching
-        xamlTextBlock.HorizontalAlignment(rtxaml::HorizontalAlignment::Left);
-        xamlTextBlock.TextAlignment(rtxaml::TextAlignment::Left);
+        xamlTextBlock.HorizontalAlignment(winrt::HorizontalAlignment::Left);
+        xamlTextBlock.TextAlignment(winrt::TextAlignment::Left);
         break;
     case winrt::HAlignment::Right:
-        xamlTextBlock.HorizontalAlignment(rtxaml::HorizontalAlignment::Right);
-        xamlTextBlock.TextAlignment(rtxaml::TextAlignment::Right);
+        xamlTextBlock.HorizontalAlignment(winrt::HorizontalAlignment::Right);
+        xamlTextBlock.TextAlignment(winrt::TextAlignment::Right);
         break;
     case winrt::HAlignment::Center:
-        xamlTextBlock.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
-        xamlTextBlock.TextAlignment(rtxaml::TextAlignment::Center);
+        xamlTextBlock.HorizontalAlignment(winrt::HorizontalAlignment::Center);
+        xamlTextBlock.TextAlignment(winrt::TextAlignment::Center);
         break;
     }
 }
@@ -155,7 +155,7 @@ void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
         auto fontColor = GetColorFromAdaptiveColor(hostConfig, adaptiveTextColor, containerStyle, isSubtle, false);
 
-        auto fontColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
+        auto fontColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
 
         xamlTextElement.Foreground(fontColorBrush);
     }

@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                             winrt::AdaptiveRenderContext const& renderContext,
                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {

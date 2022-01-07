@@ -11,8 +11,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveFontTypeDefinition(::AdaptiveCards::FontTypeDefinition const& fontTypeDefinition = {});
 
         property<hstring> FontFamily;
-        property<Uwp::AdaptiveFontWeightsConfig> FontWeights;
-        property<Uwp::AdaptiveFontSizesConfig> FontSizes;
+        property<winrt::AdaptiveFontWeightsConfig> FontWeights;
+        property<winrt::AdaptiveFontSizesConfig> FontSizes;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

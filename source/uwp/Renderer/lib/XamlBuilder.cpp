@@ -29,18 +29,18 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void XamlBuilder::ImagesLoadingHadError() { FireImagesLoadingHadError(); }
 
-    rtxaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
+    winrt::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
                                                                         winrt::AdaptiveRenderContext const& renderContext,
                                                                         XamlBuilder* xamlBuilder,
                                                                         winrt::ContainerStyle defaultContainerStyle)
     {
         try
         {
-            rtxaml::FrameworkElement xamlTreeRoot{nullptr};
+            winrt::FrameworkElement xamlTreeRoot{nullptr};
 
             auto hostConfig = renderContext.HostConfig();
 
-            bool ifSupportsInteractivity = XamlHelpers::SupportsInteractivity(hostConfig);
+            bool ifSupportsInteractivity =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig);
 
             // TODO: why is it called adaptiveCard if it's config? :D
             auto adaptiveCardConfig = hostConfig.AdaptiveCard();
@@ -63,7 +63,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto& [bodyElementContainer, rootElement] =
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder);
 
-            rtxaml::FrameworkElement rootAsFrameworkElement = rootElement.as<rtxaml::FrameworkElement>();
+            winrt::FrameworkElement rootAsFrameworkElement = rootElement.as<winrt::FrameworkElement>();
             uint32_t cardMinHeight = adaptiveCard.MinHeight();
 
             if (cardMinHeight > 0)
@@ -78,18 +78,18 @@ namespace AdaptiveCards::Rendering::Uwp
             auto rootSelectActionElement =
                 ActionHelpers::HandleSelectAction(nullptr, selectAction, renderContext, rootElement, ifSupportsInteractivity, true);
 
-            rootAsFrameworkElement = rootSelectActionElement.as<rtxaml::FrameworkElement>();
+            rootAsFrameworkElement = rootSelectActionElement.as<winrt::FrameworkElement>();
 
             // Enumerate the child items of the card and build xaml for them
             auto body = adaptiveCard.Body();
             auto bodyRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, adaptiveCard, nullptr);
 
-            BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](rtxaml::UIElement) {});
+            BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](winrt::UIElement) {});
 
             winrt::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
 
-            XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer, verticalContentAlignment);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer, verticalContentAlignment);
 
             auto actions = adaptiveCard.Actions();
 
@@ -110,11 +110,11 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isInShowCard)
             {
-                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement);
             }
             else
             {
-                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
             }
 
             xamlTreeRoot = rootAsFrameworkElement;
@@ -176,8 +176,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
     std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
     XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                       winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
                                        XamlBuilder* xamlBuilder)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -189,7 +189,7 @@ namespace AdaptiveCards::Rendering::Uwp
         try
         {
             winrt::Panel bodyElementContainer{nullptr};
-            rtxaml::UIElement rootElementResult{nullptr};
+            winrt::UIElement rootElementResult{nullptr};
 
             winrt::Grid rootElement{};
 
@@ -200,14 +200,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
             // TODO: How do I check for errors here? are there gonna be any?
             auto backgroundColor = GetBackgroundColorFromStyle(containerStyle, hostConfig);
-            rootElement.Background(XamlHelpers::GetSolidColorBrush(backgroundColor));
+            rootElement.Background( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
 
             auto backgroundImage = adaptiveCard.BackgroundImage();
             bool isBackgroundImageValid = IsBackgroundImageValid(backgroundImage);
 
             if (isBackgroundImageValid)
             {
-                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
             }
 
             auto spacingConfig = hostConfig.Spacing();
@@ -219,14 +219,14 @@ namespace AdaptiveCards::Rendering::Uwp
             auto bodyElementHostImpl = winrt::make_self<WholeItemsPanelWinRT>();
             bodyElementHostImpl->SetMainPanel(true);
             bodyElementHostImpl->SetAdaptiveHeight(true);
-            winrt::AdaptiveCards::Rendering::Uwp::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
+            winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
 
-            XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
 
             // TODO: why is it called height if it's height type?
             winrt::HeightType adaptiveCardHeightType = adaptiveCard.Height();
 
-            XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
             // TODO: I should be able to cast here directly, right? *bodyElementHostImpl?
             bodyElementContainer = bodyElementHost;
 
@@ -239,13 +239,13 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (adaptiveCardHeightType == winrt::HeightType::Stretch)
             {
-                rootElement.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
+                rootElement.VerticalAlignment(winrt::VerticalAlignment::Stretch);
             }
 
             // TODO: Add RTL check and add flow direction
             if (auto const contextRtl = renderContext.Rtl())
             {
-                rootElement.FlowDirection(contextRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
+                rootElement.FlowDirection(contextRtl.Value() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
             }
 
             // TODO: no need to do that, remove later;
@@ -281,7 +281,7 @@ namespace AdaptiveCards::Rendering::Uwp
         winrt::Panel parentPanel,
         winrt::AdaptiveRenderContext renderContext,
         winrt::AdaptiveRenderArgs renderArgs,
-        std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
+        std::function<void(winrt::UIElement const& child)> childCreatedCallback)
     {
         int iElement = 0;
         uint32_t childrenSize = children.Size();
@@ -300,7 +300,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto elementRenderer = elementRenderers.Get(elementType);
             auto hostConfig = renderContext.HostConfig();
 
-            rtxaml::UIElement newControl{nullptr};
+            winrt::UIElement newControl{nullptr};
             winrt::IAdaptiveCardElement renderedElement;
             if (!shouldFallback && elementRenderer)
             {
@@ -312,26 +312,26 @@ namespace AdaptiveCards::Rendering::Uwp
             if (elementRenderer == nullptr || shouldFallback)
             {
                 // TODO: figure out if we do it right
-                std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
+                std::tie(newControl, renderedElement) =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::RenderFallback(element, renderContext, renderArgs);
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
             if (newControl)
             {
-                auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+                auto separator =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 // If the renderedElement was an input, render the label and error message
                 if (auto const inputElement = renderedElement.try_as<winrt::IAdaptiveInputElement>())
                 {
-                    newControl = XamlHelpers::HandleLabelAndErrorMessage(inputElement, renderContext, renderArgs, newControl);
+                    newControl =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleLabelAndErrorMessage(inputElement, renderContext, renderArgs, newControl);
                 }
 
-                XamlHelpers::AddRenderedControl(newControl, element, parentPanel, separator, nullptr, childCreatedCallback);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddRenderedControl(newControl, element, parentPanel, separator, nullptr, childCreatedCallback);
             }
 
             // Revert the ancestorHasFallback value
             renderArgs.AncestorHasFallback(ancestorHasFallback);
         }
-        XamlHelpers::SetSeparatorVisibility(parentPanel);
+         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
     }
 }

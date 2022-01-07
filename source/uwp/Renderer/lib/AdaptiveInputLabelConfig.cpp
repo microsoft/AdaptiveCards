@@ -9,10 +9,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveInputLabelConfig::AdaptiveInputLabelConfig(::AdaptiveCards::InputLabelConfig const& inputLabelConfig)
     {
-        Color = static_cast<ObjectModel::Uwp::ForegroundColor>(inputLabelConfig.color);
+        Color = static_cast<winrt::ForegroundColor>(inputLabelConfig.color);
         IsSubtle = inputLabelConfig.isSubtle;
-        Size = static_cast<ObjectModel::Uwp::TextSize>(inputLabelConfig.size);
+        Size = static_cast<winrt::TextSize>(inputLabelConfig.size);
         Suffix = UTF8ToHString(inputLabelConfig.suffix);
-        Weight = static_cast<ObjectModel::Uwp::TextWeight>(inputLabelConfig.weight);
+        Weight = static_cast<winrt::TextWeight>(inputLabelConfig.weight);
     }
 }

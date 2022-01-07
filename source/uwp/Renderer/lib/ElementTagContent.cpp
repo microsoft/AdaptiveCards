@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     ElementTagContent::ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
                                          winrt::Panel const& parentPanel,
-                                         rtxaml::UIElement const& separator,
+                                         winrt::UIElement const& separator,
                                          winrt::ColumnDefinition const& columnDefinition,
                                          boolean expectedVisibility,
                                          boolean isStretchable)

@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveInputsConfig(::AdaptiveCards::InputsConfig const& inputsConfig = {});
 
-        property<Uwp::AdaptiveErrorMessageConfig> ErrorMessage;
-        property<Uwp::AdaptiveLabelConfig> Label;
+        property<winrt::AdaptiveErrorMessageConfig> ErrorMessage;
+        property<winrt::AdaptiveLabelConfig> Label;
     };
 }
 

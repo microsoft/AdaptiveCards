@@ -10,8 +10,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveTextStylesConfig(::AdaptiveCards::TextStylesConfig const& textConfig = {});
 
-        property<Uwp::AdaptiveTextStyleConfig> Heading;
-        property<Uwp::AdaptiveTextStyleConfig> ColumnHeader;
+        property<winrt::AdaptiveTextStyleConfig> Heading;
+        property<winrt::AdaptiveTextStyleConfig> ColumnHeader;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

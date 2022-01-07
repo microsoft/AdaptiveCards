@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveCardResourceResolvers() = default;
 
-        void Set(hstring const& scheme, Uwp::IAdaptiveCardResourceResolver const& resolver);
+        void Set(hstring const& scheme, winrt::IAdaptiveCardResourceResolver const& resolver);
         Uwp::IAdaptiveCardResourceResolver Get(hstring const& scheme);
 
         std::map<hstring, Rendering::Uwp::IAdaptiveCardResourceResolver> m_resourceResolvers;

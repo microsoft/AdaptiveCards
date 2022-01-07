@@ -10,12 +10,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveContainerStylesDefinition(::AdaptiveCards::ContainerStylesDefinition const& stylesDefinition = {});
 
-        property<Uwp::AdaptiveContainerStyleDefinition> Default;
-        property<Uwp::AdaptiveContainerStyleDefinition> Emphasis;
-        property<Uwp::AdaptiveContainerStyleDefinition> Good;
-        property<Uwp::AdaptiveContainerStyleDefinition> Attention;
-        property<Uwp::AdaptiveContainerStyleDefinition> Warning;
-        property<Uwp::AdaptiveContainerStyleDefinition> Accent;
+        property<winrt::AdaptiveContainerStyleDefinition> Default;
+        property<winrt::AdaptiveContainerStyleDefinition> Emphasis;
+        property<winrt::AdaptiveContainerStyleDefinition> Good;
+        property<winrt::AdaptiveContainerStyleDefinition> Attention;
+        property<winrt::AdaptiveContainerStyleDefinition> Warning;
+        property<winrt::AdaptiveContainerStyleDefinition> Accent;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

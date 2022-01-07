@@ -8,14 +8,14 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                           winrt::AdaptiveRenderContext const& renderContext,
                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
-            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (! ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Number input was stripped from card because interactivity is not supported");
@@ -53,15 +53,15 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             textBox.PlaceholderText(adaptiveNumberInput.Placeholder());
-            textBox.VerticalAlignment(rtxaml::VerticalAlignment::Top);
+            textBox.VerticalAlignment(winrt::VerticalAlignment::Top);
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Number", textBox);
+             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Number", textBox);
 
             // If there's any validation on this input, put the input inside a border
             auto max = adaptiveNumberInput.Max();
             auto min = adaptiveNumberInput.Min();
 
-            auto& [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+            auto& [inputLayout, validationBorder] =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
                 adaptiveNumberInput,
                 textBox,
                 (max || min), // TODO: no need to compare with nullptr, right?

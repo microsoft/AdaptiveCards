@@ -11,17 +11,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     }
 
-    void AdaptiveFeatureRegistration::Set(hstring const& name, hstring const& version)
+    void AdaptiveFeatureRegistration::Set(winrt::hstring const& name, winrt::hstring const& version)
     {
         m_sharedFeatureRegistration->AddFeature(HStringToUTF8(name), HStringToUTF8(version));
     }
 
-    hstring AdaptiveFeatureRegistration::Get(hstring const& name)
+    winrt::hstring AdaptiveFeatureRegistration::Get(winrt::hstring const& name)
     {
         return UTF8ToHString(m_sharedFeatureRegistration->GetFeatureVersion(HStringToUTF8(name)));
     }
 
-    void AdaptiveFeatureRegistration::Remove(hstring const& name)
+    void AdaptiveFeatureRegistration::Remove(winrt::hstring const& name)
     {
         m_sharedFeatureRegistration->RemoveFeature(HStringToUTF8(name));
     }

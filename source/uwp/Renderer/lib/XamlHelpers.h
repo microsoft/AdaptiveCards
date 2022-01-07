@@ -3,19 +3,11 @@
 #pragma once
 
 #include "pch.h"
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "WholeItemsPanel.h"
 #include <type_traits>
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
- /*   namespace winrt
-    {
-        namespace rendering = ::winrt::AdaptiveCards::Rendering::Uwp;
-    };*/
-
-    namespace rtxaml = winrt::Windows::UI::Xaml;
-
     inline winrt::SolidColorBrush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
     {
         winrt::SolidColorBrush solidColorBrush;
@@ -25,16 +17,16 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
-                                        rtxaml::FrameworkElement const& frameworkElement);
+                                        winrt::FrameworkElement const& frameworkElement);
 
-    rtxaml::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
+    winrt::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
                                       uint32_t spacing,
                                       uint32_t separatorThickness,
                                       winrt::Windows::UI::Color const& separatorColor,
                                       bool isHorizontal = true);
 
     template<typename T>
-    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, winrt::hstring const& resourceName)
+    T TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary, winrt::hstring const& resourceName)
     {
         if (resourceDictionary == nullptr)
         {
@@ -57,7 +49,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     template<typename T>
-    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
+    T TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
     {
         return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName));
     }
@@ -81,7 +73,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             return;
         }
 
-        auto elementToAppend = xamlElement.as<rtxaml::UIElement>();
+        auto elementToAppend = xamlElement.as<winrt::UIElement>();
         panel.Children().Append(elementToAppend);
 
         if (heightType == winrt::HeightType::Stretch)
@@ -136,7 +128,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (wrap)
         {
-            content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords);
+            content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
         }
 
         if (const auto contentControl = item.try_as<winrt::ContentControl>())
@@ -165,43 +157,43 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     winrt::Windows::UI::Xaml::UIElement
     RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                     winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                     winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+                     winrt::AdaptiveRenderContext const& renderContext,
+                     winrt::AdaptiveRenderArgs const& renderArgs);
 
     winrt::Windows::UI::Xaml::UIElement
     RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                            winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
+                            winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::Border
     CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
-                           winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext);
+                           winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::Windows::UI::Xaml::UIElement
     HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
-                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                               winrt::AdaptiveRenderContext const& renderContext,
+                               winrt::AdaptiveRenderArgs const& renderArgs,
                                winrt::Windows::UI::Xaml::UIElement const& inputLayout);
 
     std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Border>
     HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
                                    winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
                                    bool hasTypeSpecificValidation,
-                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                                   winrt::AdaptiveRenderContext const& renderContext,
                                    bool ifValidationBorderIsNeeded = true);
 
     void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel, winrt::AdaptiveBackgroundImage const& backgroundImage, winrt::AdaptiveRenderContext const& renderContext);
 
-    void AddRenderedControl(rtxaml::UIElement const& newControl,
+    void AddRenderedControl(winrt::UIElement const& newControl,
                             winrt::IAdaptiveCardElement const& element,
                             winrt::Panel const& parentPanel,
-                            rtxaml::UIElement const& separator,
+                            winrt::UIElement const& separator,
                             winrt::ColumnDefinition const& columnDefinition,
-                            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
+                            std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
     // TODO: come back to this function
-    std::tuple<rtxaml::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
+    std::tuple<winrt::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
                                                                              winrt::AdaptiveRenderContext const& renderContext,
                                                                              winrt::AdaptiveRenderArgs const& renderArgs);
 
@@ -229,8 +221,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     winrt::Windows::UI::Xaml::UIElement
     AddSeparatorIfNeeded(int& currentElement,
                          winrt::IAdaptiveCardElement const& element,
-                         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
-                         winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
+                         winrt::AdaptiveHostConfig const& hostConfig,
+                         winrt::AdaptiveRenderContext const& renderContext,
                          winrt::Panel const& parentPanel);
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
@@ -238,9 +230,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                           winrt::BitmapSource const& imageSource,
                           bool setVisible);
 
-    void ApplyMarginToXamlElement(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig const& hostConfig,
+    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig,
                                   winrt::Windows::UI::Xaml::IFrameworkElement const& element);
 
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
-                                               winrt::AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig const& hostConfig);
+                                               winrt::AdaptiveHostConfig const& hostConfig);
 }

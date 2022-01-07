@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     {
         if (const auto inputAsControl = m_uiInputElement.try_as<winrt::Control>())
         {
-            inputAsControl.Focus(rtxaml::FocusState::Programmatic);
+            inputAsControl.Focus(winrt::FocusState::Programmatic);
         }
     }
 
@@ -50,11 +50,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     {
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        auto inputUIElementAsDependencyObject = m_uiInputElement.as<rtxaml::DependencyObject>();
+        auto inputUIElementAsDependencyObject = m_uiInputElement.as<winrt::DependencyObject>();
 
         auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
 
-        auto uiValidationErrorAsDependencyObject = m_validationError.as<rtxaml::DependencyObject>();
+        auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
         uint32_t index;
         bool found = uiElementDescribers.IndexOf(uiValidationErrorAsDependencyObject, index);
@@ -107,11 +107,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         {
             if (isInputValid)
             {
-                m_validationError.Visibility(rtxaml::Visibility::Collapsed);
+                m_validationError.Visibility(winrt::Visibility::Collapsed);
             }
             else
             {
-                m_validationError.Visibility(rtxaml::Visibility::Visible);
+                m_validationError.Visibility(winrt::Visibility::Visible);
             }
 
             SetAccessibilityProperties(isInputValid);
@@ -119,7 +119,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     }
 
     TextInputBase::TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                 rtxaml::UIElement const& uiTextInputElement,
+                                 winrt::UIElement const& uiTextInputElement,
                                  winrt::Border const& validationBorder) :
         // TODO: is this the proper way for calling base ctor? Do I need to cast the first argument?
         InputValue(adaptiveTextInput, uiTextInputElement, validationBorder),
@@ -331,7 +331,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     winrt::hstring ToggleInputValue::CurrentValue()
     {
-        auto checkedValue = XamlHelpers::GetToggleValue(m_checkBoxElement);
+        auto checkedValue =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
 
         if (checkedValue)
         {
@@ -354,7 +354,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         if (isRequired)
         {
             // MeetsRequirement is true if toggle is checked
-            meetsRequirement = XamlHelpers::GetToggleValue(m_checkBoxElement);
+            meetsRequirement =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
         }
         return meetsRequirement;
     }
@@ -412,7 +412,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             std::string multiSelectValues;
             for (auto element : panelChildren)
             {
-                if (XamlHelpers::GetToggleValue(element))
+                if ( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
                 {
                     multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index) + ",";
                 }
@@ -431,7 +431,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             uint32_t selectedIndex = -1;
             for (auto element : panelChildren)
             {
-                if (XamlHelpers::GetToggleValue(element))
+                if ( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
                 {
                     selectedIndex = index;
                     break;
@@ -453,7 +453,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         if (const auto choiceAsControl = firstChoice.try_as<winrt::Control>())
         {
             // TODO: do we need to return bool indicating whether focus was set?
-            choiceAsControl.Focus(rtxaml::FocusState::Programmatic);
+            choiceAsControl.Focus(winrt::FocusState::Programmatic);
         }
     }
 

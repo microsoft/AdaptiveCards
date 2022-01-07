@@ -8,7 +8,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveMediaEventInvoker::AdaptiveMediaEventInvoker(Uwp::RenderedAdaptiveCard const& renderResult) :
+    AdaptiveMediaEventInvoker::AdaptiveMediaEventInvoker(winrt::RenderedAdaptiveCard const& renderResult) :
         m_weakRenderResult(renderResult)
     {
     }

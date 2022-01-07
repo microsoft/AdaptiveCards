@@ -3,7 +3,6 @@
 #pragma once
 
 #include "WholeItemsPanel.g.h"
-#include <winrt/Windows.UI.Xaml.Shapes.h>
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -32,9 +31,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         virtual bool IsAllContentClippedOut() { return ((m_measuredCount > 0) && (m_visibleCount == 0)); }
         virtual bool IsTruncated() { return m_isTruncated; }
 
-        void AddElementToStretchablesList(rtxaml::UIElement const& element);
-        bool IsUIElementInStretchableList(rtxaml::UIElement const& element);
-        void SetVerticalContentAlignment(AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
+        void AddElementToStretchablesList(winrt::UIElement const& element);
+        bool IsUIElementInStretchableList(winrt::UIElement const& element);
+        void SetVerticalContentAlignment(winrt::VerticalContentAlignment verticalContentAlignment)
         {
             m_verticalContentAlignment = verticalContentAlignment;
         }
@@ -51,7 +50,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         uint32_t m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment m_verticalContentAlignment{};
+        winrt::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel
@@ -71,11 +70,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 
-        static void AppendAltTextToUIElement(rtxaml::UIElement const& pUIElement, std::wstring& buffer);
+        static void AppendAltTextToUIElement(winrt::UIElement const& pUIElement, std::wstring& buffer);
 
-        static winrt::hstring GetAltAsString(rtxaml::UIElement const& element);
+        static winrt::hstring GetAltAsString(winrt::UIElement const& element);
 
-        static bool HasExplicitSize(rtxaml::FrameworkElement const& element);
+        static bool HasExplicitSize(winrt::FrameworkElement const& element);
     };
 }
 

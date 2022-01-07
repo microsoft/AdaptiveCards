@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveImageSetConfig(::AdaptiveCards::ImageSetConfig const& ImageSetConfig = {});
 
-        property<ObjectModel::Uwp::ImageSize> ImageSize;
+        property<winrt::ImageSize> ImageSize;
         property<uint32_t> MaxImageHeight;
     };
 }

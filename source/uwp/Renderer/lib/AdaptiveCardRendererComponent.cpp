@@ -36,6 +36,8 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 
+using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
+
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveCardRenderer::AdaptiveCardRenderer() :
@@ -76,7 +78,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         GetHostConfig()->OverflowMaxActions = overflowMaxActions;
     }
 
-    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(ObjectModel::Uwp::AdaptiveCard const& adaptiveCard)
+    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
     {
         auto renderedCard = winrt::make_self<implementation::RenderedAdaptiveCard>();
         renderedCard->SetOriginatingCard(adaptiveCard);
@@ -110,7 +112,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
             catch (...)
             {
-                renderContext->AddError(ObjectModel::Uwp::ErrorStatusCode::RenderFailed,
+                renderContext->AddError(winrt::ErrorStatusCode::RenderFailed,
                                         L"An unrecoverable error was encountered while rendering the card");
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -121,7 +123,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson)
     {
-        auto adaptiveCardParseResult = ObjectModel::Uwp::AdaptiveCard::FromJsonString(adaptiveJson);
+        auto adaptiveCardParseResult = winrt::AdaptiveCard::FromJsonString(adaptiveJson);
         if (auto parsedCard = adaptiveCardParseResult.AdaptiveCard())
         {
             return RenderAdaptiveCard(parsedCard);
@@ -161,12 +163,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<rtxaml::ResourceDictionary>();
+        auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
         auto actionSentimentResourceDictionary =
-            winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<rtxaml::ResourceDictionary>();
+            winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
 
@@ -186,18 +188,19 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto hoverAccentColor = GenerateLHoverColor(accentColor);
         auto hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
-        auto accentColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(accentColor);
+        auto accentColorBrush = GetSolidColorBrush(accentColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush);
 
-        auto lightAccentColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(hoverAccentColor);
+        auto lightAccentColorBrush = GetSolidColorBrush(hoverAccentColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush);
 
-        auto attentionColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(attentionColor);
+        auto attentionColorBrush = GetSolidColorBrush(attentionColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush);
 
-        auto lightAttentionColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(hoverAttentionColor);
+        auto lightAttentionColorBrush = GetSolidColorBrush(hoverAttentionColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
                                                        lightAttentionColorBrush);
+
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()

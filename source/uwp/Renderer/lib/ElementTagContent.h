@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         ElementTagContent() = default;
         ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
                           winrt::Panel const& parentPanel,
-                          rtxaml::UIElement const& separator,
+                          winrt::UIElement const& separator,
                           winrt::ColumnDefinition const& columnDefinition,
                           boolean expectedVisibility,
                           boolean isStretchable);
@@ -21,7 +21,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<bool> ExpectedVisibility;
         property<bool> IsStretchable;
 
-        rtxaml::UIElement Separator() { return m_separator; }
+        winrt::UIElement Separator() { return m_separator; }
         winrt::Panel ParentPanel() { return m_parentPanel; }
         winrt::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
         winrt::IAdaptiveCardElement CardElement() { return m_cardElement; }
@@ -30,7 +30,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        rtxaml::UIElement m_separator{nullptr};
+        winrt::UIElement m_separator{nullptr};
         winrt::Panel m_parentPanel{nullptr};
         winrt::ColumnDefinition m_columnDefinition;
         winrt::IAdaptiveCardElement m_cardElement;

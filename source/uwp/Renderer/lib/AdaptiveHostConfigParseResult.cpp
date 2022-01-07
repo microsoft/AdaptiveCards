@@ -7,8 +7,8 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult(Uwp::AdaptiveHostConfig const& value) :
-        Errors{winrt::single_threaded_vector<ObjectModel::Uwp::AdaptiveError>()}, HostConfig{value}
+    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult(winrt::AdaptiveHostConfig const& value) :
+        Errors{winrt::single_threaded_vector<winrt::AdaptiveError>()}, HostConfig{value}
     {
     }
 }

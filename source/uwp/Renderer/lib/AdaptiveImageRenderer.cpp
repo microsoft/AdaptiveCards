@@ -18,7 +18,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     }
 
-    rtxaml::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+    winrt::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                     winrt::AdaptiveRenderContext const& renderContext,
                                                     winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -44,7 +44,7 @@ namespace AdaptiveCards::Rendering::Uwp
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    rtxaml::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+    winrt::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                               winrt::AdaptiveRenderContext const& renderContext,
                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -86,7 +86,7 @@ namespace AdaptiveCards::Rendering::Uwp
         // TODO: we can just use adaptiveImage here?
         auto isVisible = adaptiveCardElement.IsVisible();
 
-        rtxaml::FrameworkElement frameworkElement{nullptr};
+        winrt::FrameworkElement frameworkElement{nullptr};
 
         // TODO: Not sure why it's been done this way
         if (imageStyle == winrt::ImageStyle::Person)
@@ -126,12 +126,12 @@ namespace AdaptiveCards::Rendering::Uwp
                 // Fill the background ellipse with solid color brush
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
                 // TODO: would be good to refactor it in single function call.
-                auto backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
+                auto backgroundColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 winrt::Grid imageGrid{};
-                XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
-                XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
                 frameworkElement = imageGrid;
             }
@@ -150,7 +150,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 // Create a surrounding border with solid color background to contain the image
                 winrt::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                auto backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
+                auto backgroundColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
                 border.Background(backgroundColorBrush);
 
                 border.Child(xamlImage);
@@ -258,18 +258,18 @@ namespace AdaptiveCards::Rendering::Uwp
         switch (adaptiveHorizontalAlignment)
         {
         case winrt::HAlignment::Left:
-            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Left);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Left);
             break;
         case winrt::HAlignment::Right:
-            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Right);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Right);
             break;
         case winrt::HAlignment::Center:
-            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Center);
             break;
         }
 
-        frameworkElement.VerticalAlignment(rtxaml::VerticalAlignment::Top);
-        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
+        frameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
+         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
 
         auto selectAction = adaptiveImage.SelectAction();
 
@@ -278,7 +278,7 @@ namespace AdaptiveCards::Rendering::Uwp
         winrt::AutomationProperties::SetName(frameworkElement, altText);
 
         return ActionHelpers::HandleSelectAction(
-            adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
+            adaptiveCardElement, selectAction, renderContext, frameworkElement,  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
     template<typename T>
@@ -318,7 +318,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // Create the arguments to pass to the resolver
                 auto args =
-                    winrt::make<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
+                    winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
 
                 // And call the resolver to get the image stream
                 auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
@@ -515,7 +515,7 @@ namespace AdaptiveCards::Rendering::Uwp
             if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                ellipseAsShape.Visibility(rtxaml::Visibility::Collapsed);
+                ellipseAsShape.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // TODO: what's the point of eventToken if we don';t save it ?
@@ -527,7 +527,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 // TODO: do we need a revoker/token?
                 brushAsImageBrush.ImageOpened(
                     [ellipseAsShape, weakParent, isVisible](winrt::IInspectable const& sender,
-                                                            rtxaml::RoutedEventArgs /*args*/) -> void
+                                                            winrt::RoutedEventArgs /*args*/) -> void
                     {
                         if (isVisible)
                         {
@@ -541,17 +541,17 @@ namespace AdaptiveCards::Rendering::Uwp
                             // be successfull if ellipseAsShape is not null
                             if (ellipseAsShape && lambdaParentElement)
                             {
-                                rtxaml::FrameworkElement k{nullptr};
+                                winrt::FrameworkElement k{nullptr};
                                 winrt::BitmapSource as{nullptr};
 
-                                XamlHelpers::SetAutoImageSize(ellipseAsShape, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
+                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
                             }
                         }
                     });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
@@ -574,7 +574,7 @@ namespace AdaptiveCards::Rendering::Uwp
             if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
-                xamlImage.Visibility(rtxaml::Visibility::Collapsed);
+                xamlImage.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // Take weak references to the image and parent to avoid circular references between this lambda and
@@ -585,7 +585,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 xamlImage.ImageOpened(
                     [weakImage, weakParent, imageSourceAsBitmapSource, isVisible](winrt::IInspectable const& /*sender*/,
-                                                                                  rtxaml::RoutedEventArgs const&
+                                                                                  winrt::RoutedEventArgs const&
                                                                                   /*args*/) -> void
                     {
                         // TODO: is this correct way to cast weak ref?
@@ -593,14 +593,14 @@ namespace AdaptiveCards::Rendering::Uwp
                         {
                             if (const auto lambdaParentElement = weakParent.get())
                             {
-                                XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement, lambdaParentElement, imageSourceAsBitmapSource, isVisible);
+                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement, lambdaParentElement, imageSourceAsBitmapSource, isVisible);
                             }
                         }
                     });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
+                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
             }
         }
     }

@@ -10,9 +10,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    rtxaml::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                     winrt::AdaptiveRenderContext const& renderContext,
-                                                     winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -39,7 +39,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (currentRtl)
             {
-                columnPanel.FlowDirection(currentRtl.Value() ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
+                columnPanel.FlowDirection(currentRtl.Value() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
             }
 
             winrt::ContainerStyle containerStyle =
@@ -47,8 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto parentElement = renderArgs.ParentElement();
 
-            auto newRenderArgs =
-                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
+            auto newRenderArgs = winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
 
             auto childItems = adaptiveColumn.Items();
 
@@ -69,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel, verticalContentAlignment);
 
             // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-            columnPanel.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
+            columnPanel.VerticalAlignment(winrt::VerticalAlignment::Stretch);
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanel);
 
@@ -84,7 +83,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto selectAction = adaptiveColumn.SelectAction();
 
             // Define column As UIElement based on the existence of a backgroundImage
-            rtxaml::UIElement columnAsUIElement{nullptr};
+            winrt::UIElement columnAsUIElement{nullptr};
 
             auto backgroundImage = adaptiveColumn.BackgroundImage();
 

@@ -10,13 +10,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     public:
         winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+winrt::AdaptiveRenderContext const& renderContext,
+winrt::AdaptiveRenderArgs const& renderArgs);
 
         static winrt::Windows::UI::Xaml::UIElement
         BuildShowCard(winrt::AdaptiveCard const& showCard,
-                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs,
+                      winrt::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveRenderArgs const& renderArgs,
                       bool isBottomActionBar);
     };
 }

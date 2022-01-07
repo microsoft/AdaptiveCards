@@ -9,6 +9,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveImageConfig::AdaptiveImageConfig(::AdaptiveCards::ImageConfig const& sharedImageConfig)
     {
-        ImageSize = static_cast<ObjectModel::Uwp::ImageSize>(sharedImageConfig.imageSize);
+        ImageSize = static_cast<winrt::ImageSize>(sharedImageConfig.imageSize);
     }
 }
