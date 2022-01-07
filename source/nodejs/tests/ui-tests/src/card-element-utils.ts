@@ -82,7 +82,10 @@ export abstract class Input extends ACElement {
     protected label?: WebElement;
     protected errorMessage?: WebElement;
 
-    abstract setData(data: string): Promise<void>;
+    async setData(data: string): Promise<void> {
+        await this.underlyingElement?.click();
+        await this.underlyingElement?.sendKeys(data);
+    }
 
     override async ensureUnderlyingElement(className?: string): Promise<void> {
         this.div = await TestUtils.getInstance().getInputContainer(this.id, this.container);
@@ -151,11 +154,6 @@ export abstract class Input extends ACElement {
 }
 
 export class ACTypeableInput extends Input {
-    override async setData(data: string): Promise<void> {
-        await this.underlyingElement?.click();
-        await this.underlyingElement?.sendKeys(data);
-    }
-
     async isFocused(): Promise<boolean> {
         if (this.elementWasFound()) {
             const inputId: string = await this.underlyingElement!.getAttribute("id");
@@ -365,8 +363,6 @@ export class ACInputToggle extends Input {
     async toggle(): Promise<void> {
         await this.underlyingElement?.click();
     }
-
-
 }
 
 export class ACContainer extends ACActionableElement {
