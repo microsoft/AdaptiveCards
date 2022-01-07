@@ -21,7 +21,7 @@ describe("Mock function", function() {
 
     beforeAll(async() => {
         utils = TestUtils.getInstance();
-        utils.initializeDriver();
+        await utils.initializeDriver();
     }, timeoutForServerStartupInCIBuild);
 
     afterAll(async() => {
@@ -41,11 +41,8 @@ describe("Mock function", function() {
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        const dueDateRetrievedValue: string = await utils.getInputFor("dueDate");
-        Assert.strictEqual(dueDateRetrievedValue, "1993-02-04");
-
-        const commentRetrievedValue: string = await utils.getInputFor("comment");
-        Assert.strictEqual(commentRetrievedValue, "A comment");
+        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
+        Assert.strictEqual(await utils.getInputFor("comment"), "A comment");
     }));
 
     test("Test TextInput get focus on invalid submit", (async() => {
