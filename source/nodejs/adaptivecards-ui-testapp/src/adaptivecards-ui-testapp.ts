@@ -16,7 +16,7 @@ function renderTestCasesList() {
 }
 
 function hideInputsDiv() {
-    let retrievedInputsDiv = document.getElementById("retrievedInputsDiv");
+    const retrievedInputsDiv = document.getElementById("retrievedInputsDiv");
     retrievedInputsDiv.style.visibility = "hidden";
 }
 
