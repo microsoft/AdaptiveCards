@@ -63,8 +63,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
                         if (!keepItem)
                         {
-                            winrt::Size remainingSpace = {measuredAvailableSize.Width,
-                                                                               static_cast<float>(availableHeightForItem)};
+                            winrt::Size remainingSpace = {measuredAvailableSize.Width, static_cast<float>(availableHeightForItem)};
 
                             child.Measure(remainingSpace);
 
@@ -86,8 +85,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            winrt::Size noLimit{std::numeric_limits<float>::infinity(),
-                                                                     std::numeric_limits<float>::infinity()};
+                            winrt::Size noLimit{std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()};
                             childAsTextBlock.TextWrapping(winrt::TextWrapping::NoWrap);
                             childAsTextBlock.Measure(noLimit);
                             childSize = childAsTextBlock.DesiredSize();
@@ -240,7 +238,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     newHeight = finalSize.Height;
                 }
                 const winrt::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width
-                                                                                                                 // does not respect Text alignment
+                                                                                            // does not respect Text alignment
 
                 child.Arrange(rc);
 
@@ -249,10 +247,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             else
             {
                 // Arrange the child outside the panel
-                const winrt::Rect rc = {0.0f,
-                                                             OutsidePanelY - childSize.Height,
-                                                             childSize.Width,
-                                                             childSize.Height};
+                const winrt::Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
                 child.Arrange(rc);
             }
         }

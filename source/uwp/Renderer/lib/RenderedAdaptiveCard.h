@@ -50,11 +50,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet,
-                               winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
-        void AddOverflowButton(winrt::AdaptiveCard const& actionCard,
-                               winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
         void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);

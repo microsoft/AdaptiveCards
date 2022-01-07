@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveFontTypeDefinition::AdaptiveFontTypeDefinition(::AdaptiveCards::FontTypeDefinition const& typeDefinition) :
-        FontFamily{UTF8ToHString(typeDefinition.fontFamily)},
-        FontWeights{winrt::make<implementation::AdaptiveFontWeightsConfig>(typeDefinition.fontWeights)},
+        FontFamily{UTF8ToHString(typeDefinition.fontFamily)}, FontWeights{winrt::make<implementation::AdaptiveFontWeightsConfig>(
+                                                                  typeDefinition.fontWeights)},
         FontSizes{winrt::make<implementation::AdaptiveFontSizesConfig>(typeDefinition.fontSizes)}
     {
     }

@@ -11,10 +11,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
     winrt::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
-                                      uint32_t spacing,
-                                      uint32_t separatorThickness,
-                                      winrt::Windows::UI::Color const& separatorColor,
-                                      bool isHorizontal)
+                                     uint32_t spacing,
+                                     uint32_t separatorThickness,
+                                     winrt::Windows::UI::Color const& separatorColor,
+                                     bool isHorizontal)
     {
         winrt::Grid separator;
         separator.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
@@ -104,9 +104,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
-                                                 winrt::Border const& containerBorder,
-                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                 winrt::AdaptiveRenderArgs renderArgs)
+                                                  winrt::Border const& containerBorder,
+                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                  winrt::AdaptiveRenderArgs renderArgs)
     {
         winrt::UIElement elem{nullptr};
 
@@ -444,8 +444,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
         // TODO: Don't we need a revoker?
         // TODO: no need to save a token, right?
-        uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args)
-                         { args.Handled(true); });
+        uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
@@ -493,10 +492,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::UIElement AddSeparatorIfNeeded(int& currentElement,
-                                           winrt::IAdaptiveCardElement const& element,
-                                           winrt::AdaptiveHostConfig const& hostConfig,
-                                           winrt::AdaptiveRenderContext const& renderContext,
-                                           winrt::Panel const& parentPanel)
+                                          winrt::IAdaptiveCardElement const& element,
+                                          winrt::AdaptiveHostConfig const& hostConfig,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::Panel const& parentPanel)
     {
         // First element does not need a separator added
         if (currentElement++ > 0)
@@ -567,8 +566,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                       winrt::AdaptiveRenderContext const& renderContext,
-                                       winrt::AdaptiveRenderArgs const& renderArgs)
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::hstring inputLabel = adaptiveInputElement.Label();
         // Retrieve if the input is required so we can file a warning if the label is empty
@@ -622,8 +621,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
-    void FormatErrorMessageWithHostConfig(winrt::AdaptiveRenderContext const& renderContext,
-                                          winrt::TextBlock const& errorMessage)
+    void FormatErrorMessageWithHostConfig(winrt::AdaptiveRenderContext const& renderContext, winrt::TextBlock const& errorMessage)
     {
         auto hostConfig = renderContext.HostConfig();
         auto inputsConfig = hostConfig.Inputs();
@@ -641,7 +639,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                              winrt::AdaptiveRenderContext const& renderContext)
+                                             winrt::AdaptiveRenderContext const& renderContext)
     {
         // Add the error message if present
         winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
@@ -671,8 +669,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return nullptr;
     }
 
-    winrt::Border XamlHelpers::CreateValidationBorder(winrt::UIElement const& childElement,
-                                                                 winrt::AdaptiveRenderContext const& renderContext)
+    winrt::Border XamlHelpers::CreateValidationBorder(winrt::UIElement const& childElement, winrt::AdaptiveRenderContext const& renderContext)
     {
         auto hostConfig = renderContext.HostConfig();
 
@@ -688,9 +685,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                 winrt::AdaptiveRenderArgs const& renderArgs,
-                                                 winrt::UIElement const& inputLayout)
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::AdaptiveRenderArgs const& renderArgs,
+                                                winrt::UIElement const& inputLayout)
     {
         // Create a new stack panel to add the label and error message
         // The contents from the input panel will be copied to the new panel

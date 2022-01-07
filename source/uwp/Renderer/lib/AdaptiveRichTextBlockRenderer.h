@@ -11,8 +11,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveRichTextBlockRenderer() = default;
 
         winrt::Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-winrt::AdaptiveRenderContext const& renderContext,
-winrt::AdaptiveRenderArgs const& renderArgs);
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

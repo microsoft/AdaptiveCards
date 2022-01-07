@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 
-STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId,  ::IActivationFactory** factory)
+STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, ::IActivationFactory** factory)
 {
     return WINRT_GetActivationFactory(activatableClassId, reinterpret_cast<void**>(factory));
 }

@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                            winrt::AdaptiveRenderContext const& renderContext,
-                                                            winrt::AdaptiveRenderArgs const& renderArgs)
+                                                           winrt::AdaptiveRenderContext const& renderContext,
+                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -36,7 +36,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             uint32_t currentOffset = 0;
 
             auto xamlInlines = xamlParagraph.Inlines();
-
 
             auto adaptiveInlines = adaptiveRichTextBlock.Inlines();
 

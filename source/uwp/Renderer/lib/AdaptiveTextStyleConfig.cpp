@@ -6,4 +6,5 @@
 #include "AdaptiveTextStyleConfig.g.cpp"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
-{}
+{
+}

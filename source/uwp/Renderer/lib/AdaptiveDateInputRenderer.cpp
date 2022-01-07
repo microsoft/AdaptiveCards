@@ -9,13 +9,13 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                        winrt::AdaptiveRenderContext const& renderContext,
-                                                        winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
-            if (! ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Date input was stripped from card because interactivity is not supported");
@@ -72,10 +72,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 }
             }
 
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePicker);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePicker);
 
             auto& [inputLayout, validationBorder] =
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
 
             // TODO: come back to inputs here.
             auto input = winrt::make_self<winrt::DateInputValue>(adaptiveDateInput, datePicker, validationBorder);

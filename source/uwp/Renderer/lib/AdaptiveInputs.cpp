@@ -7,10 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::JsonObject AdaptiveInputs::AsJson()
-    {
-        return StringToJsonObject(GetInputItemsAsJsonString());
-    }
+    winrt::JsonObject AdaptiveInputs::AsJson() { return StringToJsonObject(GetInputItemsAsJsonString()); }
 
     void AdaptiveInputs::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -43,8 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action,
-                                                Uwp::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, Uwp::AdaptiveRenderArgs const& renderArgs)
     {
         uint32_t actionId = GetInternalIdFromAction(action);
         uint32_t cardId = renderArgs.ParentCard().InternalId();
@@ -83,8 +79,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     winrt::ValueSet AdaptiveInputs::AsValueSet()
     {
         winrt::ValueSet valueSet;
-        auto propertySetMap =
-            valueSet.as<winrt::IMap<hstring, winrt::IInspectable>>();
+        auto propertySetMap = valueSet.as<winrt::IMap<hstring, winrt::IInspectable>>();
 
         for (auto&& inputValue : m_lastRetrievedValues)
         {

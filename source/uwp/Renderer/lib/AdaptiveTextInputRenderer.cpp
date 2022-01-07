@@ -19,7 +19,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto textBoxParentContainer = inputUIElement;
 
         // If there's any validation on this input, put the input inside a border. We don't use
-        //  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
+        //  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation validation border because that
+        //  would wrap any inline action as
         // well as the text input, which is not the desired behavior.
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
@@ -28,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         if (!regex.empty() || isRequired)
         {
-            validationBorder =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
+            validationBorder = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
             textBoxParentContainer = validationBorder;
         }
 
@@ -51,11 +52,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             textBoxFrameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
         }
 
-        // Call  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation to handle accessibility properties. Pass nullptr for
-        // validationBorder as we've already handled that above.
+        // Call  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation to handle accessibility
+        // properties. Pass nullptr for validationBorder as we've already handled that above.
         winrt::UIElement inputLayout{nullptr};
 
-        std::tie(inputLayout, std::ignore) =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+        std::tie(inputLayout, std::ignore) = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
             adaptiveTextInput, textBoxParentContainer, !regex.empty(), renderContext, false);
 
         return {inputLayout, validationBorder};
@@ -63,8 +64,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     // TODO: should it be winrt::IAdaptiveTextInput for first arg?
     winrt::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                               winrt::AdaptiveRenderArgs const& renderArgs)
+                                                              winrt::AdaptiveRenderContext const& renderContext,
+                                                              winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::TextBox textBox{};
 
@@ -110,13 +111,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
 
-         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;
     }
 
     winrt::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+                                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::PasswordBox passwordBox{};
 
@@ -135,13 +136,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     winrt::UIElement AdaptiveTextInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                        winrt::AdaptiveRenderContext const& renderContext,
-                                                        winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             auto hostConfig = renderContext.HostConfig();
-            if (! ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Text Input was stripped from card because interactivity is not supported");

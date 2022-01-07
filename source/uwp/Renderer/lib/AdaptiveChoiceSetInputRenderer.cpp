@@ -10,8 +10,8 @@ using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveChoiceSetInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -106,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::ComboBoxItem comboBoxItem{};
 
-             SetContent(comboBoxItem, title, wrap);
+            SetContent(comboBoxItem, title, wrap);
 
             if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
@@ -119,15 +119,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         comboBox.SelectedIndex(selectedIndex);
 
-        comboBox.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args)
-                        { args.Handled(true); });
+        comboBox.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
 
-         SetStyleFromResourceDictionary(renderContext,
-                                                                                     L"Adaptive.Input.ChoiceSet.Compact",
-                                                                                     comboBox);
+        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
 
         auto& [inputLayout, validationBorder] =
-             HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
+            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
         // TODO: come back here. AddInputValue probably needs to be modified to take in appropriate parameter
@@ -138,9 +135,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                  winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                  winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
-                                                                                  bool isMultiSelect)
+                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                 winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+                                                                                 bool isMultiSelect)
     {
         auto choices = adaptiveChoiceSetInput.Choices();
 
@@ -159,11 +156,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 winrt::CheckBox checkBox{};
                 // TODO: no need to cast, right?
-                 SetStyleFromResourceDictionary(renderContext,
-                                                                                             L"Adaptive.Input.Choice.Multiselect",
-                                                                                             checkBox);
+                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", checkBox);
 
-                 SetToggleValue(checkBox, IsChoiceSelected(values, input));
+                SetToggleValue(checkBox, IsChoiceSelected(values, input));
                 // TODO: is this correct way?
                 choiceItem = checkBox;
             }
@@ -171,31 +166,27 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 winrt::RadioButton radioButton{};
 
-                 SetStyleFromResourceDictionary(renderContext,
-                                                                                             L"Adaptive.Input.Choice.SingleSelect",
-                                                                                             radioButton);
+                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", radioButton);
                 if (values.size() == 1)
                 {
                     // When isMultiSelect is false, only 1 specified value is accepted.
                     // Otherwise, leave all options unset
-                     SetToggleValue(radioButton, IsChoiceSelected(values, input));
+                    SetToggleValue(radioButton, IsChoiceSelected(values, input));
                 }
                 choiceItem = radioButton;
             }
             winrt::hstring title = input.Title();
-             SetContent(choiceItem, title, wrap);
-             AddHandledTappedEvent(choiceItem);
-             AppendXamlElementToPanel(choiceItem, stackPanel);
+            SetContent(choiceItem, title, wrap);
+            AddHandledTappedEvent(choiceItem);
+            AppendXamlElementToPanel(choiceItem, stackPanel);
         }
 
-         SetStyleFromResourceDictionary(renderContext,
-                                                                                     L"Adaptive.Input.ChoiceSet.Expanded",
-                                                                                     stackPanel);
+        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Expanded", stackPanel);
 
         winrt::UIElement inputLayout{nullptr};
 
-        std::tie(inputLayout, std::ignore) =  HandleInputLayoutAndValidation(
-            adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
+        std::tie(inputLayout, std::ignore) =
+            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
         // TODO: revisit this. AddInputValue args need to be modified to accept proper inputValue
@@ -205,8 +196,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                  winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                  winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
+                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                 winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::AutoSuggestBox autoSuggestBox{};
 
@@ -266,9 +257,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         // Handle input validation
         auto& [inputLayout, validationBorder] =
-             HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
+            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
-        //TODO: come back here. Create the InputValue and add it to the context
+        // TODO: come back here. Create the InputValue and add it to the context
         auto input = winrt::make_self<winrt::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 

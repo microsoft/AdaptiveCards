@@ -112,21 +112,19 @@ namespace AdaptiveCards::Rendering::Uwp
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
-                                                    winrt::RoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::IInspectable const& sender,
-                                                    winrt::ExceptionRoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::IInspectable const& sender, winrt::ExceptionRoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
     void ImageLoadTracker::ImageLoadResultReceived(winrt::IInspectable const& sender)
     {
-        std::unique_lock lock {m_mutex};
+        std::unique_lock lock{m_mutex};
 
         m_trackedImageCount--;
         if (m_eventRevokers.find(sender) != m_eventRevokers.end())

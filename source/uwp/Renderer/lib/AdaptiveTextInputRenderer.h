@@ -16,21 +16,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(
-            winrt::AdaptiveTextInput const& adaptiveTextInput,
-            winrt::AdaptiveRenderContext const& renderContext,
-            winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                                     winrt::AdaptiveRenderContext const& renderContext,
+                                                                                     winrt::AdaptiveRenderArgs const& renderArgs);
 
-        winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(
-            winrt::AdaptiveTextInput const& adaptiveTextInput,
-            winrt::AdaptiveRenderContext const& renderContext,
-            winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::Windows::UI::Xaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                                                         winrt::AdaptiveRenderArgs const& renderArgs);
 
-        std::tuple<winrt::UIElement, winrt::Border>
-        HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                  winrt::Windows::UI::Xaml::UIElement const& textBox,
-                                  winrt::AdaptiveRenderContext const& renderContext,
-                                  winrt::AdaptiveRenderArgs const& renderArgs);
+        std::tuple<winrt::UIElement, winrt::Border> HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                              winrt::Windows::UI::Xaml::UIElement const& textBox,
+                                                                              winrt::AdaptiveRenderContext const& renderContext,
+                                                                              winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

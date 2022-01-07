@@ -28,29 +28,33 @@
 
 namespace winrt
 {
-	using namespace ::winrt::Windows::Foundation;
+    using namespace ::winrt::Windows::Foundation;
     using namespace ::winrt::Windows::Foundation::Collections;
     using namespace ::winrt::Windows::Foundation::Numerics;
     using namespace ::winrt::Windows::Storage::Streams;
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
-	using namespace ::winrt::Windows::UI::Xaml;
+    using namespace ::winrt::Windows::UI::Xaml;
     using namespace ::winrt::Windows::UI::Xaml::Controls;
     using namespace ::winrt::Windows::UI::Xaml::Controls::Primitives;
     using namespace ::winrt::Windows::UI::Xaml::Automation;
-	using namespace ::winrt::Windows::UI::Xaml::Automation::Peers;
+    using namespace ::winrt::Windows::UI::Xaml::Automation::Peers;
     using namespace ::winrt::Windows::UI::Xaml::Documents;
     using namespace ::winrt::Windows::UI::Xaml::Input;
     using namespace ::winrt::Windows::UI::Xaml::Markup;
     using namespace ::winrt::Windows::UI::Xaml::Media::Imaging;
     using namespace ::winrt::Windows::UI::Xaml::Shapes;
-	using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
-    
-    // In order to avoid "namespace not defined" errors we have to define the namespace here too.
-	namespace AdaptiveCards::Rendering::Uwp{}
-	using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
+    using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
 
-    namespace AdaptiveCards::Rendering::Uwp::implementation{}
+    // In order to avoid "namespace not defined" errors we have to define the namespace here too.
+    namespace AdaptiveCards::Rendering::Uwp
+    {
+    }
+    using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
+
+    namespace AdaptiveCards::Rendering::Uwp::implementation
+    {
+    }
     namespace implementation
     {
         using namespace ::winrt::AdaptiveCards::Rendering::Uwp::implementation;
@@ -188,8 +192,8 @@ namespace winrt
     // using VisualTreeHelper = winrt::Windows::UI::Xaml::Media::VisualTreeHelper;
     // using XamlCompositionBrushBase = ::winrt::Windows::UI::Xaml::Media::XamlCompositionBrushBase;
     // using XamlLight = winrt::Windows::UI::Xaml::Media::XamlLight;
-	using AlignmentX = ::winrt::Windows::UI::Xaml::Media::AlignmentX;
-	using AlignmentY = ::winrt::Windows::UI::Xaml::Media::AlignmentY;
+    using AlignmentX = ::winrt::Windows::UI::Xaml::Media::AlignmentX;
+    using AlignmentY = ::winrt::Windows::UI::Xaml::Media::AlignmentY;
 
     // using namespace ::winrt::Windows::UI::Xaml::Media.Animation;
     // using IStoryboard = ::winrt::Windows::UI::Xaml::Media::Animation::IStoryboard;
@@ -253,26 +257,26 @@ namespace winrt
     // using SelectorAutomationPeer = winrt::Windows::UI::Xaml::Automation::Peers::SelectorAutomationPeer;
     // using SliderAutomationPeer = winrt::Windows::UI::Xaml::Automation::Peers::SliderAutomationPeer;
 
-	// using namespace winrt::Windows::Data::Json
-	using JsonObject = ::winrt::Windows::Data::Json::JsonObject;
+    // using namespace winrt::Windows::Data::Json
+    using JsonObject = ::winrt::Windows::Data::Json::JsonObject;
 
-	// using namespace winrt::Windows::Data::Xml::Dom
-	using XmlDocument = ::winrt::Windows::Data::Xml::Dom::XmlDocument;
-	using IXmlNode = ::winrt::Windows::Data::Xml::Dom::IXmlNode;
+    // using namespace winrt::Windows::Data::Xml::Dom
+    using XmlDocument = ::winrt::Windows::Data::Xml::Dom::XmlDocument;
+    using IXmlNode = ::winrt::Windows::Data::Xml::Dom::IXmlNode;
 
-	// using namespace winrt::Windows::Globalization::DateTimeFormatting;
-	using DateTimeFormatter = ::winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter;
+    // using namespace winrt::Windows::Globalization::DateTimeFormatting;
+    using DateTimeFormatter = ::winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter;
 
-	// using namespace winrt::Windows::UI::Core;
-	using CoreWindow = ::winrt::Windows::UI::Core::CoreWindow;
-	using CoreVirtualKeyStates = ::winrt::Windows::UI::Core::CoreVirtualKeyStates;
+    // using namespace winrt::Windows::UI::Core;
+    using CoreWindow = ::winrt::Windows::UI::Core::CoreWindow;
+    using CoreVirtualKeyStates = ::winrt::Windows::UI::Core::CoreVirtualKeyStates;
 
-	// using namespace winrt::Windows::Web::Http
-	using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;
-	using HttpClient = ::winrt::Windows::Web::Http::HttpClient;
+    // using namespace winrt::Windows::Web::Http
+    using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;
+    using HttpClient = ::winrt::Windows::Web::Http::HttpClient;
 
-	// using namespace winrt::Windows::Web::Http::HttpFilters
-	using HttpBaseProtocolFilter = ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter;
+    // using namespace winrt::Windows::Web::Http::HttpFilters
+    using HttpBaseProtocolFilter = ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter;
 
-	// TODO: all headers need to include pch.h
+    // TODO: all headers need to include pch.h
 }

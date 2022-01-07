@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                        winrt::AdaptiveRenderContext const& renderContext,
-                                                        winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -33,7 +33,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // TODO: renderer code that extracts them from markup(.json). So only the values that ARE NOT
             // TODO: being programatically set will propagate from style. And it doesn't really matter
             // TODO: whether we apply style before or after and setters from the code.
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
             StyleXamlTextBlockProperties(adaptiveTextBlock, renderContext, renderArgs, xamlTextBlock);
             auto inlines = xamlTextBlock.Inlines();
 
@@ -78,8 +78,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    winrt::Peers::AutomationHeadingLevel
-    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
+    winrt::Peers::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
     {
         // TODO: why is it called textBlock if it's a config? :D
         auto textBlockConfig = renderContext.HostConfig().TextBlock();

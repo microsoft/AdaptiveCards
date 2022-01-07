@@ -156,7 +156,7 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
 }
 
 winrt::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::ContainerStyle const& style,
-                                                                       winrt::AdaptiveHostConfig const& hostConfig)
+                                                                    winrt::AdaptiveHostConfig const& hostConfig)
 {
     auto containerStyles = hostConfig.ContainerStyles();
 
@@ -226,8 +226,8 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig co
 }
 
 winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
-                                                  winrt::AdaptiveRenderContext const& renderContext,
-                                                  winrt::AdaptiveRenderArgs const& renderArgs)
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs)
 {
     winrt::TextHighlighter textHighlighter{};
 
@@ -245,8 +245,8 @@ winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiv
     auto backgroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, true);
     auto foregroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, false);
 
-    textHighlighter.Background( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
-    textHighlighter.Foreground( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(foregroundColor));
+    textHighlighter.Background(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
+    textHighlighter.Foreground(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(foregroundColor));
 
     return textHighlighter;
 }
@@ -709,9 +709,7 @@ winrt::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int 
     return winrt::clock::from_FILETIME({fileTime});
 }
 
-winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year,
-                                                                                                  unsigned int month,
-                                                                                                  unsigned int day)
+winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day)
 {
     // TODO: default constructor for reference will be invoked, right?
     return GetDateTime(year, month, day);

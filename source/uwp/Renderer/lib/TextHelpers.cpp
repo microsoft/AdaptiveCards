@@ -51,8 +51,7 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
 }
 
 // TODO: this function repeats - shoudl I template it?
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
-                                  winrt::TextElement const& textElement)
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textElement)
 {
     winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
     if (styleProperties.IsStrikethrough())

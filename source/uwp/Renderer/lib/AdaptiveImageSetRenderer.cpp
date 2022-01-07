@@ -9,8 +9,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveImageSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+                                                      winrt::AdaptiveRenderContext const& renderContext,
+                                                      winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -33,8 +33,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 auto containerStyle = renderArgs.ContainerStyle();
 
-                auto childRenderArgs =
-                    winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, xamlGrid, renderArgs);
+                auto childRenderArgs = winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, xamlGrid, renderArgs);
 
                 for (auto adaptiveImage : images)
                 {
@@ -47,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     if (const auto uiImageAsFrameworkElement = uiImage.try_as<winrt::FrameworkElement>())
                     {
                         uiImageAsFrameworkElement.MaxHeight(imageSetConfig.MaxImageHeight());
-                         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(uiImageAsFrameworkElement, xamlGrid);
+                        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(uiImageAsFrameworkElement, xamlGrid);
                     }
                 }
             }
@@ -58,7 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             // TODO: Do I need to cast xamlGrid to FrameworkElement?
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
             return xamlGrid;
         }
         catch (winrt::hresult_error const& ex)

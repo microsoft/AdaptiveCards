@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                        winrt::AdaptiveRenderContext const& renderContext,
-                                                        winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -56,7 +56,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::Border containerBorder{};
 
-            auto containerStyle =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveContainer,
+            auto containerStyle = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveContainer,
                                                                                                         containerBorder,
                                                                                                         renderContext,
                                                                                                         renderArgs);
@@ -77,7 +77,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::VerticalContentAlignment verticalContentAlignment =
                 GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
 
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel, verticalContentAlignment);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel, verticalContentAlignment);
 
             // Check if backgroundImage defined
             auto backgroundImage = adaptiveContainer.BackgroundImage();
@@ -85,13 +85,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (IsBackgroundImageValid(backgroundImage))
             {
                 winrt::Grid rootElement{};
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 // Add rootElement to containerBorder
                 containerBorder.Child(rootElement);
 
                 // Add containerPanel to rootElement
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(containerPanel, rootElement, containerHeightType);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(containerPanel, rootElement, containerHeightType);
             }
             else
             {
@@ -99,7 +99,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 containerBorder.Child(containerPanel);
             }
 
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Container", containerPanel);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Container", containerPanel);
 
             auto selectAction = adaptiveContainer.SelectAction();
             auto hostConfig = renderContext.HostConfig();
@@ -109,7 +109,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 selectAction,
                 renderContext,
                 containerBorder,
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
                 true);
         }
         catch (winrt::hresult_error const& ex)

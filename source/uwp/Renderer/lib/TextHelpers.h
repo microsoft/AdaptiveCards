@@ -98,7 +98,7 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
     }
 
     winrt::HAlignment horizontalAlignment = GetValueFromRef(adaptiveHorizontalAlignmentReference, winrt::HAlignment::Left);
-    
+
     switch (horizontalAlignment)
     {
     case winrt::HAlignment::Left:
@@ -118,11 +118,9 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
         break;
     }
 }
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
-                                  winrt::TextBlock const& textBlock);
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock);
 
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
-                                  winrt::TextElement const& textBlock);
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textBlock);
 
 template<typename TXamlTextBlockType>
 void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
@@ -155,7 +153,7 @@ void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
         auto fontColor = GetColorFromAdaptiveColor(hostConfig, adaptiveTextColor, containerStyle, isSubtle, false);
 
-        auto fontColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
+        auto fontColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
 
         xamlTextElement.Foreground(fontColorBrush);
     }

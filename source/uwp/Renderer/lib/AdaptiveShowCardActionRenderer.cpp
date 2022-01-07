@@ -9,8 +9,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -23,9 +23,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
     winrt::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
-                                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                                    winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                    bool isBottomActionBar)
+                                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                                   winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                   bool isBottomActionBar)
     {
         try
         {

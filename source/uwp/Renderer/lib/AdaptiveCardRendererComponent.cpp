@@ -106,8 +106,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 renderContext->LinkCardToParent(adaptiveCard, nullptr);
                 auto xamlTreeRoot =
                     ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
-                                                                                                   *renderContext,
-                                                                                                   m_xamlBuilder.get());
+                                                                                                *renderContext,
+                                                                                                m_xamlBuilder.get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
             }
             catch (...)
@@ -200,7 +200,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto lightAttentionColorBrush = GetSolidColorBrush(hoverAttentionColor);
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
                                                        lightAttentionColorBrush);
-
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()

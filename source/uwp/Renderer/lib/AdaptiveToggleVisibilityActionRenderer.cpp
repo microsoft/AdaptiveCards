@@ -9,8 +9,8 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveToggleVisibilityActionRenderer::Render(winrt::IAdaptiveActionElement const& actionElement,
-                                                                     winrt::AdaptiveRenderContext const& renderContext,
-                                                                     winrt::AdaptiveRenderArgs const& renderArgs)
+                                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

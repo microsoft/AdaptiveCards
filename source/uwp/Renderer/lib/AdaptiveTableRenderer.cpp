@@ -8,13 +8,13 @@
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
-                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                               winrt::AdaptiveRenderArgs const& renderArgs,
-                                                               winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
-                                                               boolean showGridLines,
-                                                               winrt::ContainerStyle gridStyle,
-                                                               uint32_t rowNumber,
-                                                               uint32_t columnNumber)
+                                                              winrt::AdaptiveRenderContext const& renderContext,
+                                                              winrt::AdaptiveRenderArgs const& renderArgs,
+                                                              winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
+                                                              boolean showGridLines,
+                                                              winrt::ContainerStyle gridStyle,
+                                                              uint32_t rowNumber,
+                                                              uint32_t columnNumber)
     {
         auto cellVerticalAlignment = cell.VerticalContentAlignment();
         // If the cell doesn't have a vertical content alignment, pass in the one from the parent
@@ -47,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::Border cellBorder{};
 
             auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
-            cellBorder.BorderBrush( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
+            cellBorder.BorderBrush(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
 
             // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
             // cells respectively in order to avoid double-thickness borders
@@ -169,7 +169,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 // TODO: it's okay to pass the enum instead of ref, right? constructor will be invoked?
                 renderContext.HorizontalContentAlignment(columnHorizontalAlignment ? columnHorizontalAlignment :
-                                                                                                contextHorizontalAlignment);
+                                                                                     contextHorizontalAlignment);
             }
 
             // Render the cell
@@ -181,7 +181,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::Grid::SetColumn(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
             columnNumber++;
         }
 
@@ -191,8 +191,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     winrt::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                    winrt::AdaptiveRenderArgs const& renderArgs)
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -223,7 +223,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             for (auto column : columns)
             {
                 winrt::ColumnDefinition xamlColumnDefinition{};
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
                 xamlColumnDefinitions.Append(xamlColumnDefinition);
             }
 

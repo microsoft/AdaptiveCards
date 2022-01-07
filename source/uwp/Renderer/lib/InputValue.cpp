@@ -240,8 +240,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             auto date = dateRef.Value();
 
             // TODO: is this correct?
-            winrt::DateTimeFormatter dateTimeFormatter{
-                L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
+            winrt::DateTimeFormatter dateTimeFormatter{L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
             formattedDate = dateTimeFormatter.Format(date);
         }
 
@@ -331,7 +330,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     winrt::hstring ToggleInputValue::CurrentValue()
     {
-        auto checkedValue =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
+        auto checkedValue = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
 
         if (checkedValue)
         {
@@ -354,7 +353,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         if (isRequired)
         {
             // MeetsRequirement is true if toggle is checked
-            meetsRequirement =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
+            meetsRequirement = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(m_checkBoxElement);
         }
         return meetsRequirement;
     }
@@ -412,7 +411,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             std::string multiSelectValues;
             for (auto element : panelChildren)
             {
-                if ( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
+                if (::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
                 {
                     multiSelectValues += GetChoiceValue(m_adaptiveChoiceSetInput, index) + ",";
                 }
@@ -431,7 +430,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             uint32_t selectedIndex = -1;
             for (auto element : panelChildren)
             {
-                if ( ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
+                if (::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
                 {
                     selectedIndex = index;
                     break;

@@ -20,11 +20,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     }
 
-    RenderedAdaptiveCard::RenderedAdaptiveCard(
-        winrt::IVector<winrt::AdaptiveError> const& errors,
-        winrt::IVector<winrt::AdaptiveWarning> const& warnings) :
-        Errors{errors},
-        Warnings{warnings}, m_inputs{winrt::make_self<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
+    RenderedAdaptiveCard::RenderedAdaptiveCard(winrt::IVector<winrt::AdaptiveError> const& errors, winrt::IVector<winrt::AdaptiveWarning> const& warnings) :
+        Errors{errors}, Warnings{warnings}, m_inputs{winrt::make_self<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
     {
     }
 
@@ -109,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 if (auto cardElementAsColumn = cardElement.try_as<winrt::AdaptiveColumn>())
                 {
                     auto columnDefinition = elementTagContent.ColumnDefinition();
-                     ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(
                         cardElementAsColumn, (visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible), columnDefinition);
                 }
             }
@@ -119,7 +116,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (parentPanel)
             {
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
             }
         }
     }
@@ -215,10 +212,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(winrt::AdaptiveCard const& value)
-    {
-        m_originatingCard = value;
-    }
+    void RenderedAdaptiveCard::SetOriginatingCard(winrt::AdaptiveCard const& value) { m_originatingCard = value; }
 
     void RenderedAdaptiveCard::SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value)
     {

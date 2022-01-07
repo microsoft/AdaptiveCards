@@ -114,9 +114,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     struct TimeInputValue : public InputValue
     {
     public:
-        TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput,
-                       winrt::TimePicker uiTimePickerElement,
-                       winrt::Border validationBorder);
+        TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput, winrt::TimePicker uiTimePickerElement, winrt::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
@@ -131,9 +129,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     struct ToggleInputValue : public InputValue
     {
     public:
-        ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput,
-                         winrt::CheckBox uiCheckBoxElement,
-                         winrt::Border validationBorder);
+        ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput, winrt::CheckBox uiCheckBoxElement, winrt::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 

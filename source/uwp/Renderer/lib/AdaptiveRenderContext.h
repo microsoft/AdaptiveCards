@@ -39,8 +39,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         Uwp::AdaptiveInputs UserInputs();
 
         void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
-        void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction,
-                                    Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction, Uwp::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& args);
 
         Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
@@ -58,11 +57,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
                                Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet,
-                               winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
-        void AddOverflowButton(winrt::AdaptiveCard const& actionCard,
-                               winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::Windows::UI::Xaml::UIElement const& actionUIElement);
 
         winrt::com_ptr<implementation::RenderedAdaptiveCard> GetRenderResult();
         winrt::Windows::UI::Xaml::ResourceDictionary GetDefaultActionSentimentDictionary();

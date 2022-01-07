@@ -12,8 +12,8 @@ const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio
 namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 {
     winrt::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
-                                                  winrt::AdaptiveRenderArgs const& renderArgs,
-                                                  winrt::AdaptiveMedia const& adaptiveMedia)
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       winrt::AdaptiveMedia const& adaptiveMedia)
     {
         auto posterString = adaptiveMedia.Poster();
 
@@ -66,7 +66,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         // Set it's fill and opacity
         winrt::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
 
-        auto rectangleBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(whiteBrushColor);
+        auto rectangleBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(whiteBrushColor);
         rectangle.Fill(rectangleBrush);
         rectangle.Opacity(c_playIconOpacity);
 
@@ -74,7 +74,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         auto containerStyle = renderArgs.ContainerStyle();
 
         auto darkBrushColor = GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Dark, containerStyle, false, false);
-        auto darkBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(darkBrushColor);
+        auto darkBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(darkBrushColor);
         rectangle.Stroke(darkBrush);
 
         // Create a play symbol icon
@@ -85,11 +85,11 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         winrt::RelativePanel relativePanelStatics{};
 
         // TODO: should we just set property directly on rectangle and playIcon?
-         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
         relativePanelStatics.SetAlignHorizontalCenterWithPanel(rectangle, true);
         relativePanelStatics.SetAlignVerticalCenterWithPanel(rectangle, true);
 
-         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
         relativePanelStatics.SetAlignHorizontalCenterWithPanel(playIcon, true);
         relativePanelStatics.SetAlignVerticalCenterWithPanel(playIcon, true);
     }
@@ -114,7 +114,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             playIconAsFrameworkElement.Height(c_playIconSize);
 
             // Add it to the panel and center it
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
             winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
             winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIconUIElement, true);
         }
@@ -141,14 +141,14 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     }
 
     winrt::UIElement CreatePosterContainerWithPlayButton(winrt::Image const& posterImage,
-                                                          winrt::AdaptiveRenderContext const& renderContext,
-                                                          winrt::AdaptiveRenderArgs const& renderArgs)
+                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                         winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::RelativePanel posterRelativePanel{};
 
         if (posterImage)
         {
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
         }
         AddPlayIcon(posterRelativePanel, renderContext, renderArgs);
 
@@ -156,7 +156,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     }
 
     std::tuple<winrt::Uri, winrt::hstring> GetMediaSource(winrt::AdaptiveHostConfig const& hostConfig,
-                                                                               winrt::AdaptiveMedia const& adaptiveMedia)
+                                                          winrt::AdaptiveMedia const& adaptiveMedia)
     {
         winrt::Uri mediaSourceUrl{nullptr};
         winrt::hstring mimeType{};
@@ -190,11 +190,10 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         return {mediaSourceUrl, mimeType};
     }
 
-    void HandleMediaResourceResolverCompleted(
-        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
-        winrt::AsyncStatus status, // TODO: do we need to make enum const&?
-        winrt::MediaElement const& mediaElement,
-        winrt::hstring const& mimeType)
+    void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
+                                              winrt::AsyncStatus status, // TODO: do we need to make enum const&?
+                                              winrt::MediaElement const& mediaElement,
+                                              winrt::hstring const& mimeType)
     {
         if (status == winrt::AsyncStatus::Completed)
         {
@@ -231,14 +230,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             }
             else
             {
-                auto args =
-                    winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(mediaSourceUrl);
+                auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(mediaSourceUrl);
 
                 auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
 
                 getResourceStreamOperation.Completed(
-                    [mediaElement, mimeType](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
-                                             winrt::AsyncStatus status) -> void
+                    [mediaElement, mimeType](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation, winrt::AsyncStatus status) -> void
                     { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType); });
             }
 

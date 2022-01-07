@@ -13,8 +13,8 @@ using namespace AdaptiveCards::Rendering::Uwp::MediaHelpers;
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                    winrt::AdaptiveRenderArgs const& renderArgs)
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto posterImage = GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia);
 
             // If the host doesn't support interactivity we're done here, just return the poster image
-            if (! ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             // Create a panel to hold the poster and the media element
             winrt::StackPanel mediaStackPanel{};
 
-             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
 
             // Check if this host allows inline playback
             auto mediaConfig = hostConfig.Media();
@@ -90,7 +90,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 // Make the media element collapsed until the user clicks
                 mediaElement.Visibility(winrt::Visibility::Collapsed);
 
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
             }
 
             auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::ButtonBase>();
@@ -109,7 +109,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                     // TODO: unregister the click since button is disabled now. Is this correct approach?
                     // TODO: not sure about this:) Do we still want this to work afterwards? button is disabled tho..
-                    //touchTargetAsButtonBase.Click(*renderingEventToken);
+                    // touchTargetAsButtonBase.Click(*renderingEventToken);
                 });
             return mediaStackPanel;
         }

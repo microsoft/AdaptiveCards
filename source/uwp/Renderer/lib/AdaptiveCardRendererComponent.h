@@ -90,8 +90,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     private:
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
-        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
-                                                            winrt::IInspectable const& value);
+        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName, winrt::IInspectable const& value);
         void SetMergedDictionary();
 
         winrt::Windows::UI::Xaml::ResourceDictionary m_defaultResourceDictionary;

@@ -19,8 +19,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     winrt::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                    winrt::AdaptiveRenderArgs const& renderArgs)
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -45,8 +45,8 @@ namespace AdaptiveCards::Rendering::Uwp
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     winrt::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                              winrt::AdaptiveRenderContext const& renderContext,
-                                              winrt::AdaptiveRenderArgs const& renderArgs)
+                                             winrt::AdaptiveRenderContext const& renderContext,
+                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto adaptiveImage = adaptiveCardElement.as<winrt::AdaptiveImage>();
 
@@ -94,8 +94,7 @@ namespace AdaptiveCards::Rendering::Uwp
             winrt::Ellipse ellipse{};
             winrt::Ellipse backgroundEllipse{};
 
-            winrt::Stretch imageStretch =
-                (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
+            winrt::Stretch imageStretch = (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
 
             // bool mustHideElement{true};
 
@@ -126,12 +125,12 @@ namespace AdaptiveCards::Rendering::Uwp
                 // Fill the background ellipse with solid color brush
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
                 // TODO: would be good to refactor it in single function call.
-                auto backgroundColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
+                auto backgroundColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 winrt::Grid imageGrid{};
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
                 frameworkElement = imageGrid;
             }
@@ -150,7 +149,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 // Create a surrounding border with solid color background to contain the image
                 winrt::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                auto backgroundColorBrush =  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
+                auto backgroundColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
                 border.Background(backgroundColorBrush);
 
                 border.Child(xamlImage);
@@ -269,7 +268,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         frameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
-         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
 
         auto selectAction = adaptiveImage.SelectAction();
 
@@ -277,8 +276,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::AutomationProperties::SetName(frameworkElement, altText);
 
-        return ActionHelpers::HandleSelectAction(
-            adaptiveCardElement, selectAction, renderContext, frameworkElement,  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig), true);
+        return ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                                 selectAction,
+                                                 renderContext,
+                                                 frameworkElement,
+                                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
+                                                 true);
     }
 
     template<typename T>
@@ -317,8 +320,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
                 // Create the arguments to pass to the resolver
-                auto args =
-                    winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
+                auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
 
                 // And call the resolver to get the image stream
                 auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
@@ -342,8 +344,8 @@ namespace AdaptiveCards::Rendering::Uwp
                             auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
 
                             setSourceAction.Completed(
-                                [this, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                    winrt::IAsyncAction const&, winrt::AsyncStatus status)
+                                [this, uiElement, isAutoSize, parentElement, imageContainer, isVisible](winrt::IAsyncAction const&,
+                                                                                                        winrt::AsyncStatus status)
                                 {
                                     if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                     {
@@ -434,8 +436,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl)
+    template<typename T> void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl)
     {
         winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
@@ -451,24 +452,20 @@ namespace AdaptiveCards::Rendering::Uwp
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
 
         getStreamOperation.Completed(
-            [this, bitmapImage, imageControl](
-                winrt::IAsyncOperationWithProgress<winrt::IInputStream,
-                                                                        winrt::HttpProgress> const& operation,
-                winrt::AsyncStatus status) -> void // TODO: should it be void?)))
+            [this, bitmapImage, imageControl](winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
+                                              winrt::AsyncStatus status) -> void // TODO: should it be void?)))
             {
                 if (status == winrt::AsyncStatus::Completed)
                 {
                     auto imageStream = operation.GetResults();
                     // TODO: not totally sure about all this stream stuf...
                     winrt::InMemoryRandomAccessStream randomAccessStream{};
-                    auto copyStreamOperation =
-                        winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
+                    auto copyStreamOperation = winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
                     m_copyStreamOperations.push_back(copyStreamOperation);
 
-                    copyStreamOperation.Completed(
-                        [this, bitmapImage, randomAccessStream, imageControl](
-                            winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
-                            winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
+                    copyStreamOperation.Completed([this, bitmapImage, randomAccessStream, imageControl](
+                                                      winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
+                                                      winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
                 }
             });
         m_getStreamOperations.push_back(getStreamOperation);
@@ -482,8 +479,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
     template<>
     void XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
-                                                              winrt::ImageSource const& imageSource,
-                                                              winrt::Stretch stretch)
+                                                     winrt::ImageSource const& imageSource,
+                                                     winrt::Stretch stretch)
     {
         winrt::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
@@ -494,10 +491,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
     template<>
     void XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& destination,
-                                                           winrt::IInspectable const& parentElement,
-                                                           winrt::IInspectable const& imageContainer,
-                                                           bool isVisible,
-                                                           bool imageFiresOpenEvent)
+                                                  winrt::IInspectable const& parentElement,
+                                                  winrt::IInspectable const& imageContainer,
+                                                  bool isVisible,
+                                                  bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement && m_enableXamlImageHandling)
@@ -526,8 +523,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // TODO: do we need a revoker/token?
                 brushAsImageBrush.ImageOpened(
-                    [ellipseAsShape, weakParent, isVisible](winrt::IInspectable const& sender,
-                                                            winrt::RoutedEventArgs /*args*/) -> void
+                    [ellipseAsShape, weakParent, isVisible](winrt::IInspectable const& sender, winrt::RoutedEventArgs /*args*/) -> void
                     {
                         if (isVisible)
                         {
@@ -544,14 +540,17 @@ namespace AdaptiveCards::Rendering::Uwp
                                 winrt::FrameworkElement k{nullptr};
                                 winrt::BitmapSource as{nullptr};
 
-                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape,
+                                                                                               lambdaParentElement,
+                                                                                               lamdaImageSourceAsBitmap,
+                                                                                               isVisible);
                             }
                         }
                     });
             }
             else
             {
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
@@ -593,14 +592,17 @@ namespace AdaptiveCards::Rendering::Uwp
                         {
                             if (const auto lambdaParentElement = weakParent.get())
                             {
-                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement, lambdaParentElement, imageSourceAsBitmapSource, isVisible);
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
+                                                                                               lambdaParentElement,
+                                                                                               imageSourceAsBitmapSource,
+                                                                                               isVisible);
                             }
                         }
                     });
             }
             else
             {
-                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
             }
         }
     }
