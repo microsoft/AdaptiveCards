@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACRColumnDefinition : NSObject
 
-// if pixel, numeric has the pixel width, else has the fraction, 
+// if pixel, numeric has the pixel width, else has the fraction,
 // the width / total relative width
 @property CGFloat numeric;
 // sum of all pixel width in a row
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
              rootView:(ACRView *)rootView
                inputs:(NSMutableArray *)inputs
            hostConfig:(ACOHostConfig *)acoConfig
-           gridStyle:(ACRContainerStyle)gridStyle;
+            gridStyle:(ACRContainerStyle)gridStyle;
 
 @end
 

@@ -2,18 +2,17 @@
 //  AdaptiveCardsTests.mm
 //  AdaptiveCardsTests
 //
-//  Created by almedina on 6/22/21.
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRContentHoldingUIView.h"
 #import "ACOBaseCardElementPrivate.h"
-#import "ACRRegistration.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelView.h"
+#import "ACRRegistration.h"
+#import "ACRTextView.h"
 #import "TextBlock.h"
 #import "TextInput.h"
-#import "ACRInputLabelView.h"
-#import "ACRTextView.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
@@ -66,7 +65,9 @@ using namespace AdaptiveCards;
     ACRView *rootView = [[ACRView alloc] init];
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
     ACOHostConfig *config = [[ACOHostConfig alloc] init];
-    UIView *inputView = [renderer render:viewGroup rootView:rootView inputs:inputs
+    UIView *inputView = [renderer render:viewGroup
+                                rootView:rootView
+                                  inputs:inputs
                          baseCardElement:baseCardElement
                               hostConfig:config];
     XCTAssertNotNil(inputView);
@@ -89,7 +90,9 @@ using namespace AdaptiveCards;
     ACRView *rootView = [[ACRView alloc] init];
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
     ACOHostConfig *config = [[ACOHostConfig alloc] init];
-    UIView *inputView = [renderer render:viewGroup rootView:rootView inputs:inputs
+    UIView *inputView = [renderer render:viewGroup
+                                rootView:rootView
+                                  inputs:inputs
                          baseCardElement:baseCardElement
                               hostConfig:config];
     XCTAssertNotNil(inputView);
@@ -111,7 +114,9 @@ using namespace AdaptiveCards;
     ACRView *rootView = [[ACRView alloc] init];
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
     ACOHostConfig *config = [[ACOHostConfig alloc] init];
-    UIView *inputView = [renderer render:viewGroup rootView:rootView inputs:inputs
+    UIView *inputView = [renderer render:viewGroup
+                                rootView:rootView
+                                  inputs:inputs
                          baseCardElement:baseCardElement
                               hostConfig:config];
     XCTAssertNotNil(inputView);
@@ -124,4 +129,3 @@ using namespace AdaptiveCards;
 }
 
 @end
-

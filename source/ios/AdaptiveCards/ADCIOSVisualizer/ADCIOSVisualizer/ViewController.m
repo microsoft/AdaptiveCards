@@ -168,10 +168,9 @@ CGFloat kFileBrowserWidth = 0;
 - (IBAction)deleteAllRows:(id)sender
 {
     [(ACRChatWindow *)self.chatWindow.dataSource deleteAllRows:self.chatWindow];
-    
+
     // clean the retrieved inputs
-    if ([self appIsBeingTested])
-    {
+    if ([self appIsBeingTested]) {
         [self.retrievedInputsTextView setText:@" "];
     }
 }
@@ -245,14 +244,14 @@ CGFloat kFileBrowserWidth = 0;
 
     NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
     UIStackView *retrievedInputsLayout = [self buildRetrievedResultsLayout:fileBrowserView.centerXAnchor];
-    
+
     UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     [self.chatWindow registerClass:[ACRChatWindowCell class] forCellReuseIdentifier:@"adaptiveCell"];
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    
+
     // set a identifier to ease development of UI tests
     self.chatWindow.accessibilityIdentifier = @"ChatWindow";
 
@@ -265,23 +264,20 @@ CGFloat kFileBrowserWidth = 0;
     [self.view addSubview:self.chatWindow];
 
     UITableView *chatWindow = self.chatWindow;
-    
+
     // if the app is being tested we render an extra layout that contains the
     // retrieved input values json
     NSString *layoutOption = [self appIsBeingTested] ? @"-[retrievedInputsLayout]-" : @"-";
     NSString *verticalFormat = [NSString stringWithFormat:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]%@[chatWindow]-40@100-|", layoutOption];
     NSArray<NSString *> *formats = [NSArray arrayWithObjects:verticalFormat, @"H:|-[chatWindow]-|", nil];
-    
+
     NSDictionary *viewMap;
-    if ([self appIsBeingTested])
-    {
+    if ([self appIsBeingTested]) {
         viewMap =
-        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
-    }
-    else
-    {
+            NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
+    } else {
         viewMap =
-        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
+            NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
     }
 
     [ViewController applyConstraints:formats variables:viewMap];
@@ -336,19 +332,16 @@ CGFloat kFileBrowserWidth = 0;
             [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
         }
         NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
-        
+
         // if the app is being tested we set the result in the uilabel, otherwise
         // we show the label in a popup
-        if ([self appIsBeingTested])
-        {
+        if ([self appIsBeingTested]) {
             NSString *str2 = [NSString stringWithFormat:@"{\n\t\"inputs\":%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
             [self.retrievedInputsTextView setText:str2];
-        }
-        else
-        {
+        } else {
             [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
         }
-        
+
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
@@ -445,7 +438,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                     alertController:(UIAlertController *)alert
-                      additionalData:(NSDictionary *)additionalData
+                     additionalData:(NSDictionary *)additionalData
 {
     // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
     //    [self presentViewController: alert];
@@ -545,7 +538,7 @@ CGFloat kFileBrowserWidth = 0;
     // custon renderer button
     self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
     [layout[1] addArrangedSubview:self.enableCustomRendererButton];
-   
+
     return layout;
 }
 
@@ -554,20 +547,19 @@ CGFloat kFileBrowserWidth = 0;
     UIStackView *layout = [self configureButtons:centerXAnchor
                                     distribution:UIStackViewDistributionFill];
 
-    if ([self appIsBeingTested])
-    {
+    if ([self appIsBeingTested]) {
         // Set a background red color to signalize the app is in test mode
         self.view.backgroundColor = [UIColor colorWithRed:1.0 green:0.80 blue:0.80 alpha:1];
-        
+
         // Initialize the input results label
         self.retrievedInputsTextView = [self buildLabel:@"" withIdentifier:@"SubmitActionRetrievedResults"];
-        
+
         [self.retrievedInputsTextView setText:@" "];
-        
+
         // Add the label to the container
         [layout addArrangedSubview:self.retrievedInputsTextView];
     }
-    
+
     return layout;
 }
 
@@ -593,7 +585,7 @@ CGFloat kFileBrowserWidth = 0;
     return button;
 }
 
-- (UILabel *)buildLabel:(NSString*)text withIdentifier:(NSString*)identifier
+- (UILabel *)buildLabel:(NSString *)text withIdentifier:(NSString *)identifier
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     [label setText:text];
@@ -601,7 +593,7 @@ CGFloat kFileBrowserWidth = 0;
     [label setBaselineAdjustment:UIBaselineAdjustmentAlignBaselines];
     [label setLineBreakMode:NSLineBreakByCharWrapping];
     [label setNumberOfLines:4];
-    
+
     [label setAccessibilityIdentifier:identifier];
     return label;
 }
@@ -680,34 +672,30 @@ CGFloat kFileBrowserWidth = 0;
                    ^{
                        [self.chatWindow beginUpdates];
                        [self.chatWindow endUpdates];
-    });
+                   });
 }
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
     dispatch_async(_global_queue,
                    ^{
-                       
                        // This lines are required for updating the element tree after a
                        // show card action has taken place, otherwise no previously hidden
                        // element can be retrieved
-                       if ([self appIsBeingTested])
-                       {
-                            [self.chatWindow beginUpdates];
-                            
-                            NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
-                            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                            // reload the row; it is possible that the row height, for example, is calculated without images loaded
-                            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+                       if ([self appIsBeingTested]) {
+                           [self.chatWindow beginUpdates];
 
-                            [self.chatWindow endUpdates];
-                        }
-                       else
-                       {
-                            [self.chatWindow beginUpdates];
-                            [self.chatWindow endUpdates];
-                        }
-    });
+                           NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+                           NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+                           // reload the row; it is possible that the row height, for example, is calculated without images loaded
+                           [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+
+                           [self.chatWindow endUpdates];
+                       } else {
+                           [self.chatWindow beginUpdates];
+                           [self.chatWindow endUpdates];
+                       }
+                   });
 }
 
 // Handle accessibility state change events

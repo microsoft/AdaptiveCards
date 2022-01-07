@@ -198,6 +198,7 @@
     constraints[0].priority = priority;
     constraints[1].priority = priority;
 
+    ACRAspectRatio aspectRatio = [ACRImageProperties convertToAspectRatio:cgsize];
 
     [constraints addObjectsFromArray:@[
         [NSLayoutConstraint constraintWithItem:imageView
@@ -205,14 +206,14 @@
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:imageView
                                      attribute:NSLayoutAttributeWidth
-                                    multiplier:cgsize.height / cgsize.width
+                                    multiplier:aspectRatio.heightToWidth
                                       constant:0],
         [NSLayoutConstraint constraintWithItem:imageView
                                      attribute:NSLayoutAttributeWidth
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:imageView
                                      attribute:NSLayoutAttributeHeight
-                                    multiplier:cgsize.width / cgsize.height
+                                    multiplier:aspectRatio.widthToHeight
                                       constant:0]
     ]];
 

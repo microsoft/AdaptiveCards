@@ -5,11 +5,17 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElement.h"
-#import "ACOHostConfig.h"
-#import "ACREnums.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACREnums.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+struct ACRAspectRatio {
+    CGFloat widthToHeight;
+    CGFloat heightToWidth;
+};
+typedef struct ACRAspectRatio ACRAspectRatio;
 
 @interface ACRImageProperties : NSObject
 
@@ -26,4 +32,5 @@
 
 - (void)updateContentSize:(CGSize)size;
 
++ (ACRAspectRatio)convertToAspectRatio:(CGSize)cgsize;
 @end

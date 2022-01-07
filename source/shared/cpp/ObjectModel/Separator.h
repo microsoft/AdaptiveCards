@@ -6,25 +6,25 @@
 
 namespace AdaptiveCards
 {
-    class Separator
-    {
-    public:
-        Separator();
+class Separator
+{
+public:
+    Separator();
 
-        std::string Serialize();
-        Json::Value SerializeToJsonValue();
+    std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
-        SeparatorThickness GetThickness() const;
-        void SetThickness(SeparatorThickness value);
+    SeparatorThickness GetThickness() const;
+    void SetThickness(SeparatorThickness value);
 
-        ForegroundColor GetColor() const;
-        void SetColor(const ForegroundColor value);
+    ForegroundColor GetColor() const;
+    void SetColor(const ForegroundColor value);
 
-        static std::shared_ptr<Separator> Deserialize(const Json::Value& root);
-        static std::shared_ptr<Separator> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<Separator> Deserialize(const Json::Value& root);
+    static std::shared_ptr<Separator> DeserializeFromString(const std::string& jsonString);
 
-    private:
-        SeparatorThickness m_thickness;
-        ForegroundColor m_color;
-    };
-}
+private:
+    SeparatorThickness m_thickness;
+    ForegroundColor m_color;
+};
+} // namespace AdaptiveCards

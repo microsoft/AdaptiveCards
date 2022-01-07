@@ -893,19 +893,6 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
     return key;
 }
 
-CGSize getAspectRatio(CGSize size)
-{
-    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
-    if (size.width > 0) {
-        heightToWidthRatio = size.height / size.width;
-    }
-
-    if (size.height > 0) {
-        widthToHeightRatio = size.width / size.height;
-    }
-    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
-}
-
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
 {
     if (hasExplicitDimensions) {
