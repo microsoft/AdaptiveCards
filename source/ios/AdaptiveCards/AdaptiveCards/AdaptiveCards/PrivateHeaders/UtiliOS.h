@@ -11,8 +11,8 @@
 #import <AdaptiveCards/ACRSeparator.h>
 #import <AdaptiveCards/ACRViewPrivate.h>
 #import <AdaptiveCards/BaseCardElement.h>
-#import <AdaptiveCards/StyledCollectionElement.h>
 #import <AdaptiveCards/RichTextElementProperties.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/TextRun.h>
 #import <AdaptiveCards/UnknownAction.h>
@@ -106,8 +106,6 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
-
-CGSize getAspectRatio(CGSize size);
 
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
 

@@ -8,42 +8,42 @@
 
 namespace AdaptiveCards
 {
-    class Fact;
+class Fact;
 
-    class FactSet : public BaseCardElement
-    {
-        friend class FactSetParser;
+class FactSet : public BaseCardElement
+{
+    friend class FactSetParser;
 
-    public:
-        FactSet();
-        FactSet(const FactSet&) = default;
-        FactSet(FactSet&&) = default;
-        FactSet& operator=(const FactSet&) = default;
-        FactSet& operator=(FactSet&&) = default;
-        ~FactSet() = default;
+public:
+    FactSet();
+    FactSet(const FactSet&) = default;
+    FactSet(FactSet&&) = default;
+    FactSet& operator=(const FactSet&) = default;
+    FactSet& operator=(FactSet&&) = default;
+    ~FactSet() = default;
 
-        Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
-        std::vector<std::shared_ptr<Fact>>& GetFacts();
-        const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
+    std::vector<std::shared_ptr<Fact>>& GetFacts();
+    const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
-    private:
-        void PopulateKnownPropertiesSet();
+private:
+    void PopulateKnownPropertiesSet();
 
-        std::vector<std::shared_ptr<Fact>> m_facts;
-    };
+    std::vector<std::shared_ptr<Fact>> m_facts;
+};
 
-    class FactSetParser : public BaseCardElementParser
-    {
-    public:
-        FactSetParser() = default;
-        FactSetParser(const FactSetParser&) = default;
-        FactSetParser(FactSetParser&&) = default;
-        FactSetParser& operator=(const FactSetParser&) = default;
-        FactSetParser& operator=(FactSetParser&&) = default;
-        virtual ~FactSetParser() = default;
+class FactSetParser : public BaseCardElementParser
+{
+public:
+    FactSetParser() = default;
+    FactSetParser(const FactSetParser&) = default;
+    FactSetParser(FactSetParser&&) = default;
+    FactSetParser& operator=(const FactSetParser&) = default;
+    FactSetParser& operator=(FactSetParser&&) = default;
+    virtual ~FactSetParser() = default;
 
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
-        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
-    };
-}
+    std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+    std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+};
+} // namespace AdaptiveCards

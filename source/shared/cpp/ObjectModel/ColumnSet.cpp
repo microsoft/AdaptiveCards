@@ -41,20 +41,22 @@ Json::Value ColumnSet::SerializeToJsonValue() const
 
 void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
-    m_columns = ParseUtil::GetElementCollection<Column>(false, // isTopToBottomContainer
-                                                        context,
-                                                        value,
-                                                        AdaptiveCardSchemaKey::Columns,
-                                                        false,                                             // isRequired
-                                                        CardElementTypeToString(CardElementType::Column)); // impliedType
+    m_columns = ParseUtil::GetElementCollection<Column>(
+        false, // isTopToBottomContainer
+        context,
+        value,
+        AdaptiveCardSchemaKey::Columns,
+        false,                                             // isRequired
+        CardElementTypeToString(CardElementType::Column)); // impliedType
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)});
 }
 
 void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

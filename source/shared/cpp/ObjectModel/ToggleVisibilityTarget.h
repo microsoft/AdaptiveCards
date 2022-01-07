@@ -8,32 +8,32 @@
 
 namespace AdaptiveCards
 {
-    enum IsVisible
-    {
-        IsVisibleToggle,
-        IsVisibleTrue,
-        IsVisibleFalse
-    };
+enum IsVisible
+{
+    IsVisibleToggle,
+    IsVisibleTrue,
+    IsVisibleFalse
+};
 
-    class ToggleVisibilityTarget
-    {
-    public:
-        ToggleVisibilityTarget();
+class ToggleVisibilityTarget
+{
+public:
+    ToggleVisibilityTarget();
 
-        std::string GetElementId() const;
-        void SetElementId(const std::string& value);
+    std::string GetElementId() const;
+    void SetElementId(const std::string& value);
 
-        IsVisible GetIsVisible() const;
-        void SetIsVisible(IsVisible value);
+    IsVisible GetIsVisible() const;
+    void SetIsVisible(IsVisible value);
 
-        std::string Serialize();
-        Json::Value SerializeToJsonValue();
+    std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
-        static std::shared_ptr<ToggleVisibilityTarget> Deserialize(ParseContext& context, const Json::Value& root);
-        static std::shared_ptr<ToggleVisibilityTarget> DeserializeFromString(ParseContext& context, const std::string& jsonString);
+    static std::shared_ptr<ToggleVisibilityTarget> Deserialize(ParseContext& context, const Json::Value& root);
+    static std::shared_ptr<ToggleVisibilityTarget> DeserializeFromString(ParseContext& context, const std::string& jsonString);
 
-    private:
-        std::string m_targetId;
-        IsVisible m_visibilityToggle;
-    };
-}
+private:
+    std::string m_targetId;
+    IsVisible m_visibilityToggle;
+};
+} // namespace AdaptiveCards

@@ -6,10 +6,10 @@
 
 namespace AdaptiveCards
 {
-    struct RemoteResourceInformation
-    {
-        std::string url;
-        std::string mimeType;
-    };
+struct RemoteResourceInformation
+{
+    std::string url;
+    std::string mimeType;
+};
 
-}
+} // namespace AdaptiveCards

@@ -29,8 +29,9 @@ bool MarkDownEmphasisHtmlGenerator::IsMatch(const MarkDownEmphasisHtmlGenerator&
     if (this->type == emphasisToken.type)
     {
         // rule #9 & #10, sum of delimiter count can't be multiple of 3
-        return !((this->IsLeftAndRightEmphasis() || emphasisToken.IsLeftAndRightEmphasis()) &&
-                 (((this->m_numberOfUnusedDelimiters + emphasisToken.m_numberOfUnusedDelimiters) % 3) == 0));
+        return !(
+            (this->IsLeftAndRightEmphasis() || emphasisToken.IsLeftAndRightEmphasis()) &&
+            (((this->m_numberOfUnusedDelimiters + emphasisToken.m_numberOfUnusedDelimiters) % 3) == 0));
     }
     return false;
 }
