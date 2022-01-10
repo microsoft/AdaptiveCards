@@ -55,6 +55,10 @@ export class SelectAction extends React.Component {
 			return null;
 		}
 
+		this.payload = this.props.selectActionData;
+		this.onExecuteAction = undefined;
+		this.toggleVisibilityForElementWithID = undefined;
+
 		const ButtonComponent = TouchableOpacity;
 		return (<InputContextConsumer>
 			{({ onExecuteAction, toggleVisibilityForElementWithID }) => {
@@ -66,7 +70,7 @@ export class SelectAction extends React.Component {
 					onPress={() => { this.onClickHandle() }}
 					disabled={this.payload.isEnabled === undefined ? false : !this.payload.isEnabled}
 					accessible={true}
-					accessibilityLabel={this.payload.altText}
+					accessibilityLabel={this.props.altText}
 					accessibilityRole={Constants.Button}
 					accessibilityState={{ disabled: this.payload.isEnabled === undefined ? false : !this.payload.isEnabled }}
 					style={this.props.style}>

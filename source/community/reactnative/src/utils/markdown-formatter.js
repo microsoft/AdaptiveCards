@@ -94,6 +94,10 @@ export default class MarkdownFormatter extends React.PureComponent {
 		this.userStyles = this.props.defaultStyles;
 		this.text = this.props.text;
 		this.altText = this.props.altText;
+		this.matchedIndices = [];
+		this.matchesFound = [];
+		this.matchesStyleTypes = [];
+		this.matchesStyles = [];
 		this.preprocessor();
 
 		for (var i = 0; i <= this.styleTypes.length - 1; i++) {

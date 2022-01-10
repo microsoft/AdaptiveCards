@@ -42,10 +42,10 @@ export class ChoiceSetInput extends React.Component {
 		this.payload = props.json;
 		this.label = Constants.EmptyString;
 		this.isRequired = this.payload.isRequired || false;
+		this.placeholder = this.payload.placeholder
 
 		this.state = {
-			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ?
-				props.json.choices[0].value : props.json.value,
+			selectedPickerValue: this.payload.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -93,11 +93,13 @@ export class ChoiceSetInput extends React.Component {
 	 * @param {string} value 
 	 */
 	getPickerSelectedValue = (value, addInputItem) => {
-		if (Utils.isNullOrEmpty(value))
-			return Constants.EmptyString
+		if (Utils.isNullOrEmpty(value)) {
+			addInputItem(this.id, { value: value, errorState: this.state.isError });
+			return this.placeholder;
+		}
 		let choiceName = this.choices.find(choice => choice.value === value);
 		addInputItem(this.id, { value: value, errorState: this.state.isError });
-		return choiceName ? choiceName.title : Constants.EmptyString;
+		return choiceName ? choiceName.title : this.placeholder;
 	}
 
 	/**
@@ -155,12 +157,28 @@ export class ChoiceSetInput extends React.Component {
 	}
 
 	/**
-	 * @description Renders Picker component as per the json
+	 * @description Get styles for placeholder/choice selected for picker component.
+	 * @returns {object} - Styles computed based on the payload
+	 */
+	getPickerComponentStyles = (addInputItem) => {
+		// remove placeholderColor from styles object before using
+		const { placeholderColor, ...stylesObject } = this.styleConfig.dropdownText;
+		let inputComputedStyles = [stylesObject];
+		placeholderColor && (this.getPickerSelectedValue(this.state.selectedPickerValue, addInputItem) === this.placeholder) && inputComputedStyles.push({ color: placeholderColor });
+
+		return inputComputedStyles;
+	}
+
+	/**
+	 * @description Renders Picker component as per the json for single choice compact style.
+	 * Renders custom element containing textbox with placeholder/default/selected value with dropdown image.
+	 * It hides the default picker element which shows its own text box in Android and shows custom picker element.
+	 * On picker element selected, it shows the dropdown with list of choices.
 	 */
 	renderPickerComponent(addInputItem) {
 		return (
 			<View style={styles.containerView}>
-				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
+				{<TouchableOpacity
 					activeOpacity={1}
 					onPress={onPress}
 					accessible={true}
@@ -169,7 +187,7 @@ export class ChoiceSetInput extends React.Component {
 				>
 					<View style={this.styleConfig.dropdown}>
 						<Text
-							style={[this.styleConfig.dropdownText, this.styleConfig.defaultFontConfig]}
+							style={[this.getPickerComponentStyles(addInputItem), this.styleConfig.defaultFontConfig]}
 						>
 							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 								addInputItem)
@@ -192,6 +210,7 @@ export class ChoiceSetInput extends React.Component {
 		let picker = (
 			<Picker
 				mode={'dropdown'}
+				style={(Platform.OS === Constants.PlatformAndroid) && { width: '100%', height: '100%', position: 'absolute', opacity: 0 }}
 				itemStyle={this.styleConfig.picker}
 				selectedValue={this.getPickerInitialValue(addInputItem)}
 				onValueChange={
@@ -210,13 +229,6 @@ export class ChoiceSetInput extends React.Component {
 				)}
 			</Picker>
 		);
-		if (Platform.OS == Constants.PlatformAndroid) {
-			picker = (
-				<View style={this.styleConfig.dropdown}>
-					{picker}
-				</View>
-			)
-		}
 		return picker;
 	}
 

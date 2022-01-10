@@ -192,5 +192,6 @@ export const ThemeElement = Object.freeze({
 	Switch: "switch",
 	InlineAction: "inlineAction",
 	InlineActionText: "inlineActionText",
-	ActionSet: "actionSet"
+	ActionSet: "actionSet",
+	InputContainer: "inputContainer"
 });

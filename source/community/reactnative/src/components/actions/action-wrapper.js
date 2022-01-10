@@ -28,6 +28,15 @@ export class ActionWrapper extends React.Component {
 		}
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.actions !== this.props.actions) {
+			this.hasShowCard = false;
+			this.setState({
+				isShowCard: false,
+			});
+		}
+	}
+
 	hasShowCard = false;
 
 	onShowAdaptiveCard = (adaptiveCard) => {

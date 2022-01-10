@@ -137,6 +137,7 @@ export class FactSet extends React.Component {
 	}
 
 	render() {
+		this.payload = this.props.json;
 		let factSetContainer = this.internalRenderer(this.props.json);
 		return factSetContainer;
 	}

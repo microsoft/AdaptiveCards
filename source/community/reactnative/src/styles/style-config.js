@@ -99,6 +99,9 @@ export class StyleConfig {
 			},
 			actionSet: {
 				...this.themeConfig.actionSet[Platform.OS]
+			},
+			inputContainer: {
+				...this.themeConfig.inputContainer[Platform.OS]
 			}
 		};
 		return styles;
