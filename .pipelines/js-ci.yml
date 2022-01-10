@@ -1,0 +1,92 @@
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - source/nodejs
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+  demands:
+  - npm
+
+parameters:
+- name: target_packages
+  displayName: "Which packages is going to be built."
+  type: object
+  default:
+  - adaptivecards
+  - adaptivecards-controls
+  - adaptivecards-designer
+  - adaptivecards-templating
+  - adaptivecards-react
+
+- name: test_projects
+  displayName: "Which project is going to be consume the built packages."
+  type: object
+  default:
+  - adaptivecards-ui-testapp
+  - adaptivecards-react-testapp
+
+steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 14.x
+  inputs:
+    versionSpec: 14.x
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: source/nodejs
+    contents: 'tsconfig.*' 
+    targetFolder: source
+  displayName: Copy tsconfig
+
+- ${{ each test_project in parameters.test_projects }}:
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: source/nodejs/${{ test_project }}
+      contents: '**' 
+      targetFolder: source/${{ test_project }}
+    displayName: Copy [${{ test_project }}] from source/nodejs to source/
+
+- bash: |
+   npm ci 
+   npx lerna bootstrap --ci
+   npx lerna run release
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna bootstrap'
+
+- bash: |
+   npx lerna run test
+  workingDirectory: source/nodejs
+  displayName: 'Run all tests'
+
+- ${{ each target_package in parameters.target_packages }}:
+  - task: Npm@1
+    displayName: '[${{ target_package }}] npm pack'
+    inputs:
+      command: custom
+      customCommand: pack
+      workingDir: source/nodejs/${{ target_package }}
+  
+  - ${{ each test_project in parameters.test_projects }}:
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: source/nodejs/${{ target_package }}
+        contents: '*.tgz' 
+        targetFolder: source/${{ test_project }}
+      displayName: 'Copy tgz to [${{ test_project }}]'
+
+- ${{ each test_project in parameters.test_projects }}:
+  - bash: |
+      npm i *.tgz
+      cat package.json
+      npm i
+      npm run build
+    workingDirectory: source/${{ test_project }}
+    displayName: 'Install the built package and build the [${{ test_project }}]'
