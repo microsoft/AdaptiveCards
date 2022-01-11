@@ -131,15 +131,15 @@ stages:
         AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
         AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
 
+    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0  
+      displayName: 'Manifest Generator '
+      inputs:
+        BuildDropPath: '$(build.artifactstagingdirectory)'
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-
-    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-      displayName: 'Manifest Generator '
-      inputs:
-        BuildDropPath: '$(build.artifactstagingdirectory)'
 
 - stage: NexusValidation
   jobs:
