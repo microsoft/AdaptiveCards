@@ -136,6 +136,11 @@ stages:
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
 
+    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+      displayName: 'Manifest Generator '
+      inputs:
+        BuildDropPath: '$(build.artifactstagingdirectory)'
+
 - stage: NexusValidation
   jobs:
   - job: NexusValidation
