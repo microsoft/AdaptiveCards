@@ -40,6 +40,7 @@ steps:
     versionSpec: 14.x
 
 - bash: |
+   npm i -g npm@latest
    npm ci 
    npx lerna bootstrap --ci
    npx lerna run release
