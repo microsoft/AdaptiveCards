@@ -39,21 +39,6 @@ steps:
   inputs:
     versionSpec: 14.x
 
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: source/nodejs
-    contents: 'tsconfig.*' 
-    targetFolder: source
-  displayName: Copy tsconfig
-
-- ${{ each test_project in parameters.test_projects }}:
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: source/nodejs/${{ test_project }}
-      contents: '**' 
-      targetFolder: source/${{ test_project }}
-    displayName: Copy [${{ test_project }}] from source/nodejs to source/
-
 - bash: |
    npm ci 
    npx lerna bootstrap --ci
@@ -65,6 +50,7 @@ steps:
    npx lerna run test
   workingDirectory: source/nodejs
   displayName: 'Run all tests'
+  condition: failed() # This is disabled because of issue 6874
 
 - ${{ each target_package in parameters.target_packages }}:
   - task: Npm@1
@@ -74,19 +60,24 @@ steps:
       customCommand: pack
       workingDir: source/nodejs/${{ target_package }}
   
-  - ${{ each test_project in parameters.test_projects }}:
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: source/nodejs/${{ target_package }}
-        contents: '*.tgz' 
-        targetFolder: source/${{ test_project }}
-      displayName: 'Copy tgz to [${{ test_project }}]'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: source/nodejs/${{ target_package }}
+      contents: '*.tgz' 
+      targetFolder: ../
+    displayName: 'Copy tgz to ../'
+
+- bash: |
+   git clean -dxf
+   npm i
+  workingDirectory: source/nodejs
+  displayName: 'clean and re-install the package'
 
 - ${{ each test_project in parameters.test_projects }}:
   - bash: |
-      npm i *.tgz
+      npm i ../../../../*.tgz
       cat package.json
       npm i
       npm run build
-    workingDirectory: source/${{ test_project }}
+    workingDirectory: source/nodejs/${{ test_project }}
     displayName: 'Install the built package and build the [${{ test_project }}]'
