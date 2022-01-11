@@ -63,7 +63,7 @@ steps:
   - task: CopyFiles@2
     inputs:
       sourceFolder: source/nodejs/${{ target_package }}
-      contents: '*.tgz' 
+      contents: '${{ target_package }}*.tgz' 
       targetFolder: ../
     displayName: 'Copy tgz to ../'
 
