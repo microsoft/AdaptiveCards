@@ -1,7 +1,0 @@
--r requirements-pytorch.txt
-requests
-nltk
-scikit-learn
-black
-pylint==2.7.4
-coverage

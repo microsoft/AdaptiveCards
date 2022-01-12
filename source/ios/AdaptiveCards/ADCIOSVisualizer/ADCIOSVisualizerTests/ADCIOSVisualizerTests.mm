@@ -210,7 +210,7 @@
                     [self assertRendering:renderResult fileName:fileName];
                 }
                 @catch (NSException *exception) {
-                    XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Exception in %@", fileName]];
+                    XCTMutableIssue *issue = [[XCTMutableIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:[NSString stringWithFormat:@"Rendering Exception in %@ with %@ \nStack Trace:%@", fileName, exception, exception.callStackSymbols]];
                     [self recordIssue:issue];
                 }
             }
