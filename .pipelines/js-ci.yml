@@ -36,7 +36,7 @@ parameters:
   displayName: "project in tests/."
   type: object
   default:
-  - test-adaptive-card-schema
+  # - test-adaptive-card-schema  # bug https://github.com/microsoft/AdaptiveCards/issues/6882
   - ui-tests
   - unit-tests
 
