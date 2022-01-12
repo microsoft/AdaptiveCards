@@ -37,7 +37,7 @@ parameters:
   type: object
   default:
   # - test-adaptive-card-schema  # bug https://github.com/microsoft/AdaptiveCards/issues/6882
-  - ui-tests
+  # - ui-tests # bug https://github.com/microsoft/AdaptiveCards/issues/6885
   - unit-tests
 
 steps:
