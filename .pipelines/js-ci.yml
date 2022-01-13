@@ -1,0 +1,99 @@
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - source/nodejs
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+  demands:
+  - npm
+
+parameters:
+- name: target_packages
+  displayName: "Which packages is going to be built."
+  type: object
+  default:
+  - adaptivecards
+  - adaptivecards-controls
+  - adaptivecards-designer
+  - adaptivecards-templating
+  - adaptivecards-react
+
+- name: test_apps
+  displayName: "Which project is going to be consume the built npm packages."
+  type: object
+  default:
+  - adaptivecards-ui-testapp
+  - adaptivecards-react-testapp
+
+- name: test_projects
+  displayName: "project in tests/."
+  type: object
+  default:
+  # - test-adaptive-card-schema  # bug https://github.com/microsoft/AdaptiveCards/issues/6882
+  # - ui-tests # bug https://github.com/microsoft/AdaptiveCards/issues/6885
+  - unit-tests
+
+steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 14.x
+  inputs:
+    versionSpec: 14.x
+
+- bash: |
+   npm i -g npm@latest
+   npm ci 
+   npx lerna bootstrap --ci
+   npx lerna run release
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna bootstrap'
+
+- bash: |
+   npx lerna run test
+  workingDirectory: source/nodejs
+  displayName: 'Run all tests'
+  condition: failed() # This is disabled because of issue 6874
+
+- ${{ each target_package in parameters.target_packages }}:
+  - task: Npm@1
+    displayName: '[${{ target_package }}] npm pack'
+    inputs:
+      command: custom
+      customCommand: pack
+      workingDir: source/nodejs/${{ target_package }}
+  
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: source/nodejs/${{ target_package }}
+      contents: '${{ target_package }}*.tgz' 
+      targetFolder: ../
+    displayName: 'Copy tgz to ../'
+
+- ${{ each test_project in parameters.test_projects }}:
+  - bash: |
+      npm i
+      npm run build-and-test
+    workingDirectory: source/nodejs/tests/${{ test_project }}
+    displayName: 'Build and run test in tests/[${{ test_project }}]'
+
+- bash: |
+   git clean -dxf
+   npm i
+  workingDirectory: source/nodejs
+  displayName: 'clean and re-install the package'
+
+- ${{ each test_app in parameters.test_apps }}:
+  - bash: |
+      npm i ../../../../*.tgz --force
+      cat package.json
+      npm i
+      npm run build
+    workingDirectory: source/nodejs/${{ test_app }}
+    displayName: 'Install the built package and build the [${{ test_app }}]'
