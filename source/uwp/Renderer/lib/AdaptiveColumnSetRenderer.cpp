@@ -63,9 +63,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 {
                    xamlColumn = columnRenderer.Render(column, renderContext, newRenderArgs);
                 }
-                catch (winrt::hresult const& ex)
+                catch (winrt::hresult_error const& ex)
                 {
-                    if (ex.value != E_PERFORM_FALLBACK)
+                    if (ex.code() != E_PERFORM_FALLBACK)
                     {
                         throw ex;
                     }
