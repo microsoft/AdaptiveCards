@@ -176,11 +176,10 @@ namespace AdaptiveCards::Rendering::Uwp
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    std::pair<winrt::Panel, winrt::Windows::UI::Xaml::UIElement>
-    XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                                       winrt::AdaptiveRenderContext const& renderContext,
-                                       winrt::AdaptiveRenderArgs const& renderArgs,
-                                       XamlBuilder* xamlBuilder)
+    std::pair<winrt::Panel, winrt::UIElement> XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
+                                                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                 XamlBuilder* xamlBuilder)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to front these are:
@@ -292,29 +291,36 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // Get fallback state
             winrt::FallbackType elementFallback = element.FallbackType();
-            renderArgs.AncestorHasFallback(elementFallback != winrt::FallbackType::None || ancestorHasFallback);
+            bool elementHasFallback = elementFallback != winrt::FallbackType::None || ancestorHasFallback;
+            renderArgs.AncestorHasFallback(elementHasFallback);
 
             // Check to see if element's requirements are being met
-            bool shouldFallback = !MeetsRequirements(element, featureRegistration);
+            bool shouldFallback = featureRegistration && !MeetsRequirements(element, featureRegistration);
             auto elementRenderers = renderContext.ElementRenderers();
             winrt::hstring elementType = element.ElementTypeString();
             auto elementRenderer = elementRenderers.Get(elementType);
             auto hostConfig = renderContext.HostConfig();
 
             winrt::UIElement newControl{nullptr};
-            winrt::IAdaptiveCardElement renderedElement;
-            if (!shouldFallback && elementRenderer)
+            winrt::IAdaptiveCardElement renderedElement{nullptr};
+            try
             {
+                if (!elementRenderer || shouldFallback)
+                {
+                    throw winrt::hresult_error(E_PERFORM_FALLBACK);
+                }
+
                 newControl = elementRenderer.Render(element, renderContext, renderArgs);
                 renderedElement = element;
             }
-            // TODO: figure all this stuff with rendering fallback everywhere. not sure if I'm doing this correctly...
-            // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
-            if (elementRenderer == nullptr || shouldFallback)
+            catch (winrt::hresult_error const& ex)
             {
-                // TODO: figure out if we do it right
-                std::tie(newControl, renderedElement) =
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::RenderFallback(element, renderContext, renderArgs);
+                if (ex.code() != E_PERFORM_FALLBACK)
+                {
+                    // We're only interested in fallback exception
+                    throw ex;
+                }
+                auto& [newControl, renderedElement] = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel

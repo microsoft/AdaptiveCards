@@ -304,6 +304,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         // TODO: come back to this routine later
         // TODO: still not sure I'm doing this right...
+
+		if (!currentElement)
+		{
+			return {nullptr, nullptr};
+		}
+
         auto elementRenderers = renderContext.ElementRenderers();
         auto elementFallback = currentElement.FallbackType();
         winrt::hstring elementType = currentElement.ElementTypeString();
@@ -311,7 +317,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         bool fallbackHandled = false;
         /*winrt::com_ptr<winrt::UIElement> fallbackControl;*/
         winrt::UIElement fallbackControl{nullptr};
-        winrt::IAdaptiveCardElement renderedElement;
+        winrt::IAdaptiveCardElement renderedElement{nullptr};
         winrt::UIElement result{nullptr};
 
         switch (elementFallback)
@@ -327,30 +333,17 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto fallbackElementRenderer = elementRenderers.Get(fallbackElementType);
 
             bool shouldPerformFallBack = true;
-
+			// TODO: shouldn't we check if it meets requirements here?
             if (fallbackElementRenderer)
             {
                 fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
 
-                // TODO: FIGURE OUT HOW TO DO PROPER LOGIC FOR CALLBACK
-                // shouldPerformFallBack = false;
-                // TODO: what is the proper logic here?
                 renderedElement = fallbackElement;
             }
-            // if (hr == E_PERFORM_FALLBACK)
-            // TODO: I assume the correct check here is this. We didn't get anything returned from render, so we try to renderfallback
+
             if (fallbackControl == nullptr)
             {
-                // RenderFallback(fallbackElement, renderContext, renderArgs, fallbackControl, renderedElement);
                 std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
-            }
-            else
-            {
-                // Check the non-fallback return value from the render call
-                // RETURN_IF_FAILED(hr);
-
-                // TODO: what do we do here?
-                // TODO: return nullptrs??
             }
             fallbackHandled = true;
             break;
@@ -381,7 +374,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             }
             else
             {
-                // TODO: return E_perform_callback. What do we do here?
+                throw winrt::hresult_error(E_PERFORM_FALLBACK);
             }
         }
         return std::tuple(result, renderedElement);
@@ -435,7 +428,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement)
+    void AddHandledTappedEvent(winrt::UIElement const& uiElement)
     {
         // TODO: is ! enough? no need for == nullptr?
         if (!uiElement)
@@ -447,7 +440,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
-    void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
+    void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
                           winrt::BitmapSource const& imageSource,
                           bool setVisible)
@@ -515,7 +508,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig,
-                                  winrt::Windows::UI::Xaml::IFrameworkElement const& element)
+                                  winrt::IFrameworkElement const& element)
     {
         auto spacingConfig = hostConfig.Spacing();
         uint32_t padding = spacingConfig.Padding();

@@ -121,6 +121,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
+            // In case we need to perform fallback, propagate it up to the parent
+            if (ex.code() == E_PERFORM_FALLBACK)
+            {
+                throw ex;
+            }
             // TODO: what do we do here?
             return nullptr;
         }

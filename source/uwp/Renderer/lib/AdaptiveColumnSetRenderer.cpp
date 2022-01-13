@@ -49,90 +49,82 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             bool ifFailureOccured = false;
             for (auto column : columns)
             {
+                auto columnAsCardElement = column.as<winrt::IAdaptiveCardElement>();
+
+                auto columnDefinitions = xamlGrid.ColumnDefinitions();
+
+                winrt::FallbackType fallbackType = column.FallbackType();
+
+                newRenderArgs.AncestorHasFallback(ancestorHasFallback || fallbackType != winrt::FallbackType::None);
+
+                // Build the Column
+                winrt::UIElement xamlColumn{nullptr};
                 try
                 {
-                    auto columnAsCardElement = column.as<winrt::IAdaptiveCardElement>();
-
-                    auto columnDefinitions = xamlGrid.ColumnDefinitions();
-
-                    winrt::FallbackType fallbackType = column.FallbackType();
-
-                    // Build the Column
-                    newRenderArgs.AncestorHasFallback(ancestorHasFallback || fallbackType != winrt::FallbackType::None);
-
-                    // TODO: look at the BuildPanel children and callBack in XamlBuilder, ColumnRenderer
-                    auto xamlColumn = columnRenderer.Render(column, renderContext, newRenderArgs);
-                    /* if (hr == E_PERFORM_FALLBACK)*/
-
-                    // TODO: figure out how to do fallback properly
-                    if (!xamlColumn)
-                    {
-                        // TODO: am I doing this right?
-                        std::tie(xamlColumn, std::ignore) =
-                            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::RenderFallback(column, renderContext, newRenderArgs);
-                    }
-                    newRenderArgs.AncestorHasFallback(ancestorHasFallback);
-
-                    // Check the column for nullptr as it may have been dropped due to fallback
-                    if (xamlColumn)
-                    {
-                        // If not the first column
-                        winrt::UIElement separator{nullptr};
-                        if (currentColumn > 0)
-                        {
-                            // Add Separator to the columnSet
-                            // TODO: do I need to cast?
-                            auto needsSeparator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::NeedsSeparator(column);
-                            // TODO: separator thickness can be 0 in many cases
-                            // TODO: is it wise to insert an additional element into the tree just for spacing?
-
-                            if (needsSeparator)
-                            {
-                                auto separatorParams =
-                                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSeparatorParameters(column, hostConfig);
-
-                                // Create a new ColumnDefinition for the separator
-
-                                winrt::ColumnDefinition separatorColumnDefinition{};
-                                separatorColumnDefinition.Width({1.0, winrt::GridUnitType::Auto});
-                                columnDefinitions.Append(separatorColumnDefinition);
-
-                                separator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateSeparator(
-                                    renderContext, separatorParams.spacing, separatorParams.thickness, separatorParams.color, false);
-                                // TODO: is this the right logic?
-                                if (const auto separatorAsFrameworkElement = separator.try_as<winrt::FrameworkElement>())
-                                {
-                                    winrt::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
-                                }
-                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
-                            }
-                        }
-
-                        // Determine if the column is auto, stretch, or percentage width, and set the column width
-                        winrt::ColumnDefinition columnDefinition{};
-
-                        auto isVisible = column.IsVisible();
-
-                        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(column, isVisible, columnDefinition);
-
-                        columnDefinitions.Append(columnDefinition);
-
-                        // Mark the column container with the current column
-                        if (const auto columnAsFrameworkElement = xamlColumn.try_as<winrt::FrameworkElement>())
-                        {
-                            winrt::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
-                        }
-
-                        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddRenderedControl(
-                            xamlColumn, column, xamlGrid, separator, columnDefinition, [](winrt::UIElement const&) {});
-                    }
+                   xamlColumn = columnRenderer.Render(column, renderContext, newRenderArgs);
                 }
-                catch (winrt::hresult_error const& ex)
+                catch (winrt::hresult const& ex)
                 {
-                    // TODO: probably log an error?
-                    // TODO: I don't think we need this inner try/catc. The one outside should handle this, right?
-                    winrt::throw_last_error();
-                    // ifFailureOccured = true;
+                    if (ex.value != E_PERFORM_FALLBACK)
+                    {
+                        throw ex;
+                    }
+                    // We try to perform callback in case column renderer threw a E_PERFROM_CALLBACK
+                    std::tie(xamlColumn, std::ignore) =
+                        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::RenderFallback(column, renderContext, newRenderArgs);
+                }
+                newRenderArgs.AncestorHasFallback(ancestorHasFallback);
+
+                // Check the column for nullptr as it may have been dropped due to fallback
+                if (xamlColumn)
+                {
+                    // If not the first column
+                    winrt::UIElement separator{nullptr};
+                    if (currentColumn > 0)
+                    {
+                        // Add Separator to the columnSet
+                        auto needsSeparator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::NeedsSeparator(column);
+                        // TODO: separator thickness can be 0 in many cases
+                        // TODO: is it wise to insert an additional element into the tree just for spacing?
+
+                        if (needsSeparator)
+                        {
+                            auto separatorParams =
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSeparatorParameters(column, hostConfig);
+
+                            // Create a new ColumnDefinition for the separator
+                            winrt::ColumnDefinition separatorColumnDefinition{};
+                            separatorColumnDefinition.Width({1.0, winrt::GridUnitType::Auto});
+                            columnDefinitions.Append(separatorColumnDefinition);
+
+                            separator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateSeparator(
+                                renderContext, separatorParams.spacing, separatorParams.thickness, separatorParams.color, false);
+                            // TODO: is this the right logic?
+                            if (const auto separatorAsFrameworkElement = separator.try_as<winrt::FrameworkElement>())
+                            {
+                                winrt::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
+                            }
+                            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
+                        }
+                    }
+
+                    // Determine if the column is auto, stretch, or percentage width, and set the column width
+                    winrt::ColumnDefinition columnDefinition{};
+
+                    auto isVisible = column.IsVisible();
+
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(column, isVisible, columnDefinition);
+
+                    columnDefinitions.Append(columnDefinition);
+
+                    // Mark the column container with the current column
+                    if (const auto columnAsFrameworkElement = xamlColumn.try_as<winrt::FrameworkElement>())
+                    {
+                        winrt::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
+                    }
+
+                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddRenderedControl(
+                        xamlColumn, column, xamlGrid, separator, columnDefinition, [](winrt::UIElement const&) {});
                 }
             }
 
@@ -160,9 +152,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
                 true);
         }
-
         catch (winrt::hresult_error const& ex)
         {
+            // In case we need to perform fallback, propagate it up to the parent
+            if (ex.code() == E_PERFORM_FALLBACK)
+            {
+                throw ex;
+            }
             // TODO: what do we do here?
             return nullptr;
         }
