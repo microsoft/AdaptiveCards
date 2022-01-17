@@ -981,7 +981,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
     {
-        if (action.ActionType() == winrt::ActionType::OpenUrl)
+        if (action && action.ActionType() == winrt::ActionType::OpenUrl)
         {
             return winrt::make<LinkButton>();
         }
