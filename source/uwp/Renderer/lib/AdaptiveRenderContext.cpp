@@ -65,14 +65,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet,
-                                                  winrt::UIElement const& actionUIElement)
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionSet, actionUIElement);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveCard const& actionCard,
-                                                  winrt::UIElement const& actionUIElement)
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionCard, actionUIElement);
     }
@@ -126,8 +124,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             return renderResult;
         }
 
-        // TODO: does this make sense?
-        throw(winrt::hresult_error(winrt::hresult_invalid_argument(
-            L"RenderResult could not be resolved. Most likely, the object is no longer alive because all the references were destroyed.")));
+        throw winrt::hresult_invalid_argument(
+            L"RenderResult could not be resolved. Most likely, the object is no longer alive because all the references were destroyed.");
     }
 }

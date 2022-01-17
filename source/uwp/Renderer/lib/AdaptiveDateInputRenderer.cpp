@@ -8,7 +8,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+    winrt::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                        winrt::AdaptiveRenderContext const& renderContext,
                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 return nullptr;
             }
 
-            auto adaptiveDateInput = adaptiveCardElement.as<winrt::AdaptiveDateInput>();
+            auto adaptiveDateInput = cardElement.as<winrt::AdaptiveDateInput>();
 
             winrt::CalendarDatePicker datePicker{};
             datePicker.PlaceholderText(adaptiveDateInput.Placeholder());
@@ -85,7 +85,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

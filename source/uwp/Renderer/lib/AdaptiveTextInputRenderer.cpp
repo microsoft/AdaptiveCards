@@ -41,15 +41,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             bool isMultiline = adaptiveTextInput.IsMultiline();
             winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != winrt::TextInputStyle::Password;
-            // TODO: not sure why inputUIElement is passed twice here.. (as textBoxParentContainer)
             textBoxParentContainer = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
         }
 
         if (!adaptiveTextInput.IsMultiline())
         {
-            auto textBoxFrameworkElement = textBoxParentContainer.as<winrt::FrameworkElement>();
-            textBoxFrameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
+            if (const auto textBoxFrameworkElement = textBoxParentContainer.as<winrt::FrameworkElement>())
+            {
+                textBoxFrameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
+            }
         }
 
         // Call  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation to handle accessibility
@@ -162,7 +163,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

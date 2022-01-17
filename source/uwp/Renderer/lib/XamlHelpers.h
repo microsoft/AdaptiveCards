@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "pch.h"
 #include "WholeItemsPanel.h"
-#include <type_traits>
-
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     inline winrt::SolidColorBrush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
@@ -20,53 +17,31 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                         winrt::FrameworkElement const& frameworkElement);
 
     winrt::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
-                                      uint32_t spacing,
-                                      uint32_t separatorThickness,
-                                      winrt::Windows::UI::Color const& separatorColor,
-                                      bool isHorizontal = true);
+                                     uint32_t spacing,
+                                     uint32_t separatorThickness,
+                                     winrt::Windows::UI::Color const& separatorColor,
+                                     bool isHorizontal = true);
 
-    template<typename T>
-    T TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary, winrt::hstring const& resourceName)
+    inline winrt::IInspectable TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary,
+                                                               winrt::hstring const& resourceName)
     {
         if (resourceDictionary == nullptr)
         {
             return nullptr;
         }
-        T toReturn{nullptr};
-        try
-        {
-            auto resourceKey = winrt::box_value(resourceName);
 
-            toReturn = resourceDictionary.TryLookup(resourceKey).try_as<T>();
-            return toReturn;
-        }
-        catch (...)
-        {
-            // TODO: do we want to catch exception and extract some value from it?
-        }
-        // TOOD: do we return nullptr?
-        return nullptr;
-    }
-
-    template<typename T>
-    T TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
-    {
-        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName));
+        auto resourceKey = winrt::box_value(resourceName);
+        return resourceDictionary.HasKey(resourceKey) ? resourceDictionary.Lookup(resourceKey) : nullptr;
     }
 
     void SetSeparatorVisibility(winrt::Panel const& parentPanel);
 
-    void HandleColumnWidth(winrt::AdaptiveColumn const& column,
-                           bool isVisible,
-                           winrt::ColumnDefinition const& columnDefinition);
+    void HandleColumnWidth(winrt::AdaptiveColumn const& column, bool isVisible, winrt::ColumnDefinition const& columnDefinition);
 
-    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column,
-                                winrt::ColumnDefinition const& columnDefinition);
+    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column, winrt::ColumnDefinition const& columnDefinition);
 
     template<typename T>
-    void AppendXamlElementToPanel(T const& xamlElement,
-                                  winrt::Panel const& panel,
-                                  winrt::HeightType heightType = winrt::HeightType::Auto)
+    void AppendXamlElementToPanel(T const& xamlElement, winrt::Panel const& panel, winrt::HeightType heightType = winrt::HeightType::Auto)
     {
         if (!xamlElement)
         {
@@ -95,9 +70,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // must inherit from ToggleButton");
         // TODO: do we want static asserts? or is it fine with compilers catching misusages?
 
-        auto toggleButton =
-            item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
-                                                                                     // toggleButton descendabts have isChecked() exposed, right?
+        auto toggleButton = item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                            // toggleButton descendabts have isChecked() exposed, right?
         toggleButton.IsChecked(isChecked);
     }
 
@@ -105,9 +79,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         // TODO: InputValue613 failes to compile, why?
         /*static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
-        auto toggleButton =
-            item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
-                                                                                     // toggleButton descendants have isChecked() exposed, right?
+        auto toggleButton = item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                            // toggleButton descendants have isChecked() exposed, right?
 
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
@@ -138,9 +111,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
-                                                 winrt::Border const& containerBorder,
-                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                 winrt::AdaptiveRenderArgs renderArgs);
+                                                  winrt::Border const& containerBorder,
+                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                  winrt::AdaptiveRenderArgs renderArgs);
 
     bool SupportsInteractivity(winrt::AdaptiveHostConfig const& hostConfig);
 
@@ -155,35 +128,31 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    winrt::UIElement
-    RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                     winrt::AdaptiveRenderContext const& renderContext,
-                     winrt::AdaptiveRenderArgs const& renderArgs);
+    winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
-    winrt::UIElement
-    RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                            winrt::AdaptiveRenderContext const& renderContext);
+    winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                             winrt::AdaptiveRenderContext const& renderContext);
 
-    winrt::Border
-    CreateValidationBorder(winrt::UIElement const& childElement,
-                           winrt::AdaptiveRenderContext const& renderContext);
+    winrt::Border CreateValidationBorder(winrt::UIElement const& childElement, winrt::AdaptiveRenderContext const& renderContext);
 
-    winrt::UIElement
-    HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
-                               winrt::AdaptiveRenderContext const& renderContext,
-                               winrt::AdaptiveRenderArgs const& renderArgs,
-                               winrt::UIElement const& inputLayout);
+    winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::AdaptiveRenderArgs const& renderArgs,
+                                                winrt::UIElement const& inputLayout);
 
-    std::tuple<winrt::UIElement, winrt::Border>
-    HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                   winrt::UIElement const& inputUIElement,
-                                   bool hasTypeSpecificValidation,
-                                   winrt::AdaptiveRenderContext const& renderContext,
-                                   bool ifValidationBorderIsNeeded = true);
+    std::tuple<winrt::UIElement, winrt::Border> HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                                               winrt::UIElement const& inputUIElement,
+                                                                               bool hasTypeSpecificValidation,
+                                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                                               bool ifValidationBorderIsNeeded = true);
 
     void AddHandledTappedEvent(winrt::UIElement const& uiElement);
 
-    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel, winrt::AdaptiveBackgroundImage const& backgroundImage, winrt::AdaptiveRenderContext const& renderContext);
+    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
+                               winrt::AdaptiveBackgroundImage const& backgroundImage,
+                               winrt::AdaptiveRenderContext const& renderContext);
 
     void AddRenderedControl(winrt::UIElement const& newControl,
                             winrt::IAdaptiveCardElement const& element,
@@ -218,21 +187,30 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
 
-    winrt::UIElement
-    AddSeparatorIfNeeded(int& currentElement,
-                         winrt::IAdaptiveCardElement const& element,
-                         winrt::AdaptiveHostConfig const& hostConfig,
-                         winrt::AdaptiveRenderContext const& renderContext,
-                         winrt::Panel const& parentPanel);
+    inline void ErrForRenderFailed(winrt::AdaptiveRenderContext const& renderContext,
+                                   winrt::hstring const& elementType,
+                                   winrt::hstring const& exceptionMessage = L"")
+    {
+        auto error = L"Rendering failed for element of type \"" + elementType + L"\"";
+        if (!exceptionMessage.empty())
+        {
+            error = error + L" with the following message: \n" + exceptionMessage;
+        }
+        renderContext.AddError(winrt::ErrorStatusCode::RenderFailed, error);
+    }
+
+    winrt::UIElement AddSeparatorIfNeeded(int& currentElement,
+                                          winrt::IAdaptiveCardElement const& element,
+                                          winrt::AdaptiveHostConfig const& hostConfig,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::Panel const& parentPanel);
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
                           winrt::BitmapSource const& imageSource,
                           bool setVisible);
 
-    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig,
-                                  winrt::IFrameworkElement const& element);
+    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element);
 
-    SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
-                                               winrt::AdaptiveHostConfig const& hostConfig);
+    SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
 }

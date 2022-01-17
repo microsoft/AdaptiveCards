@@ -69,10 +69,6 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             // TODO: COME BACK AND FIX IT
-            // if (m_listeners.find(listener) == m_listeners.end())
-            //{
-            //    m_listeners.emplace(listener);
-            //}
             // else
             //{
             //    /*return E_INVALIDARG;*/
@@ -94,10 +90,6 @@ namespace AdaptiveCards::Rendering::Uwp
                 m_listeners.erase(listener);
             }
             // TODO: COME BACK AND FIX IT
-            // if (m_listeners.find(listener) != m_listeners.end())
-            //{
-            //    m_listeners.erase(listener);
-            //}
             // else
             //{
             //    /*  return E_INVALIDARG;*/

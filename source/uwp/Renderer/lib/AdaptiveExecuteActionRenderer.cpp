@@ -20,8 +20,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: restore treat warnings as errrors
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             action.ActionTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

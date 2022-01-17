@@ -8,17 +8,19 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::UIElement AdaptiveToggleVisibilityActionRenderer::Render(winrt::IAdaptiveActionElement const& actionElement,
+    winrt::UIElement AdaptiveToggleVisibilityActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
                                                                     winrt::AdaptiveRenderContext const& renderContext,
                                                                     winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
-            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(actionElement, renderContext, renderArgs, false);
+            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             action.ActionTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

@@ -3,11 +3,10 @@
 #include "pch.h"
 
 #include "XamlBuilder.h"
-
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveRenderArgs.h"
 #include "ActionHelpers.h"
-#include "XamlHelpers.h"
+#include "WholeItemsPanel.h"
 
 // TODO: fix this later
 using WholeItemsPanelWinRT = winrt::AdaptiveCards::Rendering::Uwp::implementation::WholeItemsPanel;

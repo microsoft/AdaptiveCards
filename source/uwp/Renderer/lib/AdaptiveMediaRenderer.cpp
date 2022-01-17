@@ -12,14 +12,14 @@ using namespace AdaptiveCards::Rendering::Uwp::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+    winrt::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                    winrt::AdaptiveRenderContext const& renderContext,
                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             // TODO: what is the need for the local object? only to use ComPtr.as later? or for something else as well?
-            auto adaptiveMedia = adaptiveCardElement.as<winrt::AdaptiveMedia>();
+            auto adaptiveMedia = cardElement.as<winrt::AdaptiveMedia>();
             auto hostConfig = renderContext.HostConfig();
 
             // Get the poster image
@@ -41,7 +41,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::hstring altText = adaptiveMedia.AltText();
 
             auto touchTargetUIElement = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::WrapInTouchTarget(
-                adaptiveCardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
+                cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
             winrt::StackPanel mediaStackPanel{};
@@ -115,7 +115,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

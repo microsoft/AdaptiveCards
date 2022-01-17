@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "pch.h"
 
 namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 {
@@ -28,9 +27,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                               winrt::AdaptiveHostConfig const& hostConfig,
                               bool allActionsHaveIcons,
                               winrt::Button const& button);
-
-    void SetMatchingHeight(winrt::FrameworkElement const& elementToChange,
-                           winrt::FrameworkElement const& elementToMatch);
 
     void HandleActionStyling(winrt::IAdaptiveActionElement const& adaptiveActionElement,
                              winrt::FrameworkElement const& buttonFrameworkElement,

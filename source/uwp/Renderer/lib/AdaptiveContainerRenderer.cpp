@@ -114,12 +114,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
+            // In case we need to perform fallback, propagate it up to the parent
             if (ex.code() == E_PERFORM_FALLBACK)
             {
-                // In case we need to perform fallback, propagate it up to the parent
                 throw ex;
             }
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

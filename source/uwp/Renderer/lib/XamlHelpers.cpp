@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+//#include "ActionHelpers.h"
+#include "WholeItemsPanel.h"
 #include "XamlHelpers.h"
-#include "ActionHelpers.h"
 #include "ElementTagContent.h"
 #include "TileControl.h"
 
@@ -45,19 +46,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                         winrt::FrameworkElement const& frameworkElement)
     {
         auto resourceDictionary = renderContext.OverrideStyles();
-        try
+
+        if (auto style = TryGetResourceFromResourceDictionaries(resourceDictionary, resourceName).try_as<winrt::Style>())
         {
-            if (auto style = TryGetResourceFromResourceDictionaries<winrt::Style>(resourceDictionary, resourceName))
-            {
-                frameworkElement.Style(style);
-            }
-        }
-        catch (...)
-        {
-            // TODO: lookup will throw if it cannot find a resource
+            frameworkElement.Style(style);
         }
     }
-
     void XamlHelpers::SetSeparatorVisibility(winrt::Panel const& parentPanel)
     {
         // Iterate over the elements in a container and ensure that the correct separators are marked as visible
@@ -241,18 +235,22 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
     {
-        // TODO: if url is invalid, it will bitmapImage.UriSource(nullptr) will throw, right?
-        winrt::Image backgroundImage;
+        try
+        {
+            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
+            winrt::BitmapImage bitmapImage{};
+            bitmapImage.UriSource(imageUrl);
 
-        // GetUrlFromString will throw if url is not in correct format
-        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
+            winrt::Image backgroundImage;
+            backgroundImage.Source(bitmapImage);
 
-        winrt::BitmapImage bitmapImage{};
-        bitmapImage.UriSource(imageUrl);
-
-        backgroundImage.Source(bitmapImage);
-
-        return backgroundImage;
+            return backgroundImage;
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            renderContext.AddWarning(winrt::WarningStatusCode::CustomWarning, ex.message() + L" Skipping rendering of background image.");
+            return nullptr;
+        }
     }
 
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
@@ -288,7 +286,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             // the overlay if that resources exists
             auto resourceDictionary = renderContext.OverrideStyles();
             if (const auto backgroundOverlayBrush =
-                    XamlHelpers::TryGetResourceFromResourceDictionaries<winrt::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
+                    XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, c_BackgroundImageOverlayBrushKey)
+                        .try_as<winrt::Brush>())
             {
                 winrt::Rectangle overlayRectangle;
                 overlayRectangle.Fill(backgroundOverlayBrush);
@@ -305,10 +304,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // TODO: come back to this routine later
         // TODO: still not sure I'm doing this right...
 
-		if (!currentElement)
-		{
-			return {nullptr, nullptr};
-		}
+        if (!currentElement)
+        {
+            return {nullptr, nullptr};
+        }
 
         auto elementRenderers = renderContext.ElementRenderers();
         auto elementFallback = currentElement.FallbackType();
@@ -333,7 +332,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto fallbackElementRenderer = elementRenderers.Get(fallbackElementType);
 
             bool shouldPerformFallBack = true;
-			// TODO: shouldn't we check if it meets requirements here?
+            // TODO: shouldn't we check if it meets requirements here?
             if (fallbackElementRenderer)
             {
                 fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
@@ -507,8 +506,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return nullptr;
     }
 
-    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig,
-                                  winrt::IFrameworkElement const& element)
+    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element)
     {
         auto spacingConfig = hostConfig.Spacing();
         uint32_t padding = spacingConfig.Padding();
@@ -832,9 +830,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer, inputStackPanel);
 
         // Different input renderers perform stuff differently
-        // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
-        // Input.Time and Input.Date let this method render the border for them
-        // Input.Toggle
+        // Input.Text and Input.Number render the border previously so the object received as parameter may be a
+        // border Input.Time and Input.Date let this method render the border for them Input.Toggle
         winrt::UIElement actualInputUIElement{nullptr};
         // TODO: revisit this
         // if (validationBorderOut && hasValidation)

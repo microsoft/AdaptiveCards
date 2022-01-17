@@ -126,7 +126,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 throw ex;
             }
-            // TODO: what do we do here?
+
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }

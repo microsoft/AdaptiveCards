@@ -28,7 +28,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
             return nullptr;
         }
     }
@@ -324,7 +326,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // And call the resolver to get the image stream
                 auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
-
+                // TODO: come back to check if needed get_weak()
                 getResourceStreamOperation.Completed(
                     [this, uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
                         winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
@@ -390,7 +392,7 @@ namespace AdaptiveCards::Rendering::Uwp
             // TODO: Do I need to cast to output stream?
             winrt::InMemoryRandomAccessStream randomAccessStream{};
             auto bufferWriteOperation = randomAccessStream.WriteAsync(buffer);
-
+            // TODO: come back to check if needed get_weak()
             bufferWriteOperation.Completed(
                 [this, bitmapImage, randomAccessStream, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
                     winrt::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/,
@@ -450,23 +452,29 @@ namespace AdaptiveCards::Rendering::Uwp
         bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
-
+        //auto weak_this{get_weak()} // TODO: come back to check if needed get_weak()
         getStreamOperation.Completed(
-            [this, bitmapImage, imageControl](winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
-                                              winrt::AsyncStatus status) -> void // TODO: should it be void?)))
+            [this,
+             bitmapImage,
+             imageControl](winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
+                           winrt::AsyncStatus status) -> void // TODO: should it be void?)))
             {
-                if (status == winrt::AsyncStatus::Completed)
-                {
-                    auto imageStream = operation.GetResults();
-                    // TODO: not totally sure about all this stream stuf...
-                    winrt::InMemoryRandomAccessStream randomAccessStream{};
-                    auto copyStreamOperation = winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
-                    m_copyStreamOperations.push_back(copyStreamOperation);
-
-                    copyStreamOperation.Completed([this, bitmapImage, randomAccessStream, imageControl](
-                                                      winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
-                                                      winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
-                }
+                // TODO: come back to it.
+               /* if (auto strong_this{weak_this.get()})
+                {*/
+                // TODO: static_cast': cannot convert from 'AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener *' to 'winrt::impl::produce<D,winrt::com_ptr<AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener>> *'
+                    if (status == winrt::AsyncStatus::Completed)
+                    {
+                        auto imageStream = operation.GetResults();
+                        winrt::InMemoryRandomAccessStream randomAccessStream{};
+                        auto copyStreamOperation = winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
+                        m_copyStreamOperations.push_back(copyStreamOperation);
+                        // TODO: why are we passing so many elements to lambad when we don't use them there?
+                        copyStreamOperation.Completed([this, bitmapImage, randomAccessStream, imageControl](
+                                                          winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
+                                                          winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
+                    }
+                //}
             });
         m_getStreamOperations.push_back(getStreamOperation);
     }
