@@ -329,7 +329,7 @@ a.ac-anchor:hover {
 .swiper-button-prev.ac-carousel-left::after,
 .swiper-button-next.ac-carousel-right::after {
 	color:rgba(255, 255, 255, 0.5442);
-	font-size:8px;
+	font-size:8px !important;
 }
 
 .swiper-button-prev.ac-carousel-left:active::after,
@@ -340,9 +340,9 @@ a.ac-anchor:hover {
 }
 
 .swiper-pagination-bullet {
-	background:rgba(255, 255, 255, 0.5442);
-	height:4px;
-	width:4px;
+	background:rgba(255, 255, 255, 0.5442) !important;
+	height:4px !important;
+	width:4px !important;
 	vertical-align:middle;
 }
 
