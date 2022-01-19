@@ -298,8 +298,8 @@ a.ac-anchor:hover {
 }
 
 .ac-carousel-container {
-	padding: 0px 16px 16px 16px;
-	margin: 0px -16px -16px -16px;
+	padding: 0px 16px 16px 16px !important;
+	margin: 0px -16px -16px -16px !important;
 }
 
 .ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
@@ -326,16 +326,16 @@ a.ac-anchor:hover {
 	background: transparent;
 }
 
-.swiper-button-prev.ac-carousel-left:after,
-.swiper-button-next.ac-carousel-right:after {
+.swiper-button-prev.ac-carousel-left::after,
+.swiper-button-next.ac-carousel-right::after {
 	color:rgba(255, 255, 255, 0.5442);
 	font-size:8px;
 }
 
-.swiper-button-prev.ac-carousel-left:active:after,
-.swiper-button-prev.ac-carousel-left:hover:after,
-.swiper-button-next.ac-carousel-right:active:after,
-.swiper-button-next.ac-carousel-right:hover:after {
+.swiper-button-prev.ac-carousel-left:active::after,
+.swiper-button-prev.ac-carousel-left:hover::after,
+.swiper-button-next.ac-carousel-right:active::after,
+.swiper-button-next.ac-carousel-right:hover::after {
 	color:rgba(255, 255, 255, 0.786);
 }
 
