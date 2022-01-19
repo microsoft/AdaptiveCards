@@ -50,7 +50,7 @@
 
 .ac-adaptiveCard {
     border: 0px;
-    padding: 48px 24px 24px 24px !important;
+    padding: 48px 16px 16px 16px !important;
     border-radius: 4px !important;
 }
 
@@ -295,4 +295,62 @@ a.ac-anchor:hover {
 .ac-container.ac-selectable:hover,
 .ac-columnSet.ac-selectable:hover {
     background-color: rgba(255, 255, 255, 0.0605);
+}
+
+.ac-carousel-container {
+	padding: 0px 16px 16px 16px;
+	margin: 0px -16px -16px -16px;
+}
+
+.ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
+.ac-carousel-container .swiper-button-next.ac-carousel-right {
+	display:none;
+}
+
+.ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-left,
+.ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-right,
+.ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-left,
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right {
+	display: flex;
+}
+
+.swiper-button-prev.ac-carousel-left,
+.swiper-button-next.ac-carousel-right {
+	border-radius:3px;
+	height:38px;
+	width:16px;
+}
+
+.swiper-button-prev.ac-carousel-left:hover,
+.swiper-button-next.ac-carousel-right:hover {
+	background: transparent;
+}
+
+.swiper-button-prev.ac-carousel-left:after,
+.swiper-button-next.ac-carousel-right:after {
+	color:rgba(255, 255, 255, 0.5442);
+	font-size:8px;
+}
+
+.swiper-button-prev.ac-carousel-left:active:after,
+.swiper-button-prev.ac-carousel-left:hover:after,
+.swiper-button-next.ac-carousel-right:active:after,
+.swiper-button-next.ac-carousel-right:hover:after {
+	color:rgba(255, 255, 255, 0.786);
+}
+
+.swiper-pagination-bullet {
+	background:rgba(255, 255, 255, 0.5442);
+	height:4px;
+	width:4px;
+	vertical-align:middle;
+}
+
+.swiper-pagination-bullet:hover {
+	background:rgba(255, 255, 255, 0.786);
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+	height:6px;
+	width:6px;
 }
