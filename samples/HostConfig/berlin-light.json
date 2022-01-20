@@ -67,6 +67,18 @@
 				"accent": {
 					"default": "#003E92",
 					"subtle": "#003E92"
+				},
+                "good": {
+					"default": "#0F7B0F",
+					"subtle": "#0F7B0F"
+				},
+				"warning": {
+					"default": "#9D5D00",
+					"subtle": "#9D5D00"
+				},
+				"attention": {
+					"default": "#C42B1C",
+					"subtle": "#C42B1C"
 				}
 			}
 		}

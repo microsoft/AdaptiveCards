@@ -322,7 +322,7 @@ a.ac-anchor:hover {
 
 .swiper-button-prev.ac-carousel-left:hover,
 .swiper-button-next.ac-carousel-right:hover {
-	background: transparent;
+	background: transparent !important;
 }
 
 .swiper-button-prev.ac-carousel-left::after,
@@ -335,7 +335,7 @@ a.ac-anchor:hover {
 .swiper-button-prev.ac-carousel-left:hover::after,
 .swiper-button-next.ac-carousel-right:active::after,
 .swiper-button-next.ac-carousel-right:hover::after {
-	color:rgba(0, 0, 0, 0.6063);
+	color:rgba(0, 0, 0, 0.6063) !important;
 }
 
 .swiper-pagination-bullet{
@@ -350,6 +350,6 @@ a.ac-anchor:hover {
 }
 
 .swiper-pagination-bullet.swiper-pagination-bullet-active{
-	height:6px;
-	width:6px;
+	height:6px !important;
+	width:6px !important;
 }
