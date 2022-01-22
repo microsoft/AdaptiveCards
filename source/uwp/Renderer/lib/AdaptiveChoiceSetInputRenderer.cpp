@@ -47,9 +47,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                                       cardElement.ElementTypeString(),
+                                                                                       ex.message());
             return nullptr;
         }
         return nullptr;
@@ -81,10 +81,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    winrt::UIElement
-    AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                               winrt::AdaptiveRenderArgs const& renderArgs,
-                                                               winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
+    winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
+                                                                                winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::ComboBox comboBox{};
 
@@ -125,11 +124,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
 
-        auto& [inputLayout, validationBorder] =
+        auto [inputLayout, validationBorder] =
             HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
-        // TODO: come back here. AddInputValue probably needs to be modified to take in appropriate parameter
         auto input = winrt::make_self<winrt::CompactChoiceSetInputValue>(adaptiveChoiceSetInput, comboBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 
@@ -144,8 +142,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto choices = adaptiveChoiceSetInput.Choices();
 
         winrt::StackPanel stackPanel{};
-        // TODO: No need to set vertical orientation, that's default, right?
-        /* stackPanel.Orientation(winrt::Orientation::Vertical);*/
+        stackPanel.Orientation(winrt::Orientation::Vertical);
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
@@ -157,11 +154,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (isMultiSelect)
             {
                 winrt::CheckBox checkBox{};
-                // TODO: no need to cast, right?
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", checkBox);
-
-                SetToggleValue(checkBox, IsChoiceSelected(values, input));
-                // TODO: is this correct way?
+                checkBox.IsChecked(IsChoiceSelected(values, input));
                 choiceItem = checkBox;
             }
             else
@@ -173,7 +167,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 {
                     // When isMultiSelect is false, only 1 specified value is accepted.
                     // Otherwise, leave all options unset
-                    SetToggleValue(radioButton, IsChoiceSelected(values, input));
+                    radioButton.IsChecked(IsChoiceSelected(values, input));
                 }
                 choiceItem = radioButton;
             }
@@ -191,7 +185,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
-        // TODO: revisit this. AddInputValue args need to be modified to accept proper inputValue
         auto input = winrt::make_self<winrt::ExpandedChoiceSetInputValue>(adaptiveChoiceSetInput, stackPanel, nullptr);
         renderContext.AddInputValue(*input, renderArgs);
         return inputLayout;
@@ -208,8 +201,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
         // Set up the initial choice list, and set the value if present
-        // TODO: is this a correct way to initialize a vector?
-        winrt::IVector<winrt::hstring> choiceList{};
+        winrt::IVector<winrt::hstring> choiceList{winrt::single_threaded_vector<winrt::hstring>()};
         for (auto input : choices)
         {
             auto title = input.Title();
@@ -225,22 +217,25 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         autoSuggestBox.ItemsSource(choiceList);
 
         // When we get focus open the suggestion list. This ensures the choices are shown on first focus.
-        // TODO: no need for token, right? is this event going to clear itself? or we need a revoker?
-        autoSuggestBox.GettingFocus([autoSuggestBox](IInspectable const&, winrt::GettingFocusEventArgs const& args) -> void
-                                    { autoSuggestBox.IsSuggestionListOpen(true); });
+        autoSuggestBox.GettingFocus(
+            [](IInspectable const& sender, winrt::GettingFocusEventArgs const& /* args */) -> void
+            {
+                if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
+                {
+                    autoSuggestBox.IsSuggestionListOpen(true);
+                }
+            });
 
-        // TODO: no need for token, right?
         // When the text changes, update the ItemSource with matching items
         autoSuggestBox.TextChanged(
             [choices](IInspectable const& sender, winrt::AutoSuggestBoxTextChangedEventArgs const&) -> void
             {
-                // TODO: is this correct way to do it?
                 if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
                 {
                     auto currentTextHstring = autoSuggestBox.Text();
                     std::string currentText = HStringToUTF8(currentTextHstring);
 
-                    winrt::IVector<winrt::hstring> currentResults{};
+                    winrt::IVector<winrt::hstring> currentResults{winrt::single_threaded_vector<winrt::hstring>()};
 
                     for (auto input : choices)
                     {
@@ -258,10 +253,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             });
 
         // Handle input validation
-        auto& [inputLayout, validationBorder] =
+        auto [inputLayout, validationBorder] =
             HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
-        // TODO: come back here. Create the InputValue and add it to the context
         auto input = winrt::make_self<winrt::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 

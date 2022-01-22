@@ -73,11 +73,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePicker);
-
-            auto& [inputLayout, validationBorder] =
+			
+            auto [inputLayout, validationBorder] =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
 
-            // TODO: come back to inputs here.
             auto input = winrt::make_self<winrt::DateInputValue>(adaptiveDateInput, datePicker, validationBorder);
             renderContext.AddInputValue(*input, renderArgs);
 
@@ -85,7 +84,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

@@ -123,25 +123,8 @@ inline bool Boolify(const boolean value) noexcept
     return (value > 0);
 }
 
-// TODO: we don't need this, right?
-template<typename T, typename TInterface, typename C>
-void IterateOverVector(winrt::IVector<T> vector, C iterationCallback)
-{
-    for (T item : vector)
-    {
-        iterationCallback(item);
-    }
-}
-
-template<typename T, typename C>
-void IterateOverVector(winrt::IVector<T> vector, C iterationCallback)
-{
-    IterateOverVector<T, T, C>(vector, iterationCallback);
-}
-
 winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
-// TODO: const& for enums?
 winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig const& hostConfig,
                                                     winrt::ForegroundColor adaptiveColor,
                                                     winrt::ContainerStyle containerStyle,
@@ -182,31 +165,9 @@ winrt::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
 winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson);
 std::string JsonObjectToString(winrt::JsonObject const& inputJson);
 
-// TODO: these functions live in ObjectModelUtil now if I'm correct? we don't need them here?
-// HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::winrt::IJsonValue** result);
-// HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::winrt::IJsonValue** result);
-// HRESULT JsonValueToHString(_In_ ABI::winrt::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
-// HRESULT JsonValueToString(_In_ ABI::winrt::IJsonValue* inputJsonValue, std::string& result);
-
-// HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::winrt::IJsonObject** result);
-// HRESULT JsonObjectToJsonCpp(_In_ ABI::winrt::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
-
-// HRESULT ProjectedActionTypeToHString(ABI::winrt::ElementType projectedActionType,
-//                                     _Outptr_ HSTRING* result);
-// HRESULT ProjectedElementTypeToHString(ABI::winrt::ElementType projectedElementType,
-//                                      _Outptr_ HSTRING* result);
-
 bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration);
 
-bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage backgroundImage);
-
-// TODO: I don't see this typedef being used anywhere
-// typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-//                                                                                 ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>>
-//    ActionEventSource;
-// typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-//                                                                                 ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>>
-//    MediaEventSource;
+bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImage);
 
 struct ShowCardInfo
 {
@@ -265,7 +226,6 @@ template<typename T> inline T EnumBitwiseOR(T a, T b)
     return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-// TODO: Helper to extract value from a ref. if will handle ref = nullptr as well.
 template<typename T> inline T GetValueFromRef(winrt::IReference<T> const& ref, T defaultValue)
 {
     if (ref != nullptr)
@@ -279,7 +239,6 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     struct XamlBuilder;
 
-    // TODO: is this the correct way to do it? Should we also simply accept XamlBuilder* ?
     void RegisterDefaultElementRenderers(winrt::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder);
 

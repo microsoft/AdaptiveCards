@@ -98,7 +98,6 @@ std::string HStringToUTF8(winrt::hstring const& in)
 
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
-// TODO: do we want to keep try/catch here?
 winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
 {
     winrt::Windows::UI::Color color{};
@@ -112,10 +111,10 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
         {
             // If color string has alpha channel, extract and set to color
             std::string alphaString = hexColorString.substr(0, 2);
-            // TODO: instead of INT32, can we just put int or long?
-            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
 
-            color.A = static_cast<BYTE>(alpha);
+            auto alpha = strtol(alphaString.c_str(), nullptr, 16);
+
+            color.A = static_cast<uint8_t>(alpha);
 
             hexColorString = hexColorString.substr(2, std::string::npos);
         }
@@ -123,8 +122,8 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
         {
             // Otherwise, set full opacity
             std::string alphaString = "FF";
-            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
-            color.A = static_cast<BYTE>(alpha);
+            auto alpha = strtol(alphaString.c_str(), nullptr, 16);
+            color.A = static_cast<uint8_t>(alpha);
         }
 
         // A valid string at this point should have 6 hex characters (RRGGBB)
@@ -133,24 +132,24 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
         {
             // Then set all other Red, Green, and Blue channels
             std::string redString = hexColorString.substr(0, 2);
-            INT32 red = strtol(redString.c_str(), nullptr, 16);
+            auto red = strtol(redString.c_str(), nullptr, 16);
 
             std::string greenString = hexColorString.substr(2, 2);
-            INT32 green = strtol(greenString.c_str(), nullptr, 16);
+            auto green = strtol(greenString.c_str(), nullptr, 16);
 
             std::string blueString = hexColorString.substr(4, 2);
-            INT32 blue = strtol(blueString.c_str(), nullptr, 16);
+            auto blue = strtol(blueString.c_str(), nullptr, 16);
 
-            color.R = static_cast<BYTE>(red);
-            color.G = static_cast<BYTE>(green);
-            color.B = static_cast<BYTE>(blue);
+            color.R = static_cast<uint8_t>(red);
+            color.G = static_cast<uint8_t>(green);
+            color.B = static_cast<uint8_t>(blue);
 
             return color;
         }
     }
 
     // All other formats are ignored (set alpha to 0)
-    color.A = static_cast<BYTE>(0);
+    color.A = static_cast<uint8_t>(0);
 
     return color;
 }
@@ -233,10 +232,6 @@ winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiv
 
     auto hostConfig = renderContext.HostConfig();
 
-    /* auto adaptiveForegroundColorRef = adaptiveTextElement.Color();*/
-
-    // TODO: do we need to do it? Won't it default to 'Default' by default?
-    // TODO: should I create a helper to extract a value from refs? GetValueFromRef(... const& ref, ... defaultValue); ?
     winrt::ForegroundColor adaptiveForegroundColor = GetValueFromRef(adaptiveTextElement.Color(), winrt::ForegroundColor::Default);
     bool isSubtle = GetValueFromRef(adaptiveTextElement.IsSubtle(), false);
 
@@ -251,7 +246,6 @@ winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiv
     return textHighlighter;
 }
 
-// TODO: do we want try/catch here?
 uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing)
 {
     auto spacingConfig = hostConfig.Spacing();
@@ -278,241 +272,185 @@ uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, 
 
 winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::AdaptiveHostConfig const& hostConfig)
 {
-    // TODO: how do I handle errors here? are there gonna be any?
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BackgroundColor();
 }
 
 winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::AdaptiveHostConfig const& hostConfig)
-
 {
-    // TODO: how do I handle error here?
-    // TODO: what if this styleDef nullptr? check for that, see above the method from WRL (try/catch)
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BorderColor();
 }
 
-// TODO: do we want try/catch here?
 winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
-    try
+    // Get FontFamily from desired style
+    auto typeDefinition = GetFontType(hostConfig, fontType);
+    auto fontFamily = typeDefinition.FontFamily();
+    if (fontFamily.empty())
     {
-        // Get FontFamily from desired style
-        // TODO: rename the function to GetFontTypeDefinition(..)?
-        auto typeDefinition = GetFontType(hostConfig, fontType);
-        auto fontFamily = typeDefinition.FontFamily();
-        if (fontFamily.empty())
+        if (fontType == winrt::FontType::Monospace)
         {
-            if (fontType == winrt::FontType::Monospace)
+            // fallback to system default monospace FontFamily
+            fontFamily = UTF8ToHString("Courier New");
+        }
+        else
+        {
+            // fallback to deprecated FontFamily
+            fontFamily = hostConfig.FontFamily();
+            if (fontFamily.empty())
             {
-                // fallback to system default monospace FontFamily
-                fontFamily = UTF8ToHString("Courier New");
-            }
-            else
-            {
-                // fallback to deprecated FontFamily
-                fontFamily = hostConfig.FontFamily();
-                if (fontFamily.empty())
-                {
-                    // fallback to system default FontFamily
-                    fontFamily = UTF8ToHString("Segoe UI");
-                }
+                // fallback to system default FontFamily
+                fontFamily = UTF8ToHString("Segoe UI");
             }
         }
-        return fontFamily;
     }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here?
-        return L"";
-    }
+    return fontFamily;
 }
 
 uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType, winrt::TextSize const& desiredSize)
 {
-    try
-    {
-        winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-        winrt::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
-        uint32_t result = GetFontSize(sizesConfig, desiredSize);
+    winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+    winrt::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
+    uint32_t result = GetFontSize(sizesConfig, desiredSize);
 
-        // TODO: can we still use MAXUINT32?
+    // TODO: can we still use MAXUINT32?
+    if (result == MAXUINT32)
+    {
+        // Get FontSize from Default style
+        fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
+        sizesConfig = fontTypeDefinition.FontSizes();
+        result = GetFontSize(sizesConfig, desiredSize);
+
         if (result == MAXUINT32)
         {
-            // Get FontSize from Default style
-            fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
-            sizesConfig = fontTypeDefinition.FontSizes();
+            // get deprecated FontSize
+            sizesConfig = hostConfig.FontSizes();
             result = GetFontSize(sizesConfig, desiredSize);
 
             if (result == MAXUINT32)
             {
-                // get deprecated FontSize
-                sizesConfig = hostConfig.FontSizes();
-                result = GetFontSize(sizesConfig, desiredSize);
-
-                if (result == MAXUINT32)
+                // set system default FontSize based on desired style
+                switch (desiredSize)
                 {
-                    // set system default FontSize based on desired style
-                    switch (desiredSize)
-                    {
-                    case winrt::TextSize::Small:
-                        result = 10;
-                        break;
-                    case winrt::TextSize::Medium:
-                        result = 14;
-                        break;
-                    case winrt::TextSize::Large:
-                        result = 17;
-                        break;
-                    case winrt::TextSize::ExtraLarge:
-                        result = 20;
-                        break;
-                    case winrt::TextSize::Default:
-                    default:
-                        result = 12;
-                        break;
-                    }
+                case winrt::TextSize::Small:
+                    result = 10;
+                    break;
+                case winrt::TextSize::Medium:
+                    result = 14;
+                    break;
+                case winrt::TextSize::Large:
+                    result = 17;
+                    break;
+                case winrt::TextSize::ExtraLarge:
+                    result = 20;
+                    break;
+                case winrt::TextSize::Default:
+                default:
+                    result = 12;
+                    break;
                 }
             }
         }
-        return result;
     }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here?
-        return 0;
-    }
+    return result;
 }
 
 winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostConfig const& hostConfig,
                                                             winrt::FontType const& fontType,
                                                             winrt::TextWeight const& desiredWeight)
 {
-    try
+    winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+    winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+    uint16_t result = GetFontWeight(weightConfig, desiredWeight);
+
+    if (result == MAXUINT16)
     {
-        winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-        winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
-        uint16_t result = GetFontWeight(weightConfig, desiredWeight);
+        // get FontWeight from Default style
+        fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
+        weightConfig = fontTypeDefinition.FontWeights();
+        result = GetFontWeight(weightConfig, desiredWeight);
 
         if (result == MAXUINT16)
         {
-            // get FontWeight from Default style
-            winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
-            winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+            // get deprecated FontWeight
+            weightConfig = hostConfig.FontWeights();
             result = GetFontWeight(weightConfig, desiredWeight);
 
             if (result == MAXUINT16)
             {
-                // get deprecated FontWeight
-                weightConfig = hostConfig.FontWeights();
-                result = GetFontWeight(weightConfig, desiredWeight);
-
-                if (result == MAXUINT16)
+                // set system default FontWeight based on desired style
+                switch (desiredWeight)
                 {
-                    // set system default FontWeight based on desired style
-                    switch (desiredWeight)
-                    {
-                    case winrt::TextWeight::Lighter:
-                        result = 200;
-                        break;
-                    case winrt::TextWeight::Bolder:
-                        result = 800;
-                        break;
-                    case winrt::TextWeight::Default:
-                    default:
-                        result = 400;
-                        break;
-                    }
+                case winrt::TextWeight::Lighter:
+                    result = 200;
+                    break;
+                case winrt::TextWeight::Bolder:
+                    result = 800;
+                    break;
+                case winrt::TextWeight::Default:
+                default:
+                    result = 400;
+                    break;
                 }
             }
         }
-        return {result};
     }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here? return default?
-        return {400};
-    }
+    return {result};
 }
 
 winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
-    try
+    auto fontTypes = hostConfig.FontTypes();
+    switch (fontType)
     {
-        auto fontTypes = hostConfig.FontTypes();
-        switch (fontType)
-        {
-        case winrt::FontType::Monospace:
-            return fontTypes.Monospace();
-            break;
-        case winrt::FontType::Default:
-        default:
-            return fontTypes.Default();
-            break;
-        }
-    }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here?
-        return nullptr;
+    case winrt::FontType::Monospace:
+        return fontTypes.Monospace();
+        break;
+    case winrt::FontType::Default:
+    default:
+        return fontTypes.Default();
+        break;
     }
 }
 
 uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize)
 {
-    try
+    switch (desiredSize)
     {
-        switch (desiredSize)
-        {
-        case winrt::TextSize::Small:
-            return sizesConfig.Small();
-            break;
-        case winrt::TextSize::Medium:
-            return sizesConfig.Medium();
-            break;
-        case winrt::TextSize::Large:
-            return sizesConfig.Large();
-            break;
-        case winrt::TextSize::ExtraLarge:
-            return sizesConfig.ExtraLarge();
-            break;
-        case winrt::TextSize::Default:
-        default:
-            return sizesConfig.Default();
-            break;
-        }
-    }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here? Return default?
+    case winrt::TextSize::Small:
+        return sizesConfig.Small();
+        break;
+    case winrt::TextSize::Medium:
+        return sizesConfig.Medium();
+        break;
+    case winrt::TextSize::Large:
+        return sizesConfig.Large();
+        break;
+    case winrt::TextSize::ExtraLarge:
+        return sizesConfig.ExtraLarge();
+        break;
+    case winrt::TextSize::Default:
+    default:
         return sizesConfig.Default();
+        break;
     }
 }
 
 uint16_t GetFontWeight(winrt::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight)
 {
-    try
+    switch (desiredWeight)
     {
-        // TODO: we have a lot of functions like this. Can we have a MAP of values?
-        // TODO: so we don't have to do if/else all the time?
-        switch (desiredWeight)
-        {
-        case winrt::TextWeight::Lighter:
-            return weightsConfig.Lighter();
-            break;
-        case winrt::TextWeight::Bolder:
-            return weightsConfig.Bolder();
-            break;
-        case winrt::TextWeight::Default:
-        default:
-            return weightsConfig.Default();
-            break;
-        }
-    }
-    catch (winrt::hresult_error const& ex)
-    {
-        // TODO: what do we do here? Return default?
+    case winrt::TextWeight::Lighter:
+        return weightsConfig.Lighter();
+        break;
+    case winrt::TextWeight::Bolder:
+        return weightsConfig.Bolder();
+        break;
+    case winrt::TextWeight::Default:
+    default:
         return weightsConfig.Default();
+        break;
     }
 }
 
@@ -540,76 +478,8 @@ std::string JsonObjectToString(winrt::JsonObject const& inputJson)
 
 winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson)
 {
-    // TODO: do we want to check for null here?
     return inputJson.Stringify();
 }
-
-// TODO: these functions live in ObjectModelUtil now if I'm correct? we don't need them here?
-// HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue** result)
-// {
-//     HString asHstring;
-//     RETURN_IF_FAILED(UTF8ToHString(inputString, asHstring.GetAddressOf()));
-//     return HStringToJsonValue(asHstring.Get(), result);
-// }
-
-// HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ IJsonValue** result)
-// {
-//     ComPtr<IJsonValueStatics> jValueStatics;
-//     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(), &jValueStatics));
-//     ComPtr<IJsonValue> jValue;
-//     HRESULT hr = jValueStatics->Parse(inputHString, &jValue);
-//     if (FAILED(hr))
-//     {
-//         RETURN_IF_FAILED(ActivateInstance(HStringReference(RuntimeClass_Windows_Data_Json_JsonValue).Get(), &jValue));
-//     }
-//     *result = jValue.Detach();
-//     return S_OK;
-// }
-
-// HRESULT JsonValueToString(_In_ IJsonValue* inputValue, std::string& result)
-// {
-//     HString asHstring;
-//     RETURN_IF_FAILED(JsonValueToHString(inputValue, asHstring.GetAddressOf()));
-//     return HStringToUTF8(asHstring.Get(), result);
-// }
-
-// HRESULT JsonValueToHString(_In_ IJsonValue* inputJsonValue, _Outptr_ HSTRING* result)
-// {
-//     if (!inputJsonValue)
-//     {
-//         return E_INVALIDARG;
-//     }
-//     ComPtr<IJsonValue> localInputJsonValue(inputJsonValue);
-//     return (localInputJsonValue->Stringify(result));ProjectedActionTypeToHString
-// }
-
-// HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonObject** result)
-// {
-//     std::string jsonString = ParseUtil::JsonToString(jsonCppValue);
-//     return StringToJsonObject(jsonString, result);
-// }
-
-// HRESULT JsonObjectToJsonCpp(_In_ ABI::winrt::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue)
-// {
-//     std::string jsonString;
-//     RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
-
-//     *jsonCppValue = ParseUtil::GetJsonValueFromString(jsonString);
-
-//     return S_OK;
-// }
-
-// HRESULT ProjectedActionTypeToHString(ABI::winrt::ElementType projectedActionType, _Outptr_ HSTRING* result)
-// {
-//     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
-//     return UTF8ToHString(ActionTypeToString(sharedActionType), result);
-// }
-
-// HRESULT ProjectedElementTypeToHString(ABI::winrt::ElementType projectedElementType, _Outptr_ HSTRING* result)
-// {
-//     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
-//     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
-//}
 
 bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration)
 {
@@ -643,12 +513,10 @@ bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::Ad
     return meetsRequirementsLocal;
 }
 
-bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage backgroundImage)
+bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImage)
 {
-    // TODO: is this correct here? the logic?
     if (backgroundImage)
     {
-        // TODO: is this a proper check? instead of HString.isValid()?
         return !backgroundImage.Url().empty();
     }
     return false;
@@ -658,7 +526,6 @@ winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::
 {
     winrt::Uri uri{nullptr};
 
-    // TODO: We can also use the factory, but we don't need to, right? This will try to make absolute uri?
     if (const auto uriFromAbsoluteUri = winrt::Uri{urlString})
     {
         return uriFromAbsoluteUri;
@@ -681,9 +548,9 @@ winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& o
 
     winrt::Windows::UI::Color hoverColor;
     hoverColor.A = originalColor.A;
-    hoverColor.R = originalColor.R - static_cast<BYTE>(originalColor.R * hoverIncrement);
-    hoverColor.G = originalColor.G - static_cast<BYTE>(originalColor.G * hoverIncrement);
-    hoverColor.B = originalColor.B - static_cast<BYTE>(originalColor.B * hoverIncrement);
+    hoverColor.R = originalColor.R - static_cast<uint8_t>(originalColor.R * hoverIncrement);
+    hoverColor.G = originalColor.G - static_cast<uint8_t>(originalColor.G * hoverIncrement);
+    hoverColor.B = originalColor.B - static_cast<uint8_t>(originalColor.B * hoverIncrement);
     return hoverColor;
 }
 
@@ -700,18 +567,12 @@ winrt::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int 
     // Convert to ticks
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
-    // DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
 
-    // TODO: should we just get it from fileTime instead of from .UniversalTime?
-    // winrt::clock::from_FILETIME(fileTime);
-    // return winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
-    // TODO: I can remove curly bracket, c++ will call the apropriate constructor anyway. This feels nicer tho :)
     return winrt::clock::from_FILETIME({fileTime});
 }
 
 winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day)
 {
-    // TODO: default constructor for reference will be invoked, right?
     return GetDateTime(year, month, day);
 }
 
@@ -721,8 +582,6 @@ winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& t
     {
         winrt::AdaptiveTextRun textRun;
 
-        // TODO: is this the right way to do it? Or do we need to .Value()?
-        // TODO: does IReference has copy constructor that will extract .Value() and copy it? (at least for primitifves)?
         textRun.Color(textElement.Color());
         textRun.FontType(textElement.FontType());
         textRun.IsSubtle(textElement.IsSubtle());
@@ -735,15 +594,11 @@ winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& t
     return nullptr;
 }
 
-// TODO: Do I need const& for winrt::com_ptr?
-// TODO: Can I just pass com_ptr of implementation? Can I just pass projection here?
 namespace AdaptiveCards::Rendering::Uwp
 {
     void RegisterDefaultElementRenderers(winrt::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder)
     {
-        // TODO: I don't need implementation of registration here, right? Or for safety reasons I do need it? (if
-        // somebody implements interface and passes it in)
         registration->Set(L"ActionSet", winrt::make<winrt::implementation::AdaptiveActionSetRenderer>());
         registration->Set(L"Column", winrt::make<winrt::implementation::AdaptiveColumnRenderer>());
         registration->Set(L"ColumnSet", winrt::make<winrt::implementation::AdaptiveColumnSetRenderer>());

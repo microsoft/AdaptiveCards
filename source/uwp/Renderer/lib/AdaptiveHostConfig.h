@@ -39,7 +39,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        // TODO: weird stuff here
         static Uwp::AdaptiveHostConfigParseResult FromJsonString(hstring const& hostConfigJson);
         static Uwp::AdaptiveHostConfigParseResult FromJson(winrt::JsonObject const& hostConfigJson);
 

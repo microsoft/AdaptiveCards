@@ -13,7 +13,6 @@ static const float OutsidePanelY = -1000.0f;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    // TODO: can we do it in the header?
     uint32_t WholeItemsPanel::s_bleedMargin = 0;
 
     // IFrameworkElementOverrides
@@ -297,7 +296,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::hstring WholeItemsPanel::GetAltText()
     {
-        // TODO: is this correct?
         std::wstring buffer;
         AppendAltText(buffer);
         return {buffer.c_str()};
@@ -321,14 +319,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
-                // TODO: do we want to peek_innards here to make sure it's our own implementation?
                 if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
                 {
                     tagAsElementTagContent.IsStretchable(true);
                 }
                 else
                 {
-                    // TODO: should we call winrt::make to skip overhead of projection?
                     winrt::ElementTagContent tagContent{};
                     tagContent.IsStretchable(true);
                     elementAsFrameworkElement.Tag(tagContent);
@@ -344,26 +340,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
-                // TODO: do I need peek_innards for this?
                 if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
                 {
                     return tagAsElementTagContent.IsStretchable();
                 }
             }
         }
-        // else - do we throw?
-        // potentially, we should never reach here
-
         return false;
     }
 
-    bool WholeItemsPanel::IsAnySubgroupTruncated(winrt::Panel panel)
+    bool WholeItemsPanel::IsAnySubgroupTruncated(winrt::Panel const& panel)
     {
-        bool childTruncated = false;
-        auto children = panel.Children();
-        uint32_t size = children.Size();
-
-        for (auto child : children)
+        for (auto child : panel.Children())
         {
             // Subgroups (columns) are implemented with WholeItemsPanel
             if (auto childAsWholeItemPanel = child.as<winrt::WholeItemsPanel>())
@@ -405,8 +393,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             return winrt::AutomationProperties::GetName(dependencyObject);
         }
-
-        // TODO: We shouldn't reach here. What do we do? throw or return empty string?
         return L"";
     }
 

@@ -4,7 +4,6 @@
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
-    <ClCompile Include="dll\dll.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveColorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveCardConfig.cpp" />
@@ -83,6 +82,7 @@
     <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfig.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AsyncOperations.h" />
@@ -170,6 +170,7 @@
     <ClInclude Include="lib\AdaptiveTextStyleConfigBase.h" />
     <ClInclude Include="lib\AdaptiveTableRenderer.h" />
     <ClInclude Include="lib\AdaptiveTableConfig.h" />
+    <ClInclude Include="dll\CppWinRTIncludes.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

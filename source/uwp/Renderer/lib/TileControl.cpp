@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         this->Content(m_containerElement);
     }
 
-    void TileControl::ImageOpened(const IInspectable& sender, const winrt::RoutedEventArgs& args)
+    void TileControl::ImageOpened(const IInspectable& /* sender */, const winrt::RoutedEventArgs& /* args */)
     {
         auto uiElement = m_resolvedImage;
 
@@ -60,7 +60,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::Size TileControl::ArrangeOverride(winrt::Size const& arrangeBounds)
     {
-        // TODO: am I doing this right?
         m_containerSize = TileControl_base::ArrangeOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
@@ -73,7 +72,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             containerAsUIElement.Clip(clip);
         }
         RefreshContainerTile();
-        // TODO: is this correct?
         return m_containerSize;
     }
 
@@ -180,8 +178,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
         }
 
-        // TODO: do we need this cast?
-        // m_brushXaml to winrt::Brush?
         // Change positions+brush for all actives elements
         for (int x = 0, index = 0; x < numberImagePerRow; x++)
         {
@@ -223,7 +219,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                 if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
-                    // TODO: do we ened to convert it to tile brush? not really, right?
                     m_brushXaml.Stretch(winrt::Stretch::UniformToFill);
 
                     // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast

@@ -18,7 +18,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         try
         {
-            // TODO: what is the need for the local object? only to use ComPtr.as later? or for something else as well?
             auto adaptiveMedia = cardElement.as<winrt::AdaptiveMedia>();
             auto hostConfig = renderContext.HostConfig();
 
@@ -31,7 +30,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
 
-                // TODO: we gotta return something here, so even if it's null we do return it regardless, right?
                 return posterImage;
             }
 
@@ -69,7 +67,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 if (mediaSourceUrl == nullptr)
                 {
                     renderContext.AddWarning(winrt::WarningStatusCode::UnsupportedMediaType, L"Unsupported media element dropped");
-                    // TODO: is this correct? do we just return null here?
                     return nullptr;
                 }
 
@@ -95,10 +92,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::ButtonBase>();
 
-            // TODO: can we do this? or do we need to return event token? I'm afraid it will revoke momentarily
-            auto renderingEventToken = std::make_shared<winrt::event_token>();
-            *renderingEventToken = touchTargetAsButtonBase.Click(
-                [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker, renderingEventToken](
+            touchTargetAsButtonBase.Click(
+                [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker](
                     winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
                     // Turn off the button to prevent extra clicks
@@ -106,18 +101,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                     // Handle the click
                     HandleMediaClick(renderContext, adaptiveMedia, mediaElement, touchTargetAsButtonBase, mediaSourceUrl, mimeType, mediaInvoker);
-
-                    // TODO: unregister the click since button is disabled now. Is this correct approach?
-                    // TODO: not sure about this:) Do we still want this to work afterwards? button is disabled tho..
-                    // touchTargetAsButtonBase.Click(*renderingEventToken);
                 });
             return mediaStackPanel;
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                                       cardElement.ElementTypeString(),
+                                                                                       ex.message());
             return nullptr;
         }
     }

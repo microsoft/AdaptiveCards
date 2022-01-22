@@ -15,8 +15,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                    winrt::Border const& validationBorder);
         InputValue();
 
-        // TODO: getting compile errors with this for some reason...
-        // property<winrt::UIElement> ErrorMessage;
         winrt::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
         winrt::UIElement ErrorMessage() { return m_validationError; };
         void ErrorMessage(winrt::UIElement const& errorMessage)

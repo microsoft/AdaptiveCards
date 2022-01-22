@@ -16,8 +16,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         try
         {
             auto adaptiveContainer = cardElement.as<winrt::AdaptiveContainer>();
-
-            // TODO: revisit wholeitemPanel
             auto containerPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
 
             // Get any RTL setting set on either the current context or on this container. Any value set on the
@@ -60,12 +58,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                                                                                                         containerBorder,
                                                                                                         renderContext,
                                                                                                         renderArgs);
+            auto newRenderArgs =
+                winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
 
             auto childItems = adaptiveContainer.Items();
             ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
-                childItems, containerPanel.as<winrt::Panel>(), renderContext, renderArgs, [](winrt::UIElement) {});
+                childItems, containerPanel.as<winrt::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
@@ -119,7 +119,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 throw ex;
             }
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

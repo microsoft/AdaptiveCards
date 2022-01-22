@@ -6,9 +6,6 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    // TODO: we don't really need it in the idl, right? we can just do this:
-    // WholeItemsPanel: winrt::PanelT<WholeItemsPanel, ITypePeek>
-    // TODO: I don't think we want to expose this type..
     struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
     {
     public:
@@ -64,7 +61,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
-        bool IsAnySubgroupTruncated(winrt::Panel pPanel);
+        bool IsAnySubgroupTruncated(winrt::Panel const& panel);
 
         static void LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight);
 

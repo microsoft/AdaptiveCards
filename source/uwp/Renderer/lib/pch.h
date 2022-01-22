@@ -23,7 +23,7 @@
 #define ERRORBASE_ADAPTIVECARDS 0x1000
 #define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
 
-#include "CppWinRTIncludes.h"
+#include "dll\CppWinRTIncludes.h"
 
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it

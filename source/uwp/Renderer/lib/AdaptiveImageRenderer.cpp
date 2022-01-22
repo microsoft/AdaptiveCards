@@ -28,9 +28,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                                       cardElement.ElementTypeString(),
+                                                                                       ex.message());
             return nullptr;
         }
     }
@@ -59,7 +59,6 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (imageUrl == nullptr)
         {
-            // TODO: is this right?
             renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed, L"Image not found");
             return nullptr;
         }
@@ -85,12 +84,10 @@ namespace AdaptiveCards::Rendering::Uwp
         auto imageStyle = adaptiveImage.Style();
         auto resourceResolvers = renderContext.ResourceResolvers();
         auto backgroundColor = adaptiveImage.BackgroundColor();
-        // TODO: we can just use adaptiveImage here?
         auto isVisible = adaptiveCardElement.IsVisible();
 
         winrt::FrameworkElement frameworkElement{nullptr};
 
-        // TODO: Not sure why it's been done this way
         if (imageStyle == winrt::ImageStyle::Person)
         {
             winrt::Ellipse ellipse{};
@@ -98,15 +95,11 @@ namespace AdaptiveCards::Rendering::Uwp
 
             winrt::Stretch imageStretch = (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
 
-            // bool mustHideElement{true};
-
             auto parentElement = renderArgs.ParentElement();
 
             auto ellipseAsShape = ellipse.as<winrt::Shape>();
             auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
 
-            // TODO: I don't see this mustHideElement being used for anything. Was it intended to be used when we can't set image so we collapse the visual?
-            /* auto mustHideElement = */
             SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
 
             if (size == winrt::ImageSize::None || size == winrt::ImageSize::Stretch || size == winrt::ImageSize::Auto || hasExplicitMeasurements)
@@ -126,7 +119,6 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 // Fill the background ellipse with solid color brush
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                // TODO: would be good to refactor it in single function call.
                 auto backgroundColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
 
                 // Create a grid to contain the background color ellipse and the image ellipse
@@ -138,7 +130,6 @@ namespace AdaptiveCards::Rendering::Uwp
             }
             else
             {
-                // TODO: I don't need to cast, do I?
                 frameworkElement = ellipse;
             }
         }
@@ -169,9 +160,6 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             auto parentElement = renderArgs.ParentElement();
-            // TODO: I don't see this mustHideElement being used anywhere. Was it inteended to be used when image was
-            // not set? so we don't waste lasyout space?
-            /*bool mustHideElement =*/
             SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
         }
 
@@ -229,9 +217,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 }
                 default:
                 {
-                    /*return E_UNEXPECTED;*/
-                    // TODO: do we return nullptr here?
-                    return nullptr;
+                    throw winrt::hresult_error(E_UNEXPECTED);
                 }
                 }
 
@@ -296,11 +282,9 @@ namespace AdaptiveCards::Rendering::Uwp
                                           bool isVisible,
                                           winrt::Stretch stretch)
     {
-        // TODO: not sure how it's being used..
         bool mustHideElement = true;
 
         // Get the image url scheme
-        // TODO: what if uri is nullptr? do we wanna fail?
         winrt::hstring schemeName = imageUrl.SchemeName();
 
         // Get the resolver for the image
@@ -326,38 +310,45 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // And call the resolver to get the image stream
                 auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
-                // TODO: come back to check if needed get_weak()
+
                 getResourceStreamOperation.Completed(
-                    [this, uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
-                        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
-                        winrt::AsyncStatus status) -> void // TODO: should it be void?
+                    [this, weakThis = this->get_weak(), uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
+                        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation, winrt::AsyncStatus status) -> void
                     {
                         if (status == winrt::AsyncStatus::Completed)
                         {
-                            auto randomAccessStream = operation.GetResults();
-                            if (randomAccessStream)
+                            if (auto strongThis = weakThis.get())
                             {
-                                // TODO: gotta work on this m_imageLoadTracker
-                                this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
-                                return;
-                            }
-                            SetImageSource(uiElement, bitmapImage, stretch);
-
-                            auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
-
-                            setSourceAction.Completed(
-                                [this, uiElement, isAutoSize, parentElement, imageContainer, isVisible](winrt::IAsyncAction const&,
-                                                                                                        winrt::AsyncStatus status)
+                                auto randomAccessStream = operation.GetResults();
+                                if (!randomAccessStream)
                                 {
-                                    if (status == winrt::AsyncStatus::Completed && isAutoSize)
+                                    this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
+                                    return;
+                                }
+                                SetImageSource(uiElement, bitmapImage, stretch);
+
+                                auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
+
+                                setSourceAction.Completed(
+                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](winrt::IAsyncAction const&,
+                                                                                                      winrt::AsyncStatus status)
                                     {
-                                        SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                                    }
-                                });
+                                        if (status == winrt::AsyncStatus::Completed && isAutoSize)
+                                        {
+                                            if (auto strongThis = weakThis.get())
+                                            {
+                                                strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                            }
+                                        }
+                                    });
+                            }
                         }
                         else
                         {
-                            this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
+                            if (auto strongThis = weakThis.get())
+                            {
+                                this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
+                            }
                         }
                     });
             }
@@ -366,22 +357,13 @@ namespace AdaptiveCards::Rendering::Uwp
         if (schemeName == L"data")
         {
             // Decode base 64 string
-
             winrt::hstring dataPath = imageUrl.Path();
-
+            // TODO: look at this routine (not too sure about memcpy_s)
             std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
             std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
 
-            // TODO: is this correct way to create buffer?
             winrt::Buffer buffer{static_cast<uint32_t>(decodedData.size())};
 
-            /*ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
-            THROW_IF_FAILED(buffer.As(&bufferByteAccess));*/
-
-            // BYTE* dataInternal{};
-            // bufferByteAccess->Buffer(&dataInternal);
-
-            // TODO: is this correct? look above how it was done before
             memcpy_s(buffer.data(), decodedData.size(), decodedData.data(), decodedData.size());
 
             buffer.Length(static_cast<uint32_t>(decodedData.size()));
@@ -389,29 +371,33 @@ namespace AdaptiveCards::Rendering::Uwp
             winrt::BitmapImage bitmapImage{};
             bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
 
-            // TODO: Do I need to cast to output stream?
             winrt::InMemoryRandomAccessStream randomAccessStream{};
             auto bufferWriteOperation = randomAccessStream.WriteAsync(buffer);
-            // TODO: come back to check if needed get_weak()
+
             bufferWriteOperation.Completed(
-                [this, bitmapImage, randomAccessStream, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    winrt::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/,
-                    winrt::AsyncStatus /*status*/) -> void // TODO: should it be void?)
+                [weakThis = this->get_weak(), bitmapImage, randomAccessStream, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                    winrt::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
                 {
-                    randomAccessStream.Seek(0);
-                    SetImageSource(uiElement, bitmapImage);
+                    if (auto strongThis = weakThis.get())
+                    {
+                        randomAccessStream.Seek(0);
+                        strongThis->SetImageSource(uiElement, bitmapImage);
 
-                    auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
+                        auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
 
-                    setSourceAction.Completed(
-                        [this, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                            winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
-                        {
-                            if (status == winrt::AsyncStatus::Completed & isAutoSize)
+                        setSourceAction.Completed(
+                            [weakThis, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
                             {
-                                SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                            }
-                        });
+                                if (status == winrt::AsyncStatus::Completed && isAutoSize)
+                                {
+                                    if (auto strongThis = weakThis.get())
+                                    {
+                                        strongThis->SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                    }
+                                }
+                            });
+                    }
                 });
             m_writeAsyncOperations.push_back(bufferWriteOperation);
             mustHideElement = false;
@@ -452,35 +438,32 @@ namespace AdaptiveCards::Rendering::Uwp
         bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
-        //auto weak_this{get_weak()} // TODO: come back to check if needed get_weak()
         getStreamOperation.Completed(
-            [this,
-             bitmapImage,
-             imageControl](winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
-                           winrt::AsyncStatus status) -> void // TODO: should it be void?)))
+            [this, weakThis = this->get_weak(), bitmapImage, imageControl](
+                winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
+                winrt::AsyncStatus status) -> void
             {
-                // TODO: come back to it.
-               /* if (auto strong_this{weak_this.get()})
-                {*/
-                // TODO: static_cast': cannot convert from 'AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener *' to 'winrt::impl::produce<D,winrt::com_ptr<AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener>> *'
-                    if (status == winrt::AsyncStatus::Completed)
+                if (status == winrt::AsyncStatus::Completed)
+                {
+                    if (auto strongThis = weakThis.get())
                     {
                         auto imageStream = operation.GetResults();
                         winrt::InMemoryRandomAccessStream randomAccessStream{};
                         auto copyStreamOperation = winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
+
                         m_copyStreamOperations.push_back(copyStreamOperation);
-                        // TODO: why are we passing so many elements to lambad when we don't use them there?
-                        copyStreamOperation.Completed([this, bitmapImage, randomAccessStream, imageControl](
-                                                          winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
-                                                          winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
+
+                        copyStreamOperation.Completed(
+                            [randomAccessStream](winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
+                                                 winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
                     }
-                //}
+                }
             });
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
     template<typename T>
-    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch /*stretch*/)
+    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
@@ -498,7 +481,7 @@ namespace AdaptiveCards::Rendering::Uwp
     };
 
     template<>
-    void XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& destination,
+    void XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& ellipse,
                                                   winrt::IInspectable const& parentElement,
                                                   winrt::IInspectable const& imageContainer,
                                                   bool isVisible,
@@ -520,18 +503,14 @@ namespace AdaptiveCards::Rendering::Uwp
             if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                ellipseAsShape.Visibility(winrt::Visibility::Collapsed);
+                ellipse.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                // TODO: what's the point of eventToken if we don';t save it ?
-
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
-
                 auto weakParent = winrt::make_weak(parentElement);
 
-                // TODO: do we need a revoker/token?
                 brushAsImageBrush.ImageOpened(
-                    [ellipseAsShape, weakParent, isVisible](winrt::IInspectable const& sender, winrt::RoutedEventArgs /*args*/) -> void
+                    [ellipse, weakParent, isVisible](winrt::IInspectable const& sender, winrt::RoutedEventArgs /*args*/) -> void
                     {
                         if (isVisible)
                         {
@@ -541,14 +520,12 @@ namespace AdaptiveCards::Rendering::Uwp
                             auto lamdaImageSourceAsBitmap = lambdaImageSource.as<winrt::BitmapSource>();
 
                             auto lambdaParentElement = weakParent.get();
-                            // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will
-                            // be successfull if ellipseAsShape is not null
-                            if (ellipseAsShape && lambdaParentElement)
+                            if (ellipse && lambdaParentElement)
                             {
                                 winrt::FrameworkElement k{nullptr};
                                 winrt::BitmapSource as{nullptr};
 
-                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape,
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse,
                                                                                                lambdaParentElement,
                                                                                                lamdaImageSourceAsBitmap,
                                                                                                isVisible);
@@ -558,7 +535,7 @@ namespace AdaptiveCards::Rendering::Uwp
             }
             else
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
@@ -572,7 +549,6 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         if (parentElement && m_enableXamlImageHandling)
         {
-            // TODO: am I doing this right? or need to create new object and pass destination in constructor?
             auto xamlImage = destination.as<winrt::Image>();
             auto imageSource = xamlImage.Source();
             auto imageSourceAsBitmapSource = imageSource.as<winrt::BitmapSource>();
@@ -595,7 +571,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                                   winrt::RoutedEventArgs const&
                                                                                   /*args*/) -> void
                     {
-                        // TODO: is this correct way to cast weak ref?
                         if (const auto lambdaImageAsFrameworkElement = weakImage.get())
                         {
                             if (const auto lambdaParentElement = weakParent.get())

@@ -23,7 +23,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                      bool isHorizontal = true);
 
     inline winrt::IInspectable TryGetResourceFromResourceDictionaries(winrt::ResourceDictionary const& resourceDictionary,
-                                                               winrt::hstring const& resourceName)
+                                                                      winrt::hstring const& resourceName)
     {
         if (resourceDictionary == nullptr)
         {
@@ -53,8 +53,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (heightType == winrt::HeightType::Stretch)
         {
-            // TODO: is this the right way?
-            // TODO: can we peek innards right away?
             if (const auto wholeItemsPanel = panel.try_as<winrt::WholeItemsPanel>())
             {
                 auto wholeItemsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(wholeItemsPanel);
@@ -63,39 +61,19 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
-    template<typename T> void SetToggleValue(T const& item, bool isChecked)
-    {
-        // TODO: compiling fails at AdaptiveToggleInputRenderer.cpp(66)
-        // static_assert(std::is_base_of<winrt::ToggleButton>, T > ::value, "T
-        // must inherit from ToggleButton");
-        // TODO: do we want static asserts? or is it fine with compilers catching misusages?
-
-        auto toggleButton = item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
-                                                            // toggleButton descendabts have isChecked() exposed, right?
-        toggleButton.IsChecked(isChecked);
-    }
-
     template<typename T> bool GetToggleValue(T const& item)
     {
-        // TODO: InputValue613 failes to compile, why?
-        /*static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
-        auto toggleButton = item.as<winrt::ToggleButton>(); // TODO: I don't think we need this cast, all
-                                                            // toggleButton descendants have isChecked() exposed, right?
-
+        auto toggleButton = item.as<winrt::ToggleButton>(); 
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
-        // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
-        /* static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ContenControl");*/
         SetContent(item, contentString, false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        // TODO: compiling failing as ToggleInputRenderer(52)
-        /*  static_assert(std::is_base_of<winrt::ToggleButton, T > ::value, "T must inherit from ToggleButton");*/
         winrt::TextBlock content{};
         content.Text(contentString);
 
@@ -122,15 +100,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         if (const auto containerAsPanel = container.try_as<winrt::WholeItemsPanel>())
         {
-            // TODO: can we peek innards right away?
             auto containerAsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(containerAsPanel);
             containerAsPanelImpl->SetVerticalContentAlignment(verticalContentAlignment);
         }
     }
 
     winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs);
+                                      winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                                              winrt::AdaptiveRenderContext const& renderContext);
@@ -139,7 +115,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                winrt::AdaptiveRenderArgs const& renderArgs,
                                                 winrt::UIElement const& inputLayout);
 
     std::tuple<winrt::UIElement, winrt::Border> HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
@@ -161,7 +136,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                             winrt::ColumnDefinition const& columnDefinition,
                             std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
-    // TODO: come back to this function
     std::tuple<winrt::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
                                                                              winrt::AdaptiveRenderContext const& renderContext,
                                                                              winrt::AdaptiveRenderArgs const& renderArgs);
@@ -187,16 +161,34 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
 
-    inline void ErrForRenderFailed(winrt::AdaptiveRenderContext const& renderContext,
-                                   winrt::hstring const& elementType,
-                                   winrt::hstring const& exceptionMessage = L"")
+    inline void LogErrRenderFailed(winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::hstring const& elementType = L"",
+                                      winrt::hstring const& exceptionMessage = L"")
     {
-        auto error = L"Rendering failed for element of type \"" + elementType + L"\"";
+        winrt::hstring errorMessage = L"Rendering failed";
+
+        if (!elementType.empty())
+        {
+            errorMessage = errorMessage + L" for element of type \"" + elementType + L"\"";
+        }
+
         if (!exceptionMessage.empty())
         {
-            error = error + L" with the following message: \n" + exceptionMessage;
+            errorMessage = errorMessage + L" with the following message: \n" + exceptionMessage;
         }
-        renderContext.AddError(winrt::ErrorStatusCode::RenderFailed, error);
+        renderContext.AddError(winrt::ErrorStatusCode::RenderFailed, errorMessage);
+    }
+
+    inline void ErrForRenderFailed(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& exceptionMessage = L"")
+    {
+        LogErrRenderFailed(renderContext, L"", exceptionMessage);
+    }
+
+    inline void ErrForRenderFailedForElement(winrt::AdaptiveRenderContext const& renderContext,
+                                             winrt::hstring const& elementType,
+                                             winrt::hstring const& exceptionMessage = L"")
+    {
+        LogErrRenderFailed(renderContext, elementType, exceptionMessage);
     }
 
     winrt::UIElement AddSeparatorIfNeeded(int& currentElement,

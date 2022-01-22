@@ -11,7 +11,7 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    struct XamlBuilder : winrt::implements<XamlBuilder, IImageLoadTrackerListener>
+    struct XamlBuilder : winrt::implements<XamlBuilder, winrt::IInspectable, IImageLoadTrackerListener>
     {
     public:
         XamlBuilder();
@@ -27,8 +27,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                       winrt::ContainerStyle defaultContainerStyle =
                                           winrt::ContainerStyle::Default);
 
-        // TODO: not sure what we need this for? Are they for public?
-        // TODO: I think these methods are created so people from outside can listen to images loading?
         void AddListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
         void RemoveListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
         void SetFixedDimensions(uint32_t width, uint32_t height) noexcept;
@@ -47,7 +45,6 @@ namespace AdaptiveCards::Rendering::Uwp
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
-        // TODO: why do we need this?
         std::set<IXamlBuilderListener*> m_listeners;
         std::vector<winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress>> m_getStreamOperations;
         std::vector<winrt::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
@@ -58,7 +55,6 @@ namespace AdaptiveCards::Rendering::Uwp
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
 
-        // TODO: can we move word static to the function name?
         static std::pair<winrt::Panel, winrt::UIElement>
         CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                               winrt::AdaptiveRenderContext const& renderContext,
@@ -76,8 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void SetImageSource(T const& destination,
                             winrt::ImageSource const& imageSource,
                             winrt::Stretch stretch = winrt::Stretch::UniformToFill);
-
-        // TODO: do we want to return bool to indicate success/failure?
+							
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,

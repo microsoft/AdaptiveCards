@@ -27,8 +27,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::ContainerStyle containerStyle =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumnSet, columnSetBorder, renderContext, renderArgs);
 
-            auto parentElement = renderArgs.ParentElement();
-            auto newRenderArgs = winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
+            auto newRenderArgs = winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
             winrt::Grid xamlGrid{};
 
@@ -46,7 +45,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto hostConfig = renderContext.HostConfig();
             auto ancestorHasFallback = renderArgs.AncestorHasFallback();
 
-            bool ifFailureOccured = false;
             for (auto column : columns)
             {
                 auto columnAsCardElement = column.as<winrt::IAdaptiveCardElement>();
@@ -84,8 +82,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     {
                         // Add Separator to the columnSet
                         auto needsSeparator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::NeedsSeparator(column);
-                        // TODO: separator thickness can be 0 in many cases
-                        // TODO: is it wise to insert an additional element into the tree just for spacing?
 
                         if (needsSeparator)
                         {
@@ -99,7 +95,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
                             separator = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateSeparator(
                                 renderContext, separatorParams.spacing, separatorParams.thickness, separatorParams.color, false);
-                            // TODO: is this the right logic?
+
                             if (const auto separatorAsFrameworkElement = separator.try_as<winrt::FrameworkElement>())
                             {
                                 winrt::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
@@ -160,7 +156,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 throw ex;
             }
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

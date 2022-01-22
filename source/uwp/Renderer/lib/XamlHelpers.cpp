@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-//#include "ActionHelpers.h"
 #include "WholeItemsPanel.h"
 #include "XamlHelpers.h"
 #include "ElementTagContent.h"
@@ -67,7 +66,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 auto tag = childAsFrameworkElement.Tag();
                 if (tag)
                 {
-                    // TODDO: do we wanto to peek_innards to make sure this is our implementation?
                     if (const auto elementTagContent = tag.try_as<winrt::ElementTagContent>())
                     {
                         auto separator = elementTagContent.Separator();
@@ -127,7 +125,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (hasExplicitContainerStyle)
         {
             auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
-            // TODO: do we need this getSolidColorBrush helper at all?
             containerBorder.Background(XamlHelpers::GetSolidColorBrush(backgroundColor));
 
             // If the container style doesn't match its parent apply padding.
@@ -259,25 +256,14 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
-        // TODO: it might be an overkill to render apdativeImage for background image
-        // TODO: we should probably create a routine to do that without adaptive image. Should be simple enough.
         if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
         {
-            winrt::BackgroundImageFillMode fillMode = adaptiveBackgroundImage.FillMode();
-
             // Creates the background image for all fill modes
             auto tileControl = winrt::make<winrt::implementation::TileControl>();
 
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
-
-            // THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
             tileControl.BackgroundImage(adaptiveBackgroundImage);
-
-            // TODO: I don't see this rootelement being used anywhere, a bug?
-            // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
-            // tileControl.RootElement(rootPanel);
-
             tileControl.LoadImageBrush(backgroundImage);
 
             XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
@@ -301,9 +287,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                                                              winrt::AdaptiveRenderContext const& renderContext,
                                                                              winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        // TODO: come back to this routine later
-        // TODO: still not sure I'm doing this right...
-
         if (!currentElement)
         {
             return {nullptr, nullptr};
@@ -314,7 +297,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
-        /*winrt::com_ptr<winrt::UIElement> fallbackControl;*/
         winrt::UIElement fallbackControl{nullptr};
         winrt::IAdaptiveCardElement renderedElement{nullptr};
         winrt::UIElement result{nullptr};
@@ -331,8 +313,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
             auto fallbackElementRenderer = elementRenderers.Get(fallbackElementType);
 
-            bool shouldPerformFallBack = true;
-            // TODO: shouldn't we check if it meets requirements here?
             if (fallbackElementRenderer)
             {
                 fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
@@ -362,7 +342,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (fallbackHandled)
         {
-            // TODO: refactor
             result = fallbackControl;
         }
         else
@@ -406,10 +385,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto newControlAsFrameworkElement = newControl.as<winrt::FrameworkElement>();
 
             winrt::hstring id = element.Id();
-            // RETURN_IF_FAILED(element->get_Id(id.GetAddressOf()));
-
-            // TODO: what does it mean for hstring to be valid? to have c_str? to not be empty? both?
-            // TODO: can we do if (const auto id = element.Id()) instead of assigning and checking for empty in different places?
+            
             if (!id.empty())
             {
                 newControlAsFrameworkElement.Name(id);
@@ -429,13 +405,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void AddHandledTappedEvent(winrt::UIElement const& uiElement)
     {
-        // TODO: is ! enough? no need for == nullptr?
         if (!uiElement)
         {
             return;
         }
-        // TODO: Don't we need a revoker?
-        // TODO: no need to save a token, right?
         uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
@@ -543,7 +516,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         winrt::hstring suffix = inputLabelConfig.Suffix();
         // If no suffix was defined, use * as default
 
-        // TODO: is this correct?
         if (suffix.empty())
         {
             suffix = UTF8ToHString(" *");
@@ -557,8 +529,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs)
+                                      winrt::AdaptiveRenderContext const& renderContext)
     {
         winrt::hstring inputLabel = adaptiveInputElement.Label();
         // Retrieve if the input is required so we can file a warning if the label is empty
@@ -607,7 +578,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             renderContext.AddWarning(winrt::WarningStatusCode::EmptyLabelInRequiredInput,
                                      L"Input is required but there's no label for required hint rendering");
         }
-        // TODO: is this correct here?
         return nullptr;
     }
 
@@ -635,7 +605,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // Add the error message if present
         winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
 
-        // TODO: is this correct in this scenario instead of .IsValid()?
         if (!errorMessage.empty())
         {
             winrt::TextBlock errorMessageTextBlock{};
@@ -677,7 +646,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                winrt::AdaptiveRenderArgs const& renderArgs,
                                                 winrt::UIElement const& inputLayout)
     {
         // Create a new stack panel to add the label and error message
@@ -689,7 +657,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto inputsConfig = hostConfig.Inputs();
 
         // Render the label and add it to the stack panel
-        auto label = XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs);
+        auto label = XamlHelpers::RenderInputLabel(adaptiveInput, renderContext);
         XamlHelpers::AppendXamlElementToPanel(label, inputStackPanel);
 
         if (label)
@@ -790,13 +758,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                                 winrt::AdaptiveRenderContext const& renderContext,
                                                 bool ifValidationBorderIsNeeded)
     {
-        // TODO: Make sure this function works properly
         winrt::StackPanel inputStackPanel{};
 
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
-        /*ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;*/
-        // TODO: I do not need this right?
         auto inputUIElementParentContainer = inputUIElement;
 
         // If there's any validation on this input, and the caller has requested a validation border by passing
@@ -809,11 +774,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             // If we have validation, we should have an error message to display if it fails. If we don't, return a
             // warning to encourage the card author to add one.
-
-            winrt::hstring errorMessage = adaptiveInput.ErrorMessage();
-
-            // TODO: what if the user just wants an empty error message? do we allow that?
-            if (errorMessage.empty())
+            if (adaptiveInput.ErrorMessage().empty())
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::MissingValidationErrorMessage,
                                          L"Inputs with validation should include an errorMessage");
@@ -833,11 +794,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // Input.Text and Input.Number render the border previously so the object received as parameter may be a
         // border Input.Time and Input.Date let this method render the border for them Input.Toggle
         winrt::UIElement actualInputUIElement{nullptr};
-        // TODO: revisit this
-        // if (validationBorderOut && hasValidation)
+
         if (hasValidation && ifValidationBorderIsNeeded)
         {
-            // RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
             actualInputUIElement = validationBorder.Child();
         }
         else
@@ -845,13 +804,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             if (hasValidation)
             {
                 // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
-                // TODO: no need to save inputUIElementParentContainre in validationBorder because we're not going to return it anyway
-                /* if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
-                 {
-                     RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
-                 }*/
                 if (const auto containerAsBorder = inputUIElementParentContainer.try_as<winrt::Border>())
                 {
+					validationBorder = containerAsBorder;
                     actualInputUIElement = containerAsBorder.Child();
                 }
                 else

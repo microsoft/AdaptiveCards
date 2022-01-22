@@ -7,18 +7,16 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
     {
-        for (auto& eventRegistration : m_eventRevokers)
+        for (auto& [_, trackedImageDetails] : m_eventRevokers)
         {
-            UnsubscribeFromEvents(eventRegistration.first, eventRegistration.second);
+            UnsubscribeFromEvents(trackedImageDetails);
         }
     }
 
     void ImageLoadTracker::TrackBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
-        // TODO: Am I doing this right?
         auto trackedImageDetails = winrt::make_self<TrackedImageDetails>();
 
-        // TODO: are these revokers correct?
         trackedImageDetails->imageOpenedRevoker =
             bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageLoaded});
 
@@ -26,13 +24,10 @@ namespace AdaptiveCards::Rendering::Uwp
             bitmapImage.ImageFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageFailed});
 
         // Ensure we don't try and write the private data from multiple threads
-        // TODO: I can also use scoped_lock but as I understand - scope lock is usually used for multiple mutexes
         std::unique_lock lock{m_mutex};
 
         if (m_eventRevokers.find(bitmapImage) == m_eventRevokers.end())
         {
-            // If we haven't registered for this image events yet, do so
-            // TODO: I'm not sure if this is the right way.... com_ptr to imageDetails, weird..
             m_eventRevokers[bitmapImage] = trackedImageDetails;
             m_trackedImageCount++;
             m_totalImageCount++;
@@ -50,55 +45,27 @@ namespace AdaptiveCards::Rendering::Uwp
 
     void ImageLoadTracker::AbandonOutstandingImages()
     {
-        // TODO: will scoped lock work here?
         std::unique_lock lock{m_mutex};
-        for (auto& eventRegistration : m_eventRevokers)
+        for (auto& [_, trackedImageDetails] : m_eventRevokers)
         {
-            UnsubscribeFromEvents(eventRegistration.first, eventRegistration.second);
+            UnsubscribeFromEvents(trackedImageDetails);
         }
         m_eventRevokers.clear();
     }
 
     void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
     {
-        try
+        if (m_listeners.find(listener) == m_listeners.end())
         {
-            if (m_listeners.find(listener) == m_listeners.end())
-            {
-                m_listeners.emplace(listener);
-            }
-
-            // TODO: COME BACK AND FIX IT
-            // else
-            //{
-            //    /*return E_INVALIDARG;*/
-            //    // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
-            //}
-        }
-        catch (winrt::hresult_error const& ex)
-        {
-            // TODO: what do we do here?
+            m_listeners.emplace(listener);
         }
     }
 
     void ImageLoadTracker::RemoveListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
     {
-        try
+        if (m_listeners.find(listener) != m_listeners.end())
         {
-            if (m_listeners.find(listener) != m_listeners.end())
-            {
-                m_listeners.erase(listener);
-            }
-            // TODO: COME BACK AND FIX IT
-            // else
-            //{
-            //    /*  return E_INVALIDARG;*/
-            //    // TODO: do we wanna return bool may be? indicating success/failure? do we need to at all?
-            //}
-        }
-        catch (winrt::hresult_error const& ex)
-        {
-            // TODO: what do we do here?
+            m_listeners.erase(listener);
         }
     }
 
@@ -121,7 +88,7 @@ namespace AdaptiveCards::Rendering::Uwp
         m_trackedImageCount--;
         if (m_eventRevokers.find(sender) != m_eventRevokers.end())
         {
-            UnsubscribeFromEvents(sender, m_eventRevokers[sender]);
+            UnsubscribeFromEvents(m_eventRevokers[sender]);
         }
 
         if (m_trackedImageCount == 0)
@@ -130,11 +97,8 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::UnsubscribeFromEvents(winrt::IInspectable const& bitmapImage,
-                                                 winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
-        // TODO: this is the right way to do it, correct?
-        // TODO: should we use events instead?
         trackedImageDetails->imageOpenedRevoker.revoke();
         trackedImageDetails->imageFailedRevoker.revoke();
     }

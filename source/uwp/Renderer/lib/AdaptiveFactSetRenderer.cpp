@@ -21,7 +21,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::ColumnDefinition titleColumn{};
             winrt::ColumnDefinition valueColumn{};
 
-            // TODO: does value(0 in this case) matter when type=Auto?
             winrt::GridLength factSetGridTitleLength{0, winrt::GridUnitType::Auto};
             winrt::GridLength factSetGridValueLength{1, winrt::GridUnitType::Star};
 
@@ -107,7 +106,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (validFacts == 0)
             {
-                // TODO: is this right? or we're supposed to do something else?
                 return nullptr;
             }
 
@@ -117,7 +115,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

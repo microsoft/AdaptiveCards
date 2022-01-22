@@ -19,9 +19,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto textBoxParentContainer = inputUIElement;
 
         // If there's any validation on this input, put the input inside a border. We don't use
-        //  ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation validation border because that
-        //  would wrap any inline action as
-        // well as the text input, which is not the desired behavior.
+        // ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation validation border because that
+        // would wrap any inline action as well as the text input, which is not the desired behavior.
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
 
@@ -63,7 +62,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return {inputLayout, validationBorder};
     }
 
-    // TODO: should it be winrt::IAdaptiveTextInput for first arg?
     winrt::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                                               winrt::AdaptiveRenderContext const& renderContext,
                                                               winrt::AdaptiveRenderArgs const& renderArgs)
@@ -87,7 +85,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         switch (textInputStyle)
         {
         case winrt::TextInputStyle::Email:
-            // TODO: why smtp instead of name/email?
             inputScopeName.NameValue(winrt::InputScopeNameValue::EmailSmtpAddress);
             break;
 
@@ -104,13 +101,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         inputScope.Names().Append(inputScopeName);
 
         textBox.InputScope(inputScope);
-
-        auto& [textInputControl, validationBorder] =
+		
+        auto [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
-        // TODO: come back here, not sure if this is correct?
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
-        renderContext.AddInputValue(*inputValue, renderArgs);
+		renderContext.AddInputValue(*inputValue, renderArgs);
 
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;
@@ -126,13 +122,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         passwordBox.MaxLength(adaptiveTextInput.MaxLength());
         passwordBox.PlaceholderText(adaptiveTextInput.Placeholder());
 
-        auto& [textInputControl, validationBorder] =
+        auto [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, passwordBox, renderContext, renderArgs);
 
-        // TODO: come back to inputs, not sure if it's correct
         auto inputValue = winrt::make_self<winrt::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
-        // TODO: no custom style for passwordBox I guess?
         return textInputControl;
     }
 
@@ -163,7 +157,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

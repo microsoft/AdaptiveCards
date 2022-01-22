@@ -20,21 +20,18 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // If the cell doesn't have a vertical content alignment, pass in the one from the parent
         if (cellVerticalAlignment == nullptr)
         {
-            // RETURN_IF_FAILED(tableCellAsContainer->put_VerticalContentAlignment(verticalContentAlignment));
             cell.VerticalContentAlignment(verticalContentAlignment);
         }
 
         if (showGridLines)
         {
             // If we're showing grid lines add padding so the content isn't against the grid
-            // TODO: Don't we need to undo it later? we'll modify the existing renderArgs and the rest of the renderers will use it as well
             renderArgs.AddContainerPadding(true);
         }
 
         // Render the cell as a container
         auto containerRenderer = renderContext.ElementRenderers().Get(L"Container");
 
-        // TODO: no need to cast cell to IAdapativeCardElement, right?
         auto cellRenderedAsContainer = containerRenderer.Render(cell, renderContext, renderArgs);
 
         // Handle Grid Lines or Cell Spacing
@@ -65,7 +62,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             cellBorder.Child(cellRenderedAsContainer);
             cellFrameworkElement = cellBorder;
             // Clear the container padding flag from the renderArgs
-            // TODO: how do we know it wasn't true before? should we save and then reassign?
             renderArgs.AddContainerPadding(false);
         }
         else
@@ -121,16 +117,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto contextTextStyle = renderContext.TextStyle();
 
         // Set the column header style if this is the first row and firstRowAsHeaders is set
-        // TODO: shouldn't it be first rowAsHeader? not plural?
         if (rowNumber == 0 && firstRowAsHeaders)
         {
             // Set the text style to TextStyle::ColumnHeader
-            // TODO: it will create IReference automatically, right?
-            // TODO: fix firstRowAsHeader(s) variable name
             renderContext.TextStyle(winrt::TextStyle::ColumnHeader);
-            /*winrt::box_value(ABI::winrt::TextStyle::ColumnHeader)
-                .as<ABI::Windows::Foundation::IReference<ABI::winrt::TextStyle>>()
-                .get()));*/
         }
 
         // Save the current horizontal alignment from the context
@@ -153,7 +143,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         uint32_t columnNumber = 0;
 
-        // TODO: how do we handle errors here? do we want to use IterOverVecWithFailure?
         for (auto cell : cells)
         {
             // Get the horizontal alignment from the column definition
@@ -167,7 +156,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
             else
             {
-                // TODO: it's okay to pass the enum instead of ref, right? constructor will be invoked?
                 renderContext.HorizontalContentAlignment(columnHorizontalAlignment ? columnHorizontalAlignment :
                                                                                      contextHorizontalAlignment);
             }
@@ -219,7 +207,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto columns = adaptiveTable.Columns();
             auto xamlColumnDefinitions = xamlGrid.ColumnDefinitions();
 
-            // TODO: how do we handle failure here? is there going to be any?
             for (auto column : columns)
             {
                 winrt::ColumnDefinition xamlColumnDefinition{};
@@ -248,7 +235,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

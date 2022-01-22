@@ -14,13 +14,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         try
         {
-            // TODO: do we need to check for errors here? or catch -> nullptr should be enough
             renderContext.LinkSubmitActionToCard(action, renderArgs);
             return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              action.ActionTypeString(),
                                                                              ex.message());
             return nullptr;

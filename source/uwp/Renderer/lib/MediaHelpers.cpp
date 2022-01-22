@@ -17,7 +17,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     {
         auto posterString = adaptiveMedia.Poster();
 
-        // TODO: is this right? analog of HSTRING: posterString == nullptr???
         if (posterString.empty())
         {
             auto hostConfig = renderContext.HostConfig();
@@ -40,12 +39,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         auto elementRenderers = renderContext.ElementRenderers();
         auto imageRenderer = elementRenderers.Get(L"Image");
 
-        // TODO: Do I need this cast?
-        auto posterAdaptiveElement = adaptiveImage.as<winrt::IAdaptiveCardElement>();
-        auto posterUiElement = imageRenderer.Render(posterAdaptiveElement, renderContext, renderArgs);
-
-        // TODO: should i try_as and return null if it doesn't work? What do we do in this case?
-        return posterUiElement.as<winrt::Image>();
+        if (const auto posterUiElement = imageRenderer.Render(adaptiveImage, renderContext, renderArgs))
+        {
+            return posterUiElement.as<winrt::Image>();
+        }
+        // Not logging a warning because if we get nullptr from imageRendere - it will log warning for us.
+        return nullptr;
     }
 
     void AddDefaultPlayIcon(winrt::Panel const& posterPanel,
@@ -82,16 +81,13 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
         playIcon.Foreground(darkBrush);
 
-        winrt::RelativePanel relativePanelStatics{};
-
-        // TODO: should we just set property directly on rectangle and playIcon?
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
-        relativePanelStatics.SetAlignHorizontalCenterWithPanel(rectangle, true);
-        relativePanelStatics.SetAlignVerticalCenterWithPanel(rectangle, true);
+        winrt::RelativePanel::SetAlignVerticalCenterWithPanel(rectangle, true);
+        winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(rectangle, true);
 
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
-        relativePanelStatics.SetAlignHorizontalCenterWithPanel(playIcon, true);
-        relativePanelStatics.SetAlignVerticalCenterWithPanel(playIcon, true);
+        winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIcon, true);
+        winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIcon, true);
     }
 
     void AddCustomPlayIcon(winrt::Panel const& posterPanel,
@@ -99,7 +95,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                            winrt::AdaptiveRenderContext const& renderContext,
                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        // TOOD: this may not be the best idea. We can probably add a simpler method to generate an winrt::Image.
         // Render the custom play icon using the image renderer
         winrt::AdaptiveImage playIconAdaptiveImage{};
         playIconAdaptiveImage.Url(playIconString);
@@ -108,7 +103,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
         auto playIconUIElement = imageRenderer.Render(playIconAdaptiveImage, renderContext, renderArgs);
 
-        // TODO: is this the correct way? what if it's nullptr? what do we do? Do we throw? Do we ignore?
         if (const auto playIconAsFrameworkElement = playIconUIElement.try_as<winrt::FrameworkElement>())
         {
             playIconAsFrameworkElement.Height(c_playIconSize);
@@ -169,14 +163,11 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         {
             winrt::hstring currentMimeType = source.MimeType();
 
-            // TODO: is this right to get the size of sizeof(supportedMimeTypes)/sizeof(supportedMimeTypes[0]) needed here?
             for (uint32_t i = 0; i < std::size(supportedMimeTypes); i++)
             {
-                // TODO: comparison operator in hstring is a thing, right?:))
                 if (currentMimeType == supportedMimeTypes[i])
                 {
                     selectedSource = source;
-                    // TODO: do we nee to break out of the outer loop as well? Original code doesn't seem to do it for some reason....
                     break;
                 }
             }
@@ -191,7 +182,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     }
 
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
-                                              winrt::AsyncStatus status, // TODO: do we need to make enum const&?
+                                              winrt::AsyncStatus status,
                                               winrt::MediaElement const& mediaElement,
                                               winrt::hstring const& mimeType)
     {
@@ -239,22 +230,22 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                     { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType); });
             }
 
-            // TODO: what's the point of a token, if it's not saved anywhere?
-            // EventRegistrationToken mediaOpenedToken;
             mediaElement.MediaOpened(
-                // TODO: is it correct to capture by value here? Is media element captured by default? do we need = sign in lambda capture?
-                [=](winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const& /*args*/) -> void
+                [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
-                    bool audioOnly = mediaElement.IsAudioOnly();
-                    auto posterSource = mediaElement.PosterSource();
-
-                    if (audioOnly && posterSource == nullptr)
+                    if (const auto mediaElement = sender.try_as<winrt::MediaElement>())
                     {
-                        // If this is audio only and there's no poster, set the height so
-                        // that the controls are visible.
-                        mediaElement.Height(c_audioHeight);
+                        bool audioOnly = mediaElement.IsAudioOnly();
+                        auto posterSource = mediaElement.PosterSource();
+
+                        if (audioOnly && posterSource == nullptr)
+                        {
+                            // If this is audio only and there's no poster, set the height so
+                            // that the controls are visible.
+                            mediaElement.Height(c_audioHeight);
+                        }
+                        mediaElement.Play();
                     }
-                    mediaElement.Play();
                 });
         }
         else

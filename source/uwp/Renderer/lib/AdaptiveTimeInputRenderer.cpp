@@ -45,10 +45,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::hstring min = adaptiveTimeInput.Min();
             winrt::hstring max = adaptiveTimeInput.Max();
 
-            auto& [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
+            auto [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
                 adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext);
-
-            // TODO: come back to all the inputs, not sure if this is right
+				
             auto input = winrt::make_self<winrt::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);
             renderContext.AddInputValue(*input, renderArgs);
 
@@ -56,7 +55,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

@@ -4,12 +4,10 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    // TODO: Comeback to this thing
-    struct DECLSPEC_UUID("D940E878-F2E0-4AF7-A844-4D090C7379E3") IImageLoadTrackerListener : public ::IInspectable
+    struct DECLSPEC_UUID("D940E878-F2E0-4AF7-A844-4D090C7379E3") IImageLoadTrackerListener : ::IUnknown
     {
     public:
         virtual void AllImagesLoaded() = 0;
         virtual void ImagesLoadingHadError() = 0;
     };
-
 }

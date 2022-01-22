@@ -98,11 +98,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             winrt::StackPanel buttonContentsStackPanel{};
 
             // Create image and add it to the button
-            // TODO: should we use adaptive image here at all?
             winrt::AdaptiveImage adaptiveImage{};
 
             adaptiveImage.Url(iconUrl);
-            // TODO: no need to box to convert to IRef, right?
             adaptiveImage.HorizontalAlignment(winrt::HAlignment::Center);
 
             winrt::UIElement buttonIcon{nullptr};
@@ -176,8 +174,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             actionSentiment = adaptiveActionElement.Style();
         }
 
-        int32_t isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
-
         auto resourceDictionary = renderContext.OverrideStyles();
 
         auto contextImpl = peek_innards<winrt::implementation::AdaptiveRenderContext>(renderContext);
@@ -185,10 +181,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
         if (isOverflowActionButton)
         {
-            if (const auto style =
+            if (const auto overflowActionStyle =
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Overflow").try_as<winrt::Style>())
             {
-                buttonFrameworkElement.Style(style);
+                buttonFrameworkElement.Style(overflowActionStyle);
             }
         }
 
@@ -198,39 +194,42 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         }
         else if (actionSentiment == L"positive")
         {
-            if (const auto style =
+            if (const auto positiveActionStyle =
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Positive").try_as<winrt::Style>())
             {
-                buttonFrameworkElement.Style(style);
+                buttonFrameworkElement.Style(positiveActionStyle);
             }
             else
             {
                 // By default, set the action background color to accent color
                 auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-                if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"PositiveActionDefaultStyle")
-                                           .try_as<winrt::Style>())
+                if (const auto positiveActionDefaultStyle =
+                        XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"PositiveActionDefaultStyle")
+                            .try_as<winrt::Style>())
                 {
-                    buttonFrameworkElement.Style(style);
+                    buttonFrameworkElement.Style(positiveActionDefaultStyle);
                 }
             }
         }
         else if (actionSentiment == L"destructive")
         {
-            if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Destructive")
-                                       .try_as<winrt::Style>())
+            if (const auto destructiveActionStyle =
+                    XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Destructive")
+                        .try_as<winrt::Style>())
             {
-                buttonFrameworkElement.Style(style);
+                buttonFrameworkElement.Style(destructiveActionStyle);
             }
             else
             {
                 // By default, set the action text color to attention color
                 auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-                if (const auto style = XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"DestructiveActionDefaultStyle")
-                                           .try_as<winrt::Style>())
+                if (const auto destructiveActionDefaultStyle =
+                        XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"DestructiveActionDefaultStyle")
+                            .try_as<winrt::Style>())
                 {
-                    buttonFrameworkElement.Style(style);
+                    buttonFrameworkElement.Style(destructiveActionDefaultStyle);
                 }
             }
         }
@@ -246,8 +245,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                  winrt::AdaptiveRenderArgs const& renderArgs,
                                  bool isOverflowActionButton)
     {
-        // TODO: Should we PeekInnards on the winrt:: types and save ourselves some layers of C++/winrt?
-
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
 
@@ -305,7 +302,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         {
             auto actionInvoker = renderContext.ActionInvoker();
             auto clickToken = button.Click([adaptiveActionElement, actionInvoker](winrt::IInspectable const& /*sender*/,
-                                                                                  winrt::RoutedEventArgs const& /*args*/) -> void // TODO: can we just use (auto..)?
+                                                                                  winrt::RoutedEventArgs const& /*args*/) -> void
                                            { actionInvoker.SendActionEvent(adaptiveActionElement); });
             button.IsEnabled(adaptiveActionElement.IsEnabled());
         }
@@ -407,7 +404,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
         if (!iconUrl.empty())
         {
-            // TODO: same thing as with rendering Poster/BackgroundImage, should we resort to something else?
             auto elementRenderers = renderContext.ElementRenderers();
             auto imageRenderer = elementRenderers.Get(L"Image");
 
@@ -422,8 +418,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             // centered relative to the text box.
             winrt::TextBlock titleTextBlock{};
             titleTextBlock.Text(inlineAction.Title());
-
-            // TOOD: what about text alignment?
             titleTextBlock.VerticalAlignment(winrt::VerticalAlignment::Center);
 
             winrt::Grid titleGrid{};
@@ -559,8 +553,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         else if (!altText.empty())
         {
             // If we don't have an action but we've been passed altText, use that for name and tooltip
-            // name.Set(altText);
-            // tooltip.Set(altText);
             name = altText;
             tooltip = altText;
         }
@@ -582,11 +574,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                  winrt::AdaptiveRenderContext const& renderContext)
     {
         auto actionInvoker = renderContext.ActionInvoker();
-        // TODO: do we need to do this?
-        winrt::IAdaptiveActionElement strongAction{action};
 
-        auto eventToken = button.Click([strongAction, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
-                                       { actionInvoker.SendActionEvent(strongAction); });
+        button.Click([action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
+                     {
+                actionInvoker.SendActionEvent(action);
+            });
     }
 
     winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
@@ -598,10 +590,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     {
         if (selectAction && supportsInteractivity)
         {
-            // TODO: Fix all instances of checking c_str of hstring to .empty()
-            // TODO: Does this pass empty hstring or hstring with null c_str?
-            return WrapInTouchTarget(
-                adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", {}, true);
+            return WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", L"", true);
         }
         else
         {
@@ -641,13 +630,13 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         auto overflowButtonAsUIElement = BuildAction(nullptr, renderContext, renderArgs, true);
 
         // Create a menu flyout for the overflow button
-        // TODO : is this correct? Is there other concrete type I can use here?
-        auto overflowButtonAsButtonWithFlyout = overflowButtonAsUIElement.as<winrt::IButtonWithFlyout>();
+        if (const auto overflowButton = overflowButtonAsUIElement.try_as<winrt::Button>())
+        {
+            overflowButton.Flyout(winrt::MenuFlyout{});
+            return overflowButton;
+        }
 
-        winrt::MenuFlyout overflowFlyout{};
-        overflowButtonAsButtonWithFlyout.Flyout(overflowFlyout);
-
-        return overflowButtonAsUIElement.as<winrt::Button>();
+        return nullptr;
     }
 
     winrt::UIElement AddOverflowFlyoutItem(winrt::IAdaptiveActionElement const& action,
@@ -675,9 +664,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // Hook the menu item up to the action invoker
         winrt::IAdaptiveActionElement actionParam{action};
         winrt::AdaptiveActionInvoker actionInvoker = renderContext.ActionInvoker();
-        // TODO: Do I need this eventToken at all?
-        auto eventToken = flyoutItem.Click([actionParam, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const)
-                                           { return actionInvoker.SendActionEvent(actionParam); });
+
+        flyoutItem.Click([actionParam, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const)
+                         { return actionInvoker.SendActionEvent(actionParam); });
 
         winrt::ActionType actionType = action.ActionType();
         if (actionType == winrt::ActionType::ShowCard)
@@ -702,8 +691,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
         auto showCardActionConfig = actionsConfig.ShowCard();
-        // TODO: fix this namespace
         auto showCardActionMode = showCardActionConfig.ActionMode();
+        // ActionMode enum exists both in Rendering in ObjectModel namespaces. When the time permits, fix it.
         if (showCardActionMode == winrt::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
         {
             // Get the card to be shown
@@ -763,7 +752,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                     break; // Go again
 
                 case winrt::FallbackType::None:
-                    throw winrt::hresult_error(E_FAIL); // TODO: Really?
+                default:
+                    throw winrt::hresult_error(E_FAIL);
                 }
             }
         }
@@ -829,7 +819,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             switch (actionAlignment)
             {
             case winrt::ActionAlignment::Center:
-                // TODO: DO I need this cast?
                 actionStackPanel.HorizontalAlignment(winrt::HorizontalAlignment::Center);
                 break;
             case winrt::ActionAlignment::Left:
@@ -868,28 +857,20 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         auto hostConfigImpl = peek_innards<winrt::implementation::AdaptiveHostConfig>(hostConfig);
         bool overflowMaxActions = hostConfigImpl->OverflowMaxActions();
 
-        bool allActionsHaveIcons{true};
-
         winrt::StackPanel showCardsStackPanel{};
         winrt::Button overflowButton{nullptr};
         uint32_t currentButtonIndex{0};
 
         for (auto action : children)
         {
-            // TODO: is this correct?
             auto mode = action.Mode();
-            auto actionType = action.ActionType();
-
             winrt::UIElement actionControl{nullptr};
 
             if (action.IconUrl().empty())
             {
-                // TODO: is this cheaper than iterating through actions first?
-                // TODO: should I create a bool to track if allowAboveTitleIconPlacement has been set and not enter this if clause then?
                 renderArgs.AllowAboveTitleIconPlacement(false);
             }
 
-            // TODO: fix action mode namespace
             if (currentButtonIndex < maxActions && mode == winrt::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
             {
                 // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
@@ -943,8 +924,6 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                 winrt::ColumnDefinition columnDefinition{};
                 columnDefinition.Width({1.0, winrt::GridUnitType::Star});
                 columnDefinitions.Append(columnDefinition);
-
-                // TODO: No need to convert, right?
                 winrt::Grid::SetColumn(overflowButton, currentButtonIndex);
             }
 
@@ -953,16 +932,16 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             // Register the overflow button with the render context
 
-            auto contextImpl = peek_innards<winrt::implementation::AdaptiveRenderContext>(renderContext);
-
-            if (adaptiveActionSet)
+            if (const auto contextImpl = peek_innards<winrt::implementation::AdaptiveRenderContext>(renderContext))
             {
-                // TODO: no need to .as<winrt::UIElement> for overflowButton, correct?
-                contextImpl->AddOverflowButton(adaptiveActionSet, overflowButton);
-            }
-            else
-            {
-                contextImpl->AddOverflowButton(adaptiveCard, overflowButton);
+                if (adaptiveActionSet)
+                {
+                    contextImpl->AddOverflowButton(adaptiveActionSet, overflowButton);
+                }
+                else
+                {
+                    contextImpl->AddOverflowButton(adaptiveCard, overflowButton);
+                }
             }
         }
 
@@ -981,7 +960,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
     {
-        if (action && action.ActionType() == winrt::ActionType::OpenUrl)
+        if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
         {
             return winrt::make<LinkButton>();
         }

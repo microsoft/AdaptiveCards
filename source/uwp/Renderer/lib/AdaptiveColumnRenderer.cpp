@@ -74,7 +74,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             uint32_t columnMinHeight = adaptiveColumn.MinHeight();
 
-            // TODO: Do I need to cast adaptiveColumn to winrt::ContainerBase?
             if (columnMinHeight > 0)
             {
                 columnPanel.MinHeight(columnMinHeight);
@@ -90,11 +89,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (IsBackgroundImageValid(backgroundImage))
             {
                 winrt::Grid rootElement{};
-
-                // TODO:No need to cast right? Winrt will call QueryInterface and cast Grid to Panel?
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
-                // TODO: why is it called height if it's HeightType?
                 auto columnHeightType = cardElement.Height();
 
                 // Add columnBorder to rootElement
@@ -127,7 +123,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 throw ex;
             }
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

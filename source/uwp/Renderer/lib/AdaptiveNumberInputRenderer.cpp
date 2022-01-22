@@ -28,7 +28,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::InputScopeName inputScopeName{winrt::InputScopeNameValue::Number};
 
             winrt::InputScope inputScope{};
-            // TODO: we can do this, right?
             inputScope.Names().Append(winrt::InputScopeName{winrt::InputScopeNameValue::Number});
 
             textBox.InputScope(inputScope);
@@ -37,18 +36,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             if (value)
             {
-                // TODO: why do we need to check if retrieval of value was successful? ref is not nullptr
-                // TODO: what if it's 0? then if (const auto boxValue = value.Value()) won't work
-                // if (SUCCEEDED(value->get_Value(&boxValue)))
                 double boxValue = value.Value();
                 std::wstringstream ss;
-                // TODO: why not just use std::to_string(boxValue)? so we can specify precision correctly?
                 ss.precision(std::numeric_limits<double>::digits10);
                 ss << boxValue;
                 std::wstring stringValue = ss.str();
-
-                // TODO: hstring constructor from wstring will be invoked.
-                // TODO: {} is not neccessary, right?
                 textBox.Text(stringValue);
             }
 
@@ -61,15 +53,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto max = adaptiveNumberInput.Max();
             auto min = adaptiveNumberInput.Min();
 
-            auto& [inputLayout, validationBorder] =
+            auto [inputLayout, validationBorder] =
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(adaptiveNumberInput,
                                                                                              textBox,
-                                                                                             (max || min), // TODO: no need to compare with nullptr, right?
+                                                                                             (max || min),
                                                                                              renderContext);
 
-            // Create the InputValue and add it to the context
-            // TODO: is this the right way to do it?
-            // TODO: do we need private IDL for these scenarios?
+            // Create the InputValue and add it to the context?
             auto input = winrt::make_self<winrt::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
             renderContext.AddInputValue(*input, renderArgs);
@@ -78,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;

@@ -75,8 +75,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 auto toggleElementAsUIElement = toggleObject.as<winrt::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::FrameworkElement>();
-                // TODO: we need to peek to make sure it's our own class, right? because it's coming from the Tag
-                // auto elementTagContent = peek_innards<winrt::implementation::ElementTagContent>(toggleElementAsFrameworkElement);
                 auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<winrt::ElementTagContent>();
 
                 winrt::Visibility visibilityToSet = winrt::Visibility::Visible;

@@ -28,11 +28,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::TextBlock xamlTextBlock{};
 
-            // NOTE: Style must be applied BEFORE we set any actual values in code.
-            // TODO: Does it matter though? Even if we apply style before, the values that were set will be overriden by the
-            // TODO: renderer code that extracts them from markup(.json). So only the values that ARE NOT
-            // TODO: being programatically set will propagate from style. And it doesn't really matter
-            // TODO: whether we apply style before or after and setters from the code.
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
             StyleXamlTextBlockProperties(adaptiveTextBlock, renderContext, renderArgs, xamlTextBlock);
             auto inlines = xamlTextBlock.Inlines();
@@ -73,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;
@@ -82,7 +77,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     winrt::Peers::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
     {
-        // TODO: why is it called textBlock if it's a config? :D
         auto textBlockConfig = renderContext.HostConfig().TextBlock();
 
         switch (textBlockConfig.HeadingLevel())

@@ -44,7 +44,7 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
@@ -114,8 +114,8 @@
       <PreprocessorDefinitions>_WINRT_DLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..;..\..\shared\cpp\ObjectModel;..\..\shared\cpp\ObjectModel\json;..\AdaptiveCardsObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -169,7 +169,7 @@
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
-    <ClInclude Include="CppWinRTIncludes.h" />
+    <ClInclude Include="dll\CppWinRTIncludes.h" />
     <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
@@ -280,6 +280,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories);$(GeneratedFilesDir)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories);$(GeneratedFilesDir)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
@@ -329,7 +330,6 @@
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
-    <ClCompile Include="dll\dll.cpp" />
     <ClInclude Include="lib\XamlHelpers.h" />
   </ItemGroup>
   <ItemGroup>

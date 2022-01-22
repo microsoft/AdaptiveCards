@@ -127,7 +127,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         uint32_t actionId = GetInternalIdFromAction(action);
         std::size_t card = m_containerCardForAction[actionId];
-        // TODO: This is equivalent to "is the card id 0" - InternalId() inits to zero, Hash returns that
+        // This is equivalent to "is the card id 0" - InternalId() inits to zero, Hash returns that
         while (card != ::AdaptiveCards::InternalId::Invalid)
         {
             const auto& inputsInCard = m_inputsPerCard[card];

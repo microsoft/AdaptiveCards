@@ -18,7 +18,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              action.ActionTypeString(),
                                                                              ex.message());
             return nullptr;
@@ -65,7 +65,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            // TODO: what do we do here?
+            renderContext.AddError(winrt::ErrorStatusCode::CustomError,
+                                   L"Show Card building failed with the following message:\n" + ex.message());
             return nullptr;
         }
     }

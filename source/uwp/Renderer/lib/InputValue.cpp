@@ -4,20 +4,9 @@
 #include "InputValue.h"
 #include "json/json.h"
 #include "XamlHelpers.h"
-#include <windows.globalization.datetimeformatting.h>
-
-using namespace AdaptiveCards::Rendering::Uwp;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp
 {
-    // TODO: what is this function?
-    void ValidateIfNeeded(winrt::IAdaptiveInputValue const& inputValue)
-    {
-        auto currentValue = inputValue.CurrentValue();
-
-        inputValue.Validate();
-    }
-
     InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                            winrt::UIElement const& uiInputElement,
                            winrt::Border const& validationBorder) :
@@ -37,7 +26,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return isValid;
     }
 
-    // TODO: should we return a bool?
     void InputValue::SetFocus()
     {
         if (const auto inputAsControl = m_uiInputElement.try_as<winrt::Control>())
@@ -48,6 +36,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     void InputValue::SetAccessibilityProperties(bool isInputValid)
     {
+        // TODO: meaning?
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
         auto inputUIElementAsDependencyObject = m_uiInputElement.as<winrt::DependencyObject>();
@@ -121,7 +110,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     TextInputBase::TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                  winrt::UIElement const& uiTextInputElement,
                                  winrt::Border const& validationBorder) :
-        // TODO: is this the proper way for calling base ctor? Do I need to cast the first argument?
         InputValue(adaptiveTextInput, uiTextInputElement, validationBorder),
         m_adaptiveTextInput(adaptiveTextInput)
     {
@@ -130,7 +118,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
     bool TextInputBase::IsValueValid()
     {
         // Call the base class to validate isRequired
-
         if (!InputValue::IsValueValid())
         {
             return false;
@@ -265,8 +252,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         {
             // timeSpan here is std::chrono::duration<int64_t, 100 * std::nano>, so count will give the same value as duration before
             auto timeSpan = timeSpanReference.Value();
-
-            // TODO: Is is the same number?
             uint64_t totalMinutes = timeSpan.count() / 10000000 / 60;
             uint64_t hours = totalMinutes / 60;
             uint64_t minutesPastTheHour = totalMinutes - (hours * 60);
@@ -358,17 +343,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         return meetsRequirement;
     }
 
-    std::string GetChoiceValue(winrt::AdaptiveChoiceSetInput const& choiceInput, uint32_t selectedIndex)
+    std::string GetChoiceValue(winrt::AdaptiveChoiceSetInput const& choiceInput, int selectedIndex)
     {
         if (selectedIndex != -1)
         {
             auto choices = choiceInput.Choices();
-
-            // TODO: should we check if selectedIndex is a valid index? And if not, should we log an error / throw an exception?
             auto choice = choices.GetAt(selectedIndex);
             return HStringToUTF8(choice.Value());
         }
-        // TODO: what do we do here? throw?
         return "";
     }
 
@@ -382,11 +364,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     winrt::hstring CompactChoiceSetInputValue::CurrentValue()
     {
-        auto choiceSetStyle = m_adaptiveChoiceSetInput.ChoiceSetStyle();
-        auto isMultiSelect = m_adaptiveChoiceSetInput.IsMultiSelect();
-        auto selectedIndex = m_selectorElement.SelectedIndex();
-
-        std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex);
+        std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput, m_selectorElement.SelectedIndex());
         return UTF8ToHString(choiceValue);
     }
 
@@ -427,7 +405,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         else
         {
             // Look for the single selected choice
-            uint32_t selectedIndex = -1;
+            int selectedIndex = -1;
             for (auto element : panelChildren)
             {
                 if (::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetToggleValue(element))
@@ -438,7 +416,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
                 index++;
             }
 
-            // TODO: Bad readability right?
             return UTF8ToHString(GetChoiceValue(m_adaptiveChoiceSetInput, selectedIndex));
         }
     }
@@ -451,7 +428,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
         if (const auto choiceAsControl = firstChoice.try_as<winrt::Control>())
         {
-            // TODO: do we need to return bool indicating whether focus was set?
             choiceAsControl.Focus(winrt::FocusState::Programmatic);
         }
     }
@@ -469,12 +445,9 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         auto choices = m_adaptiveChoiceSetInput.Choices();
         auto selectedChoice = GetSelectedChoice();
         if (selectedChoice)
-
         {
             return selectedChoice.Value();
         }
-
-        // TODO: is this correct to return empty hstring? What do we do here?
         return L"";
     }
 

@@ -38,7 +38,6 @@ uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderContext const& renderContext,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
-                        // TODO: should it be const& or const TextRunStyleParameters&??
                         TextRunStyleParameters const& styleParameters,
                         winrt::IVector<winrt::Inline> const& inlines);
 
@@ -46,8 +45,7 @@ uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElem
                              winrt::AdaptiveRenderContext const& renderContext,
                              winrt::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
-                             // TODO: should it be const TextRunStyleParameters& ?
-                             const TextRunStyleParameters& styleParameters,
+                             TextRunStyleParameters const& styleParameters,
                              winrt::IVector<winrt::Inline> const& inlines);
 
 uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
@@ -65,7 +63,7 @@ void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textEl
 void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
                                        winrt::AdaptiveTextStyleConfig const& textStyle,
-                                       winrt::IAdaptiveTextElement const& textElement, // TODO: optional?
+                                       winrt::IAdaptiveTextElement const& textElement,
                                        winrt::hstring const& language,
                                        winrt::hstring const& text,
                                        winrt::TextBlock const& textBlock);
@@ -126,7 +124,7 @@ template<typename TXamlTextBlockType>
 void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                       winrt::AdaptiveRenderContext const& renderContext,
                       winrt::AdaptiveRenderArgs const& renderArgs,
-                      const TextRunStyleParameters& styleProperties,
+                      TextRunStyleParameters const& styleProperties,
                       TXamlTextBlockType const& xamlTextElement)
 {
     auto hostConfig = renderContext.HostConfig();

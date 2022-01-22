@@ -12,19 +12,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         TileControl();
 
     public:
-        // TODO: convert to property?
         void BackgroundImage(winrt::AdaptiveBackgroundImage const& adaptiveBackgroundImage)
         {
             m_adaptiveBackgroundImage = adaptiveBackgroundImage;
         }
         winrt::AdaptiveBackgroundImage BackgroundImage() { return m_adaptiveBackgroundImage; }
 
-        // TODO: couldn't see rootElement being used anywhere?
-        /*  void RootElement(winrt::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
-                  winrt::FrameworkElement RootElement() { return m_rootElement;}*/
-
         winrt::UIElement ResolvedImage() { return m_resolvedImage; }
-        // TODO: convert to property?
         void ImageSize(winrt::Size const& imageSize) { m_imageSize = imageSize; }
         winrt::Size ImageSize() { return m_imageSize; }
 

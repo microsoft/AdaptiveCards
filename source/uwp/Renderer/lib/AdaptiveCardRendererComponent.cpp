@@ -48,7 +48,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
         m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::Uwp::XamlBuilder>())
     {
-        // TODO: is this legal to detach implementaiton from comptr?
         ::AdaptiveCards::Rendering::Uwp::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
         ::AdaptiveCards::Rendering::Uwp::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();

@@ -6,14 +6,13 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    struct TrackedImageDetails : winrt::implements<TrackedImageDetails, ::IInspectable>
+    struct TrackedImageDetails : winrt::implements<TrackedImageDetails, winrt::IInspectable>
     {
-        // TODO: add {} for initialization?
         winrt::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
         winrt::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
     };
 
-    struct ImageLoadTracker : winrt::implements<ImageLoadTracker, ::IInspectable>
+    struct ImageLoadTracker : winrt::implements<ImageLoadTracker, winrt::IInspectable>
     {
     public:
         ~ImageLoadTracker();
@@ -30,7 +29,7 @@ namespace AdaptiveCards::Rendering::Uwp
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
-        // TODO: can I just hold a naked pointer *? instead of com_ptr?
+		// TODO: remove com ptr from here
         std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 
@@ -40,9 +39,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                       winrt::ExceptionRoutedEventArgs const& eventArgs);
         void ImageLoadResultReceived(winrt::IInspectable const& sender);
 
-        // TODO: Do I need a const ref here? or just ref?
-        void UnsubscribeFromEvents(winrt::IInspectable const& bitmapImage,
-                                   winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
+        void UnsubscribeFromEvents(winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };

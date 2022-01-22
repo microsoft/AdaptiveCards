@@ -31,14 +31,11 @@ void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBl
     StyleTextElement(adaptiveTextBlock, renderContext, renderArgs, TextRunStyleParameters(), xamlTextBlock);
 }
 
-// TODO: should it be const TextRunStyleParameters&?
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock)
+winrt::TextDecorations GetTextDecorations(TextRunStyleParameters const& styleProperties)
 {
-    winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
+    winrt::TextDecorations textDecorations = winrt::TextDecorations::None;
     if (styleProperties.IsStrikethrough())
     {
-        // TODO: what is this operator doing for enums? Figure out how to use it properly in winrt
-        // TODO: find a better way to do it? May be static cast right here?
         textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Strikethrough);
     }
 
@@ -46,24 +43,17 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
     {
         textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Underline);
     }
-
-    textBlock.TextDecorations(textDecorations);
+    return textDecorations;
 }
 
-// TODO: this function repeats - shoudl I template it?
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock)
+{
+    textBlock.TextDecorations(GetTextDecorations(styleProperties));
+}
+
 void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textElement)
 {
-    winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
-    if (styleProperties.IsStrikethrough())
-    {
-        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Strikethrough);
-    }
-
-    if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
-    {
-        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Underline);
-    }
-    textElement.TextDecorations(textDecorations);
+    textElement.TextDecorations(GetTextDecorations(styleProperties));
 }
 
 void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textElement,
@@ -79,7 +69,7 @@ void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textEl
 void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
                                        winrt::AdaptiveTextStyleConfig const& textStyle,
-                                       winrt::IAdaptiveTextElement const& textElement, // TODO: optional?
+                                       winrt::IAdaptiveTextElement const& textElement,
                                        winrt::hstring const& language,
                                        winrt::hstring const& text,
                                        winrt::TextBlock const& textBlock)
@@ -98,14 +88,6 @@ void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& rende
 
     if (textElement)
     {
-        // TODO: is it better then: weightToSet = textElement.Weigth() ? textElement.Weight() : weightToSet;
-        // TODO: may be create a helper for this purpose?
-        // TODO: I'm using references instead of the values here so we don't have to go from ref -> value and then from
-        // value -> ref again when using the resulting values
-        // TODO: Instead I could either operate with values instead of refs and use GetValueFromRef
-        // TODO: Or I can simply operate with refs and use GetValueFromRef like this : weightToSet =
-        // GetValueFromRef(textElement.Weight(), textStyle.Weight())
-        // TODO: It will convert from ref -> val -> ref again. That's the drawback
         if (const auto weight = textElement.Weight())
         {
             weightToSet = weight;
@@ -202,7 +184,6 @@ uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
 static winrt::hstring GetTextFromXmlNode(winrt::IXmlNode const& node)
 {
-    // TODO: is this correct?
     return node.InnerText();
 }
 
@@ -217,7 +198,6 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
     auto attributeMap = node.Attributes();
     auto startNode = attributeMap.GetNamedItem(L"start");
 
-    // TODO: should we leave unsigned long? can we use uint64_t = unsigned long long?
     unsigned long iteration = 1;
     if (startNode)
     {
@@ -225,7 +205,6 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
         auto start = GetTextFromXmlNode(startNode);
         try
         {
-            // TODO: I don't fully understand this
             iteration = std::stoul(HStringToUTF8(start));
 
             // Check that we can iterate the entire list without overflowing.
@@ -242,8 +221,8 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
         }
         catch (const std::out_of_range&)
         {
-            // TODO: not sure what's happening here...
             // If stoul throws out_of_range, start the numbered list at 1.
+			iteration = 1;
         }
     }
 
@@ -307,8 +286,7 @@ uint32_t AddLinkInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
     if (hrefNode == nullptr)
     {
-        // TODO: do we need to throw here?
-        return 0;
+        throw winrt::hresult_error(E_INVALIDARG);
     }
 
     auto href = GetTextFromXmlNode(hrefNode);
@@ -335,8 +313,7 @@ uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElem
                              winrt::AdaptiveRenderContext const& renderContext,
                              winrt::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
-                             // TODO: should it be const TextRunStyleParameters& ?
-                             TextRunStyleParameters const& styleParameters,
+                             const TextRunStyleParameters& styleParameters,
                              winrt::IVector<winrt::Inline> const& inlines)
 {
     winrt::Run run{};
@@ -354,7 +331,6 @@ uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElem
 
     inlines.Append(run);
 
-    // TODO: are we sure we do not want to return the size of text that we assigned to run? (textWithParsedDatesHString)
     return stringToParse.size();
 }
 
@@ -362,68 +338,71 @@ uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderContext const& renderContext,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
-                        // TODO: should it be const& or const TextRunStyleParameters&??
                         TextRunStyleParameters const& styleParameters,
                         winrt::IVector<winrt::Inline> const& inlines)
 {
     auto childNode = node.FirstChild();
 
     uint32_t totalCharacterLength = 0;
-    while (childNode)
+    try
     {
-        winrt::hstring nodeName = childNode.NodeName();
+        while (childNode)
+        {
+            winrt::hstring nodeName = childNode.NodeName();
 
-        bool isLinkResult = nodeName == L"a";
-        bool isBoldResult = nodeName == L"strong";
-        bool isItalicResult = nodeName == L"em";
-        bool isTextResult = nodeName == L"#text";
+            bool isLinkResult = nodeName == L"a";
+            bool isBoldResult = nodeName == L"strong";
+            bool isItalicResult = nodeName == L"em";
+            bool isTextResult = nodeName == L"#text";
 
-        // TODO: would it be better to use 'switch'?
-        uint32_t nodeCharacterLength = 0;
-        if (isLinkResult)
-        {
-            nodeCharacterLength = AddLinkInline(adaptiveTextElement,
-                                                renderContext,
-                                                renderArgs,
-                                                childNode,
-                                                styleParameters.IsStrikethrough(),
-                                                styleParameters.IsItalic(),
-                                                styleParameters.IsUnderline(),
-                                                inlines);
-        }
-        else if (isTextResult)
-        {
-            auto text = GetTextFromXmlNode(childNode);
-            nodeCharacterLength =
-                AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, text, styleParameters, inlines);
-        }
-        else
-        {
-            winrt::IAdaptiveTextElement textElementToUse = adaptiveTextElement;
-            if (isBoldResult || isItalicResult)
+            uint32_t nodeCharacterLength = 0;
+            if (isLinkResult)
             {
-                // Make a copy of the element so we can apply bold or italics
-                // TODO: weird stuff..
-                textElementToUse = CopyTextElement(adaptiveTextElement);
-
-                if (isBoldResult)
-                {
-                    // TODO: no need to box it, right?
-                    textElementToUse.Weight(winrt::TextWeight::Bolder);
-                }
+                nodeCharacterLength = AddLinkInline(adaptiveTextElement,
+                                                    renderContext,
+                                                    renderArgs,
+                                                    childNode,
+                                                    styleParameters.IsStrikethrough(),
+                                                    styleParameters.IsItalic(),
+                                                    styleParameters.IsUnderline(),
+                                                    inlines);
             }
-            nodeCharacterLength = AddTextInlines(textElementToUse,
-                                                 renderContext,
-                                                 renderArgs,
-                                                 childNode,
-                                                 TextRunStyleParameters(styleParameters.IsStrikethrough(),
-                                                                        styleParameters.IsItalic() || isItalicResult,
-                                                                        styleParameters.IsUnderline(),
-                                                                        styleParameters.IsInHyperlink()),
-                                                 inlines);
+            else if (isTextResult)
+            {
+                auto text = GetTextFromXmlNode(childNode);
+                nodeCharacterLength =
+                    AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, text, styleParameters, inlines);
+            }
+            else
+            {
+                winrt::IAdaptiveTextElement textElementToUse = adaptiveTextElement;
+                if (isBoldResult || isItalicResult)
+                {
+                    // Make a copy of the element so we can apply bold or italics
+                    textElementToUse = CopyTextElement(adaptiveTextElement);
+
+                    if (isBoldResult)
+                    {
+                        textElementToUse.Weight(winrt::TextWeight::Bolder);
+                    }
+                }
+                nodeCharacterLength = AddTextInlines(textElementToUse,
+                                                     renderContext,
+                                                     renderArgs,
+                                                     childNode,
+                                                     TextRunStyleParameters(styleParameters.IsStrikethrough(),
+                                                                            styleParameters.IsItalic() || isItalicResult,
+                                                                            styleParameters.IsUnderline(),
+                                                                            styleParameters.IsInHyperlink()),
+                                                     inlines);
+            }
+            childNode = childNode.NextSibling();
+            totalCharacterLength += nodeCharacterLength;
         }
-        childNode = childNode.NextSibling();
-        totalCharacterLength += nodeCharacterLength;
+    }
+    catch (...)
+    {
+        renderContext.AddWarning(winrt::WarningStatusCode::CustomWarning, L"Adding Text Inlines failed.");
     }
 
     return totalCharacterLength;
@@ -476,9 +455,6 @@ uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
             // End of paragraph. check to see if there's more content. if there is, insert a line break
             if (const auto nextSibling = childNode.NextSibling())
             {
-                // there's more content... need a linebreak.
-                // TODO: Can I do it this way?
-                // TODO: Do we need to check for presnence of the API?
                 inlines.Append(winrt::LineBreak{});
             }
         }

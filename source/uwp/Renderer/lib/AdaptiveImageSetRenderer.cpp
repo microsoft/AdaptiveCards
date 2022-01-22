@@ -39,10 +39,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 {
                     adaptiveImage.Size(imageSize);
 
-                    // TODO: Do I need to cast adaptiveImage to IAdaptiveCardElemenet?
                     auto uiImage = imageRenderer.Render(adaptiveImage, renderContext, childRenderArgs);
 
-                    // TODO: is this the correct way to handle this?
                     if (const auto uiImageAsFrameworkElement = uiImage.try_as<winrt::FrameworkElement>())
                     {
                         uiImageAsFrameworkElement.MaxHeight(imageSetConfig.MaxImageHeight());
@@ -56,13 +54,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 return nullptr;
             }
 
-            // TODO: Do I need to cast xamlGrid to FrameworkElement?
             ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
             return xamlGrid;
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext,
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
                                                                              cardElement.ElementTypeString(),
                                                                              ex.message());
             return nullptr;
