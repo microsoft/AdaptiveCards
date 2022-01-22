@@ -27,7 +27,6 @@
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
 #include <winrt/Windows.UI.Text.h>
 
-
 namespace winrt
 {
 	using namespace ::winrt::Windows::Foundation;
