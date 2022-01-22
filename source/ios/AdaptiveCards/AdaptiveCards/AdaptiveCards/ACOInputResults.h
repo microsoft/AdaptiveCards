@@ -6,9 +6,9 @@
 //
 //
 
-#import <Foundation/Foundation.h>
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 @interface ACOInputResults : NSObject

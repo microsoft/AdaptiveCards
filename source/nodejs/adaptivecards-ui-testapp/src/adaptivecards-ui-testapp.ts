@@ -15,6 +15,11 @@ function renderTestCasesList() {
     });
 }
 
+function hideInputsDiv() {
+    const retrievedInputsDiv = document.getElementById("retrievedInputsDiv");
+    retrievedInputsDiv.style.visibility = "hidden";
+}
+
 window.onload = () => {
     renderTestCasesList();
 
@@ -47,4 +52,7 @@ window.onload = () => {
     };
 
     renderCard(card, cardRenderedCallback);
+
+    const hideInputsButton = document.getElementById("hideInputsBtn");
+    hideInputsButton.addEventListener("click", (e: Event) => { hideInputsDiv() });
 }

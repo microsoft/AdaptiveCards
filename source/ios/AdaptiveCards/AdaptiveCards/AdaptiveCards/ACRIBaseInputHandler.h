@@ -14,10 +14,10 @@
 @property BOOL isRequired;
 @property BOOL hasValidationProperties;
 @property BOOL hasVisibilityChanged;
-@property NSString * _Nonnull id;
+@property NSString *_Nonnull id;
 
-- (BOOL)validate:(NSError * _Nullable * _Nullable)error;
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view;
+- (BOOL)validate:(NSError *_Nullable *_Nullable)error;
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *_Nullable)view;
 - (void)getInput:(NSMutableDictionary *_Nonnull)dictionary;
 
 @end

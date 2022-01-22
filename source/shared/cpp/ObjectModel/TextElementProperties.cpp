@@ -27,22 +27,26 @@ Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
 {
     if (m_textSize.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize.value_or(TextSize::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] =
+            TextSizeToString(m_textSize.value_or(TextSize::Default));
     }
 
     if (m_textColor.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor.value_or(ForegroundColor::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] =
+            ForegroundColorToString(m_textColor.value_or(ForegroundColor::Default));
     }
 
     if (m_textWeight.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight.value_or(TextWeight::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] =
+            TextWeightToString(m_textWeight.value_or(TextWeight::Default));
     }
 
     if (m_fontType.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] = FontTypeToString(m_fontType.value_or(FontType::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] =
+            FontTypeToString(m_fontType.value_or(FontType::Default));
     }
 
     if (m_isSubtle.has_value())
@@ -170,9 +174,8 @@ void TextElementProperties::Deserialize(ParseContext& context, const Json::Value
     SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, false));
     if (GetText().empty())
     {
-        context.warnings.emplace_back(
-            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
-                                                       "required property, \"text\", is either empty or missing"));
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+            WarningStatusCode::RequiredPropertyMissing, "required property, \"text\", is either empty or missing"));
     }
 
     SetTextSize(ParseUtil::GetOptionalEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSizeFromString));
@@ -185,10 +188,11 @@ void TextElementProperties::Deserialize(ParseContext& context, const Json::Value
 
 void TextElementProperties::PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties)
 {
-    knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)});
+    knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)});
 }

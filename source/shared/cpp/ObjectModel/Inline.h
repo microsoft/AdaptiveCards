@@ -9,36 +9,36 @@
 
 namespace AdaptiveCards
 {
-    class Inline
-    {
-    public:
-        Inline(InlineElementType type);
-        Inline() = default;
-        Inline(const Inline&) = default;
-        Inline(Inline&&) = default;
-        Inline& operator=(const Inline&) = default;
-        Inline& operator=(Inline&&) = default;
-        virtual ~Inline() = default;
+class Inline
+{
+public:
+    Inline(InlineElementType type);
+    Inline() = default;
+    Inline(const Inline&) = default;
+    Inline(Inline&&) = default;
+    Inline& operator=(const Inline&) = default;
+    Inline& operator=(Inline&&) = default;
+    virtual ~Inline() = default;
 
-        virtual Json::Value SerializeToJsonValue() const;
+    virtual Json::Value SerializeToJsonValue() const;
 
-        // Element type
-        virtual InlineElementType GetInlineType() const;
-        std::string GetInlineTypeString() const;
+    // Element type
+    virtual InlineElementType GetInlineType() const;
+    std::string GetInlineTypeString() const;
 
-        static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
+    static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
 
-        const Json::Value& GetAdditionalProperties() const;
-        void SetAdditionalProperties(Json::Value&& additionalProperties);
-        void SetAdditionalProperties(const Json::Value& additionalProperties);
+    const Json::Value& GetAdditionalProperties() const;
+    void SetAdditionalProperties(Json::Value&& additionalProperties);
+    void SetAdditionalProperties(const Json::Value& additionalProperties);
 
-    protected:
-        std::unordered_set<std::string> m_knownProperties;
-        Json::Value m_additionalProperties;
+protected:
+    std::unordered_set<std::string> m_knownProperties;
+    Json::Value m_additionalProperties;
 
-    private:
-        void PopulateKnownPropertiesSet();
+private:
+    void PopulateKnownPropertiesSet();
 
-        InlineElementType m_type;
-    };
-}
+    InlineElementType m_type;
+};
+} // namespace AdaptiveCards

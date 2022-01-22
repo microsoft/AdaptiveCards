@@ -12,7 +12,8 @@
 		"clean": "rimraf lib dist",
 		"build": "tsc",
 		"lint": "eslint src/*.ts",
-		"test": "npm run build && jest ./lib/*"
+		"test": "jest ./lib/*",
+		"build-and-test": "npm run build && npm run test"
 	},
 	"devDependencies": {
 		"selenium-webdriver": "^4.1.0",
