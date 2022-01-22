@@ -29,7 +29,6 @@ namespace AdaptiveCards::Rendering::Uwp
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
-		// TODO: remove com ptr from here
         std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
         std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
 
