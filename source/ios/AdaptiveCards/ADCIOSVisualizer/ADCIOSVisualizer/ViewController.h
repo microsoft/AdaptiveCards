@@ -6,11 +6,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACVTableViewController.h"
 #import <AdaptiveCards/AdaptiveCards.h>
+#import <UIKit/UIKit.h>
 
-@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer, UITextViewDelegate>
+@interface ViewController : UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer, UITextViewDelegate>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;

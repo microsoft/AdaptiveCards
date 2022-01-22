@@ -9,35 +9,35 @@
 
 namespace AdaptiveCards
 {
-    class ToggleVisibilityAction : public BaseActionElement
-    {
-        friend class ToggleVisibilityActionParser;
+class ToggleVisibilityAction : public BaseActionElement
+{
+    friend class ToggleVisibilityActionParser;
 
-    public:
-        ToggleVisibilityAction();
+public:
+    ToggleVisibilityAction();
 
-        const std::vector<std::shared_ptr<ToggleVisibilityTarget>>& GetTargetElements() const;
-        std::vector<std::shared_ptr<ToggleVisibilityTarget>>& GetTargetElements();
+    const std::vector<std::shared_ptr<ToggleVisibilityTarget>>& GetTargetElements() const;
+    std::vector<std::shared_ptr<ToggleVisibilityTarget>>& GetTargetElements();
 
-        Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
-    private:
-        void PopulateKnownPropertiesSet();
+private:
+    void PopulateKnownPropertiesSet();
 
-        std::vector<std::shared_ptr<ToggleVisibilityTarget>> m_targetElements;
-    };
+    std::vector<std::shared_ptr<ToggleVisibilityTarget>> m_targetElements;
+};
 
-    class ToggleVisibilityActionParser : public ActionElementParser
-    {
-    public:
-        ToggleVisibilityActionParser() = default;
-        ToggleVisibilityActionParser(const ToggleVisibilityActionParser&) = default;
-        ToggleVisibilityActionParser(ToggleVisibilityActionParser&&) = default;
-        ToggleVisibilityActionParser& operator=(const ToggleVisibilityActionParser&) = default;
-        ToggleVisibilityActionParser& operator=(ToggleVisibilityActionParser&&) = default;
-        virtual ~ToggleVisibilityActionParser() = default;
+class ToggleVisibilityActionParser : public ActionElementParser
+{
+public:
+    ToggleVisibilityActionParser() = default;
+    ToggleVisibilityActionParser(const ToggleVisibilityActionParser&) = default;
+    ToggleVisibilityActionParser(ToggleVisibilityActionParser&&) = default;
+    ToggleVisibilityActionParser& operator=(const ToggleVisibilityActionParser&) = default;
+    ToggleVisibilityActionParser& operator=(ToggleVisibilityActionParser&&) = default;
+    virtual ~ToggleVisibilityActionParser() = default;
 
-        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
-        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
-    };
-}
+    std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+    std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+};
+} // namespace AdaptiveCards

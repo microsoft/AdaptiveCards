@@ -44,5 +44,5 @@
 
 namespace AdaptiveCards
 {
-    constexpr const char* const c_sharedModelVersion = "1.5";
+constexpr const char* const c_sharedModelVersion = "1.5";
 }

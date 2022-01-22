@@ -5,11 +5,10 @@
 #include "BaseCardElement.h"
 #include "AdaptiveCardParseWarning.h"
 
-std::string ValidateColor(const std::string& backgroundColor,
-                          std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings);
+std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings);
 
-std::optional<int> ParseSizeForPixelSize(const std::string& sizeString,
-                                         std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>* warnings);
+std::optional<int> ParseSizeForPixelSize(
+    const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>* warnings);
 
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions, const std::string& version);
 

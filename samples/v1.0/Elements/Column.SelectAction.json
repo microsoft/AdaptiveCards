@@ -43,7 +43,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"tooltip": "cool link",
+						"tooltip": "another cool link",
 						"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 					}
 				},
@@ -61,7 +61,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"tooltip": "cool link",
+						"tooltip": "a third cool link",
 						"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 					}
 				}

@@ -76,6 +76,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(Par
 
 void SubmitAction::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs)});
 }

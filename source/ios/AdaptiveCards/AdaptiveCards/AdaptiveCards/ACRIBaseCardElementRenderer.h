@@ -21,12 +21,12 @@
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig;
 @optional
-/// override this method for custom styling 
+/// override this method for custom styling
 /// not all renderers supports it
 - (void)configure:(UIView *)view
-         rootView:(ACRView *)rootView
-  baseCardElement:(ACOBaseCardElement *)acoElem
-       hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 
 @end
 

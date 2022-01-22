@@ -115,23 +115,22 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
 
     auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(context, json);
 
-    choiceSet->SetChoiceSetStyle(
-        ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
+    choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(
+        json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
     choiceSet->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
     choiceSet->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
 
     // Parse Choices
-    auto choices =
-        ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
+    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(
+        context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
     choiceSet->m_choices = std::move(choices);
 
     if (choiceSet->GetIsMultiSelect() && choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered)
     {
-        context.warnings.emplace_back(
-            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidValue,
-                                                       "Input.ChoiceSet does not support filtering with multiselect"));
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+            WarningStatusCode::InvalidValue, "Input.ChoiceSet does not support filtering with multiselect"));
     }
 
     return choiceSet;
@@ -144,10 +143,11 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(Par
 
 void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
 }
