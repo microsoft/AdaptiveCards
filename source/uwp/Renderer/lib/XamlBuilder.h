@@ -48,7 +48,7 @@ namespace AdaptiveCards::Rendering::Uwp
         std::set<IXamlBuilderListener*> m_listeners;
         std::vector<winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress>> m_getStreamOperations;
         std::vector<winrt::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
-        std::vector<winrt::IAsyncOperationWithProgress<uint32_t, uint32_t>> m_writeAsyncOperations;
+        std::vector<winrt::IAsyncOperation<uint32_t>> m_writeAsyncOperations;
         uint32_t m_fixedWidth = 0;
         uint32_t m_fixedHeight = 0;
 

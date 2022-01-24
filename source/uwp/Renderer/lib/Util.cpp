@@ -314,21 +314,20 @@ uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig, wi
     winrt::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
     uint32_t result = GetFontSize(sizesConfig, desiredSize);
 
-    // TODO: can we still use MAXUINT32?
-    if (result == MAXUINT32)
+    if (result == std::numeric_limits<unsigned int>::max())
     {
         // Get FontSize from Default style
         fontTypeDefinition = GetFontType(hostConfig, winrt::FontType::Default);
         sizesConfig = fontTypeDefinition.FontSizes();
         result = GetFontSize(sizesConfig, desiredSize);
 
-        if (result == MAXUINT32)
+        if (result == std::numeric_limits<unsigned int>::max())
         {
             // get deprecated FontSize
             sizesConfig = hostConfig.FontSizes();
             result = GetFontSize(sizesConfig, desiredSize);
 
-            if (result == MAXUINT32)
+            if (result == std::numeric_limits<unsigned int>::max())
             {
                 // set system default FontSize based on desired style
                 switch (desiredSize)

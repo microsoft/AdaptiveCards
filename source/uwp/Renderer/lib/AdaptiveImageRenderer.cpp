@@ -330,8 +330,8 @@ namespace AdaptiveCards::Rendering::Uwp
                                 auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
 
                                 setSourceAction.Completed(
-                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](winrt::IAsyncAction const&,
-                                                                                                      winrt::AsyncStatus status)
+                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                        winrt::IAsyncAction const&, winrt::AsyncStatus status)
                                     {
                                         if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                         {
@@ -358,49 +358,49 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // Decode base 64 string
             winrt::hstring dataPath = imageUrl.Path();
-            // TODO: look at this routine (not too sure about memcpy_s)
             std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
             std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
 
-            winrt::Buffer buffer{static_cast<uint32_t>(decodedData.size())};
+            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
 
-            memcpy_s(buffer.data(), decodedData.size(), decodedData.data(), decodedData.size());
-
-            buffer.Length(static_cast<uint32_t>(decodedData.size()));
+            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
 
             winrt::BitmapImage bitmapImage{};
             bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+            m_imageLoadTracker->TrackBitmapImage(bitmapImage);
 
-            winrt::InMemoryRandomAccessStream randomAccessStream{};
-            auto bufferWriteOperation = randomAccessStream.WriteAsync(buffer);
+            auto streamWriteOperation = dataWriter.StoreAsync();
 
-            bufferWriteOperation.Completed(
-                [weakThis = this->get_weak(), bitmapImage, randomAccessStream, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    winrt::IAsyncOperationWithProgress<uint32_t, uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+            streamWriteOperation.Completed(
+                [weakThis = this->get_weak(), dataWriter, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                    winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
                 {
                     if (auto strongThis = weakThis.get())
                     {
-                        randomAccessStream.Seek(0);
-                        strongThis->SetImageSource(uiElement, bitmapImage);
+                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                        {
+                            stream.Seek(0);
+                            strongThis->SetImageSource(uiElement, bitmapImage);
+                            auto setSourceAction = bitmapImage.SetSourceAsync(stream);
 
-                        auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
-
-                        setSourceAction.Completed(
-                            [weakThis, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
-                            {
-                                if (status == winrt::AsyncStatus::Completed && isAutoSize)
+                            setSourceAction.Completed(
+                                [weakThis, bitmapImage, isAutoSize, parentElement, imageContainer, isVisible](
+                                    winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
                                 {
-                                    if (auto strongThis = weakThis.get())
+                                    if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                     {
-                                        strongThis->SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                        if (auto strongThis = weakThis.get())
+                                        {
+                                            strongThis->SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                        }
                     }
                 });
-            m_writeAsyncOperations.push_back(bufferWriteOperation);
+            m_writeAsyncOperations.push_back(streamWriteOperation);
             mustHideElement = false;
+            return;
         }
 
         // Otherwise, no resolver...

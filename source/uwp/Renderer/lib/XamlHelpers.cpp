@@ -736,13 +736,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             XamlHelpers::AppendXamlElementToPanel(errorMessageControl, inputStackPanel);
         }
 
-        // TODO: do I need this?
-        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
-        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-
-        /*  ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-          RETURN_IF_FAILED(actualUIElement.As(&inputUIElementAsDependencyObject));*/
-
         if (label)
         {
             winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
@@ -819,12 +812,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 actualInputUIElement = inputUIElement;
             }
         }
-
-        // TODO: do I need this
-        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
-        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        /*ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));*/
 
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.

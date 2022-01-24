@@ -220,7 +220,6 @@ winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year,
 
 winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& textElement);
 
-// TODO: rethink this perhaps?
 template<typename T> inline T EnumBitwiseOR(T a, T b)
 {
     return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));

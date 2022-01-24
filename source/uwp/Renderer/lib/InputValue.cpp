@@ -36,12 +36,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
 
     void InputValue::SetAccessibilityProperties(bool isInputValid)
     {
-        // TODO: meaning?
-        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
-        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        auto inputUIElementAsDependencyObject = m_uiInputElement.as<winrt::DependencyObject>();
-
-        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(inputUIElementAsDependencyObject);
+        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
         auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
@@ -58,7 +53,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             uiElementDescribers.RemoveAt(index);
         }
 
-        winrt::AutomationProperties::SetIsDataValidForForm(inputUIElementAsDependencyObject, isInputValid);
+        winrt::AutomationProperties::SetIsDataValidForForm(m_uiInputElement, isInputValid);
     }
 
     bool InputValue::IsValueValid()
@@ -226,7 +221,6 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
         {
             auto date = dateRef.Value();
 
-            // TODO: is this correct?
             winrt::DateTimeFormatter dateTimeFormatter{L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
             formattedDate = dateTimeFormatter.Format(date);
         }
@@ -490,7 +484,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp
             if (!::AdaptiveCards::ParseUtil::ToLowercase(text).compare(::AdaptiveCards::ParseUtil::ToLowercase(title)))
             {
                 selectedChoice = choice;
-                // TODO: do we need to break here? can we just return? why do we need to keep going
+                break;
             }
         }
 
