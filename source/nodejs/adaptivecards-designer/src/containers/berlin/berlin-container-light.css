@@ -5,11 +5,13 @@
 }
 
 .berlin-outer-container {
-    border: 1px solid #E6E6E6;
+    border: 1px solid rgba(0, 0, 0, 0.0578);
     padding: 1px 1px;
-    background-color: #F6F6F6;
+    background: linear-gradient(rgba(246, 246, 246, 0.5), rgba(246, 246, 246, 0.5)), linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
     width: 300px;
-    border-radius: 4px;
+    border-radius: 8px;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+	box-sizing: border-box;
 }
 
 .berlin-header {
@@ -294,6 +296,15 @@ a.ac-anchor:hover {
 .ac-container.ac-selectable:hover,
 .ac-columnSet.ac-selectable:hover {
     background-color: rgba(0, 0, 0, 0.0373);
+}
+
+.ac-image, .ac-media {
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.ac-media video {
+	border-radius: 4px;
 }
 
 .ac-carousel-container {

@@ -1,9 +1,11 @@
 .berlin-outer-container {
-    border: 1px solid #E6E6E6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 1px 1px;
-    background-color: #201E1F;
+    background: linear-gradient(rgba(255, 255, 255, 0.0326), rgba(255, 255, 255, 0.0326)), linear-gradient(rgba(44, 44, 44, 1), rgba(44, 44, 44, 1));
     width: 300px;
-    border-radius: 4px;
+    border-radius: 8px;
+	box-sizing: border-box;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.13);
     color: white;
     position: relative;
 }
@@ -295,6 +297,15 @@ a.ac-anchor:hover {
 .ac-container.ac-selectable:hover,
 .ac-columnSet.ac-selectable:hover {
     background-color: rgba(255, 255, 255, 0.0605);
+}
+
+.ac-image, .ac-media {
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.ac-media video {
+	border-radius: 4px;
 }
 
 .ac-carousel-container {
