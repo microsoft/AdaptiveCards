@@ -4,8 +4,9 @@ if [ -f $HUSKY_SH ]; then
     . $HUSKY_SH
     cd source/nodejs
     NODEJS_FILES_CHANGED=`git status . --short | wc -l`
-    if [ $NODEJS_FILES_CHANGED != "0" ]; then
-        npx lint-staged
-    fi
+    # npx lint-staged is disabled because of https://github.com/microsoft/AdaptiveCards/issues/6895
+    #if [ $NODEJS_FILES_CHANGED != "0" ]; then
+    #    npx lint-staged
+    #fi
 fi
 
