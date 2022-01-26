@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::Border cellBorder{};
 
             auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
-            cellBorder.BorderBrush(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(borderColor));
+            cellBorder.BorderBrush(winrt::SolidColorBrush{borderColor});
 
             // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
             // cells respectively in order to avoid double-thickness borders

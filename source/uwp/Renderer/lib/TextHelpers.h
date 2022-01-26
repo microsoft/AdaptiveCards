@@ -151,9 +151,7 @@ void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
         auto fontColor = GetColorFromAdaptiveColor(hostConfig, adaptiveTextColor, containerStyle, isSubtle, false);
 
-        auto fontColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
-
-        xamlTextElement.Foreground(fontColorBrush);
+        xamlTextElement.Foreground(winrt::SolidColorBrush{fontColor});
     }
 
     uint32_t fontSize = GetFontSizeFromFontType(hostConfig, fontType, adaptiveTextSize);

@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                      bool isHorizontal)
     {
         winrt::Grid separator;
-        separator.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
+        separator.Background(winrt::SolidColorBrush{separatorColor});
 
         const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
         winrt::Thickness margin{};
@@ -63,8 +63,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             if (const auto childAsFrameworkElement = child.try_as<winrt::FrameworkElement>())
             {
-                auto tag = childAsFrameworkElement.Tag();
-                if (tag)
+                if (const auto tag = childAsFrameworkElement.Tag())
                 {
                     if (const auto elementTagContent = tag.try_as<winrt::ElementTagContent>())
                     {
@@ -125,7 +124,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (hasExplicitContainerStyle)
         {
             auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
-            containerBorder.Background(XamlHelpers::GetSolidColorBrush(backgroundColor));
+            containerBorder.Background(winrt::SolidColorBrush{backgroundColor});
 
             // If the container style doesn't match its parent apply padding.
             addContainerPadding |= (localContainerStyle != parentContainerStyle);
@@ -320,7 +319,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 renderedElement = fallbackElement;
             }
 
-            if (fallbackControl == nullptr)
+            if (!fallbackControl)
             {
                 std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
             }
@@ -497,7 +496,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         auto color = GetColorFromAdaptiveColor(hostConfig, textColor, winrt::ContainerStyle::Default, false, false);
 
-        labelRun.Foreground(XamlHelpers::GetSolidColorBrush(color));
+        labelRun.Foreground(winrt::SolidColorBrush{color});
 
         winrt::TextSize textSize = inputLabelConfig.Size();
 
@@ -616,7 +615,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto attentionColor =
                 GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
-            errorMessageTextBlock.Foreground(XamlHelpers::GetSolidColorBrush(attentionColor));
+            errorMessageTextBlock.Foreground(winrt::SolidColorBrush{attentionColor});
 
             // Format the error message through host config
             FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock);
@@ -638,7 +637,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
         winrt::Border validationBorder{};
-        validationBorder.BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor));
+        validationBorder.BorderBrush(winrt::SolidColorBrush{attentionColor});
         validationBorder.Child(childElement);
 
         return validationBorder;
@@ -799,7 +798,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
                 if (const auto containerAsBorder = inputUIElementParentContainer.try_as<winrt::Border>())
                 {
-					validationBorder = containerAsBorder;
+                    validationBorder = containerAsBorder;
                     actualInputUIElement = containerAsBorder.Child();
                 }
                 else

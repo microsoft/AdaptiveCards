@@ -119,7 +119,7 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 // Fill the background ellipse with solid color brush
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                auto backgroundColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
+                backgroundEllipse.Fill(winrt::SolidColorBrush{color});
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 winrt::Grid imageGrid{};
@@ -142,8 +142,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 // Create a surrounding border with solid color background to contain the image
                 winrt::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                auto backgroundColorBrush = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(color);
-                border.Background(backgroundColorBrush);
+                border.Background(winrt::SolidColorBrush{color});
 
                 border.Child(xamlImage);
 

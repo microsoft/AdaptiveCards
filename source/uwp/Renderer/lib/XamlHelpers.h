@@ -5,13 +5,6 @@
 #include "WholeItemsPanel.h"
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
-    inline winrt::SolidColorBrush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
-    {
-        winrt::SolidColorBrush solidColorBrush;
-        solidColorBrush.Color(color);
-        return solidColorBrush;
-    }
-
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
                                         winrt::FrameworkElement const& frameworkElement);
@@ -55,35 +48,36 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             if (const auto wholeItemsPanel = panel.try_as<winrt::WholeItemsPanel>())
             {
-                auto wholeItemsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(wholeItemsPanel);
-                wholeItemsPanelImpl->AddElementToStretchablesList(elementToAppend);
+                if (const auto wholeItemsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(wholeItemsPanel))
+                {
+                    wholeItemsPanelImpl->AddElementToStretchablesList(elementToAppend);
+                }
             }
         }
     }
 
     template<typename T> bool GetToggleValue(T const& item)
     {
-        auto toggleButton = item.as<winrt::ToggleButton>(); 
+        auto toggleButton = item.as<winrt::ToggleButton>();
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
-        SetContent(item, contentString, false);
+        SetContent(item, contentString, false /* wrap */);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        winrt::TextBlock content{};
-        content.Text(contentString);
-
-        if (wrap)
-        {
-            content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
-        }
-
         if (const auto contentControl = item.try_as<winrt::ContentControl>())
         {
+            winrt::TextBlock content{};
+            content.Text(contentString);
+
+            if (wrap)
+            {
+                content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
+            }
             contentControl.Content(content);
         }
     }
@@ -100,8 +94,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         if (const auto containerAsPanel = container.try_as<winrt::WholeItemsPanel>())
         {
-            auto containerAsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(containerAsPanel);
-            containerAsPanelImpl->SetVerticalContentAlignment(verticalContentAlignment);
+            if (const auto containerAsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(containerAsPanel))
+            {
+                containerAsPanelImpl->SetVerticalContentAlignment(verticalContentAlignment);
+            }
         }
     }
 
@@ -162,8 +158,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     }
 
     inline void LogErrRenderFailed(winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::hstring const& elementType = L"",
-                                      winrt::hstring const& exceptionMessage = L"")
+                                   winrt::hstring const& elementType = L"",
+                                   winrt::hstring const& exceptionMessage = L"")
     {
         winrt::hstring errorMessage = L"Rendering failed";
 

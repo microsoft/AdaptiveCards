@@ -192,7 +192,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto containerStyle = renderArgs.ContainerStyle();
 
             auto backgroundColor = GetBackgroundColorFromStyle(containerStyle, hostConfig);
-            rootElement.Background(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
+            rootElement.Background(winrt::SolidColorBrush{backgroundColor});
 
             auto backgroundImage = adaptiveCard.BackgroundImage();
             bool isBackgroundImageValid = IsBackgroundImageValid(backgroundImage);

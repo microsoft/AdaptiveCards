@@ -575,7 +575,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     {
         auto actionInvoker = renderContext.ActionInvoker();
 
-        button.Click([action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
+        auto m = button.Click(winrt::auto_revoke, [action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
                      {
                 actionInvoker.SendActionEvent(action);
             });

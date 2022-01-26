@@ -240,8 +240,8 @@ winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiv
     auto backgroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, true);
     auto foregroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, false);
 
-    textHighlighter.Background(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(backgroundColor));
-    textHighlighter.Foreground(::AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(foregroundColor));
+    textHighlighter.Background(winrt::SolidColorBrush{backgroundColor});
+    textHighlighter.Foreground(winrt::SolidColorBrush{foregroundColor});
 
     return textHighlighter;
 }

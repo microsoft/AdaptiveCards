@@ -187,18 +187,16 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto hoverAccentColor = GenerateLHoverColor(accentColor);
         auto hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
-        auto accentColorBrush = GetSolidColorBrush(accentColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush);
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
+                                                       winrt::SolidColorBrush{accentColor});
 
-        auto lightAccentColorBrush = GetSolidColorBrush(hoverAccentColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush);
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
+                                                       winrt::SolidColorBrush{hoverAccentColor});
 
-        auto attentionColorBrush = GetSolidColorBrush(attentionColor);
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush);
-
-        auto lightAttentionColorBrush = GetSolidColorBrush(hoverAttentionColor);
+        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
+                                                       winrt::SolidColorBrush{attentionColor});
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
-                                                       lightAttentionColorBrush);
+                                                       winrt::SolidColorBrush{hoverAttentionColor});
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()
