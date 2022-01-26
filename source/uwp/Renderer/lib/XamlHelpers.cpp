@@ -116,7 +116,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto spacingConfig = hostConfig.Spacing();
 
         uint32_t padding = spacingConfig.Padding();
-        double paddingAsDouble = (double)padding;
+        double paddingAsDouble = static_cast<double>(padding);
 
         bool addContainerPadding = renderArgs.AddContainerPadding();
 
