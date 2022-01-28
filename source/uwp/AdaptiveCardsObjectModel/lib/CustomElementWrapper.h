@@ -7,7 +7,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement);
+        CustomElementWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;

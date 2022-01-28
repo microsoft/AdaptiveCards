@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         m_isInitializing = false;
     }
 
-    void AdaptiveActionParserRegistration::Set(hstring const& type, _In_ Uwp::IAdaptiveActionParser const& Parser)
+    void AdaptiveActionParserRegistration::Set(hstring const& type, Uwp::IAdaptiveActionParser const& Parser)
     {
         std::string typeString = HStringToUTF8(type);
         (*m_registration)[typeString] = Parser;

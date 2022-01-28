@@ -17,6 +17,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedModel->GetHeight());
         InternalId = sharedModel->GetInternalId().Hash();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+
         if (m_fallbackType == winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
         {
             if (auto fallbackObject = sharedModel->GetFallbackContent())
@@ -45,7 +46,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         {
             m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::None;
         }
-        else if (content != nullptr)
+        else if (content)
         {
             m_fallbackType = winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content;
         }

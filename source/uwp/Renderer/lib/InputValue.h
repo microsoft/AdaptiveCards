@@ -2,207 +2,190 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
+#include "winrt/AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
-    class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>
+    struct DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue : public winrt::implements<InputValue, IAdaptiveInputValue>
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* uiInputElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+        InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                   winrt::UIElement const& uiInputElement,
+                   winrt::Border const& validationBorder);
+        InputValue();
 
-        IFACEMETHODIMP get_InputElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement** inputElement);
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) = 0;
-        IFACEMETHODIMP get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage);
-        IFACEMETHODIMP put_ErrorMessage(_In_ ABI::Windows::UI::Xaml::IUIElement* uiErrorMessage);
+        winrt::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
+        winrt::UIElement ErrorMessage() { return m_validationError; };
+        void ErrorMessage(winrt::UIElement const& errorMessage)
+        {
+            m_validationError = errorMessage;
+        };
+        bool Validate();
+        void SetFocus();
+        void SetAccessibilityProperties(bool isInputValid);
 
-        IFACEMETHODIMP Validate(_Out_ boolean* isInputValid);
-        IFACEMETHODIMP SetFocus();
-        IFACEMETHODIMP SetAccessibilityProperties(boolean isInputValid);
+        virtual winrt::hstring CurrentValue() = 0;
 
     protected:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
-        virtual HRESULT SetValidation(boolean isValid);
+        virtual bool IsValueValid();
+        virtual void SetValidation(bool isValid);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement> m_adaptiveInputElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IBorder> m_validationBorder;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_validationError;
+        winrt::IAdaptiveInputElement m_adaptiveInputElement;
+        winrt::UIElement m_uiInputElement;
+        winrt::Border m_validationBorder;
+        winrt::UIElement m_validationError;
     };
 
     // Base class for AdaptiveTextInput
-    class TextInputBase : public InputValue
+    struct TextInputBase : public InputValue
     {
     public:
-        TextInputBase() {}
-
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* uiTextInputElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+        TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                      winrt::UIElement const& uiTextInputElement,
+                      winrt::Border const& validationBorder);
 
     protected:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput> m_adaptiveTextInput;
+        virtual bool IsValueValid() override;
+        winrt::AdaptiveTextInput m_adaptiveTextInput;
     };
 
     // Input value for Input.Text
-    class TextInputValue : public TextInputBase
+    struct TextInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+        TextInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                       winrt::TextBox const& uiTextBoxElement,
+                       winrt::Border const& validationBorder);
 
     private:
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
-
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
+        winrt::hstring CurrentValue() override { return m_textBoxElement.Text(); };
+        winrt::TextBox m_textBoxElement;
     };
 
-    class PasswordInputValue : public TextInputValue
+    struct PasswordInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IPasswordBox* uiPasswordElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+        PasswordInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                           winrt::PasswordBox const& uiPasswordElement,
+                           winrt::Border const& validationBorder);
 
     private:
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override { return m_passwordElement.Password(); };
 
     protected:
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPasswordBox> m_passwordElement;
+        winrt::IPasswordBox m_passwordElement;
     };
 
     // Input value for Input.Number
     class NumberInputValue : public InputValue
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInput* adaptiveNumberInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+        NumberInputValue(winrt::AdaptiveNumberInput const& adaptiveNumberInput,
+                         winrt::TextBox const& uiInputTextBoxElement,
+                         winrt::Border const& validationBorder);
 
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override { return m_textBoxElement.Text(); };
 
     private:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInput> m_adaptiveNumberInput;
+        bool IsValueValid();
+        winrt::TextBox m_textBoxElement;
+        winrt::AdaptiveNumberInput m_adaptiveNumberInput;
     };
 
     // Input value for Input.Date
-    class DateInputValue : public InputValue
+    struct DateInputValue : public InputValue
     {
     public:
-        DateInputValue() {}
+        DateInputValue(winrt::AdaptiveDateInput const& adaptiveDateInput,
+                       winrt::CalendarDatePicker const& uiDatePickerElement,
+                       winrt::Border const& validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveDateInput* adaptiveDateInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker* uiDatePickerElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveDateInput> m_adaptiveDateInput;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker> m_datePickerElement;
+        winrt::AdaptiveDateInput m_adaptiveDateInput;
+        winrt::CalendarDatePicker m_datePickerElement;
     };
 
     // Input value for Input.Time
-    class TimeInputValue : public InputValue
+    struct TimeInputValue : public InputValue
     {
     public:
-        TimeInputValue() {}
+        TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput, winrt::TimePicker uiTimePickerElement, winrt::Border validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTimeInput* adaptiveTimeInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITimePicker* uiTimePickerElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+        bool IsValueValid();
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTimeInput> m_adaptiveTimeInput;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITimePicker> m_timePickerElement;
+        winrt::AdaptiveTimeInput m_adaptiveTimeInput;
+        winrt::TimePicker m_timePickerElement;
     };
 
     // Input value for Input.Toggle
-    class ToggleInputValue : public InputValue
+    struct ToggleInputValue : public InputValue
     {
     public:
-        ToggleInputValue() {}
+        ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput, winrt::CheckBox uiCheckBoxElement, winrt::Border validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInput* adaptiveTimeInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ICheckBox* uiCheckBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+        bool IsValueValid();
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInput> m_adaptiveToggleInput;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICheckBox> m_checkBoxElement;
+        winrt::AdaptiveToggleInput m_adaptiveToggleInput;
+        winrt::CheckBox m_checkBoxElement;
     };
 
     // Input value for Input.ChoiceSet with compact style
-    class CompactChoiceSetInputValue : public InputValue
+    struct CompactChoiceSetInputValue : public InputValue
     {
     public:
-        CompactChoiceSetInputValue() {}
+        CompactChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                   winrt::Selector choiceSetSelector,
+                                   winrt::Border validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::Primitives::ISelector* choiceSetSelector,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::Primitives::ISelector> m_selectorElement;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        winrt::Selector m_selectorElement;
+        winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 
     // Input value for Input.ChoiceSet with expanded style
-    class ExpandedChoiceSetInputValue : public InputValue
+    struct ExpandedChoiceSetInputValue : public InputValue
     {
     public:
-        ExpandedChoiceSetInputValue() {}
+        ExpandedChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                    winrt::Panel uiChoiceSetElement,
+                                    winrt::Border validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IPanel* uiChoiceSetElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        IFACEMETHODIMP SetFocus() override;
+        void SetFocus();
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> m_panelElement;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        winrt::Panel m_panelElement;
+        winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 
     // Input value for Input.ChoiceSet with filtered style
-    class FilteredChoiceSetInputValue : public InputValue
+    struct FilteredChoiceSetInputValue : public InputValue
     {
     public:
-        FilteredChoiceSetInputValue() {}
+        FilteredChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
+                                    winrt::AutoSuggestBox uiChoiceSetElement,
+                                    winrt::Border validationBorder);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox* uiChoiceSetElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
-
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+        winrt::hstring CurrentValue() override;
 
     private:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+        bool IsValueValid();
 
-        HRESULT GetSelectedChoice(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput** adaptiveChoiceInput);
+        winrt::AdaptiveChoiceInput GetSelectedChoice();
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox> m_autoSuggestBox;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        winrt::AutoSuggestBox m_autoSuggestBox;
+        winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 }

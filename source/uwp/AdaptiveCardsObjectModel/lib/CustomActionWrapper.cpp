@@ -5,7 +5,7 @@
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    CustomActionWrapper::CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement) :
+    CustomActionWrapper::CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement) :
         AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)
     {
         BaseElement::SetId(GetActionElementId());

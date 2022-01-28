@@ -3,190 +3,124 @@
 #include "pch.h"
 
 #include "AdaptiveRichTextBlockRenderer.h"
+#include "AdaptiveRichTextBlockRenderer.g.cpp"
 #include "AdaptiveRenderContext.h"
 #include "TextHelpers.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace ABI::Windows::UI::Xaml::Documents;
-using namespace ABI::Windows::UI::Xaml::Controls;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveRichTextBlockRenderer::RuntimeClassInitialize() noexcept
-    try
+    winrt::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                           winrt::AdaptiveRenderContext const& renderContext,
+                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        return S_OK;
-    }
-    CATCH_RETURN;
+        try
+        {
+            // Create the top level rich text block and set it's properties
+            winrt::RichTextBlock xamlRichTextBlock{};
 
-    HRESULT AdaptiveRichTextBlockRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
-                                                  _In_ IAdaptiveRenderContext* renderContext,
-                                                  _In_ IAdaptiveRenderArgs* renderArgs,
-                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
-    try
-    {
-        // Create the top level rich text block and set it's properties
-        ComPtr<IRichTextBlock> xamlRichTextBlock =
-            XamlHelpers::CreateABIClass<IRichTextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RichTextBlock));
+            auto adaptiveRichTextBlock = cardElement.as<winrt::AdaptiveRichTextBlock>();
 
-        ComPtr<IAdaptiveCardElement> localAdaptiveCardElement(cardElement);
-        ComPtr<IAdaptiveRichTextBlock> adaptiveRichTextBlock;
-        RETURN_IF_FAILED(localAdaptiveCardElement.As(&adaptiveRichTextBlock));
+            // Set the horizontal Alingment
+            SetHorizontalAlignment(adaptiveRichTextBlock, renderContext, xamlRichTextBlock);
 
-        // Set the horizontal Alingment
-        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), renderContext, xamlRichTextBlock.Get()));
+            // Get the highlighters
+            auto textHighlighters = xamlRichTextBlock.TextHighlighters();
 
-        // Get the highlighters
-        ComPtr<IRichTextBlock5> xamlRichTextBlock5;
-        RETURN_IF_FAILED(xamlRichTextBlock.As(&xamlRichTextBlock5));
+            // Add a paragraph for the inlines
+            auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-        ComPtr<IVector<TextHighlighter*>> textHighlighters;
-        RETURN_IF_FAILED(xamlRichTextBlock5->get_TextHighlighters(&textHighlighters));
+            winrt::Paragraph xamlParagraph{};
+            xamlBlocks.Append(xamlParagraph);
 
-        // Add a paragraph for the inlines
-        ComPtr<IVector<Block*>> xamlBlocks;
-        RETURN_IF_FAILED(xamlRichTextBlock->get_Blocks(&xamlBlocks));
+            // Add the Inlines
+            uint32_t currentOffset = 0;
 
-        ComPtr<IParagraph> xamlParagraph =
-            XamlHelpers::CreateABIClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+            auto xamlInlines = xamlParagraph.Inlines();
 
-        ComPtr<IBlock> paragraphAsBlock;
-        RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
-        RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
+            auto adaptiveInlines = adaptiveRichTextBlock.Inlines();
 
-        // Add the Inlines
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
-        RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
-
-        ComPtr<IVector<IAdaptiveInline*>> adaptiveInlines;
-        RETURN_IF_FAILED(adaptiveRichTextBlock->get_Inlines(&adaptiveInlines));
-
-        UINT currentOffset = 0;
-        IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
-            // We only support TextRun inlines for now
-            ComPtr<IAdaptiveInline> localInline(adaptiveInline);
-            ComPtr<IAdaptiveTextRun> adaptiveTextRun;
-            RETURN_IF_FAILED(localInline.As(&adaptiveTextRun));
-
-            ComPtr<IAdaptiveActionElement> selectAction;
-            RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
-
-            boolean selectActionIsEnabled = false;
-            if (selectAction != nullptr)
+            for (auto adaptiveInline : adaptiveInlines)
             {
-                // If the select action is disabled we won't render this as a link
-                RETURN_IF_FAILED(selectAction->get_IsEnabled(&selectActionIsEnabled));
-            }
+                // We only support TextRun inlines for now
+                auto adaptiveTextRun = adaptiveInline.as<winrt::AdaptiveTextRun>();
+                auto selectAction = adaptiveTextRun.SelectAction();
 
-            ComPtr<IAdaptiveTextElement> adaptiveTextElement;
-            RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
-
-            HString text;
-            RETURN_IF_FAILED(adaptiveTextElement->get_Text(text.GetAddressOf()));
-
-            boolean isStrikethrough{false};
-            RETURN_IF_FAILED(adaptiveTextRun->get_Strikethrough(&isStrikethrough));
-
-            boolean isItalic{false};
-            RETURN_IF_FAILED(adaptiveTextRun->get_Italic(&isItalic));
-
-            boolean isUnderline{};
-            RETURN_IF_FAILED(adaptiveTextRun->get_Underline(&isUnderline));
-
-            UINT inlineLength;
-            if (selectAction != nullptr && selectActionIsEnabled)
-            {
-                // If there's a select action, create a hyperlink that triggers the action
-                ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
-                    XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
-
-                ComPtr<IAdaptiveActionInvoker> actionInvoker;
-                renderContext->get_ActionInvoker(&actionInvoker);
-
-                // Use the selectAction's title as the accessibility name for this link.
-                HString actionTitle;
-                RETURN_IF_FAILED(selectAction->get_Title(actionTitle.ReleaseAndGetAddressOf()));
-                if (actionTitle.IsValid() && !WindowsIsStringEmpty(actionTitle.Get()))
+                bool selectActionIsEnabled = false;
+                if (selectAction)
                 {
-                    ComPtr<IAutomationPropertiesStatics> automationProperties;
-                    RETURN_IF_FAILED(GetActivationFactory(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationProperties));
-                    ComPtr<IDependencyObject> linkAsDependencyObject;
-                    RETURN_IF_FAILED(hyperlink.As(&linkAsDependencyObject));
-                    RETURN_IF_FAILED(automationProperties->SetName(linkAsDependencyObject.Get(), actionTitle.Get()));
+                    // If the select action is disabled we won't render this as a link
+                    selectActionIsEnabled = selectAction.IsEnabled();
                 }
 
-                EventRegistrationToken clickToken;
-                RETURN_IF_FAILED(
-                    hyperlink->add_Click(Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
-                                             [selectAction, actionInvoker](IInspectable*, IHyperlinkClickEventArgs*) -> HRESULT {
-                                                 return actionInvoker->SendActionEvent(selectAction.Get());
-                                             })
-                                             .Get(),
-                                         &clickToken));
+                auto adaptiveTextElement = adaptiveInline.as<winrt::IAdaptiveTextElement>();
+                winrt::hstring text = adaptiveTextRun.Text();
+                bool isStrikethrough = adaptiveTextRun.Strikethrough();
+                bool isItalic = adaptiveTextRun.Italic();
+                bool isUnderline = adaptiveTextRun.Underline();
+                uint32_t inlineLength{0};
 
-                // Add the run text to the hyperlink's inlines
-                ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
-                RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
+                if (selectAction && selectActionIsEnabled)
+                {
+                    // If there's a select action, create a hyperlink that triggers the action
+                    winrt::Hyperlink hyperlink{};
 
-                ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
-                RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
-                RETURN_IF_FAILED(AddSingleTextInline(adaptiveTextElement.Get(),
-                                                     renderContext,
-                                                     renderArgs,
-                                                     text.Get(),
-                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, true),
-                                                     hyperlinkInlines.Get(),
-                                                     &inlineLength));
+                    auto actionInvoker = renderContext.ActionInvoker();
 
-                ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
-                RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
+                    // Use the selectAction's title as the accessibility name for this link.
+                    auto actionTitle = selectAction.Title();
 
-                // Add the hyperlink to the paragraph's inlines
-                RETURN_IF_FAILED(xamlInlines->Append(hyperlinkAsInline.Get()));
+                    if (!actionTitle.empty())
+                    {
+                        winrt::AutomationProperties::SetName(hyperlink, actionTitle);
+                    }
+
+                    hyperlink.Click([selectAction, actionInvoker](winrt::IInspectable const& /* sender */,
+                                                                  winrt::HyperlinkClickEventArgs const& /* args*/) -> void
+                                    { actionInvoker.SendActionEvent(selectAction); });
+
+                    // Add the run text to the hyperlink's inlines
+                    auto hyperlinkInlines = hyperlink.Inlines();
+
+                    inlineLength = AddSingleTextInline(adaptiveTextElement,
+                                                       renderContext,
+                                                       renderArgs,
+                                                       text,
+                                                       TextRunStyleParameters{isStrikethrough, isItalic, isUnderline, true},
+                                                       hyperlinkInlines);
+
+                    xamlInlines.Append(hyperlink);
+                }
+                else
+                {
+                    // Add the text to the paragraph's inlines
+                    inlineLength = AddSingleTextInline(adaptiveTextElement,
+                                                       renderContext,
+                                                       renderArgs,
+                                                       text,
+                                                       TextRunStyleParameters{isStrikethrough, isItalic, isUnderline, false},
+                                                       xamlInlines);
+                }
+
+                bool highlight = adaptiveTextRun.Highlight();
+
+                if (highlight)
+                {
+                    auto textHighlighter = GetHighlighter(adaptiveTextElement, renderContext, renderArgs);
+                    textHighlighter.Ranges().Append({(int)currentOffset, (int)inlineLength});
+                    textHighlighters.Append(textHighlighter);
+                }
+
+                currentOffset += inlineLength;
             }
-            else
-            {
-                // Add the text to the paragraph's inlines
-                RETURN_IF_FAILED(AddSingleTextInline(adaptiveTextElement.Get(),
-                                                     renderContext,
-                                                     renderArgs,
-                                                     text.Get(),
-                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, false),
-                                                     xamlInlines.Get(),
-                                                     &inlineLength));
-            }
 
-            boolean highlight;
-            RETURN_IF_FAILED(adaptiveTextRun->get_Highlight(&highlight));
-
-            if (highlight)
-            {
-                ComPtr<ITextHighlighter> textHighlighter;
-                RETURN_IF_FAILED(GetHighlighter(adaptiveTextElement.Get(), renderContext, renderArgs, &textHighlighter));
-
-                ComPtr<IVector<TextRange>> ranges;
-                RETURN_IF_FAILED(textHighlighter->get_Ranges(&ranges));
-
-                TextRange textRange = {(INT32)currentOffset, (INT32)inlineLength};
-                RETURN_IF_FAILED(ranges->Append(textRange));
-
-                RETURN_IF_FAILED(textHighlighters->Append(textHighlighter.Get()));
-            }
-
-            currentOffset += inlineLength;
-            return S_OK;
-        });
-
-        return xamlRichTextBlock.CopyTo(result);
+            return xamlRichTextBlock;
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
+            return nullptr;
+        }
     }
-    CATCH_RETURN;
 }

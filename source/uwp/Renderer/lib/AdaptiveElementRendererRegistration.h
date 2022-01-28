@@ -2,29 +2,38 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
+#include "AdaptiveElementREndererRegistration.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveElementRendererRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration>,
-                                              Microsoft::WRL::FtmBase>
+    struct AdaptiveElementRendererRegistration : AdaptiveElementRendererRegistrationT<AdaptiveElementRendererRegistration>
     {
-        AdaptiveRuntime(AdaptiveElementRendererRegistration);
+        using RegistrationMap =
+            std::unordered_map<hstring, winrt::IAdaptiveElementRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
+        AdaptiveElementRendererRegistration() = default;
 
-    public:
-        AdaptiveElementRendererRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
+        void Set(hstring const& type, winrt::IAdaptiveElementRenderer const& renderer)
+        {
+            m_registration[type] = renderer;
+        }
 
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer* renderer);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer** result);
-        IFACEMETHODIMP Remove(_In_ HSTRING type);
+        Uwp::IAdaptiveElementRenderer Get(hstring const& type)
+        {
+            auto it = m_registration.find(type);
+            if (it != m_registration.end())
+            {
+                return it->second;
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
 
-    private:
-        std::shared_ptr<RegistrationMap> m_registration;
+        void Remove(hstring const& type) { m_registration.erase(type); }
+
+        RegistrationMap m_registration;
     };
 }

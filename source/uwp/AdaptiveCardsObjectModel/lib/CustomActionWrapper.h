@@ -7,7 +7,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement);
+        CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
