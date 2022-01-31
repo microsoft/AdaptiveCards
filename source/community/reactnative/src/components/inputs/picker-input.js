@@ -37,7 +37,7 @@ export class PickerInput extends React.Component {
 		this.label = Constants.EmptyString;
 		this.parseHostConfig();
 
-		this.errorMessage = this.payload.errorMessage || Constants.ErrorMessage;
+		this.errorMessage = this.payload.errorMessage;
 
 		this.state = {
 			isRequired: this.payload.isRequired || false,
@@ -88,7 +88,7 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
+					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst} value={this.props.value}>
 						<InputLabel configManager={this.props.configManager} isRequired={this.state.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}
 							accessibilityLabel={Platform.OS === 'android' ? (this.payload.altText || this.props.value || placeholder) : undefined}

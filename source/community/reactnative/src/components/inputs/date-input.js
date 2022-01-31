@@ -1,6 +1,10 @@
 /**
  * Date component based on the given payload.
  * 
+ * For range is present in given payload,
+ * If no default value is given: it selects max value from payload else, current date in date picker.
+ * If given default value is not within the range: it selects minimum or maximum value from payload depending on the given default value in date picker.
+ * 
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputdate
  */
 
@@ -16,6 +20,8 @@ export class DateInput extends React.Component {
 		super(props);
 
 		this.payload = props.json;
+		this.minDate = this.payload.min ? this.parseDateString(this.payload.min) : undefined;
+		this.maxDate = this.payload.max ? this.parseDateString(this.payload.max) : undefined;
 		this.parseHostConfig();
 	}
 
@@ -24,15 +30,26 @@ export class DateInput extends React.Component {
 	 */
 	parseHostConfig() {
 		this.state = {
-			chosenDate: this.payload.value ? this.parseDateString(this.payload.value) : new Date(),
-			minDate: this.payload.min ? this.parseDateString(this.payload.min) : undefined,
-			maxDate: this.payload.max ? this.parseDateString(this.payload.max) : undefined,
+			chosenDate: this.getChosenDate(),
 			modalVisible: false,
 			modalVisibleAndroid: false,
 			value: this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 
 		this.state.setDate = this.setDate.bind(this);
+	}
+
+	/**
+	 * @description Return chosen date value based on value and range present in payload.
+	 */
+	getChosenDate() {
+		dateValue = this.payload.value && this.parseDateString(this.payload.value);
+		if (dateValue) {
+			if (this.minDate && dateValue < this.minDate) return this.minDate;
+			if (this.maxDate && dateValue > this.maxDate) return this.maxDate;
+			return dateValue;
+		}
+		return this.maxDate || new Date();
 	}
 
 	/**
@@ -64,6 +81,7 @@ export class DateInput extends React.Component {
 	 * @description Hides the DatePicker on close event
 	 */
 	handleModalClose = () => {
+		this.setDate(this.state.chosenDate);
 		this.setState({ modalVisible: false })
 	}
 
@@ -110,8 +128,8 @@ export class DateInput extends React.Component {
 					modalVisible={this.state.modalVisible}
 					handleModalClose={this.handleModalClose}
 					chosenDate={this.state.chosenDate || new Date()}
-					minDate={this.state.minDate}
-					maxDate={this.state.maxDate}
+					minDate={this.minDate}
+					maxDate={this.maxDate}
 					handleDateChange={this.handleDateChange}
 					mode='date'
 					configManager={this.props.configManager}
@@ -121,8 +139,8 @@ export class DateInput extends React.Component {
 					<DateTimePicker
 						mode="date"
 						value={this.state.chosenDate}
-						minimumDate={this.state.minDate}
-						maximumDate={this.state.maxDate}
+						minimumDate={this.minDate}
+						maximumDate={this.maxDate}
 						onChange={(event, date) => this.setDate(date)}
 					/>
 				}
