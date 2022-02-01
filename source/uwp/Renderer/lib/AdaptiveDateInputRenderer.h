@@ -2,24 +2,22 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "DateInput.h"
+#include "AdaptiveDateInputRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveDateInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveDateInputRenderer : AdaptiveDateInputRendererT<AdaptiveDateInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveDateInputRenderer);
+        AdaptiveDateInputRenderer() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        winrt::UIElement Render(winrt::IAdaptiveCardElement const& element,
+                                                   winrt::AdaptiveRenderContext const& context,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs);
     };
-
-    ActivatableClass(AdaptiveDateInputRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveDateInputRenderer : AdaptiveDateInputRendererT<AdaptiveDateInputRenderer, implementation::AdaptiveDateInputRenderer>
+    {
+    };
 }

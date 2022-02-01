@@ -2,33 +2,25 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardResourceResolvers.h"
+#include "AdaptiveCardResourceResolvers.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::Foundation;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept
-    try
+    void AdaptiveCardResourceResolvers::Set(hstring const& scheme, winrt::IAdaptiveCardResourceResolver const& resolver)
     {
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveCardResourceResolvers::Set(_In_ HSTRING scheme, _In_ IAdaptiveCardResourceResolver* resolver)
-    {
-        std::string schemeString;
-        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
-        m_resourceResolvers[schemeString] = resolver;
-        return S_OK;
+        m_resourceResolvers[scheme] = resolver;
     }
 
-    HRESULT AdaptiveCardResourceResolvers::Get(_In_ HSTRING scheme, _COM_Outptr_ IAdaptiveCardResourceResolver** resolver)
+    Uwp::IAdaptiveCardResourceResolver AdaptiveCardResourceResolvers::Get(hstring const& scheme)
     {
-        std::string schemeString;
-        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
-        ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
-        return resolverPtr.CopyTo(resolver);
+        auto found = m_resourceResolvers.find(scheme);
+        if (found != m_resourceResolvers.end())
+        {
+            return found->second;
+        }
+        else
+        {
+            return nullptr;
+        }
     }
 }

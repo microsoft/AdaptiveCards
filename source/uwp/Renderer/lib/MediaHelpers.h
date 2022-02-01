@@ -2,25 +2,24 @@
 // Licensed under the MIT License.
 #pragma once
 
-void GetMediaPosterAsImage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                           _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* adaptiveMedia,
-                           _Outptr_ ABI::Windows::UI::Xaml::Controls::IImage** posterImage);
+namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
+{
+    winrt::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       winrt::AdaptiveMedia const& adaptiveMedia);
 
-void CreatePosterContainerWithPlayButton(_In_ ABI::Windows::UI::Xaml::Controls::IImage* posterImage,
-                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** posterContainer);
+    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::Image const& posterImage,
+                                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                                            winrt::AdaptiveRenderArgs const& renderArgs);
 
-void GetMediaSource(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                    _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* adaptiveMedia,
-                    _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** mediaSourceUrl,
-                    _Outptr_ HSTRING* mimeType);
+    std::tuple<winrt::Uri, winrt::hstring> GetMediaSource(winrt::AdaptiveHostConfig const& hostConfig,
+                                                          winrt::AdaptiveMedia const& adaptiveMedia);
 
-HRESULT HandleMediaClick(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* adaptiveMedia,
-                         _In_ ABI::Windows::UI::Xaml::Controls::IMediaElement* mediaElement,
-                         _In_ ABI::Windows::UI::Xaml::IUIElement* posterContainer,
-                         _In_ ABI::Windows::Foundation::IUriRuntimeClass* mediaSourceUrl,
-                         _In_ HSTRING mimeType,
-                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker* mediaInvoker);
+    void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
+                          winrt::AdaptiveMedia const& adaptiveMedia,
+                          winrt::MediaElement const& mediaElement,
+                          winrt::UIElement const& posterContainer,
+                          winrt::Uri const& mediaSourceUrl,
+                          winrt::hstring const& mimeType,
+                          winrt::AdaptiveMediaEventInvoker const& mediaInvoker);
+}

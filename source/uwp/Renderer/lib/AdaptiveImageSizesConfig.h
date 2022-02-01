@@ -2,32 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveImageSizesConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveImageSizesConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSizesConfig>
+    struct AdaptiveImageSizesConfig : AdaptiveImageSizesConfigT<AdaptiveImageSizesConfig>
     {
-        AdaptiveRuntime(AdaptiveImageSizesConfig);
+        AdaptiveImageSizesConfig(::AdaptiveCards::ImageSizesConfig const& imageSizesConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(ImageSizesConfig imageSizesConfig) noexcept;
-
-        IFACEMETHODIMP get_Small(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Small(UINT32 value);
-
-        IFACEMETHODIMP get_Medium(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Medium(UINT32 value);
-
-        IFACEMETHODIMP get_Large(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Large(UINT32 value);
-
-    private:
-        UINT32 m_small;
-        UINT32 m_medium;
-        UINT32 m_large;
+        property<uint32_t> Small;
+        property<uint32_t> Medium;
+        property<uint32_t> Large;
     };
+}
 
-    ActivatableClass(AdaptiveImageSizesConfig);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveImageSizesConfig : AdaptiveImageSizesConfigT<AdaptiveImageSizesConfig, implementation::AdaptiveImageSizesConfig>
+    {
+    };
 }

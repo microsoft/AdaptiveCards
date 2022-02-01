@@ -2,27 +2,26 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
+#include "AdaptiveMediaEventInvoker.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveMediaEventInvoker
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker>
+    struct AdaptiveMediaEventInvoker : AdaptiveMediaEventInvokerT<AdaptiveMediaEventInvoker>
     {
-        AdaptiveRuntime(AdaptiveMediaEventInvoker);
+        AdaptiveMediaEventInvoker() {}
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveMediaEventInvoker(winrt::RenderedAdaptiveCard const& renderResult);
 
-        HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+        void SendMediaClickedEvent(winrt::AdaptiveMedia const& mediaElement);
 
-        IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* mediaElement);
-
-    private:
-        Microsoft::WRL::WeakRef m_weakRenderResult;
+        winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
     };
+}
 
-    ActivatableClass(AdaptiveMediaEventInvoker);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveMediaEventInvoker : AdaptiveMediaEventInvokerT<AdaptiveMediaEventInvoker, implementation::AdaptiveMediaEventInvoker>
+    {
+    };
 }

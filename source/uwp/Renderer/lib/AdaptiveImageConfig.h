@@ -2,24 +2,20 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveImageConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveImageConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageConfig>
+    struct AdaptiveImageConfig : AdaptiveImageConfigT<AdaptiveImageConfig>
     {
-        AdaptiveRuntime(AdaptiveImageConfig);
+        AdaptiveImageConfig(::AdaptiveCards::ImageConfig const& ImageConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(ImageConfig ImageConfig) noexcept;
-
-        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize);
-
-    private:
-        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize m_imageSize;
+        property<winrt::ImageSize> ImageSize;
     };
-
-    ActivatableClass(AdaptiveImageConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveImageConfig : AdaptiveImageConfigT<AdaptiveImageConfig, implementation::AdaptiveImageConfig>
+    {
+    };
 }

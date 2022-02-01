@@ -2,37 +2,36 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Util.h"
+#include "AdaptiveFeatureRegistration.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class DECLSPEC_UUID("34988ccd-4c0d-4043-b53d-3c1d2868860b") AdaptiveFeatureRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
+    struct DECLSPEC_UUID("34988ccd-4c0d-4043-b53d-3c1d2868860b") AdaptiveFeatureRegistration
+        : AdaptiveFeatureRegistrationT<AdaptiveFeatureRegistration, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveFeatureRegistration);
+        AdaptiveFeatureRegistration(std::shared_ptr<::AdaptiveCards::FeatureRegistration> sharedParserRegistration =
+                                        std::make_shared<::AdaptiveCards::FeatureRegistration>());
 
-    public:
-        AdaptiveFeatureRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept;
-
-        // IAdaptiveFeatureRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING name, _In_ HSTRING version) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING name, _Outptr_ HSTRING* version) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING name) noexcept;
+        void Set(winrt::hstring const& name, winrt::hstring const& version);
+        winrt::hstring Get(winrt::hstring const& name);
+        void Remove(winrt::hstring const& name);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        const std::shared_ptr<FeatureRegistration>& GetSharedFeatureRegistration();
+        const std::shared_ptr<::AdaptiveCards::FeatureRegistration>& GetSharedFeatureRegistration()
+        {
+            return m_sharedFeatureRegistration;
+        }
 
     private:
-        std::shared_ptr<FeatureRegistration> m_sharedFeatureRegistration;
+        std::shared_ptr<::AdaptiveCards::FeatureRegistration> m_sharedFeatureRegistration;
     };
-
-    ActivatableClass(AdaptiveFeatureRegistration);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveFeatureRegistration
+        : AdaptiveFeatureRegistrationT<AdaptiveFeatureRegistration, implementation::AdaptiveFeatureRegistration>
+    {
+    };
 }

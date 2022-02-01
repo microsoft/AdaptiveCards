@@ -6,16 +6,16 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     // LinkButton is a templated button that exists strictly to behave as a button but appear as a link for
     // accessibility purposes.
-    struct LinkButton : public winrt::Windows::UI::Xaml::Controls::ButtonT<LinkButton>
+    struct LinkButton : public winrt::ButtonT<LinkButton>
     {
-        winrt::Windows::UI::Xaml::Automation::Peers::AutomationPeer OnCreateAutomationPeer();
+        winrt::AutomationPeer OnCreateAutomationPeer();
     };
 
-    struct LinkButtonAutomationPeer : public winrt::Windows::UI::Xaml::Automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
+    struct LinkButtonAutomationPeer : public winrt::ButtonAutomationPeerT<LinkButtonAutomationPeer>
     {
         LinkButtonAutomationPeer(LinkButton& linkButton);
 
-        winrt::Windows::UI::Xaml::Automation::Peers::AutomationControlType GetAutomationControlType() const;
-        winrt::Windows::UI::Xaml::Automation::Peers::AutomationControlType GetAutomationControlTypeCore() const;
+        winrt::AutomationControlType GetAutomationControlType() const;
+        winrt::AutomationControlType GetAutomationControlTypeCore() const;
     };
 }
