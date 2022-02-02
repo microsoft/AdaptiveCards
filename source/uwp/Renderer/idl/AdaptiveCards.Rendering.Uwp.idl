@@ -449,6 +449,7 @@ namespace AdaptiveCards
             runtimeclass AdaptiveActionInvoker
             {
                 AdaptiveActionInvoker();
+                AdaptiveActionInvoker(RenderedAdaptiveCard renderResult);
 
                 void SendActionEvent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement actionElement);
             }
@@ -456,6 +457,7 @@ namespace AdaptiveCards
             runtimeclass AdaptiveMediaEventInvoker
             {
                 AdaptiveMediaEventInvoker();
+                AdaptiveMediaEventInvoker(RenderedAdaptiveCard renderResult);
 
                 void SendMediaClickedEvent(AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia mediaElement);
             }
