@@ -43,11 +43,9 @@ export class ChoiceSetInput extends React.Component {
 		this.label = Constants.EmptyString;
 		this.isRequired = this.payload.isRequired || false;
 		this.placeholder = this.payload.placeholder;
-		this.pickerRef = React.createRef();
-
 
 		this.state = {
-			selectedPickerValue: (this.payload.choices.find(choice => choice.value === this.payload.value)) && this.payload.value,
+			selectedPickerValue: this.payload.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -55,10 +53,6 @@ export class ChoiceSetInput extends React.Component {
 			checkedValues: undefined,
 			isError: this.isRequired ? this.validate() : false
 		}
-	}
-
-	componentDidUpdate() {
-		Platform.OS === Constants.PlatformAndroid && this.state.isPickerSelected && this.pickerRef?.current?.focus?.();
 	}
 
 	/**
@@ -189,7 +183,6 @@ export class ChoiceSetInput extends React.Component {
 					onPress={onPress}
 					accessible={true}
 					accessibilityRole={'button'}
-					accessibilityLabel={this.getPickerSelectedValue(this.state.selectedPickerValue, addInputItem)}
 					accessibilityState={{ expanded: this.state.isPickerSelected }}
 				>
 					<View style={this.styleConfig.dropdown}>
@@ -217,16 +210,9 @@ export class ChoiceSetInput extends React.Component {
 		let picker = (
 			<Picker
 				mode={'dropdown'}
-				ref={this.pickerRef}
-				enabled={false}
 				style={(Platform.OS === Constants.PlatformAndroid) && { width: '100%', height: '100%', position: 'absolute', opacity: 0 }}
-				onFocus={() => {
-					this.setState({
-						isPickerSelected: false
-					})
-				}}
 				itemStyle={this.styleConfig.picker}
-				selectedValue={this.getPickerInitialValue(addInputItem) || (this.payload.choices[0]?.value)}
+				selectedValue={this.getPickerInitialValue(addInputItem)}
 				onValueChange={
 					(itemValue) => {
 						this.setState({

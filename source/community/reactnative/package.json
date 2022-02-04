@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "2.2.19",
+  "version": "2.2.20",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^3.0.9",
-    "@react-native-picker/picker": "^1.16.3",
+    "@react-native-picker/picker": "^1.9.11",
     "adaptivecards-templating": "1.0.0-rc.0",
     "antlr4ts": "^0.5.0-alpha.3",
     "assert": "^2.0.0",
