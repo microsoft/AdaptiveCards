@@ -369,8 +369,12 @@ void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToke
 void LinkParser::Match(std::stringstream& stream)
 {
     // link syntax check, match keyword at each stage
-    if (MatchAtLinkInit(stream) && MatchAtLinkTextRun(stream) && MatchAtLinkTextEnd(stream) &&
-        MatchAtLinkDestinationStart(stream) && MatchAtLinkDestinationRun(stream))
+    bool capturedLink = (MatchAtLinkInit(stream)
+                         && MatchAtLinkTextRun(stream)
+                         && MatchAtLinkTextEnd(stream));
+    if (capturedLink &&
+        MatchAtLinkDestinationStart(stream)
+        && MatchAtLinkDestinationRun(stream))
     {
         /// Link is in correct syntax, capture it as link
         CaptureLinkToken();
@@ -431,11 +435,14 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
 }
 
+int linkStartCounter = 0;
+
 // link is in form of [txt](url), this method matches ']'
 bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
+        ++linkStartCounter;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -446,9 +453,31 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
     return false;
 }
 
+int endoflink = 0;
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
+    if (linkStartCounter == 0) {
+        return false;
+    }
+
+    std::stringstream::pos_type start = lookahead.tellg();
+    lookahead.seekp(0, std::ios::end);
+    std::stringstream::pos_type end = lookahead.tellp();
+    int i = int(start);
+    
+    while (linkStartCounter > 0 && i < end) {
+        if (lookahead.str()[i] == '(') {
+            ++linkStartCounter;
+        } else if (lookahead.str()[i] == ')') {
+            --linkStartCounter;
+        }
+        if (linkStartCounter == 0) {
+            endoflink = i;
+        }
+        ++i;
+    }
+    
     // if peeked char is EOF or extended char, this isn't a match
     if (lookahead.peek() < 0)
     {
@@ -467,17 +496,8 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
         lookahead.get();
         return true;
     }
-
-    // parses destination
-    ParseBlock(lookahead);
-
-    if (lookahead.peek() == ')')
-    {
-        return true;
-    }
-
-    m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-    return false;
+    
+    return true;
 }
 
 // link is in form of [txt](url), this method matches ')'
@@ -490,17 +510,19 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
-    if (lookahead.peek() == ')')
-    {
-        lookahead.get();
-        return true;
-    }
-
-    // parses destination
     ParseBlock(lookahead);
+
+    int currentpos = int(lookahead.tellg());
+    while (currentpos <= endoflink && lookahead.peek() != EOF) {
+        ParseBlock(lookahead);
+        currentpos = int(lookahead.tellg());
+    }
+    
+    m_parsedResult.PopBack();
+
     return true;
 }
-
+ 
 // this method is called when link syntax check is complete
 // it processes the parsed result from link destination  and link text
 // and build a MarkDownStringHtmlGenerator that will output
