@@ -366,8 +366,11 @@ void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToke
     }
 }
 
+int linkStartCounter = 0;
+
 void LinkParser::Match(std::stringstream& stream)
 {
+    linkStartCounter= 0;
     // link syntax check, match keyword at each stage
     bool capturedLink = (MatchAtLinkInit(stream)
                          && MatchAtLinkTextRun(stream)
@@ -435,8 +438,6 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
 }
 
-int linkStartCounter = 0;
-
 // link is in form of [txt](url), this method matches ']'
 bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
@@ -457,8 +458,15 @@ int endoflink = 0;
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
+    // if peeked char is EOF or extended char, this isn't a match
     if (linkStartCounter == 0) {
         return false;
+    }
+    
+    // handles [xx](
+    if (lookahead.peek() < 0) {
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return  false;
     }
 
     std::stringstream::pos_type start = lookahead.tellg();
@@ -477,12 +485,6 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
         }
         ++i;
     }
-    
-    // if peeked char is EOF or extended char, this isn't a match
-    if (lookahead.peek() < 0)
-    {
-        return false;
-    }
 
     // control key is detected, syntax check failed
     if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
@@ -493,13 +495,13 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 
     if (lookahead.peek() == ')')
     {
-        lookahead.get();
+        ParseBlock(lookahead);
         return true;
     }
     
     return true;
 }
-
+//[Stay tuned to Know more](https://tcscomprod.sharepoint.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
@@ -510,7 +512,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
-    ParseBlock(lookahead);
+//    ParseBlock(lookahead);
 
     int currentpos = int(lookahead.tellg());
     while (currentpos <= endoflink && lookahead.peek() != EOF) {
