@@ -368,7 +368,6 @@ void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToke
 
 void LinkParser::Match(std::stringstream& stream)
 {
-    link_destination_start= 0;
     // link syntax check, match keyword at each stage
     bool capturedLink = (MatchAtLinkInit(stream)
                          && MatchAtLinkTextRun(stream)
