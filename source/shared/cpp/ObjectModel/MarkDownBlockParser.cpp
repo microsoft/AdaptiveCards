@@ -497,7 +497,6 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     
     return true;
 }
-//[Stay tuned to Know more](https://tcscomprod.sharepoint.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
@@ -507,8 +506,6 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
     }
-
-//    ParseBlock(lookahead);
 
     int currentpos = int(lookahead.tellg());
     while (currentpos <= link_destination_end && lookahead.peek() != EOF) {
