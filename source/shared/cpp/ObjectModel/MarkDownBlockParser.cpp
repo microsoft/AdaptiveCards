@@ -366,11 +366,9 @@ void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToke
     }
 }
 
-int linkStartCounter = 0;
-
 void LinkParser::Match(std::stringstream& stream)
 {
-    linkStartCounter= 0;
+    link_destination_start= 0;
     // link syntax check, match keyword at each stage
     bool capturedLink = (MatchAtLinkInit(stream)
                          && MatchAtLinkTextRun(stream)
@@ -443,7 +441,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        ++linkStartCounter;
+        ++link_destination_start;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -454,12 +452,11 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
     return false;
 }
 
-int endoflink = 0;
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
     // if peeked char is EOF or extended char, this isn't a match
-    if (linkStartCounter == 0) {
+    if (link_destination_start == 0) {
         return false;
     }
     
@@ -474,14 +471,14 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     std::stringstream::pos_type end = lookahead.tellp();
     int i = int(start);
     
-    while (linkStartCounter > 0 && i < end) {
+    while (link_destination_start > 0 && i < end) {
         if (lookahead.str()[i] == '(') {
-            ++linkStartCounter;
+            ++link_destination_start;
         } else if (lookahead.str()[i] == ')') {
-            --linkStartCounter;
+            --link_destination_start;
         }
-        if (linkStartCounter == 0) {
-            endoflink = i;
+        if (link_destination_start == 0) {
+            link_destination_end = i;
         }
         ++i;
     }
@@ -515,7 +512,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 //    ParseBlock(lookahead);
 
     int currentpos = int(lookahead.tellg());
-    while (currentpos <= endoflink && lookahead.peek() != EOF) {
+    while (currentpos <= link_destination_end && lookahead.peek() != EOF) {
         ParseBlock(lookahead);
         currentpos = int(lookahead.tellg());
     }
