@@ -465,15 +465,14 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
         return  false;
     }
 
-    std::stringstream::pos_type start = lookahead.tellg();
-    lookahead.seekp(0, std::ios::end);
-    std::stringstream::pos_type end = lookahead.tellp();
-    int i = int(start);
+    std::stringstream::pos_type current = lookahead.tellg();
+    int i = int(current);
     
-    while (link_destination_start > 0 && i < end) {
-        if (lookahead.str()[i] == '(') {
+    char c;
+    while (lookahead.get(c) && link_destination_start > 0 ) {
+        if (c== '(') {
             ++link_destination_start;
-        } else if (lookahead.str()[i] == ')') {
+        } else if (c == ')') {
             --link_destination_start;
         }
         if (link_destination_start == 0) {
@@ -481,6 +480,8 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
         }
         ++i;
     }
+    lookahead.clear();
+    lookahead.seekg(current, std::ios::beg);
 
     // control key is detected, syntax check failed
     if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
