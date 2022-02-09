@@ -120,6 +120,7 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
+				actionPayload.data = this.getMergeObject();
 				//Invoked for the custom action type.
 				this.onExecuteAction(actionPayload);
 				break;
