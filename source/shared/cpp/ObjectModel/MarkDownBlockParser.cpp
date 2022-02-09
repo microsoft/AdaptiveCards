@@ -454,7 +454,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
-    // if peeked char is EOF or extended char, this isn't a match
+    // we did not find opening for destination.
     if (link_destination_start == 0) {
         return false;
     }
@@ -462,7 +462,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     // handles [xx](
     if (lookahead.peek() < 0) {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-        return  false;
+        return false;
     }
 
     std::stringstream::pos_type current = lookahead.tellg();
@@ -510,7 +510,14 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 
     int currentpos = int(lookahead.tellg());
     while (currentpos <= link_destination_end && lookahead.peek() != EOF) {
-        ParseBlock(lookahead);
+        if (lookahead.peek() == '[') {
+            // we found an opening in the destination. Catch it.
+            char c{};
+            lookahead.get(c);
+            m_parsedResult.AddNewTokenToParsedResult(c);
+        } else {
+            ParseBlock(lookahead);
+        }
         currentpos = int(lookahead.tellg());
     }
     
