@@ -159,9 +159,6 @@ private:
     // Matches LinkDestination Run syntax of link
     bool MatchAtLinkDestinationRun(std::stringstream&);
 
-    int link_destination_start = 0;
-    int link_destination_end = 0;
-    
     // holds intermediate result of LinkText
     MarkDownParsedResult m_linkTextParsedResult;
 };
