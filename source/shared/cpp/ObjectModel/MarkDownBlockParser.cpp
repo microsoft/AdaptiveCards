@@ -440,7 +440,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        ++link_destination_start;
+        ++m_linkDestinationStart;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -454,34 +454,30 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
-    // we did not find opening for destination.
-    if (link_destination_start == 0) {
-        return false;
-    }
-    
     // handles [xx](
     if (lookahead.peek() < 0) {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
     }
 
-    std::stringstream::pos_type current = lookahead.tellg();
-    int i = int(current);
-    
+    // identify where the destination value ends by marking the position
+    // e.g: ([ab()c])()()() end = 7
+    m_parsingCurrentPos = lookahead.tellg();
+    int i = int(m_parsingCurrentPos);
     char c;
-    while (lookahead.get(c) && link_destination_start > 0 ) {
+    while (lookahead.get(c) && m_linkDestinationStart > 0 ) {
         if (c== '(') {
-            ++link_destination_start;
+            ++m_linkDestinationStart;
         } else if (c == ')') {
-            --link_destination_start;
+            --m_linkDestinationStart;
         }
-        if (link_destination_start == 0) {
-            link_destination_end = i;
+        if (m_linkDestinationStart == 0) {
+            m_linkDestinationEnd = i;
         }
         ++i;
     }
     lookahead.clear();
-    lookahead.seekg(current, std::ios::beg);
+    lookahead.seekg(m_parsingCurrentPos, std::ios::beg);
 
     // control key is detected, syntax check failed
     if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
@@ -490,12 +486,6 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
         return false;
     }
 
-    if (lookahead.peek() == ')')
-    {
-        ParseBlock(lookahead);
-        return true;
-    }
-    
     return true;
 }
 // link is in form of [txt](url), this method matches ')'
@@ -508,8 +498,9 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
-    int currentpos = int(lookahead.tellg());
-    while (currentpos <= link_destination_end && lookahead.peek() != EOF) {
+    
+    m_parsingCurrentPos = lookahead.tellg();
+    while (m_parsingCurrentPos <= m_linkDestinationEnd && lookahead.peek() != EOF) {
         if (lookahead.peek() == '[') {
             // we found an opening in the destination. Catch it.
             char c{};
@@ -518,7 +509,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         } else {
             ParseBlock(lookahead);
         }
-        currentpos = int(lookahead.tellg());
+        m_parsingCurrentPos = int(lookahead.tellg());
     }
     
     m_parsedResult.PopBack();
