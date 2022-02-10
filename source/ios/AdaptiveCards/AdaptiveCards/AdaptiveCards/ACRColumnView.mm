@@ -52,7 +52,7 @@
         }
 
         [view setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         // if columnWidth is set to stretch or number, allow column to fill the available space
