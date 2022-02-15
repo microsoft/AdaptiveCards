@@ -3412,7 +3412,7 @@ export class ChoiceSetInput extends Input {
     defaultValue?: string;
 
     @property(ChoiceSetInput.styleProperty)
-    style?: "compact" | "expanded" | "filtered";
+    style?: "compact" | "expanded" | "filtered" | "people";
 
     get isCompact(): boolean {
         return !this.style || this.style === "compact";
@@ -3727,7 +3727,7 @@ export class ChoiceSetInput extends Input {
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (this.choices.length === 0) {
+        if (this.choices.length === 0 && this.style !== "people") {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.CollectionCantBeEmpty,
