@@ -3,11 +3,11 @@
 
 export abstract class DeviceEmulation {
   readonly name: string;
-  readonly styleSheet: string;
+  readonly maxWidth: string | null;
 
-  constructor(name: string, styleSheet: string) {
+  constructor(name: string, maxWidth: string | null) {
     this.name = name;
-    this.styleSheet = styleSheet;
+    this.maxWidth = maxWidth;
   }
 
 }

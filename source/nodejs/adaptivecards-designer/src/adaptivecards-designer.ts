@@ -20,6 +20,7 @@ export const defaultMicrosoftHosts: containers.HostContainer[] = [
 ]
 
 export const defaultMicrosoftDeviceEmulations: DeviceEmulation[] = [
-	{ name: 'Unconstrained', styleSheet: 'unconstrained.css' },
-	{ name: 'Mobile, typical', styleSheet: 'mobile.css'},
+	{ name: 'Unconstrained', maxWidth: null },
+	{ name: 'Small (320px)', maxWidth: '320px'},
+	{ name: 'Medium (667px)', maxWidth: '667px'}
 ]

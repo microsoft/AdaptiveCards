@@ -1431,6 +1431,15 @@ export class CardDesigner extends Designer.DesignContext {
     set deviceEmulation(value: DeviceEmulation) {
         if (this._deviceEmulation !== value) {
             this._deviceEmulation = value;
+            if(value.maxWidth){
+                this._designerHostElement.style.setProperty('max-width', value.maxWidth)
+                this._designerHostElement.style.setProperty('margin-left', 'auto')
+                this._designerHostElement.style.setProperty('margin-right', 'auto')
+            }else{
+                this._designerHostElement.style.removeProperty('max-width')
+                this._designerHostElement.style.removeProperty('margin-left')
+                this._designerHostElement.style.removeProperty('margin-right')
+            }
         }
     }
 
