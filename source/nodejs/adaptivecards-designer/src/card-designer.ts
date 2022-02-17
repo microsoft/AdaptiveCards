@@ -1440,6 +1440,7 @@ export class CardDesigner extends Designer.DesignContext {
                 this._designerHostElement.style.removeProperty('margin-left')
                 this._designerHostElement.style.removeProperty('margin-right')
             }
+            this._designerSurface.updateLayout(true)
         }
     }
 
