@@ -36,7 +36,8 @@
 }
 
 .acd-designer-host {
-    margin: 20px 40px 20px 20px;
+    margin: 20px 0;
+    padding: 0 40px 0 20px;
 }
 
 .acd-designer-card-header {
