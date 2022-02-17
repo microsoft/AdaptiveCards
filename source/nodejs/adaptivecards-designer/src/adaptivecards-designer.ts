@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as containers from "./containers";
+import {DeviceEmulation} from "./device-emulation";
 
 export * from "./adaptivecards-designer-standalone";
 export * from "./containers/index";
@@ -16,4 +17,9 @@ export const defaultMicrosoftHosts: containers.HostContainer[] = [
 	new containers.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"),
 	new containers.CortanaClassicContainer("Cortana Skills (Classic)", "containers/cortana-classic-container.css"),
 	...containers.BerlinContainer.allContainers(),
+]
+
+export const defaultMicrosoftDeviceEmulations: DeviceEmulation[] = [
+	{ name: 'Unconstrained', styleSheet: 'unconstrained.css' },
+	{ name: 'Mobile, typical', styleSheet: 'mobile.css'},
 ]
