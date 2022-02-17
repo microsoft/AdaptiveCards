@@ -41,14 +41,7 @@ parameters:
   - unit-tests
 
 steps:
-- task: NodeTool@0
-  name: NodeTool1
-  displayName: Use Node 14.x
-  inputs:
-    versionSpec: 14.x
-
 - bash: |
-   npm i -g npm@latest
    npm ci 
    npx lerna bootstrap --ci
    npx lerna run release
