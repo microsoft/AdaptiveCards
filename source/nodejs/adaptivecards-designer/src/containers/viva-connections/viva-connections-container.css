@@ -88,7 +88,7 @@
 .ac-container {
   border: none !important;
 }
-.ac-image.ac-selectable, .ac-container.ac-selectable {
+.ac-image.ac-selectable, .ac-container.ac-selectable, .ac-columnSet.ac-selectable {
   cursor: pointer;
 }
 .ac-container iframe {
