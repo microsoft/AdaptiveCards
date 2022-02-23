@@ -3,9 +3,9 @@
 
 export abstract class DeviceEmulation {
   readonly name: string;
-  readonly maxWidth: string | null;
+  readonly maxWidth: string | undefined;
 
-  constructor(name: string, maxWidth: string | null) {
+  constructor(name: string, maxWidth: string | undefined) {
     this.name = name;
     this.maxWidth = maxWidth;
   }
