@@ -26,7 +26,7 @@ import * as Shared from "./shared";
 import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
-import {DeviceEmulation} from "./device-emulation";
+import { DeviceEmulation } from "./device-emulation";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -1432,15 +1432,15 @@ export class CardDesigner extends Designer.DesignContext {
         if (this._deviceEmulation !== value) {
             this._deviceEmulation = value;
             if(value.maxWidth){
-                this._designerHostElement.style.setProperty('max-width', value.maxWidth)
-                this._designerHostElement.style.setProperty('margin-left', 'auto')
-                this._designerHostElement.style.setProperty('margin-right', 'auto')
+                this._designerHostElement.style.setProperty('max-width', value.maxWidth);
+                this._designerHostElement.style.setProperty('margin-left', 'auto');
+                this._designerHostElement.style.setProperty('margin-right', 'auto');
             }else{
-                this._designerHostElement.style.removeProperty('max-width')
-                this._designerHostElement.style.removeProperty('margin-left')
-                this._designerHostElement.style.removeProperty('margin-right')
+                this._designerHostElement.style.removeProperty('max-width');
+                this._designerHostElement.style.removeProperty('margin-left');
+                this._designerHostElement.style.removeProperty('margin-right');
             }
-            this._designerSurface.updateLayout(true)
+            this._designerSurface.updateLayout(true);
         }
     }
 

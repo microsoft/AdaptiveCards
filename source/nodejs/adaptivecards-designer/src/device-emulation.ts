@@ -9,5 +9,4 @@ export abstract class DeviceEmulation {
     this.name = name;
     this.maxWidth = maxWidth;
   }
-
 }

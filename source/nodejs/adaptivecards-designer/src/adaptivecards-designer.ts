@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as containers from "./containers";
-import {DeviceEmulation} from "./device-emulation";
+import { DeviceEmulation } from "./device-emulation";
 
 export * from "./adaptivecards-designer-standalone";
 export * from "./containers/index";
@@ -20,7 +20,7 @@ export const defaultMicrosoftHosts: containers.HostContainer[] = [
 ]
 
 export const defaultMicrosoftDeviceEmulations: DeviceEmulation[] = [
-	{ name: 'Unconstrained', maxWidth: undefined },
-	{ name: 'Small (320px)', maxWidth: '320px'},
-	{ name: 'Medium (667px)', maxWidth: '667px'}
-]
+  { name: "Unconstrained", maxWidth: undefined },
+  { name: "Small (320px)", maxWidth: "320px" },
+  { name: "Medium (667px)", maxWidth: "667px" }
+];

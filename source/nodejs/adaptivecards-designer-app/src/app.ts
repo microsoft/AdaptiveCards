@@ -61,9 +61,12 @@ window.onload = function() {
     }
     */
 
-	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
-	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-	designer.attachTo(document.getElementById("designerRootHost"));
+  let designer = new ACDesigner.CardDesigner(
+    ACDesigner.defaultMicrosoftHosts,
+    ACDesigner.defaultMicrosoftDeviceEmulations
+  );
+  designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
+  designer.attachTo(document.getElementById("designerRootHost"));
 
     /* Uncomment to test a custom palette item example
     let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
@@ -310,8 +313,8 @@ window.onload = function() {
     };
     */
 
-	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
-    // designer.lockDataStructure = true;
-    designer.sampleData = sampleData;
-    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
-}
+  designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+  // designer.lockDataStructure = true;
+  designer.sampleData = sampleData;
+  designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+};
