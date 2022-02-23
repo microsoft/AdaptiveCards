@@ -65,6 +65,7 @@ window.onload = function() {
     ACDesigner.defaultMicrosoftHosts,
     ACDesigner.defaultMicrosoftDeviceEmulations
   );
+
   designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
   designer.attachTo(document.getElementById("designerRootHost"));
 
@@ -313,8 +314,8 @@ window.onload = function() {
     };
     */
 
-  designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
-  // designer.lockDataStructure = true;
-  designer.sampleData = sampleData;
-  designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
-};
+	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+    // designer.lockDataStructure = true;
+    designer.sampleData = sampleData;
+    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+}
