@@ -50,7 +50,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     void WireButtonClickToAction(winrt::Button const& button,
                                  winrt::IAdaptiveActionElement const& action,
-                                 winrt::AdaptiveRenderContext const& renderContext);
+                                 winrt::AdaptiveRenderContext const& renderContext,
+                                 std::function<void()> callback = nullptr);
 
     winrt::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                           winrt::UIElement const& elementToWrap,

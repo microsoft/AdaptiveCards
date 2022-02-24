@@ -541,10 +541,31 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                     tooltip = title;
                 }
             }
-            else
+            else if (!tooltip.empty())
             {
                 // If we don't have a title, use the tooltip as the name
                 name = tooltip;
+            }
+            else
+            {
+                // There is an edge case here where the column is being used as a toggle button,
+                // i.e. it contains 2 items, one visible and one invisibile, and they swap visibilities
+                // upon the column being clicked. In this case, we need the AltText of the visible item
+                // since the column itself does not have one
+                if (const auto col = adaptiveCardElement.try_as<winrt::AdaptiveColumn>())
+                {
+                    for (auto item : col.Items())
+                    {
+                        if (item.IsVisible())
+                        {
+                            if (const auto img = item.try_as<winrt::AdaptiveImage>())
+                            {
+                                name = img.AltText();
+                                tooltip = img.AltText();
+                            }
+                        }
+                    }
+                }
             }
 
             // Disable the select action button if necessary
@@ -563,7 +584,37 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // can we do explicit check? or need to call check_pointer()?
         if (action)
         {
-            WireButtonClickToAction(button, action, renderContext);
+            if (action.Title().empty() && action.Tooltip().empty())
+            {
+                const auto callback = [adaptiveCardElement, button, description]()
+                {
+                    if (const auto col = adaptiveCardElement.try_as<winrt::AdaptiveColumn>())
+                    {
+                        for (auto item : col.Items())
+                        {
+                            if (const auto img = item.try_as<winrt::AdaptiveImage>())
+                            {
+                                // Swap the visibilities
+                                if (img.IsVisible())
+                                {
+                                    img.IsVisible(false);
+                                }
+                                else
+                                {
+                                    img.IsVisible(true);
+                                    SetAutomationNameAndDescription(button, img.AltText(), description);
+                                    SetTooltip(img.AltText(), button);
+                                }
+                            }
+                        }
+                    }
+                };
+                WireButtonClickToAction(button, action, renderContext, callback);
+            }
+            else
+            {
+                WireButtonClickToAction(button, action, renderContext);
+            }
         }
 
         return button;
@@ -571,14 +622,16 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     void WireButtonClickToAction(winrt::Button const& button,
                                  winrt::IAdaptiveActionElement const& action,
-                                 winrt::AdaptiveRenderContext const& renderContext)
+                                 winrt::AdaptiveRenderContext const& renderContext,
+                                 std::function<void()> callback)
     {
         auto actionInvoker = renderContext.ActionInvoker();
 
-        auto m = button.Click(winrt::auto_revoke, [action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
-                     {
-                actionInvoker.SendActionEvent(action);
-            });
+        auto token = button.Click([action, actionInvoker, callback](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
+                                   {
+                                       actionInvoker.SendActionEvent(action);
+                                       callback();
+                                   });
     }
 
     winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
