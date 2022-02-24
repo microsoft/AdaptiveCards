@@ -318,6 +318,10 @@ a.ac-anchor:hover {
 	display:none;
 }
 
+.swiper-slide.ac-carousel-page {
+	background: transparent !important;
+}
+
 .ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-left,
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-right,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-left,

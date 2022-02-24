@@ -65,8 +65,8 @@
 					"subtle": "#60CDFF"
 				},
 				"dark": {
-					"default": "#FFFFFFFF",
-					"subtle": "#C5FFFFFF"
+					"default": "#E4000000",
+					"subtle": "#9E000000"
 				},
 				"good": {
 					"default": "#6CCB5E",
