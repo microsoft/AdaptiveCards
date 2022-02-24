@@ -879,8 +879,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
                 {
                     stream.Seek(0);
-                    bitmapImage.SetSource(stream);
                     image.Source(bitmapImage);
+                    bitmapImage.SetSourceAsync(stream);
                 }
             });
 
