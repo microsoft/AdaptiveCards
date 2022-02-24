@@ -27,6 +27,11 @@ export class BerlinContainer extends HostContainer {
 		this._colorTheme = theme;
 	}
 
+	public initialize(): void {
+		super.initialize();
+		Adaptive.GlobalSettings.addPaddingToContainerWithBackgroundImage = false; 
+	}
+
 	public renderTo(hostElement: HTMLElement) {
 		this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
 		const outerFrame = document.createElement("div");

@@ -5906,13 +5906,17 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getHasBackground(): boolean {
+        return this.getHasPadding(true);
+    }
+
+    protected getHasPadding(shouldCountBackgroundImage : boolean): boolean {
         let currentElement: CardElement | undefined = this.parent;
 
         while (currentElement) {
             const currentElementHasBackgroundImage =
                 currentElement instanceof Container
-                    ? currentElement.backgroundImage.isValid()
-                    : false;
+                    ? (currentElement.backgroundImage.isValid() && shouldCountBackgroundImage) 
+		    : false;
 
             if (currentElement instanceof StylableCardElementContainer) {
                 if (
@@ -5931,7 +5935,11 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        return this.getHasBackground() || this.getHasBorder()
+        let hasPadding = GlobalSettings.addPaddingToContainerWithBackgroundImage ? 
+            this.getHasBackground() : this.getHasPadding(false);
+
+        return hasPadding  || 
+               this.getHasBorder()
             ? new PaddingDefinition(
                   Enums.Spacing.Padding,
                   Enums.Spacing.Padding,
