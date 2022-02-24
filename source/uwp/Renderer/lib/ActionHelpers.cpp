@@ -586,6 +586,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         {
             if (action.Title().empty() && action.Tooltip().empty())
             {
+                // We are in the same edge case mentioned above (column being used as a toggle button)
+                // so we need to ensure that we update our title/tooltip when our items swap visibilities
                 const auto callback = [adaptiveCardElement, button, description]()
                 {
                     if (const auto col = adaptiveCardElement.try_as<winrt::AdaptiveColumn>())
