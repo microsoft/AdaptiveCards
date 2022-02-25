@@ -5,7 +5,7 @@ export * from "./default/default-container";
 export * from "./berlin/berlin-container";
 export * from "./bf-image/bf-image-container";
 export * from "./cortana-classic/cortana-classic-container";
-export * from "./cortana/cortana-container";
+export * from "./cortana/cortana-container"
 export * from "./notifications/toast-container";
 export * from "./outlook/outlook-container";
 export * from "./skype/skype-container";

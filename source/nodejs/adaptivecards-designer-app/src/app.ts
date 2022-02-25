@@ -11,17 +11,15 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function () {
-  ACTemplating.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => {
-    return "<" + path + " is undefined>";
-  };
+    ACTemplating.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<" + path + " is undefined>" };
 
-  ACDesigner.GlobalSettings.showVersionPicker = true;
-  ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-  ACDesigner.GlobalSettings.showDataStructureToolbox = false;
-  ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+    ACDesigner.GlobalSettings.showVersionPicker = true;
+    ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+    ACDesigner.GlobalSettings.showDataStructureToolbox = false;
+    ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
 
-  // Uncomment to configure default toolbox titles
-  /*
+    // Uncomment to configure default toolbox titles
+    /*
     ACDesigner.Strings.toolboxes.cardEditor.title = "Custom title";
     ACDesigner.Strings.toolboxes.cardStructure.title = "Custom title";
     ACDesigner.Strings.toolboxes.dataStructure.title = "Custom title";
@@ -30,36 +28,32 @@ window.onload = function () {
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
 
-  // Uncomment to configure pic2card service
-  /*
-	ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>>";
+    // Uncomment to configure pic2card service
+    /*
+    ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>>";
     */
 
-  // To Configure path for pic2card image usage policy
-  /*
+    // To Configure path for pic2card image usage policy
+    /*
     ACDesigner.Pic2Card.privacyLink = "../myPath/privacy";
     */
 
-  ACDesigner.CardDesigner.onProcessMarkdown = (
-    text: string,
-    result: { didProcess: boolean; outputHtml: string }
-  ) => {
-    result.outputHtml = new markdownit().render(text);
-    result.didProcess = true;
-  };
+    ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
+        result.outputHtml = new markdownit().render(text);
+        result.didProcess = true;
+    }
 
-  if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
-    // eslint-disable-next-line no-console
-    console.log("Local storage is not available.");
-  }
+    if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+        console.log("Local storage is not available.");
+    }
 
-  // Uncomment to disable (de)serialization of a specific property
-  /*
+    // Uncomment to disable (de)serialization of a specific property
+    /*
     Adaptive.CardElement.requiresProperty.isSerializationEnabled = false;
     */
 
-  // Uncomment to add/remove properties to/from the designer's property sheet
-  /*
+    // Uncomment to add/remove properties to/from the designer's property sheet
+    /*
     ACDesigner.DesignerPeer.onPopulatePropertySheet = (sender: ACDesigner.DesignerPeer, propertySheet: ACDesigner.PropertySheet) => {
         if (sender instanceof ACDesigner.TextBlockPeer) {
             propertySheet.remove(ACDesigner.TextBlockPeer.maxLinesProperty);
@@ -67,11 +61,11 @@ window.onload = function () {
     }
     */
 
-  const designer = new ACDesigner.CardDesigner(ACDesigner.DefaultMicrosoftHosts);
-  designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-  designer.attachTo(document.getElementById("designerRootHost"));
+    let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
+    designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
+    designer.attachTo(document.getElementById("designerRootHost"));
 
-  /* Uncomment to test a custom palette item example
+    /* Uncomment to test a custom palette item example
     let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
     exampleSnippet.snippet = {
         type: "ColumnSet",
@@ -110,122 +104,120 @@ window.onload = function () {
     designer.customPaletteItems = [ exampleSnippet ];
     */
 
-  designer.monacoModuleLoaded(monaco);
+    designer.monacoModuleLoaded(monaco);
 
-  const sampleData = {
-    title: "Publish Adaptive Card Schema",
-    description:
-      "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-    creator: {
-      name: "Matt Hidinger",
-      profileImage: "https://matthidinger.com/images/bio-photo.jpg"
-    },
-    createdUtc: "2017-02-14T06:08:39Z",
-    viewUrl: "https://adaptivecards.io",
-    properties: [
-      { key: "Board", value: "Adaptive Cards" },
-      { key: "List", value: "Backlog" },
-      { key: "Assigned to", value: "Matt Hidinger" },
-      { key: "Due date", value: "Not set" }
-    ]
-  };
+    let sampleData = {
+        title: "Publish Adaptive Card Schema",
+        description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+        creator: {
+            name: "Matt Hidinger",
+            profileImage: "https://matthidinger.com/images/bio-photo.jpg"
+        },
+        createdUtc: "2017-02-14T06:08:39Z",
+        viewUrl: "https://adaptivecards.io",
+        properties: [
+            { key: "Board", value: "Adaptive Cards" },
+            { key: "List", value: "Backlog" },
+            { key: "Assigned to", value: "Matt Hidinger" },
+            { key: "Due date", value: "Not set" }
+        ]
+    };
 
-  const sampleDataStructure: ACDesigner.IData = {
-    valueType: "Object",
-    fields: [
-      {
-        name: "title",
-        displayName: "Title",
-        valueType: "String",
-        sampleValue: "Publish Adaptive Card Schema"
-      },
-      {
-        name: "description",
-        displayName: "Description",
-        valueType: "String",
-        sampleValue:
-          "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."
-      },
-      {
-        name: "creator",
-        displayName: "Creator",
+    let sampleDataStructure: ACDesigner.IData = {
         valueType: "Object",
         fields: [
-          {
-            name: "name",
-            displayName: "Name",
-            valueType: "String",
-            sampleValue: "Matt Hidinger"
-          },
-          {
-            name: "profileImage",
-            displayName: "Profile image URL",
-            valueType: "String",
-            sampleValue: "https://matthidinger.com/images/bio-photo.jpg"
-          }
-        ]
-      },
-      {
-        name: "createdUtc",
-        displayName: "Date created",
-        valueType: "String",
-        sampleValue: "2017-02-14T06:08:39Z"
-      },
-      {
-        name: "viewUrl",
-        displayName: "View URL",
-        valueType: "String",
-        sampleValue: "https://adaptivecards.io"
-      },
-      {
-        name: "properties",
-        displayName: "Properties",
-        valueType: "Array",
-        itemType: {
-          valueType: "Object",
-          fields: [
             {
-              name: "key",
-              displayName: "Key",
-              valueType: "String",
-              sampleValue: "Sample key"
+                name: "title",
+                displayName: "Title",
+                valueType: "String",
+                sampleValue: "Publish Adaptive Card Schema"
             },
             {
-              name: "value",
-              displayName: "Value",
-              valueType: "String",
-              sampleValue: "Sample value"
+                name: "description",
+                displayName: "Description",
+                valueType: "String",
+                sampleValue: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."
+            },
+            {
+                name: "creator",
+                displayName: "Creator",
+                valueType: "Object",
+                fields: [
+                    {
+                        name: "name",
+                        displayName: "Name",
+                        valueType: "String",
+                        sampleValue: "Matt Hidinger"
+                    },
+                    {
+                        name: "profileImage",
+                        displayName: "Profile image URL",
+                        valueType: "String",
+                        sampleValue: "https://matthidinger.com/images/bio-photo.jpg"
+                    }
+                ]
+            },
+            {
+                name: "createdUtc",
+                displayName: "Date created",
+                valueType: "String",
+                sampleValue: "2017-02-14T06:08:39Z"
+            },
+            {
+                name: "viewUrl",
+                displayName: "View URL",
+                valueType: "String",
+                sampleValue: "https://adaptivecards.io"
+            },
+            {
+                name: "properties",
+                displayName: "Properties",
+                valueType: "Array",
+                itemType: {
+                    valueType: "Object",
+                    fields: [
+                        {
+                            name: "key",
+                            displayName: "Key",
+                            valueType: "String",
+                            sampleValue: "Sample key"
+                        },
+                        {
+                            name: "value",
+                            displayName: "Value",
+                            valueType: "String",
+                            sampleValue: "Sample value"
+                        }
+                    ]
+                }
             }
-          ]
-        }
-      }
-    ]
-  };
+        ]
+    };
 
-  /*
-	let sampleData = {
-		firstName: "John",
-		lastName: "Doe",
-		age: 45,
-		isMarried: true,
-		address: {
-			street: "1234 555th Ave NE",
-			city: "Redmond",
-			state: "WA",
-			countryOrRegion: "USA"
-		},
-		children: [
-			{
-				firstName: "Jennifer",
-				lastName: "Doe",
-				age: 9
-			},
-			{
-				firstName: "James",
-				lastName: "Doe",
-				age: 13
-			}
-		]
+    /*
+    let sampleData = {
+        firstName: "John",
+        lastName: "Doe",
+        age: 45,
+        isMarried: true,
+        address: {
+            street: "1234 555th Ave NE",
+            city: "Redmond",
+            state: "WA",
+            countryOrRegion: "USA"
+        },
+        children: [
+            {
+                firstName: "Jennifer",
+                lastName: "Doe",
+                age: 9
+            },
+            {
+                firstName: "James",
+                lastName: "Doe",
+                age: 13
+            }
+        ]
     };
 
     let sampleDataStructure: ACDesigner.IData = {
@@ -318,8 +310,8 @@ window.onload = function () {
     };
     */
 
-  designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
-  // designer.lockDataStructure = true;
-  designer.sampleData = sampleData;
-  designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
-};
+    designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+    // designer.lockDataStructure = true;
+    designer.sampleData = sampleData;
+    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+}
