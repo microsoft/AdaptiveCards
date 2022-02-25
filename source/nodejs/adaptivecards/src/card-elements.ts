@@ -5906,16 +5906,16 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getHasBackground(): boolean {
-        return this.getHasPadding(true);
+        return this.getHasPadding(GlobalSettings.addPaddingToContainerWithBackgroundImage);
     }
 
-    protected getHasPadding(shouldCountBackgroundImage : boolean): boolean {
+    protected getHasPadding(shouldCountBackgroundImage: boolean): boolean {
         let currentElement: CardElement | undefined = this.parent;
 
         while (currentElement) {
             const currentElementHasBackgroundImage =
                 currentElement instanceof Container
-                    ? (currentElement.backgroundImage.isValid() && shouldCountBackgroundImage) 
+                    ? (!shouldCountBackgroundImage || currentElement.backgroundImage.isValid()) 
 		    : false;
 
             if (currentElement instanceof StylableCardElementContainer) {
