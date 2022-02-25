@@ -65,6 +65,11 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 Registry.getManager().removeComponent('Input.Date');
 ```
 
+* To override an internal the support of an element type (i.e To ignore the rendering of specific element type), 
+```
+Registry.getManager().removeComponent('Input.Date');
+```
+
 ## DataBinding
 The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) library is used for DataBinding.
 
@@ -173,6 +178,28 @@ In this example, styles passed for element `input` are applied to all the platfo
 <AdaptiveCards themeConfig={customThemeConfig} payload={payload} />
 ```
 Refer this [wiki page](https://github.com/microsoft/AdaptiveCards/wiki/React-Native-Theme-Config-Support) to view the complete list of customizable theme config properties.
+
+##  Support for overriding BaseImage component
+BaseImage can be overriden to provide support for extensibility for Images in the SDK
+
+**Example**: Providing Auth support via headers
+```
+Registry.getManager().registerInternalComponent('BaseImage', CustomBaseImage);
+
+export const CustomBaseImage = (props) => {
+  return (
+    <Image
+      {...props}
+      source={{
+        uri: 'https://domain.sampleimage.com',
+        headers: 'Bearer AUTH_TOKEN',
+        width: 100,
+        height: 100,
+      }}
+    />
+  );
+};
+```
 
 ##  Examples / Visualizer
 There are lot of sample JSON payloads covering all element types with few real case scenarios are available within this project.   

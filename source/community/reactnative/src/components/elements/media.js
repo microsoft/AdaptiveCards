@@ -8,7 +8,6 @@ import React from "react";
 import {
     View,
     StyleSheet,
-    Image
 } from "react-native";
 
 import * as Constants from "../../utils/constants";
@@ -20,6 +19,7 @@ import {
     InputContext
 } from '../../utils/context';
 import * as Utils from '../../utils/util';
+import { BaseImage } from "./base-image";
 
 
 export class Media extends React.Component {
@@ -130,7 +130,7 @@ export class Media extends React.Component {
                                     style={styles.nativeVideoControls}
                                 />
                             }
-                            {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} resizeMode="contain" style={styles.nativeVideoControls}></Image>}
+                            {(!this.state.onLoad && this.payload.poster) && <BaseImage source={{ uri: this.payload.poster }} resizeMode="contain" style={styles.nativeVideoControls} />}
                         </View>
                     </ElementWrapper>
                 }}

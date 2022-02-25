@@ -15,7 +15,7 @@ export default class InputLabel extends React.Component {
 	constructor(props) {
 		super(props);
 		this.label = props.label || Constants.EmptyString;
-		this.wrap = props.wrap || false;
+		this.wrap = props.wrap || true;
 		this.style = props.style || {};
 		this.isRequired = props.isRequired || false;
 		this.hostConfig = props.configManager.hostConfig;
@@ -24,7 +24,7 @@ export default class InputLabel extends React.Component {
 	}
 
 	render() {
-		const { label, wrap, style, applyStyleConfig } = this;
+		const { label, isRequired, wrap, style, applyStyleConfig } = this;
 
 		// NOTE :: Do not apply label styles on Toggle, other Input's labels style is picked from themeconfig
 		let computedStyle = style;
@@ -41,6 +41,7 @@ export default class InputLabel extends React.Component {
 						style={[this.props.configManager.styleConfig.defaultFontConfig, computedStyle]}
 						configManager={this.props.configManager}
 						wrap={wrap}
+						isRequired={!!isRequired}
 						altText={this.props.altText} />
 				);
 			} else if (typeof label == Constants.TypeObject && this.isValidLabelType(label.type)) {
@@ -55,7 +56,6 @@ export default class InputLabel extends React.Component {
 			return (
 				<View style={styles.container} accessible={typeof label == Constants.TypeString ? true: undefined}>
 					<View>{inputLabel}</View>
-					{this.isRequired && this.getRedAsterisk()}
 				</View>
 			);
 		} else return inputLabel;
@@ -64,19 +64,10 @@ export default class InputLabel extends React.Component {
 	isValidLabelType = type => {
 		return !isNullOrEmpty(type) && (type == Constants.TypeTextBlock || type == Constants.TypeRichTextBlock);
 	}
-
-	getRedAsterisk = () => {
-		const colorDefinition = this.hostConfig.getTextColorForStyle(TextColor.Attention, ContainerStyle.Default);
-		return (<Text style={[styles.redAsterisk, { color: colorDefinition.default }]}>*</Text>);
-	}
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: Constants.FlexRow
-	},
-	redAsterisk: {
-		marginLeft: 2,
-		alignSelf: Constants.CenterString
 	}
 });

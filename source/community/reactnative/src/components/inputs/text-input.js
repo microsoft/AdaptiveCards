@@ -27,8 +27,8 @@ export class InputText extends React.Component {
 		this.regex = this.payload.regex ? new RegExp(this.payload.regex) : undefined;
 
 		this.state = {
-			isError: this.isRequired,
-			text:  this.payload.value ? this.payload.value : Constants.EmptyString
+			isError: this.isInvalid(this.payload.value),
+			text: this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 	}
 
@@ -79,13 +79,19 @@ export class InputText extends React.Component {
 	/**
 	 * @description validate the text in the textInput field based on style of the textInput.
 	 */
-	validate = () => {
+	validate = (textValue) => {
+		this.setState({
+			isError: this.isInvalid(textValue)
+		})
+	};
+
+	isInvalid = (textValue) => {
 		let isError = false;
 		if (this.isRequired) {
 			isError = true;
 		}
-		
-		let text = this.state.text.trim();
+
+		let text = textValue?.trim();
 		if (text) {
 			if (Utils.isNullOrEmpty(this.regex)) {
 				switch (this.styleValue) {
@@ -109,7 +115,8 @@ export class InputText extends React.Component {
 				isError = !this.regex.test(text);
 			}
 		}
-		this.setState({ isError });
+
+		return isError;
 	};
 
 	/**
@@ -126,8 +133,8 @@ export class InputText extends React.Component {
 	 */
 	handleBlur = () => {
 		if (this.isRequired)
-			this.validate();
+			this.validate(this.state.text);
 		else if (this.regex)
-			this.validate();
+			this.validate(this.state.text);
 	}
 }

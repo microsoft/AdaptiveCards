@@ -9,11 +9,11 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	ViewPropTypes,
-	Image
 } from 'react-native';
 import { Label } from '../../elements'
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
+import { BaseImage } from '../../elements/base-image';
 
 const IMAGE_COLOR_PROPERTY = "tintColor";
 const TEXT_COLOR_PROPERTY = "color";
@@ -88,15 +88,19 @@ class CheckBox extends React.PureComponent {
 		const { isRadioButtonType } = this.props;
 		const modifiedStyles = this.getModifiedStyles(isRadioButtonType ? this.styleConfig.radioButton : this.styleConfig.checkBox, IMAGE_COLOR_PROPERTY);
 		return (
-			<Image
-				style={modifiedStyles}
-				source={isRadioButtonType ?
-					this.state.checked ? require(CheckedRadioImage) :
-						require(UncheckedRadioImage) :
-					this.state.checked ? require(CheckedCheckBoxImage) :
-						require(UncheckedCheckBoxImage)}
-			/>
-		)
+            <BaseImage
+                style={modifiedStyles}
+                source={
+                    isRadioButtonType
+                        ? this.state.checked
+                            ? require(CheckedRadioImage)
+                            : require(UncheckedRadioImage)
+                        : this.state.checked
+                        ? require(CheckedCheckBoxImage)
+                        : require(UncheckedCheckBoxImage)
+                }
+            />
+        );
 	}
 
 	renderContent = () => {

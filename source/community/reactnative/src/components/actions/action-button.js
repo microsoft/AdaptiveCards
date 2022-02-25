@@ -9,7 +9,6 @@ import {
 	Text,
 	View,
 	StyleSheet,
-	Image,
 	Platform,
 	TouchableOpacity,
 	TouchableNativeFeedback
@@ -22,6 +21,7 @@ import {
 } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
+import { BaseImage } from '../elements/base-image';
 
 
 export class ActionButton extends React.Component {
@@ -218,20 +218,19 @@ export class ActionButton extends React.Component {
 
 	buttonContent = () => {
 		return (
-			<View
-				style={this.getButtonStyles()}>
-				{
-					!Utils.isNullOrEmpty(this.iconUrl) ?
-						<Image resizeMode="center"
-							source={{ uri: this.iconUrl }}
-							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
-						: null
-				}
-				<Text numberOfLines={1} style={this.getButtonTitleStyles()}>
-					{this.title}
-				</Text>
-			</View>
-		);
+            <View style={this.getButtonStyles()}>
+                {!Utils.isNullOrEmpty(this.iconUrl) ? (
+                    <BaseImage
+                        resizeMode="center"
+                        source={{uri: this.iconUrl}}
+                        style={[styles.buttonIcon, this.styleConfig.actionIcon]}
+                    />
+                ) : null}
+                <Text numberOfLines={1} style={this.getButtonTitleStyles()}>
+                    {this.title}
+                </Text>
+            </View>
+        );
 	};
 }
 

@@ -19,6 +19,14 @@
         "isRequired": true
       },
       {
+        "type": "Input.Text",
+        "style": "text",
+        "label": "Long Label test to verify label wrapping along with required field test. This text should wrap, not truncate, and end with asterisk",
+        "id": "LongLabelVal",
+        "errorMessage": "Required",
+        "isRequired": true
+      },
+      {
         "type": "Input.Number",
         "id": "Phone",
         "label": {

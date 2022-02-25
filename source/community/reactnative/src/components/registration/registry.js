@@ -49,6 +49,15 @@ export class Registry {
 	}
 
 	/**
+	 * @description Register a new Component or Override an Existing Internal components
+	 * @param {string} key - Type of the Component to be overridden
+	 * @param {Component} component - React Native component to be rendered
+	 */
+	registerInternalComponent = (key, component) => {
+		this.InternalRegistry[key] = component;
+	}
+
+	/**
 	 * @description Remove an Existing Component
 	 * @param {string} key - Type of the Component to be removed
 	 */
@@ -83,12 +92,24 @@ export class Registry {
 		'ActionSet': ActionSet
 	};
 
+	InternalRegistry = {
+		'BaseImage': undefined
+	}
+
 	/**
 	 * @description Get then component associated for the given element type
 	 * @param {string} type - Type of the element
 	 */
 	getComponentOfType = (type) => {
 		return this.ElementRegistry[type];
+	}
+
+	/**
+	 * @description Get internal component associated for the given element type
+	 * @param {string} type - Type of the element
+	 */
+	getInternalComponentOfType = (type) => {
+		return this.InternalRegistry[type];
 	}
 
 	/**

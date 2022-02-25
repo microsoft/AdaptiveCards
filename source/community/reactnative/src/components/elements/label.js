@@ -19,7 +19,7 @@ export class Label extends React.Component {
 	render() {
 		this.hostConfig = this.props.configManager.hostConfig;
 
-		let { text, altText, wrap, maxLines, onDidLayout } = this.props;
+		let { text, altText, wrap, maxLines, onDidLayout, isRequired } = this.props;
 
 		// parse & format DATE/TIME values
 		let lang = this.context.lang;
@@ -29,7 +29,7 @@ export class Label extends React.Component {
 		let receivedStyle = this.props.style;
 
 		// compute style from props
-		let computedStyle = this.getComputedStyle();
+		const [computedStyle, extraStyles] = this.getComputedStyle();
 
 		// number of lines
 		let numberOfLines = wrap ? (maxLines != undefined ? maxLines : 0) : 1;
@@ -40,8 +40,10 @@ export class Label extends React.Component {
 		return (
 			<MarkDownFormatter
 				defaultStyles={[computedStyle, receivedStyle]}
+				extraStyles={extraStyles}
 				numberOfLines={numberOfLines}
 				text={formattedText}
+				isRequired={!!isRequired}
 				altText={altText}
 				onDidLayout={onDidLayout}
 				{...clickProps} />
@@ -104,13 +106,18 @@ export class Label extends React.Component {
 			Enums.TextSize.Default
 		));
 
-		return {
+		// required asterisk style
+		const requiredTextStyle = this.hostConfig.getTextColorForStyle(Enums.TextColor.Attention, Enums.ContainerStyle.Default);
+
+		return [{
 			fontSize,
 			fontWeight: fontWeight.toString(),
 			fontFamily: fontFamilyValue,
 			color: colorValue,
 			textAlign,
 			lineHeight
-		}
+		}, {
+			requiredTextStyle
+		}];
 	}
 }

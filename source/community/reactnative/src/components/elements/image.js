@@ -7,7 +7,7 @@
 import React from 'react';
 import {
 	StyleSheet,
-	Image,
+	Image
 } from 'react-native';
 
 import * as Utils from '../../utils/util';
@@ -19,6 +19,7 @@ import {
 	InputContext,
 	InputContextConsumer
 } from '../../utils/context';
+import { BaseImage } from './base-image';
 
 export class Img extends React.Component {
 
@@ -273,15 +274,20 @@ export class Img extends React.Component {
 
 	getImageComponent(imageUrl, wrapperComputedStyle, imageComputedStyle) {
 		return (
-			<ElementWrapper configManager={this.props.configManager} json={this.payload} isFirst={this.props.isFirst}
-				style={wrapperComputedStyle}
-				onPageLayout={this.onPageLayoutHandler}>
-				<Image style={imageComputedStyle}
-					accessible={true}
-					accessibilityLabel={this.payload.altText}
-					source={{ uri: imageUrl }} />
-			</ElementWrapper>
-		);
+            <ElementWrapper
+                configManager={this.props.configManager}
+                json={this.payload}
+                isFirst={this.props.isFirst}
+                style={wrapperComputedStyle}
+                onPageLayout={this.onPageLayoutHandler}>
+                <BaseImage
+                    style={imageComputedStyle}
+                    accessible={true}
+                    accessibilityLabel={this.payload.altText}
+                    source={{uri: imageUrl}}
+                />
+            </ElementWrapper>
+        );
 	}
 
 	render() {

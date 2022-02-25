@@ -20,6 +20,7 @@ export default class MarkdownFormatter extends React.PureComponent {
 	matchesStyles = [];
 
 	text = '';
+	isRequired = false;
 	patterns = [];
 	styles = [];
 	styleTypes = [];
@@ -82,7 +83,9 @@ export default class MarkdownFormatter extends React.PureComponent {
 
 		this.numberOfLines = props.numberOfLines;
 		this.userStyles = props.defaultStyles;
+		this.extraStyles = props.extraStyles;
 		this.text = props.text;
+		this.isRequired = props.isRequired;
 		this.altText = props.altText;
 		this.regexArray = this.MD_FORMATTER_CONFIG;
 
@@ -92,7 +95,9 @@ export default class MarkdownFormatter extends React.PureComponent {
 	render() {
 		this.numberOfLines = this.props.numberOfLines;
 		this.userStyles = this.props.defaultStyles;
+		this.extraStyles = this.props.extraStyles;
 		this.text = this.props.text;
+		this.isRequired = this.props.isRequired;
 		this.altText = this.props.altText;
 		this.matchedIndices = [];
 		this.matchesFound = [];
@@ -106,10 +111,10 @@ export default class MarkdownFormatter extends React.PureComponent {
 
 		return (
 			this.altText ?
-			<View accessible={true} accessibilityLabel={this.altText}>
-				{this.renderText(this.text)}
-			</View> :
-			this.renderText(this.text)
+				<View accessible={true} accessibilityLabel={this.altText}>
+					{this.renderText(this.text)}
+				</View> :
+				this.renderText(this.text)
 		);
 	}
 
@@ -244,7 +249,7 @@ export default class MarkdownFormatter extends React.PureComponent {
 		if (this.matchesFound.length < 1) {
 			jsxArray.push(
 				<Text key={'text'} style={this.userStyles} numberOfLines={this.numberOfLines}>
-					{remainingText}
+					{remainingText}{!!this.isRequired && this.getRedAsterisk()}
 				</Text>
 			);
 		} else {
@@ -335,6 +340,12 @@ export default class MarkdownFormatter extends React.PureComponent {
 		return jsxArray;
 	}
 
+	getRedAsterisk = () => {
+		return (
+			<Text style={[{ color: this.extraStyles?.requiredTextStyle?.default }]}> *</Text>
+		);
+	}
+
 	/**
 	 * @description Create the actual <Text/> elements
 	 * @returns {Array} fullJsx - Array of created elements
@@ -422,13 +433,13 @@ export default class MarkdownFormatter extends React.PureComponent {
 	}
 
 	/**
-     * @description Finds the nth Index for Fact key and column value.
+	 * @description Finds the nth Index for Fact key and column value.
 	 * @param {Array} arr - Input array
 	 * @param {} - element
 	 * @param {number} nthIndex
 	 * 
 	 * @return {number} index
-     */
+	 */
 	findNthIndexOfElement(arr, element, nthIndex) {
 		var index = -1;
 		for (var i = 0, len = arr.length; i < len; i++) {

@@ -8,7 +8,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	TextInput,
-	Image,
 	Text,
 	View,
 	Platform,
@@ -21,6 +20,7 @@ import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import InputLabel from "./input-label";
 import { SelectAction } from '../actions';
+import { BaseImage } from '../elements/base-image';
 
 const ERROR_MESSAGE = "Inline ShowCard is not supported as of now";
 
@@ -121,7 +121,7 @@ export class Input extends React.Component {
 		const { isMultiline } = this;
 
 		// remove placeholderTextColor from styles object before using
-		const { placeholderTextColor, activeColor, inactiveColor, singleLineHeight, multiLineHeight, ...stylesObject } = this.styleConfig.input;
+		const { placeholderTextColor, placeholderCursorColor, activeColor, inactiveColor, singleLineHeight, multiLineHeight, ...stylesObject } = this.styleConfig.input;
 		let inputComputedStyles = [stylesObject, styles.input];
 		inputComputedStyles.push({ borderColor: this.state.isFocused ? activeColor : inactiveColor })
 		isMultiline ?
@@ -254,7 +254,7 @@ export class Input extends React.Component {
 							>
 								{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
 									<Text numberOfLines={1} style={[styles.inlineActionText, opacityStyle, this.styleConfig.inlineActionText]}>{inlineAction.title}</Text> :
-									<Image
+									<BaseImage
 										style={[styles.inlineActionImage, opacityStyle]}
 										source=
 										{{ uri: inlineAction.iconUrl }} />
