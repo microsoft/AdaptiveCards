@@ -29,7 +29,7 @@ export class BerlinContainer extends HostContainer {
 
 	public initialize(): void {
 		super.initialize();
-		Adaptive.GlobalSettings.addPaddingToContainerWithBackgroundImage = false; 
+		Adaptive.GlobalSettings.removePaddingFromContainersWithBackgroundImage = true; 
 	}
 
 	public renderTo(hostElement: HTMLElement) {

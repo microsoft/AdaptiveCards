@@ -34,7 +34,7 @@ export class GlobalSettings {
     static enableFallback: boolean = true;
     static useWebkitLineClamp: boolean = true;
     static allowMoreThanMaxActionsInOverflowMenu: boolean = false;
-    static addPaddingToContainerWithBackgroundImage: boolean = true;
+    static removePaddingFromContainersWithBackgroundImage: boolean = false;
 
     static readonly applets: AppletsSettings = {
         logEnabled: true,

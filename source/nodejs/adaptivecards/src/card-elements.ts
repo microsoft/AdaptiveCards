@@ -398,7 +398,7 @@ export abstract class CardElement extends CardObject {
         return new PaddingDefinition();
     }
 
-    protected getHasBackground(): boolean {
+    protected getHasBackground(ignoreBackgroundImage: boolean): boolean {
         return false;
     }
 
@@ -5905,18 +5905,17 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         }
     }
 
-    protected getHasBackground(): boolean {
-        return this.getHasPadding(GlobalSettings.addPaddingToContainerWithBackgroundImage);
-    }
-
-    protected getHasPadding(shouldCountBackgroundImage: boolean): boolean {
+    protected getHasBackground(ignoreBackgroundImage: boolean = false): boolean {
         let currentElement: CardElement | undefined = this.parent;
 
         while (currentElement) {
-            const currentElementHasBackgroundImage =
-                currentElement instanceof Container
-                    ? (!shouldCountBackgroundImage || currentElement.backgroundImage.isValid()) 
-		    : false;
+            let currentElementHasBackgroundImage: boolean = false;
+            if (ignoreBackgroundImage) {
+                currentElementHasBackgroundImage = false;
+            }
+            else {
+                currentElementHasBackgroundImage = currentElement instanceof Container ? currentElement.backgroundImage.isValid() : false;
+            }
 
             if (currentElement instanceof StylableCardElementContainer) {
                 if (
@@ -5935,11 +5934,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        let hasPadding = GlobalSettings.addPaddingToContainerWithBackgroundImage ? 
-            this.getHasBackground() : this.getHasPadding(false);
-
-        return hasPadding  || 
-               this.getHasBorder()
+        return this.getHasBackground() || this.getHasBorder()
             ? new PaddingDefinition(
                   Enums.Spacing.Padding,
                   Enums.Spacing.Padding,
@@ -6313,8 +6308,16 @@ export class Container extends ContainerBase {
         }
     }
 
-    protected getHasBackground(): boolean {
-        return this.backgroundImage.isValid() || super.getHasBackground();
+    getEffectivePadding(): PaddingDefinition {
+        if (GlobalSettings.removePaddingFromContainersWithBackgroundImage && !this.getHasBackground(true)) {
+            return new PaddingDefinition();
+        }
+        return super.getEffectivePadding();
+    }
+
+    protected getHasBackground(ignoreBackgroundImage: boolean = false): boolean {
+         let result = ignoreBackgroundImage ? false : this.backgroundImage.isValid();
+        return result || super.getHasBackground(ignoreBackgroundImage);
     }
 
     protected canHostSingletons() {
@@ -7706,7 +7709,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return renderedElement;
     }
 
-    protected getHasBackground(): boolean {
+    protected getHasBackground(ignoreBackgroundImage: false): boolean {
         return true;
     }
 
