@@ -398,7 +398,7 @@ export abstract class CardElement extends CardObject {
         return new PaddingDefinition();
     }
 
-    protected getHasBackground(ignoreBackgroundImage: boolean): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         return false;
     }
 
@@ -5905,12 +5905,13 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         }
     }
 
-    protected getHasBackground(ignoreBackgroundImage: boolean = false): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         let currentElement: CardElement | undefined = this.parent;
 
         while (currentElement) {
             let currentElementHasBackgroundImage: boolean = false;
-            if (ignoreBackgroundImage) {
+
+            if (ignoreBackgroundImages) {
                 currentElementHasBackgroundImage = false;
             }
             else {
@@ -6308,16 +6309,10 @@ export class Container extends ContainerBase {
         }
     }
 
-    getEffectivePadding(): PaddingDefinition {
-        if (GlobalSettings.removePaddingFromContainersWithBackgroundImage && !this.getHasBackground(true)) {
-            return new PaddingDefinition();
-        }
-        return super.getEffectivePadding();
-    }
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
+        let result = ignoreBackgroundImages ? false : this.backgroundImage.isValid();
 
-    protected getHasBackground(ignoreBackgroundImage: boolean = false): boolean {
-         let result = ignoreBackgroundImage ? false : this.backgroundImage.isValid();
-        return result || super.getHasBackground(ignoreBackgroundImage);
+        return result || super.getHasBackground(ignoreBackgroundImages);
     }
 
     protected canHostSingletons() {
@@ -6373,6 +6368,14 @@ export class Container extends ContainerBase {
 
     protected get isSelectable(): boolean {
         return true;
+    }
+
+    getEffectivePadding(): PaddingDefinition {
+        if (GlobalSettings.removePaddingFromContainersWithBackgroundImage && !this.getHasBackground(true)) {
+            return new PaddingDefinition();
+        }
+
+        return super.getEffectivePadding();
     }
 
     getEffectiveVerticalContentAlignment(): Enums.VerticalAlignment {
@@ -7709,7 +7712,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return renderedElement;
     }
 
-    protected getHasBackground(ignoreBackgroundImage: false): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         return true;
     }
 
