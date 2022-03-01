@@ -1140,7 +1140,7 @@ export class CardDesigner extends Designer.DesignContext {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
         styleSheetLinkElement.rel = "stylesheet";
-		    styleSheetLinkElement.type = "text/css";
+        styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
