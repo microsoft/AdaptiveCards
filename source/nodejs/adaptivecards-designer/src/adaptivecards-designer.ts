@@ -7,7 +7,7 @@ export * from "./adaptivecards-designer-standalone";
 export * from "./containers/index";
 
 export const defaultMicrosoftHosts: containers.HostContainer[] = [
-	new containers.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css", ),
+	new containers.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
 	new containers.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css", true),
 	new containers.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css", true),
 	new containers.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css", true),
