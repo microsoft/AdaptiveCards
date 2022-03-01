@@ -26,6 +26,7 @@ import * as Shared from "./shared";
 import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
+import { DeviceEmulation } from "./device-emulation";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -48,6 +49,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _cardEditor: monaco.editor.IStandaloneCodeEditor;
     private _sampleDataEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
+    private _deviceEmulations: Array<DeviceEmulation>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
     private _designerHostElement: HTMLElement;
@@ -55,6 +57,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _draggedElement: HTMLElement;
     private _currentMousePosition: IPoint;
     private _hostContainer: HostContainer;
+    private _deviceEmulation: DeviceEmulation;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
     private _startDragPayload: object;
@@ -412,8 +415,21 @@ export class CardDesigner extends Designer.DesignContext {
     private activeHostContainerChanged() {
         this.recreateDesignerSurface();
 
+        if (this._deviceEmulationChoicePicker) {
+            this._deviceEmulationChoicePicker.isEnabled = !!this.hostContainer.enableDeviceEmulation
+            this.activeDeviceEmulationChanged()
+        }
+
         if (this.onActiveHostContainerChanged) {
             this.onActiveHostContainerChanged(this);
+        }
+    }
+
+    private activeDeviceEmulationChanged() {
+        if (this.deviceEmulation?.maxWidth && this._hostContainer.enableDeviceEmulation) {
+            this._designerHostElement.style.setProperty('max-width', this.deviceEmulation.maxWidth);
+        } else {
+            this._designerHostElement.style.removeProperty('max-width');
         }
     }
 
@@ -610,6 +626,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
+    private _deviceEmulationChoicePicker: ToolbarChoicePicker;
     private _versionChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
     private _redoButton: ToolbarButton;
@@ -751,6 +768,27 @@ export class CardDesigner extends Designer.DesignContext {
             };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
+        }
+
+        if (this._deviceEmulations && this._deviceEmulations.length > 0) {
+            this._deviceEmulationChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.DeviceEmulationPicker);
+            this._deviceEmulationChoicePicker.separator = true;
+            this._deviceEmulationChoicePicker.label = "Emulate device:"
+
+            for (let i = 0; i < this._deviceEmulations.length; i++) {
+                this._deviceEmulationChoicePicker.choices.push(
+                    {
+                        name: this._deviceEmulations[i].name,
+                        value: i.toString(),
+                    }
+                );
+            }
+
+            this._deviceEmulationChoicePicker.onChanged = (sender) => {
+                this.deviceEmulation = this._deviceEmulations[parseInt(this._deviceEmulationChoicePicker.value)];
+            };
+
+            this.toolbar.addElement(this._deviceEmulationChoicePicker);
         }
 
         this._undoButton = new ToolbarButton(
@@ -995,7 +1033,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     lockDataStructure: boolean = false;
 
-    constructor(hostContainers: Array<HostContainer> = null) {
+    constructor(hostContainers: Array<HostContainer> = null, deviceEmulations: Array<DeviceEmulation> = null) {
         super();
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
@@ -1007,6 +1045,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         this._hostContainers = hostContainers ? hostContainers : [];
+        this._deviceEmulations = deviceEmulations ? deviceEmulations : [];
 
         this.prepareToolbar();
     }
@@ -1101,7 +1140,7 @@ export class CardDesigner extends Designer.DesignContext {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";
+        styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
@@ -1111,6 +1150,10 @@ export class CardDesigner extends Designer.DesignContext {
         }
         else {
             this._hostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
+        }
+
+        if (this._deviceEmulationChoicePicker) {
+            this._deviceEmulationChoicePicker.isEnabled = !!this._hostContainer.enableDeviceEmulation;
         }
 
         root.classList.add("acd-designer-root");
@@ -1398,6 +1441,18 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+    get deviceEmulation(): DeviceEmulation {
+        return this._deviceEmulation;
+    }
+
+    set deviceEmulation(value: DeviceEmulation) {
+        if (this._deviceEmulation !== value) {
+            this._deviceEmulation = value;
+            this.activeDeviceEmulationChanged();
+            this._designerSurface.updateLayout(true);
+        }
+    }
+
     get canUndo(): boolean {
         return this._undoStackIndex >= 1;
     }
@@ -1460,6 +1515,7 @@ export class CardDesigner extends Designer.DesignContext {
 export module CardDesigner {
     export class ToolbarCommands {
         static readonly HostAppPicker = "__hostAppPicker";
+        static readonly DeviceEmulationPicker = "__deviceEmulationPicker";
         static readonly VersionPicker = "__versionPicker";
         static readonly Undo = "__undoButton";
         static readonly Redo = "__redoButton";
