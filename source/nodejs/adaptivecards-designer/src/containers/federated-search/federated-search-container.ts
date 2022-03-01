@@ -19,7 +19,7 @@ export class FederatedSearchContainer extends HostContainer {
   }
 
   public renderTo(hostElement: HTMLElement) {
-    hostElement.classList.add("fedsearch-card");
+    this.cardHost.classList.add("fedsearch-card");
     hostElement.appendChild(this.cardHost);
   }
 
