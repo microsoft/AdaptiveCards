@@ -5,8 +5,8 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/federated-search.json";
 
 export class FederatedSearchContainer extends HostContainer {
-  constructor(name: string, styleSheet: string) {
-    super(name, styleSheet);
+  constructor(name: string, styleSheet: string, enableDeviceEmulation?: boolean) {
+    super(name, styleSheet, enableDeviceEmulation);
 
     this.actionsRegistry.unregister("Action.Submit");
     this.elementsRegistry.unregister("Input.Text");

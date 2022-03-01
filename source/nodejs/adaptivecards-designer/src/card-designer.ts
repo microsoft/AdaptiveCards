@@ -415,8 +415,25 @@ export class CardDesigner extends Designer.DesignContext {
     private activeHostContainerChanged() {
         this.recreateDesignerSurface();
 
+        if (this._deviceEmulationChoicePicker) {
+            this._deviceEmulationChoicePicker.isEnabled = !!this.hostContainer.enableDeviceEmulation
+            this.activeDeviceEmulationChanged()
+        }
+
         if (this.onActiveHostContainerChanged) {
             this.onActiveHostContainerChanged(this);
+        }
+    }
+
+    private activeDeviceEmulationChanged() {
+        if (this.deviceEmulation?.maxWidth && this._hostContainer.enableDeviceEmulation) {
+            this._designerHostElement.style.setProperty('max-width', this.deviceEmulation.maxWidth);
+            this._designerHostElement.style.setProperty('margin-left', 'auto');
+            this._designerHostElement.style.setProperty('margin-right', 'auto');
+        } else {
+            this._designerHostElement.style.removeProperty('max-width');
+            this._designerHostElement.style.removeProperty('margin-left');
+            this._designerHostElement.style.removeProperty('margin-right');
         }
     }
 
@@ -1127,7 +1144,7 @@ export class CardDesigner extends Designer.DesignContext {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";
+		    styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
@@ -1137,6 +1154,10 @@ export class CardDesigner extends Designer.DesignContext {
         }
         else {
             this._hostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
+        }
+
+        if (this._deviceEmulationChoicePicker) {
+            this._deviceEmulationChoicePicker.isEnabled = !!this._hostContainer.enableDeviceEmulation;
         }
 
         root.classList.add("acd-designer-root");
@@ -1431,15 +1452,7 @@ export class CardDesigner extends Designer.DesignContext {
     set deviceEmulation(value: DeviceEmulation) {
         if (this._deviceEmulation !== value) {
             this._deviceEmulation = value;
-            if (value.maxWidth) {
-                this._designerHostElement.style.setProperty('max-width', value.maxWidth);
-                this._designerHostElement.style.setProperty('margin-left', 'auto');
-                this._designerHostElement.style.setProperty('margin-right', 'auto');
-            } else {
-                this._designerHostElement.style.removeProperty('max-width');
-                this._designerHostElement.style.removeProperty('margin-left');
-                this._designerHostElement.style.removeProperty('margin-right');
-            }
+            this.activeDeviceEmulationChanged();
             this._designerSurface.updateLayout(true);
         }
     }

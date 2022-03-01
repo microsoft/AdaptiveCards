@@ -5,15 +5,15 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
 export class OutlookContainer extends HostContainer {
-    constructor(name: string, styleSheet: string) {
-        super(name, styleSheet);
+    constructor(name: string, styleSheet: string, enableDeviceEmulation?: boolean) {
+        super(name, styleSheet, enableDeviceEmulation);
 
         this.actionsRegistry.unregister("Action.Submit");
         this.actionsRegistry.register("Action.Http", Adaptive.HttpAction);
     }
 
     public renderTo(hostElement: HTMLElement) {
-        hostElement.classList.add("outlook-frame");
+        this.cardHost.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
     }
 

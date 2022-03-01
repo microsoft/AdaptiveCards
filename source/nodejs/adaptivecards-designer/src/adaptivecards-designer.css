@@ -32,7 +32,6 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    min-width: 30%;
 }
 
 .acd-designer-host {
@@ -905,6 +904,10 @@
     align-items: center;
     flex: 0 0 auto;
     margin: 0px 8px 0px 8px;
+}
+
+.acd-toolbar-picker-disabled[aria-disabled="true"], .acd-toolbar-picker-disabled + .acd-toolbar-separator {
+    display: none;
 }
 
 @media all and (min-width: 651px) {
