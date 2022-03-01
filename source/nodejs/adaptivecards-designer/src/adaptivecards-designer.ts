@@ -15,5 +15,6 @@ export const defaultMicrosoftHosts: containers.HostContainer[] = [
 	new containers.LightCortanaContainer("Cortana Skills - Light", "containers/cortana-container-light.css"),
 	new containers.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"),
 	new containers.CortanaClassicContainer("Cortana Skills (Classic)", "containers/cortana-classic-container.css"),
+	new containers.FederatedSearchContainer("Federated Search","containers/federated-search-container.css"),
 	...containers.BerlinContainer.allContainers(),
 ]
