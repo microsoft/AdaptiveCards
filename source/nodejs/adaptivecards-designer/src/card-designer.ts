@@ -1034,7 +1034,7 @@ export class CardDesigner extends Designer.DesignContext {
         // Setup card JSON editor
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.setAttribute("role", "region");
-        this._cardEditorToolbox.content.setAttribute("aria-label", "card payload editor");
+        this._cardEditorToolbox.content.setAttribute("aria-label", "card payload editor, press Ctrl+M to toggle behavior of the TAB key");
         this._cardEditorToolbox.content.classList.add("acd-code-editor");
 
         this._cardEditor = monaco.editor.create(
