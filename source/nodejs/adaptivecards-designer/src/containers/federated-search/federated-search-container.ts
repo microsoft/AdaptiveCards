@@ -19,7 +19,7 @@ export class FederatedSearchContainer extends HostContainer {
   }
 
   public renderTo(hostElement: HTMLElement) {
-    hostElement.classList.add("fedsearch-card");
+    this.cardHost.classList.add("fedsearch-card");
     hostElement.appendChild(this.cardHost);
   }
 
@@ -34,5 +34,9 @@ export class FederatedSearchContainer extends HostContainer {
 
   get targetVersion(): Adaptive.Version {
     return Adaptive.Versions.v1_4;
+  }
+
+  get enableDeviceEmulation(): boolean {
+    return true;
   }
 }

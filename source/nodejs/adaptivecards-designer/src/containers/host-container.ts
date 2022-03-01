@@ -76,4 +76,8 @@ export abstract class HostContainer {
     get targetVersion(): Version {
         return Versions.v1_0;
     }
+
+    get enableDeviceEmulation(): boolean {
+        return false;
+    }
 }

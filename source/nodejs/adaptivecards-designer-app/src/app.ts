@@ -61,7 +61,11 @@ window.onload = function () {
     }
     */
 
-    let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
+    let designer = new ACDesigner.CardDesigner(
+      ACDesigner.defaultMicrosoftHosts,
+      ACDesigner.defaultMicrosoftDeviceEmulations
+    );
+
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
     designer.attachTo(document.getElementById("designerRootHost"));
 
