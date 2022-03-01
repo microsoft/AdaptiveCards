@@ -10,12 +10,10 @@ export abstract class HostContainer {
 
     readonly name: string;
     readonly styleSheet: string;
-    readonly enableDeviceEmulation: boolean;
 
-    constructor(name: string, styleSheet: string, enableDeviceEmulation = false) {
+    constructor(name: string, styleSheet: string) {
         this.name = name;
         this.styleSheet = styleSheet;
-        this.enableDeviceEmulation = enableDeviceEmulation;
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
@@ -77,5 +75,9 @@ export abstract class HostContainer {
 
     get targetVersion(): Version {
         return Versions.v1_0;
+    }
+
+    get enableDeviceEmulation(): boolean {
+        return false;
     }
 }

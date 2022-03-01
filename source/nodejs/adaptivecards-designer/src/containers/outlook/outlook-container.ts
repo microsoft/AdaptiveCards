@@ -5,8 +5,8 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
 export class OutlookContainer extends HostContainer {
-    constructor(name: string, styleSheet: string, enableDeviceEmulation?: boolean) {
-        super(name, styleSheet, enableDeviceEmulation);
+    constructor(name: string, styleSheet: string) {
+        super(name, styleSheet);
 
         this.actionsRegistry.unregister("Action.Submit");
         this.actionsRegistry.register("Action.Http", Adaptive.HttpAction);
@@ -124,5 +124,9 @@ export class OutlookContainer extends HostContainer {
 
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_4;
+    }
+
+    get enableDeviceEmulation(): boolean {
+        return true;
     }
 }

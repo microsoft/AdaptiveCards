@@ -5,8 +5,8 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/federated-search.json";
 
 export class FederatedSearchContainer extends HostContainer {
-  constructor(name: string, styleSheet: string, enableDeviceEmulation?: boolean) {
-    super(name, styleSheet, enableDeviceEmulation);
+  constructor(name: string, styleSheet: string) {
+    super(name, styleSheet);
 
     this.actionsRegistry.unregister("Action.Submit");
     this.elementsRegistry.unregister("Input.Text");
@@ -34,5 +34,9 @@ export class FederatedSearchContainer extends HostContainer {
 
   get targetVersion(): Adaptive.Version {
     return Adaptive.Versions.v1_4;
+  }
+
+  get enableDeviceEmulation(): boolean {
+    return true;
   }
 }
