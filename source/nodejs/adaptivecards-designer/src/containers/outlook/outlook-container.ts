@@ -13,7 +13,7 @@ export class OutlookContainer extends HostContainer {
     }
 
     public renderTo(hostElement: HTMLElement) {
-        hostElement.classList.add("outlook-frame");
+        this.cardHost.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
     }
 
@@ -124,5 +124,9 @@ export class OutlookContainer extends HostContainer {
 
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_4;
+    }
+
+    get enableDeviceEmulation(): boolean {
+        return true;
     }
 }

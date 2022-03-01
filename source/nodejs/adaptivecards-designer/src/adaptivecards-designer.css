@@ -35,7 +35,8 @@
 }
 
 .acd-designer-host {
-    margin: 20px 40px 20px 20px;
+    margin: 20px 0;
+    padding: 0 40px 0 20px;
 }
 
 .acd-designer-card-header {
@@ -902,6 +903,10 @@
     align-items: center;
     flex: 0 0 auto;
     margin: 0px 8px 0px 8px;
+}
+
+.acd-toolbar-picker-disabled[aria-disabled="true"], .acd-toolbar-picker-disabled + .acd-toolbar-separator {
+    display: none;
 }
 
 @media all and (min-width: 651px) {
