@@ -15,7 +15,11 @@ export class BotFrameworkContainer extends HostContainer {
 		hostElement.appendChild(frame);
 	}
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfig);
-    }
+	public getHostConfig(): Adaptive.HostConfig {
+		return new Adaptive.HostConfig(hostConfig);
+	}
+
+	get enableDeviceEmulation(): boolean {
+		return true;
+	}
 }
