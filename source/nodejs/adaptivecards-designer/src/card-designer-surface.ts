@@ -723,7 +723,7 @@ export class CardDesignerSurface {
         this._removeCommandElement.style.position = "absolute";
         this._removeCommandElement.style.zIndex = "500";
         this._removeCommandElement.onkeyup= (e) => {
-            if (e.key == Constants.keys.enter)
+            if (e.key === Constants.keys.enter)
             {
                 this.removeSelected();
             }
