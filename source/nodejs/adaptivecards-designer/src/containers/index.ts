@@ -13,3 +13,4 @@ export * from "./teams/teams-container";
 export * from "./timeline/timeline-container";
 export * from "./webchat/webchat-container";
 export * from "./viva-connections/viva-connections-container";
+export * from "./federated-search/federated-search-container";
