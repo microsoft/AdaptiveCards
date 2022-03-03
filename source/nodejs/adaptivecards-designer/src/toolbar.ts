@@ -214,6 +214,7 @@ export interface IChoicePickerItem {
 export class ToolbarChoicePicker extends ToolbarElement {
     private _dropDown: DropDown;
     private _labelledById: string; // id to use for our label element
+    private _isEnabled: boolean = true;
 
     protected internalRender(): HTMLElement {
         this._dropDown = new DropDown();
@@ -262,6 +263,16 @@ export class ToolbarChoicePicker extends ToolbarElement {
         return pickerContainerElement;
     }
 
+    protected internalUpdateLayout() {
+        if (!this.isEnabled) {
+            this.renderedElement.classList.add("acd-toolbar-picker-disabled");
+            this.renderedElement.setAttribute("aria-disabled", "true");
+        } else {
+            this.renderedElement.classList.remove("acd-toolbar-picker-disabled");
+            this.renderedElement.removeAttribute("aria-disabled");
+        }
+    }
+
     onChanged: (sender: ToolbarChoicePicker) => void;
 
     label: string = null;
@@ -278,6 +289,15 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
     set selectedIndex(value: number) {
         this._dropDown.selectedIndex = value;
+    }
+
+    get isEnabled(): boolean {
+        return this._isEnabled;
+    }
+
+    set isEnabled(value: boolean) {
+        this._isEnabled = value;
+        this.updateLayout();
     }
 }
 
