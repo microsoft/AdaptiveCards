@@ -948,7 +948,7 @@
 }
 
 .acd-toolbar-button.acd-toolbar-button-disabled {
-    color: lightgray;
+    color: InactiveCaptionText;
     background-color: transparent;
     cursor: default;
 }
