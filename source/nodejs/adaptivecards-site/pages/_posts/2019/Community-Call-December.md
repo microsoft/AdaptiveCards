@@ -69,7 +69,7 @@ See you in 2020!
 
 Watch the call here.
 
-<iframe width="560" height="315" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/B9d354AY_GA"></iframe>
+<iframe width="560" title="Community Call December 2019 video" height="315" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/B9d354AY_GA"></iframe>
 
 Resources from this month's call
 
