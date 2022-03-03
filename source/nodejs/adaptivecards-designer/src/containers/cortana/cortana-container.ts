@@ -17,6 +17,10 @@ abstract class BaseCortanaContainer extends HostContainer {
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_2;
     }
+
+    get enableDeviceEmulation(): boolean {
+        return true;
+    }
 }
 
 export class LightCortanaContainer extends BaseCortanaContainer {
