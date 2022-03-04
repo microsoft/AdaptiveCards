@@ -60,6 +60,10 @@
 					"default": "#E4000000",
 					"subtle": "#9E000000"
 				},
+				"light": {
+					"default": "#FFFFFFFF",
+					"subtle": "#C5FFFFFF"
+				},
 				"dark": {
 					"default": "#000000",
 					"subtle": "#000000"
