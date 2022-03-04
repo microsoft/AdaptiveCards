@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { ActionStyle } from "./enums";
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 export type TextSize = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
@@ -13,6 +14,7 @@ export type ImageStyle = "default" | "person";
 export interface IAction {
     id: string;
     title?: string;
+		style?: ActionStyle;
 }
 
 export interface ISubmitAction extends IAction {
