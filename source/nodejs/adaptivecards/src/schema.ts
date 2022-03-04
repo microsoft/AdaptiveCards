@@ -14,7 +14,7 @@ export type ImageStyle = "default" | "person";
 export interface IAction {
     id: string;
     title?: string;
-		style?: ActionStyle;
+    style?: ActionStyle;
 }
 
 export interface ISubmitAction extends IAction {
