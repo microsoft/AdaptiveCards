@@ -1,5 +1,5 @@
 {
-	"name": "adaptivecards-extras-designer",
+	"name": "@microsoft/adaptivecards-extras-designer",
 	"version": "0.2.0-alpha.0",
 	"description": "Designer support for Adaptive Card Extras",
 	"author": "AdaptiveCards",
@@ -30,6 +30,6 @@
 	"dependencies": {
 		"adaptivecards": "^3.0.0-beta.1",
 		"adaptivecards-designer": "^2.4.0-alpha.0",
-		"adaptivecards-extras": "^0.2.0-alpha.0"
+		"@microsoft/adaptivecards-extras": "^0.2.0-alpha.0"
 	}
 }
