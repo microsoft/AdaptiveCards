@@ -6,8 +6,7 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "Assets/Adaptive10.png",
-			"altText": "Adaptive cards 1.0 logo"
+			"url": "Assets/Adaptive10.png"
 		}
 	],
 	"actions": [

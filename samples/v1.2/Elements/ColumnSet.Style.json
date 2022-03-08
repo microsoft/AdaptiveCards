@@ -12,8 +12,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						},
 						{
 							"type": "TextBlock",
@@ -30,8 +29,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						}
 					]
 				},
@@ -44,8 +42,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						}
 					]
 				}
@@ -60,8 +57,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						},
 						{
 							"type": "TextBlock",
@@ -78,8 +74,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						}
 					]
 				},
@@ -92,8 +87,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						}
 					]
 				}
@@ -109,8 +103,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						},
 						{
 							"type": "TextBlock",
@@ -124,8 +117,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png",
-							"altText": "Cat"
+							"url": "https://adaptivecards.io/content/cats/1.png"
 						},
 						{
 							"type": "TextBlock",

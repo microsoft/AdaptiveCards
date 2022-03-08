@@ -18,7 +18,6 @@
 						{
 							"type": "Image",
 							"url": "https://unsplash.it/80?image=1083",
-							"altText": "Silver Star Mountain",
 							"size": "medium"
 						}
 					]
@@ -56,7 +55,6 @@
 						{
 							"type": "Image",
 							"url": "https://unsplash.it/80?image=1082",
-							"altText": "Kitchen Remodel",
 							"size": "medium"
 						}
 					]
@@ -95,7 +93,6 @@
 						{
 							"type": "Image",
 							"url": "https://unsplash.it/80?image=1080",
-							"altText": "The Witcher",
 							"size": "medium"
 						}
 					]

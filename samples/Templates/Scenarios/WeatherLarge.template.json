@@ -15,8 +15,7 @@
                         {
                             "type": "Image",
                             "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-                            "size": "Stretch",
-                            "altText": "Mostly cloudy weather"
+                            "size": "Stretch"
                         }
                     ]
                 },
@@ -72,8 +71,7 @@
                         {
                             "type": "Image",
                             "size": "auto",
-                            "url": "${weather.icon}",
-                            "altText": "${weather.description}"
+                            "url": "${weather.icon}"
                         },
                         {
                             "type": "FactSet",

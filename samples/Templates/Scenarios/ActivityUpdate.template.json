@@ -19,7 +19,6 @@
 							"type": "Image",
 							"style": "Person",
 							"url": "${creator.profileImage}",
-							"altText": "${creator.name}",
 							"size": "Small"
 						}
 					],

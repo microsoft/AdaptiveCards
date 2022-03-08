@@ -5,8 +5,7 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "https://adaptivecards.io/content/adaptive-card-50.png",
-			"altText": "Adaptive cards logo"
+			"url": "https://adaptivecards.io/content/adaptive-card-50.png"
 		},
 		{
 			"type": "TextBlock",

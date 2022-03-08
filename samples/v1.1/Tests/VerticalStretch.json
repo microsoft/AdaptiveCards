@@ -37,7 +37,6 @@
 						{
 							"type": "Image",
 							"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-							"altText": "Person",
 							"size": "small",
 							"style": "person"
 						}

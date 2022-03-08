@@ -12,7 +12,6 @@
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
-			"altText": "Small cat",
 			"size": "small"
 		},
 		{
@@ -24,7 +23,6 @@
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
-			"altText": "Medium cat",
 			"size": "medium"
 		},
 		{
@@ -36,7 +34,6 @@
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
-			"altText": "Large cat",
 			"size": "large"
 		}
 	]

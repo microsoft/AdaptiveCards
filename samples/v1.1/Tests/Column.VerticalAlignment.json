@@ -23,7 +23,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"altText": "Adaptive Cards logo",
+							"altText": "",
 							"url": "https://adaptivecards.io/content/adaptive-card-50.png",
 							"horizontalAlignment": "Center"
 						}

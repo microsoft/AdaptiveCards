@@ -18,7 +18,6 @@
 					{
 						"type": "Image",
 						"url": "https://adaptivecards.io/content/cats/1.png",
-						"altText": "Cat",
 						"size": "medium"
 					}
 				]
@@ -30,7 +29,6 @@
 					{
 						"type": "Image",
 						"url": "https://adaptivecards.io/content/cats/2.png",
-						"altText": "Cat with bandana",
 						"size": "medium"
 					}
 				]

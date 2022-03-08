@@ -9,33 +9,27 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/1.png",
-					"altText": "Cat"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				},
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/2.png",
-					"altText": "Cat with red bandana"
+					"url": "https://adaptivecards.io/content/cats/2.png"
 				},
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/3.png",
-					"altText": "Cat with shades"
+					"url": "https://adaptivecards.io/content/cats/3.png"
 				},
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/1.png",
-					"altText": "Cat"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				},
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/2.png",
-					"altText": "Cat with red bandana"
+					"url": "https://adaptivecards.io/content/cats/2.png"
 				},
 				{
 					"type": "Image",
-					"url": "https://adaptivecards.io/content/cats/3.png",
-					"altText": "Cat with shades"
+					"url": "https://adaptivecards.io/content/cats/3.png"
 				}
 			]
 		}

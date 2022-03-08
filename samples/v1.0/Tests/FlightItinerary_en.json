@@ -71,7 +71,6 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"altText": "Flight to",
 							"size": "small",
 							"spacing": "none"
 						}
@@ -144,7 +143,6 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"altText": "Flight to",
 							"size": "small",
 							"spacing": "none"
 						}

@@ -5,8 +5,7 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "https://adaptivecards.io/content/cats/1.png",
-			"altText": "Cat"
+			"url": "https://adaptivecards.io/content/cats/1.png"
 		}
 	]
 }
