@@ -128,6 +128,7 @@
         {
           "type": "Image",
           "url": "https://adaptivecards.io/content/cats/2.png",
+          "altText": "Cat with red bandana",
           "size": "Small"
         },
         {
@@ -142,6 +143,7 @@
             {
               "type": "Image",
               "url": "https://adaptivecards.io/content/cats/3.png",
+              "altText": "Cat with shades",
               "size": "Small"
             }
           ]
@@ -179,12 +181,14 @@
         {
           "type": "Image",
           "url": "https://adaptivecards.io/content/cats/1.png",
+          "altText": "cat",
           "size": "Small"
         },
         {
           "type": "Image",
           "horizontalAlignment": "Right",
           "url": "https://adaptivecards.io/content/cats/1.png",
+          "altText": "cat",
           "size": "Small"
         }
       ]
