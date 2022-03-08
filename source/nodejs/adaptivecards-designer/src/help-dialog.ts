@@ -26,11 +26,11 @@ export class HelpDialog extends Dialog {
     protected renderContent(): HTMLElement {
         this._renderedElement = document.createElement("div");
 
-        let cardHeading = document.createElement("h1");
+        let cardHeading = document.createElement("h2");
         cardHeading.innerText = "Card Payload and Sample Data Editors";
         this._renderedElement.appendChild(cardHeading);
 
-        let keyboardHeading = document.createElement("h2");
+        let keyboardHeading = document.createElement("h3");
         keyboardHeading.innerText = "Keyboard Shortcuts";
         this._renderedElement.appendChild(keyboardHeading);
 
