@@ -670,8 +670,22 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
+    }
+
+    getAllActions(): Action[] {
+        let result: Action[] = [];
+
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
+            
+            if (action) {
+                result.push(action);
+            }
+        }
+
+        return result;
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -969,6 +983,16 @@ export abstract class BaseTextBlock extends CardElement {
         if (this.ariaHidden) {
             targetElement.setAttribute("aria-hidden", "true");
         }
+    }
+
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        if (this.selectAction) {
+            result.push(this.selectAction);
+        }
+
+        return result;
     }
 
     get effectiveColor(): Enums.TextColor {
@@ -2065,6 +2089,16 @@ export class Image extends CardElement {
         return "Image";
     }
 
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        if (this.selectAction) {
+            result.push(this.selectAction);
+        }
+
+        return result;
+    }
+
     getActionById(id: string) {
         let result = super.getActionById(id);
 
@@ -2239,7 +2273,21 @@ export abstract class CardElementContainer extends CardElement {
         let result: Input[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getAllInputs(processActions));
+            result.push(...this.getItemAt(i).getAllInputs(processActions));
+        }
+
+        return result;
+    }
+
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            result.push(...this.getItemAt(i).getAllActions());
+        }
+
+        if (this._selectAction) {
+            result.push(this._selectAction);
         }
 
         return result;
@@ -2249,7 +2297,7 @@ export abstract class CardElementContainer extends CardElement {
         let result: IResourceInformation[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getResourceInformation());
+            result.push(...this.getItemAt(i).getResourceInformation());
         }
 
         return result;
@@ -2973,7 +3021,7 @@ export abstract class Input extends CardElement implements IInput {
         return result;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [this];
     }
 
@@ -3160,6 +3208,16 @@ export class TextInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.Text";
+    }
+
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        if (this.inlineAction) {
+            result.push(this.inlineAction);
+        }
+
+        return result;
     }
 
     getActionById(id: string) {
@@ -4431,8 +4489,12 @@ export abstract class Action extends CardObject {
         return false;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
+    }
+
+    getAllActions(): Action[] {
+        return [ this ];
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -4554,7 +4616,7 @@ export abstract class SubmitActionBase extends Action {
             let inputs: Input[] = [];
 
             while (current) {
-                inputs = inputs.concat(current.getAllInputs(false));
+                inputs.push(...current.getAllInputs(false));
 
                 current = current.parent;
             }
@@ -5065,8 +5127,20 @@ export class ShowCardAction extends Action {
         return this.card.getAllInputs(processActions);
     }
 
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        result.push(...this.card.getAllActions());
+
+        return result;
+    }
+
     getResourceInformation(): IResourceInformation[] {
-        return super.getResourceInformation().concat(this.card.getResourceInformation());
+        let result = super.getResourceInformation();
+
+        result.push(...this.card.getResourceInformation());
+
+        return result;
     }
 
     getActionById(id: string): Action | undefined {
@@ -5093,6 +5167,14 @@ class OverflowAction extends Action {
 
     getActions(): readonly Action[] {
         return this._actions;
+    }
+
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        result.push(...this._actions);
+
+        return result;
     }
 
     getJsonTypeName(): string {
@@ -5617,7 +5699,7 @@ class ActionCollection {
 
         if (processActions) {
             for (const action of this._items) {
-                result = result.concat(action.getAllInputs());
+                result.push(...action.getAllInputs());
             }
         }
 
@@ -5628,7 +5710,7 @@ class ActionCollection {
         let result: IResourceInformation[] = [];
 
         for (const action of this._items) {
-            result = result.concat(action.getResourceInformation());
+            result.push(...action.getResourceInformation());
         }
 
         return result;
@@ -5721,6 +5803,20 @@ export class ActionSet extends CardElement {
         const result: Action | undefined = this._actionCollection.getActionById(id);
 
         return result ? result : super.getActionById(id);
+    }
+
+    getAllActions(): Action[] {
+        let result = super.getAllActions();
+
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
+
+            if (action) {
+                result.push(action);
+            }
+        }
+
+        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -7283,16 +7379,18 @@ export abstract class ContainerWithActions extends Container {
         let result = super.getAllInputs(processActions);
 
         if (processActions) {
-            result = result.concat(this._actionCollection.getAllInputs(processActions));
+            result.push(...this._actionCollection.getAllInputs(processActions));
         }
 
         return result;
     }
 
     getResourceInformation(): IResourceInformation[] {
-        return super
-            .getResourceInformation()
-            .concat(this._actionCollection.getResourceInformation());
+        let result = super.getResourceInformation();
+
+        result.push(...this._actionCollection.getResourceInformation());
+
+        return result;
     }
 
     isBleedingAtBottom(): boolean {
