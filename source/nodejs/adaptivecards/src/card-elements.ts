@@ -571,12 +571,22 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
+        this.getRootElement().updateActionsEnabledState();
+
         return this._renderedElement;
     }
 
     updateLayout(_processChildren: boolean = true) {
         this.updateRenderedElementVisibility();
         this.applyPadding();
+    }
+
+    updateActionsEnabledState() {
+        let allActions = this.getRootElement().getAllActions();
+
+        for (let action of allActions) {
+            action.updateEnabledState();
+        }
     }
 
     indexOf(_cardElement: CardElement): number {
@@ -788,7 +798,7 @@ export class ActionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: Action | undefined,
         context: SerializationContext
@@ -1829,7 +1839,7 @@ class ImageDimensionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: number | undefined,
         context: BaseSerializationContext
@@ -2786,6 +2796,7 @@ export abstract class Input extends CardElement implements IInput {
     private _renderedErrorMessageElement?: HTMLElement;
     private _renderedLabelElement?: HTMLElement;
     private _renderedInputControlElement?: HTMLElement;
+    private _oldValue: any;
 
     protected getAllLabelIds(): string[] {
         const labelIds: string[] = [];
@@ -2905,10 +2916,14 @@ export abstract class Input extends CardElement implements IInput {
             return this._outerContainerElement;
         }
 
+        this.resetDirtyState();
+
         return undefined;
     }
 
     protected valueChanged() {
+        this.getRootElement().updateActionsEnabledState();
+
         if (this.isValid()) {
             this.resetValidationFailureCue();
         }
@@ -2975,6 +2990,14 @@ export abstract class Input extends CardElement implements IInput {
         return true;
     }
 
+    isDirty(): boolean {
+        return this.value !== this._oldValue;
+    }
+
+    resetDirtyState() {
+        this._oldValue = this.value;
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -3023,6 +3046,14 @@ export abstract class Input extends CardElement implements IInput {
 
     getAllInputs(processActions: boolean = true): Input[] {
         return [this];
+    }
+
+    render(): HTMLElement | undefined {
+        let result = super.render();
+
+        this.resetDirtyState();
+
+        return result;
     }
 
     abstract get value(): any;
@@ -3270,7 +3301,7 @@ export class ToggleInput extends Input {
         true,
         undefined,
         "true",
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return "true";
         }
     );
@@ -3280,7 +3311,7 @@ export class ToggleInput extends Input {
         true,
         undefined,
         "false",
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return "false";
         }
     );
@@ -3305,6 +3336,7 @@ export class ToggleInput extends Input {
 
     private _checkboxInputElement: HTMLInputElement;
     private _checkboxInputLabelElement: HTMLElement | undefined;
+    private _oldCheckboxValue: boolean;
 
     protected updateInputControlAriaLabelledBy() {
         if (this._checkboxInputElement) {
@@ -3350,6 +3382,8 @@ export class ToggleInput extends Input {
         if (this.defaultValue === this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
+
+        this._oldCheckboxValue = this._checkboxInputElement.checked;
 
         this._checkboxInputElement.onchange = () => {
             this.valueChanged();
@@ -3406,6 +3440,10 @@ export class ToggleInput extends Input {
         }
 
         return this.value ? true : false;
+    }
+
+    isDirty(): boolean {
+        return this._checkboxInputElement ? this._checkboxInputElement.checked !== this._oldCheckboxValue : false;
     }
 
     get value(): string | undefined {
@@ -4060,10 +4098,10 @@ export class TimeProperty extends CustomProperty<string | undefined> {
             targetVersion,
             name,
             (
-                _sender: SerializableObject,
+                sender: SerializableObject,
                 prop: PropertyDefinition,
                 source: PropertyBag,
-                _context: BaseSerializationContext
+                context: BaseSerializationContext
             ) => {
                 const value = source[prop.name];
 
@@ -4074,7 +4112,7 @@ export class TimeProperty extends CustomProperty<string | undefined> {
                 return undefined;
             },
             (
-                _sender: SerializableObject,
+                sender: SerializableObject,
                 prop: PropertyDefinition,
                 target: PropertyBag,
                 value: string | undefined,
@@ -4232,7 +4270,13 @@ export abstract class Action extends CardObject {
     tooltip?: string;
 
     @property(Action.isEnabledProperty)
-    isEnabled: boolean;
+    get isEnabled(): boolean {
+        return this.internalGetIsEnabled();
+    }
+
+    set isEnabled(value: boolean) {
+        this.setValue(Action.isEnabledProperty, value);
+    }
 
     //#endregion
 
@@ -4350,6 +4394,10 @@ export abstract class Action extends CardObject {
         }
     }
 
+    protected internalGetIsEnabled(): boolean {
+        return this.getValue(Action.isEnabledProperty);
+    }
+
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext();
     }
@@ -4390,6 +4438,14 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    protected internalAfterExecute() {
+        let rootObject = this.getRootObject();
+
+        if (rootObject instanceof CardElement) {
+            rootObject.updateActionsEnabledState();
+        }
+    }
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -4412,6 +4468,7 @@ export abstract class Action extends CardObject {
         if (!this.isEnabled) {
             element.setAttribute("aria-disabled", "true");
         } else {
+            element.removeAttribute("aria-disabled");
             element.classList.add(this.hostConfig.makeCssClassName("ac-selectable"));
         }
 
@@ -4419,12 +4476,14 @@ export abstract class Action extends CardObject {
             element.setAttribute("aria-label", this.title);
             element.title = this.title;
         }
+        else {
+            element.removeAttribute("aria-label");
+            element.removeAttribute("title");
+        }
 
         if (this.tooltip) {
             const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
+                ? this.title ? "aria-description" : "aria-label"
                 : "aria-description";
 
             element.setAttribute(targetAriaAttribute, this.tooltip);
@@ -4464,6 +4523,7 @@ export abstract class Action extends CardObject {
         }
 
         this.raiseExecuteActionEvent();
+        this.internalAfterExecute();
     }
 
     prepareForExecution(): boolean {
@@ -4516,6 +4576,10 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
+    updateEnabledState() {
+        // Do nothing in base implementation
     }
 
     get isPrimary(): boolean {
@@ -4573,10 +4637,10 @@ export abstract class SubmitActionBase extends Action {
         Versions.v1_3,
         "associatedInputs",
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             source: PropertyBag,
-            _context: BaseSerializationContext
+            context: BaseSerializationContext
         ) => {
             const value = source[prop.name];
 
@@ -4587,7 +4651,7 @@ export abstract class SubmitActionBase extends Action {
             return undefined;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: string | undefined,
@@ -4596,17 +4660,22 @@ export abstract class SubmitActionBase extends Action {
             context.serializeValue(target, prop.name, value);
         }
     );
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(Versions.v1_6, "disabledUnlessAssociatedInputsChange", false);
 
     @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
     @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
-
+    
+    @property(SubmitActionBase.disabledUnlessAssociatedInputsChangeProperty)
+    disabledUnlessAssociatedInputsChange: boolean = false;
+    
     //#endregion
 
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
+    private _areReferencedInputsDirty: boolean = false;
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
         const result: Dictionary<Input> = {};
@@ -4650,6 +4719,56 @@ export abstract class SubmitActionBase extends Action {
         }
 
         this._isPrepared = true;
+    }
+
+    protected internalGetIsEnabled(): boolean {
+        let result = super.internalGetIsEnabled();
+        
+        return this.disabledUnlessAssociatedInputsChange ? result && this._areReferencedInputsDirty : result;
+    }
+
+    protected internalAfterExecute() {
+        if (GlobalSettings.resetInputsDirtyStateAfterActionExecution) {
+            this.resetReferencedInputsDirtyState();
+        }
+    }
+
+    resetReferencedInputsDirtyState() {
+        let referencedInputs = this.getReferencedInputs();
+
+        this._areReferencedInputsDirty = false;
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                input.resetDirtyState();
+            }
+        }
+    }
+
+    updateEnabledState() {
+        this._areReferencedInputsDirty = false;
+
+        let referencedInputs = this.getReferencedInputs();
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                if (input.isDirty()) {
+                    this._areReferencedInputsDirty = true;
+
+                    break;
+                }
+            }
+        }
+
+        this.updateCssClasses();
+
+        if (this._renderedElement) {
+            this.setupElementForAccessibility(this._renderedElement);
+        }
     }
 
     get data(): object | undefined {
@@ -4737,10 +4856,10 @@ export class ToggleVisibilityAction extends Action {
         Versions.v1_2,
         "targetElements",
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             source: PropertyBag,
-            _context: BaseSerializationContext
+            context: BaseSerializationContext
         ) => {
             const result: PropertyBag = {};
 
@@ -4761,7 +4880,7 @@ export class ToggleVisibilityAction extends Action {
             return result;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: PropertyBag,
@@ -4783,7 +4902,7 @@ export class ToggleVisibilityAction extends Action {
             context.serializeArray(target, prop.name, targetElements);
         },
         {},
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return {};
         }
     );
@@ -4863,9 +4982,9 @@ export class ToggleVisibilityAction extends Action {
 
 class StringWithSubstitutionProperty extends PropertyDefinition {
     parse(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         source: PropertyBag,
-        _context: BaseSerializationContext
+        context: BaseSerializationContext
     ): StringWithSubstitutions {
         const result = new StringWithSubstitutions();
         result.set(Utils.parseString(source[this.name]));
@@ -4874,7 +4993,7 @@ class StringWithSubstitutionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: StringWithSubstitutions,
         context: BaseSerializationContext
@@ -6726,8 +6845,8 @@ export class Column extends Container {
             return result;
         },
         (
-            _sender: SerializableObject,
-            _property: PropertyDefinition,
+            sender: SerializableObject,
+            property: PropertyDefinition,
             target: PropertyBag,
             value: ColumnWidth,
             context: BaseSerializationContext
@@ -7448,7 +7567,7 @@ export class RefreshActionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: ExecuteAction | undefined,
         context: SerializationContext
@@ -7595,18 +7714,18 @@ export class AdaptiveCard extends ContainerWithActions {
         Versions.v1_0,
         "$schema",
         (
-            _sender: SerializableObject,
-            _property: PropertyDefinition,
-            _source: PropertyBag,
-            _context: BaseSerializationContext
+            sender: SerializableObject,
+            property: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
         ) => {
             return AdaptiveCard.schemaUrl;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
-            _value: Versions | undefined,
+            value: Versions | undefined,
             context: BaseSerializationContext
         ) => {
             context.serializeValue(target, prop.name, AdaptiveCard.schemaUrl);
@@ -7637,7 +7756,7 @@ export class AdaptiveCard extends ContainerWithActions {
             return version;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: Version | undefined,
