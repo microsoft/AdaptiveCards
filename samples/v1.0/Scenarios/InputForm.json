@@ -50,7 +50,9 @@
 							"type": "Input.Text",
 							"id": "myTel",
 							"label": "Phone Number",
+							"regex": "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$",
 							"placeholder": "xxx.xxx.xxxx",
+							"errorMessage": "Please input a valid phone number",
 							"style": "tel"
 						}
 					]
