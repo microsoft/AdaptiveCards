@@ -181,14 +181,14 @@
         {
           "type": "Image",
           "url": "https://adaptivecards.io/content/cats/1.png",
-          "altText": "cat",
+          "altText": "Cat",
           "size": "Small"
         },
         {
           "type": "Image",
           "horizontalAlignment": "Right",
           "url": "https://adaptivecards.io/content/cats/1.png",
-          "altText": "cat",
+          "altText": "Cat",
           "size": "Small"
         }
       ]
