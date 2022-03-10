@@ -50,6 +50,11 @@
 				}
 			]
 		},
+		"metadata": {
+			"type": "Metadata",
+			"description": "Defines various metadata properties typically not used for rendering the card",
+			"version": "1.6"
+        },
 		"minHeight": {
 			"type": "string",
 			"description": "Specifies the minimum height of the card.",
