@@ -865,8 +865,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
 
         // Decode base 64 string
-        winrt::hstring dataPath = imageUrl.Path();
-        std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
+        std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(imageUrl.Path()));
         std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
 
         winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
