@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 "use strict";
-var typedschema = require("ac-typed-schema");
+var typedschema = require("@microsoft/ac-typed-schema");
 var path = require("path");
 
 function getPreviewClassName(version)

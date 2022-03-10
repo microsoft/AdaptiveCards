@@ -1,5 +1,5 @@
 {
-	"name": "adaptivecards-designer-app",
+	"name": "@microsoft/adaptivecards-designer-app",
 	"version": "0.6.0-alpha.0",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
