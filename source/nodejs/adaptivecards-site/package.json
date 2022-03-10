@@ -1,5 +1,5 @@
 {
-	"name": "adaptivecards-site",
+	"name": "@microsoft/adaptivecards-site",
 	"version": "0.8.0-alpha.0",
 	"private": true,
 	"scripts": {
@@ -16,7 +16,7 @@
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-free": "^5.11.2",
-		"ac-typed-schema": "^0.7.0-alpha.0",
+		"@microsoft/ac-typed-schema": "^0.7.0-alpha.0",
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^3.0.0-beta.1",
 		"adaptivecards-designer": "^2.4.0-alpha.0",
@@ -43,7 +43,7 @@
 		"highlightjs": "^9.12.0",
 		"jquery": "^3.4.1",
 		"markdown-it": "^12.2.0",
-		"marked-schema": "^0.2.0-alpha.0",
+		"@microsoft/marked-schema": "^0.2.0-alpha.0",
 		"md5": "^2.2.1",
 		"minimist": "^1.2.5",
 		"monaco-editor": "^0.29.1",

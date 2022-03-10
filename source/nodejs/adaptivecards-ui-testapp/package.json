@@ -1,5 +1,5 @@
 {
-	"name": "adaptivecards-ui-testapp",
+	"name": "@microsoft/adaptivecards-ui-testapp",
 	"version": "1.1.0-alpha.0",
 	"description": "Harness for UI testing for the Adaptive Cards rendering library",
 	"author": "AdaptiveCards",
