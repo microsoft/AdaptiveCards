@@ -249,7 +249,9 @@
     [chatWindow /*@START_MENU_TOKEN@*/.buttons[@"myColor"] /*[[".cells.buttons[@\"myColor\"]",".buttons[@\"myColor\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
 
     XCUIElementQuery *tablesQuery = testApp.tables;
-    [tablesQuery.cells[@"(null), Blue"].staticTexts[@"Blue"] tap];
+    [tablesQuery.cells[@"myColor, Blue"].staticTexts[@"Blue"] tap];
+
+    [chatWindow swipeUp];
 
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"OK"] tap];
@@ -273,6 +275,9 @@
     [chatWindow.tables[@"myColor2"].staticTexts[@"myColor2, Green"] tap];
     [chatWindow /*@START_MENU_TOKEN@*/.tables[@"myColor3"].staticTexts[@"myColor3, Red"] /*[[".cells.tables[@\"myColor3\"]",".cells[@\"Empty list, Red\"]",".staticTexts[@\"Red\"]",".staticTexts[@\"myColor3, Red\"]",".tables[@\"myColor3\"]"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ tap];
 
+    [chatWindow swipeUp];
+
+    // Execute a drag from the 4th element to the 2nd element
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"OK"] tap];
 
@@ -293,6 +298,8 @@
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
     [chatWindow.tables[@"myColor3"].staticTexts[@"myColor3, Blue"] tap];
     [chatWindow /*@START_MENU_TOKEN@*/.tables[@"myColor3"].staticTexts[@"myColor3, Red"] /*[[".cells.tables[@\"myColor3\"]",".cells[@\"Empty list, Red\"]",".staticTexts[@\"Red\"]",".staticTexts[@\"myColor3, Red\"]",".tables[@\"myColor3\"]"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ tap];
+
+    [chatWindow swipeUp];
 
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"OK"] tap];
