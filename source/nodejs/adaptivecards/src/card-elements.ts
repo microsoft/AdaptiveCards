@@ -2477,7 +2477,7 @@ export abstract class MediaPlayer {
 }
 
 export abstract class CustomMediaPlayer extends MediaPlayer {
-    constructor(readonly owner: Media, readonly matches: RegExpExecArray) {
+    constructor(readonly owner: Media, matches: RegExpExecArray) {
         super(owner);
     }
 }
@@ -2571,7 +2571,7 @@ export class HTML5MediaPlayer extends MediaPlayer {
 export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
     private _videoId?: string;
 
-    constructor(readonly owner: Media, readonly matches: RegExpExecArray) {
+    constructor(readonly owner: Media, matches: RegExpExecArray) {
         super(owner, matches);
 
         if (matches.length === 2) {
@@ -2712,7 +2712,7 @@ export class YouTubePlayer extends IFrameMediaMediaPlayer {
 }
 
 export type MediaPlayerType = {
-    new(owner: Media, matches: RegExpExecArray): MediaPlayer;
+    new(owner: Media, matches: RegExpExecArray): CustomMediaPlayer;
     getUrlPatterns(): RegExp[];
  };
 
