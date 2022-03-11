@@ -747,8 +747,8 @@
 
 .acd-peerButton {
     font-size: 14px;
-    border: 1px solid steelblue;
-    color: steelblue;
+    border: 1px solid #2D7BB7;
+    color: #2D7BB7;
     background-color: white;
     cursor: default;
     user-select: none;
@@ -786,7 +786,7 @@
 }
 
 .acd-peerButton:hover {
-    background-color: steelblue;
+    background-color: #2D7BB7;
     color: white;
 }
 
