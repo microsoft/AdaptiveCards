@@ -2144,6 +2144,14 @@ export abstract class CardElementContainer extends CardElement {
 
     allowVerticalOverflow: boolean = false;
 
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            this.getItemAt(i).releaseDOMResources();
+        }
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -2477,29 +2485,60 @@ export class Media extends CardElement {
     static readonly supportedMediaTypes = ["audio", "video"];
 
     private _selectedMediaType?: string;
-    private _selectedSources: MediaSource[];
+    private _selectedSources: MediaSource[] = [];
+    private _youTubeVideoId?: string;
 
     private getPosterUrl(): string | undefined {
-        return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+        if (this.poster) {
+            return this.poster;
+        }
+
+        if (this._youTubeVideoId) {
+            return `https://img.youtube.com/vi/${this._youTubeVideoId}/maxresdefault.jpg`;
+        }
+
+        return this.hostConfig.media.defaultPoster;
     }
 
     private processSources() {
-        this._selectedSources = [];
-        this._selectedMediaType = undefined;
+        let youTubeUrlPatterns = [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
 
-        for (const source of this.sources) {
-            const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
+        for (let source of this.sources) {
+            if (source.url) {
+                for (let pattern of youTubeUrlPatterns) {
+                    let matches = pattern.exec(source.url);
 
-            if (mimeComponents.length === 2) {
-                if (!this._selectedMediaType) {
-                    const index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
+                    if (matches !== null && matches.length === 2) {
+                        this._youTubeVideoId = matches[1];
 
-                    if (index >= 0) {
-                        this._selectedMediaType = Media.supportedMediaTypes[index];
+                        break;
                     }
                 }
-                if (mimeComponents[0] === this._selectedMediaType) {
-                    this._selectedSources.push(source);
+            }
+
+            if (this._youTubeVideoId) {
+                break;
+            }
+        }
+
+        if (!this._youTubeVideoId) {
+            this._selectedSources = [];
+            this._selectedMediaType = undefined;
+
+            for (const source of this.sources) {
+                const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
+
+                if (mimeComponents.length === 2) {
+                    if (!this._selectedMediaType) {
+                        const index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
+
+                        if (index >= 0) {
+                            this._selectedMediaType = Media.supportedMediaTypes[index];
+                        }
+                    }
+                    if (mimeComponents[0] === this._selectedMediaType) {
+                        this._selectedSources.push(source);
+                    }
                 }
             }
         }
@@ -2516,8 +2555,10 @@ export class Media extends CardElement {
                 this.renderedElement.innerHTML = "";
                 this.renderedElement.appendChild(mediaPlayerElement);
 
-                void mediaPlayerElement.play();
-                mediaPlayerElement.focus();
+                if (mediaPlayerElement instanceof HTMLMediaElement) {
+                    mediaPlayerElement.play();
+                    mediaPlayerElement.focus();
+                }
             }
         } else {
             if (Media.onPlay) {
@@ -2568,7 +2609,7 @@ export class Media extends CardElement {
             posterRootElement.style.minHeight = "150px";
         }
 
-        if (this.hostConfig.supportsInteractivity && this._selectedSources.length > 0) {
+        if (this.hostConfig.supportsInteractivity && (this._selectedSources.length > 0 || this._youTubeVideoId)) {
             const playButtonOuterElement = document.createElement("div");
             playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
@@ -2628,7 +2669,31 @@ export class Media extends CardElement {
         return posterRootElement;
     }
 
-    private renderMediaPlayer(): HTMLMediaElement {
+    private renderYouTubePlayer(videoUrl: string): HTMLElement {
+        let container = document.createElement("div");
+        container.style.position = "relative";
+        container.style.width = "100%";
+        container.style.height = "0";
+        container.style.paddingBottom = "56.25%";
+
+        let iFrame = document.createElement("iframe");
+        iFrame.style.position = "absolute";
+        iFrame.style.top = "0";
+        iFrame.style.left = "0";
+        iFrame.style.width = "100%";
+        iFrame.style.height = "100%";
+        iFrame.src = videoUrl;
+        iFrame.title = "YouTube video player";
+        iFrame.frameBorder = "0";
+        iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iFrame.allowFullscreen = true;
+        
+        container.appendChild(iFrame);
+
+        return container;
+    }
+
+    private renderHTML5Player(): HTMLMediaElement {
         let mediaElement: HTMLMediaElement;
 
         if (this._selectedMediaType === "video") {
@@ -2670,6 +2735,12 @@ export class Media extends CardElement {
         return mediaElement;
     }
 
+    private renderMediaPlayer(): HTMLElement {
+        return this._youTubeVideoId
+            ? this.renderYouTubePlayer(`https://www.youtube.com/embed/${this._youTubeVideoId}?autoplay=1`)
+            : this.renderHTML5Player();
+    }
+
     protected internalRender(): HTMLElement | undefined {
         const element = <HTMLElement>document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-media");
@@ -2682,6 +2753,15 @@ export class Media extends CardElement {
     }
 
     static onPlay?: (sender: Media) => void;
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        if (this._renderedElement) {
+            this._renderedElement.innerHTML = "";
+            this._renderedElement.appendChild(this.renderPoster());
+        }
+    }
 
     getJsonTypeName(): string {
         return "Media";
@@ -5045,6 +5125,12 @@ export class ShowCardAction extends Action {
 
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
+    releaseDOMResources() {
+        super.releaseDOMResources();
+        
+        this.card.releaseDOMResources();
+    }
+
     getJsonTypeName(): string {
         return ShowCardAction.JsonTypeName;
     }
@@ -5274,6 +5360,12 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    releaseDOMResources() {
+        for (let action of this._renderedActions) {
+            action.releaseDOMResources();
+        }
     }
 
     actionExecuted(action: Action) {
@@ -5684,6 +5776,12 @@ export class ActionSet extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this);
+    }
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        this._actionCollection.releaseDOMResources();
     }
 
     isBleedingAtBottom(): boolean {
@@ -7237,6 +7335,12 @@ export abstract class ContainerWithActions extends Container {
         super();
 
         this._actionCollection = new ActionCollection(this);
+    }
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        this._actionCollection.releaseDOMResources();
     }
 
     getActionCount(): number {
