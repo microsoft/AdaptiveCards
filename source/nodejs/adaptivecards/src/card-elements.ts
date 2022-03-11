@@ -2465,7 +2465,7 @@ export abstract class MediaPlayer {
 
     abstract canPlay(): boolean;
     abstract render(): HTMLElement;
-    abstract getPosterUrl(): string | undefined;
+    abstract getPosterUrl(): Promise<string | undefined>;
 
     play() {
         // Do nothing in base implementation
@@ -2521,21 +2521,13 @@ export class HTML5MediaPlayer extends MediaPlayer {
         return this._selectedSources.length > 0;
     }
 
-    getPosterUrl(): string | undefined {
+    async getPosterUrl(): Promise<string | undefined> {
         return this.owner.poster ? this.owner.poster : this.owner.hostConfig.media.defaultPoster;
     }
 
     render(): HTMLElement {
         if (this._selectedMediaType === "video") {
-            const videoPlayer = document.createElement("video");
-
-            const posterUrl = this.getPosterUrl();
-
-            if (posterUrl) {
-                videoPlayer.poster = posterUrl;
-            }
-
-            this._mediaElement = videoPlayer;
+            this._mediaElement = document.createElement("video");
         } else {
             this._mediaElement = document.createElement("audio");
         }
@@ -2576,13 +2568,7 @@ export class HTML5MediaPlayer extends MediaPlayer {
     }
 }
 
-export class YouTubePlayer extends CustomMediaPlayer {
-    static getUrlPatterns(): RegExp[] {
-        return [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
-    }
-
-    static iFrameTitle = "YouTube video player";
-
+export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
     private _videoId?: string;
 
     constructor(readonly owner: Media, readonly matches: RegExpExecArray) {
@@ -2593,20 +2579,11 @@ export class YouTubePlayer extends CustomMediaPlayer {
         }
     }
 
+    abstract getIFrameTitle(): string;
+    abstract getVideoUrl(): string;
+
     canPlay(): boolean {
         return this._videoId !== undefined;
-    }
-
-    getPosterUrl(): string | undefined {
-        if (this.owner.poster) {
-            return this.owner.poster;
-        }
-
-        if (this._videoId) {
-            return `https://img.youtube.com/vi/${this._videoId}/maxresdefault.jpg`;
-        }
-
-        return this.owner.hostConfig.media.defaultPoster;
     }
 
     render(): HTMLElement {
@@ -2622,8 +2599,8 @@ export class YouTubePlayer extends CustomMediaPlayer {
         iFrame.style.left = "0";
         iFrame.style.width = "100%";
         iFrame.style.height = "100%";
-        iFrame.src = `https://www.youtube.com/embed/${this._videoId}?autoplay=1`;
-        iFrame.title = YouTubePlayer.iFrameTitle;
+        iFrame.src = this.getVideoUrl();
+        iFrame.title = this.getIFrameTitle();
         iFrame.frameBorder = "0";
         iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iFrame.allowFullscreen = true;
@@ -2631,6 +2608,106 @@ export class YouTubePlayer extends CustomMediaPlayer {
         container.appendChild(iFrame);
 
         return container;
+    }
+
+    get videoId(): string | undefined {
+        return this._videoId;
+    }
+}
+
+export class VimeoPlayer extends IFrameMediaMediaPlayer {
+    static getUrlPatterns(): RegExp[] {
+        return [ /https?:\/\/vimeo.com\/([\w\d-_]+)/ig ];
+    }
+
+    static iFrameTitle = "Vimeo video player";
+
+    async getPosterUrl(): Promise<string | undefined> {
+        if (this.owner.poster) {
+            return this.owner.poster;
+        }
+
+        const oEmbedUrl = `https://vimeo.com/api/oembed.json?url=${this.getVideoUrl()}`;
+
+        let response = await fetch(oEmbedUrl);
+
+        if (response.ok) {
+            let json = await response.json();
+
+            return json["thumbnail_url"];
+        }
+
+        return this.owner.hostConfig.media.defaultPoster;
+    }
+
+    getIFrameTitle(): string {
+        return VimeoPlayer.iFrameTitle;
+    }
+
+    getVideoUrl(): string {
+        return `https://player.vimeo.com/video/${this.videoId}?autoplay=1`;
+    }
+}
+
+export class DailymotionPlayer extends IFrameMediaMediaPlayer {
+    static getUrlPatterns(): RegExp[] {
+        return [ /https?:\/\/www.dailymotion.com\/video\/([\w\d-_]+)/ig ];
+    }
+
+    static iFrameTitle = "Vimeo video player";
+
+    async getPosterUrl(): Promise<string | undefined> {
+        if (this.owner.poster) {
+            return this.owner.poster;
+        }
+
+        const apiUrl = `https://api.dailymotion.com/video/${this.videoId}?fields=thumbnail_720_url`;
+
+        let response = await fetch(apiUrl);
+
+        if (response.ok) {
+            let json = await response.json();
+
+            return json["thumbnail_720_url"];
+        }
+
+        return this.owner.hostConfig.media.defaultPoster;
+    }
+
+    getIFrameTitle(): string {
+        return VimeoPlayer.iFrameTitle;
+    }
+
+    getVideoUrl(): string {
+        return  `https://www.dailymotion.com/embed/video/${this.videoId}?autoplay=1`;
+    }
+}
+
+export class YouTubePlayer extends IFrameMediaMediaPlayer {
+    static getUrlPatterns(): RegExp[] {
+        return [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
+    }
+
+    static iFrameTitle = "YouTube video player";
+
+    async getPosterUrl(): Promise<string | undefined> {
+        if (this.owner.poster) {
+            return this.owner.poster;
+        }
+
+        if (this.videoId) {
+            return `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg`;
+        }
+
+        return this.owner.hostConfig.media.defaultPoster;
+    }
+
+    getIFrameTitle(): string {
+        return YouTubePlayer.iFrameTitle;
+    }
+
+    getVideoUrl(): string {
+        return `https://www.youtube.com/embed/${this.videoId}?autoplay=1`;
     }
 }
 
@@ -2640,7 +2717,7 @@ export type MediaPlayerType = {
  };
 
 export class Media extends CardElement {
-    static customMediaPlayers: MediaPlayerType[] = [ YouTubePlayer ];
+    static customMediaPlayers: MediaPlayerType[] = [ YouTubePlayer, VimeoPlayer, DailymotionPlayer ];
 
     //#region Schema
 
@@ -2708,125 +2785,133 @@ export class Media extends CardElement {
         }
     }
 
-    private renderPoster(): HTMLElement {
-        const playButtonArrowWidth = 12;
-        const playButtonArrowHeight = 15;
+    private async displayPoster() {
+        if (this.renderedElement) {
+            const playButtonArrowWidth = 12;
+            const playButtonArrowHeight = 15;
 
-        const posterRootElement = document.createElement("div");
-        posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
-        posterRootElement.setAttribute("role", "contentinfo");
-        posterRootElement.setAttribute(
-            "aria-label",
-            this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
-        );
-        posterRootElement.style.position = "relative";
-        posterRootElement.style.display = "flex";
+            const posterRootElement = document.createElement("div");
+            posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
+            posterRootElement.setAttribute("role", "contentinfo");
+            posterRootElement.setAttribute(
+                "aria-label",
+                this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
+            );
+            posterRootElement.style.position = "relative";
+            posterRootElement.style.display = "flex";
 
-        const posterUrl = this._mediaPlayer.getPosterUrl();
+            const posterUrl = await this._mediaPlayer.getPosterUrl();
 
-        if (posterUrl) {
-            const posterImageElement = document.createElement("img");
-            posterImageElement.style.width = "100%";
-            posterImageElement.style.height = "100%";
-            posterImageElement.setAttribute("role", "presentation");
+            if (posterUrl) {
+                const posterImageElement = document.createElement("img");
+                posterImageElement.style.width = "100%";
+                posterImageElement.style.height = "100%";
+                posterImageElement.setAttribute("role", "presentation");
 
-            posterImageElement.onerror = (_e: Event) => {
-                if (posterImageElement.parentNode) {
-                    posterImageElement.parentNode.removeChild(posterImageElement);
-                }
+                posterImageElement.onerror = (_e: Event) => {
+                    if (posterImageElement.parentNode) {
+                        posterImageElement.parentNode.removeChild(posterImageElement);
+                    }
 
+                    posterRootElement.classList.add("empty");
+                    posterRootElement.style.minHeight = "150px";
+                };
+
+                posterImageElement.src = posterUrl;
+
+                posterRootElement.appendChild(posterImageElement);
+            } else {
                 posterRootElement.classList.add("empty");
                 posterRootElement.style.minHeight = "150px";
-            };
+            }
 
-            posterImageElement.src = posterUrl;
-
-            posterRootElement.appendChild(posterImageElement);
-        } else {
-            posterRootElement.classList.add("empty");
-            posterRootElement.style.minHeight = "150px";
-        }
-
-        if (this.hostConfig.supportsInteractivity && this._mediaPlayer.canPlay()) {
-            const playButtonOuterElement = document.createElement("div");
-            playButtonOuterElement.tabIndex = 0;
-            playButtonOuterElement.setAttribute("role", "button");
-            playButtonOuterElement.setAttribute(
-                "aria-label",
-                Strings.defaults.mediaPlayerPlayMedia()
-            );
-            playButtonOuterElement.className =
-                this.hostConfig.makeCssClassName("ac-media-playButton");
-            playButtonOuterElement.style.display = "flex";
-            playButtonOuterElement.style.alignItems = "center";
-            playButtonOuterElement.style.justifyContent = "center";
-            playButtonOuterElement.onclick = (e) => {
-                this.handlePlayButtonInvoke(e);
-            };
-
-            playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
-                if (e.code === "Enter" || e.code === "Space") {
-                    // space or enter
+            if (this.hostConfig.supportsInteractivity && this._mediaPlayer.canPlay()) {
+                const playButtonOuterElement = document.createElement("div");
+                playButtonOuterElement.tabIndex = 0;
+                playButtonOuterElement.setAttribute("role", "button");
+                playButtonOuterElement.setAttribute(
+                    "aria-label",
+                    Strings.defaults.mediaPlayerPlayMedia()
+                );
+                playButtonOuterElement.className =
+                    this.hostConfig.makeCssClassName("ac-media-playButton");
+                playButtonOuterElement.style.display = "flex";
+                playButtonOuterElement.style.alignItems = "center";
+                playButtonOuterElement.style.justifyContent = "center";
+                playButtonOuterElement.onclick = (e) => {
                     this.handlePlayButtonInvoke(e);
-                }
-            };
+                };
 
-            const playButtonInnerElement = document.createElement("div");
-            playButtonInnerElement.className = this.hostConfig.makeCssClassName(
-                "ac-media-playButton-arrow"
-            );
-            playButtonInnerElement.style.width = playButtonArrowWidth + "px";
-            playButtonInnerElement.style.height = playButtonArrowHeight + "px";
-            playButtonInnerElement.style.borderTopWidth = playButtonArrowHeight / 2 + "px";
-            playButtonInnerElement.style.borderBottomWidth = playButtonArrowHeight / 2 + "px";
-            playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
-            playButtonInnerElement.style.borderRightWidth = "0";
-            playButtonInnerElement.style.borderStyle = "solid";
-            playButtonInnerElement.style.borderTopColor = "transparent";
-            playButtonInnerElement.style.borderRightColor = "transparent";
-            playButtonInnerElement.style.borderBottomColor = "transparent";
-            playButtonInnerElement.style.transform =
-                "translate(" + playButtonArrowWidth / 10 + "px,0px)";
+                playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
+                    if (e.code === "Enter" || e.code === "Space") {
+                        // space or enter
+                        this.handlePlayButtonInvoke(e);
+                    }
+                };
 
-            playButtonOuterElement.appendChild(playButtonInnerElement);
+                const playButtonInnerElement = document.createElement("div");
+                playButtonInnerElement.className = this.hostConfig.makeCssClassName(
+                    "ac-media-playButton-arrow"
+                );
+                playButtonInnerElement.style.width = playButtonArrowWidth + "px";
+                playButtonInnerElement.style.height = playButtonArrowHeight + "px";
+                playButtonInnerElement.style.borderTopWidth = playButtonArrowHeight / 2 + "px";
+                playButtonInnerElement.style.borderBottomWidth = playButtonArrowHeight / 2 + "px";
+                playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
+                playButtonInnerElement.style.borderRightWidth = "0";
+                playButtonInnerElement.style.borderStyle = "solid";
+                playButtonInnerElement.style.borderTopColor = "transparent";
+                playButtonInnerElement.style.borderRightColor = "transparent";
+                playButtonInnerElement.style.borderBottomColor = "transparent";
+                playButtonInnerElement.style.transform =
+                    "translate(" + playButtonArrowWidth / 10 + "px,0px)";
 
-            const playButtonContainer = document.createElement("div");
-            playButtonContainer.style.position = "absolute";
-            playButtonContainer.style.left = "0";
-            playButtonContainer.style.top = "0";
-            playButtonContainer.style.width = "100%";
-            playButtonContainer.style.height = "100%";
-            playButtonContainer.style.display = "flex";
-            playButtonContainer.style.justifyContent = "center";
-            playButtonContainer.style.alignItems = "center";
+                playButtonOuterElement.appendChild(playButtonInnerElement);
 
-            playButtonContainer.appendChild(playButtonOuterElement);
-            posterRootElement.appendChild(playButtonContainer);
+                const playButtonContainer = document.createElement("div");
+                playButtonContainer.style.position = "absolute";
+                playButtonContainer.style.left = "0";
+                playButtonContainer.style.top = "0";
+                playButtonContainer.style.width = "100%";
+                playButtonContainer.style.height = "100%";
+                playButtonContainer.style.display = "flex";
+                playButtonContainer.style.justifyContent = "center";
+                playButtonContainer.style.alignItems = "center";
+
+                playButtonContainer.appendChild(playButtonOuterElement);
+                posterRootElement.appendChild(playButtonContainer);
+            }
+
+            this.renderedElement.innerHTML = "";
+            this.renderedElement.appendChild(posterRootElement);
         }
-
-        return posterRootElement;
     }
 
     protected internalRender(): HTMLElement | undefined {
         const element = <HTMLElement>document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-media");
 
-        this._mediaPlayer = this.createMediaPlayer();
-
-        element.appendChild(this.renderPoster());
-
         return element;
     }
 
     static onPlay?: (sender: Media) => void;
 
+    render(): HTMLElement | undefined {
+        let result = super.render();
+
+        if (result) {
+            this._mediaPlayer = this.createMediaPlayer();
+
+            this.displayPoster();
+        }
+
+        return result;
+    }
+
     releaseDOMResources() {
         super.releaseDOMResources();
 
-        if (this._renderedElement) {
-            this._renderedElement.innerHTML = "";
-            this._renderedElement.appendChild(this.renderPoster());
-        }
+        this.displayPoster();
     }
 
     getJsonTypeName(): string {
@@ -2837,7 +2922,7 @@ export class Media extends CardElement {
         const result: IResourceInformation[] = [];
 
         if (this._mediaPlayer) {
-            const posterUrl = this._mediaPlayer.getPosterUrl();
+            const posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
 
             if (posterUrl) {
                 result.push({ url: posterUrl, mimeType: "image" });
