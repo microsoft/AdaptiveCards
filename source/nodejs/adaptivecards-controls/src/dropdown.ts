@@ -239,7 +239,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
             this.rootElement.setAttribute("aria-labelledby", ariaLabelledByIds.join(" "));
         }
 
-        this.rootElement.setAttribute("role", "button");
+        this.rootElement.setAttribute("role", "combobox");
         this.rootElement.setAttribute("aria-haspopup", "menu");
     }
 
