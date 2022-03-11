@@ -1,5 +1,5 @@
 {
-	"name": "spec-generator",
+	"name": "@microsoft/spec-generator",
 	"version": "0.7.0-alpha.0",
 	"private": true,
 	"description": "Generates the element/property tables for our specs based on the schema file.",
@@ -22,8 +22,8 @@
 		"build-all-and-run": "npm run build-all && npm run run"
 	},
 	"devDependencies": {
-		"ac-typed-schema": "^0.7.0-alpha.0",
-		"marked-schema": "^0.2.0-alpha.0",
+		"@microsoft/ac-typed-schema": "^0.7.0-alpha.0",
+		"@microsoft/marked-schema": "^0.2.0-alpha.0",
 		"p-iteration": "^1.1.8"
 	}
 }

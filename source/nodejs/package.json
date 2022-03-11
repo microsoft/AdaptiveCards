@@ -1,5 +1,5 @@
 {
-	"name": "root",
+	"name": "@microsoft/adaptivecards-root",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
