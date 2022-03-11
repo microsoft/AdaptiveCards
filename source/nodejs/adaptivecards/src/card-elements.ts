@@ -2460,7 +2460,188 @@ export class MediaSource extends SerializableObject {
     }
 }
 
+export abstract class MediaPlayer {
+    constructor(readonly owner: Media) { }
+
+    abstract canPlay(): boolean;
+    abstract render(): HTMLElement;
+    abstract getPosterUrl(): string | undefined;
+
+    play() {
+        // Do nothing in base implementation
+    }
+
+    get selectedMediaType(): string | undefined {
+        return undefined;
+    }
+}
+
+export abstract class CustomMediaPlayer extends MediaPlayer {
+    constructor(readonly owner: Media, readonly matches: RegExpExecArray) {
+        super(owner);
+    }
+}
+
+export class HTML5MediaPlayer extends MediaPlayer {
+    private _selectedMediaType?: string;
+    private _selectedSources: MediaSource[] = [];
+    private _mediaElement?: HTMLMediaElement;
+
+    private processSources() {
+        this._selectedSources = [];
+        this._selectedMediaType = undefined;
+
+        for (const source of this.owner.sources) {
+            const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
+
+            if (mimeComponents.length === 2) {
+                if (!this._selectedMediaType) {
+                    const index = HTML5MediaPlayer.supportedMediaTypes.indexOf(mimeComponents[0]);
+
+                    if (index >= 0) {
+                        this._selectedMediaType = HTML5MediaPlayer.supportedMediaTypes[index];
+                    }
+                }
+                if (mimeComponents[0] === this._selectedMediaType) {
+                    this._selectedSources.push(source);
+                }
+            }
+        }
+    }
+
+    static readonly supportedMediaTypes = [ "audio", "video" ];
+
+    constructor(readonly owner: Media) {
+        super(owner);
+
+        this.processSources();
+    }
+
+    canPlay(): boolean {
+        return this._selectedSources.length > 0;
+    }
+
+    getPosterUrl(): string | undefined {
+        return this.owner.poster ? this.owner.poster : this.owner.hostConfig.media.defaultPoster;
+    }
+
+    render(): HTMLElement {
+        if (this._selectedMediaType === "video") {
+            const videoPlayer = document.createElement("video");
+
+            const posterUrl = this.getPosterUrl();
+
+            if (posterUrl) {
+                videoPlayer.poster = posterUrl;
+            }
+
+            this._mediaElement = videoPlayer;
+        } else {
+            this._mediaElement = document.createElement("audio");
+        }
+
+        this._mediaElement.setAttribute(
+            "aria-label",
+            this.owner.altText ? this.owner.altText : Strings.defaults.mediaPlayerAriaLabel()
+        );
+        this._mediaElement.setAttribute("webkit-playsinline", "");
+        this._mediaElement.setAttribute("playsinline", "");
+        this._mediaElement.autoplay = true;
+        this._mediaElement.controls = true;
+
+        if (Utils.isMobileOS()) {
+            this._mediaElement.muted = true;
+        }
+
+        this._mediaElement.preload = "none";
+        this._mediaElement.style.width = "100%";
+
+        for (const source of this.owner.sources) {
+            const renderedSource = source.render();
+
+            Utils.appendChild(this._mediaElement, renderedSource);
+        }
+
+        return this._mediaElement;
+    }
+
+    play() {
+        if (this._mediaElement) {
+            this._mediaElement.play();
+        }
+    }
+
+    get selectedMediaType(): string | undefined {
+        return this._selectedMediaType;
+    }
+}
+
+export class YouTubePlayer extends CustomMediaPlayer {
+    static getUrlPatterns(): RegExp[] {
+        return [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
+    }
+
+    static iFrameTitle = "YouTube video player";
+
+    private _videoId?: string;
+
+    constructor(readonly owner: Media, readonly matches: RegExpExecArray) {
+        super(owner, matches);
+
+        if (matches.length === 2) {
+            this._videoId = matches[1];
+        }
+    }
+
+    canPlay(): boolean {
+        return this._videoId !== undefined;
+    }
+
+    getPosterUrl(): string | undefined {
+        if (this.owner.poster) {
+            return this.owner.poster;
+        }
+
+        if (this._videoId) {
+            return `https://img.youtube.com/vi/${this._videoId}/maxresdefault.jpg`;
+        }
+
+        return this.owner.hostConfig.media.defaultPoster;
+    }
+
+    render(): HTMLElement {
+        let container = document.createElement("div");
+        container.style.position = "relative";
+        container.style.width = "100%";
+        container.style.height = "0";
+        container.style.paddingBottom = "56.25%";
+
+        let iFrame = document.createElement("iframe");
+        iFrame.style.position = "absolute";
+        iFrame.style.top = "0";
+        iFrame.style.left = "0";
+        iFrame.style.width = "100%";
+        iFrame.style.height = "100%";
+        iFrame.src = `https://www.youtube.com/embed/${this._videoId}?autoplay=1`;
+        iFrame.title = YouTubePlayer.iFrameTitle;
+        iFrame.frameBorder = "0";
+        iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iFrame.allowFullscreen = true;
+        
+        container.appendChild(iFrame);
+
+        return container;
+    }
+}
+
+export type MediaPlayerType = {
+    new(owner: Media, matches: RegExpExecArray): MediaPlayer;
+    getUrlPatterns(): RegExp[];
+ };
+
 export class Media extends CardElement {
+    static customMediaPlayers: MediaPlayerType[] = [ YouTubePlayer ];
+
     //#region Schema
 
     static readonly sourcesProperty = new SerializableObjectCollectionProperty(
@@ -2482,66 +2663,24 @@ export class Media extends CardElement {
 
     //#endregion
 
-    static readonly supportedMediaTypes = ["audio", "video"];
+    private _mediaPlayer: MediaPlayer;
 
-    private _selectedMediaType?: string;
-    private _selectedSources: MediaSource[] = [];
-    private _youTubeVideoId?: string;
+    private createMediaPlayer(): MediaPlayer {
+        for (let provider of Media.customMediaPlayers) {
+            for (let source of this.sources) {
+                if (source.url) {
+                    for (let pattern of provider.getUrlPatterns()) {
+                        let matches = pattern.exec(source.url);
 
-    private getPosterUrl(): string | undefined {
-        if (this.poster) {
-            return this.poster;
-        }
-
-        if (this._youTubeVideoId) {
-            return `https://img.youtube.com/vi/${this._youTubeVideoId}/maxresdefault.jpg`;
-        }
-
-        return this.hostConfig.media.defaultPoster;
-    }
-
-    private processSources() {
-        let youTubeUrlPatterns = [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
-
-        for (let source of this.sources) {
-            if (source.url) {
-                for (let pattern of youTubeUrlPatterns) {
-                    let matches = pattern.exec(source.url);
-
-                    if (matches !== null && matches.length === 2) {
-                        this._youTubeVideoId = matches[1];
-
-                        break;
-                    }
-                }
-            }
-
-            if (this._youTubeVideoId) {
-                break;
-            }
-        }
-
-        if (!this._youTubeVideoId) {
-            this._selectedSources = [];
-            this._selectedMediaType = undefined;
-
-            for (const source of this.sources) {
-                const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
-
-                if (mimeComponents.length === 2) {
-                    if (!this._selectedMediaType) {
-                        const index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
-
-                        if (index >= 0) {
-                            this._selectedMediaType = Media.supportedMediaTypes[index];
+                        if (matches !== null) {
+                            return new provider(this, matches);    
                         }
                     }
-                    if (mimeComponents[0] === this._selectedMediaType) {
-                        this._selectedSources.push(source);
-                    }
                 }
             }
         }
+
+        return new HTML5MediaPlayer(this);
     }
 
     private handlePlayButtonInvoke(event: UIEvent): void {
@@ -2550,15 +2689,14 @@ export class Media extends CardElement {
             event.cancelBubble = true;
 
             if (this.renderedElement) {
-                const mediaPlayerElement = this.renderMediaPlayer();
+                const mediaPlayerElement = this._mediaPlayer.render();
 
                 this.renderedElement.innerHTML = "";
                 this.renderedElement.appendChild(mediaPlayerElement);
 
-                if (mediaPlayerElement instanceof HTMLMediaElement) {
-                    mediaPlayerElement.play();
-                    mediaPlayerElement.focus();
-                }
+                this._mediaPlayer.play();
+
+                mediaPlayerElement.focus();
             }
         } else {
             if (Media.onPlay) {
@@ -2584,7 +2722,7 @@ export class Media extends CardElement {
         posterRootElement.style.position = "relative";
         posterRootElement.style.display = "flex";
 
-        const posterUrl = this.getPosterUrl();
+        const posterUrl = this._mediaPlayer.getPosterUrl();
 
         if (posterUrl) {
             const posterImageElement = document.createElement("img");
@@ -2609,7 +2747,7 @@ export class Media extends CardElement {
             posterRootElement.style.minHeight = "150px";
         }
 
-        if (this.hostConfig.supportsInteractivity && (this._selectedSources.length > 0 || this._youTubeVideoId)) {
+        if (this.hostConfig.supportsInteractivity && this._mediaPlayer.canPlay()) {
             const playButtonOuterElement = document.createElement("div");
             playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
@@ -2669,83 +2807,11 @@ export class Media extends CardElement {
         return posterRootElement;
     }
 
-    private renderYouTubePlayer(videoUrl: string): HTMLElement {
-        let container = document.createElement("div");
-        container.style.position = "relative";
-        container.style.width = "100%";
-        container.style.height = "0";
-        container.style.paddingBottom = "56.25%";
-
-        let iFrame = document.createElement("iframe");
-        iFrame.style.position = "absolute";
-        iFrame.style.top = "0";
-        iFrame.style.left = "0";
-        iFrame.style.width = "100%";
-        iFrame.style.height = "100%";
-        iFrame.src = videoUrl;
-        iFrame.title = "YouTube video player";
-        iFrame.frameBorder = "0";
-        iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iFrame.allowFullscreen = true;
-        
-        container.appendChild(iFrame);
-
-        return container;
-    }
-
-    private renderHTML5Player(): HTMLMediaElement {
-        let mediaElement: HTMLMediaElement;
-
-        if (this._selectedMediaType === "video") {
-            const videoPlayer = document.createElement("video");
-
-            const posterUrl = this.getPosterUrl();
-
-            if (posterUrl) {
-                videoPlayer.poster = posterUrl;
-            }
-
-            mediaElement = videoPlayer;
-        } else {
-            mediaElement = document.createElement("audio");
-        }
-
-        mediaElement.setAttribute(
-            "aria-label",
-            this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
-        );
-        mediaElement.setAttribute("webkit-playsinline", "");
-        mediaElement.setAttribute("playsinline", "");
-        mediaElement.autoplay = true;
-        mediaElement.controls = true;
-
-        if (Utils.isMobileOS()) {
-            mediaElement.muted = true;
-        }
-
-        mediaElement.preload = "none";
-        mediaElement.style.width = "100%";
-
-        for (const source of this.sources) {
-            const renderedSource = source.render();
-
-            Utils.appendChild(mediaElement, renderedSource);
-        }
-
-        return mediaElement;
-    }
-
-    private renderMediaPlayer(): HTMLElement {
-        return this._youTubeVideoId
-            ? this.renderYouTubePlayer(`https://www.youtube.com/embed/${this._youTubeVideoId}?autoplay=1`)
-            : this.renderHTML5Player();
-    }
-
     protected internalRender(): HTMLElement | undefined {
         const element = <HTMLElement>document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-media");
 
-        this.processSources();
+        this._mediaPlayer = this.createMediaPlayer();
 
         element.appendChild(this.renderPoster());
 
@@ -2770,10 +2836,12 @@ export class Media extends CardElement {
     getResourceInformation(): IResourceInformation[] {
         const result: IResourceInformation[] = [];
 
-        const posterUrl = this.getPosterUrl();
+        if (this._mediaPlayer) {
+            const posterUrl = this._mediaPlayer.getPosterUrl();
 
-        if (posterUrl) {
-            result.push({ url: posterUrl, mimeType: "image" });
+            if (posterUrl) {
+                result.push({ url: posterUrl, mimeType: "image" });
+            }
         }
 
         for (const mediaSource of this.sources) {
@@ -2791,7 +2859,7 @@ export class Media extends CardElement {
     }
 
     get selectedMediaType(): string | undefined {
-        return this._selectedMediaType;
+        return this._mediaPlayer.selectedMediaType;
     }
 }
 
