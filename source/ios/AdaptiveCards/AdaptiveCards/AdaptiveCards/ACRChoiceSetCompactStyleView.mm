@@ -77,6 +77,8 @@ using namespace AdaptiveCards;
         _listView = [[UITableView alloc] init];
         _listView.dataSource = self;
         _listView.delegate = self;
+        _listView.accessibilityIdentifier = [NSString stringWithUTF8String:choiceSet->GetId().c_str()];
+
         self.filteredListView = _listView;
 
         _view = [[UIView alloc] init];
@@ -343,6 +345,7 @@ using namespace AdaptiveCards;
     cell.textLabel.text = [_filteredDataSource getItemAt:indexPath.row];
     cell.textLabel.numberOfLines = _wrapLines;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
+    cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@, %@", self.id, cell.textLabel.text];
     cell.accessibilityTraits = UIAccessibilityTraitButton;
     return cell;
 }
