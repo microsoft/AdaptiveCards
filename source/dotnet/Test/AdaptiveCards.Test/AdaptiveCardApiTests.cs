@@ -81,6 +81,40 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void TestParsingCardWithRefreshOption()
+        {
+            string json =
+@"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.4"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""size"": ""medium"",
+      ""weight"": ""bolder"",
+      ""text"": ""AdaptiveRefreshSerializeBug"",
+      ""wrap"": true,
+      ""style"": ""heading""
+    }
+  ],
+  ""refresh"": {
+    ""action"": {
+      ""type"": ""Action.Execute"",
+      ""verb"": ""refresh"",
+      ""title"": ""Refresh""
+    },
+    ""userIds"": [
+      ""testUser""
+    ]
+  }
+}";
+
+            AdaptiveCardParseResult adaptiveCardParseResult = AdaptiveCard.FromJson(json);
+            Assert.IsNotNull(adaptiveCardParseResult.Card);
+            Assert.AreEqual(json, adaptiveCardParseResult.Card.ToJson());
+        }
+
+        [TestMethod]
         public void TestParsingInvalidCardMissingVersion()
         {
             var json = @"{
