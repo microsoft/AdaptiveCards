@@ -91,15 +91,19 @@ en:
     - title: Native performance
       subtitle: Adaptive Cards render native UI on any platform
       smallImage: content/Feature.jpg
+      smallImageAlt: Native performance
     - title: Adapts to the surrounding UI
       subtitle: Cards automatically adaptive to the surrounding UI
       smallImage: content/Feature.jpg
+      smallImageAlt: Adapts to the surrounding UI
     - title: Fully extensible
       subtitle: The schema is open-ended so you can add your own element
       smallImage: content/Feature.jpg
+      smallImageAlt: Fully extensible
     - title: Dynamic and interactive
       subtitle: Interactivity is expressed declaratively to help reduce risk of custom code injection
       smallImage: content/Feature.jpg
+      smallImageAlt: Dynamic and interactive
   template_details:
     - title: Rich designer integration
       subtitle: Sample data allows you to preview your template without leaving the designer.
