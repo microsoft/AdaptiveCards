@@ -69,6 +69,7 @@
 						{
 							"type": "Image",
 							"url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
+							"altText": "Great Barrier Reef",
 							"size": "auto",
 							"height": "stretch"
 						}
