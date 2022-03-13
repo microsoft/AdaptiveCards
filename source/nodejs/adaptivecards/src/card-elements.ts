@@ -2461,24 +2461,26 @@ export class MediaSource extends SerializableObject {
 }
 
 export abstract class MediaPlayer {
-    constructor(readonly owner: Media) { }
+    private _posterUrl?: string;
 
     abstract canPlay(): boolean;
     abstract render(): HTMLElement;
-    abstract getPosterUrl(): Promise<string | undefined>;
+    abstract fetchVideoDetails(): Promise<void>;
 
     play() {
         // Do nothing in base implementation
     }
 
+    get posterUrl(): string | undefined {
+        return this._posterUrl;
+    }
+
+    protected set posterUrl(value: string | undefined) {
+        this._posterUrl = value;
+    }
+
     get selectedMediaType(): string | undefined {
         return undefined;
-    }
-}
-
-export abstract class CustomMediaPlayer extends MediaPlayer {
-    constructor(readonly owner: Media, matches: RegExpExecArray) {
-        super(owner);
     }
 }
 
@@ -2512,7 +2514,7 @@ export class HTML5MediaPlayer extends MediaPlayer {
     static readonly supportedMediaTypes = [ "audio", "video" ];
 
     constructor(readonly owner: Media) {
-        super(owner);
+        super();
 
         this.processSources();
     }
@@ -2521,8 +2523,8 @@ export class HTML5MediaPlayer extends MediaPlayer {
         return this._selectedSources.length > 0;
     }
 
-    async getPosterUrl(): Promise<string | undefined> {
-        return this.owner.poster ? this.owner.poster : this.owner.hostConfig.media.defaultPoster;
+    async fetchVideoDetails() {
+        // Nothing to fetch for the HTML5 media player
     }
 
     render(): HTMLElement {
@@ -2568,19 +2570,24 @@ export class HTML5MediaPlayer extends MediaPlayer {
     }
 }
 
+export abstract class CustomMediaPlayer extends MediaPlayer {
+    constructor(matches: RegExpExecArray) {
+        super();
+    }
+}
+
 export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
     private _videoId?: string;
 
-    constructor(readonly owner: Media, matches: RegExpExecArray) {
-        super(owner, matches);
+    constructor(matches: RegExpExecArray) {
+        super(matches);
 
         if (matches.length === 2) {
             this._videoId = matches[1];
         }
     }
 
-    abstract getIFrameTitle(): string;
-    abstract getVideoUrl(): string;
+    abstract getEmbedVideoUrl(): string;
 
     canPlay(): boolean {
         return this._videoId !== undefined;
@@ -2599,8 +2606,7 @@ export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
         iFrame.style.left = "0";
         iFrame.style.width = "100%";
         iFrame.style.height = "100%";
-        iFrame.src = this.getVideoUrl();
-        iFrame.title = this.getIFrameTitle();
+        iFrame.src = this.getEmbedVideoUrl();
         iFrame.frameBorder = "0";
         iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iFrame.allowFullscreen = true;
@@ -2616,51 +2622,25 @@ export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
 }
 
 export class VimeoPlayer extends IFrameMediaMediaPlayer {
-    static getUrlPatterns(): RegExp[] {
-        return [ /https?:\/\/vimeo.com\/([\w\d-_]+)/ig ];
-    }
-
-    static iFrameTitle = "Vimeo video player";
-
-    async getPosterUrl(): Promise<string | undefined> {
-        if (this.owner.poster) {
-            return this.owner.poster;
-        }
-
-        const oEmbedUrl = `https://vimeo.com/api/oembed.json?url=${this.getVideoUrl()}`;
+    async fetchVideoDetails(): Promise<void> {
+        const oEmbedUrl = `https://vimeo.com/api/oembed.json?url=${this.getEmbedVideoUrl()}`;
 
         let response = await fetch(oEmbedUrl);
 
         if (response.ok) {
             let json = await response.json();
 
-            return json["thumbnail_url"];
+            this.posterUrl = json["thumbnail_url"];
         }
-
-        return this.owner.hostConfig.media.defaultPoster;
     }
 
-    getIFrameTitle(): string {
-        return VimeoPlayer.iFrameTitle;
-    }
-
-    getVideoUrl(): string {
+    getEmbedVideoUrl(): string {
         return `https://player.vimeo.com/video/${this.videoId}?autoplay=1`;
     }
 }
 
 export class DailymotionPlayer extends IFrameMediaMediaPlayer {
-    static getUrlPatterns(): RegExp[] {
-        return [ /https?:\/\/www.dailymotion.com\/video\/([\w\d-_]+)/ig ];
-    }
-
-    static iFrameTitle = "Vimeo video player";
-
-    async getPosterUrl(): Promise<string | undefined> {
-        if (this.owner.poster) {
-            return this.owner.poster;
-        }
-
+    async fetchVideoDetails(): Promise<void> {
         const apiUrl = `https://api.dailymotion.com/video/${this.videoId}?fields=thumbnail_720_url`;
 
         let response = await fetch(apiUrl);
@@ -2668,56 +2648,45 @@ export class DailymotionPlayer extends IFrameMediaMediaPlayer {
         if (response.ok) {
             let json = await response.json();
 
-            return json["thumbnail_720_url"];
+            this.posterUrl = json["thumbnail_720_url"];
         }
-
-        return this.owner.hostConfig.media.defaultPoster;
     }
 
-    getIFrameTitle(): string {
-        return VimeoPlayer.iFrameTitle;
-    }
-
-    getVideoUrl(): string {
+    getEmbedVideoUrl(): string {
         return  `https://www.dailymotion.com/embed/video/${this.videoId}?autoplay=1`;
     }
 }
 
 export class YouTubePlayer extends IFrameMediaMediaPlayer {
-    static getUrlPatterns(): RegExp[] {
-        return [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ];
+    async fetchVideoDetails(): Promise<void> {
+        this.posterUrl = this.videoId ? `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg` : undefined;
     }
 
-    static iFrameTitle = "YouTube video player";
-
-    async getPosterUrl(): Promise<string | undefined> {
-        if (this.owner.poster) {
-            return this.owner.poster;
-        }
-
-        if (this.videoId) {
-            return `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg`;
-        }
-
-        return this.owner.hostConfig.media.defaultPoster;
-    }
-
-    getIFrameTitle(): string {
-        return YouTubePlayer.iFrameTitle;
-    }
-
-    getVideoUrl(): string {
+    getEmbedVideoUrl(): string {
         return `https://www.youtube.com/embed/${this.videoId}?autoplay=1`;
     }
 }
 
-export type MediaPlayerType = {
-    new(owner: Media, matches: RegExpExecArray): CustomMediaPlayer;
-    getUrlPatterns(): RegExp[];
- };
+export interface ICustomMediaPlayer {
+    urlPatterns: RegExp[];
+    createMediaPlayer: (matches: RegExpExecArray) => CustomMediaPlayer
+}
 
 export class Media extends CardElement {
-    static customMediaPlayers: MediaPlayerType[] = [ YouTubePlayer, VimeoPlayer, DailymotionPlayer ];
+    static customMediaPlayers: ICustomMediaPlayer[] = [
+        {
+            urlPatterns: [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ],
+            createMediaPlayer: (matches) => new YouTubePlayer(matches)
+        },
+        {
+            urlPatterns: [ /https?:\/\/vimeo.com\/([\w\d-_]+)/ig ],
+            createMediaPlayer: (matches) => new VimeoPlayer(matches)
+        },
+        {
+            urlPatterns: [ /https?:\/\/www.dailymotion.com\/video\/([\w\d-_]+)/ig ],
+            createMediaPlayer: (matches) => new DailymotionPlayer(matches)
+        }
+    ];
 
     //#region Schema
 
@@ -2746,11 +2715,11 @@ export class Media extends CardElement {
         for (let provider of Media.customMediaPlayers) {
             for (let source of this.sources) {
                 if (source.url) {
-                    for (let pattern of provider.getUrlPatterns()) {
+                    for (let pattern of provider.urlPatterns) {
                         let matches = pattern.exec(source.url);
 
                         if (matches !== null) {
-                            return new provider(this, matches);    
+                            return provider.createMediaPlayer(matches);    
                         }
                     }
                 }
@@ -2800,7 +2769,11 @@ export class Media extends CardElement {
             posterRootElement.style.position = "relative";
             posterRootElement.style.display = "flex";
 
-            const posterUrl = await this._mediaPlayer.getPosterUrl();
+            let posterUrl = this.poster ? this.poster : this._mediaPlayer.posterUrl;
+
+            if (!posterUrl) {
+                posterUrl = this.hostConfig.media.defaultPoster;
+            }
 
             if (posterUrl) {
                 const posterImageElement = document.createElement("img");
@@ -2902,7 +2875,7 @@ export class Media extends CardElement {
         if (result) {
             this._mediaPlayer = this.createMediaPlayer();
 
-            this.displayPoster();
+            this._mediaPlayer.fetchVideoDetails().then(() => this.displayPoster());
         }
 
         return result;
