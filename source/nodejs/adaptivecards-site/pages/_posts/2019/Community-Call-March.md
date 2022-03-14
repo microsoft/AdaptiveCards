@@ -37,7 +37,7 @@ Take a look at the video below for full details.
 
 Watch the call here.
 
-<iframe src="https://www.youtube.com/embed/POP_kOO8YP4" height="315" width="560"></iframe>
+<iframe title="Community Call March 2019 video" src="https://www.youtube.com/embed/POP_kOO8YP4" height="315" width="560"></iframe>
 
 Next month's call will be held on Thursday, **April 11, 2019 at 9:00am PST**. We look forward to talking to you then!
 
