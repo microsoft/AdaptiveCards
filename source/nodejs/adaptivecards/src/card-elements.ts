@@ -1136,7 +1136,7 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -1146,7 +1146,7 @@ export class TextBlock extends BaseTextBlock {
 
                 this.selectAction.setupElementForAccessibility(element);
 
-                if (this.selectAction.isEnabled) {
+                if (this.selectAction.isEffectivelyEnabled()) {
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -1436,7 +1436,7 @@ export class TextRun extends BaseTextBlock {
                 anchor.href = href ? href : "";
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2040,7 +2040,7 @@ export class Image extends CardElement {
                 imageElement.onkeypress = (e) => {
                     if (
                         this.selectAction &&
-                        this.selectAction.isEnabled &&
+                        this.selectAction.isEffectivelyEnabled() &&
                         (e.code === "Enter" || e.code === "Space")
                     ) {
                         // enter or space pressed
@@ -2052,7 +2052,7 @@ export class Image extends CardElement {
                 };
 
                 imageElement.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2062,7 +2062,7 @@ export class Image extends CardElement {
 
                 this.selectAction.setupElementForAccessibility(imageElement);
 
-                if (this.selectAction.isEnabled) {
+                if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -2236,7 +2236,7 @@ export abstract class CardElementContainer extends CardElement {
                 hostConfig.supportsInteractivity
             ) {
                 element.onclick = (e) => {
-                    if (this._selectAction && this._selectAction.isEnabled) {
+                    if (this._selectAction && this._selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2247,7 +2247,7 @@ export abstract class CardElementContainer extends CardElement {
                 element.onkeypress = (e) => {
                     if (
                         this._selectAction &&
-                        this._selectAction.isEnabled &&
+                        this._selectAction.isEffectivelyEnabled() &&
                         (e.code === "Enter" || e.code === "Space")
                     ) {
                         // Enter or space pressed
@@ -2260,7 +2260,7 @@ export abstract class CardElementContainer extends CardElement {
 
                 this._selectAction.setupElementForAccessibility(element);
 
-                if (this._selectAction.isEnabled) {
+                if (this._selectAction.isEffectivelyEnabled()) {
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -3137,7 +3137,7 @@ export class TextInput extends Input {
                 e.ctrlKey &&
                 e.code === "Enter" &&
                 this.inlineAction &&
-                this.inlineAction.isEnabled
+                this.inlineAction.isEffectivelyEnabled()
             ) {
                 this.inlineAction.execute();
             }
@@ -3175,13 +3175,13 @@ export class TextInput extends Input {
         if (this.inlineAction) {
             const button = document.createElement("button");
             button.className = this.hostConfig.makeCssClassName(
-                this.inlineAction.isEnabled
+                this.inlineAction.isEffectivelyEnabled()
                     ? "ac-inlineActionButton"
                     : "ac-inlineActionButton-disabled"
             );
 
             button.onclick = (e) => {
-                if (this.inlineAction && this.inlineAction.isEnabled) {
+                if (this.inlineAction && this.inlineAction.isEffectivelyEnabled()) {
                     e.preventDefault();
                     e.cancelBubble = true;
 
@@ -4270,13 +4270,7 @@ export abstract class Action extends CardObject {
     tooltip?: string;
 
     @property(Action.isEnabledProperty)
-    get isEnabled(): boolean {
-        return this.internalGetIsEnabled();
-    }
-
-    set isEnabled(value: boolean) {
-        this.setValue(Action.isEnabledProperty, value);
-    }
+    isEnabled: boolean;
 
     //#endregion
 
@@ -4352,7 +4346,7 @@ export abstract class Action extends CardObject {
             const hostConfig = this.parent.hostConfig;
 
             this.renderedElement.className = hostConfig.makeCssClassName(
-                this.isEnabled ? "ac-pushButton" : "ac-pushButton-disabled"
+                this.isEffectivelyEnabled() ? "ac-pushButton" : "ac-pushButton-disabled"
             );
 
             const parentContainer = this.getParentContainer();
@@ -4380,7 +4374,7 @@ export abstract class Action extends CardObject {
                     break;
             }
 
-            if (this.style && this.isEnabled) {
+            if (this.style && this.isEffectivelyEnabled()) {
                 if (this.style === Enums.ActionStyle.Positive) {
                     this.renderedElement.classList.add(
                         ...hostConfig.makeCssClassNames("primary", "style-positive")
@@ -4392,10 +4386,6 @@ export abstract class Action extends CardObject {
                 }
             }
         }
-    }
-
-    protected internalGetIsEnabled(): boolean {
-        return this.getValue(Action.isEnabledProperty);
     }
 
     protected getDefaultSerializationContext(): BaseSerializationContext {
@@ -4457,15 +4447,15 @@ export abstract class Action extends CardObject {
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = this.isEnabled ? 0 : -1;
+        element.tabIndex = this.isEffectivelyEnabled() ? 0 : -1;
 
         element.setAttribute("role", this.getAriaRole());
 
         if (element instanceof HTMLButtonElement) {
-            element.disabled = !this.isEnabled;
+            element.disabled = !this.isEffectivelyEnabled();
         }
 
-        if (!this.isEnabled) {
+        if (!this.isEffectivelyEnabled()) {
             element.setAttribute("aria-disabled", "true");
         } else {
             element.removeAttribute("aria-disabled");
@@ -4502,7 +4492,7 @@ export abstract class Action extends CardObject {
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
         buttonElement.onclick = (e) => {
-            if (this.isEnabled) {
+            if (this.isEffectivelyEnabled()) {
                 e.preventDefault();
                 e.cancelBubble = true;
 
@@ -4580,6 +4570,10 @@ export abstract class Action extends CardObject {
 
     updateEnabledState() {
         // Do nothing in base implementation
+    }
+
+    isEffectivelyEnabled(): boolean {
+        return this.isEnabled;
     }
 
     get isPrimary(): boolean {
@@ -4721,12 +4715,6 @@ export abstract class SubmitActionBase extends Action {
         this._isPrepared = true;
     }
 
-    protected internalGetIsEnabled(): boolean {
-        let result = super.internalGetIsEnabled();
-        
-        return this.disabledUnlessAssociatedInputsChange ? result && this._areReferencedInputsDirty : result;
-    }
-
     protected internalAfterExecute() {
         if (GlobalSettings.resetInputsDirtyStateAfterActionExecution) {
             this.resetReferencedInputsDirtyState();
@@ -4769,6 +4757,12 @@ export abstract class SubmitActionBase extends Action {
         if (this._renderedElement) {
             this.setupElementForAccessibility(this._renderedElement);
         }
+    }
+
+    isEffectivelyEnabled(): boolean {
+        let result = super.isEffectivelyEnabled();
+        
+        return this.disabledUnlessAssociatedInputsChange ? result && this._areReferencedInputsDirty : result;
     }
 
     get data(): object | undefined {
