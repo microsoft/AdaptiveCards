@@ -9,10 +9,12 @@ export type TextWeight = "lighter" | "default" | "bolder";
 export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warning" | "attention";
 export type ContainerStyle = "default" | "emphasis";
 export type ImageStyle = "default" | "person";
+export type ActionStyle = "default" | "positive" | "destructive";
 
 export interface IAction {
     id: string;
     title?: string;
+    style?: ActionStyle;
 }
 
 export interface ISubmitAction extends IAction {
