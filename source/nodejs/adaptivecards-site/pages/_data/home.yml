@@ -108,15 +108,19 @@ en:
     - title: Rich designer integration
       subtitle: Sample data allows you to preview your template without leaving the designer.
       smallImage: content/Feature.jpg
+      smallImageAlt: Rich designer integration
     - title: Simplify development workflows
       subtitle: Create your template in the designer, use it without your services, then paste it right back into the designer to make changes.
       smallImage: content/Feature.jpg
+      smallImageAlt: Simplify development workflows
     - title: Discover and share templates using a REST service
       subtitle: The template service finds a template for your data, and will even populate it for you.
       smallImage: content/Feature.jpg
+      smallImageAlt: Discover and share templates using a REST service
     - title: We want to hear from you
       subtitle: We don't have a release date for this preview yet, but we're waiting to learn from you.
       smallImage: content/Feature.jpg
+      smallImageAlt: We want to hear from you
   quotes:
     richard:
       quotation: User engagement on surveys is always a challenge, but after utilizing Outlook Actionable Messages our return rate surged from 10-12% to a 3 month average of 35%!
