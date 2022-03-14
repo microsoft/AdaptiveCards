@@ -17,7 +17,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png",
+                                            "altText": "Location A"
                                         }
                                     ],
                                     "width": "auto"
@@ -58,7 +59,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationBlue_B.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationBlue_B.png",
+                                            "altText": "Location B"
                                         }
                                     ],
                                     "width": "auto"
@@ -99,7 +101,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationRed_C.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/LocationRed_C.png",
+                                            "altText": "Location C"
                                         }
                                     ],
                                     "width": "auto"
@@ -143,7 +146,8 @@
                                         {
                                             "type": "Image",
                                             "horizontalAlignment": "Left",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png",
+                                            "altText": "Calendar conflict"
                                         }
                                     ],
                                     "width": "auto"
@@ -183,7 +187,8 @@
                         {
                             "type": "Image",
                             "horizontalAlignment": "Center",
-                            "url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png",
+                            "altText": "Location A: Coffee"
                         }
                     ],
                     "width": "auto",
@@ -206,7 +211,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png",
+                                            "altText": "Location"
                                         }
                                     ],
                                     "width": "auto"
@@ -232,17 +238,20 @@
                                 {
                                     "type": "Image",
                                     "url": "https://messagecardplayground.azurewebsites.net/assets/person_w1.png",
-                                    "size": "Small"
+                                    "size": "Small",
+                                    "altText": "Person with bangs"
                                 },
                                 {
                                     "type": "Image",
                                     "url": "https://messagecardplayground.azurewebsites.net/assets/person_m1.png",
-                                    "size": "Small"
+                                    "size": "Small",
+                                    "altText": "Person with glasses and short hair"
                                 },
                                 {
                                     "type": "Image",
                                     "url": "https://messagecardplayground.azurewebsites.net/assets/person_w2.png",
-                                    "size": "Small"
+                                    "size": "Small",
+                                    "altText": "Person smiling"
                                 }
                             ]
                         },
@@ -255,7 +264,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png",
+                                            "altText": "Powerpoint presentation"
                                         }
                                     ],
                                     "width": "auto"
@@ -297,7 +307,8 @@
                         {
                             "type": "Image",
                             "horizontalAlignment": "Center",
-                            "url": "https://messagecardplayground.azurewebsites.net/assets/Gray_Dot.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Gray_Dot.png",
+                            "altText": "Gray dot"
                         }
                     ],
                     "width": "auto",
@@ -314,7 +325,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/car.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/car.png",
+                                            "altText": "Travel by car"
                                         }
                                     ],
                                     "width": "auto"
@@ -372,7 +384,8 @@
                         {
                             "type": "Image",
                             "horizontalAlignment": "Center",
-                            "url": "https://messagecardplayground.azurewebsites.net/assets/CircleBlue_flight.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/CircleBlue_flight.png",
+                            "altText": "Location B: Flight"
                         }
                     ],
                     "width": "auto",
@@ -395,7 +408,8 @@
                                     "items": [
                                         {
                                             "type": "Image",
-                                            "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png",
+                                            "altText": "Location"
                                         }
                                     ],
                                     "width": "auto"
@@ -416,7 +430,8 @@
                         {
                             "type": "Image",
                             "url": "https://messagecardplayground.azurewebsites.net/assets/SeaTacMap.png",
-                            "size": "Stretch"
+                            "size": "Stretch",
+                            "altText": "Map of the Seattle-Tacoma airport"
                         }
                     ],
                     "width": 40
