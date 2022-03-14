@@ -26,7 +26,8 @@
                                 {
                                     "type": "Image",
                                     "size": "Small",
-                                    "url": "https://adaptivecards.io/content/airplane.png"
+                                    "url": "https://adaptivecards.io/content/airplane.png",
+                                    "altText": "Airplane"
                                 }
                             ]
                         },
@@ -224,6 +225,7 @@
                                 {
                                     "type": "Image",
                                     "url": "https://adaptivecards.io/content/airplane.png",
+                                    "altText": "Airplane",
                                     "horizontalAlignment": "Center",
                                     "size": "Small"
                                 }

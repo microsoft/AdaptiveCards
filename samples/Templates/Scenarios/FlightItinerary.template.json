@@ -125,6 +125,7 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
+							"altText": "Airplane",
 							"size": "Small",
 							"spacing": "None"
 						}
@@ -255,6 +256,7 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
+							"altText": "Airplane",
 							"size": "Small",
 							"spacing": "None"
 						}
