@@ -42,7 +42,8 @@
 							{
 								"type": "Image",
 								"id": "Z",
-								"url": "https://adaptivecards.io/content/cats/1.png"
+								"url": "https://adaptivecards.io/content/cats/1.png",
+								"altText": "Cat"
 							}
 						]
 					},
@@ -70,7 +71,8 @@
 													{
 														"type": "Image",
 														"id": "I",
-														"url": "https://adaptivecards.io/content/cats/2.png"
+														"url": "https://adaptivecards.io/content/cats/2.png",
+														"altText": "Cat"
 													},
 													{
 														"type": "TextBlock",

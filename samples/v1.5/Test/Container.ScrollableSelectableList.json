@@ -27,7 +27,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png",
+                  "altText": "OneNote"
                 }
               ],
               "type": "Column",
@@ -81,7 +82,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png",
+                  "altText": "OneNote"
                 }
               ],
               "type": "Column",
@@ -135,7 +137,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png",
+                  "altText": "Microsoft Word"
                 }
               ],
               "type": "Column",
@@ -189,7 +192,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png",
+                  "altText": "OneNote"
                 }
               ],
               "type": "Column",
@@ -243,7 +247,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png",
+                  "altText": "PowerPoint"
                 }
               ],
               "type": "Column",
@@ -297,7 +302,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png",
+                  "altText": "Microsoft Word"
                 }
               ],
               "type": "Column",
@@ -351,7 +357,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png",
+                  "altText": "Microsoft Word"
                 }
               ],
               "type": "Column",
@@ -405,7 +412,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png",
+                  "altText": "OneNote"
                 }
               ],
               "type": "Column",
@@ -459,7 +467,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png",
+                  "altText": "Microsoft Word"
                 }
               ],
               "type": "Column",
@@ -513,7 +522,8 @@
                 {
                   "type": "Image",
                   "size": "small",
-                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png"
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png",
+                  "altText": "PowerPoint"
                 }
               ],
               "type": "Column",

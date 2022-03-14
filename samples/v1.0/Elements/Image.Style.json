@@ -17,6 +17,7 @@
 						{
 							"type": "Image",
 							"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+							"altText": "Person",
 							"style": "default"
 						}
 					]
@@ -32,6 +33,7 @@
 						{
 							"type": "Image",
 							"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+							"altText": "Person",
 							"style": "person"
 						}
 					]
