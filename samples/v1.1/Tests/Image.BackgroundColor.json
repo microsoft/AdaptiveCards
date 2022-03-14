@@ -6,12 +6,14 @@
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/2.png",
+			"altText": "Cat",
 			"size": "small",
 			"backgroundColor": "#FF0000FF"
 		},
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
+			"altText": "Cat",
 			"style": "person",
 			"backgroundColor": "#FFFF0000"
 		}
