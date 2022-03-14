@@ -14,6 +14,7 @@
                         {
                             "type": "Image",
                             "url": "${gameImageUrl}",
+                            "altText": "${gameName}",
                             "size": "Stretch"
                         }
                     ]

@@ -53,6 +53,7 @@
 						{
 							"type": "Image",
 							"url": "${thumbnailUrl}",
+							"altText": "${thumbnailAlt}",
 							"size": "auto"
 						}
 					]
