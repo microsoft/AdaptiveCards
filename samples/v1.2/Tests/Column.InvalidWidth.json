@@ -13,6 +13,7 @@
                         {
                             "type": "Image",
                             "url": "https://www.sewausa.org/resources/Sewa%20USA%20Images/DIY%20Campaigns/profile-clipart-generic-user-12.png",
+                            "altText": "Person",
                             "horizontalAlignment": "left",
                             "size": "small",
                             "style": "person"
