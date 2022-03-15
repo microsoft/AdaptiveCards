@@ -230,8 +230,11 @@
 - (void)testCanGatherDefaultValuesFromChoiceInputSet
 {
     [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
-        
-    XCUIElementQuery* buttons = testApp.buttons;
+
+    XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
+    [chatWindow swipeUp];
+
+    XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"OK"] tap];
 
     NSString* resultsString = [self getInputsString];
