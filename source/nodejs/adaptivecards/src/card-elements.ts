@@ -582,7 +582,7 @@ export abstract class CardElement extends CardObject {
     }
 
     updateActionsEnabledState() {
-        let allActions = this.getRootElement().getAllActions();
+        const allActions = this.getRootElement().getAllActions();
 
         for (let action of allActions) {
             action.updateEnabledState();
@@ -685,7 +685,7 @@ export abstract class CardElement extends CardObject {
     }
 
     getAllActions(): Action[] {
-        let result: Action[] = [];
+        const result: Action[] = [];
 
         for (let i = 0; i < this.getActionCount(); i++) {
             let action = this.getActionAt(i);
@@ -996,7 +996,7 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         if (this.selectAction) {
             result.push(this.selectAction);
@@ -2100,7 +2100,7 @@ export class Image extends CardElement {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         if (this.selectAction) {
             result.push(this.selectAction);
@@ -2290,7 +2290,7 @@ export abstract class CardElementContainer extends CardElement {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         for (let i = 0; i < this.getItemCount(); i++) {
             result.push(...this.getItemAt(i).getAllActions());
@@ -3242,7 +3242,7 @@ export class TextInput extends Input {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         if (this.inlineAction) {
             result.push(this.inlineAction);
@@ -5241,7 +5241,7 @@ export class ShowCardAction extends Action {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         result.push(...this.card.getAllActions());
 
@@ -5283,7 +5283,7 @@ class OverflowAction extends Action {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         result.push(...this._actions);
 
@@ -5919,7 +5919,7 @@ export class ActionSet extends CardElement {
     }
 
     getAllActions(): Action[] {
-        let result = super.getAllActions();
+        const result = super.getAllActions();
 
         for (let i = 0; i < this.getActionCount(); i++) {
             let action = this.getActionAt(i);
