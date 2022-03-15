@@ -18,6 +18,7 @@
 							"style": "person",
 							"type": "Image",
 							"url": "https://picsum.photos/100/100?image=112",
+							"altText": "Wheat field",
 							"isVisible": false,
 							"id": "imageToToggle",
 							"size": "medium"
@@ -30,6 +31,7 @@
 						{
 							"type": "Image",
 							"url": "https://picsum.photos/100/100?image=123",
+							"altText": "Gravel road",
 							"isVisible": false,
 							"id": "imageToToggle2",
 							"size": "medium"
