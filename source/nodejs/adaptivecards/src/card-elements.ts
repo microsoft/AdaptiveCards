@@ -2582,7 +2582,7 @@ export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
     constructor(matches: RegExpExecArray, readonly iFrameTitle?: string) {
         super(matches);
 
-        if (matches.length === 2) {
+        if (matches.length >= 2) {
             this._videoId = matches[1];
         }
     }
@@ -2663,12 +2663,28 @@ export class DailymotionPlayer extends IFrameMediaMediaPlayer {
 }
 
 export class YouTubePlayer extends IFrameMediaMediaPlayer {
+    private _startTimeIndex?: number;
+
+    constructor(matches: RegExpExecArray, readonly iFrameTitle?: string) {
+        super(matches, iFrameTitle);
+
+        if (matches.length >= 3 && matches[2] !== undefined) {
+            this._startTimeIndex = parseInt(matches[2]);
+        }
+    }
+
     async fetchVideoDetails(): Promise<void> {
         this.posterUrl = this.videoId ? `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg` : undefined;
     }
 
     getEmbedVideoUrl(): string {
-        return `https://www.youtube.com/embed/${this.videoId}?autoplay=1`;
+        let url = `https://www.youtube.com/embed/${this.videoId}?autoplay=1`;
+
+        if (this._startTimeIndex !== undefined) {
+            url += `&start=${this._startTimeIndex}`;
+        }
+
+        return url;
     }
 }
 
@@ -2680,7 +2696,7 @@ export interface ICustomMediaPlayer {
 export class Media extends CardElement {
     static customMediaPlayers: ICustomMediaPlayer[] = [
         {
-            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+)s)?).*/ig, /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/ig ],
+            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/ig, /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/ig ],
             createMediaPlayer: (matches) => new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
         },
         {
