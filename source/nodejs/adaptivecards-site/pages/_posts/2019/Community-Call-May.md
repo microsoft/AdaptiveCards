@@ -17,7 +17,7 @@ Agenda for this month's call, hosted by **Matt Hidinger**, included:
 
 The Microsoft Build conference took place last week and the Adaptive Cards team had the opportunity to share some real-world use cases and an early look at what we're planning. Have a look at the full session below, or the community call recap for a more condensed version.
 
-<iframe width="560" height="315" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/wT1yFr_j6IM"></iframe>
+<iframe width="560" title="Microsoft Build video" height="315" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/wT1yFr_j6IM"></iframe>
 
 **What about the source code?**
 
@@ -25,7 +25,7 @@ Throughout the talk we refer to a *Contoso Healthcare* sample app for the web an
 
 Watch the call here.
 
-<iframe width="560" height="315" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/DrlxTtwcpkI"></iframe>
+<iframe width="560" height="315" title="Community Call May 2019 video" allowfullscreen="allowfullscreen" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" frameborder="0" src="https://www.youtube.com/embed/DrlxTtwcpkI"></iframe>
 
 Next month's call will be held on **Thursday, June 13, 2019 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.
 
