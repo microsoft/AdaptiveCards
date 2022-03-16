@@ -38,7 +38,7 @@ export class HelpDialog extends Dialog {
 
         let tableCaption = shortcutTable.createCaption();
         tableCaption.style.textAlign = "left";
-        tableCaption.innerHTML = "These keyboard shortcuts only work when the keyboard focus is within either the card payload or sample data editors"
+        tableCaption.innerText = "These keyboard shortcuts only work when the keyboard focus is within either the card payload or sample data editors"
 
         shortcutTable.appendChild(document.createElement("br"));
 
