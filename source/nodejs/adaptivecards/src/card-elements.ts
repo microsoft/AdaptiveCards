@@ -2579,7 +2579,7 @@ export abstract class CustomMediaPlayer extends MediaPlayer {
 export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
     private _videoId?: string;
 
-    constructor(matches: RegExpExecArray) {
+    constructor(matches: RegExpExecArray, readonly iFrameTitle?: string) {
         super(matches);
 
         if (matches.length === 2) {
@@ -2608,6 +2608,11 @@ export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
         iFrame.style.height = "100%";
         iFrame.src = this.getEmbedVideoUrl();
         iFrame.frameBorder = "0";
+
+        if (this.iFrameTitle) {
+            iFrame.title = this.iFrameTitle;
+        }
+
         iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iFrame.allowFullscreen = true;
         
@@ -2675,16 +2680,16 @@ export interface ICustomMediaPlayer {
 export class Media extends CardElement {
     static customMediaPlayers: ICustomMediaPlayer[] = [
         {
-            urlPatterns: [ /https?:\/\/www.youtube.com\/watch\?v=([\w\d-_]+)&?/ig, /https?:\/\/youtu.be\/([\w\d-_]+)/ig ],
-            createMediaPlayer: (matches) => new YouTubePlayer(matches)
+            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+)s)?).*/ig, /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/ig ],
+            createMediaPlayer: (matches) => new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
         },
         {
-            urlPatterns: [ /https?:\/\/vimeo.com\/([\w\d-_]+)/ig ],
-            createMediaPlayer: (matches) => new VimeoPlayer(matches)
+            urlPatterns: [ /^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/ig ],
+            createMediaPlayer: (matches) => new VimeoPlayer(matches, Strings.defaults.vimeoVideoPlayer())
         },
         {
-            urlPatterns: [ /https?:\/\/www.dailymotion.com\/video\/([\w\d-_]+)/ig ],
-            createMediaPlayer: (matches) => new DailymotionPlayer(matches)
+            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/ig ],
+            createMediaPlayer: (matches) => new DailymotionPlayer(matches, Strings.defaults.dailymotionVideoPlayer())
         }
     ];
 
