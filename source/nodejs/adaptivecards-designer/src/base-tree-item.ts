@@ -33,7 +33,7 @@ export abstract class BaseTreeItem extends DraggableElement {
                 this._treeItemElement.classList.remove("selected");
             }
 
-            this._rootElement.setAttribute("aria-selected", this._isSelected.toString());
+            this._rootElement.setAttribute("ariaSelected", this._isSelected.toString());
 
             this.selectedChanged(scrollIntoView);
         }
@@ -91,7 +91,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._rootElement.style.listStyleType = "none";
         this._rootElement.setAttribute("aria-labelledby", labelId);
         this._rootElement.setAttribute("aria-level", this._level.toString());
-        this._rootElement.setAttribute("aria-selected", this._isSelected.toString());
+        this._rootElement.setAttribute("ariaSelected", this._isSelected.toString());
         this._rootElement.tabIndex = 0;
 
         if (hasChildren) {
