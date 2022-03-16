@@ -827,6 +827,8 @@ export class CardDesigner extends Designer.DesignContext {
         this._togglePreviewButton.separator = true;
         this._togglePreviewButton.allowToggle = true;
         this._togglePreviewButton.isVisible = Shared.GlobalSettings.enableDataBindingSupport;
+        // On initialization, the preview button is not pressed so set the tooltip to "Switch to Preview mode"
+        this._togglePreviewButton.toolTip = "Switch to Preview mode";
 
         this.toolbar.addElement(this._togglePreviewButton);
 

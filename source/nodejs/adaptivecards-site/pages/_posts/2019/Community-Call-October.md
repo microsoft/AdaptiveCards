@@ -51,7 +51,7 @@ And as always for the curious, the website code for these updates can be found i
 
 Watch the call here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GY8__dqPMiU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
+<iframe width="560" height="315" title="Community Call October 2019 video" src="https://www.youtube.com/embed/GY8__dqPMiU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
 
 Next month's call will be held on **Thursday, November 14, 2019 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.
 
