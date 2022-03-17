@@ -5,6 +5,7 @@
 #include "XamlHelpers.h"
 #include "ElementTagContent.h"
 #include "TileControl.h"
+#include "AdaptiveBase64Util.h"
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
@@ -234,6 +235,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         try
         {
             auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
+
+            if (imageUrl.SchemeName() == L"data")
+            {
+                return RenderImageFromDataUri(imageUrl);
+            }
+
             winrt::BitmapImage bitmapImage{};
             bitmapImage.UriSource(imageUrl);
 
@@ -384,7 +391,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             auto newControlAsFrameworkElement = newControl.as<winrt::FrameworkElement>();
 
             winrt::hstring id = element.Id();
-            
+
             if (!id.empty())
             {
                 newControlAsFrameworkElement.Name(id);
@@ -849,5 +856,33 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
 
         return {lineColor, spacing, lineThickness};
+    }
+
+    winrt::Image XamlHelpers::RenderImageFromDataUri(winrt::Uri const& imageUrl)
+    {
+        winrt::Image image{};
+        winrt::BitmapImage bitmapImage{};
+        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+
+        // Decode base 64 string
+        std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(imageUrl.Path()));
+        std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+        winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
+
+        dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+
+        dataWriter.StoreAsync().Completed(
+            [dataWriter, bitmapImage, image](winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+            {
+                if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                {
+                    stream.Seek(0);
+                    image.Source(bitmapImage);
+                    bitmapImage.SetSourceAsync(stream);
+                }
+            });
+
+        return image;
     }
 }
