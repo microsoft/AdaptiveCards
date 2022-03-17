@@ -1544,6 +1544,7 @@ export abstract class BaseSubmitActionPeer<TAction extends Adaptive.SubmitAction
             { targetVersion: Adaptive.Versions.v1_3, name: "Automatic", value: "auto" },
             { targetVersion: Adaptive.Versions.v1_3, name: "None", value: "none" }
         ]);
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_6, "disabledUnlessAssociatedInputsChange", "Only enable when associated inputs change");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -1551,7 +1552,8 @@ export abstract class BaseSubmitActionPeer<TAction extends Adaptive.SubmitAction
         propertySheet.add(
             defaultCategory,
             BaseSubmitActionPeer.dataProperty,
-            BaseSubmitActionPeer.associatedInputsProperty);
+            BaseSubmitActionPeer.associatedInputsProperty,
+            BaseSubmitActionPeer.disabledUnlessAssociatedInputsChangeProperty);
     }
 }
 
