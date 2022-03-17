@@ -525,6 +525,14 @@ dir {
   color: #696969;
 }
 
+.platform-list {
+  list-style-type: none;
+  padding-left: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-before: 0;
+  margin-bottom: 0;
+}
+
 .homepage .divider {
   border-bottom: solid 1px #ddd;
   margin-top: 64px;
