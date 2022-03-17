@@ -9,7 +9,8 @@
 		},
 		"expires": {
 			"type": "string",
-			"description": "A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z"
+			"description": "A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z",
+			"version": "1.6"
 		},
 		"userIds": {
 			"type": "string[]",
