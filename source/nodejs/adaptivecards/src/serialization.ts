@@ -335,15 +335,15 @@ export class PropertyDefinition {
     }
 
     parse(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         source: PropertyBag,
-        _context: BaseSerializationContext
+        context: BaseSerializationContext
     ): any {
         return source[this.name];
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: any,
         context: BaseSerializationContext
@@ -395,7 +395,7 @@ export class StringProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: string | undefined,
         context: BaseSerializationContext
@@ -422,15 +422,15 @@ export class StringProperty extends PropertyDefinition {
 
 export class BoolProperty extends PropertyDefinition {
     parse(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         source: PropertyBag,
-        _context: BaseSerializationContext
+        context: BaseSerializationContext
     ): boolean | undefined {
         return Utils.parseBool(source[this.name], this.defaultValue);
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: object,
         value: boolean | undefined,
         context: BaseSerializationContext
@@ -450,15 +450,15 @@ export class BoolProperty extends PropertyDefinition {
 
 export class NumProperty extends PropertyDefinition {
     parse(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         source: PropertyBag,
-        _context: BaseSerializationContext
+        context: BaseSerializationContext
     ): number | undefined {
         return Utils.parseNumber(source[this.name], this.defaultValue);
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: number | undefined,
         context: BaseSerializationContext
@@ -513,7 +513,7 @@ export class PixelSizeProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: number | undefined,
         context: BaseSerializationContext
@@ -563,7 +563,7 @@ export class StringArrayProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: string[] | undefined,
         context: BaseSerializationContext
@@ -837,7 +837,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: SerializableObject | undefined,
         context: BaseSerializationContext
@@ -862,7 +862,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
         readonly nullable: boolean = false,
         defaultValue?: SerializableObject
     ) {
-        super(targetVersion, name, defaultValue, (_sender: SerializableObject) => {
+        super(targetVersion, name, defaultValue, (sender: SerializableObject) => {
             return this.nullable ? undefined : new this.objectType();
         });
     }
@@ -899,7 +899,7 @@ export class SerializableObjectCollectionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: SerializableObject[] | undefined,
         context: BaseSerializationContext
@@ -913,7 +913,7 @@ export class SerializableObjectCollectionProperty extends PropertyDefinition {
         readonly objectType: SerializableObjectType,
         readonly onItemAdded?: (sender: SerializableObject, item: SerializableObject) => void
     ) {
-        super(targetVersion, name, undefined, (_sender: SerializableObject) => {
+        super(targetVersion, name, undefined, (sender: SerializableObject) => {
             return [];
         });
     }
