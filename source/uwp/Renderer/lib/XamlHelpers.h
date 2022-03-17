@@ -201,4 +201,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element);
 
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
+
+    winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
 }
