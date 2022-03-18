@@ -1200,6 +1200,17 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    pushChild(peer: DesignerPeer, index: number = -1) {
+        if (index == -1) {
+            this._children.push(peer);
+        }
+        else {
+            this._children.splice(index, 0, peer);
+        }
+
+        peer.parent = this;
+    }
+
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
