@@ -187,7 +187,6 @@ export class CardDesignerSurface {
 
     private _card: Adaptive.AdaptiveCard;
     private _allPeers: Array<DesignerPeers.DesignerPeer> = [];
-    private _allCardPeers: Array<DesignerPeers.DesignerPeer> = [];
     private _rootPeer: DesignerPeers.DesignerPeer;
     private _cardHost: HTMLElement;
     private _designerSurface: HTMLDivElement;
@@ -389,11 +388,9 @@ export class CardDesignerSurface {
         this._cardHost.appendChild(renderedCard);
     }
 
-    private addPeer(peer: DesignerPeers.DesignerPeer, whichList: boolean = false) {
-        let list = whichList ? this._allCardPeers : this._allPeers;
-        
-        if (list.indexOf(peer) < 0) {
-            list.push(peer);
+    private addPeer(peer: DesignerPeers.DesignerPeer) {
+        if (this._allPeers.indexOf(peer) < 0) {
+            this._allPeers.push(peer);
 
             peer.render();
 
@@ -410,7 +407,7 @@ export class CardDesignerSurface {
             peer.onChanged = (sender: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) => { this.peerChanged(sender, updatePropertySheet); };
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
-                this.addPeer(newPeer, whichList);
+                this.addPeer(newPeer);
                 this.updateLayout();
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
@@ -418,19 +415,8 @@ export class CardDesignerSurface {
 
             peer.addElementsToDesignerSurface(this._designerSurface);
 
-            if (peer instanceof DesignerPeers.ShowCardActionPeer)
-            {
-                let registration = CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
-
-                var cardPeer : DesignerPeers.CardElementPeer;
-                cardPeer = new registration.peerType(cardPeer, this, registration, peer.action.card);
-                
-                peer.pushChild(cardPeer);
-                this.addPeer(cardPeer, true);       
-            }
-
             for (let i = 0; i < peer.getChildCount(); i++) {
-                this.addPeer(peer.getChildAt(i), whichList);
+                this.addPeer(peer.getChildAt(i));
             }
         }
     }
@@ -473,14 +459,6 @@ export class CardDesignerSurface {
     private findCardElementPeer(cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer {
         for (let i = 0; i < this._allPeers.length; i++) {
             var peer = this._allPeers[i];
-
-            if (peer instanceof DesignerPeers.CardElementPeer && peer.cardElement == cardElement) {
-                return peer;
-            }
-        }
-
-        for (let i = 0; i < this._allCardPeers.length; i++) {
-            var peer = this._allCardPeers[i];
 
             if (peer instanceof DesignerPeers.CardElementPeer && peer.cardElement == cardElement) {
                 return peer;
