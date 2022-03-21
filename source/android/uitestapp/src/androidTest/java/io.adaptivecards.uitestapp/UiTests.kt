@@ -90,9 +90,7 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
-        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "rr")
-
-        TestHelpers.selectPopupOption("Crimson Shining Parrot")
+        TestHelpers.pickItemInFilteredChoiceSet("chosenAnimal", "rr", "Crimson Shining Parrot")
 
         TestHelpers.clickOnElementWithText("OK")
 

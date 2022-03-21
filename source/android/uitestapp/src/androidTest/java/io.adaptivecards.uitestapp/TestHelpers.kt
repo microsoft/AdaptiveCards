@@ -2,13 +2,19 @@
 // Licensed under the MIT License.
 package io.adaptivecards.uitestapp
 
+import android.util.Log
+import androidx.test.espresso.DataInteraction
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import io.adaptivecards.renderer.TagContent
+import io.adaptivecards.uitestapp.TestHelpers.findInputInValidatedContainer
+import io.adaptivecards.uitestapp.TestHelpers.selectPopupOption
+import io.adaptivecards.uitestapp.TestHelpers.setTextInInput
 import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput
 import org.hamcrest.Matchers
 
@@ -38,7 +44,47 @@ object TestHelpers {
     }
 
     internal fun selectPopupOption(optionText : String) {
-        Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        val TAG = "SelectPopupOption";
+
+        val optionDataInteraction : DataInteraction = Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup());
+        Log.i(TAG, "Found data $optionText");
+
+        optionDataInteraction.perform(ViewActions.scrollTo());
+        Log.i(TAG, "Scrolled to element");
+
+        optionDataInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Log.i(TAG, "Asserted element is displayed");
+
+        optionDataInteraction.perform(ViewActions.click());
+        Log.i(TAG, "Clicked on option $optionText");
+    }
+
+    internal fun pickItemInFilteredChoiceSet(inputName : String, hint : String, choiceSetOption : String)
+    {
+        val TAG = "PickItemInFilteredChoiceSet";
+
+        var selectionWasSuccessful : Boolean = false;
+        var retries : Int = 0;
+
+        while (!selectionWasSuccessful && retries < 5) {
+            Log.i(TAG, "Try #$retries")
+
+            try {
+                setTextInInput(findInputInValidatedContainer(inputName), hint)
+                Log.i(TAG, "Set value to $hint")
+
+                selectPopupOption(choiceSetOption)
+                Log.i(TAG, "Set option to $choiceSetOption")
+
+                selectionWasSuccessful = true;
+            } catch (e: Exception) {
+                e.printStackTrace();
+
+                Thread.sleep(500);
+            }
+
+            retries++;
+        }
     }
 
     internal fun clickOnElementWithText(text : String) {
