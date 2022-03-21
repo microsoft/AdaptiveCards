@@ -230,9 +230,5 @@
 	"The card elements to render inside the `TableCell`.": "The card elements to render inside the `TableCell`.",
 	"An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.": "An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.",
 	"Style hint for `TableCell`.": "Style hint for `TableCell`.",
-	"Allows users to filter choices in a choice set.": "Allows users to filter choices in a choice set.",
-	"Defines various metadata properties": "Defines various metadata properties",
-	"Defines various metadata properties typically not used for rendering the card": "Defines various metadata properties typically not used for rendering the card",
-	"A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z": "A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z",
-	"URL that uniquely identifies the card and serves as a browser fallback that can be used by some hosts.": "URL that uniquely identifies the card and serves as a browser fallback that can be used by some hosts."
+	"Allows users to filter choices in a choice set.": "Allows users to filter choices in a choice set."
 }
