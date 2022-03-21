@@ -687,7 +687,7 @@ button .fa-check {
   color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
-  white-space: nowrap;
+  white-space: break-word;
 }
 
 .ac-footer a:hover {
