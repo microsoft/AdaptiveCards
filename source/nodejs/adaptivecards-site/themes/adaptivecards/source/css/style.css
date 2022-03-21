@@ -653,6 +653,11 @@ button .fa-check {
   color: blue;
 }
 
+.schema-content a:link,
+.schema-content a:visited {
+	text-decoration: underline;
+}
+
 /* .fa-chevron-right {
   font-size: 11px;
   font-weight: lighter;
