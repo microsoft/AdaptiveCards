@@ -5,33 +5,25 @@ package io.adaptivecards.uitestapp
 import android.widget.DatePicker
 import org.junit.runner.RunWith
 import org.junit.Rule
-import io.adaptivecards.uitestapp.RenderCardUiTestAppActivity
 import kotlin.Throws
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.ViewAssertion
-import androidx.test.espresso.ViewInteraction
 import org.hamcrest.Matchers
 import androidx.test.espresso.action.ViewActions
-import io.adaptivecards.uitestapp.TestHelpers
 import androidx.test.espresso.matcher.ViewMatchers
 import io.adaptivecards.renderer.TagContent
 import androidx.test.espresso.contrib.PickerActions
 import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Assert
 import org.junit.Test
 import java.io.IOException
-import android.R.attr.y
-
-import android.R.attr.x
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import org.junit.Ignore
+import org.junit.rules.RuleChain
 
 
 @RunWith(AndroidJUnit4::class)
@@ -44,7 +36,8 @@ class UiTests {
     }
 
     @get:Rule
-    val mActivityRule: ActivityScenarioRule<RenderCardUiTestAppActivity> = ActivityScenarioRule<RenderCardUiTestAppActivity>(RenderCardUiTestAppActivity::class.java)
+    val testRule: RuleChain = RuleChain.outerRule(ActivityScenarioRule<RenderCardUiTestAppActivity>(RenderCardUiTestAppActivity::class.java))
+                                       .around(TestWatchRule());
 
     @Test
     @Throws(IOException::class)
@@ -105,9 +98,7 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
-        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "RR")
-
-        TestHelpers.selectPopupOption("Crimson Shining Parrot")
+        TestHelpers.pickItemInFilteredChoiceSet("chosenAnimal", "RR", "Crimson Shining Parrot")
 
         TestHelpers.clickOnElementWithText("OK")
 
@@ -122,11 +113,7 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "braz" to try to find brazillian
-        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "braz")
-
-        Thread.sleep(1000)
-
-        TestHelpers.selectPopupOption("Brazilian Tulipwood")
+        TestHelpers.pickItemInFilteredChoiceSet("chosenAnimal", "braz", "Brazilian Tulipwood")
 
         TestHelpers.clickOnElementWithText("OK")
 
@@ -141,9 +128,7 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "cuda" to try to find barracuda
-        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "cuda")
-
-        TestHelpers.selectPopupOption("Blackspot barracuda")
+        TestHelpers.pickItemInFilteredChoiceSet("chosenAnimal", "cuda", "Blackspot barracuda")
 
         TestHelpers.clickOnElementWithText("OK")
 
