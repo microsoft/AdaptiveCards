@@ -1,11 +1,4 @@
 steps:
-- script: |
-   mkdir Screenshots
-   cd Screenshots
-   adb pull /storage/emulated/0/Screenshots/
-  displayName: 'Pull screenshots script'
-  workingDirectory: $(Build.SourcesDirectory)
-
 - task: Gradle@2
   displayName: gradlew build
   inputs:
@@ -53,7 +46,12 @@ steps:
     cwd: source/android
     tasks: connectedAndroidTest
 
-
+- script: |
+   mkdir Screenshots
+   cd Screenshots
+   adb pull /storage/emulated/0/Screenshots/
+  displayName: 'Pull screenshots script'
+  workingDirectory: $(Build.SourcesDirectory)
 
 - task: PublishSymbols@1
   displayName: 'Publish symbols path: '
