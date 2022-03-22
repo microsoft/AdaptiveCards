@@ -1,4 +1,10 @@
 steps:
+- task: BatchScript@1
+  displayName: 'Run pull screenshots script'
+  inputs:
+    filename: 'source\scripts\PullScreenshots.cmd'
+    arguments: '.'
+
 - task: Gradle@2
   displayName: gradlew build
   inputs:
@@ -45,3 +51,12 @@ steps:
     wrapperScript: source/android/gradlew
     cwd: source/android
     tasks: connectedAndroidTest
+
+
+
+- task: PublishSymbols@1
+  displayName: 'Publish symbols path: '
+  inputs:
+    SearchPattern: '**\source\scripts\Screenshots\*.jpeg'
+  continueOnError: true
+
