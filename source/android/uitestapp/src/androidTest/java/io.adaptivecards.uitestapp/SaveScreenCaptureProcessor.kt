@@ -19,6 +19,8 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
             screenshotDirectory.mkdirs();
         }
 
+        throw java.lang.Exception("Storage at $screenshotPath")
+
         val screenshotFilePath = "$screenshotPath/$file"
         val screenshotFile = File(screenshotFilePath)
 
