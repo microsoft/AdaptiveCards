@@ -1,8 +1,10 @@
 steps:
 - script: |
+   mkdir Screenshots
+   cd Screenshots
    adb pull /storage/emulated/0/Screenshots/
   displayName: 'Pull screenshots script'
-  workingDirectory: $(Agent.BuildDirectory)/Screenshots
+  workingDirectory: $(Build.SourcesDirectory)
 
 - task: Gradle@2
   displayName: gradlew build
