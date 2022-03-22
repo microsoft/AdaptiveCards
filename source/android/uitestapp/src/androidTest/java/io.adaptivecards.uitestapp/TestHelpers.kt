@@ -61,8 +61,8 @@ object TestHelpers {
     {
         val METHOD_NAME = "PickItemInFilteredChoiceSet";
 
-        var selectionWasSuccessful : Boolean = false;
-        var retries : Int = 0;
+        var selectionWasSuccessful = false;
+        var retries = 0;
 
         while (!selectionWasSuccessful && retries < 5) {
             Log.i(TAG, "$METHOD_NAME - Try #$retries")

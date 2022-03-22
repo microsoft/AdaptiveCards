@@ -24,6 +24,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import org.junit.Ignore
 import org.junit.rules.RuleChain
+import org.junit.rules.Timeout
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -37,11 +39,13 @@ class UiTests {
 
     @get:Rule
     val testRule: RuleChain = RuleChain.outerRule(ActivityScenarioRule<RenderCardUiTestAppActivity>(RenderCardUiTestAppActivity::class.java))
-                                       .around(TestWatchRule());
+                                       .around(TestWatchRule())
+                                       .around(Timeout.seconds(60));
 
     @Test
     @Throws(IOException::class)
-    fun MockTest() {
+    fun MockTest()
+    {
         Assert.assertTrue(true)
     }
 
@@ -86,6 +90,8 @@ class UiTests {
         TestHelpers.pickItemInFilteredChoiceSet("chosenAnimal", "rr", "Crimson Shining Parrot")
 
         TestHelpers.clickOnElementWithText("OK")
+
+        Assert.assertFalse(true);
 
         TestHelpers.goToInputsScreen()
         TestHelpers.assertInputValuePairExists("chosenAnimal", "Crimson Shining Parrot")
