@@ -569,6 +569,13 @@ export class CardDesignerSurface {
                         }
 
                         break;
+
+                    case Constants.keys.enter:
+                        if (this._selectedPeer instanceof DesignerPeers.ActionPeer) {
+                            this._selectedPeer.action.renderedElement.click();
+                        }
+
+                        break;
                 }
             }
 
