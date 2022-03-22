@@ -563,11 +563,11 @@ export class CardDesignerSurface {
                         }
 
                         break;
+                    case Constants.keys.backspace:	
                     case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
                         }
-
                         break;
 
                     case Constants.keys.enter:
