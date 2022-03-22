@@ -1,9 +1,8 @@
 steps:
-- task: BatchScript@1
-  displayName: 'Run pull screenshots script'
-  inputs:
-    filename: 'source\scripts\PullScreenshots.cmd'
-    arguments: '.'
+- script: |
+   adb pull /storage/emulated/0/Screenshots/
+  displayName: 'Pull screenshots script'
+  workingDirectory: $(Agent.BuildDirectory)/Screenshots
 
 - task: Gradle@2
   displayName: gradlew build
@@ -57,6 +56,6 @@ steps:
 - task: PublishSymbols@1
   displayName: 'Publish symbols path: '
   inputs:
-    SearchPattern: '**\source\scripts\Screenshots\*.jpeg'
+    SearchPattern: '**\Screenshots\*.jpeg'
   continueOnError: true
 
