@@ -52,6 +52,7 @@ steps:
    adb pull /storage/emulated/0/Screenshots/
   displayName: 'Pull screenshots script'
   workingDirectory: $(Build.SourcesDirectory)
+  condition: succeededOrFailed()
 
 - task: PublishSymbols@1
   displayName: 'Publish symbols path: '
