@@ -801,6 +801,7 @@ export class CardDesignerSurface {
 
                 if (this.selectedPeer.remove(false, true)) {
                     this.setSelectedPeer(parent);
+                    parent.focus();
                 }
             }
             finally {
