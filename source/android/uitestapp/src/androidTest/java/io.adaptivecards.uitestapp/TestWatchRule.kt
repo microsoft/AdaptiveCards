@@ -18,37 +18,15 @@ public class TestWatchRule : TestWatcher() {
     protected override fun succeeded(description: Description?) {
         super.succeeded(description)
 
-        takeScreenshot(description, true)
+        ScreenshotUtil().instance().takeScreenshot(description, true)
     }
 
     protected override fun failed(e: Throwable?, description: Description?)
     {
         super.failed(e, description)
 
-        takeScreenshot(description, false)
+        ScreenshotUtil().instance().takeScreenshot(description, false)
     }
 
-    private fun takeScreenshot(description: Description?, success: Boolean)
-    {
-        var suffix = "_success"
-        if (!success)
-        {
-            suffix = "_fail";
-        }
 
-        val testName: String = description!!.methodName + suffix
-        val format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
-        val filename = "$testName.$format"
-        val capture: ScreenCapture = Screenshot.capture()
-        capture.name = filename
-        capture.format = format
-
-        val processors: HashSet<ScreenCaptureProcessor> = HashSet()
-        val captureProcessor = SaveScreenCaptureProcessor()
-        processors.add(captureProcessor)
-
-        try {
-            capture.process(processors)
-        } catch (e: IOException) {}
-    }
 }

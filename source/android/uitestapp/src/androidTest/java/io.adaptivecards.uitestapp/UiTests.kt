@@ -91,8 +91,6 @@ class UiTests {
 
         TestHelpers.clickOnElementWithText("OK")
 
-        Assert.assertFalse(true);
-
         TestHelpers.goToInputsScreen()
         TestHelpers.assertInputValuePairExists("chosenAnimal", "Crimson Shining Parrot")
     }
