@@ -13,10 +13,15 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
         val file:String = capture?.name ?: "Default.jpg"
         val data: ByteArrayOutputStream = getImageData(capture)
 
-        val screenshotPath = Environment.getExternalStorageDirectory().absolutePath + "/Screenshots"
+        val screenshotPath = Environment.getExternalStorageDirectory().absolutePath + "/screenshots/"
         val screenshotDirectory = File(screenshotPath)
         if (!screenshotDirectory.exists()) {
-            screenshotDirectory.mkdirs();
+            val dirCreated = screenshotDirectory.mkdirs()
+
+            if (!dirCreated)
+            {
+                throw Exception("Path was not created: $screenshotPath")
+            }
         }
 
         val screenshotFilePath = "$screenshotPath/$file"
@@ -28,7 +33,7 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
         catch (e: Exception)
         {
             val screenShotDirectoryExists = screenshotDirectory.exists();
-            throw java.lang.Exception("Screenshot Path: $screenshotPath \n Screenshot file: $screenshotFilePath \n Screenshot path exists: $screenShotDirectoryExists")
+            throw Exception("Screenshot Path: $screenshotPath \n Screenshot file: $screenshotFilePath \n Screenshot path exists: $screenShotDirectoryExists")
         }
 
         try {
