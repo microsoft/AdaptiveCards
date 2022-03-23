@@ -39,9 +39,6 @@ steps:
    
   displayName: Creation of emulator for testing
 
-- script: |
-   adb shell install -g 
-
 - task: Gradle@2
   displayName: gradlew test
   inputs:
@@ -62,3 +59,8 @@ steps:
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.SourcesDirectory)'
+  condition: succeededOrFailed()
+
+- publish: $(Build.SourcesDirectory)
+  artifact: ScreenshotsPublished
+  condition: succeededOrFailed()
