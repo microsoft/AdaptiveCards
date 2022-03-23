@@ -72,10 +72,12 @@ export class ToolbarButton extends ToolbarElement {
         if(!this.isEnabled) {
             this.renderedElement.classList.add("acd-toolbar-button-disabled");
             this.renderedElement.setAttribute("aria-disabled", "true");
+            this.renderedElement.tabIndex = -1;
         }
         else {
             this.renderedElement.classList.remove("acd-toolbar-button-disabled");
             this.renderedElement.removeAttribute("aria-disabled");
+            this.renderedElement.tabIndex = 0;
         }
 
         if (this.isToggled) {

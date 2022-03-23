@@ -21,15 +21,18 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "${hasMenu.hasMenuSection[0].image}"
+                    "url": "${hasMenu.hasMenuSection[0].image}",
+                    "altText": "${hasMenu.hasMenuSection[0].name}"
                 },
                 {
                     "type": "Image",
-                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[0].image}"
+                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[0].image}",
+                    "altText": "${hasMenu.hasMenuSection[0].hasMenuSection[0].name}"
                 },
                 {
                     "type": "Image",
-                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[1].image}"
+                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[1].image}",
+                    "altText": "${hasMenu.hasMenuSection[0].hasMenuSection[1].name}"
                 }
             ]
         }
