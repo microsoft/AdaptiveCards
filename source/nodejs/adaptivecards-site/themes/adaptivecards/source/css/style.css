@@ -653,6 +653,11 @@ button .fa-check {
   color: blue;
 }
 
+.schema-content a:link,
+.schema-content a:visited {
+	text-decoration: underline;
+}
+
 /* .fa-chevron-right {
   font-size: 11px;
   font-weight: lighter;
@@ -682,7 +687,7 @@ button .fa-check {
   color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
-  white-space: nowrap;
+  white-space: break-word;
 }
 
 .ac-footer a:hover {
