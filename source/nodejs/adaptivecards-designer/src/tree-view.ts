@@ -9,6 +9,9 @@ export class TreeView {
         treeItem.onSelectedChange = (sender: BaseTreeItem) => {
             this.selectedItem = sender;
         };
+        treeItem.onSetSelected = (sender: BaseTreeItem) => {
+            this.onSetSelected(this);
+        };
 
         for (let i = 0; i < treeItem.getChildCount(); i++) {
             this.setupTreeItemEvents(treeItem.getChildAt(i));
@@ -41,6 +44,7 @@ export class TreeView {
     }
 
     onSelectedItemChanged: (sender: TreeView) => void;
+    onSetSelected: (sender: TreeView) => void;
 
     constructor(readonly rootItem: BaseTreeItem) { }
 

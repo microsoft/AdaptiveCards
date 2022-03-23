@@ -19,7 +19,9 @@ export class FieldPicker extends Controls.PopupControl {
 
         this._treeView.onSelectedItemChanged = (sender) => {
             this._selectedField = (this._treeView.selectedItem as DataTreeItem).field;
+        };
 
+        this._treeView.onSetSelected = (sender) => {
             if (this._selectedField) {
                 this.closePopup(false);
             }

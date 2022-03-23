@@ -262,6 +262,8 @@ export class CardDesignerSurface {
         if (updatePropertySheet && this.onSelectedPeerChanged) {
             this.onSelectedPeerChanged(this._selectedPeer);
         }
+
+        peer.focus();
     }
 
     private peerRemoved(peer: DesignerPeers.DesignerPeer) {
@@ -581,6 +583,22 @@ export class CardDesignerSurface {
 
             return !e.cancelBubble;
         }
+
+        this._designerSurface.onkeydown = (e: KeyboardEvent) => {
+            if (this._selectedPeer) {
+                if (e.ctrlKey && e.key == "b") {
+                    let buttons = this._peerCommandsHostElement.children;
+                    for (let i = 0; i < buttons.length; i++) {
+                        let button = buttons.item(i);
+                        if (button instanceof HTMLButtonElement) {
+                            if (button.innerText == "Bind...") {
+                                button.click();
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
         this._designerSurface.onpointermove = (e: PointerEvent) => {
             let clientRect = this._designerSurface.getBoundingClientRect();

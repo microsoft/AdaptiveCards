@@ -45,6 +45,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         super.click(e);
 
         this.setIsSelected(true, false);
+        this.onSetSelected(this);
     }
 
     protected getIconClass(): string {
@@ -102,12 +103,12 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._rootElement.onclick = () => { this.click; };
         this._rootElement.onkeydown = (e: KeyboardEvent) => {
             if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
-                this.setIsSelected(!this.isSelected, !this.isSelected);
-                this._rootElement.focus();
-                e.preventDefault();
-                e.cancelBubble = true;
+                this.onSetSelected(this);
             }
-        }
+        };
+        this._rootElement.onfocus = (e: FocusEvent) => {
+            this.setIsSelected(true, false);
+        };
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
@@ -214,6 +215,7 @@ export abstract class BaseTreeItem extends DraggableElement {
     protected _level: number = 0;
 
     onSelectedChange: (sender: BaseTreeItem) => void;
+    onSetSelected: (sender: BaseTreeItem) => void;
 
     constructor(isExpanded: boolean = true) {
         super();
