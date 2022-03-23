@@ -51,12 +51,15 @@ steps:
    cd Screenshots
    adb shell ls /storage/emulated/0/
    adb pull /storage/emulated/0/Screenshots/
+   ls
   displayName: 'Pull screenshots script'
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
 
 - script: |
-   ls -R *.jpeg
+   ls
+   ls -R **/*.jpeg
+  displayName: 'Print ls'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
