@@ -21,6 +21,7 @@ import org.junit.Assert
 import org.junit.Test
 import java.io.IOException
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import org.junit.Ignore
 import org.junit.rules.RuleChain
@@ -40,7 +41,8 @@ class UiTests {
     @get:Rule
     val testRule: RuleChain = RuleChain.outerRule(ActivityScenarioRule<RenderCardUiTestAppActivity>(RenderCardUiTestAppActivity::class.java))
                                        .around(TestWatchRule())
-                                       .around(Timeout.seconds(60));
+                                       .around(Timeout.seconds(60))
+                                       .around(GrantPermissionRule.grant(android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
 
     @Test
     @Throws(IOException::class)
