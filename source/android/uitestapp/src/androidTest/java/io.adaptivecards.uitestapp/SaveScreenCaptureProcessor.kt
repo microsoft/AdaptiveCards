@@ -22,7 +22,14 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
         val screenshotFilePath = "$screenshotPath/$file"
         val screenshotFile = File(screenshotFilePath)
 
-        screenshotFile.createNewFile()
+        try{
+            screenshotFile.createNewFile()
+        }
+        catch (e: Exception)
+        {
+            val screenShotDirectoryExists = screenshotDirectory.exists();
+            throw java.lang.Exception("Screenshot Path: $screenshotPath \n Screenshot file: $screenshotFilePath \n Screenshot path exists: $screenShotDirectoryExists")
+        }
 
         try {
             val fos = FileOutputStream(screenshotFile)
