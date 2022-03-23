@@ -55,12 +55,15 @@ steps:
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
 
+- script: |
+   ls -R *.jpeg
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(build.SourcesDirectory)'
+    PathtoPublish: '$(build.SourcesDirectory)/Screenshots'
   condition: succeededOrFailed()
 
-- publish: $(Build.SourcesDirectory)
+- publish: $(Build.SourcesDirectory)/Screenshots'
   artifact: ScreenshotsPublished
   condition: succeededOrFailed()
