@@ -14,7 +14,7 @@
 		},
 		"poster": {
 			"type": "uri-reference",
-			"description": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) ot will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube."
+			"description": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) or will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube."
 		},
 		"altText": {
 			"type": "string",
