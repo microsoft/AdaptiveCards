@@ -39,6 +39,9 @@ steps:
    
   displayName: Creation of emulator for testing
 
+- script: |
+   adb shell install -g 
+
 - task: Gradle@2
   displayName: gradlew test
   inputs:
@@ -55,9 +58,7 @@ steps:
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
 
-- task: PublishSymbols@1
-  displayName: 'Publish symbols path: '
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
   inputs:
-    SearchPattern: '**\Screenshots\*.jpeg'
-  continueOnError: true
-
+    PathtoPublish: '$(build.SourcesDirectory)'
