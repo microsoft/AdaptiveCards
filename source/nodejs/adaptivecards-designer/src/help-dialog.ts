@@ -45,6 +45,10 @@ export class HelpDialog extends Dialog {
         shortcutTable.appendChild(this._getShortcutRow("Shortcut", "Description", true));
         shortcutTable.appendChild(this._getShortcutRow("Alt-F1", "Show help dialog for editor"));
         shortcutTable.appendChild(this._getShortcutRow("Ctrl-M", "Toggle behavior of TAB key. By default, pressing TAB will insert a TAB character. When toggled, pressing TAB will navigate to the next focusable item."));
+        shortcutTable.appendChild(this._getShortcutRow("Delete, Backspace", "(Designer mode) Delete the currently selected card element"));
+        shortcutTable.appendChild(this._getShortcutRow("Ctrl-B", "(Designer mode) Open up the bind menu for the currently selected card element, if available"));
+        shortcutTable.appendChild(this._getShortcutRow("Space", "(Designer mode) Toggle drag mode"));
+        shortcutTable.appendChild(this._getShortcutRow("Arrow keys", "(Designer mode) In drag mode, move the currently selected element"));
 
         this._renderedElement.appendChild(shortcutTable);
         return this._renderedElement;
