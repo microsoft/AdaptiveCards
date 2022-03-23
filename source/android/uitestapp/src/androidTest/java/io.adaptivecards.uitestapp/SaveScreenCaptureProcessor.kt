@@ -19,8 +19,6 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
             screenshotDirectory.mkdirs();
         }
 
-        throw java.lang.Exception("Storage at $screenshotPath")
-
         val screenshotFilePath = "$screenshotPath/$file"
         val screenshotFile = File(screenshotFilePath)
 
@@ -32,7 +30,7 @@ class SaveScreenCaptureProcessor: ScreenCaptureProcessor
             fos.flush()
             fos.close()
         } catch (e: Exception) {
-            e.printStackTrace()
+            throw e;
         }
 
         return ""
