@@ -14,12 +14,12 @@ public class TestWatchRule : TestWatcher() {
     protected override fun succeeded(description: Description?) {
         super.succeeded(description)
 
-        ScreenshotUtil().instance().takeScreenshot(description, true)
+        ScreenshotHelper().takeScreenshot(description, true)
     }
 
     protected override fun failed(e: Throwable?, description: Description?) {
         super.failed(e, description)
 
-        ScreenshotUtil().instance().takeScreenshot(description, false)
+        ScreenshotHelper().takeScreenshot(description, false)
     }
 }

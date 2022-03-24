@@ -11,7 +11,7 @@ import java.io.*
 class SaveScreenCaptureProcessor : ScreenCaptureProcessor {
     override fun process(capture: ScreenCapture?): String {
         val file: String = capture?.name ?: "Default.jpg"
-        val data: ByteArrayOutputStream = getImageData(capture)
+        val data: ByteArray = getImageData(capture)
 
         val screenshotPath =
             Environment.getExternalStorageDirectory().absolutePath + "/screenshots/"
@@ -25,18 +25,17 @@ class SaveScreenCaptureProcessor : ScreenCaptureProcessor {
         screenshotFile.createNewFile()
 
         val fos = FileOutputStream(screenshotFile)
-        fos.write(data.toByteArray())
+        fos.write(data)
         fos.flush()
         fos.close()
 
         return screenshotPath
     }
-    
+
     @Throws(IOException::class)
-    private fun getImageData(capture: ScreenCapture?): ByteArrayOutputStream {
+    private fun getImageData(capture: ScreenCapture?): ByteArray {
         val outputStream = ByteArrayOutputStream()
         capture!!.bitmap.compress(capture!!.format, 100, outputStream)
-        outputStream.close()
-        return outputStream;
+        return outputStream.toByteArray()
     }
 }

@@ -8,22 +8,21 @@ import androidx.test.runner.screenshot.ScreenCaptureProcessor
 import androidx.test.runner.screenshot.Screenshot
 import org.junit.runner.Description
 
-class ScreenshotUtil {
+class ScreenshotHelper() {
+    private var mIndex: Int = 0
+    private var mTestName: String = ""
 
-    private lateinit var mInstance: ScreenshotUtil
-
-    public fun instance(): ScreenshotUtil {
-        if (!(this::mInstance.isInitialized)) {
-            mInstance = ScreenshotUtil()
-        }
-
-        return mInstance
+    // Constructor to be used for taking multiple screenshots in a single test
+    constructor(testName: String) : this() {
+        mTestName = testName
     }
 
-    public fun takeScreenshot(screenshotName: String) {
-        saveScreenshot(screenshotName)
+    public fun takeScreenshot() {
+        ++mIndex
+        saveScreenshotAs("$mTestName-$mIndex")
     }
 
+    // Function to be called from the succeeded or failed methods from a TestWatcher implementation
     public fun takeScreenshot(description: Description?, success: Boolean) {
         var suffix = "_success"
         if (!success) {
@@ -31,10 +30,10 @@ class ScreenshotUtil {
         }
 
         val testName: String = description!!.methodName + suffix
-        saveScreenshot(testName);
+        saveScreenshotAs(testName);
     }
 
-    private fun saveScreenshot(filename: String) {
+    private fun saveScreenshotAs(filename: String) {
         val format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
 
         val capture: ScreenCapture = Screenshot.capture()
