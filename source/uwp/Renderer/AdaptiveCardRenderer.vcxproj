@@ -43,13 +43,15 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
+    <CppWinRTFastAbi>true</CppWinRTFastAbi>
+    <CppWinRTOptimized>true</CppWinRTOptimized>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -161,11 +163,13 @@
     <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTextStyleConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClInclude Include="dll\CppWinRTIncludes.h" />
     <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
@@ -242,14 +246,12 @@
     <ClInclude Include="lib\AdaptiveFactSetTextConfig.h" />
     <ClInclude Include="lib\AsyncOperations.h" />
     <ClInclude Include="lib\DefaultResourceDictionary.h" />
-    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\ImageLoadTracker.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\TileControl.h" />
     <ClInclude Include="lib\Util.h" />
-    <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
@@ -278,6 +280,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories);$(GeneratedFilesDir)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories);$(GeneratedFilesDir)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
@@ -327,7 +330,6 @@
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
-    <ClCompile Include="dll\dll.cpp" />
     <ClInclude Include="lib\XamlHelpers.h" />
   </ItemGroup>
   <ItemGroup>

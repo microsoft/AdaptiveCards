@@ -6,105 +6,90 @@
 #include "util.h"
 #include "InputValue.h"
 #include "AdaptiveInputs.h"
+#include "RenderedAdaptiveCard.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+template<typename TSrc, typename TPayload> struct auto_event
 {
-    class DECLSPEC_UUID("F25E0D36-0B5B-4398-AFC8-F84105EC46A2") RenderedAdaptiveCard
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<IWeakReferenceSource>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard>>
+    using handler = winrt::TypedEventHandler<TSrc, TPayload>;
+    winrt::event<handler> m_event;
+    auto operator()(handler const& t) { return m_event.add(t); }
+    void operator()(winrt::event_token const& t) { return m_event.remove(t); }
+    auto operator()(TSrc const& src, TPayload const& p) { return m_event(src, p); }
+};
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+{
+    struct DECLSPEC_UUID("F25E0D36-0B5B-4398-AFC8-F84105EC46A2") RenderedAdaptiveCard
+        : RenderedAdaptiveCardT<RenderedAdaptiveCard, ITypePeek>
     {
-        AdaptiveRuntime(RenderedAdaptiveCard);
-
-    public:
         RenderedAdaptiveCard();
-
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>* errors,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* warnings);
+        RenderedAdaptiveCard(winrt::IVector<winrt::AdaptiveError> const& errors,
+                             winrt::IVector<winrt::AdaptiveWarning> const& warnings);
 
         // IRenderedAdaptiveCard
-        IFACEMETHODIMP get_OriginatingCard(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard** value) override;
-        IFACEMETHODIMP get_OriginatingHostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** value) override;
-        IFACEMETHODIMP get_FrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value) override;
-        IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value) override;
-        IFACEMETHODIMP add_Action(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                              ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
-            _Out_ EventRegistrationToken* token) override;
-        IFACEMETHODIMP remove_Action(EventRegistrationToken token) override;
+        auto OriginatingCard() { return m_originatingCard; }
+        auto OriginatingHostConfig() { return m_originatingHostConfig; }
+        auto FrameworkElement() { return m_frameworkElement; }
+        auto UserInputs() { return static_cast<winrt::AdaptiveInputs>(*m_inputs); }
 
-        IFACEMETHODIMP add_MediaClicked(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                              ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>* handler,
-            _Out_ EventRegistrationToken* token) override;
-        IFACEMETHODIMP remove_MediaClicked(EventRegistrationToken token) override;
-
-        IFACEMETHODIMP get_Errors(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value) override;
-        IFACEMETHODIMP get_Warnings(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>** value) override;
+        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveActionEventArgs> Action;
+        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveMediaEventArgs> MediaClicked;
+        property<winrt::IVector<winrt::AdaptiveError>> Errors;
+        property<winrt::IVector<winrt::AdaptiveWarning>> Warnings;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
-                                  _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+        void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
+                               winrt::IAdaptiveShowCardAction const& showCardAction,
+                               winrt::UIElement const& showCardUIElement,
+                               Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                  _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+        void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
+                               winrt::IAdaptiveShowCardAction const& showCardAction,
+                               winrt::UIElement const& showCardUIElement,
+                               Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 
-        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement);
 
-        HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* containerCardId);
-        HRESULT LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
-                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
-                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                              _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue);
+        void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
+        void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs);
+        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
-        void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
-        void SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* value);
-        void SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* value);
-        HRESULT SendActionEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* eventArgs);
-        HRESULT SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* eventArgs);
+        void SetFrameworkElement(winrt::FrameworkElement const& value);
+        void SetOriginatingCard(winrt::AdaptiveCard const& value);
+        void SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value);
+        void SendActionEvent(winrt::IAdaptiveActionElement const& eventArgs);
+        void SendMediaClickedEvent(winrt::AdaptiveMedia const& eventArgs);
 
     private:
-        HRESULT HandleInlineShowCardEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement);
+        void HandleInlineShowCardEvent(winrt::IAdaptiveActionElement const& actionElement);
 
-        HRESULT AddInlineShowCardHelper(UINT32 internalId,
-                                        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+        void AddInlineShowCardHelper(uint32_t internalId,
+                                     winrt::IAdaptiveShowCardAction const& showCardAction,
+                                     winrt::UIElement const& showCardUIElement,
+                                     Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard> m_originatingCard;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> m_originatingHostConfig;
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveInputs> m_inputs;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_frameworkElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>> m_errors;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>> m_warnings;
-        std::shared_ptr<ActionEventSource> m_actionEvents;
-        std::shared_ptr<MediaEventSource> m_mediaClickedEvents;
+        winrt::AdaptiveCard m_originatingCard;
+        Rendering::Uwp::AdaptiveHostConfig m_originatingHostConfig;
+        winrt::com_ptr<winrt::implementation::AdaptiveInputs> m_inputs;
+        winrt::FrameworkElement m_frameworkElement;
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is the ShowCardInfo structure for that show card
-        std::unordered_map<UINT32, std::shared_ptr<ShowCardInfo>> m_showCards;
+        std::unordered_map<uint32_t, std::shared_ptr<ShowCardInfo>> m_showCards;
 
         // Map of the rendered overflow buttons keyed on action set Id. This is needed to move buttons around when a
         // show card from an overflow menu needs to be moved to a primary button in the action set
-        std::unordered_map<UINT32, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>> m_overflowButtons;
+        std::unordered_map<uint32_t, winrt::UIElement> m_overflowButtons;
     };
+}
 
-    ActivatableClass(RenderedAdaptiveCard);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct RenderedAdaptiveCard : RenderedAdaptiveCardT<RenderedAdaptiveCard, implementation::RenderedAdaptiveCard>
+    {
+    };
 }

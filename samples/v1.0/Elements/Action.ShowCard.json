@@ -23,7 +23,10 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
-						"title": "Neat!"
+						"title": "Neat!",
+						"data": {
+							"neat": "true"
+						}
 					}
 				]
 			}

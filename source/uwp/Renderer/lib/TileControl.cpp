@@ -2,188 +2,84 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include <cmath>
 #include "TileControl.h"
+#include "TileControl.g.cpp"
 #include "XamlHelpers.h"
+#include <cmath>
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Media;
-using namespace ABI::Windows::UI::Xaml::Media::Imaging;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT TileControl::RuntimeClassInitialize() noexcept
-    try
+    TileControl::TileControl()
     {
-        ComPtr<IContentControlFactory> spFactory;
-        RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(
-            HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ContentControl).Get(), &spFactory));
-
-        // Create composable base
-        ComPtr<IInspectable> spInnerInspectable;
-        ComPtr<IContentControl> spInnerContentControl;
-        RETURN_IF_FAILED(spFactory->CreateInstance(static_cast<ITileControl*>(this),
-                                                   spInnerInspectable.GetAddressOf(),
-                                                   spInnerContentControl.GetAddressOf()));
-        RETURN_IF_FAILED(SetComposableBasePointers(spInnerInspectable.Get(), spFactory.Get()));
-
-        // initialize members
-        m_containerElement =
-            XamlHelpers::CreateABIClass<ICanvas>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas));
-        m_brushXaml = XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
-
-        // Add m_containerElement to content of ContentControl
-        ComPtr<IInspectable> content;
-        RETURN_IF_FAILED(m_containerElement.As(&content));
-        RETURN_IF_FAILED(spInnerContentControl->put_Content(content.Get()));
-
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT TileControl::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* value)
-    {
-        m_adaptiveBackgroundImage = value;
-        return S_OK;
+        m_containerElement = winrt::Canvas{};
+        m_brushXaml = winrt::ImageBrush{};
+        this->Content(m_containerElement);
     }
 
-    HRESULT TileControl::put_RootElement(_In_ IFrameworkElement* value)
+    void TileControl::ImageOpened(const IInspectable& /* sender */, const winrt::RoutedEventArgs& /* args */)
     {
-        m_rootElement = value;
-        return S_OK;
+        auto uiElement = m_resolvedImage;
+
+        // Do we need to throw/log if we fail here?
+        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
+        {
+            if (const auto imageSource = image.Source())
+            {
+                if (const auto bitmapSource = imageSource.try_as<winrt::BitmapSource>())
+                {
+                    m_imageSize = {(float)bitmapSource.PixelWidth(), (float)bitmapSource.PixelHeight()};
+                    RefreshContainerTile();
+                }
+            }
+        }
     }
-
-    HRESULT TileControl::get_ResolvedImage(_COM_Outptr_ IUIElement** value) { return m_resolvedImage.CopyTo(value); }
-
-    HRESULT TileControl::put_ImageSize(_In_ Size value)
-    {
-        m_imageSize = value;
-        return S_OK;
-    }
-
-    HRESULT TileControl::LoadImageBrush(_In_ IUIElement* uielement)
+    void TileControl::LoadImageBrush(winrt::UIElement const& uielement)
     {
         m_resolvedImage = uielement;
 
-        ComPtr<IImage> image;
-        RETURN_IF_FAILED(m_resolvedImage.As(&image));
-
-        if (image == nullptr)
+        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
         {
-            return E_INVALIDARG;
+            if (const auto imageSource = image.Source())
+            {
+                if (const auto bitmapImage = imageSource.try_as<winrt::BitmapImage>())
+                {
+                    m_imageOpenedRevoker.revoke();
+                    m_imageOpenedRevoker = bitmapImage.ImageOpened(winrt::auto_revoke, {this, &TileControl::ImageOpened});
+                    m_brushXaml.ImageSource(imageSource);
+                }
+            }
         }
-
-        ComPtr<IImageSource> imageSource;
-        THROW_IF_FAILED(image->get_Source(&imageSource));
-
-        if (imageSource == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        ComPtr<IBitmapImage> bitmapImage;
-        THROW_IF_FAILED(imageSource.As(&bitmapImage));
-
-        if (bitmapImage == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        EventRegistrationToken eventToken;
-
-        THROW_IF_FAILED(
-            bitmapImage->add_ImageOpened(Callback<IRoutedEventHandler>([&](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                                             ComPtr<IUIElement> uiElement;
-                                             THROW_IF_FAILED(get_ResolvedImage(&uiElement));
-
-                                             // Extract BitmapSource from Image
-                                             ComPtr<IImage> image;
-                                             THROW_IF_FAILED(uiElement.As(&image));
-                                             ComPtr<IImageSource> imageSource;
-                                             THROW_IF_FAILED(image->get_Source(&imageSource));
-                                             ComPtr<IBitmapSource> bitmapSource;
-                                             THROW_IF_FAILED(imageSource.As(&bitmapSource));
-
-                                             // Extract Size from Image
-                                             int height{}, width{};
-                                             THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
-                                             THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
-
-                                             // Save size to member variable
-                                             Size imageSize{};
-                                             imageSize.Height = static_cast<float>(height);
-                                             imageSize.Width = static_cast<float>(width);
-                                             THROW_IF_FAILED(put_ImageSize(imageSize));
-
-                                             RefreshContainerTile();
-                                             return S_OK;
-                                         }).Get(),
-                                         &eventToken));
-
-        THROW_IF_FAILED(m_brushXaml->put_ImageSource(imageSource.Get()));
-
-        return S_OK;
     }
 
-    HRESULT TileControl::OnApplyTemplate()
+    void TileControl::OnApplyTemplate() { TileControl_base::OnApplyTemplate(); }
+
+    winrt::Size TileControl::MeasureOverride(winrt::Size const& availableSize)
     {
-        // Call OnApplyTemplate() for composable base
-        ComPtr<IInspectable> composableBase = GetComposableBase();
-        ComPtr<IFrameworkElementOverrides> frameworkOverrides;
-        RETURN_IF_FAILED(composableBase.As(&frameworkOverrides));
-        return frameworkOverrides->OnApplyTemplate();
+        return TileControl_base::MeasureOverride(availableSize);
     }
 
-    HRESULT TileControl::MeasureOverride(Size availableSize, Size* pReturnValue)
+    winrt::Size TileControl::ArrangeOverride(winrt::Size const& arrangeBounds)
     {
-        ComPtr<IFrameworkElementOverrides> base;
-        RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
-                                                             reinterpret_cast<void**>(base.GetAddressOf())));
-
-        return base->MeasureOverride(availableSize, pReturnValue);
-    }
-
-    HRESULT TileControl::ArrangeOverride(Size arrangeBounds, Size* pReturnValue)
-    {
-        ComPtr<IFrameworkElementOverrides> base;
-        RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
-                                                             reinterpret_cast<void**>(base.GetAddressOf())));
-
-        RETURN_IF_FAILED(base->ArrangeOverride(arrangeBounds, pReturnValue));
-        m_containerSize = *pReturnValue;
+        m_containerSize = TileControl_base::ArrangeOverride(arrangeBounds);
 
         // Define clip properties for m_containerElement
-        Rect* rect = new Rect();
-        rect->X = 0;
-        rect->Y = 0;
-        rect->Width = m_containerSize.Width;
-        rect->Height = m_containerSize.Height;
+        winrt::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
 
-        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangleGeometry>(
-            HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry));
-        RETURN_IF_FAILED(clip->put_Rect(*rect));
-
-        ComPtr<IUIElement> containerAsUIElement;
-        RETURN_IF_FAILED(m_containerElement.As(&containerAsUIElement));
-        RETURN_IF_FAILED(containerAsUIElement->put_Clip(clip.Get()));
-
+        winrt::RectangleGeometry clip;
+        clip.Rect(rect);
+        if (const auto containerAsUIElement = m_containerElement.try_as<winrt::UIElement>())
+        {
+            containerAsUIElement.Clip(clip);
+        }
         RefreshContainerTile();
-        return S_OK;
+        return m_containerSize;
     }
 
     void TileControl::RefreshContainerTile()
     {
-        BackgroundImageFillMode fillMode{};
-        HAlignment hAlignment{};
-        VAlignment vAlignment{};
-        THROW_IF_FAILED(ExtractBackgroundImageData(&fillMode, &hAlignment, &vAlignment));
+        winrt::BackgroundImageFillMode fillMode = m_adaptiveBackgroundImage.FillMode();
+        winrt::HAlignment hAlignment = m_adaptiveBackgroundImage.HorizontalAlignment();
+        winrt::VAlignment vAlignment = m_adaptiveBackgroundImage.VerticalAlignment();
 
         int numberSpriteToInstanciate{1};
         int numberImagePerColumn{1};
@@ -198,48 +94,48 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             switch (fillMode)
             {
-            case BackgroundImageFillMode::RepeatHorizontally:
+            case winrt::BackgroundImageFillMode::RepeatHorizontally:
                 numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 numberImagePerColumn = 1;
 
                 switch (vAlignment)
                 {
-                case VAlignment::Bottom:
+                case winrt::VAlignment::Bottom:
                     offsetVerticalAlignment = m_containerSize.Height - m_imageSize.Height;
                     break;
-                case VAlignment::Center:
+                case winrt::VAlignment::Center:
                     offsetVerticalAlignment = static_cast<float>((m_containerSize.Height - m_imageSize.Height) / 2.0f);
                     break;
-                case VAlignment::Top:
+                case winrt::VAlignment::Top:
                 default:
                     break;
                 }
                 break;
 
-            case BackgroundImageFillMode::RepeatVertically:
+            case winrt::BackgroundImageFillMode::RepeatVertically:
                 numberImagePerRow = 1;
                 numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
 
                 switch (hAlignment)
                 {
-                case HAlignment::Right:
+                case winrt::HAlignment::Right:
                     offsetHorizontalAlignment = m_containerSize.Width - m_imageSize.Width;
                     break;
-                case HAlignment::Center:
+                case winrt::HAlignment::Center:
                     offsetHorizontalAlignment = static_cast<float>((m_containerSize.Width - m_imageSize.Width) / 2.0f);
                     break;
-                case HAlignment::Left:
+                case winrt::HAlignment::Left:
                 default:
                     break;
                 }
                 break;
 
-            case BackgroundImageFillMode::Repeat:
+            case winrt::BackgroundImageFillMode::Repeat:
                 numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
                 numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 break;
 
-            case BackgroundImageFillMode::Cover:
+            case winrt::BackgroundImageFillMode::Cover:
             default:
                 numberImagePerColumn = 1;
                 numberImagePerRow = 1;
@@ -252,22 +148,22 @@ namespace AdaptiveCards::Rendering::Uwp
         int count = static_cast<int>(m_xamlChildren.size());
 
         // Get containerElement.Children
-        ComPtr<IVector<UIElement*>> children;
-        ComPtr<IPanel> containerElementAsPanel;
-        THROW_IF_FAILED(m_containerElement.As(&containerElementAsPanel));
-        THROW_IF_FAILED(containerElementAsPanel->get_Children(&children));
+
+        winrt::IVector<winrt::UIElement> children{};
+        // Not sure what is the need to convert to xaml::controls::Panel?
+        if (const auto containerElementAsPanel = m_containerElement.try_as<winrt::Panel>())
+        {
+            children = containerElementAsPanel.Children();
+        }
 
         if (numberSpriteToInstanciate > count)
         {
             // instanciate all elements not created yet
-            for (int x{}; x < (numberSpriteToInstanciate - count); x++)
+            for (int x = 0; x < (numberSpriteToInstanciate - count); x++)
             {
-                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangle>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+                winrt::Rectangle rectangle;
 
-                ComPtr<IUIElement> rectangleAsUIElement;
-                THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
-                THROW_IF_FAILED(children->Append(rectangleAsUIElement.Get()));
+                children.Append(rectangle.as<winrt::UIElement>());
 
                 m_xamlChildren.push_back(rectangle);
             }
@@ -275,16 +171,12 @@ namespace AdaptiveCards::Rendering::Uwp
         else
         {
             // remove elements not used now
-            for (int x{}; x < (count - numberSpriteToInstanciate); ++x)
+            for (int x = 0; x < (count - numberSpriteToInstanciate); x++)
             {
-                THROW_IF_FAILED(children->RemoveAtEnd());
+                children.RemoveAtEnd();
                 m_xamlChildren.pop_back();
             }
         }
-
-        // Convert ImageBrush to Brush
-        ComPtr<IBrush> brushXamlAsBrush;
-        THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsBrush));
 
         // Change positions+brush for all actives elements
         for (int x = 0, index = 0; x < numberImagePerRow; x++)
@@ -295,31 +187,22 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto rectangle = m_xamlChildren[index];
 
                 // For cover, the bitmapimage must be scaled to fill the container and then clipped to only the
-                // necessary section Set rectangle.Fill
-                ComPtr<IShape> rectangleAsShape;
-                THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
-                THROW_IF_FAILED(rectangleAsShape->put_Fill(brushXamlAsBrush.Get()));
+                // necessary section Set rectangle.
+                rectangle.Fill(m_brushXaml);
 
-                // Convert rectangle to UIElement
-                ComPtr<IUIElement> rectangleAsUIElement;
-                THROW_IF_FAILED(rectangleAsShape.As(&rectangleAsUIElement));
-
-                double originPositionX{}, originPositionY{};
-                if (fillMode != BackgroundImageFillMode::Cover)
+                double originPositionX{0.0}, originPositionY{0.0};
+                if (fillMode != winrt::BackgroundImageFillMode::Cover)
                 {
                     originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
                     originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
                 }
 
                 // Set Left and Top for rectangle
-                ComPtr<ICanvasStatics> canvasStatics;
-                ABI::Windows::Foundation::GetActivationFactory(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);
-                THROW_IF_FAILED(canvasStatics->SetLeft(rectangleAsUIElement.Get(), originPositionX));
-                THROW_IF_FAILED(canvasStatics->SetTop(rectangleAsUIElement.Get(), originPositionY));
+                winrt::Canvas::SetLeft(rectangle, originPositionX);
+                winrt::Canvas::SetTop(rectangle, originPositionY);
 
-                double imageWidth{}, imageHeight{};
-                if (fillMode == BackgroundImageFillMode::Cover)
+                double imageWidth{0.0}, imageHeight{0.0};
+                if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
                     imageWidth = m_containerSize.Width;
                     imageHeight = m_containerSize.Height;
@@ -330,32 +213,19 @@ namespace AdaptiveCards::Rendering::Uwp
                     imageHeight = m_imageSize.Height;
                 }
 
-                ComPtr<IFrameworkElement> rectangleAsFElement;
-                THROW_IF_FAILED(rectangle.As(&rectangleAsFElement));
                 // Set Width and Height for Rectangle
-                THROW_IF_FAILED(rectangleAsFElement->put_Width(imageWidth));
-                THROW_IF_FAILED(rectangleAsFElement->put_Height(imageHeight));
+                rectangle.Width(imageWidth);
+                rectangle.Height(imageHeight);
 
-                if (fillMode == BackgroundImageFillMode::Cover)
+                if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
-                    ComPtr<ITileBrush> brushXamlAsTileBrush;
-                    THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsTileBrush));
-
-                    THROW_IF_FAILED(brushXamlAsTileBrush->put_Stretch(Stretch_UniformToFill));
+                    m_brushXaml.Stretch(winrt::Stretch::UniformToFill);
 
                     // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
-                    THROW_IF_FAILED(brushXamlAsTileBrush->put_AlignmentX(static_cast<AlignmentX>(hAlignment)));
-                    THROW_IF_FAILED(brushXamlAsTileBrush->put_AlignmentY(static_cast<AlignmentY>(vAlignment)));
+                    m_brushXaml.AlignmentX(static_cast<winrt::AlignmentX>(hAlignment));
+                    m_brushXaml.AlignmentY(static_cast<winrt::AlignmentY>(vAlignment));
                 }
             }
         }
-    }
-
-    HRESULT TileControl::ExtractBackgroundImageData(BackgroundImageFillMode* fillMode, HAlignment* hAlignment, VAlignment* vAlignment)
-    {
-        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_FillMode(fillMode));
-        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_HorizontalAlignment(hAlignment));
-        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_VerticalAlignment(vAlignment));
-        return S_OK;
     }
 }

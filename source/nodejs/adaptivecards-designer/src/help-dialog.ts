@@ -26,20 +26,22 @@ export class HelpDialog extends Dialog {
     protected renderContent(): HTMLElement {
         this._renderedElement = document.createElement("div");
 
-        let cardHeading = document.createElement("h1");
+        let cardHeading = document.createElement("h2");
         cardHeading.innerText = "Card Payload and Sample Data Editors";
         this._renderedElement.appendChild(cardHeading);
 
-        let keyboardHeading = document.createElement("h2");
+        let keyboardHeading = document.createElement("h3");
         keyboardHeading.innerText = "Keyboard Shortcuts";
         this._renderedElement.appendChild(keyboardHeading);
 
-        let keyboardText = document.createElement("div");
-        keyboardText.innerText = "These keyboard shortcuts only work when the keyboard focus is within either the card payload or sample data editors";
-        this._renderedElement.appendChild(keyboardText);
-        this._renderedElement.appendChild(document.createElement("br"));
-
         let shortcutTable = document.createElement("table");
+
+        let tableCaption = shortcutTable.createCaption();
+        tableCaption.style.textAlign = "left";
+        tableCaption.innerText = "These keyboard shortcuts only work when the keyboard focus is within either the card payload or sample data editors";
+
+        shortcutTable.appendChild(document.createElement("br"));
+
         shortcutTable.appendChild(this._getShortcutRow("Shortcut", "Description", true));
         shortcutTable.appendChild(this._getShortcutRow("Alt-F1", "Show help dialog for editor"));
         shortcutTable.appendChild(this._getShortcutRow("Ctrl-M", "Toggle behavior of TAB key. By default, pressing TAB will insert a TAB character. When toggled, pressing TAB will navigate to the next focusable item."));

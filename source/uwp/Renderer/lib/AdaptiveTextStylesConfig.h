@@ -2,28 +2,21 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveTextStylesConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveTextStylesConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig>
+    struct AdaptiveTextStylesConfig : AdaptiveTextStylesConfigT<AdaptiveTextStylesConfig>
     {
-        AdaptiveRuntime(AdaptiveTextStylesConfig);
+        AdaptiveTextStylesConfig(::AdaptiveCards::TextStylesConfig const& textConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(TextStylesConfig textConfig) noexcept;
-
-        IFACEMETHODIMP get_Heading(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** headingStyle) override;
-        IFACEMETHODIMP put_Heading(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* headingStyle) override;
-
-        IFACEMETHODIMP get_ColumnHeader(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** columnHeaderStyle) override;
-        IFACEMETHODIMP put_ColumnHeader(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* columnHeaderStyle) override;
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig> m_headingStyle;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig> m_columnHeaderStyle;
+        property<winrt::AdaptiveTextStyleConfig> Heading;
+        property<winrt::AdaptiveTextStyleConfig> ColumnHeader;
     };
-
-    ActivatableClass(AdaptiveTextStylesConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveTextStylesConfig : AdaptiveTextStylesConfigT<AdaptiveTextStylesConfig, implementation::AdaptiveTextStylesConfig>
+    {
+    };
 }
