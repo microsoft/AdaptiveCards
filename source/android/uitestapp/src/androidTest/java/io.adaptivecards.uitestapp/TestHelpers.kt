@@ -44,7 +44,7 @@ object TestHelpers {
     }
 
     internal fun clearTextInInput(input: ViewInteraction) {
-        input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText());
+        input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText())
     }
 
     internal fun setTextInInput(input: ViewInteraction, text: String) {
@@ -57,20 +57,20 @@ object TestHelpers {
     }
 
     internal fun selectPopupOption(optionText: String) {
-        val methodName = "SelectPopupOption";
+        val methodName = "SelectPopupOption"
 
+        Log.i(TAG, "$methodName - Search data $optionText")
         val optionDataInteraction: DataInteraction =
-            Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup());
-        Log.i(TAG, "$methodName - Found data $optionText");
+            Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup())
 
-        optionDataInteraction.perform(ViewActions.scrollTo());
-        Log.i(TAG, "$methodName - Scrolled to element");
+        Log.i(TAG, "$methodName - Scroll to element")
+        optionDataInteraction.perform(ViewActions.scrollTo())
 
-        optionDataInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Log.i(TAG, "$methodName - Asserted element is displayed");
+        Log.i(TAG, "$methodName - Assert element is displayed")
+        optionDataInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        optionDataInteraction.perform(ViewActions.click());
-        Log.i(TAG, "$methodName - Clicked on option $optionText");
+        Log.i(TAG, "$methodName - Click on option $optionText")
+        optionDataInteraction.perform(ViewActions.click())
     }
 
     internal fun pickItemInFilteredChoiceSet(
@@ -88,11 +88,11 @@ object TestHelpers {
             Log.i(TAG, "$methodName - Try #$retries")
 
             try {
-                setTextInInput(findInputInValidatedContainer(inputName), hint)
                 Log.i(TAG, "$methodName - Set value to $hint")
+                setTextInInput(findInputInValidatedContainer(inputName), hint)
 
-                selectPopupOption(choiceSetOption)
                 Log.i(TAG, "$methodName - Set option to $choiceSetOption")
+                selectPopupOption(choiceSetOption)
 
                 break
             } catch (e: Exception) {

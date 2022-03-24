@@ -35,7 +35,7 @@ class SaveScreenCaptureProcessor : ScreenCaptureProcessor {
     @Throws(IOException::class)
     private fun getImageData(capture: ScreenCapture?): ByteArray {
         val outputStream = ByteArrayOutputStream()
-        capture!!.bitmap.compress(capture!!.format, 100, outputStream)
+        capture!!.bitmap.compress(capture.format, 100, outputStream)
         return outputStream.toByteArray()
     }
 }
