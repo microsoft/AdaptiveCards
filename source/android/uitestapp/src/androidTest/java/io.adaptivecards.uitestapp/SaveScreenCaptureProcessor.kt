@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.uitestapp
 
 import androidx.test.runner.screenshot.ScreenCapture
@@ -6,49 +8,30 @@ import androidx.test.runner.screenshot.ScreenCaptureProcessor
 import android.os.Environment
 import java.io.*
 
-
-class SaveScreenCaptureProcessor: ScreenCaptureProcessor
-{
+class SaveScreenCaptureProcessor : ScreenCaptureProcessor {
     override fun process(capture: ScreenCapture?): String {
-        val file:String = capture?.name ?: "Default.jpg"
+        val file: String = capture?.name ?: "Default.jpg"
         val data: ByteArrayOutputStream = getImageData(capture)
 
-        val screenshotPath = Environment.getExternalStorageDirectory().absolutePath + "/screenshots/"
+        val screenshotPath =
+            Environment.getExternalStorageDirectory().absolutePath + "/screenshots/"
         val screenshotDirectory = File(screenshotPath)
         if (!screenshotDirectory.exists()) {
-            val dirCreated = screenshotDirectory.mkdirs()
-
-            if (!dirCreated)
-            {
-                throw Exception("Path was not created: $screenshotPath")
-            }
+            screenshotDirectory.mkdirs()
         }
 
         val screenshotFilePath = "$screenshotPath/$file"
         val screenshotFile = File(screenshotFilePath)
+        screenshotFile.createNewFile()
 
-        try{
-            screenshotFile.createNewFile()
-        }
-        catch (e: Exception)
-        {
-            val screenShotDirectoryExists = screenshotDirectory.exists();
-            throw Exception("Screenshot Path: $screenshotPath \n Screenshot file: $screenshotFilePath \n Screenshot path exists: $screenShotDirectoryExists")
-        }
+        val fos = FileOutputStream(screenshotFile)
+        fos.write(data.toByteArray())
+        fos.flush()
+        fos.close()
 
-        try {
-            val fos = FileOutputStream(screenshotFile)
-            fos.write(data.toByteArray())
-            fos.flush()
-            fos.close()
-        } catch (e: Exception) {
-            throw e;
-        }
-
-        return ""
+        return screenshotPath
     }
-
-
+    
     @Throws(IOException::class)
     private fun getImageData(capture: ScreenCapture?): ByteArrayOutputStream {
         val outputStream = ByteArrayOutputStream()

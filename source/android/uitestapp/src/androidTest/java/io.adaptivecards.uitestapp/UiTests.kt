@@ -26,8 +26,6 @@ import androidx.test.uiautomator.UiDevice
 import org.junit.Ignore
 import org.junit.rules.RuleChain
 import org.junit.rules.Timeout
-import java.util.concurrent.TimeUnit
-
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest

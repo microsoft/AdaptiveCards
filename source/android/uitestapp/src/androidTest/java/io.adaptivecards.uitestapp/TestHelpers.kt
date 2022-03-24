@@ -18,78 +18,100 @@ object TestHelpers {
     val TAG = "UITESTING";
 
     internal fun goToTestCasesScreen() {
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_test_cases)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.navigation_test_cases))
+            .perform(ViewActions.click())
     }
 
     internal fun goToRenderedCardScreen() {
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_rendered_card)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.navigation_rendered_card))
+            .perform(ViewActions.click())
     }
 
     internal fun goToInputsScreen() {
         Espresso.onView(ViewMatchers.withId(R.id.navigation_inputs)).perform(ViewActions.click())
     }
 
-    internal fun findInputInValidatedContainer(validatedContainerTagId : String) : ViewInteraction {
-        return Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent(validatedContainerTagId)))));
+    internal fun findInputInValidatedContainer(validatedContainerTagId: String): ViewInteraction {
+        return Espresso.onView(
+            ViewMatchers.withParent(
+                ViewMatchers.withTagValue(
+                    Matchers.`is`(
+                        TagContent(validatedContainerTagId)
+                    )
+                )
+            )
+        );
     }
 
-    internal fun clearTextInInput(input : ViewInteraction) {
+    internal fun clearTextInInput(input: ViewInteraction) {
         input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText());
     }
 
-    internal fun setTextInInput(input : ViewInteraction, text : String) {
-        input.perform(ViewActions.scrollTo(), ViewActions.click(), ViewActions.clearText(), ViewActions.typeText(text));
+    internal fun setTextInInput(input: ViewInteraction, text: String) {
+        input.perform(
+            ViewActions.scrollTo(),
+            ViewActions.click(),
+            ViewActions.clearText(),
+            ViewActions.typeText(text)
+        );
     }
 
-    internal fun selectPopupOption(optionText : String) {
-        val METHOD_NAME = "SelectPopupOption";
+    internal fun selectPopupOption(optionText: String) {
+        val methodName = "SelectPopupOption";
 
-        val optionDataInteraction : DataInteraction = Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup());
-        Log.i(TAG, "$METHOD_NAME - Found data $optionText");
+        val optionDataInteraction: DataInteraction =
+            Espresso.onData(Matchers.`is`(optionText)).inRoot(RootMatchers.isPlatformPopup());
+        Log.i(TAG, "$methodName - Found data $optionText");
 
         optionDataInteraction.perform(ViewActions.scrollTo());
-        Log.i(TAG, "$METHOD_NAME - Scrolled to element");
+        Log.i(TAG, "$methodName - Scrolled to element");
 
         optionDataInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Log.i(TAG, "$METHOD_NAME - Asserted element is displayed");
+        Log.i(TAG, "$methodName - Asserted element is displayed");
 
         optionDataInteraction.perform(ViewActions.click());
-        Log.i(TAG, "$METHOD_NAME - Clicked on option $optionText");
+        Log.i(TAG, "$methodName - Clicked on option $optionText");
     }
 
-    internal fun pickItemInFilteredChoiceSet(inputName : String, hint : String, choiceSetOption : String)
-    {
-        val METHOD_NAME = "PickItemInFilteredChoiceSet";
+    internal fun pickItemInFilteredChoiceSet(
+        inputName: String,
+        hint: String,
+        choiceSetOption: String
+    ) {
+        val methodName = "PickItemInFilteredChoiceSet"
+        val maxRetries = 5
+        var retries = 0
 
-        var selectionWasSuccessful = false;
-        var retries = 0;
+        while (retries < maxRetries) {
+            ++retries
 
-        while (!selectionWasSuccessful && retries < 5) {
-            Log.i(TAG, "$METHOD_NAME - Try #$retries")
+            Log.i(TAG, "$methodName - Try #$retries")
 
             try {
                 setTextInInput(findInputInValidatedContainer(inputName), hint)
-                Log.i(TAG, "$METHOD_NAME - Set value to $hint")
+                Log.i(TAG, "$methodName - Set value to $hint")
 
                 selectPopupOption(choiceSetOption)
-                Log.i(TAG, "$METHOD_NAME - Set option to $choiceSetOption")
+                Log.i(TAG, "$methodName - Set option to $choiceSetOption")
 
-                selectionWasSuccessful = true;
+                break
             } catch (e: Exception) {
-                e.printStackTrace();
-
-                Thread.sleep(500);
+                if (retries == maxRetries) {
+                    throw e
+                } else {
+                    e.printStackTrace()
+                    Thread.sleep(500)
+                }
             }
-
-            retries++;
         }
     }
 
-    internal fun clickOnElementWithText(text : String) {
+    internal fun clickOnElementWithText(text: String) {
         Espresso.onView(ViewMatchers.withText(text)).perform(ViewActions.click())
     }
 
-    internal fun assertInputValuePairExists(inputId : String, value : String) {
-        Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    internal fun assertInputValuePairExists(inputId: String, value: String) {
+        Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value)))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
