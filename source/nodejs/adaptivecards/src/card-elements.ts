@@ -398,7 +398,7 @@ export abstract class CardElement extends CardObject {
         return new PaddingDefinition();
     }
 
-    protected getHasBackground(): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         return false;
     }
 
@@ -571,12 +571,22 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
+        this.getRootElement().updateActionsEnabledState();
+
         return this._renderedElement;
     }
 
     updateLayout(_processChildren: boolean = true) {
         this.updateRenderedElementVisibility();
         this.applyPadding();
+    }
+
+    updateActionsEnabledState() {
+        const allActions = this.getRootElement().getAllActions();
+
+        for (let action of allActions) {
+            action.updateEnabledState();
+        }
     }
 
     indexOf(_cardElement: CardElement): number {
@@ -670,8 +680,22 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
+    }
+
+    getAllActions(): Action[] {
+        const result: Action[] = [];
+
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
+            
+            if (action) {
+                result.push(action);
+            }
+        }
+
+        return result;
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -774,7 +798,7 @@ export class ActionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: Action | undefined,
         context: SerializationContext
@@ -971,6 +995,16 @@ export abstract class BaseTextBlock extends CardElement {
         }
     }
 
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        if (this.selectAction) {
+            result.push(this.selectAction);
+        }
+
+        return result;
+    }
+
     get effectiveColor(): Enums.TextColor {
         return this.color !== undefined ? this.color : this.getEffectiveTextStyleDefinition().color;
     }
@@ -1102,7 +1136,7 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -1112,7 +1146,7 @@ export class TextBlock extends BaseTextBlock {
 
                 this.selectAction.setupElementForAccessibility(element);
 
-                if (this.selectAction.isEnabled) {
+                if (this.selectAction.isEffectivelyEnabled()) {
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -1402,7 +1436,7 @@ export class TextRun extends BaseTextBlock {
                 anchor.href = href ? href : "";
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -1805,7 +1839,7 @@ class ImageDimensionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: number | undefined,
         context: BaseSerializationContext
@@ -2006,7 +2040,7 @@ export class Image extends CardElement {
                 imageElement.onkeypress = (e) => {
                     if (
                         this.selectAction &&
-                        this.selectAction.isEnabled &&
+                        this.selectAction.isEffectivelyEnabled() &&
                         (e.code === "Enter" || e.code === "Space")
                     ) {
                         // enter or space pressed
@@ -2018,7 +2052,7 @@ export class Image extends CardElement {
                 };
 
                 imageElement.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
+                    if (this.selectAction && this.selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2028,7 +2062,7 @@ export class Image extends CardElement {
 
                 this.selectAction.setupElementForAccessibility(imageElement);
 
-                if (this.selectAction.isEnabled) {
+                if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -2063,6 +2097,16 @@ export class Image extends CardElement {
 
     getJsonTypeName(): string {
         return "Image";
+    }
+
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        if (this.selectAction) {
+            result.push(this.selectAction);
+        }
+
+        return result;
     }
 
     getActionById(id: string) {
@@ -2192,7 +2236,7 @@ export abstract class CardElementContainer extends CardElement {
                 hostConfig.supportsInteractivity
             ) {
                 element.onclick = (e) => {
-                    if (this._selectAction && this._selectAction.isEnabled) {
+                    if (this._selectAction && this._selectAction.isEffectivelyEnabled()) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2203,7 +2247,7 @@ export abstract class CardElementContainer extends CardElement {
                 element.onkeypress = (e) => {
                     if (
                         this._selectAction &&
-                        this._selectAction.isEnabled &&
+                        this._selectAction.isEffectivelyEnabled() &&
                         (e.code === "Enter" || e.code === "Space")
                     ) {
                         // Enter or space pressed
@@ -2216,7 +2260,7 @@ export abstract class CardElementContainer extends CardElement {
 
                 this._selectAction.setupElementForAccessibility(element);
 
-                if (this._selectAction.isEnabled) {
+                if (this._selectAction.isEffectivelyEnabled()) {
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -2239,7 +2283,21 @@ export abstract class CardElementContainer extends CardElement {
         let result: Input[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getAllInputs(processActions));
+            result.push(...this.getItemAt(i).getAllInputs(processActions));
+        }
+
+        return result;
+    }
+
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            result.push(...this.getItemAt(i).getAllActions());
+        }
+
+        if (this._selectAction) {
+            result.push(this._selectAction);
         }
 
         return result;
@@ -2249,7 +2307,7 @@ export abstract class CardElementContainer extends CardElement {
         let result: IResourceInformation[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getResourceInformation());
+            result.push(...this.getItemAt(i).getResourceInformation());
         }
 
         return result;
@@ -2738,6 +2796,7 @@ export abstract class Input extends CardElement implements IInput {
     private _renderedErrorMessageElement?: HTMLElement;
     private _renderedLabelElement?: HTMLElement;
     private _renderedInputControlElement?: HTMLElement;
+    private _oldValue: any;
 
     protected getAllLabelIds(): string[] {
         const labelIds: string[] = [];
@@ -2857,10 +2916,14 @@ export abstract class Input extends CardElement implements IInput {
             return this._outerContainerElement;
         }
 
+        this.resetDirtyState();
+
         return undefined;
     }
 
     protected valueChanged() {
+        this.getRootElement().updateActionsEnabledState();
+
         if (this.isValid()) {
             this.resetValidationFailureCue();
         }
@@ -2927,6 +2990,14 @@ export abstract class Input extends CardElement implements IInput {
         return true;
     }
 
+    isDirty(): boolean {
+        return this.value !== this._oldValue;
+    }
+
+    resetDirtyState() {
+        this._oldValue = this.value;
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -2973,8 +3044,16 @@ export abstract class Input extends CardElement implements IInput {
         return result;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [this];
+    }
+
+    render(): HTMLElement | undefined {
+        let result = super.render();
+
+        this.resetDirtyState();
+
+        return result;
     }
 
     abstract get value(): any;
@@ -3058,7 +3137,7 @@ export class TextInput extends Input {
                 e.ctrlKey &&
                 e.code === "Enter" &&
                 this.inlineAction &&
-                this.inlineAction.isEnabled
+                this.inlineAction.isEffectivelyEnabled()
             ) {
                 this.inlineAction.execute();
             }
@@ -3096,13 +3175,13 @@ export class TextInput extends Input {
         if (this.inlineAction) {
             const button = document.createElement("button");
             button.className = this.hostConfig.makeCssClassName(
-                this.inlineAction.isEnabled
+                this.inlineAction.isEffectivelyEnabled()
                     ? "ac-inlineActionButton"
                     : "ac-inlineActionButton-disabled"
             );
 
             button.onclick = (e) => {
-                if (this.inlineAction && this.inlineAction.isEnabled) {
+                if (this.inlineAction && this.inlineAction.isEffectivelyEnabled()) {
                     e.preventDefault();
                     e.cancelBubble = true;
 
@@ -3162,6 +3241,16 @@ export class TextInput extends Input {
         return "Input.Text";
     }
 
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        if (this.inlineAction) {
+            result.push(this.inlineAction);
+        }
+
+        return result;
+    }
+
     getActionById(id: string) {
         let result = super.getActionById(id);
 
@@ -3212,7 +3301,7 @@ export class ToggleInput extends Input {
         true,
         undefined,
         "true",
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return "true";
         }
     );
@@ -3222,7 +3311,7 @@ export class ToggleInput extends Input {
         true,
         undefined,
         "false",
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return "false";
         }
     );
@@ -3247,6 +3336,7 @@ export class ToggleInput extends Input {
 
     private _checkboxInputElement: HTMLInputElement;
     private _checkboxInputLabelElement: HTMLElement | undefined;
+    private _oldCheckboxValue: boolean;
 
     protected updateInputControlAriaLabelledBy() {
         if (this._checkboxInputElement) {
@@ -3292,6 +3382,8 @@ export class ToggleInput extends Input {
         if (this.defaultValue === this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
+
+        this._oldCheckboxValue = this._checkboxInputElement.checked;
 
         this._checkboxInputElement.onchange = () => {
             this.valueChanged();
@@ -3348,6 +3440,10 @@ export class ToggleInput extends Input {
         }
 
         return this.value ? true : false;
+    }
+
+    isDirty(): boolean {
+        return this._checkboxInputElement ? this._checkboxInputElement.checked !== this._oldCheckboxValue : false;
     }
 
     get value(): string | undefined {
@@ -4002,10 +4098,10 @@ export class TimeProperty extends CustomProperty<string | undefined> {
             targetVersion,
             name,
             (
-                _sender: SerializableObject,
+                sender: SerializableObject,
                 prop: PropertyDefinition,
                 source: PropertyBag,
-                _context: BaseSerializationContext
+                context: BaseSerializationContext
             ) => {
                 const value = source[prop.name];
 
@@ -4016,7 +4112,7 @@ export class TimeProperty extends CustomProperty<string | undefined> {
                 return undefined;
             },
             (
-                _sender: SerializableObject,
+                sender: SerializableObject,
                 prop: PropertyDefinition,
                 target: PropertyBag,
                 value: string | undefined,
@@ -4250,7 +4346,7 @@ export abstract class Action extends CardObject {
             const hostConfig = this.parent.hostConfig;
 
             this.renderedElement.className = hostConfig.makeCssClassName(
-                this.isEnabled ? "ac-pushButton" : "ac-pushButton-disabled"
+                this.isEffectivelyEnabled() ? "ac-pushButton" : "ac-pushButton-disabled"
             );
 
             const parentContainer = this.getParentContainer();
@@ -4278,7 +4374,7 @@ export abstract class Action extends CardObject {
                     break;
             }
 
-            if (this.style && this.isEnabled) {
+            if (this.style && this.isEffectivelyEnabled()) {
                 if (this.style === Enums.ActionStyle.Positive) {
                     this.renderedElement.classList.add(
                         ...hostConfig.makeCssClassNames("primary", "style-positive")
@@ -4332,6 +4428,14 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    protected internalAfterExecute() {
+        let rootObject = this.getRootObject();
+
+        if (rootObject instanceof CardElement) {
+            rootObject.updateActionsEnabledState();
+        }
+    }
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -4343,17 +4447,18 @@ export abstract class Action extends CardObject {
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = this.isEnabled ? 0 : -1;
+        element.tabIndex = this.isEffectivelyEnabled() ? 0 : -1;
 
         element.setAttribute("role", this.getAriaRole());
 
         if (element instanceof HTMLButtonElement) {
-            element.disabled = !this.isEnabled;
+            element.disabled = !this.isEffectivelyEnabled();
         }
 
-        if (!this.isEnabled) {
+        if (!this.isEffectivelyEnabled()) {
             element.setAttribute("aria-disabled", "true");
         } else {
+            element.removeAttribute("aria-disabled");
             element.classList.add(this.hostConfig.makeCssClassName("ac-selectable"));
         }
 
@@ -4361,12 +4466,14 @@ export abstract class Action extends CardObject {
             element.setAttribute("aria-label", this.title);
             element.title = this.title;
         }
+        else {
+            element.removeAttribute("aria-label");
+            element.removeAttribute("title");
+        }
 
         if (this.tooltip) {
             const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
+                ? this.title ? "aria-description" : "aria-label"
                 : "aria-description";
 
             element.setAttribute(targetAriaAttribute, this.tooltip);
@@ -4385,7 +4492,7 @@ export abstract class Action extends CardObject {
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
         buttonElement.onclick = (e) => {
-            if (this.isEnabled) {
+            if (this.isEffectivelyEnabled()) {
                 e.preventDefault();
                 e.cancelBubble = true;
 
@@ -4406,6 +4513,7 @@ export abstract class Action extends CardObject {
         }
 
         this.raiseExecuteActionEvent();
+        this.internalAfterExecute();
     }
 
     prepareForExecution(): boolean {
@@ -4431,8 +4539,12 @@ export abstract class Action extends CardObject {
         return false;
     }
 
-    getAllInputs(_processActions: boolean = true): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
+    }
+
+    getAllActions(): Action[] {
+        return [ this ];
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -4454,6 +4566,14 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
+    updateEnabledState() {
+        // Do nothing in base implementation
+    }
+
+    isEffectivelyEnabled(): boolean {
+        return this.isEnabled;
     }
 
     get isPrimary(): boolean {
@@ -4511,10 +4631,10 @@ export abstract class SubmitActionBase extends Action {
         Versions.v1_3,
         "associatedInputs",
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             source: PropertyBag,
-            _context: BaseSerializationContext
+            context: BaseSerializationContext
         ) => {
             const value = source[prop.name];
 
@@ -4525,7 +4645,7 @@ export abstract class SubmitActionBase extends Action {
             return undefined;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: string | undefined,
@@ -4534,17 +4654,22 @@ export abstract class SubmitActionBase extends Action {
             context.serializeValue(target, prop.name, value);
         }
     );
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(Versions.v1_6, "disabledUnlessAssociatedInputsChange", false);
 
     @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
     @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
-
+    
+    @property(SubmitActionBase.disabledUnlessAssociatedInputsChangeProperty)
+    disabledUnlessAssociatedInputsChange: boolean = false;
+    
     //#endregion
 
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
+    private _areReferencedInputsDirty: boolean = false;
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
         const result: Dictionary<Input> = {};
@@ -4554,7 +4679,7 @@ export abstract class SubmitActionBase extends Action {
             let inputs: Input[] = [];
 
             while (current) {
-                inputs = inputs.concat(current.getAllInputs(false));
+                inputs.push(...current.getAllInputs(false));
 
                 current = current.parent;
             }
@@ -4588,6 +4713,56 @@ export abstract class SubmitActionBase extends Action {
         }
 
         this._isPrepared = true;
+    }
+
+    protected internalAfterExecute() {
+        if (GlobalSettings.resetInputsDirtyStateAfterActionExecution) {
+            this.resetReferencedInputsDirtyState();
+        }
+    }
+
+    resetReferencedInputsDirtyState() {
+        let referencedInputs = this.getReferencedInputs();
+
+        this._areReferencedInputsDirty = false;
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                input.resetDirtyState();
+            }
+        }
+    }
+
+    updateEnabledState() {
+        this._areReferencedInputsDirty = false;
+
+        let referencedInputs = this.getReferencedInputs();
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                if (input.isDirty()) {
+                    this._areReferencedInputsDirty = true;
+
+                    break;
+                }
+            }
+        }
+
+        this.updateCssClasses();
+
+        if (this._renderedElement) {
+            this.setupElementForAccessibility(this._renderedElement);
+        }
+    }
+
+    isEffectivelyEnabled(): boolean {
+        let result = super.isEffectivelyEnabled();
+        
+        return this.disabledUnlessAssociatedInputsChange ? result && this._areReferencedInputsDirty : result;
     }
 
     get data(): object | undefined {
@@ -4675,10 +4850,10 @@ export class ToggleVisibilityAction extends Action {
         Versions.v1_2,
         "targetElements",
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             source: PropertyBag,
-            _context: BaseSerializationContext
+            context: BaseSerializationContext
         ) => {
             const result: PropertyBag = {};
 
@@ -4699,7 +4874,7 @@ export class ToggleVisibilityAction extends Action {
             return result;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: PropertyBag,
@@ -4721,7 +4896,7 @@ export class ToggleVisibilityAction extends Action {
             context.serializeArray(target, prop.name, targetElements);
         },
         {},
-        (_sender: SerializableObject) => {
+        (sender: SerializableObject) => {
             return {};
         }
     );
@@ -4801,9 +4976,9 @@ export class ToggleVisibilityAction extends Action {
 
 class StringWithSubstitutionProperty extends PropertyDefinition {
     parse(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         source: PropertyBag,
-        _context: BaseSerializationContext
+        context: BaseSerializationContext
     ): StringWithSubstitutions {
         const result = new StringWithSubstitutions();
         result.set(Utils.parseString(source[this.name]));
@@ -4812,7 +4987,7 @@ class StringWithSubstitutionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: StringWithSubstitutions,
         context: BaseSerializationContext
@@ -5065,8 +5240,20 @@ export class ShowCardAction extends Action {
         return this.card.getAllInputs(processActions);
     }
 
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        result.push(...this.card.getAllActions());
+
+        return result;
+    }
+
     getResourceInformation(): IResourceInformation[] {
-        return super.getResourceInformation().concat(this.card.getResourceInformation());
+        let result = super.getResourceInformation();
+
+        result.push(...this.card.getResourceInformation());
+
+        return result;
     }
 
     getActionById(id: string): Action | undefined {
@@ -5093,6 +5280,14 @@ class OverflowAction extends Action {
 
     getActions(): readonly Action[] {
         return this._actions;
+    }
+
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        result.push(...this._actions);
+
+        return result;
     }
 
     getJsonTypeName(): string {
@@ -5617,7 +5812,7 @@ class ActionCollection {
 
         if (processActions) {
             for (const action of this._items) {
-                result = result.concat(action.getAllInputs());
+                result.push(...action.getAllInputs());
             }
         }
 
@@ -5628,7 +5823,7 @@ class ActionCollection {
         let result: IResourceInformation[] = [];
 
         for (const action of this._items) {
-            result = result.concat(action.getResourceInformation());
+            result.push(...action.getResourceInformation());
         }
 
         return result;
@@ -5721,6 +5916,20 @@ export class ActionSet extends CardElement {
         const result: Action | undefined = this._actionCollection.getActionById(id);
 
         return result ? result : super.getActionById(id);
+    }
+
+    getAllActions(): Action[] {
+        const result = super.getAllActions();
+
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
+
+            if (action) {
+                result.push(action);
+            }
+        }
+
+        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -5905,14 +6114,18 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         }
     }
 
-    protected getHasBackground(): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         let currentElement: CardElement | undefined = this.parent;
 
         while (currentElement) {
-            const currentElementHasBackgroundImage =
-                currentElement instanceof Container
-                    ? currentElement.backgroundImage.isValid()
-                    : false;
+            let currentElementHasBackgroundImage: boolean = false;
+
+            if (ignoreBackgroundImages) {
+                currentElementHasBackgroundImage = false;
+            }
+            else {
+                currentElementHasBackgroundImage = currentElement instanceof Container ? currentElement.backgroundImage.isValid() : false;
+            }
 
             if (currentElement instanceof StylableCardElementContainer) {
                 if (
@@ -6305,8 +6518,10 @@ export class Container extends ContainerBase {
         }
     }
 
-    protected getHasBackground(): boolean {
-        return this.backgroundImage.isValid() || super.getHasBackground();
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
+        let result = ignoreBackgroundImages ? false : this.backgroundImage.isValid();
+
+        return result || super.getHasBackground(ignoreBackgroundImages);
     }
 
     protected canHostSingletons() {
@@ -6362,6 +6577,14 @@ export class Container extends ContainerBase {
 
     protected get isSelectable(): boolean {
         return true;
+    }
+
+    getEffectivePadding(): PaddingDefinition {
+        if (GlobalSettings.removePaddingFromContainersWithBackgroundImage && !this.getHasBackground(true)) {
+            return new PaddingDefinition();
+        }
+
+        return super.getEffectivePadding();
     }
 
     getEffectiveVerticalContentAlignment(): Enums.VerticalAlignment {
@@ -6616,8 +6839,8 @@ export class Column extends Container {
             return result;
         },
         (
-            _sender: SerializableObject,
-            _property: PropertyDefinition,
+            sender: SerializableObject,
+            property: PropertyDefinition,
             target: PropertyBag,
             value: ColumnWidth,
             context: BaseSerializationContext
@@ -7269,16 +7492,18 @@ export abstract class ContainerWithActions extends Container {
         let result = super.getAllInputs(processActions);
 
         if (processActions) {
-            result = result.concat(this._actionCollection.getAllInputs(processActions));
+            result.push(...this._actionCollection.getAllInputs(processActions));
         }
 
         return result;
     }
 
     getResourceInformation(): IResourceInformation[] {
-        return super
-            .getResourceInformation()
-            .concat(this._actionCollection.getResourceInformation());
+        let result = super.getResourceInformation();
+
+        result.push(...this._actionCollection.getResourceInformation());
+
+        return result;
     }
 
     isBleedingAtBottom(): boolean {
@@ -7336,7 +7561,7 @@ export class RefreshActionProperty extends PropertyDefinition {
     }
 
     toJSON(
-        _sender: SerializableObject,
+        sender: SerializableObject,
         target: PropertyBag,
         value: ExecuteAction | undefined,
         context: SerializationContext
@@ -7483,18 +7708,18 @@ export class AdaptiveCard extends ContainerWithActions {
         Versions.v1_0,
         "$schema",
         (
-            _sender: SerializableObject,
-            _property: PropertyDefinition,
-            _source: PropertyBag,
-            _context: BaseSerializationContext
+            sender: SerializableObject,
+            property: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
         ) => {
             return AdaptiveCard.schemaUrl;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
-            _value: Versions | undefined,
+            value: Versions | undefined,
             context: BaseSerializationContext
         ) => {
             context.serializeValue(target, prop.name, AdaptiveCard.schemaUrl);
@@ -7525,7 +7750,7 @@ export class AdaptiveCard extends ContainerWithActions {
             return version;
         },
         (
-            _sender: SerializableObject,
+            sender: SerializableObject,
             prop: PropertyDefinition,
             target: PropertyBag,
             value: Version | undefined,
@@ -7698,7 +7923,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return renderedElement;
     }
 
-    protected getHasBackground(): boolean {
+    protected getHasBackground(ignoreBackgroundImages: boolean = false): boolean {
         return true;
     }
 

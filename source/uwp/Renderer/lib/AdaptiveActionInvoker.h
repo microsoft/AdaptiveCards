@@ -2,27 +2,25 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
+#include "AdaptiveActionInvoker.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveActionInvoker
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvoker>
+    struct AdaptiveActionInvoker : AdaptiveActionInvokerT<AdaptiveActionInvoker>
     {
-        AdaptiveRuntime(AdaptiveActionInvoker);
+        AdaptiveActionInvoker(winrt::RenderedAdaptiveCard const& renderResult = nullptr) :
+            m_weakRenderResult(renderResult)
+        {
+        }
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
-
-        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement);
-
-    private:
-        Microsoft::WRL::WeakRef m_weakRenderResult;
+        void SendActionEvent(winrt::IAdaptiveActionElement const& actionElement);
+        winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
     };
-
-    ActivatableClass(AdaptiveActionInvoker);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveActionInvoker : AdaptiveActionInvokerT<AdaptiveActionInvoker, implementation::AdaptiveActionInvoker>
+    {
+    };
 }

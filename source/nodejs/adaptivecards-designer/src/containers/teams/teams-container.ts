@@ -45,6 +45,10 @@ abstract class BaseTeamsContainer extends HostContainer {
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_4;
     }
+
+    get enableDeviceEmulation(): boolean {
+        return true;
+    }
 }
 
 export class LightTeamsContainer extends BaseTeamsContainer {

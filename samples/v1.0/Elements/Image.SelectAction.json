@@ -11,6 +11,7 @@
 		{
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
+			"altText": "Cat",
 			"selectAction": {
 				"type": "Action.OpenUrl",
 				"tooltip": "cool link",

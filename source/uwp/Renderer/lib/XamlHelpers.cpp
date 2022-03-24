@@ -1,216 +1,131 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-
+#include "WholeItemsPanel.h"
 #include "XamlHelpers.h"
-
-#include "ActionHelpers.h"
 #include "ElementTagContent.h"
 #include "TileControl.h"
-
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace ABI::Windows::UI::Xaml::Documents;
-using namespace ABI::Windows::UI::Xaml::Input;
-using namespace ABI::Windows::UI::Xaml::Media;
-using namespace ABI::Windows::UI::Xaml::Media::Imaging;
+#include "AdaptiveBase64Util.h"
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
-    ComPtr<IUIElement> CreateSeparator(_In_ IAdaptiveRenderContext* renderContext,
-                                       UINT spacing,
-                                       UINT separatorThickness,
-                                       ABI::Windows::UI::Color separatorColor,
-                                       bool isHorizontal)
+    winrt::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
+                                     uint32_t spacing,
+                                     uint32_t separatorThickness,
+                                     winrt::Windows::UI::Color const& separatorColor,
+                                     bool isHorizontal)
     {
-        ComPtr<IGrid> separator =
-            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
-        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+        winrt::Grid separator;
+        separator.Background(winrt::SolidColorBrush{separatorColor});
 
-        ComPtr<IBrush> lineColorBrush = XamlHelpers::GetSolidColorBrush(separatorColor);
-        ComPtr<IPanel> separatorAsPanel;
-        THROW_IF_FAILED(separator.As(&separatorAsPanel));
-        separatorAsPanel->put_Background(lineColorBrush.Get());
-
-        const UINT32 separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
-        Thickness margin = {0, 0, 0, 0};
+        const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
+        winrt::Thickness margin{};
 
         if (isHorizontal)
         {
             margin.Top = margin.Bottom = separatorMarginValue;
-            separatorAsFrameworkElement->put_Height(separatorThickness);
+            separator.Height(separatorThickness);
         }
         else
         {
             margin.Left = margin.Right = separatorMarginValue;
-            separatorAsFrameworkElement->put_Width(separatorThickness);
+            separator.Width(separatorThickness);
         }
 
-        THROW_IF_FAILED(separatorAsFrameworkElement->put_Margin(margin));
+        separator.Margin(margin);
 
-        THROW_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                    L"Adaptive.Separator",
-                                                                    separatorAsFrameworkElement.Get()));
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Separator", separator);
 
-        ComPtr<IUIElement> result;
-        THROW_IF_FAILED(separator.As(&result));
-        return result;
+        return separator;
     }
 
-    HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
-                                           HSTRING resourceName,
-                                           _In_ IFrameworkElement* frameworkElement) noexcept
+    void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
+                                        winrt::hstring const& resourceName,
+                                        winrt::FrameworkElement const& frameworkElement)
     {
-        ComPtr<IResourceDictionary> resourceDictionary;
-        RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+        auto resourceDictionary = renderContext.OverrideStyles();
 
-        ComPtr<IStyle> style;
-        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(), resourceName, &style)))
+        if (auto style = TryGetResourceFromResourceDictionaries(resourceDictionary, resourceName).try_as<winrt::Style>())
         {
-            RETURN_IF_FAILED(frameworkElement->put_Style(style.Get()));
+            frameworkElement.Style(style);
         }
-
-        return S_OK;
     }
-
-    HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
-                                           const wchar_t* resourceName,
-                                           _In_ IFrameworkElement* frameworkElement) noexcept
-    {
-        return SetStyleFromResourceDictionary(renderContext, HStringReference(resourceName).Get(), frameworkElement);
-    }
-
-    void SetStyleFromResourceDictionary(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext,
-                                        winrt::hstring resourceName,
-                                        winrt::Windows::UI::Xaml::IFrameworkElement frameworkElement)
-    {
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(
-            renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
-            std::wstring_view(resourceName).data(),
-            frameworkElement.as<ABI::Windows::UI::Xaml::IFrameworkElement>().get()));
-    }
-
-    HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
+    void XamlHelpers::SetSeparatorVisibility(winrt::Panel const& parentPanel)
     {
         // Iterate over the elements in a container and ensure that the correct separators are marked as visible
-        ComPtr<IVector<UIElement*>> children;
-        RETURN_IF_FAILED(parentPanel->get_Children(&children));
+
+        auto children = parentPanel.Children();
 
         bool foundPreviousVisibleElement = false;
-        IterateOverVector<UIElement, IUIElement>(children.Get(),
-                                                 [&](IUIElement* child)
-                                                 {
-                                                     ComPtr<IUIElement> localChild(child);
 
-                                                     ComPtr<IFrameworkElement> childAsFrameworkElement;
-                                                     RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
-
-                                                     // Get the tag for the element. The separators themselves will not have tags.
-                                                     ComPtr<IInspectable> tag;
-                                                     RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
-
-                                                     if (tag)
-                                                     {
-                                                         ComPtr<IElementTagContent> elementTagContent;
-                                                         RETURN_IF_FAILED(tag.As(&elementTagContent));
-
-                                                         ComPtr<IUIElement> separator;
-                                                         RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
-
-                                                         Visibility visibility;
-                                                         RETURN_IF_FAILED(child->get_Visibility(&visibility));
-
-                                                         boolean expectedVisibility{};
-                                                         RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
-
-                                                         if (separator)
-                                                         {
-                                                             if (!expectedVisibility || !foundPreviousVisibleElement)
-                                                             {
-                                                                 // If the element is collapsed, or if it's the first
-                                                                 // visible element, collapse the separator Images are
-                                                                 // hidden while they are retrieved, we shouldn't hide
-                                                                 // the separator
-                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
-                                                             }
-                                                             else
-                                                             {
-                                                                 // Otherwise show the separator
-                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
-                                                             }
-                                                         }
-
-                                                         foundPreviousVisibleElement |= (visibility == Visibility_Visible);
-                                                     }
-
-                                                     return S_OK;
-                                                 });
-
-        return S_OK;
-    }
-
-    void SetContent(winrt::Windows::UI::Xaml::Controls::IContentControl contentControl, winrt::param::hstring contentString, boolean wrap)
-    {
-        winrt::Windows::UI::Xaml::Controls::TextBlock textBlock{};
-        textBlock.Text(contentString);
-
-        if (wrap)
+        for (auto child : children)
         {
-            textBlock.TextWrapping(winrt::Windows::UI::Xaml::TextWrapping::WrapWholeWords);
-        }
+            if (const auto childAsFrameworkElement = child.try_as<winrt::FrameworkElement>())
+            {
+                if (const auto tag = childAsFrameworkElement.Tag())
+                {
+                    if (const auto elementTagContent = tag.try_as<winrt::ElementTagContent>())
+                    {
+                        auto separator = elementTagContent.Separator();
+                        auto visibility = child.Visibility();
+                        auto expectedVisibility = elementTagContent.ExpectedVisibility();
 
-        contentControl.Content(textBlock);
+                        if (separator)
+                        {
+                            if (!expectedVisibility || !foundPreviousVisibleElement)
+                            {
+                                // If the element is collapsed, or if it's the first
+                                // visible element, collapse the separator Images are
+                                // hidden while they are retrieved, we shouldn't hide
+                                // the separator
+                                separator.Visibility(winrt::Visibility::Collapsed);
+                            }
+                            else
+                            {
+                                separator.Visibility(winrt::Visibility::Visible);
+                            }
+                        }
+
+                        foundPreviousVisibleElement |= (visibility == winrt::Visibility::Visible);
+                    }
+                }
+            }
+        }
     }
 
-    HRESULT HandleStylingAndPadding(_In_ IAdaptiveContainerBase* adaptiveContainer,
-                                    _In_ IBorder* containerBorder,
-                                    _In_ IAdaptiveRenderContext* renderContext,
-                                    _In_ IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* containerStyle)
+    winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
+                                                  winrt::Border const& containerBorder,
+                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                  winrt::AdaptiveRenderArgs renderArgs)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle localContainerStyle;
-        RETURN_IF_FAILED(adaptiveContainer->get_Style(&localContainerStyle));
+        winrt::UIElement elem{nullptr};
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle parentContainerStyle;
-        RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
+        auto localContainerStyle = adaptiveContainer.Style();
+        auto parentContainerStyle = renderArgs.ContainerStyle();
 
         bool hasExplicitContainerStyle{true};
-        if (localContainerStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::None)
+        if (localContainerStyle == winrt::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             localContainerStyle = parentContainerStyle;
         }
 
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        auto hostConfig = renderContext.HostConfig();
 
-        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-        RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+        auto spacingConfig = hostConfig.Spacing();
 
-        UINT32 padding;
-        RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
-        DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
+        uint32_t padding = spacingConfig.Padding();
+        double paddingAsDouble = static_cast<double>(padding);
 
-        boolean addContainerPadding;
-        RETURN_IF_FAILED(renderArgs->get_AddContainerPadding(&addContainerPadding));
+        bool addContainerPadding = renderArgs.AddContainerPadding();
 
         // If container style was explicitly assigned, apply background color and padding
         if (hasExplicitContainerStyle)
         {
-            ABI::Windows::UI::Color backgroundColor;
-            RETURN_IF_FAILED(GetBackgroundColorFromStyle(localContainerStyle, hostConfig.Get(), &backgroundColor));
-            ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
-            RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+            auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
+            containerBorder.Background(winrt::SolidColorBrush{backgroundColor});
 
             // If the container style doesn't match its parent apply padding.
             addContainerPadding |= (localContainerStyle != parentContainerStyle);
@@ -218,299 +133,213 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (addContainerPadding)
         {
-            Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
-            RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
+            containerBorder.Padding({paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble});
         }
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
         // container to bleed
-        ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection bleedDirection;
-        RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
+        auto bleedDirection = adaptiveContainer.BleedDirection();
 
-        Thickness marginThickness = {0};
-        if (bleedDirection != ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+        winrt::Thickness marginThickness{0};
+        if (bleedDirection != winrt::BleedDirection::None)
         {
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Left) !=
-                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Left) != winrt::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Right) !=
-                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Right) != winrt::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Up) !=
-                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Up) != winrt::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Down) !=
-                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+            if ((bleedDirection & winrt::BleedDirection::Down) != winrt::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
-
-            ComPtr<IBorder> localContainerBorder(containerBorder);
-            ComPtr<IFrameworkElement> containerBorderAsFrameworkElement;
-            RETURN_IF_FAILED(localContainerBorder.As(&containerBorderAsFrameworkElement));
-            RETURN_IF_FAILED(containerBorderAsFrameworkElement->put_Margin(marginThickness));
+            containerBorder.Margin(marginThickness);
         }
 
-        *containerStyle = localContainerStyle;
-
-        return S_OK;
+        return localContainerStyle;
     }
 
-    bool SupportsInteractivity(_In_ IAdaptiveHostConfig* hostConfig)
+    bool SupportsInteractivity(winrt::AdaptiveHostConfig const& hostConfig)
     {
-        boolean supportsInteractivity;
-        THROW_IF_FAILED(hostConfig->get_SupportsInteractivity(&supportsInteractivity));
-        return Boolify(supportsInteractivity);
+        return hostConfig.SupportsInteractivity();
     }
 
-    GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
+    winrt::GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
     {
         const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
 
-        GridLength columnWidth;
+        winrt::GridLength columnWidth;
         if (!isVisible || isAuto || !isValidWidth)
         {
             // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+            columnWidth.GridUnitType = winrt::GridUnitType::Auto;
             columnWidth.Value = 0;
         }
         else if (pixelWidth)
         {
             // If it's visible and pixel width is specified, use pixel width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+            columnWidth.GridUnitType = winrt::GridUnitType::Pixel;
             columnWidth.Value = pixelWidth;
         }
         else if (isStretch || isUnsetWidth)
         {
             // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.GridUnitType = winrt::GridUnitType::Star;
             columnWidth.Value = 1;
         }
         else
         {
             // If it's visible and the user specified a valid non-pixel width, use that as a star width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.GridUnitType = winrt::GridUnitType::Star;
             columnWidth.Value = ratioWidth;
         }
 
         return columnWidth;
     }
 
-    HRESULT HandleColumnWidth(_In_ IAdaptiveColumn* column, boolean isVisible, _In_ IColumnDefinition* columnDefinition)
+    void HandleColumnWidth(winrt::AdaptiveColumn const& column, bool isVisible, winrt::ColumnDefinition const& columnDefinition)
     {
-        HString adaptiveColumnWidth;
-        RETURN_IF_FAILED(column->get_Width(adaptiveColumnWidth.GetAddressOf()));
+        auto adaptiveColumnWidth = column.Width();
+        const bool isStretch = adaptiveColumnWidth == L"stretch";
+        const bool isAuto = adaptiveColumnWidth == L"auto";
+        double widthAsDouble = _wtof(adaptiveColumnWidth.data());
+        uint32_t pixelWidth = column.PixelWidth();
 
-        INT32 isStretchResult;
-        RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
-        const boolean isStretch = (isStretchResult == 0);
-
-        INT32 isAutoResult;
-        RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
-        const boolean isAuto = (isAutoResult == 0);
-
-        double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-        UINT32 pixelWidth = 0;
-        RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
-
-        GridLength columnWidth =
-            CalculateColumnWidth(isVisible, isAuto, isStretch, !adaptiveColumnWidth.IsValid(), pixelWidth, widthAsDouble);
-
-        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
-
-        return S_OK;
+        columnDefinition.Width(CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
     }
 
-    HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
+    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column, winrt::ColumnDefinition const& columnDefinition)
     {
-        ComPtr<IReference<UINT32>> width;
-        RETURN_IF_FAILED(column->get_Width(&width));
+        auto widthRef = column.Width();
+        auto pixelWidthRef = column.PixelWidth();
 
-        UINT32 widthValue = 0;
-        if (width != nullptr)
-        {
-            RETURN_IF_FAILED(width->get_Value(&widthValue));
-        }
+        uint32_t width = GetValueFromRef(widthRef, (uint32_t)0);
+        uint32_t pixelWidth = GetValueFromRef(widthRef, (uint32_t)0);
 
-        ComPtr<IReference<UINT32>> pixelWidth;
-        RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
+        bool isWidthUnset = (widthRef == nullptr) && (pixelWidthRef == nullptr);
 
-        UINT32 pixelWidthValue = 0;
-        if (pixelWidth != nullptr)
-        {
-            RETURN_IF_FAILED(pixelWidth->get_Value(&pixelWidthValue));
-        }
-
-        bool isWidthUnset = (width == nullptr) && (pixelWidth == nullptr);
-
-        GridLength columnWidth = CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidthValue, widthValue);
-
-        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
-
-        return S_OK;
+        columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
     }
 
-    void CreateBackgroundImage(_In_ IAdaptiveRenderContext* renderContext, _In_ HSTRING url, _Outptr_ IImage** backgroundImage)
+    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
     {
-        ComPtr<IImage> image = XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-
-        ComPtr<IDependencyObject> imageAsDependencyObject;
-        THROW_IF_FAILED(image.As(&imageAsDependencyObject));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        ComPtr<IUriRuntimeClass> imageUrl;
-        GetUrlFromString(hostConfig.Get(), url, imageUrl.GetAddressOf());
-
-        ComPtr<IBitmapImage> bitmapImage =
-            XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-        THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl.Get()));
-
-        ComPtr<IImageSource> bitmapImageSource;
-        THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
-
-        ComPtr<IUIElement> imageAsUIElement;
-        THROW_IF_FAILED(image.As(&imageAsUIElement));
-        THROW_IF_FAILED(image->put_Source(bitmapImageSource.Get()));
-        THROW_IF_FAILED(image.CopyTo(backgroundImage));
-    }
-
-    void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
-                               _In_ IAdaptiveBackgroundImage* backgroundImage,
-                               _In_ IAdaptiveRenderContext* renderContext)
-    {
-        HString url;
-        THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
-
-        ComPtr<IImage> xamlImage;
-        CreateBackgroundImage(renderContext, url.Get(), &xamlImage);
-        if (!xamlImage)
+        try
         {
-            return;
+            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
+
+            if (imageUrl.SchemeName() == L"data")
+            {
+                return RenderImageFromDataUri(imageUrl);
+            }
+
+            winrt::BitmapImage bitmapImage{};
+            bitmapImage.UriSource(imageUrl);
+
+            winrt::Image backgroundImage;
+            backgroundImage.Source(bitmapImage);
+
+            return backgroundImage;
         }
-
-        ComPtr<IUIElement> xamlImageAsUIElement;
-        THROW_IF_FAILED(xamlImage.As(&xamlImageAsUIElement));
-
-        // Creates the background image for all fill modes
-        ComPtr<TileControl> tileControl;
-        THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
-
-        // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
-        ComPtr<IControl> tileControlAsControl;
-        THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
-        THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
-
-        THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
-
-        ComPtr<IFrameworkElement> rootElement;
-        THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
-        THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
-
-        THROW_IF_FAILED(tileControl->LoadImageBrush(xamlImageAsUIElement.Get()));
-
-        ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-        THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
-
-        XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
-
-        // The overlay applied to the background image is determined by a resouce, so create
-        // the overlay if that resources exists
-        ComPtr<IResourceDictionary> resourceDictionary;
-        THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
-        ComPtr<IBrush> backgroundOverlayBrush;
-        if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IBrush>(resourceDictionary.Get(),
-                                                                                  c_BackgroundImageOverlayBrushKey,
-                                                                                  &backgroundOverlayBrush)))
+        catch (winrt::hresult_error const& ex)
         {
-            ComPtr<IShape> overlayRectangle =
-                XamlHelpers::CreateABIClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
-            THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
-
-            ComPtr<IUIElement> overlayRectangleAsUIElement;
-            THROW_IF_FAILED(overlayRectangle.As(&overlayRectangleAsUIElement));
-            XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);
+            renderContext.AddWarning(winrt::WarningStatusCode::CustomWarning, ex.message() + L" Skipping rendering of background image.");
+            return nullptr;
         }
     }
 
-    HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
-                           _In_ IAdaptiveRenderContext* renderContext,
-                           _In_ IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ IUIElement** result,
-                           _COM_Outptr_ IAdaptiveCardElement** renderedElement)
+    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
+                               winrt::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
+                               winrt::AdaptiveRenderContext const& renderContext)
     {
-        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-        RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+        // In order to reuse the image creation code paths, we simply create an adaptive card
+        // image element and then build that into xaml and apply to the root.
+        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
+        {
+            // Creates the background image for all fill modes
+            auto tileControl = winrt::make<winrt::implementation::TileControl>();
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType elementFallback;
-        RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
+            // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+            tileControl.IsEnabled(false);
+            tileControl.BackgroundImage(adaptiveBackgroundImage);
+            tileControl.LoadImageBrush(backgroundImage);
 
-        HString elementType;
-        RETURN_IF_FAILED(currentElement->get_ElementTypeString(elementType.GetAddressOf()));
+            XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
+
+            // The overlay applied to the background image is determined by a resouce, so create
+            // the overlay if that resources exists
+            auto resourceDictionary = renderContext.OverrideStyles();
+            if (const auto backgroundOverlayBrush =
+                    XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, c_BackgroundImageOverlayBrushKey)
+                        .try_as<winrt::Brush>())
+            {
+                winrt::Rectangle overlayRectangle;
+                overlayRectangle.Fill(backgroundOverlayBrush);
+
+                XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
+            }
+        }
+    }
+
+    std::tuple<winrt::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
+                                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+    {
+        if (!currentElement)
+        {
+            return {nullptr, nullptr};
+        }
+
+        auto elementRenderers = renderContext.ElementRenderers();
+        auto elementFallback = currentElement.FallbackType();
+        winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
-        ComPtr<IUIElement> fallbackControl;
+        winrt::UIElement fallbackControl{nullptr};
+        winrt::IAdaptiveCardElement renderedElement{nullptr};
+        winrt::UIElement result{nullptr};
+
         switch (elementFallback)
         {
-        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content:
+        case winrt::FallbackType::Content:
         {
-            // We have content, get the type of the fallback element
-            ComPtr<IAdaptiveCardElement> fallbackElement;
-            RETURN_IF_FAILED(currentElement->get_FallbackContent(&fallbackElement));
+            auto fallbackElement = currentElement.FallbackContent();
 
-            HString fallbackElementType;
-            RETURN_IF_FAILED(fallbackElement->get_ElementTypeString(fallbackElementType.GetAddressOf()));
+            winrt::hstring fallbackElementType = fallbackElement.ElementTypeString();
 
-            RETURN_IF_FAILED(WarnForFallbackContentElement(renderContext, elementType.Get(), fallbackElementType.Get()));
+            WarnForFallbackContentElement(renderContext, elementType, fallbackElementType);
 
-            // Try to render the fallback element
-            ComPtr<IAdaptiveElementRenderer> fallbackElementRenderer;
-            RETURN_IF_FAILED(elementRenderers->Get(fallbackElementType.Get(), &fallbackElementRenderer));
-            HRESULT hr = E_PERFORM_FALLBACK;
+            auto fallbackElementRenderer = elementRenderers.Get(fallbackElementType);
 
             if (fallbackElementRenderer)
             {
-                // perform this element's fallback
-                hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-                if (renderedElement)
-                {
-                    RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
-                }
+                fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
+
+                renderedElement = fallbackElement;
             }
 
-            if (hr == E_PERFORM_FALLBACK)
+            if (!fallbackControl)
             {
-                // The fallback content told us to fallback, make a recursive call to this method
-                RETURN_IF_FAILED(RenderFallback(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl, renderedElement));
+                std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
             }
-            else
-            {
-                // Check the non-fallback return value from the render call
-                RETURN_IF_FAILED(hr);
-            }
-
-            // We handled the fallback content
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Drop:
+        case winrt::FallbackType::Drop:
         {
-            // If the fallback is drop, nothing to do but warn
-            RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
+            XamlHelpers::WarnForFallbackDrop(renderContext, elementType);
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None:
+        case winrt::FallbackType::None:
         default:
         {
             break;
@@ -519,144 +348,90 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         if (fallbackHandled)
         {
-            // We did it, copy out the result if any
-            RETURN_IF_FAILED(fallbackControl.CopyTo(result));
-            return S_OK;
+            result = fallbackControl;
         }
         else
         {
-            // We didn't do it, can our ancestor?
-            boolean ancestorHasFallback;
-            RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
-
-            if (!ancestorHasFallback)
+            if (!renderArgs.AncestorHasFallback())
             {
-                // standard unknown element handling
-                std::wstring errorString = L"No Renderer found for type: ";
-                errorString += elementType.GetRawBuffer(nullptr);
-                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
-                                                           HStringReference(errorString.c_str()).Get()));
-                return S_OK;
+                renderContext.AddWarning(winrt::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
             }
             else
             {
-                return E_PERFORM_FALLBACK;
+                throw winrt::hresult_error(E_PERFORM_FALLBACK);
             }
         }
+        return std::tuple(result, renderedElement);
     }
 
-    void GetSeparationConfigForElement(_In_ IAdaptiveCardElement* cardElement,
-                                       _In_ IAdaptiveHostConfig* hostConfig,
-                                       _Out_ UINT* spacing,
-                                       _Out_ UINT* separatorThickness,
-                                       _Out_ ABI::Windows::UI::Color* separatorColor,
-                                       _Out_ bool* needsSeparator)
+    bool NeedsSeparator(winrt::IAdaptiveCardElement const& cardElement)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing elementSpacing;
-        THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));
+        auto elementSpacing = cardElement.Spacing();
+        auto hasSeparator = cardElement.Separator();
 
-        UINT localSpacing;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, elementSpacing, &localSpacing));
-
-        boolean hasSeparator;
-        THROW_IF_FAILED(cardElement->get_Separator(&hasSeparator));
-
-        ABI::Windows::UI::Color localColor = {0};
-        UINT localThickness = 0;
-        if (hasSeparator)
-        {
-            ComPtr<IAdaptiveSeparatorConfig> separatorConfig;
-            THROW_IF_FAILED(hostConfig->get_Separator(&separatorConfig));
-
-            THROW_IF_FAILED(separatorConfig->get_LineColor(&localColor));
-            THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
-        }
-
-        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::None);
-
-        *spacing = localSpacing;
-        *separatorThickness = localThickness;
-        *separatorColor = localColor;
+        return hasSeparator || (elementSpacing != winrt::Spacing::None);
     }
 
-    HRESULT AddRenderedControl(_In_ IUIElement* newControl,
-                               _In_ IAdaptiveCardElement* element,
-                               _In_ IPanel* parentPanel,
-                               _In_ IUIElement* separator,
-                               _In_ IColumnDefinition* columnDefinition,
-                               std::function<void(IUIElement* child)> childCreatedCallback)
+    void AddRenderedControl(winrt::UIElement const& newControl,
+                            winrt::IAdaptiveCardElement const& element,
+                            winrt::Panel const& parentPanel,
+                            winrt::UIElement const& separator,
+                            winrt::ColumnDefinition const& columnDefinition,
+                            std::function<void(winrt::UIElement const& child)> childCreatedCallback)
     {
-        if (newControl != nullptr)
+        if (newControl)
         {
-            boolean isVisible;
-            RETURN_IF_FAILED(element->get_IsVisible(&isVisible));
+            bool isVisible = element.IsVisible();
 
             if (!isVisible)
             {
-                RETURN_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
+                newControl.Visibility(winrt::Visibility::Collapsed);
             }
 
-            ComPtr<IUIElement> localControl(newControl);
-            ComPtr<IFrameworkElement> newControlAsFrameworkElement;
-            RETURN_IF_FAILED(localControl.As(&newControlAsFrameworkElement));
+            auto newControlAsFrameworkElement = newControl.as<winrt::FrameworkElement>();
 
-            HString id;
-            RETURN_IF_FAILED(element->get_Id(id.GetAddressOf()));
+            winrt::hstring id = element.Id();
 
-            if (id.IsValid())
+            if (!id.empty())
             {
-                RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
+                newControlAsFrameworkElement.Name(id);
             }
 
-            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType{};
-            RETURN_IF_FAILED(element->get_Height(&heightType));
+            auto heightType = element.Height();
 
-            ComPtr<ElementTagContent> tagContent;
-            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(
-                &tagContent, element, parentPanel, separator, columnDefinition, isVisible, heightType == HeightType_Stretch));
-            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
+            auto tagContent = winrt::make<winrt::implementation::ElementTagContent>(
+                element, parentPanel, separator, columnDefinition, isVisible, heightType == winrt::HeightType::Stretch);
+            newControlAsFrameworkElement.Tag(tagContent);
 
             XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
 
             childCreatedCallback(newControl);
         }
-        return S_OK;
     }
 
-    HRESULT AddHandledTappedEvent(_In_ IUIElement* uiElement)
+    void AddHandledTappedEvent(winrt::UIElement const& uiElement)
     {
-        if (uiElement == nullptr)
+        if (!uiElement)
         {
-            return E_INVALIDARG;
+            return;
         }
-
-        EventRegistrationToken clickToken;
-        // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
-        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT
-                                                                   { return args->put_Handled(TRUE); })
-                                         .Get(),
-                                     &clickToken);
+        uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
-    HRESULT SetAutoImageSize(_In_ IFrameworkElement* imageControl, _In_ IInspectable* parentElement, _In_ IBitmapSource* imageSource, bool setVisible)
+    void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
+                          winrt::IInspectable const& parentElement,
+                          winrt::BitmapSource const& imageSource,
+                          bool setVisible)
     {
-        INT32 pixelHeight;
-        RETURN_IF_FAILED(imageSource->get_PixelHeight(&pixelHeight));
-        INT32 pixelWidth;
-        RETURN_IF_FAILED(imageSource->get_PixelWidth(&pixelWidth));
-        DOUBLE maxHeight;
-        DOUBLE maxWidth;
-        ComPtr<IInspectable> localParentElement(parentElement);
-        ComPtr<IFrameworkElement> localElement(imageControl);
-        ComPtr<IColumnDefinition> parentAsColumnDefinition;
+        int32_t pixelHeight = imageSource.PixelHeight();
+        int32_t pixelWidth = imageSource.PixelWidth();
 
-        RETURN_IF_FAILED(localElement->get_MaxHeight(&maxHeight));
-        RETURN_IF_FAILED(localElement->get_MaxWidth(&maxWidth));
+        double maxHeight = imageControl.MaxHeight();
+        double maxWidth = imageControl.MaxWidth();
 
-        if (SUCCEEDED(localParentElement.As(&parentAsColumnDefinition)))
+        if (const auto parentAsColumnDefinition = parentElement.try_as<winrt::ColumnDefinition>())
         {
-            DOUBLE parentWidth;
-            RETURN_IF_FAILED(parentAsColumnDefinition->get_ActualWidth(&parentWidth));
+            double parentWidth = parentAsColumnDefinition.ActualWidth();
             if (parentWidth >= pixelWidth)
             {
                 // Make sure to keep the aspect ratio of the image
@@ -668,538 +443,370 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        ComPtr<IEllipse> localElementAsEllipse;
-        if (SUCCEEDED(localElement.As(&localElementAsEllipse)))
+        if (const auto localElementAsEllipse = imageControl.try_as<winrt::Ellipse>())
         {
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
             // max value for width should be set since adaptive cards is constrained horizontally
-            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
+            imageControl.MaxWidth(std::min(maxWidth, static_cast<double>(pixelWidth)));
         }
         else
         {
-            RETURN_IF_FAILED(localElement->put_MaxHeight(std::min(maxHeight, static_cast<DOUBLE>(pixelHeight))));
-            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
+            imageControl.MaxHeight(std::min(maxHeight, static_cast<double>(pixelHeight)));
+            imageControl.MaxWidth(std::min(maxWidth, static_cast<double>(pixelWidth)));
         }
 
         if (setVisible)
         {
-            ComPtr<IUIElement> frameworkElementAsUIElement;
-            RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
-            RETURN_IF_FAILED(frameworkElementAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+            imageControl.Visibility(winrt::Visibility::Visible);
         }
-
-        return S_OK;
     }
 
-    void AddSeparatorIfNeeded(int& currentElement,
-                              _In_ IAdaptiveCardElement* element,
-                              _In_ IAdaptiveHostConfig* hostConfig,
-                              _In_ IAdaptiveRenderContext* renderContext,
-                              _In_ IPanel* parentPanel,
-                              _Outptr_ IUIElement** addedSeparator)
+    winrt::UIElement AddSeparatorIfNeeded(int& currentElement,
+                                          winrt::IAdaptiveCardElement const& element,
+                                          winrt::AdaptiveHostConfig const& hostConfig,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::Panel const& parentPanel)
     {
         // First element does not need a separator added
         if (currentElement++ > 0)
         {
-            bool needsSeparator;
-            UINT spacing;
-            UINT separatorThickness;
-            ABI::Windows::UI::Color separatorColor;
-            XamlHelpers::GetSeparationConfigForElement(element, hostConfig, &spacing, &separatorThickness, &separatorColor, &needsSeparator);
-            if (needsSeparator)
+            if (NeedsSeparator(element))
             {
-                auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
-                XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
-                THROW_IF_FAILED(separator.CopyTo(addedSeparator));
+                auto separatorParams = XamlHelpers::GetSeparatorParameters(element, hostConfig);
+                auto separator = XamlHelpers::CreateSeparator(renderContext,
+                                                              separatorParams.spacing,
+                                                              separatorParams.thickness,
+                                                              separatorParams.color);
+                XamlHelpers::AppendXamlElementToPanel(separator, parentPanel);
+                return separator;
             }
         }
+        return nullptr;
     }
 
-    HRESULT ApplyMarginToXamlElement(_In_ IAdaptiveHostConfig* hostConfig, _In_ IFrameworkElement* element) noexcept
+    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element)
     {
-        ComPtr<IFrameworkElement> localElement(element);
-        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-        RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+        auto spacingConfig = hostConfig.Spacing();
+        uint32_t padding = spacingConfig.Padding();
 
-        UINT32 padding;
-        spacingConfig->get_Padding(&padding);
-        Thickness margin = {(double)padding, (double)padding, (double)padding, (double)padding};
-
-        RETURN_IF_FAILED(localElement->put_Margin(margin));
-        return S_OK;
+        element.Margin({(double)padding, (double)padding, (double)padding, (double)padding});
     }
 
-    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* inputLabelConfig,
-                                         _In_ boolean isHint,
-                                         ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
+    void FormatLabelRunWithHostConfig(winrt::AdaptiveHostConfig const& hostConfig,
+                                      winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
+                                      bool isHint,
+                                      winrt::Run const& labelRun)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor textColor;
-
         // If we're formatting a hint then use attention color
-        if (isHint)
-        {
-            textColor = ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Attention;
-        }
-        else
-        {
-            RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
-        }
+        winrt::ForegroundColor textColor = isHint ? winrt::ForegroundColor::Attention : inputLabelConfig.Color();
 
-        ABI::Windows::UI::Color color;
-        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, textColor, ContainerStyle_Default, false, false, &color));
+        auto color = GetColorFromAdaptiveColor(hostConfig, textColor, winrt::ContainerStyle::Default, false, false);
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> xamlLabelRun(labelRun);
+        labelRun.Foreground(winrt::SolidColorBrush{color});
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> labelRunAsTextElement;
-        RETURN_IF_FAILED(xamlLabelRun.As(&labelRunAsTextElement));
+        winrt::TextSize textSize = inputLabelConfig.Size();
 
-        RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, winrt::FontType::Default, textSize);
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize;
-        RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
-
-        UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textSize, &resultSize));
-
-        RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
-
-        return S_OK;
+        labelRun.FontSize(resultSize);
     }
 
-    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* inputLabelConfig,
-                                  IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    void AddRequiredHintInline(winrt::AdaptiveHostConfig const& hostConfig,
+                               winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
+                               winrt::IVector<winrt::Inline> const& inlines)
     {
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
-
         // Create an inline for the suffix
-        ComPtr<IRun> hintRun = XamlHelpers::CreateABIClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+        winrt::Run hintRun{};
 
-        HString suffix;
-        RETURN_IF_FAILED(inputLabelConfig->get_Suffix(suffix.GetAddressOf()));
-
+        winrt::hstring suffix = inputLabelConfig.Suffix();
         // If no suffix was defined, use * as default
-        if (WindowsIsStringEmpty(suffix.Get()))
+
+        if (suffix.empty())
         {
-            RETURN_IF_FAILED(UTF8ToHString(" *", suffix.GetAddressOf()));
+            suffix = UTF8ToHString(" *");
         }
 
-        RETURN_IF_FAILED(hintRun->put_Text(suffix.Get()));
+        hintRun.Text(suffix);
 
-        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun.Get());
+        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun);
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> hintRunAsTextElement;
-        RETURN_IF_FAILED(hintRun.As(&hintRunAsTextElement));
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hintRunAsInline;
-        RETURN_IF_FAILED(hintRun.As(&hintRunAsInline));
-
-        RETURN_IF_FAILED(xamlInlines->Append(hintRunAsInline.Get()));
-
-        return S_OK;
+        inlines.Append(hintRun);
     }
 
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* /*renderArgs*/,
-                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
+    winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                      winrt::AdaptiveRenderContext const& renderContext)
     {
-        HString inputLabel;
-        RETURN_IF_FAILED(adaptiveInputElement->get_Label(inputLabel.GetAddressOf()));
-
+        winrt::hstring inputLabel = adaptiveInputElement.Label();
         // Retrieve if the input is required so we can file a warning if the label is empty
-        boolean isRequired;
-        RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
+        bool isRequired = adaptiveInputElement.IsRequired();
 
-        if (inputLabel != nullptr)
+        // TOOD: is this correct way instead of? should I check for data?
+        if (!inputLabel.empty())
         {
             // Create a rich text block for the label
-            ComPtr<IRichTextBlock> xamlRichTextBlock = XamlHelpers::CreateABIClass<IRichTextBlock>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RichTextBlock));
+            winrt::RichTextBlock xamlRichTextBlock{};
 
             // Add a paragraph for the inlines
-            ComPtr<IVector<Block*>> xamlBlocks;
-            RETURN_IF_FAILED(xamlRichTextBlock->get_Blocks(&xamlBlocks));
+            auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-            ComPtr<IParagraph> xamlParagraph =
-                XamlHelpers::CreateABIClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+            winrt::Paragraph xamlParagraph{};
 
-            ComPtr<IBlock> paragraphAsBlock;
-            RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
-            RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
+            xamlBlocks.Append(xamlParagraph);
 
-            // Add the Inlines
-            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
-            RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
+            // Add the inlines
+            auto xamlInlines = xamlParagraph.Inlines();
 
             // First inline is the label from the card
-            ComPtr<IRun> labelRun =
-                XamlHelpers::CreateABIClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-            RETURN_IF_FAILED(labelRun->put_Text(inputLabel.Get()));
+            winrt::Run labelRun{};
+            labelRun.Text(inputLabel);
 
-            ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> labelRunAsInline;
-            RETURN_IF_FAILED(labelRun.As(&labelRunAsInline));
-
-            RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
+            xamlInlines.Append(labelRun);
 
             // Get the label config depending if the input is required
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-            ComPtr<IAdaptiveInputsConfig> inputsConfig;
-            RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
-
-            ComPtr<IAdaptiveLabelConfig> labelConfig;
-            RETURN_IF_FAILED(inputsConfig->get_Label(&labelConfig));
-
-            ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
-            if (isRequired)
-            {
-                RETURN_IF_FAILED(labelConfig->get_RequiredInputs(&inputLabelConfig));
-            }
-            else
-            {
-                RETURN_IF_FAILED(labelConfig->get_OptionalInputs(&inputLabelConfig));
-            }
+            auto hostConfig = renderContext.HostConfig();
+            auto inputsConfig = hostConfig.Inputs();
+            auto labelConfig = inputsConfig.Label();
+            winrt::AdaptiveInputLabelConfig inputLabelConfig =
+                isRequired ? labelConfig.RequiredInputs() : labelConfig.OptionalInputs();
 
             if (isRequired)
             {
-                RETURN_IF_FAILED(AddRequiredHintInline(hostConfig.Get(), inputLabelConfig.Get(), xamlInlines.Get()));
+                AddRequiredHintInline(hostConfig, inputLabelConfig, xamlInlines);
             }
+            FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, false /*isHint*/, labelRun);
 
-            RETURN_IF_FAILED(
-                FormatLabelRunWithHostConfig(hostConfig.Get(), inputLabelConfig.Get(), false /*isHint*/, labelRun.Get()));
-
-            RETURN_IF_FAILED(xamlRichTextBlock->put_TextWrapping(TextWrapping_Wrap));
-
-            RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
+            xamlRichTextBlock.TextWrapping(winrt::TextWrapping::Wrap);
+            return xamlRichTextBlock;
         }
         else if (isRequired)
         {
-            // if there was no label but the input is required file a warning for the card author
-            RETURN_IF_FAILED(renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::EmptyLabelInRequiredInput,
-                HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
+            renderContext.AddWarning(winrt::WarningStatusCode::EmptyLabelInRequiredInput,
+                                     L"Input is required but there's no label for required hint rendering");
         }
-
-        return S_OK;
+        return nullptr;
     }
 
     // Error messages are formatted for text size and weight
-    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                             ITextBlock* errorMessage)
+    void FormatErrorMessageWithHostConfig(winrt::AdaptiveRenderContext const& renderContext, winrt::TextBlock const& errorMessage)
     {
-        ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(hostConfig.GetAddressOf()));
-
-        ComPtr<IAdaptiveInputsConfig> inputsConfig;
-        RETURN_IF_FAILED(hostConfig->get_Inputs(inputsConfig.GetAddressOf()));
-
-        ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
-        RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+        auto hostConfig = renderContext.HostConfig();
+        auto inputsConfig = hostConfig.Inputs();
+        auto errorMessageConfig = inputsConfig.ErrorMessage();
 
         // Set size defined in host config
-        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize;
-        RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
-
-        UINT32 resultSize{};
-        RETURN_IF_FAILED(
-            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textSize, &resultSize));
-
-        RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
+        winrt::TextSize textSize = errorMessageConfig.Size();
+        uint32_t resultSize = GetFontSizeFromFontType(hostConfig, winrt::FontType::Default, textSize);
+        errorMessage.FontSize(resultSize);
 
         // Set weight defined in host config
-        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight;
-        RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
-
-        ABI::Windows::UI::Text::FontWeight resultWeight;
-        RETURN_IF_FAILED(
-            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textWeight, &resultWeight));
-
-        RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
-
-        return S_OK;
+        winrt::TextWeight textWeight = errorMessageConfig.Weight();
+        auto resultWeight = GetFontWeightFromStyle(hostConfig, winrt::FontType::Default, textWeight);
+        errorMessage.FontWeight(resultWeight);
     }
 
-    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                    _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
+    winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                             winrt::AdaptiveRenderContext const& renderContext)
     {
         // Add the error message if present
-        HString errorMessage;
-        RETURN_IF_FAILED(adaptiveInputElement->get_ErrorMessage(errorMessage.GetAddressOf()));
+        winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
 
-        if (errorMessage.IsValid())
+        if (!errorMessage.empty())
         {
-            ComPtr<ITextBlock> errorMessageTextBlock =
-                XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-            RETURN_IF_FAILED(errorMessageTextBlock->put_Text(errorMessage.Get()));
+            winrt::TextBlock errorMessageTextBlock{};
+            errorMessageTextBlock.Text(errorMessage);
 
             // Set the color to Attention color
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+            auto hostConfig = renderContext.HostConfig();
 
-            ABI::Windows::UI::Color attentionColor;
-            RETURN_IF_FAILED(
-                GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
+            auto attentionColor =
+                GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
-            RETURN_IF_FAILED(errorMessageTextBlock->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+            errorMessageTextBlock.Foreground(winrt::SolidColorBrush{attentionColor});
 
             // Format the error message through host config
-            RETURN_IF_FAILED(FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock.Get()));
+            FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock);
 
             // Error message should begin collapsed and only be show when validated
-            ComPtr<IUIElement> errorMessageTextBlockAsUIElement;
-            RETURN_IF_FAILED(errorMessageTextBlock.As(&errorMessageTextBlockAsUIElement));
-
-            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement->put_Visibility(Visibility_Collapsed));
-            RETURN_IF_FAILED(errorMessageTextBlock->put_TextWrapping(TextWrapping_Wrap));
-
-            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement.CopyTo(errorMessageControl));
+            errorMessageTextBlock.Visibility(winrt::Visibility::Collapsed);
+            errorMessageTextBlock.TextWrapping(winrt::TextWrapping::Wrap);
+            return errorMessageTextBlock;
         }
-
-        return S_OK;
+        return nullptr;
     }
 
-    HRESULT CreateValidationBorder(_In_ ABI::Windows::UI::Xaml::IUIElement* childElement,
-                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                   _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder)
+    winrt::Border XamlHelpers::CreateValidationBorder(winrt::UIElement const& childElement, winrt::AdaptiveRenderContext const& renderContext)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        auto hostConfig = renderContext.HostConfig();
 
-        ABI::Windows::UI::Color attentionColor;
-        RETURN_IF_FAILED(
-            GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
+        auto attentionColor =
+            GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
         // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
-        ComPtr<IBorder> validationBorder;
-        validationBorder = XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+        winrt::Border validationBorder{};
+        validationBorder.BorderBrush(winrt::SolidColorBrush{attentionColor});
+        validationBorder.Child(childElement);
 
-        RETURN_IF_FAILED(validationBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
-
-        RETURN_IF_FAILED(validationBorder->put_Child(childElement));
-
-        RETURN_IF_FAILED(validationBorder.CopyTo(elementWithBorder));
-        return S_OK;
+        return validationBorder;
     }
 
-    HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
-                                       _In_ IAdaptiveRenderContext* renderContext,
-                                       _In_ IAdaptiveRenderArgs* renderArgs,
-                                       _Out_ IUIElement** inputLayout)
+    winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::UIElement const& inputLayout)
     {
         // Create a new stack panel to add the label and error message
         // The contents from the input panel will be copied to the new panel
-        ComPtr<IStackPanel> inputStackPanel =
-            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        winrt::StackPanel inputStackPanel{};
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        ComPtr<IAdaptiveInputsConfig> inputsConfig;
-        RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+        auto hostConfig = renderContext.HostConfig();
+        // TOOD: rename Inputs to something more meaningful
+        auto inputsConfig = hostConfig.Inputs();
 
         // Render the label and add it to the stack panel
-        ComPtr<IUIElement> label;
-        RETURN_IF_FAILED(XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label));
-        XamlHelpers::AppendXamlElementToPanel(label.Get(), stackPanelAsPanel.Get());
+        auto label = XamlHelpers::RenderInputLabel(adaptiveInput, renderContext);
+        XamlHelpers::AppendXamlElementToPanel(label, inputStackPanel);
 
-        // Render the spacing between the label and the input
-        if (label != nullptr)
+        if (label)
         {
-            ComPtr<IAdaptiveLabelConfig> labelConfig;
-            RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
+            auto labelConfig = inputsConfig.Label();
+            winrt::Spacing labelSpacing = labelConfig.InputSpacing();
 
-            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing labelSpacing;
-            RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
+            uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, labelSpacing);
 
-            UINT spacing{};
-            RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), labelSpacing, &spacing));
-            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
-
-            ComPtr<IPanel> inputPanel;
-            RETURN_IF_FAILED(inputStackPanel.As(&inputPanel));
-            XamlHelpers::AppendXamlElementToPanel(separator.Get(), inputPanel.Get());
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, winrt::Windows::UI::Color{});
+            XamlHelpers::AppendXamlElementToPanel(separator, inputStackPanel);
         }
 
-        ComPtr<IUIElement> actualUIElement;
+        winrt::UIElement actualUIElement{nullptr};
 
         // Copy the contents into the new panel and get the rendered element to set acessibility properties
-        ComPtr<IUIElement> localInputLayout(*inputLayout);
-        ComPtr<IPanel> inputPanel;
-        if (SUCCEEDED(localInputLayout.As(&inputPanel)))
+        if (const auto inputPanel = inputLayout.try_as<winrt::Panel>())
         {
-            ComPtr<IVector<UIElement*>> panelChildren;
-            RETURN_IF_FAILED(inputPanel->get_Children(&panelChildren));
-
-            unsigned int childrenCount{};
-            RETURN_IF_FAILED(panelChildren->get_Size(&childrenCount));
+            auto panelChildren = inputPanel.Children();
+            uint32_t childrenCount = panelChildren.Size();
 
             // We only copy one element into the input layout, if there's only one element, then we can assume it's our layout
             if (childrenCount == 1)
             {
-                ComPtr<IUIElement> onlyElement;
-                RETURN_IF_FAILED(panelChildren->GetAt(0, &onlyElement));
-
+                auto onlyElement = panelChildren.GetAt(0);
                 // We enclose multiple items using a border, so we try to check for it
-                ComPtr<IBorder> inputBorder;
-                if (SUCCEEDED(onlyElement.As(&inputBorder)))
+                if (const auto inputBorder = onlyElement.try_as<winrt::Border>())
                 {
-                    RETURN_IF_FAILED(inputBorder->get_Child(actualUIElement.GetAddressOf()));
+                    actualUIElement = inputBorder.Child();
                 }
                 else
                 {
                     actualUIElement = onlyElement;
                 }
-
-                RETURN_IF_FAILED(panelChildren->RemoveAt(0));
-                XamlHelpers::AppendXamlElementToPanel(onlyElement.Get(), stackPanelAsPanel.Get());
+                panelChildren.RemoveAt(0);
+                XamlHelpers::AppendXamlElementToPanel(onlyElement, inputStackPanel);
             }
             else
             {
-                for (unsigned int i{}; i < childrenCount; ++i)
+                for (auto child : panelChildren)
                 {
-                    ComPtr<IUIElement> child;
-                    RETURN_IF_FAILED(panelChildren->GetAt(i, &child));
-                    RETURN_IF_FAILED(panelChildren->RemoveAt(i));
-
-                    XamlHelpers::AppendXamlElementToPanel(child.Get(), stackPanelAsPanel.Get());
+                    XamlHelpers::AppendXamlElementToPanel(child, inputStackPanel);
                 }
+                panelChildren.Clear();
             }
         }
         else
         {
-            actualUIElement = localInputLayout;
-            XamlHelpers::AppendXamlElementToPanel(localInputLayout.Get(), stackPanelAsPanel.Get());
+            actualUIElement = inputLayout;
+            XamlHelpers::AppendXamlElementToPanel(inputLayout, inputStackPanel);
         }
 
         // Add the error message if there's validation and one exists
-        ComPtr<IUIElement> errorMessageControl;
-        XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext, &errorMessageControl);
-        if (errorMessageControl != nullptr)
+        auto errorMessageControl = XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext);
+
+        if (errorMessageControl)
         {
             // Render the spacing between the input and the error message
-            ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
-            RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+            auto errorMessageConfig = inputsConfig.ErrorMessage();
 
-            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing errorSpacing;
-            RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
+            winrt::Spacing errorSpacing = errorMessageConfig.Spacing();
 
-            UINT spacing{};
-            RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), errorSpacing, &spacing));
-            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
+            uint32_t spacing = GetSpacingSizeFromSpacing(hostConfig, errorSpacing);
 
-            ComPtr<IAdaptiveInputValue> inputValue;
-            RETURN_IF_FAILED(renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf()));
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, winrt::Windows::UI::Color{});
+            auto inputValue = renderContext.GetInputValue(adaptiveInput);
+
             if (inputValue)
             {
-                RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
+                inputValue.ErrorMessage(errorMessageControl);
             }
-            XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
+
+            XamlHelpers::AppendXamlElementToPanel(separator, inputStackPanel);
 
             // Add the rendered error message
-            XamlHelpers::AppendXamlElementToPanel(errorMessageControl.Get(), stackPanelAsPanel.Get());
+            XamlHelpers::AppendXamlElementToPanel(errorMessageControl, inputStackPanel);
         }
 
-        // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
-
-        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
-        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-
-        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(actualUIElement.As(&inputUIElementAsDependencyObject));
-
-        // The AutomationProperties.LabeledBy property allows an input to have more context for people using a screen
-        // reader, as it reads the label we rendered previously
-        if (label != nullptr)
+        if (label)
         {
-            RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
+            winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
         }
 
-        RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
-
-        return S_OK;
+        return inputStackPanel;
     }
 
-    HRESULT HandleInputLayoutAndValidation(IAdaptiveInputElement* adaptiveInput,
-                                           IUIElement* inputUIElement,
-                                           boolean hasTypeSpecificValidation,
-                                           _In_ IAdaptiveRenderContext* renderContext,
-                                           IUIElement** inputLayout,
-                                           IBorder** validationBorderOut)
+    std::tuple<winrt::UIElement, winrt::Border>
+    XamlHelpers::HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                winrt::UIElement const& inputUIElement,
+                                                bool hasTypeSpecificValidation,
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                bool ifValidationBorderIsNeeded)
     {
-        // Create a stack panel for the input and related controls
-        ComPtr<IStackPanel> inputStackPanel =
-            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-
-        ComPtr<IPanel> stackPanelAsPanel;
-        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
+        winrt::StackPanel inputStackPanel{};
 
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
-        ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;
+        auto inputUIElementParentContainer = inputUIElement;
 
         // If there's any validation on this input, and the caller has requested a validation border by passing
         // validationBorderOut, put the input inside a border
-        boolean isRequired;
-        RETURN_IF_FAILED(adaptiveInput->get_IsRequired(&isRequired));
+        auto isRequired = adaptiveInput.IsRequired();
 
-        boolean hasValidation = (hasTypeSpecificValidation || isRequired);
+        auto hasValidation = (hasTypeSpecificValidation || isRequired);
 
         if (hasValidation)
         {
             // If we have validation, we should have an error message to display if it fails. If we don't, return a
             // warning to encourage the card author to add one.
-
-            HString errorMessage;
-            RETURN_IF_FAILED(adaptiveInput->get_ErrorMessage(errorMessage.GetAddressOf()));
-
-            if (!errorMessage.IsValid())
+            if (adaptiveInput.ErrorMessage().empty())
             {
-                RETURN_IF_FAILED(
-                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MissingValidationErrorMessage,
-                                              HStringReference(L"Inputs with validation should include an errorMessage").Get()));
+                renderContext.AddWarning(winrt::WarningStatusCode::MissingValidationErrorMessage,
+                                         L"Inputs with validation should include an errorMessage");
             }
         }
 
-        ComPtr<IBorder> validationBorder;
-        if (validationBorderOut && hasValidation)
+        winrt::Border validationBorder{nullptr};
+        if (hasValidation && ifValidationBorderIsNeeded)
         {
-            RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
-            RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
+            validationBorder = XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
+            inputUIElementParentContainer = validationBorder;
         }
 
-        XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer.Get(), stackPanelAsPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer, inputStackPanel);
 
         // Different input renderers perform stuff differently
-        // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
-        // Input.Time and Input.Date let this method render the border for them
-        // Input.Toggle
-        ComPtr<IUIElement> actualInputUIElement;
-        if (validationBorderOut && hasValidation)
+        // Input.Text and Input.Number render the border previously so the object received as parameter may be a
+        // border Input.Time and Input.Date let this method render the border for them Input.Toggle
+        winrt::UIElement actualInputUIElement{nullptr};
+
+        if (hasValidation && ifValidationBorderIsNeeded)
         {
-            RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+            actualInputUIElement = validationBorder.Child();
         }
         else
         {
             if (hasValidation)
             {
                 // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
-                if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+                if (const auto containerAsBorder = inputUIElementParentContainer.try_as<winrt::Border>())
                 {
-                    RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+                    validationBorder = containerAsBorder;
+                    actualInputUIElement = containerAsBorder.Child();
                 }
                 else
                 {
@@ -1212,69 +819,70 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             }
         }
 
-        // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
-
-        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
-        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));
-
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
-        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
+        winrt::AutomationProperties::SetIsRequiredForForm(actualInputUIElement, isRequired);
 
         // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
-        ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);
-        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
-        if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))
+        if (const auto adaptiveToggleInput = adaptiveInput.try_as<winrt::AdaptiveToggleInput>())
         {
-            ComPtr<IContentControl> uiInpuElementAsContentControl;
-            RETURN_IF_FAILED(actualInputUIElement.As(&uiInpuElementAsContentControl));
-
-            ComPtr<IInspectable> content;
-            RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
-
-            ComPtr<IDependencyObject> contentAsDependencyObject;
-            RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
-
-            ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
-            RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
-
-            ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-            RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
-                                                                          uiElementDescribers.GetAddressOf()));
-
-            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));
+            if (const auto uiInputElementAsContentControl = actualInputUIElement.try_as<winrt::ContentControl>())
+            {
+                if (const auto content = uiInputElementAsContentControl.Content())
+                {
+                    if (const auto contentAsDependencyObject = content.try_as<winrt::DependencyObject>())
+                    {
+                        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(actualInputUIElement);
+                        uiElementDescribers.Append(contentAsDependencyObject);
+                    }
+                }
+            }
         }
 
-        RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
-
-        if (validationBorderOut)
-        {
-            RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
-        }
-
-        return S_OK;
+        return {inputStackPanel, validationBorder};
     }
 
-    winrt::Windows::UI::Xaml::UIElement HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
-                                                                       winrt::Windows::UI::Xaml::UIElement inputUIElement,
-                                                                       boolean hasTypeSpecificValidation,
-                                                                       winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext)
+    SeparatorParemeters XamlHelpers::GetSeparatorParameters(winrt::IAdaptiveCardElement const& element,
+                                                            winrt::AdaptiveHostConfig const& hostConfig)
     {
-        winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiInputLayout;
-        THROW_IF_FAILED(HandleInputLayoutAndValidation(
-            adaptiveInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement>().get(),
-            inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
-            hasTypeSpecificValidation,
-            renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
-            abiInputLayout.put(),
-            nullptr));
+        auto spacing = GetSpacingSizeFromSpacing(hostConfig, element.Spacing());
+        winrt::Windows::UI::Color lineColor{0};
+        uint32_t lineThickness{0};
+        if (element.Separator())
+        {
+            auto separatorConfig = hostConfig.Separator();
+            lineColor = separatorConfig.LineColor();
+            lineThickness = separatorConfig.LineThickness();
+        }
 
-        return abiInputLayout.as<winrt::Windows::UI::Xaml::UIElement>();
+        return {lineColor, spacing, lineThickness};
+    }
+
+    winrt::Image XamlHelpers::RenderImageFromDataUri(winrt::Uri const& imageUrl)
+    {
+        winrt::Image image{};
+        winrt::BitmapImage bitmapImage{};
+        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+
+        // Decode base 64 string
+        std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(imageUrl.Path()));
+        std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+        winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
+
+        dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+
+        dataWriter.StoreAsync().Completed(
+            [dataWriter, bitmapImage, image](winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+            {
+                if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                {
+                    stream.Seek(0);
+                    image.Source(bitmapImage);
+                    bitmapImage.SetSourceAsync(stream);
+                }
+            });
+
+        return image;
     }
 }
