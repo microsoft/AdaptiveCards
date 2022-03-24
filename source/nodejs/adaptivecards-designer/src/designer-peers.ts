@@ -1963,6 +1963,9 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
                                 popupMenu.items.add(menuItem);
                             }
+                            popupMenu.onClose = (sender, wasCancelled) => {
+                                this.focus();
+                            }
 
                             popupMenu.popup(clickedElement);
                             popupMenu.renderedItems[0].focus();
@@ -2290,6 +2293,9 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 
                                 popupMenu.items.add(menuItem);
                             }
+                            popupMenu.onClose = (sender, wasCancelled) => {
+                                this.focus();
+                            }
 
                             popupMenu.popup(clickedElement);
                         }
@@ -2361,6 +2367,9 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                                     this.cardElement.url = fieldPicker.selectedField.asExpression();
 
                                     this.changed(true);
+                                }
+                                else {
+                                    this.focus();
                                 }
                             }
                             fieldPicker.popup(clickedElement);
@@ -2838,6 +2847,9 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
                                     this.cardElement.text = fieldPicker.selectedField.asExpression();
 
                                     this.changed(true);
+                                }
+                                else {
+                                    this.focus();
                                 }
                             }
                             fieldPicker.popup(clickedElement);
