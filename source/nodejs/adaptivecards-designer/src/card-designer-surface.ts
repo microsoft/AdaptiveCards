@@ -597,6 +597,17 @@ export class CardDesignerSurface {
                         }
                     }
                 }
+                if (e.ctrlKey && e.key == "x") {
+                    let buttons = this._peerCommandsHostElement.children;
+                    for (let i = 0; i < buttons.length; i++) {
+                        let button = buttons.item(i);
+                        if (button instanceof HTMLButtonElement) {
+                            if (button.title == "Add an action") {
+                                button.click();
+                            }
+                        }
+                    }
+                }
             }
         };
 

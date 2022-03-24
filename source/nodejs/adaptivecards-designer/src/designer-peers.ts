@@ -1965,6 +1965,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                             }
 
                             popupMenu.popup(clickedElement);
+                            popupMenu.renderedItems[0].focus();
                         }
                     })
             );

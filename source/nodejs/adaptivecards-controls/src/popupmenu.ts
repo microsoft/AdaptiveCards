@@ -8,7 +8,7 @@ import { DropDownItem } from "./dropdown";
 export class PopupMenu extends PopupControl {
     private _items: Collection<DropDownItem> = new Collection<DropDownItem>();
     private _renderedItems: Array<HTMLElement> = [];
-    private _selectedIndex: number = -1;
+    private _selectedIndex: number = 0;
 
     constructor() {
         super();
@@ -42,7 +42,33 @@ export class PopupMenu extends PopupControl {
 
         switch (e.key) {
             case Constants.keys.tab:
-                this.closePopup(true);
+                if (e.shiftKey) {
+                    if (selectedItemIndex <= 0) {
+                        selectedItemIndex = this._renderedItems.length - 1;
+                    }
+                    else {
+                        selectedItemIndex--;
+
+                        if (selectedItemIndex < 0) {
+                            selectedItemIndex = this._renderedItems.length - 1;
+                        }
+                    }
+                }
+                else {
+                    if (selectedItemIndex < 0) {
+                        selectedItemIndex = 0;
+                    }
+                    else {
+                        selectedItemIndex++;
+
+                        if (selectedItemIndex >= this._renderedItems.length) {
+                            selectedItemIndex = 0;
+                        }
+                    }
+                }
+                this.selectedIndex = selectedItemIndex;
+
+                e.cancelBubble = true;
 
                 break;
             /*
@@ -94,6 +120,10 @@ export class PopupMenu extends PopupControl {
 
     get items(): Collection<DropDownItem> {
         return this._items;
+    }
+
+    get renderedItems(): Array<HTMLElement> {
+        return this._renderedItems;
     }
 
     get selectedIndex(): number {
