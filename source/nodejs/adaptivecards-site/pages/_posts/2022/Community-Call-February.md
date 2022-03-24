@@ -11,7 +11,7 @@ The following topics are covered in this month’s community call. Demo: **Adapt
 
 ### Watch the call here
 
-<iframe width="680" height="383" src="https://www.youtube.com/embed/-Y7_nNwC20w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="680" height="383" src="https://www.youtube.com/embed/-Y7_nNwC20w" title="Community Call February 2022 video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Agenda:
 - Adaptive Cards Video Player Bot on Teams - [Alexis Kinzelin](https://www.linkedin.com/in/alexis-kinzelin-214b6b20/) (Microsoft) – [00:28](https://youtu.be/-Y7_nNwC20w?t=28)

@@ -11,7 +11,7 @@ The following topics are covered in this month’s community call. Demo: **Adapt
 
 ### Watch the call here
 
-<iframe width="680" height="383" src="https://www.youtube.com/embed/k5kNBgevDBM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="680" height="383" src="https://www.youtube.com/embed/k5kNBgevDBM" title="Community Call March 2022 video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Agenda:
 - Adaptive Cards Host Control in Microsoft PnP Library – [Fabio Franzini](http://twitter.com/franzinifabio) (Apvee Solutions) | @franzinifabio – [00:38](https://youtu.be/k5kNBgevDBM?t=38)

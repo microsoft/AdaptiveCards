@@ -11,7 +11,7 @@ The following topics are covered in this month’s community call: **Adaptive Ca
 
 ### Watch the call here
 
-<iframe width="680" height="383" src="https://www.youtube.com/embed/1IOr7naHqYA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="680" height="383" src="https://www.youtube.com/embed/1IOr7naHqYA" title="Community Call January 2022 video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Agenda:
 - Adaptive Cards and the Power Platform to solve captchas - [Tomasz Poszytek](http://twitter.com/TomaszPoszytek) (MVP) | – [00:25](https://youtu.be/1IOr7naHqYA?t=25)
