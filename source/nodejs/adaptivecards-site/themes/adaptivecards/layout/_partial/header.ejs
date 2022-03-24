@@ -54,7 +54,7 @@
                                             <a class="c-uhf-nav-link" href="<%- url_for('/') %>" data-m="{&quot;cN&quot;:&quot;CatNav_Home_nav&quot;,&quot;id&quot;:&quot;n1c8c2m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}"><%= site.data.banner.en.home %></a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="c-shellmenu_0" class="c-uhf-nav-link" href="https://docs.microsoft.com/en-us/adaptive-cards"
+                                            <a id="c-shellmenu_0" class="c-uhf-nav-link" style="margin-left:1px;" href="https://docs.microsoft.com/en-us/adaptive-cards"
                                                 data-m="{&quot;cN&quot;:&quot;CatNav_Documentation_nav&quot;,&quot;id&quot;:&quot;n2c8c2m1r1a1&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}"><%= site.data.banner.en.documentation %></a>
                                         </li>
                                         <li class="single-link js-nav-menu">
@@ -425,7 +425,7 @@
 </div>
 
     <% if(!is_current('/') && !page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
-    <div class="content-header uhf-container has-padding" data-bi-name="content-header">
+    <div class="content-header uhf-container has-padding" data-bi-name="content-header" role="complementary">
 		<ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" 
 		 aria-label="Breadcrumb">
             <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
