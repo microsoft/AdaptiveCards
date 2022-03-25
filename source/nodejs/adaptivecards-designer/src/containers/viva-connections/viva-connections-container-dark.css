@@ -25,9 +25,9 @@
   padding: 5px 8px;
   bottom: 12px;
   overflow: hidden;
-  border-color: #696baa;
+  border-color: #7579EB;
   background-color: #1b1a19;
-  color: #6264a7;
+  color: #7F85F5;
 }
 .ac-actionSet .style-default:active:hover {
   background-color: #292827;
@@ -47,15 +47,15 @@
   bottom: 12px;
   overflow: hidden;
   border-color: transparent;
-  background-color: #6264a7;
+  background-color: #7F85F5;
   color: #1b1a19;
 }
 .ac-actionSet .style-positive:active:hover {
-  background-color: #3d3f6c;
+  background-color: #3D3E78;
   color: #1b1a19;
 }
 .ac-actionSet .style-positive:hover {
-  background-color: #585a95;
+  background-color: #2F2F4A;
   color: #1b1a19;
 }
 
@@ -69,9 +69,9 @@
   padding: 5px 8px;
   bottom: 12px;
   overflow: hidden;
-  border-color: #A80000;
+  border-color: #f1707b;
   background-color: #1b1a19;
-  color: #A80000;
+  color: #f1707b;
 }
 .ac-actionSet .style-destructive:active:hover {
   background-color: #292827;
@@ -99,7 +99,7 @@
   width: unset !important;
   height: unset !important;
   border-width: 15px 0 15px 21px !important;
-  color: #6264a7;
+  color: #7F85F5;
 }
 .ac-textBlock *:first-child {
   box-sizing: border-box;
@@ -142,9 +142,9 @@
   font-weight: 700;
 }
 .ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:checked:before, .ac-input.ac-toggleInput input[type=checkbox]:checked:before {
-  background-color: #6264a7;
+  background-color: #7F85F5;
   color: #1b1a19;
-  border-color: #6264a7;
+  border-color: #7F85F5;
 }
 .ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:disabled:before, .ac-input.ac-toggleInput input[type=checkbox]:disabled:before {
   border-color: #484644;
@@ -157,9 +157,9 @@
   color: #faf9f8;
 }
 .ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:hover:checked:before, .ac-input.ac-toggleInput input[type=checkbox]:hover:checked:before {
-  background-color: #3d3f6c;
+  background-color: #C5CBFA;
   color: #1b1a19;
-  border-color: #3d3f6c;
+  border-color: #C5CBFA;
 }
 
 .ac-input.ac-choiceSetInput-expanded > div:not(:last-child) {
@@ -176,7 +176,8 @@
   box-sizing: border-box;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:before {
-  font-size: 16px;
+  content: " ";
+	font-size: 16px;
   border-radius: 50%;
   background-color: #1b1a19;
   height: 20px;
@@ -195,24 +196,27 @@
   border-color: #faf9f8;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:checked:before {
-  background-color: #3d3f6c;
   color: #1b1a19;
-  border-color: #3d3f6c
+  border-color: #C5CBFA
 }
-.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after {
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:hover:after {
   content: " ";
   mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
   -webkit-mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
   display: block;
   position: relative;
   width: 20px;
-  height: 20px
+  height: 20px;
+	top: -20px;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after {
-  background-color: #6264a7;
+  background-color: #7F85F5;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after {
   background-color: #faf9f8;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:hover:after {
+  background-color: inputBackgroundCheckedHovered
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:disabled:checked:after {
   background-color: #484644;
@@ -229,9 +233,10 @@
   border-radius: 2px;
   padding: 0 8px 1px 8px;
   color: #323130;
+	background-color: #1b1a19;
 }
 .ac-input.ac-textInput:focus, .ac-input.ac-dateInput:focus, .ac-input.ac-numberInput:focus, .ac-input.ac-multichoiceInput:focus, .ac-input.ac-timeInput:focus {
-  outline-color: #6264a7;
+  outline-color: #7F85F5;
 }
 .ac-input.ac-textInput::placeholder, .ac-input.ac-dateInput::placeholder, .ac-input.ac-numberInput::placeholder, .ac-input.ac-multichoiceInput::placeholder, .ac-input.ac-timeInput::placeholder {
   color: #a19f9d;
@@ -244,12 +249,15 @@
   background-color: #252423;
   color: #797775;
 }
+.ac-input.ac-dateInput::-webkit-calendar-picker-indicator, .ac-input.ac-timeInput::-webkit-calendar-picker-indicator {
+  filter: invert(95%);
+}
 
 .ac-input.ac-textInput.ac-input-validation-failed, .ac-input.ac-dateInput.ac-input-validation-failed, .ac-input.ac-numberInput.ac-input-validation-failed, .ac-input.ac-multichoiceInput.ac-input-validation-failed, .ac-input.ac-timeInput.ac-input-validation-failed {
-  border-color: #A80000;
+  border-color: #f1707b;
 }
 .ac-input.ac-textInput.ac-input-validation-failed:focus, .ac-input.ac-dateInput.ac-input-validation-failed:focus, .ac-input.ac-numberInput.ac-input-validation-failed:focus, .ac-input.ac-multichoiceInput.ac-input-validation-failed:focus, .ac-input.ac-timeInput.ac-input-validation-failed:focus {
-  outline-color: #A80000;
+  outline-color: #f1707b;
 }
 
 .ac-input.ac-textInput.ac-multiline {
@@ -270,9 +278,9 @@
   padding: 5px 8px;
   bottom: 12px;
   overflow: hidden;
-  border-color: #696baa;
+  border-color: #7579EB;
   background-color: #1b1a19;
-  color: #6264a7;
+  color: #7F85F5;
 }
 .ac-inlineActionButton:active:hover {
   background-color: #292827;
@@ -290,6 +298,15 @@
 }
 .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact option:checked {
   background-color: #252423;
+}
+
+.ac-anchor {
+	color: #7F85F5;
+	text-decoration: none;
+}
+.ac-anchor:hover {
+	color: #C5CBFA;
+	text-decoration: underline;
 }
 
 .vivaConnectionsContainer {
