@@ -154,16 +154,16 @@
 			"backgroundColor": "#393d1b",
 			"foregroundColors": {
 				"default": {
-					"default": "#323130",
-					"subtle": "#8A8886"
+					"default": "#f3f2f1",
+					"subtle": "#a19f9d"
 				},
 				"dark": {
-					"default": "#000000",
-					"subtle": "#605E5C"
+					"default": "#ffffff",
+					"subtle": "#a19f9d"
 				},
 				"light": {
-					"default": "#F3F2F1",
-					"subtle": "#E1DFDD"
+					"default": "#252423",
+					"subtle": "#323130"
 				},
 				"accent": {
 					"default": "#7F85F5",

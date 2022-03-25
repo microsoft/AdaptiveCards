@@ -232,7 +232,7 @@
   border: 1px solid #a19f9d;
   border-radius: 2px;
   padding: 0 8px 1px 8px;
-  color: #323130;
+  color: #f3f2f1;
 	background-color: #1b1a19;
 }
 .ac-input.ac-textInput:focus, .ac-input.ac-dateInput:focus, .ac-input.ac-numberInput:focus, .ac-input.ac-multichoiceInput:focus, .ac-input.ac-timeInput:focus {
