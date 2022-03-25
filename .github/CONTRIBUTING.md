@@ -41,7 +41,7 @@ A bug must have an issue tracking it in the issue tracker that has been approved
 ## Contributing features
 
 Thank you for wanting to contribute to Adaptive Cards. If you are planning to make changes to the Core SDK, please make sure these changes align with our [Core Design Principles](https://docs.microsoft.com/en-us/adaptive-cards/#core-design-principles). Prior to writing any code that affects rendering, please make sure you follow the following steps:
-1.	Open a "Feature Request" issue to start the discussion on the feature you wish to see in the product. Please make sure you search our planned work to see if your feature is already planned. Please make sure you search our [planned work](https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/6-planned) to see if your feature is already planned.
+1.	Open a "Feature Request" issue to start the discussion on the feature you wish to see in the product. Please make sure you search our planned work to see if your feature is already planned. Please make sure you search our [planned work](https://github.com/microsoft/AdaptiveCards/projects/32) to see if your feature is already planned.
 2.	Open a PR with a .MD file to the [following directory](https://github.com/microsoft/AdaptiveCards/tree/main/specs/elements) with a spec that clearly outlines the feature you are implementing. **Include as much detail on the feature as possible**.
     1.	At a bare minimum you must answer the following questions:
         1.	Why do you need this feature and what will the feature do?
