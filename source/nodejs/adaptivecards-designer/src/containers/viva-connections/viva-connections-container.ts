@@ -16,10 +16,6 @@ abstract class VivaConnectionsContainer extends HostContainer {
         hostElement.appendChild(vcContainer);
     }
 
-    // public getHostConfig(): Adaptive.HostConfig {
-    //     return new Adaptive.HostConfig(hostConfig);
-    // }
-
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_3;
     }
@@ -32,9 +28,9 @@ export class VivaConnectionsContainerLight extends VivaConnectionsContainer {
 }
 
 export class VivaConnectionsContainerDark extends VivaConnectionsContainer {
-	// public getBackgroundColor(): string {
-	// 		return "#201E1F";
-	// }
+	public getBackgroundColor(): string {
+			return "#1b1a19";
+	}
 
 	public getHostConfig(): Adaptive.HostConfig {
 			return new Adaptive.HostConfig(hostConfigDark);
