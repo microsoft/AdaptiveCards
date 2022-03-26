@@ -176,6 +176,10 @@ export abstract class CardObject extends SerializableObject {
         return this.contains(node) ? this : undefined;
     }
 
+    releaseDOMResources() {
+        // Do nothing in base implementation
+    }
+
     get parent(): CardObject | undefined {
         return this._parent;
     }
