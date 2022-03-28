@@ -34,7 +34,7 @@ en:
       tag: 
       tag_class: ac-blue
     - title: Roadmap
-      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
+      href: https://github.com/microsoft/AdaptiveCards/projects/32
       fa: far fa-calendar-alt
       tag: 
       tag_class: w3-light-gray
