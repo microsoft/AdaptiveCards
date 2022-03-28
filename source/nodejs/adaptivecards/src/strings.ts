@@ -94,6 +94,9 @@ export class Strings {
         inlineActionTitle: () => "Inline Action",
         overflowButtonText: () => "...",
         mediaPlayerAriaLabel: () => "Media content",
-        mediaPlayerPlayMedia: () => "Play media"
+        mediaPlayerPlayMedia: () => "Play media",
+        youTubeVideoPlayer: () => "YouTube video player",
+        vimeoVideoPlayer: () => "Vimeo video player",
+        dailymotionVideoPlayer: () => "Dailymotion video player"
     };
 }
