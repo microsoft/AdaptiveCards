@@ -21,13 +21,13 @@ abstract class VivaConnectionsContainer extends HostContainer {
     }
 }
 
-export class VivaConnectionsContainerLight extends VivaConnectionsContainer {
+export class LightVivaConnectionsContainer extends VivaConnectionsContainer {
 	public getHostConfig(): Adaptive.HostConfig {
 			return new Adaptive.HostConfig(hostConfigLight);
 	}
 }
 
-export class VivaConnectionsContainerDark extends VivaConnectionsContainer {
+export class DarkVivaConnectionsContainer extends VivaConnectionsContainer {
 	public getBackgroundColor(): string {
 			return "#1b1a19";
 	}
