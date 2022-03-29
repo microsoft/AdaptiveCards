@@ -61,6 +61,11 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
     return m_sources;
 }
 
+std::vector<std::shared_ptr<CaptionSource>>& Media::GetCaptionSources()
+{
+    return m_captionSources;
+}
+
 void Media::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(
@@ -118,6 +123,33 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context,
     }
 
     media->m_sources = std::move(sources);
+
+    //auto captionSources = ParseUtil::GetElementCollectionOfSingleType<CaptionSource>(
+    //    context, json, AdaptiveCardSchemaKey::CaptionSources, CaptionSourceParser::Deserialize, true);
+
+    //std::string captionMimeBaseType;
+    //for (auto captionSource : captionSources)
+    //{
+    //    std::string currentMimeType = captionSource->GetMimeType();
+
+    //    std::string slash("/");
+    //    const size_t slashPosition = currentMimeType.find(slash, 0);
+    //    std::string currentMimeBaseType = currentMimeType.substr(0, slashPosition);
+
+    //    if (captionMimeBaseType.empty())
+    //    {
+    //        captionMimeBaseType = currentMimeBaseType;
+    //    }
+    //    else if (captionMimeBaseType != currentMimeBaseType)
+    //    {
+    //        context.warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(
+    //            AdaptiveCards::WarningStatusCode::InvalidMediaMix,
+    //            "Caption element containing a mix of file types was dropped"));
+    //        return nullptr;
+    //    }
+    //}
+
+    //media->m_captionSources = std::move(captionSources);
 
     return media;
 }
