@@ -13,6 +13,7 @@ $font-family: 'Segoe UI', sans-serif;
 
             &:hover {
                 background-color: $selectable-hover-background !important;
+				cursor: pointer;
             }
 
             &:active {
@@ -165,6 +166,7 @@ $font-family: 'Segoe UI', sans-serif;
             background-color: $hover-background-color;
             color: $hover-color;
             border: $hover-border;
+			cursor: pointer;
         }
 
         &:active {
