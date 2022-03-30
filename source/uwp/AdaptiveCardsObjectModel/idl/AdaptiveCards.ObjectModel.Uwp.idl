@@ -324,6 +324,14 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
     };
 
+    runtimeclass AdaptiveCaptionSource
+    {
+        AdaptiveCaptionSource();
+
+        String MimeType;
+        String Url;
+    };
+
     runtimeclass AdaptiveMediaSource
     {
         AdaptiveMediaSource();
@@ -340,6 +348,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         String AltText;
 
         Windows.Foundation.Collections.IVector<AdaptiveMediaSource> Sources { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveCaptionSource> CaptionSources { get; };
     };
 
     runtimeclass AdaptiveBackgroundImage

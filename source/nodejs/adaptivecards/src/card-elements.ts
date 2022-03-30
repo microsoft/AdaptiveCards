@@ -2476,6 +2476,49 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
+export class CaptionSource extends SerializableObject {
+    //#region Schema
+
+    static readonly mimeTypeProperty = new StringProperty(Versions.v1_1, "mimeType");
+    static readonly urlProperty = new StringProperty(Versions.v1_1, "url");
+
+    @property(CaptionSource.mimeTypeProperty)
+    mimeType?: string;
+
+    @property(CaptionSource.urlProperty)
+    url?: string;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "CaptionSource";
+    }
+
+    constructor(url?: string, mimeType?: string) {
+        super();
+
+        this.url = url;
+        this.mimeType = mimeType;
+    }
+
+    isValid(): boolean {
+        return this.mimeType && this.url ? true : false;
+    }
+
+    render(): HTMLElement | undefined {
+        let result: HTMLTrackElement | undefined = undefined;
+
+        if (this.isValid()) {
+            result = document.createElement("track");
+            result.src = this.url!;
+            result.kind = "captions";
+            result.label = this.mimeType!;
+        }
+
+        return result;
+    }
+}
+
 export class MediaSource extends SerializableObject {
     //#region Schema
 
@@ -2545,10 +2588,12 @@ export abstract class MediaPlayer {
 export class HTML5MediaPlayer extends MediaPlayer {
     private _selectedMediaType?: string;
     private _selectedSources: MediaSource[] = [];
+    private _captionSources: CaptionSource[] = [];
     private _mediaElement?: HTMLMediaElement;
 
     private processSources() {
         this._selectedSources = [];
+        this._captionSources = [];
         this._selectedMediaType = undefined;
 
         for (const source of this.owner.sources) {
@@ -2566,6 +2611,10 @@ export class HTML5MediaPlayer extends MediaPlayer {
                     this._selectedSources.push(source);
                 }
             }
+        }
+
+        for (const captionSource of this.owner.captionSources) {
+            this._captionSources.push(captionSource);
         }
     }
 
@@ -2598,6 +2647,9 @@ export class HTML5MediaPlayer extends MediaPlayer {
         );
         this._mediaElement.setAttribute("webkit-playsinline", "");
         this._mediaElement.setAttribute("playsinline", "");
+        // I had to put this here for testing because the caption file has a different domain as the video and html doesn't like that.
+        // We should probably remove this before merging
+        this._mediaElement.setAttribute("crossorigin", "");
         this._mediaElement.autoplay = true;
         this._mediaElement.controls = true;
 
@@ -2612,6 +2664,12 @@ export class HTML5MediaPlayer extends MediaPlayer {
             const renderedSource = source.render();
 
             Utils.appendChild(this._mediaElement, renderedSource);
+        }
+
+        for (const captionSource of this.owner.captionSources) {
+            const renderedCaptionSource = captionSource.render();
+
+            Utils.appendChild(this._mediaElement, renderedCaptionSource);
         }
 
         return this._mediaElement;
@@ -2774,11 +2832,19 @@ export class Media extends CardElement {
         "sources",
         MediaSource
     );
+    static readonly captionSourcesProperty = new SerializableObjectCollectionProperty(
+        Versions.v1_1,
+        "captionSources",
+        CaptionSource
+    );
     static readonly posterProperty = new StringProperty(Versions.v1_1, "poster");
     static readonly altTextProperty = new StringProperty(Versions.v1_1, "altText");
 
     @property(Media.sourcesProperty)
     sources: MediaSource[] = [];
+
+    @property(Media.captionSourcesProperty)
+    captionSources: CaptionSource[] = [];
 
     @property(Media.posterProperty)
     poster?: string;
@@ -2987,6 +3053,17 @@ export class Media extends CardElement {
                     /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion -- `mediaSource.url` is of type `string | undefined`, but is validated by `isValid()` call */
                     url: mediaSource.url!,
                     mimeType: mediaSource.mimeType!
+                    /* eslint-enable @typescript-eslint/no-unnecessary-type-assertion */
+                });
+            }
+        }
+
+        for (const captionSource of this.captionSources) {
+            if (captionSource.isValid()) {
+                result.push({
+                    /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion -- `captionSource.url` is of type `string | undefined`, but is validated by `isValid()` call */
+                    url: captionSource.url!,
+                    mimeType: captionSource.mimeType!
                     /* eslint-enable @typescript-eslint/no-unnecessary-type-assertion */
                 });
             }

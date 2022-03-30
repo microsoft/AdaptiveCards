@@ -59,12 +59,12 @@ void CaptionSource::GetResourceInformation(std::vector<RemoteResourceInformation
 
 std::shared_ptr<CaptionSource> CaptionSourceParser::Deserialize(ParseContext&, const Json::Value& json)
 {
-    std::shared_ptr<CaptionSource> CaptionSource = std::make_shared<CaptionSource>();
+    std::shared_ptr<CaptionSource> captionSource = std::make_shared<CaptionSource>();
 
-    CaptionSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
-    CaptionSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));
+    captionSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
+    captionSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));
 
-    return CaptionSource;
+    return captionSource;
 }
 
 std::shared_ptr<CaptionSource> CaptionSourceParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
