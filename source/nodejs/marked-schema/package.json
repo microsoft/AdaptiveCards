@@ -15,6 +15,6 @@
 	"private": true,
 	"dependencies": {
 		"json-schema-ref-parser": "^3.3.1",
-		"minimist": "^1.2.5"
+		"minimist": "^1.2.6"
 	}
 }
