@@ -23,6 +23,8 @@
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Media.Core.h>
+#include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Data.Xml.Dom.h>
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
 #include <winrt/Windows.UI.Text.h>

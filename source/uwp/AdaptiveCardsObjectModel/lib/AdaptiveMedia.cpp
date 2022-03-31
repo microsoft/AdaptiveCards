@@ -13,6 +13,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Poster = UTF8ToHString(sharedMedia->GetPoster());
         AltText = UTF8ToHString(sharedMedia->GetAltText());
         Sources = GenerateVectorProjection<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveMediaSource>(sharedMedia->GetSources());
+        CaptionSources = GenerateVectorProjection<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveCaptionSource>(sharedMedia->GetCaptionSources());
         InitializeBaseElement(sharedMedia);
     }
 

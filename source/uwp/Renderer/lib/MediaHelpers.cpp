@@ -182,14 +182,37 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
                                               winrt::AsyncStatus status,
                                               winrt::MediaElement const& mediaElement,
-                                              winrt::hstring const& mimeType)
+                                              winrt::hstring const& mimeType,
+                                              winrt::AdaptiveMedia const& adaptiveMedia,
+                                              winrt::AdaptiveRenderContext const& renderContext)
     {
         if (status == winrt::AsyncStatus::Completed)
         {
             // Get the random access stream
             if (const auto randomAccessStream = operation.GetResults())
             {
-                mediaElement.SetSource(randomAccessStream, mimeType);
+                auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromStream(randomAccessStream, mimeType);
+                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                if (adaptiveMedia.CaptionSources().Size() > 0)
+                {
+                    for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
+                    {
+                        const auto timedTextURL =
+                            GetUrlFromString(renderContext.HostConfig(), adaptiveMedia.CaptionSources().GetAt(i).Url());
+                        const auto timedTextSrc = winrt::Windows::Media::Core::TimedTextSource::CreateFromUri(timedTextURL);
+                        timedTextSrc.Resolved(
+                            [i](winrt::Windows::Media::Core::TimedTextSource sender,
+                                winrt::Windows::Media::Core::TimedTextSourceResolveResultEventArgs args)
+                            {
+                                if (!args.Error())
+                                {
+                                    args.Tracks().GetAt(0).Label(L"Caption track " + std::to_wstring(i + 1));
+                                }
+                            });
+                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                    }
+                }
+                mediaElement.SetPlaybackSource(playbackItem);
             }
         }
     }
@@ -215,7 +238,24 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
             if (resourceResolver == nullptr)
             {
-                mediaElement.Source(mediaSourceUrl);
+                auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromUri(mediaSourceUrl);
+                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                if (adaptiveMedia.CaptionSources().Size() > 0)
+                {
+                    for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
+                    {
+                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), adaptiveMedia.CaptionSources().GetAt(i).Url());
+                        const auto timedTextSrc = winrt::Windows::Media::Core::TimedTextSource::CreateFromUri(timedTextURL);
+                        timedTextSrc.Resolved([i](winrt::Windows::Media::Core::TimedTextSource sender,
+                                                 winrt::Windows::Media::Core::TimedTextSourceResolveResultEventArgs args) {
+                                if (!args.Error()){
+                                    args.Tracks().GetAt(0).Label(L"Caption track " + std::to_wstring(i + 1));
+                                }
+                            });
+                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                    }
+                }
+                mediaElement.SetPlaybackSource(playbackItem);
             }
             else
             {
@@ -224,8 +264,9 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                 auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
 
                 getResourceStreamOperation.Completed(
-                    [mediaElement, mimeType](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation, winrt::AsyncStatus status) -> void
-                    { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType); });
+                    [mediaElement, mimeType, adaptiveMedia, renderContext](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
+                                                                           winrt::AsyncStatus status) -> void
+                    { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType, adaptiveMedia, renderContext); });
             }
 
             mediaElement.MediaOpened(
