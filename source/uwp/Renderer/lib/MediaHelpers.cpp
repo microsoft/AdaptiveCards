@@ -181,7 +181,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
                                               winrt::AsyncStatus status,
-                                              winrt::MediaElement const& mediaElement,
+                                              winrt::MediaPlayerElement const& mediaElement,
                                               winrt::hstring const& mimeType,
                                               winrt::AdaptiveMedia const& adaptiveMedia,
                                               winrt::AdaptiveRenderContext const& renderContext)
@@ -192,7 +192,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             if (const auto randomAccessStream = operation.GetResults())
             {
                 auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromStream(randomAccessStream, mimeType);
-                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
                 if (adaptiveMedia.CaptionSources().Size() > 0)
                 {
                     for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
@@ -212,14 +211,21 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                     }
                 }
-                mediaElement.SetPlaybackSource(playbackItem);
+                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                playbackItem.TimedMetadataTracksChanged(
+                    [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
+                    {
+                        playbackItem.TimedMetadataTracks().SetPresentationMode(
+                            0, winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::PlatformPresented);
+                    });
+                mediaElement.Source(playbackItem);
             }
         }
     }
 
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
-                          winrt::MediaElement const& mediaElement,
+                          winrt::MediaPlayerElement const& mediaElement,
                           winrt::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
@@ -239,7 +245,6 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             if (resourceResolver == nullptr)
             {
                 auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromUri(mediaSourceUrl);
-                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
                 if (adaptiveMedia.CaptionSources().Size() > 0)
                 {
                     for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
@@ -255,7 +260,14 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                     }
                 }
-                mediaElement.SetPlaybackSource(playbackItem);
+                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                playbackItem.TimedMetadataTracksChanged(
+                    [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
+                    {
+                        playbackItem.TimedMetadataTracks().SetPresentationMode(
+                            0, winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::PlatformPresented);
+                    });
+                mediaElement.Source(playbackItem);
             }
             else
             {
@@ -269,21 +281,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                     { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType, adaptiveMedia, renderContext); });
             }
 
-            mediaElement.MediaOpened(
-                [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
+            mediaElement.MediaPlayer().MediaOpened(
+                [](winrt::IInspectable const& sender, winrt::IInspectable const& /*args*/) -> void
                 {
-                    if (const auto mediaElement = sender.try_as<winrt::MediaElement>())
+                    if (const auto mediaPlayer = sender.try_as<winrt::Windows::Media::Playback::MediaPlayer>())
                     {
-                        bool audioOnly = mediaElement.IsAudioOnly();
-                        auto posterSource = mediaElement.PosterSource();
-
-                        if (audioOnly && posterSource == nullptr)
-                        {
-                            // If this is audio only and there's no poster, set the height so
-                            // that the controls are visible.
-                            mediaElement.Height(c_audioHeight);
-                        }
-                        mediaElement.Play();
+                        mediaPlayer.Play();
                     }
                 });
         }
