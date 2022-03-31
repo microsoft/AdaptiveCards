@@ -5176,7 +5176,6 @@ export class ToggleVisibilityAction extends Action {
 
     execute() {
 		super.execute();
-		
         if (this.parent) {
             for (const elementId of Object.keys(this.targetElements)) {
                 const targetElement = this.parent.getRootElement().getElementById(elementId);
