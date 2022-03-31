@@ -247,14 +247,14 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                 auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromUri(mediaSourceUrl);
                 if (adaptiveMedia.CaptionSources().Size() > 0)
                 {
-                    for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
+                    for (const auto captionSource : adaptiveMedia.CaptionSources())
                     {
-                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), adaptiveMedia.CaptionSources().GetAt(i).Url());
+                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
                         const auto timedTextSrc = winrt::Windows::Media::Core::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved([i](winrt::Windows::Media::Core::TimedTextSource sender,
+                        timedTextSrc.Resolved([captionSource](winrt::Windows::Media::Core::TimedTextSource sender,
                                                  winrt::Windows::Media::Core::TimedTextSourceResolveResultEventArgs args) {
                                 if (!args.Error()){
-                                    args.Tracks().GetAt(0).Label(L"Caption track " + std::to_wstring(i + 1));
+                                    args.Tracks().GetAt(0).Label(captionSource.MimeType());
                                 }
                             });
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);

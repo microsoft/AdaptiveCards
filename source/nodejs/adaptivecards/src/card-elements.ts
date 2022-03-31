@@ -2667,9 +2667,11 @@ export class HTML5MediaPlayer extends MediaPlayer {
         }
 
         for (const captionSource of this.owner.captionSources) {
-            const renderedCaptionSource = captionSource.render();
+            if (captionSource.mimeType == "vtt") {
+                const renderedCaptionSource = captionSource.render();
 
-            Utils.appendChild(this._mediaElement, renderedCaptionSource);
+                Utils.appendChild(this._mediaElement, renderedCaptionSource);
+            }
         }
 
         return this._mediaElement;
