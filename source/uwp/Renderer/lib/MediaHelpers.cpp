@@ -191,17 +191,17 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             // Get the random access stream
             if (const auto randomAccessStream = operation.GetResults())
             {
-                auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromStream(randomAccessStream, mimeType);
+                auto mediaSrc = winrt::MediaSource::CreateFromStream(randomAccessStream, mimeType);
                 if (adaptiveMedia.CaptionSources().Size() > 0)
                 {
                     for (uint32_t i = 0; i < adaptiveMedia.CaptionSources().Size(); ++i)
                     {
                         const auto timedTextURL =
                             GetUrlFromString(renderContext.HostConfig(), adaptiveMedia.CaptionSources().GetAt(i).Url());
-                        const auto timedTextSrc = winrt::Windows::Media::Core::TimedTextSource::CreateFromUri(timedTextURL);
+                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
                         timedTextSrc.Resolved(
-                            [i](winrt::Windows::Media::Core::TimedTextSource sender,
-                                winrt::Windows::Media::Core::TimedTextSourceResolveResultEventArgs args)
+                            [i](winrt::TimedTextSource sender,
+                                winrt::TimedTextSourceResolveResultEventArgs args)
                             {
                                 if (!args.Error())
                                 {
@@ -211,12 +211,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                     }
                 }
-                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                auto playbackItem = winrt::MediaPlaybackItem(mediaSrc);
                 playbackItem.TimedMetadataTracksChanged(
                     [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
                     {
                         playbackItem.TimedMetadataTracks().SetPresentationMode(
-                            0, winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::PlatformPresented);
+                            0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
                     });
                 mediaElement.Source(playbackItem);
             }
@@ -244,15 +244,15 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
             if (resourceResolver == nullptr)
             {
-                auto mediaSrc = winrt::Windows::Media::Core::MediaSource::CreateFromUri(mediaSourceUrl);
+                auto mediaSrc = winrt::MediaSource::CreateFromUri(mediaSourceUrl);
                 if (adaptiveMedia.CaptionSources().Size() > 0)
                 {
                     for (const auto captionSource : adaptiveMedia.CaptionSources())
                     {
                         const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-                        const auto timedTextSrc = winrt::Windows::Media::Core::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved([captionSource](winrt::Windows::Media::Core::TimedTextSource sender,
-                                                 winrt::Windows::Media::Core::TimedTextSourceResolveResultEventArgs args) {
+                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                        timedTextSrc.Resolved([captionSource](winrt::TimedTextSource sender,
+                                                              winrt::TimedTextSourceResolveResultEventArgs args) {
                                 if (!args.Error()){
                                     args.Tracks().GetAt(0).Label(captionSource.MimeType());
                                 }
@@ -260,12 +260,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                     }
                 }
-                auto playbackItem = winrt::Windows::Media::Playback::MediaPlaybackItem(mediaSrc);
+                auto playbackItem = winrt::MediaPlaybackItem(mediaSrc);
                 playbackItem.TimedMetadataTracksChanged(
                     [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
                     {
                         playbackItem.TimedMetadataTracks().SetPresentationMode(
-                            0, winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::PlatformPresented);
+                            0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
                     });
                 mediaElement.Source(playbackItem);
             }

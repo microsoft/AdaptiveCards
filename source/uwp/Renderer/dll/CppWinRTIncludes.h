@@ -34,6 +34,8 @@ namespace winrt
 	using namespace ::winrt::Windows::Foundation;
     using namespace ::winrt::Windows::Foundation::Collections;
     using namespace ::winrt::Windows::Foundation::Numerics;
+    using namespace ::winrt::Windows::Media::Core;
+    using namespace ::winrt::Windows::Media::Playback;
     using namespace ::winrt::Windows::Storage::Streams;
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
