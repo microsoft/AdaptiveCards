@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "2.2.23",
+  "version": "2.2.24",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -45,8 +45,7 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-test-renderer": "16.13.1",
-    "rnpm-plugin-windows": "^0.2.11",
-    "react-native-keyboard-aware-scroll-view": "^0.9.5"
+    "rnpm-plugin-windows": "^0.2.11"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^3.0.9",
@@ -55,7 +54,8 @@
     "antlr4ts": "^0.5.0-alpha.3",
     "assert": "^2.0.0",
     "react-native-video": "^4.4.2",
-    "react-native-windows": "0.57.1"
+    "react-native-windows": "0.57.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5"
   },
   "jest": {
     "preset": "react-native",
