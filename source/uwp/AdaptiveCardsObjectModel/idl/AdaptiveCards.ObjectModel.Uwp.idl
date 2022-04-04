@@ -332,6 +332,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
     [default_interface] runtimeclass AdaptiveCaptionSource : IContentSource
     {
         AdaptiveCaptionSource();
+        String Language;
     };
 
     [default_interface] runtimeclass AdaptiveMediaSource : IContentSource

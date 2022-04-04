@@ -2505,7 +2505,7 @@ export abstract class ContentSource extends SerializableObject {
 export class CaptionSource extends ContentSource {
     //#region Schema
 
-    static readonly languageProperty = new StringProperty(Versions.v1_1, "language");
+    static readonly languageProperty = new StringProperty(Versions.v1_1, "lang");
 
     @property(CaptionSource.languageProperty)
     language?: string;
