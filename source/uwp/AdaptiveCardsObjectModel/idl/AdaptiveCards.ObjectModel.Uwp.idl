@@ -324,20 +324,19 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
     };
 
-    runtimeclass AdaptiveCaptionSource
-    {
-        AdaptiveCaptionSource();
-
+    interface IContentSource{
         String MimeType;
         String Url;
     };
 
-    runtimeclass AdaptiveMediaSource
+    [default_interface] runtimeclass AdaptiveCaptionSource : IContentSource
+    {
+        AdaptiveCaptionSource();
+    };
+
+    [default_interface] runtimeclass AdaptiveMediaSource : IContentSource
     {
         AdaptiveMediaSource();
-
-        String MimeType;
-        String Url;
     };
 
     runtimeclass AdaptiveMedia : IAdaptiveCardElement

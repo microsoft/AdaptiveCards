@@ -179,6 +179,37 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         return {mediaSourceUrl, mimeType};
     }
 
+    void SetMediaSourceHelper(winrt::MediaPlayerElement const& mediaElement,
+                              winrt::AdaptiveMedia const& adaptiveMedia,
+                              winrt::AdaptiveRenderContext const& renderContext,
+                              winrt::MediaSource const& mediaSrc)
+    {
+        if (adaptiveMedia.CaptionSources().Size() > 0)
+        {
+            for (const auto captionSource : adaptiveMedia.CaptionSources())
+            {
+                const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
+                const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                timedTextSrc.Resolved(
+                    [captionSource](winrt::TimedTextSource const& /*sender*/, winrt::TimedTextSourceResolveResultEventArgs const& args)
+                    {
+                        if (!args.Error())
+                        {
+                            args.Tracks().GetAt(0).Label(captionSource.MimeType());
+                        }
+                    });
+                mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+            }
+        }
+        winrt::MediaPlaybackItem playbackItem{mediaSrc};
+        playbackItem.TimedMetadataTracksChanged(
+            [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
+            {
+                playbackItem.TimedMetadataTracks().SetPresentationMode(0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
+            });
+        mediaElement.Source(playbackItem);
+    }
+
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
                                               winrt::AsyncStatus status,
                                               winrt::MediaPlayerElement const& mediaElement,
@@ -192,31 +223,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             if (const auto randomAccessStream = operation.GetResults())
             {
                 auto mediaSrc = winrt::MediaSource::CreateFromStream(randomAccessStream, mimeType);
-                if (adaptiveMedia.CaptionSources().Size() > 0)
-                {
-                    for (const auto captionSource : adaptiveMedia.CaptionSources())
-                    {
-                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved(
-                            [captionSource](winrt::TimedTextSource sender, winrt::TimedTextSourceResolveResultEventArgs args)
-                            {
-                                if (!args.Error())
-                                {
-                                    args.Tracks().GetAt(0).Label(captionSource.MimeType());
-                                }
-                            });
-                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
-                    }
-                }
-                auto playbackItem = winrt::MediaPlaybackItem(mediaSrc);
-                playbackItem.TimedMetadataTracksChanged(
-                    [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
-                    {
-                        playbackItem.TimedMetadataTracks().SetPresentationMode(
-                            0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
-                    });
-                mediaElement.Source(playbackItem);
+                SetMediaSourceHelper(mediaElement, adaptiveMedia, renderContext, mediaSrc);
             }
         }
     }
@@ -243,29 +250,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             if (resourceResolver == nullptr)
             {
                 auto mediaSrc = winrt::MediaSource::CreateFromUri(mediaSourceUrl);
-                if (adaptiveMedia.CaptionSources().Size() > 0)
-                {
-                    for (const auto captionSource : adaptiveMedia.CaptionSources())
-                    {
-                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved([captionSource](winrt::TimedTextSource sender,
-                                                              winrt::TimedTextSourceResolveResultEventArgs args) {
-                                if (!args.Error()){
-                                    args.Tracks().GetAt(0).Label(captionSource.MimeType());
-                                }
-                            });
-                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
-                    }
-                }
-                auto playbackItem = winrt::MediaPlaybackItem(mediaSrc);
-                playbackItem.TimedMetadataTracksChanged(
-                    [playbackItem](winrt::IInspectable const& /*sender*/, winrt::IInspectable const& /*args*/)
-                    {
-                        playbackItem.TimedMetadataTracks().SetPresentationMode(
-                            0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
-                    });
-                mediaElement.Source(playbackItem);
+                SetMediaSourceHelper(mediaElement, adaptiveMedia, renderContext, mediaSrc);
             }
             else
             {
@@ -282,7 +267,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             mediaElement.MediaPlayer().MediaOpened(
                 [](winrt::IInspectable const& sender, winrt::IInspectable const& /*args*/) -> void
                 {
-                    if (const auto mediaPlayer = sender.try_as<winrt::Windows::Media::Playback::MediaPlayer>())
+                    if (const auto mediaPlayer = sender.try_as<winrt::MediaPlayer>())
                     {
                         mediaPlayer.Play();
                     }
