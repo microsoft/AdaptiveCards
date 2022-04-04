@@ -2476,23 +2476,19 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class CaptionSource extends SerializableObject {
+export abstract class ContentSource extends SerializableObject {
     //#region Schema
 
     static readonly mimeTypeProperty = new StringProperty(Versions.v1_1, "mimeType");
     static readonly urlProperty = new StringProperty(Versions.v1_1, "url");
 
-    @property(CaptionSource.mimeTypeProperty)
+    @property(ContentSource.mimeTypeProperty)
     mimeType?: string;
 
-    @property(CaptionSource.urlProperty)
+    @property(ContentSource.urlProperty)
     url?: string;
 
     //#endregion
-
-    protected getSchemaKey(): string {
-        return "CaptionSource";
-    }
 
     constructor(url?: string, mimeType?: string) {
         super();
@@ -2503,6 +2499,12 @@ export class CaptionSource extends SerializableObject {
 
     isValid(): boolean {
         return this.mimeType && this.url ? true : false;
+    }
+}
+
+export class CaptionSource extends ContentSource {
+    protected getSchemaKey(): string {
+        return "CaptionSource";
     }
 
     render(): HTMLElement | undefined {
@@ -2519,33 +2521,9 @@ export class CaptionSource extends SerializableObject {
     }
 }
 
-export class MediaSource extends SerializableObject {
-    //#region Schema
-
-    static readonly mimeTypeProperty = new StringProperty(Versions.v1_1, "mimeType");
-    static readonly urlProperty = new StringProperty(Versions.v1_1, "url");
-
-    @property(MediaSource.mimeTypeProperty)
-    mimeType?: string;
-
-    @property(MediaSource.urlProperty)
-    url?: string;
-
-    //#endregion
-
+export class MediaSource extends ContentSource {
     protected getSchemaKey(): string {
         return "MediaSource";
-    }
-
-    constructor(url?: string, mimeType?: string) {
-        super();
-
-        this.url = url;
-        this.mimeType = mimeType;
-    }
-
-    isValid(): boolean {
-        return this.mimeType && this.url ? true : false;
     }
 
     render(): HTMLElement | undefined {
