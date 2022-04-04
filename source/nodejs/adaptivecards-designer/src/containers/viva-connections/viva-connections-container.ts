@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { HostContainer } from "../host-container";
-import * as hostConfig from "../../hostConfigs/viva-connections.json";
+import * as hostConfigLight from "../../hostConfigs/viva-connections-light.json";
+import * as hostConfigDark from "../../hostConfigs/viva-connections-dark.json";
 
-export class VivaConnectionsContainer extends HostContainer {
+abstract class VivaConnectionsContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("vivaConnectionsContainer");
 
@@ -15,11 +16,23 @@ export class VivaConnectionsContainer extends HostContainer {
         hostElement.appendChild(vcContainer);
     }
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfig);
-    }
-
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_3;
     }
+}
+
+export class LightVivaConnectionsContainer extends VivaConnectionsContainer {
+	public getHostConfig(): Adaptive.HostConfig {
+			return new Adaptive.HostConfig(hostConfigLight);
+	}
+}
+
+export class DarkVivaConnectionsContainer extends VivaConnectionsContainer {
+	public getBackgroundColor(): string {
+			return "#1b1a19";
+	}
+
+	public getHostConfig(): Adaptive.HostConfig {
+			return new Adaptive.HostConfig(hostConfigDark);
+	}
 }
