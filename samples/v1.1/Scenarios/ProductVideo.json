@@ -13,6 +13,16 @@
 					"mimeType": "video/mp4",
 					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
 				}
+			],
+			"captionSources": [
+				{
+					"mimeType": "vtt",
+					"url": "https://gist.githubusercontent.com/PankajBhojwani/d11855a1e0c0b1f70a0e64f81a1fb696/raw/46fa93da5c3703d03843d59cedd8b5f10aa3747b/test.vtt"
+				},
+				{
+					"mimeType": "srt",
+					"url": "https://gist.githubusercontent.com/PankajBhojwani/fab75d6493dddd9f5ee964228ca35c71/raw/1706044f46c56216f6a66b8b9e3bb9ecdbf2c56a/zzz.srt"
+				}
 			]
 		}
 	],

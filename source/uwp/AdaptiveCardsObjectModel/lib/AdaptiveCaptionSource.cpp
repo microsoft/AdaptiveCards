@@ -8,11 +8,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveCaptionSource::AdaptiveCaptionSource(const std::shared_ptr<::AdaptiveCards::CaptionSource>& sharedCaptionSource)
     {
-        MimeType = UTF8ToHString(sharedCaptionSource->GetMimeType());
-        Url = UTF8ToHString(sharedCaptionSource->GetUrl());
+        InitializeContentSource(sharedCaptionSource);
     }
 
-    std::shared_ptr<::AdaptiveCards::CaptionSource> AdaptiveCaptionSource::GetSharedModel()
+    std::shared_ptr<::AdaptiveCards::ContentSource> AdaptiveCaptionSource::GetSharedModel()
     {
         auto captionSource = std::make_shared<::AdaptiveCards::CaptionSource>();
         captionSource->SetMimeType(HStringToUTF8(MimeType));
