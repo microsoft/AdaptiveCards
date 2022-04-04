@@ -8,6 +8,7 @@ const double c_playIconCornerRadius = 5;
 const double c_playIconOpacity = .5;
 const double c_audioHeight = 100;
 const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
+const winrt::hstring supportedCaptionTypes[] = {L"vtt", L"srt"};
 
 namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 {
@@ -188,17 +189,26 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         {
             for (const auto captionSource : adaptiveMedia.CaptionSources())
             {
-                const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-                const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                timedTextSrc.Resolved(
-                    [captionSource](winrt::TimedTextSource const& /*sender*/, winrt::TimedTextSourceResolveResultEventArgs const& args)
+                const auto currentCaptionType = captionSource.MimeType();
+                for (uint32_t i = 0; i < std::size(supportedCaptionTypes); i++)
+                {
+                    if (currentCaptionType == supportedCaptionTypes[i])
                     {
-                        if (!args.Error())
-                        {
-                            args.Tracks().GetAt(0).Label(captionSource.Language());
-                        }
-                    });
-                mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
+                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                        timedTextSrc.Resolved(
+                            [captionSource](winrt::TimedTextSource const& /*sender*/,
+                                            winrt::TimedTextSourceResolveResultEventArgs const& args)
+                            {
+                                if (!args.Error())
+                                {
+                                    args.Tracks().GetAt(0).Label(captionSource.Language());
+                                }
+                            });
+                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        break;
+                    }
+                }
             }
         }
         winrt::MediaPlaybackItem playbackItem{mediaSrc};
