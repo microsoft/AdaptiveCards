@@ -7,7 +7,7 @@ const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;
 const double c_playIconOpacity = .5;
 const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
-const winrt::hstring supportedCaptionTypes[] = {L"vtt"};
+const winrt::hstring supportedCaptionTypes[] = {L"vtt", L"srt"};
 
 namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 {
