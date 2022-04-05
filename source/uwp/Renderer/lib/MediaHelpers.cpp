@@ -201,12 +201,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                             resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
                         }
 
-                        const auto timedTextSrcResolvedHelper = [captionSource](winrt::TimedTextSource const& /*sender*/,
-                                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
+                        const auto timedTextSrcResolvedHelper = [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
+                                                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
                                 {
                                     if (!args.Error())
                                     {
-                                        args.Tracks().GetAt(0).Label(captionSource.Label());
+                                        args.Tracks().GetAt(0).Label(label);
                                     }
                                 };
                         if (resourceResolver == nullptr)
@@ -220,7 +220,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                             auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
                             auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
                             getResourceStreamOperation.Completed(
-                                [mediaSrc, captionSource, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
+                                [mediaSrc, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
                                                                                        winrt::AsyncStatus status) -> void
                                 {
                                     if (status == winrt::AsyncStatus::Completed)
