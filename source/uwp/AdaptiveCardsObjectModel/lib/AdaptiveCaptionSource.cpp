@@ -8,7 +8,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveCaptionSource::AdaptiveCaptionSource(const std::shared_ptr<::AdaptiveCards::CaptionSource>& sharedCaptionSource)
     {
-        Language = UTF8ToHString(sharedCaptionSource->GetLanguage());
+        Label = UTF8ToHString(sharedCaptionSource->GetLabel());
         InitializeContentSource(sharedCaptionSource);
     }
 
@@ -17,7 +17,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         auto captionSource = std::make_shared<::AdaptiveCards::CaptionSource>();
         captionSource->SetMimeType(HStringToUTF8(MimeType));
         captionSource->SetUrl(HStringToUTF8(Url));
-        captionSource->SetLanguage(HStringToUTF8(Language));
+        captionSource->SetLabel(HStringToUTF8(Label));
         return captionSource;
     }
 }

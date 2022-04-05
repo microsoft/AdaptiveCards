@@ -2505,10 +2505,10 @@ export abstract class ContentSource extends SerializableObject {
 export class CaptionSource extends ContentSource {
     //#region Schema
 
-    static readonly languageProperty = new StringProperty(Versions.v1_1, "lang");
+    static readonly labelProperty = new StringProperty(Versions.v1_1, "label");
 
-    @property(CaptionSource.languageProperty)
-    language?: string;
+    @property(CaptionSource.labelProperty)
+    label?: string;
 
     //#endregion
 
@@ -2523,7 +2523,7 @@ export class CaptionSource extends ContentSource {
             result = document.createElement("track");
             result.src = this.url!;
             result.kind = "captions";
-            result.label = this.language!;
+            result.label = this.label!;
         }
 
         return result;

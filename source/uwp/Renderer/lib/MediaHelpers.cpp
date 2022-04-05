@@ -201,7 +201,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                             {
                                 if (!args.Error())
                                 {
-                                    args.Tracks().GetAt(0).Label(captionSource.Language());
+                                    args.Tracks().GetAt(0).Label(captionSource.Label());
                                 }
                             });
                         mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);

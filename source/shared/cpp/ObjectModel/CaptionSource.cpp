@@ -5,14 +5,14 @@
 
 using namespace AdaptiveCards;
 
-std::string CaptionSource::GetLanguage() const
+std::string CaptionSource::GetLabel() const
 {
-    return m_language;
+    return m_label;
 }
 
-void CaptionSource::SetLanguage(const std::string& value)
+void CaptionSource::SetLabel(const std::string& value)
 {
-    m_language = value;
+    m_label = value;
 }
 
 std::shared_ptr<CaptionSource> CaptionSourceParser::Deserialize(ParseContext&, const Json::Value& json)
@@ -21,7 +21,7 @@ std::shared_ptr<CaptionSource> CaptionSourceParser::Deserialize(ParseContext&, c
 
     captionSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
     captionSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));
-    captionSource->SetLanguage(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language, false));
+    captionSource->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label, false));
 
     return captionSource;
 }

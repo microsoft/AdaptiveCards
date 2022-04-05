@@ -10,11 +10,11 @@ namespace AdaptiveCards
 class CaptionSource : public ContentSource
 {
 public:
-    std::string GetLanguage() const;
-    void SetLanguage(const std::string& value);
+    std::string GetLabel() const;
+    void SetLabel(const std::string& value);
 
 private:
-    std::string m_language;
+    std::string m_label;
 };
 
 class CaptionSourceParser

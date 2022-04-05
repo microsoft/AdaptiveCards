@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         AdaptiveCaptionSource(std::shared_ptr<::AdaptiveCards::CaptionSource> const& sharedCaptionSource =
                                 std::make_shared<::AdaptiveCards::CaptionSource>());
 
-        property<hstring> Language;
+        property<hstring> Label;
 
         virtual std::shared_ptr<::AdaptiveCards::ContentSource> GetSharedModel() override;
 
