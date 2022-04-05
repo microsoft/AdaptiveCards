@@ -2608,9 +2608,7 @@ export class HTML5MediaPlayer extends MediaPlayer {
             }
         }
 
-        for (const captionSource of this.owner.captionSources) {
-            this._captionSources.push(captionSource);
-        }
+        this._captionSources.push(...this.owner.captionSources);
     }
 
     static readonly supportedMediaTypes = [ "audio", "video" ];
