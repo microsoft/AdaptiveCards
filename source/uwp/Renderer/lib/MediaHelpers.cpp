@@ -189,9 +189,9 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             for (const auto captionSource : adaptiveMedia.CaptionSources())
             {
                 const auto currentCaptionType = captionSource.MimeType();
-                for (uint32_t i = 0; i < std::size(supportedCaptionTypes); i++)
+                for (auto&& supportedCaptionType : supportedCaptionTypes)
                 {
-                    if (currentCaptionType == supportedCaptionTypes[i])
+                    if (currentCaptionType == supportedCaptionType)
                     {
                         const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
 
@@ -201,18 +201,18 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                             resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
                         }
 
-                        if (resourceResolver == nullptr)
-                        {
-                            const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                            timedTextSrc.Resolved(
-                                [captionSource](winrt::TimedTextSource const& /*sender*/,
-                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
+                        const auto timedTextSrcResolvedHelper = [captionSource](winrt::TimedTextSource const& /*sender*/,
+                                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
                                 {
                                     if (!args.Error())
                                     {
                                         args.Tracks().GetAt(0).Label(captionSource.Label());
                                     }
-                                });
+                                };
+                        if (resourceResolver == nullptr)
+                        {
+                            const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
                             mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                         }
                         else
@@ -220,7 +220,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                             auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
                             auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
                             getResourceStreamOperation.Completed(
-                                [mediaSrc, captionSource](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
+                                [mediaSrc, captionSource, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
                                                                                        winrt::AsyncStatus status) -> void
                                 {
                                     if (status == winrt::AsyncStatus::Completed)
@@ -229,15 +229,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                                         if (const auto randomAccessStream = operation.GetResults())
                                         {
                                             auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream);
-                                            timedTextSrc.Resolved(
-                                                [captionSource](winrt::TimedTextSource const& /*sender*/,
-                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
-                                                {
-                                                    if (!args.Error())
-                                                    {
-                                                        args.Tracks().GetAt(0).Label(captionSource.Label());
-                                                    }
-                                                });
+                                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
                                             mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                                         }
                                     }
