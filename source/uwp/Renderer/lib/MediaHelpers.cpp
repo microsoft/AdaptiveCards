@@ -194,17 +194,55 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                     if (currentCaptionType == supportedCaptionTypes[i])
                     {
                         const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved(
-                            [captionSource](winrt::TimedTextSource const& /*sender*/,
-                                            winrt::TimedTextSourceResolveResultEventArgs const& args)
-                            {
-                                if (!args.Error())
+
+                        winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
+                        if (const auto resourceResolvers = renderContext.ResourceResolvers())
+                        {
+                            resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
+                        }
+
+                        if (resourceResolver == nullptr)
+                        {
+                            const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                            timedTextSrc.Resolved(
+                                [captionSource](winrt::TimedTextSource const& /*sender*/,
+                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
                                 {
-                                    args.Tracks().GetAt(0).Label(captionSource.Label());
-                                }
-                            });
-                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                                    if (!args.Error())
+                                    {
+                                        args.Tracks().GetAt(0).Label(captionSource.Label());
+                                    }
+                                });
+                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        }
+                        else
+                        {
+                            auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
+                            auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
+                            getResourceStreamOperation.Completed(
+                                [mediaSrc, captionSource](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
+                                                                                       winrt::AsyncStatus status) -> void
+                                {
+                                    if (status == winrt::AsyncStatus::Completed)
+                                    {
+                                        // Get the random access stream
+                                        if (const auto randomAccessStream = operation.GetResults())
+                                        {
+                                            auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream);
+                                            timedTextSrc.Resolved(
+                                                [captionSource](winrt::TimedTextSource const& /*sender*/,
+                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
+                                                {
+                                                    if (!args.Error())
+                                                    {
+                                                        args.Tracks().GetAt(0).Label(captionSource.Label());
+                                                    }
+                                                });
+                                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                                        }
+                                    }
+                                });
+                        }
                         break;
                     }
                 }
