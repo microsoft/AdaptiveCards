@@ -2505,7 +2505,7 @@ export abstract class ContentSource extends SerializableObject {
 export class CaptionSource extends ContentSource {
     //#region Schema
 
-    static readonly labelProperty = new StringProperty(Versions.v1_1, "label");
+    static readonly labelProperty = new StringProperty(Versions.v1_6, "label");
 
     @property(CaptionSource.labelProperty)
     label?: string;
@@ -2822,7 +2822,7 @@ export class Media extends CardElement {
         MediaSource
     );
     static readonly captionSourcesProperty = new SerializableObjectCollectionProperty(
-        Versions.v1_1,
+        Versions.v1_6,
         "captionSources",
         CaptionSource
     );
