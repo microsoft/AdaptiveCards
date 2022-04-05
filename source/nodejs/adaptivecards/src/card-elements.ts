@@ -2512,6 +2512,14 @@ export class CaptionSource extends ContentSource {
 
     //#endregion
 
+    constructor(url?: string, mimeType?: string, label?:string) {
+        super();
+
+        this.url = url;
+        this.mimeType = mimeType;
+        this.label = label;
+    }
+
     protected getSchemaKey(): string {
         return "CaptionSource";
     }

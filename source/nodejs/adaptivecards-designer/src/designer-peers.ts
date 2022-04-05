@@ -962,6 +962,123 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
     }
 }
 
+class InnerStructPropertyEditor extends PropertySheetEntry {
+    private collectionChanged(context: PropertySheetContext, innerPropertiesList: string[][], refreshPropertySheet: boolean) {
+        context.target[this.collectionPropertyName] = [];
+
+        for (let innerProperties of innerPropertiesList) {
+            let item = this.createCollectionItem(innerProperties);
+
+            context.target[this.collectionPropertyName].push(item);
+        }
+
+        context.peer.changed(refreshPropertySheet);
+    }
+
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let result = new Adaptive.Container();
+
+        let collection = context.target[this.collectionPropertyName];
+
+        if (!Array.isArray(collection)) {
+            throw new Error("The " + this.collectionPropertyName + " property on " + context.peer.getCardObject().getJsonTypeName() + " either doesn't exist or isn't an array.")
+        }
+
+        let innerPropertiesList: string[][] = [];
+
+        for (let innerProperties of collection) {
+            var newItem : string[] = [];
+            for (let i = 0; i < this.innerPropertiesLength; i++)
+            {
+                newItem.push(innerProperties[this.innerPropertiesNames[i]]);
+            }
+            innerPropertiesList.push(newItem);
+        }
+
+        if (innerPropertiesList.length == 0) {
+            let messageTextBlock = new Adaptive.TextBlock();
+            messageTextBlock.spacing = Adaptive.Spacing.Small;
+            messageTextBlock.text = this.messageIfEmpty;
+
+            result.addItem(messageTextBlock);
+        }
+        else {
+            for (let i = 0; i < innerPropertiesList.length; i++) {
+                let columnSet = new Adaptive.ColumnSet();
+                columnSet.spacing = Adaptive.Spacing.Small;
+
+                for (let j = 0; j < this.innerPropertiesLength; j++) {
+                    let textInput = new Adaptive.TextInput();
+                    let currentValue = innerPropertiesList[i][j];
+                    textInput.defaultValue = currentValue;
+                    textInput.placeholder = this.innerPropertiesLabels[j];
+
+                    textInput.onValueChanged = (sender) => {
+                        innerPropertiesList[i][j] = sender.value;
+                        this.collectionChanged(context, innerPropertiesList, false);
+                    };
+
+                    let newColumn = new Adaptive.Column("stretch");
+                    newColumn.addItem(textInput);
+                    columnSet.addColumn(newColumn);
+                }
+
+                let removeAction = new Adaptive.SubmitAction();
+                removeAction.title = "X";
+                removeAction.tooltip = "Remove";
+                removeAction.onExecute = (sender) => {
+                    innerPropertiesList.splice(i, 1);
+
+                    this.collectionChanged(context, innerPropertiesList, true);
+                }
+
+                let actionSet = new Adaptive.ActionSet();
+                actionSet.addAction(removeAction);
+
+                let removeColumn = new Adaptive.Column("auto");
+                removeColumn.spacing = Adaptive.Spacing.Small;
+                removeColumn.addItem(actionSet);
+
+                columnSet.addColumn(removeColumn);
+
+                result.addItem(columnSet);
+            }
+        }
+
+        let addAction = new Adaptive.SubmitAction();
+        addAction.title = this.addButtonTitle;
+        addAction.onExecute = (sender) => {
+            var newItem : string[] = [];
+            for (let i = 0; i < this.innerPropertiesLength; i++)
+            {
+                newItem.push("");
+            }
+            innerPropertiesList.push(newItem);
+            this.collectionChanged(context, innerPropertiesList, true);
+        }
+
+        let actionSet = new Adaptive.ActionSet();
+        actionSet.spacing = Adaptive.Spacing.Small;
+        actionSet.addAction(addAction);
+
+        result.addItem(actionSet);
+
+        return result;
+    }
+
+    constructor(
+        readonly targetVersion: Adaptive.TargetVersion,
+        readonly collectionPropertyName: string,
+        readonly innerPropertiesNames: string[],
+        readonly createCollectionItem: (innerProperties: string[]) => any,
+        readonly innerPropertiesLabels: string[],
+        readonly innerPropertiesLength: number,
+        readonly addButtonTitle: string = "Add",
+        readonly messageIfEmpty: string = "This collection is empty") {
+        super(targetVersion);
+    }
+}
+
 export abstract class DesignerPeer extends DraggableElement {
     static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 
@@ -2424,16 +2541,24 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
     static readonly altTextProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "altText", "Alternate text", true);
     static readonly posterUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "posterUrl", "Poster URL", true);
-    static readonly sourcesProperty = new NameValuePairPropertyEditor(
+    static readonly sourcesProperty = new InnerStructPropertyEditor(
         Adaptive.Versions.v1_1,
         "sources",
-        "url",
-        "mimeType",
-        (name: string, value: string) => { return new Adaptive.MediaSource(name, value); },
-        "URL",
-        "MIME type",
+        ["url", "mimeType"],
+        (innerProperties: string[]) => { return new Adaptive.MediaSource(innerProperties[0], innerProperties[1]); },
+        ["URL", "MIME type"],
+        2,
         "Add a new source",
         "No source has been defined.");
+    static readonly captionSourcesProperty = new InnerStructPropertyEditor(
+        Adaptive.Versions.v1_6,
+        "captionSources",
+        ["url", "mimeType", "label"],
+        (innerProperties: string[]) => { return new Adaptive.CaptionSource(innerProperties[0], innerProperties[1], innerProperties[2]); },
+        ["URL", "MIME type", "Label"],
+        3,
+        "Add a new caption source",
+        "No caption source has been defined.");
 
     protected internalGetTreeItemText(): string {
         if (this.cardElement.selectedMediaType == "audio") {
@@ -2458,6 +2583,10 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
         propertySheet.add(
             "Sources",
             MediaPeer.sourcesProperty);
+
+        propertySheet.add(
+            "captionSources",
+            MediaPeer.captionSourcesProperty);
     }
 }
 
