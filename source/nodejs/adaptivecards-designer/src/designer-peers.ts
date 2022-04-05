@@ -1005,8 +1005,10 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
         else {
             for (let i = 0; i < innerPropertiesList.length; i++) {
                 let columnSet = new Adaptive.ColumnSet();
-                columnSet.spacing = Adaptive.Spacing.Small;
+                columnSet.spacing = Adaptive.Spacing.Medium;
+                columnSet.separator = true;
 
+                let newColumn = new Adaptive.Column("stretch");
                 for (let j = 0; j < this.innerPropertiesLength; j++) {
                     let textInput = new Adaptive.TextInput();
                     let currentValue = innerPropertiesList[i][j];
@@ -1018,10 +1020,10 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
                         this.collectionChanged(context, innerPropertiesList, false);
                     };
 
-                    let newColumn = new Adaptive.Column("stretch");
+                    textInput.spacing = Adaptive.Spacing.Small;
                     newColumn.addItem(textInput);
-                    columnSet.addColumn(newColumn);
                 }
+                columnSet.addColumn(newColumn);
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
@@ -1037,6 +1039,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
 
                 let removeColumn = new Adaptive.Column("auto");
                 removeColumn.spacing = Adaptive.Spacing.Small;
+                removeColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
                 removeColumn.addItem(actionSet);
 
                 columnSet.addColumn(removeColumn);
@@ -2585,7 +2588,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
             MediaPeer.sourcesProperty);
 
         propertySheet.add(
-            "captionSources",
+            "Caption Sources",
             MediaPeer.captionSourcesProperty);
     }
 }
