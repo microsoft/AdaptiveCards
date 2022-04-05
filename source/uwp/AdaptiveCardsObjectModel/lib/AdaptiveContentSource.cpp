@@ -5,7 +5,7 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    void AdaptiveContentSource::InitializeContentSource(const std::shared_ptr<::AdaptiveCards::ContentSource>& sharedContentSource)
+void AdaptiveContentSource::InitializeContentSource(std::shared_ptr<::AdaptiveCards::ContentSource> const& sharedContentSource)
     {
         MimeType = UTF8ToHString(sharedContentSource->GetMimeType());
         Url = UTF8ToHString(sharedContentSource->GetUrl());

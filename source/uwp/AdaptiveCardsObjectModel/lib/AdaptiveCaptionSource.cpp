@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveCaptionSource::AdaptiveCaptionSource(const std::shared_ptr<::AdaptiveCards::CaptionSource>& sharedCaptionSource)
+AdaptiveCaptionSource::AdaptiveCaptionSource(std::shared_ptr<::AdaptiveCards::CaptionSource> const& sharedCaptionSource)
     {
         Label = UTF8ToHString(sharedCaptionSource->GetLabel());
         InitializeContentSource(sharedCaptionSource);
