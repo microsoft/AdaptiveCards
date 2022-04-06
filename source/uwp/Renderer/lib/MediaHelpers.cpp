@@ -216,22 +216,10 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                     else
                     {
                         auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
-                        auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
-                        getResourceStreamOperation.Completed(
-                            [mediaSrc, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
-                                                                   winrt::AsyncStatus status) -> void
-                            {
-                                if (status == winrt::AsyncStatus::Completed)
-                                {
-                                    // Get the random access stream
-                                    if (const auto randomAccessStream = operation.GetResults())
-                                    {
-                                        auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream);
-                                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
-                                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
-                                    }
-                                }
-                            });
+                        const auto randomAccessStream = resourceResolver.GetResourceStreamAsync(args);
+                        auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream.get());
+                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
+                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                     }
                 }
             }
