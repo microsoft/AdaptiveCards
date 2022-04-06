@@ -1,9 +1,10 @@
 {
-	"name": "ui-tests",
+	"name": "@microsoft/ac-ui-tests",
 	"version": "0.1.0",
 	"description": "Builds the ui tests.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"private": true,
 	"main": "index.js",
 	"files": [
 		"src"
