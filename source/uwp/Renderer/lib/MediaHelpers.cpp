@@ -179,7 +179,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         return {mediaSourceUrl, mimeType};
     }
 
-    void SetMediaSourceHelper(winrt::MediaPlayerElement const& mediaElement,
+    void SetMediaSourceHelper(winrt::MediaElement const& mediaElement,
                               winrt::AdaptiveMedia const& adaptiveMedia,
                               winrt::AdaptiveRenderContext const& renderContext,
                               winrt::MediaSource const& mediaSrc)
@@ -246,12 +246,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             {
                 playbackItem.TimedMetadataTracks().SetPresentationMode(0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
             });
-        mediaElement.Source(playbackItem);
+        mediaElement.SetPlaybackSource(playbackItem);
     }
 
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
                                               winrt::AsyncStatus status,
-                                              winrt::MediaPlayerElement const& mediaElement,
+                                              winrt::MediaElement const& mediaElement,
                                               winrt::hstring const& mimeType,
                                               winrt::AdaptiveMedia const& adaptiveMedia,
                                               winrt::AdaptiveRenderContext const& renderContext)
@@ -269,7 +269,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
-                          winrt::MediaPlayerElement const& mediaElement,
+                          winrt::MediaElement const& mediaElement,
                           winrt::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
@@ -303,12 +303,12 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                     { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType, adaptiveMedia, renderContext); });
             }
 
-            mediaElement.MediaPlayer().MediaOpened(
-                [](winrt::IInspectable const& sender, winrt::IInspectable const& /*args*/) -> void
+            mediaElement.MediaOpened(
+                [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
-                    if (const auto mediaPlayer = sender.try_as<winrt::MediaPlayer>())
+                    if (const auto mediaElement = sender.try_as<winrt::MediaElement>())
                     {
-                        mediaPlayer.Play();
+                        mediaElement.Play();
                     }
                 });
         }

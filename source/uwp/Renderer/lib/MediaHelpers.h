@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
-                          winrt::MediaPlayerElement const& mediaElement,
+                          winrt::MediaElement const& mediaElement,
                           winrt::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,

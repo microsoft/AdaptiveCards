@@ -55,12 +55,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::hstring mimeType{};
             winrt::Uri mediaSourceUrl{nullptr};
-            winrt::MediaPlayerElement mediaElement{nullptr};
+            winrt::MediaElement mediaElement{nullptr};
 
             if (allowInlinePlayback)
             {
                 // Create a media element and set it's source
-                mediaElement = winrt::MediaPlayerElement{};
+                mediaElement = winrt::MediaElement{};
 
                 std::tie(mediaSourceUrl, mimeType) = GetMediaSource(hostConfig, adaptiveMedia);
 
