@@ -73,7 +73,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::Peers::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
+    winrt::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
     {
         auto textBlockConfig = renderContext.HostConfig().TextBlock();
 
@@ -81,32 +81,32 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
         case 0:
         case 1:
-            return winrt::Peers::AutomationHeadingLevel::Level1;
+            return winrt::AutomationHeadingLevel::Level1;
             break;
         case 2:
-            return winrt::Peers::AutomationHeadingLevel::Level2;
+            return winrt::AutomationHeadingLevel::Level2;
             break;
         case 3:
-            return winrt::Peers::AutomationHeadingLevel::Level3;
+            return winrt::AutomationHeadingLevel::Level3;
             break;
         case 4:
-            return winrt::Peers::AutomationHeadingLevel::Level4;
+            return winrt::AutomationHeadingLevel::Level4;
             break;
         case 5:
-            return winrt::Peers::AutomationHeadingLevel::Level5;
+            return winrt::AutomationHeadingLevel::Level5;
             break;
         case 6:
-            return winrt::Peers::AutomationHeadingLevel::Level6;
+            return winrt::AutomationHeadingLevel::Level6;
             break;
         case 7:
-            return winrt::Peers::AutomationHeadingLevel::Level7;
+            return winrt::AutomationHeadingLevel::Level7;
             break;
         case 8:
-            return winrt::Peers::AutomationHeadingLevel::Level8;
+            return winrt::AutomationHeadingLevel::Level8;
             break;
         case 9:
         default:
-            return winrt::Peers::AutomationHeadingLevel::Level9;
+            return winrt::AutomationHeadingLevel::Level9;
             break;
         }
     }

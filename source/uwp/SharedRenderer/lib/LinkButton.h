@@ -6,12 +6,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     // LinkButton is a templated button that exists strictly to behave as a button but appear as a link for
     // accessibility purposes.
-    struct LinkButton : public winrt::ButtonT<LinkButton>
+    struct LinkButton : public ::winrt::Windows::UI::Xaml::Controls::ButtonT<LinkButton>
     {
         winrt::AutomationPeer OnCreateAutomationPeer();
     };
 
-    struct LinkButtonAutomationPeer : public winrt::ButtonAutomationPeerT<LinkButtonAutomationPeer>
+    struct LinkButtonAutomationPeer : public ::winrt::Windows::UI::Xaml::Automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
     {
         LinkButtonAutomationPeer(LinkButton& linkButton);
 

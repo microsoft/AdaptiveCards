@@ -106,6 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 renderContext->LinkCardToParent(adaptiveCard, nullptr);
                 auto xamlTreeRoot =
                     ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, *renderContext, m_xamlBuilder.get());
+                xamlTreeRoot.Resources().MergedDictionaries().Append(winrt::XamlControlsResources());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
             }
             catch (...)
@@ -162,6 +163,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
         auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
+        resourceDictionary.MergedDictionaries().Append(winrt::XamlControlsResources());
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
