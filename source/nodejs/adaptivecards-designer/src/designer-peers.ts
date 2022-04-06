@@ -962,8 +962,17 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
     }
 }
 
+type NameAndValue = {
+    name: string,
+    value?: string
+}
+
+type InnerPropertiesDictionary = {
+    [name: string]: NameAndValue
+}
+
 class InnerStructPropertyEditor extends PropertySheetEntry {
-    private collectionChanged(context: PropertySheetContext, innerPropertiesList: string[][], refreshPropertySheet: boolean) {
+    private collectionChanged(context: PropertySheetContext, innerPropertiesList: InnerPropertiesDictionary[], refreshPropertySheet: boolean) {
         context.target[this.collectionPropertyName] = [];
 
         const collectionItems = innerPropertiesList.map(e => this.createCollectionItem(e));
@@ -981,14 +990,11 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
             throw new Error("The " + this.collectionPropertyName + " property on " + context.peer.getCardObject().getJsonTypeName() + " either doesn't exist or isn't an array.")
         }
 
-        let innerPropertiesList: string[][] = [];
+        let innerPropertiesList: InnerPropertiesDictionary[] = [];
 
         for (let innerProperties of collection) {
-            var newItem : string[] = [];
-            for (let i = 0; i < this.innerPropertiesLength; i++)
-            {
-                newItem.push(innerProperties[this.innerPropertiesNames[i]]);
-            }
+            var newItem : InnerPropertiesDictionary = {};
+            Object.keys(this.innerPropertiesDefaults).forEach(key => newItem[key] = { name: this.innerPropertiesDefaults[key].name, value: innerProperties[key]});
             innerPropertiesList.push(newItem);
         }
 
@@ -1006,20 +1012,17 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
                 columnSet.separator = true;
 
                 let newColumn = new Adaptive.Column("stretch");
-                for (let j = 0; j < this.innerPropertiesLength; j++) {
+                Object.keys(innerPropertiesList[i]).forEach(key => {
                     let textInput = new Adaptive.TextInput();
-                    let currentValue = innerPropertiesList[i][j];
-                    textInput.defaultValue = currentValue;
-                    textInput.placeholder = this.innerPropertiesLabels[j];
-
+                    textInput.defaultValue = innerPropertiesList[i][key].value;
+                    textInput.placeholder = innerPropertiesList[i][key].name;
                     textInput.onValueChanged = (sender) => {
-                        innerPropertiesList[i][j] = sender.value;
+                        innerPropertiesList[i][key].value = sender.value;
                         this.collectionChanged(context, innerPropertiesList, false);
-                    };
-
+                    }
                     textInput.spacing = Adaptive.Spacing.Small;
                     newColumn.addItem(textInput);
-                }
+                });
                 columnSet.addColumn(newColumn);
 
                 let removeAction = new Adaptive.SubmitAction();
@@ -1048,12 +1051,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
         let addAction = new Adaptive.SubmitAction();
         addAction.title = this.addButtonTitle;
         addAction.onExecute = (sender) => {
-            var newItem : string[] = [];
-            for (let i = 0; i < this.innerPropertiesLength; i++)
-            {
-                newItem.push("");
-            }
-            innerPropertiesList.push(newItem);
+            innerPropertiesList.push({...this.innerPropertiesDefaults});
             this.collectionChanged(context, innerPropertiesList, true);
         }
 
@@ -1069,10 +1067,8 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
     constructor(
         readonly targetVersion: Adaptive.TargetVersion,
         readonly collectionPropertyName: string,
-        readonly innerPropertiesNames: string[],
-        readonly createCollectionItem: (innerProperties: string[]) => any,
-        readonly innerPropertiesLabels: string[],
-        readonly innerPropertiesLength: number,
+        readonly innerPropertiesDefaults: InnerPropertiesDictionary,
+        readonly createCollectionItem: (innerProperties: InnerPropertiesDictionary) => any,
         readonly addButtonTitle: string = "Add",
         readonly messageIfEmpty: string = "This collection is empty") {
         super(targetVersion);
@@ -2544,19 +2540,15 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
     static readonly sourcesProperty = new InnerStructPropertyEditor(
         Adaptive.Versions.v1_1,
         "sources",
-        ["url", "mimeType"],
-        (innerProperties: string[]) => { return new Adaptive.MediaSource(innerProperties[0], innerProperties[1]); },
-        ["URL", "MIME type"],
-        2,
+        {"url": {name: "URL"}, "mimeType": {name: "MIME Type"}},
+        (innerProperties: InnerPropertiesDictionary) => { return new Adaptive.MediaSource(innerProperties["url"].value, innerProperties["mimeType"].value); },
         "Add a new source",
         "No source has been defined.");
     static readonly captionSourcesProperty = new InnerStructPropertyEditor(
         Adaptive.Versions.v1_6,
         "captionSources",
-        ["url", "mimeType", "label"],
-        (innerProperties: string[]) => { return new Adaptive.CaptionSource(innerProperties[0], innerProperties[1], innerProperties[2]); },
-        ["URL", "MIME type", "Label"],
-        3,
+        {"url": {name: "URL"}, "mimeType": {name: "MIME Type"}, "label": {name: "Label"}},
+        (innerProperties: InnerPropertiesDictionary) => { return new Adaptive.CaptionSource(innerProperties["url"].value, innerProperties["mimeType"].value, innerProperties["label"].value); },
         "Add a new caption source",
         "No caption source has been defined.");
 
