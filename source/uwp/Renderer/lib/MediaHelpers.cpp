@@ -7,7 +7,7 @@ const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;
 const double c_playIconOpacity = .5;
 const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
-const winrt::hstring supportedCaptionTypes[] = {L"vtt", L"srt"};
+const std::unordered_set<winrt::hstring> supportedCaptionTypes = {L"vtt", L"srt"};
 
 namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 {
@@ -188,54 +188,50 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
         {
             for (const auto captionSource : adaptiveMedia.CaptionSources())
             {
-                const auto currentCaptionType = captionSource.MimeType();
-                for (auto&& supportedCaptionType : supportedCaptionTypes)
+                if (const auto search = supportedCaptionTypes.find(captionSource.MimeType());
+                    search != supportedCaptionTypes.end())
                 {
-                    if (currentCaptionType == supportedCaptionType)
+                    const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
+
+                    winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
+                    if (const auto resourceResolvers = renderContext.ResourceResolvers())
                     {
-                        const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
+                        resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
+                    }
 
-                        winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
-                        if (const auto resourceResolvers = renderContext.ResourceResolvers())
-                        {
-                            resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
-                        }
-
-                        const auto timedTextSrcResolvedHelper = [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
-                                                                                                winrt::TimedTextSourceResolveResultEventArgs const& args)
+                    const auto timedTextSrcResolvedHelper = [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
+                                                                                            winrt::TimedTextSourceResolveResultEventArgs const& args)
+                            {
+                                if (!args.Error())
                                 {
-                                    if (!args.Error())
-                                    {
-                                        args.Tracks().GetAt(0).Label(label);
-                                    }
-                                };
-                        if (resourceResolver == nullptr)
-                        {
-                            const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
-                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
-                        }
-                        else
-                        {
-                            auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
-                            auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
-                            getResourceStreamOperation.Completed(
-                                [mediaSrc, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
-                                                                                       winrt::AsyncStatus status) -> void
+                                    args.Tracks().GetAt(0).Label(label);
+                                }
+                            };
+                    if (!resourceResolver)
+                    {
+                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
+                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                    }
+                    else
+                    {
+                        auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
+                        auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
+                        getResourceStreamOperation.Completed(
+                            [mediaSrc, timedTextSrcResolvedHelper](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
+                                                                   winrt::AsyncStatus status) -> void
+                            {
+                                if (status == winrt::AsyncStatus::Completed)
                                 {
-                                    if (status == winrt::AsyncStatus::Completed)
+                                    // Get the random access stream
+                                    if (const auto randomAccessStream = operation.GetResults())
                                     {
-                                        // Get the random access stream
-                                        if (const auto randomAccessStream = operation.GetResults())
-                                        {
-                                            auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream);
-                                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
-                                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
-                                        }
+                                        auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream);
+                                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
+                                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                                     }
-                                });
-                        }
-                        break;
+                                }
+                            });
                     }
                 }
             }

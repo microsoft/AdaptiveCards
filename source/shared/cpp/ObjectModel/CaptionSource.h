@@ -10,6 +10,8 @@ namespace AdaptiveCards
 class CaptionSource : public ContentSource
 {
 public:
+    Json::Value SerializeToJsonValue() const override;
+
     std::string GetLabel() const;
     void SetLabel(const std::string& value);
 

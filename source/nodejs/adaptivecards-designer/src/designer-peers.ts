@@ -966,11 +966,8 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
     private collectionChanged(context: PropertySheetContext, innerPropertiesList: string[][], refreshPropertySheet: boolean) {
         context.target[this.collectionPropertyName] = [];
 
-        for (let innerProperties of innerPropertiesList) {
-            let item = this.createCollectionItem(innerProperties);
-
-            context.target[this.collectionPropertyName].push(item);
-        }
+        const collectionItems = innerPropertiesList.map(e => this.createCollectionItem(e));
+        context.target[this.collectionPropertyName].push(...collectionItems);
 
         context.peer.changed(refreshPropertySheet);
     }

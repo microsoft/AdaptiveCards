@@ -5,6 +5,17 @@
 
 using namespace AdaptiveCards;
 
+Json::Value CaptionSource::SerializeToJsonValue() const
+{
+    auto root = ContentSource::SerializeToJsonValue();
+    if (!m_label.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Label)] = m_label;
+    }
+
+    return root;
+}
+
 std::string CaptionSource::GetLabel() const
 {
     return m_label;
