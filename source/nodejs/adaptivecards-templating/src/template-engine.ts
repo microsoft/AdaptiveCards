@@ -118,10 +118,10 @@ export interface IEvaluationContext {
      * The root data object the template will bind to. Expressions that refer to $root in the template payload
      * map to this field. Initially, $data also maps to $root.
      */
-    $root: any;
+    $root?: any;
     /**
      * The host data object the template will bind to. Expressions that refer to $host in the template payload
-     * map to this field.
+     * map to this field. This allows a host process to supply additional context to the template.
      */
     $host?: any;
 }
