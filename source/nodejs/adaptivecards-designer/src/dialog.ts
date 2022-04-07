@@ -168,7 +168,7 @@ export abstract class Dialog {
                 this.onClose(this);
             }
             // Removing the focus action on close, it has been handled via onClose method of Dialog consume place.
-            // this._originalFocusedElement.focus();
+            this._originalFocusedElement.focus();
             this._originalFocusedElement = null;
         }
     }
