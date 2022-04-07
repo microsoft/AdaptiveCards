@@ -30,16 +30,10 @@ describe("Test Templating Library", () => {
 				}
 			]
 		};
-		
-		let template = new ACData.Template(templatePayload);
-		
-		let context: ACData.IEvaluationContext = {
-			$root: {
-				"name": "Adaptive Cards"
-			}
-		};
-		
-		let card = template.expand(context);
+				
+		const root = {
+			"name": "Adaptive Cards"
+		};		
 
 		const expectedOutput = {
 			"type": "AdaptiveCard",
@@ -50,9 +44,9 @@ describe("Test Templating Library", () => {
 					"text": "Hello Adaptive Cards!" 
 				} 
 			]
-		}
+		};
 
-		expect(card).toStrictEqual(expectedOutput);
+		runTest(templatePayload, root, expectedOutput);
 	})
 
 	it("BasicTemplateWithHost", () => {
@@ -66,20 +60,14 @@ describe("Test Templating Library", () => {
 				}
 			]
 		};
-		
-		let template = new ACData.Template(templatePayload);
-		
-		let context: ACData.IEvaluationContext = {
-			$root: {
-				"name": "Adaptive Cards"
-			},
-			$host: {
-				"WindowsTheme": "Light"
-			}
+				
+		const root = {
+			"name": "Adaptive Cards"
 		};
+		const host = {
+			"WindowsTheme": "Light"
+		}
 		
-		let card = template.expand(context);
-
 		const expectedOutput = {
 			"type": "AdaptiveCard",
 			"version": "1.0",
@@ -91,49 +79,37 @@ describe("Test Templating Library", () => {
 			]
 		};
 
-		expect(card).toStrictEqual(expectedOutput);
+		runTest(templatePayload, root, expectedOutput, host);
 	});
 
 	it("ComplexTemplate", () => {
-		const templateObject = fs.readFileSync("template-test-resources/complex-template.json", "utf8");
-		const dataObject = fs.readFileSync("template-test-resources/complex-template.data.json", "utf8");
-		const outputObject = fs.readFileSync("template-test-resources/complex-template.output.json", "utf8");
-
-		const templatePayload = JSON.parse(templateObject);
-		const inputData = JSON.parse(dataObject);
-		const expectedOutput = JSON.parse(outputObject);
-
-		let template = new ACData.Template(templatePayload);
-
-		let context = {
-			$root: inputData
-		};
-
-		let card = template.expand(context);
-
-		expect(card).toStrictEqual(expectedOutput);
+		runTest(loadFile("template-test-resources/complex-template.json"),
+			loadFile("template-test-resources/complex-template.data.json"),
+			loadFile("template-test-resources/complex-template.output.json"));
 	});
 
 	it("ComplexTemplateWithHost", () => {
-		const templateObject = fs.readFileSync("template-test-resources/complex-template-host.json", "utf8");
-		const dataObject = fs.readFileSync("template-test-resources/complex-template-host.data.json", "utf8");
-		const hostObject = fs.readFileSync("template-test-resources/complex-template-host.host.json", "utf8");
-		const outputObject = fs.readFileSync("template-test-resources/complex-template-host.output.json", "utf8");
-
-		const templatePayload = JSON.parse(templateObject);
-		const inputData = JSON.parse(dataObject);
-		const inputHostData = JSON.parse(hostObject);
-		const expectedOutput = JSON.parse(outputObject);
-
-		let template = new ACData.Template(templatePayload);
-
-		let context = {
-			$root: inputData,
-			$host: inputHostData
-		}
-
-		let card = template.expand(context);
-
-		expect(card).toStrictEqual(expectedOutput);
+		runTest(loadFile("template-test-resources/complex-template-host.json"),
+			loadFile("template-test-resources/complex-template-host.data.json"),
+			loadFile("template-test-resources/complex-template-host.output.json"),
+			loadFile("template-test-resources/complex-template-host.host.json"));
 	});
 });
+
+function runTest(templatePayload: any, data: any, expectedOutput: any, host?: any) {
+	let template = new ACData.Template(templatePayload);
+
+	let context = {
+		$root: data,
+		$host: host
+	};
+
+	let card = template.expand(context);
+
+	expect(card).toStrictEqual(expectedOutput);
+}
+
+function loadFile(filePath: string) {
+	const dataObject = fs.readFileSync(filePath, "utf8");
+	return JSON.parse(dataObject);
+}
