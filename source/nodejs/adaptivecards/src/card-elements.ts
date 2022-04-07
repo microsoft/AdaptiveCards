@@ -2640,8 +2640,9 @@ export class HTML5MediaPlayer extends MediaPlayer {
         );
         this._mediaElement.setAttribute("webkit-playsinline", "");
         this._mediaElement.setAttribute("playsinline", "");
-        // I had to put this here for testing because the caption file has a different domain as the video and html doesn't like that.
-        // We should probably remove this before merging
+        // We enable crossorigin for cases where the caption file has a different domain than
+        // the video file. If the caption file lives in a different domain than the video file
+        // and crossorigin is not set, then the caption file will fail to load.
         this._mediaElement.setAttribute("crossorigin", "");
         this._mediaElement.autoplay = true;
         this._mediaElement.controls = true;
