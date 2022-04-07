@@ -12,7 +12,5 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         property<hstring> MimeType;
         property<hstring> Url;
-
-        virtual std::shared_ptr<::AdaptiveCards::ContentSource> GetSharedModel() = 0;
     };
 }

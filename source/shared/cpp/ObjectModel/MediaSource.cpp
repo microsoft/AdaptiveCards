@@ -5,12 +5,9 @@
 
 using namespace AdaptiveCards;
 
-std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<MediaSource> mediaSource = std::make_shared<MediaSource>();
-
-    mediaSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
-    mediaSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));
+    std::shared_ptr<MediaSource> mediaSource = ContentSource::Deserialize<MediaSource>(context, json);
 
     return mediaSource;
 }

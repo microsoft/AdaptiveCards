@@ -26,12 +26,10 @@ void CaptionSource::SetLabel(const std::string& value)
     m_label = value;
 }
 
-std::shared_ptr<CaptionSource> CaptionSourceParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<CaptionSource> CaptionSourceParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<CaptionSource> captionSource = std::make_shared<CaptionSource>();
+    std::shared_ptr<CaptionSource> captionSource = ContentSource::Deserialize<CaptionSource>(context, json);
 
-    captionSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
-    captionSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));
     captionSource->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label, false));
 
     return captionSource;

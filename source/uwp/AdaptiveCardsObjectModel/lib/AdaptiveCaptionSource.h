@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         property<hstring> Label;
 
-        virtual std::shared_ptr<::AdaptiveCards::ContentSource> GetSharedModel() override;
+        virtual std::shared_ptr<::AdaptiveCards::CaptionSource> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
