@@ -286,6 +286,7 @@ a.ac-anchor:hover {
 .ac-columnSet.ac-selectable {
     background-blend-mode: lighten;
     background-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
 }
 
 .ac-container.ac-selectable:active,
