@@ -3,168 +3,130 @@
 #include "pch.h"
 
 #include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveColumnRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                           _In_ IAdaptiveRenderContext* renderContext,
-                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                           _COM_Outptr_ IUIElement** ColumnControl) noexcept
-    try
+    winrt::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                    winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveColumn> adaptiveColumn;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveColumn));
-
-        ComPtr<IBorder> columnBorder =
-            XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-
-        ComPtr<WholeItemsPanel> columnPanel;
-        RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
-
-        ComPtr<IUIElement> columnPanelAsUIElement;
-        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsUIElement));
-
-        RETURN_IF_FAILED(columnBorder->put_Child(columnPanelAsUIElement.Get()));
-
-        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
-        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
-
-        ComPtr<IReference<bool>> previousContextRtl;
-        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
-        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
-
-        ComPtr<IReference<bool>> containerRtl;
-        RETURN_IF_FAILED(adaptiveColumn->get_Rtl(&containerRtl));
-
-        bool updatedRtl = false;
-        if (containerRtl != nullptr)
+        try
         {
-            currentRtl = containerRtl;
-            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
-            updatedRtl = true;
-        }
+            auto adaptiveColumn = cardElement.as<winrt::AdaptiveColumn>();
 
-        if (currentRtl)
+            winrt::Border columnBorder{};
+
+            auto columnPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
+
+            columnBorder.Child(columnPanel);
+
+            auto previousContextRtl = renderContext.Rtl();
+            auto currentRtl = previousContextRtl;
+            auto containerRtl = adaptiveColumn.Rtl();
+
+            bool updatedRtl = false;
+
+            if (containerRtl)
+            {
+                currentRtl = containerRtl;
+                renderContext.Rtl(currentRtl);
+                updatedRtl = true;
+            }
+
+            if (currentRtl)
+            {
+                columnPanel.FlowDirection(currentRtl.Value() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+            }
+
+            winrt::ContainerStyle containerStyle =
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumn, columnBorder, renderContext, renderArgs);
+
+            auto parentElement = renderArgs.ParentElement();
+
+            auto newRenderArgs = winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
+
+            auto childItems = adaptiveColumn.Items();
+
+            ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
+                childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
+
+            // If we changed the context's rtl setting, set it back after rendering the children
+            if (updatedRtl)
+            {
+                renderContext.Rtl(previousContextRtl);
+            }
+
+            auto verticalContentAlignmentReference = adaptiveColumn.VerticalContentAlignment();
+
+            winrt::VerticalContentAlignment verticalContentAlignment =
+                GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
+
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel, verticalContentAlignment);
+
+            // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
+            columnPanel.VerticalAlignment(winrt::VerticalAlignment::Stretch);
+
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanel);
+
+            uint32_t columnMinHeight = adaptiveColumn.MinHeight();
+
+            if (columnMinHeight > 0)
+            {
+                columnPanel.MinHeight(columnMinHeight);
+            }
+
+            auto selectAction = adaptiveColumn.SelectAction();
+
+            // Define column As UIElement based on the existence of a backgroundImage
+            winrt::UIElement columnAsUIElement{nullptr};
+
+            auto backgroundImage = adaptiveColumn.BackgroundImage();
+
+            if (IsBackgroundImageValid(backgroundImage))
+            {
+                winrt::Grid rootElement{};
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
+
+                auto columnHeightType = cardElement.Height();
+
+                // Add columnBorder to rootElement
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(columnBorder, rootElement, columnHeightType);
+
+                columnAsUIElement = rootElement;
+            }
+            else
+            {
+                columnAsUIElement = columnBorder;
+            }
+
+            auto hostConfig = renderContext.HostConfig();
+
+            auto columnControl = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleSelectAction(
+                cardElement,
+                selectAction,
+                renderContext,
+                columnAsUIElement,
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
+                false);
+
+            return columnControl;
+        }
+        catch (winrt::hresult_error const& ex)
         {
-            boolean rtlValue;
-            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+            // In case we need to perform fallback, propagate it up to the parent
+            if (ex.code() == E_PERFORM_FALLBACK)
+            {
+                throw ex;
+            }
 
-            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
-                                                                                         FlowDirection_LeftToRight));
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                             cardElement.ElementTypeString(),
+                                                                             ex.message());
+            return nullptr;
         }
-
-        ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
-        RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
-
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
-        RETURN_IF_FAILED(
-            XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
-
-        ComPtr<IFrameworkElement> parentElement;
-        RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
-
-        ComPtr<IPanel> columnAsPanel;
-        THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
-
-        ComPtr<IVector<IAdaptiveCardElement*>> childItems;
-        RETURN_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
-            childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
-
-        // If we changed the context's rtl setting, set it back after rendering the children
-        if (updatedRtl)
-        {
-            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
-        }
-
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
-        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
-
-        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Top;
-        if (verticalContentAlignmentReference != nullptr)
-        {
-            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
-        }
-
-        XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
-
-        // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-        RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
-
-        RETURN_IF_FAILED(
-            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
-
-        UINT32 columnMinHeight{};
-        RETURN_IF_FAILED(columnAsContainerBase->get_MinHeight(&columnMinHeight));
-        if (columnMinHeight > 0)
-        {
-            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_MinHeight(columnMinHeight));
-        }
-
-        ComPtr<IAdaptiveActionElement> selectAction;
-        RETURN_IF_FAILED(columnAsContainerBase->get_SelectAction(&selectAction));
-
-        // Define columnAsUIElement based on the existence of a backgroundImage
-        ComPtr<IUIElement> columnAsUIElement;
-        ComPtr<IAdaptiveBackgroundImage> backgroundImage;
-        BOOL backgroundImageIsValid;
-        RETURN_IF_FAILED(adaptiveColumn->get_BackgroundImage(&backgroundImage));
-        RETURN_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
-        if (backgroundImageIsValid)
-        {
-            ComPtr<IGrid> rootElement =
-                XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-            ComPtr<IPanel> rootAsPanel;
-            RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
-
-            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
-
-            // get HeightType for column
-            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnHeightType{};
-            RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
-
-            // Add columnBorder to rootElement
-            ComPtr<IFrameworkElement> columnBorderAsFElement;
-            RETURN_IF_FAILED(columnBorder.As(&columnBorderAsFElement));
-            XamlHelpers::AppendXamlElementToPanel(columnBorderAsFElement.Get(), rootAsPanel.Get(), columnHeightType);
-
-            RETURN_IF_FAILED(rootElement.As(&columnAsUIElement));
-        }
-        else
-        {
-            RETURN_IF_FAILED(columnBorder.As(&columnAsUIElement));
-        }
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        ActionHelpers::HandleSelectAction(adaptiveCardElement,
-                                          selectAction.Get(),
-                                          renderContext,
-                                          columnAsUIElement.Get(),
-                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                          false,
-                                          ColumnControl);
-        return S_OK;
     }
-    CATCH_RETURN;
 }

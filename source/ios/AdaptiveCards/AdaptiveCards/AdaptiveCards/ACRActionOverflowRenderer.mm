@@ -57,8 +57,8 @@
         BOOL shouldRender = YES;
         if ([rootView.acrActionDelegate
                 respondsToSelector:@selector(onRenderOverflowAction:
-                                             forTarget:
-                                             isAtRootLevelActions:)]) {
+                                                          forTarget:
+                                                          isAtRootLevelActions:)]) {
 
             BOOL isAtRootLevelActions = ((ACOActionOverflow *)acoElem).isAtRootLevel;
 

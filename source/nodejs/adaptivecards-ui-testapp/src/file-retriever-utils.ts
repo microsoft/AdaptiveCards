@@ -1,15 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-const v10TestCases: string[] = ['Scenarios/ActivityUpdate'];
+const v10TestCases: string[] = [
+    'Scenarios/ActivityUpdate', 
+    'Elements/Container.SelectAction',
+    'Elements/Column.SelectAction',
+    'Elements/ColumnSet.SelectAction',
+    'Elements/Image.SelectAction',
+    'Elements/Action.ShowCard'];
 const v11TestCases: string[] = [];
 const v12TestCases: string[] = [];
-const v13TestCases: string[] = ['Elements/Input.Text.ErrorMessage'];
+const v13TestCases: string[] = [
+    'Elements/Input.Text.ErrorMessage', 
+    'Elements/Input.Number.ErrorMessage',
+    'Elements/Input.ChoiceSet.ErrorMessage',
+    'Elements/Input.Time.ErrorMessage',
+    'Elements/Input.Toggle.ErrorMessage'
+];
 const v14TestCases: string[] = [];
 const v15TestCases: string[] = [];
 const v16TestCases: string[] = [
     'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
     'Elements/Carousel.ScenarioCards.Timer', 'Tests/Carousel.HostConfig',
-    'Tests/Carousel.ForbiddenElements', 'Tests/Carousel.ForbiddenActions'
+    'Tests/Carousel.ForbiddenElements', 'Tests/Carousel.ForbiddenActions',
+    'Tests/Carousel.rtl'
 ];
 
 function fixTestCases(list: string[], versionNumber: string) {

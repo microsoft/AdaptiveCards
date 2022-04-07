@@ -1,0 +1,319 @@
+@font-face {
+  font-family: 'Fluent MDL2 Hybrid Icons';
+  src: url('data:application/octet-stream;base64,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') format('truetype');
+}
+
+/* base */
+.ac-actionSet {
+  flex-direction: column !important;
+}
+
+.ac-actionSet .ac-pushButton {
+  height: 32px;
+}
+.ac-actionSet .ac-pushButton:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.ac-actionSet .style-default {
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2rem;
+  cursor: pointer;
+  padding: 5px 8px;
+  bottom: 12px;
+  overflow: hidden;
+  border-color: #7579EB;
+  background-color: #1b1a19;
+  color: #7F85F5;
+}
+.ac-actionSet .style-default:active:hover {
+  background-color: #292827;
+}
+.ac-actionSet .style-default:hover {
+  background-color: #252423;
+}
+
+.ac-actionSet .style-positive {
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2rem;
+  cursor: pointer;
+  padding: 5px 8px;
+  bottom: 12px;
+  overflow: hidden;
+  border-color: transparent;
+  background-color: #7F85F5;
+  color: #1b1a19;
+}
+.ac-actionSet .style-positive:active:hover {
+  background-color: #3D3E78;
+  color: #1b1a19;
+}
+.ac-actionSet .style-positive:hover {
+  background-color: #2F2F4A;
+  color: #1b1a19;
+}
+
+.ac-actionSet .style-destructive {
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2rem;
+  cursor: pointer;
+  padding: 5px 8px;
+  bottom: 12px;
+  overflow: hidden;
+  border-color: #f1707b;
+  background-color: #1b1a19;
+  color: #f1707b;
+}
+.ac-actionSet .style-destructive:active:hover {
+  background-color: #292827;
+}
+.ac-actionSet .style-destructive:hover {
+  background-color: #252423;
+}
+
+.ac-adaptiveCard {
+  background-color: unset !important;
+}
+
+/* quickLookCard */
+.ac-container {
+  border: none !important;
+}
+.ac-image.ac-selectable, .ac-container.ac-selectable, .ac-columnSet.ac-selectable {
+  cursor: pointer;
+}
+.ac-container iframe {
+  border: none;
+}
+
+:global(.ac-media-playButton-arrow) {
+  width: unset !important;
+  height: unset !important;
+  border-width: 15px 0 15px 21px !important;
+  color: #7F85F5;
+}
+.ac-textBlock *:first-child {
+  box-sizing: border-box;
+}
+
+/* inserted by getStyledControlsForQuickView */
+.ac-input.ac-choiceSetInput-multiSelect > div:not(:last-child) {
+  margin-bottom: 8px;
+}
+.ac-input.ac-choiceSetInput-multiSelect > div {
+  min-height: 20px;
+  align-items: flex-start !important;
+}
+.ac-input.ac-toggleInput {
+  min-height: 20px;
+  align-items: flex-start !important;
+}
+
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox], .ac-input.ac-toggleInput input[type=checkbox] {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:before, .ac-input.ac-toggleInput input[type=checkbox]:before {
+  content: "\E73E";
+  font-family: 'Fluent MDL2 Hybrid Icons';
+  font-size: 16px;
+  border-radius: 2px;
+  color: transparent;
+  background: #1b1a19;
+  height: 20px;
+  width: 20px;
+  box-sizing: border-box;
+  border: 1px solid #a19f9d;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:checked:before, .ac-input.ac-toggleInput input[type=checkbox]:checked:before {
+  background-color: #7F85F5;
+  color: #1b1a19;
+  border-color: #7F85F5;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:disabled:before, .ac-input.ac-toggleInput input[type=checkbox]:disabled:before {
+  border-color: #484644;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:disabled:checked:before, .ac-input.ac-toggleInput input[type=checkbox]:disabled:checked:before {
+  background-color: #484644;
+  border-color: #484644;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:hover:before, .ac-input.ac-toggleInput input[type=checkbox]:hover:before {
+  color: #faf9f8;
+}
+.ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:hover:checked:before, .ac-input.ac-toggleInput input[type=checkbox]:hover:checked:before {
+  background-color: #C5CBFA;
+  color: #1b1a19;
+  border-color: #C5CBFA;
+}
+
+.ac-input.ac-choiceSetInput-expanded > div:not(:last-child) {
+  margin-bottom: 8px;
+}
+.ac-input.ac-choiceSetInput-expanded > div {
+  min-height: 20px;
+  align-items: flex-start !important;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio] {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:before {
+  content: " ";
+	font-size: 16px;
+  border-radius: 50%;
+  background-color: #1b1a19;
+  height: 20px;
+  width: 20px;
+  box-sizing: border-box;
+  border: 1px solid #a19f9d;
+  display: block;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:disabled:before {
+  border-color: #484644;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:disabled:checked:before {
+  border-color: #484644;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:before {
+  border-color: #faf9f8;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:checked:before {
+  color: #1b1a19;
+  border-color: #C5CBFA
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:hover:after {
+  content: " ";
+  mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
+  -webkit-mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+	top: -20px;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after {
+  background-color: #7F85F5;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after {
+  background-color: #faf9f8;
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:hover:after {
+  background-color: inputBackgroundCheckedHovered
+}
+.ac-input.ac-choiceSetInput-expanded input[type=radio]:disabled:checked:after {
+  background-color: #484644;
+}
+
+.ac-input.ac-choiceSetInput-multiSelect div > div:first-of-type, .ac-input.ac-toggleInput div > div:first-of-type, .ac-input.ac-choiceSetInput-expanded div > div:first-of-type {
+  max-width: 2px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-dateInput, .ac-input.ac-numberInput, .ac-input.ac-multichoiceInput, .ac-input.ac-timeInput {
+  min-height: 32px;
+  box-sizing: border-box;
+  border: 1px solid #a19f9d;
+  border-radius: 2px;
+  padding: 0 8px 1px 8px;
+  color: #f3f2f1;
+	background-color: #1b1a19;
+}
+.ac-input.ac-textInput:focus, .ac-input.ac-dateInput:focus, .ac-input.ac-numberInput:focus, .ac-input.ac-multichoiceInput:focus, .ac-input.ac-timeInput:focus {
+  outline-color: #7F85F5;
+}
+.ac-input.ac-textInput::placeholder, .ac-input.ac-dateInput::placeholder, .ac-input.ac-numberInput::placeholder, .ac-input.ac-multichoiceInput::placeholder, .ac-input.ac-timeInput::placeholder {
+  color: #a19f9d;
+}
+.ac-input.ac-textInput:disabled::placeholder, .ac-input.ac-dateInput:disabled::placeholder, .ac-input.ac-numberInput:disabled::placeholder, .ac-input.ac-multichoiceInput:disabled::placeholder, .ac-input.ac-timeInput:disabled::placeholder {
+  color: #797775;
+}
+.ac-input.ac-textInput:disabled, .ac-input.ac-dateInput:disabled, .ac-input.ac-numberInput:disabled, .ac-input.ac-multichoiceInput:disabled, .ac-input.ac-timeInput:disabled {
+  border-color: #252423;
+  background-color: #252423;
+  color: #797775;
+}
+.ac-input.ac-dateInput::-webkit-calendar-picker-indicator, .ac-input.ac-timeInput::-webkit-calendar-picker-indicator {
+  filter: invert(95%);
+}
+
+.ac-input.ac-textInput.ac-input-validation-failed, .ac-input.ac-dateInput.ac-input-validation-failed, .ac-input.ac-numberInput.ac-input-validation-failed, .ac-input.ac-multichoiceInput.ac-input-validation-failed, .ac-input.ac-timeInput.ac-input-validation-failed {
+  border-color: #f1707b;
+}
+.ac-input.ac-textInput.ac-input-validation-failed:focus, .ac-input.ac-dateInput.ac-input-validation-failed:focus, .ac-input.ac-numberInput.ac-input-validation-failed:focus, .ac-input.ac-multichoiceInput.ac-input-validation-failed:focus, .ac-input.ac-timeInput.ac-input-validation-failed:focus {
+  outline-color: #f1707b;
+}
+
+.ac-input.ac-textInput.ac-multiline {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  height: 54px !important;
+  line-height: 20px;
+  resize: none;
+}
+.ac-inlineActionButton {
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 400;
+  height: 32px;
+  line-height: 1.2rem;
+  cursor: pointer;
+  padding: 5px 8px;
+  bottom: 12px;
+  overflow: hidden;
+  border-color: #7579EB;
+  background-color: #1b1a19;
+  color: #7F85F5;
+}
+.ac-inlineActionButton:active:hover {
+  background-color: #292827;
+}
+.ac-inlineActionButton:hover {
+  background-color: #252423;
+}
+
+.ac-input-container {
+  align-items: flex-end;
+}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact {
+  cursor: pointer;
+}
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact option:checked {
+  background-color: #252423;
+}
+
+.ac-anchor {
+	color: #7F85F5;
+	text-decoration: none;
+}
+.ac-anchor:hover {
+	color: #C5CBFA;
+	text-decoration: underline;
+}
+
+.vivaConnectionsContainer {
+  background-color: #1b1a19;
+  border-radius: 8px;
+  box-shadow: 0 25px 57px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
+  min-height: 0;
+  min-width: 320px;
+  max-width: 375px;
+}

@@ -7,7 +7,7 @@
 ## Dive in
 
 * [Documentation](https://adaptivecards.io/documentation/)
-* [Roadmap](https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-launched)
+* [Roadmap](https://github.com/microsoft/AdaptiveCards/projects/32)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
 * [Designer](https://adaptivecards.io/designer/)
@@ -29,23 +29,68 @@ PS: Latest Build Status is against `main` branch.
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/37917/main.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564/main.svg) |
 
-#### End User License Agreement for our binary packages
+## Code format
+
+We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.
+
+Make sure clang-format version 12.0.0 and above version is used.
+
+### IDE integration
+ClangFormat describes a set of tools that are built on top of LibFormat. It can support your workflow in a variety of ways including a standalone tool and editor integrations. For details, refer to https://clang.llvm.org/docs/ClangFormat.html
+
+### Format with script
+Two scripts are provided to help you format files.
+- Windows user only: use FormatSource.ps1. This script use clang-format.exe which is built into Visual Studio by default.
+
+	Execute below command in the root folder of the project
+
+	```
+	PowerShell.exe -ExecutionPolicy Bypass scripts\FormatSource.ps1 -ModifiedOnly $False
+	```
+
+If it's the first time to run the script, make sure clang-format version 12.0.0 or above in the output. Otherwise you may need to upgrade Visual Studio or use your own clang-format binaries.
+```
+[clang-format] Version is:
+clang-format version 12.0.0
+```
+
+- Both Windows and MAC users: Use clang-format npmjs package
+
+	Execute below command in source/nodejs
+
+	```
+	npm run format
+	``` 
+
+Make sure `npm install` is run before.
+
+### Use Git pre-commit hook
+`git pre-commit hook` is an optional process. When you run `git commit`, it will automatically do the format check and auto fix the format if error detected.
+
+First make sure clang-format binary is installed in your dev enviroment.
+Then modify scripts/hooks/pre-commit to make sure clangFormat is point to the correct path.
+And finally setup the git hook.
+
+Two ways to setup the hook:
+1. Copy `scripts/hooks/pre-commit` to `.git/hooks`
+2. `git config --local core.hooksPath scripts/hooks`
+
+## End User License Agreement for our binary packages
 Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:
 - [UWP/.NET](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Windows.txt)
 - [Android/iOS](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Non-Windows.txt)
 
 NOTE: All of the source code, itself, made available in this repo as well as our NPM packages, continue to be governed by the open source [MIT license](https://github.com/microsoft/AdaptiveCards/blob/main/LICENSE).
+
 ### Community SDKs
 
 The following SDKs are lovingly maintained by the Adaptive Cards community. Their contributions are sincerely appreciated! 🎉
 
-|Platform|Install|Build|Docs|Status|Maintainer|
-|---|---|---|---|---|---|
-| ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/README.md) | [![react-native-build](https://github.com/microsoft/AdaptiveCards/workflows/react-native-build/badge.svg)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [BigThinkCode](https://github.com/BigThinkcode)
-| Pic2Card | | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/pic2card) | [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/pic2card/README.md) | ![pic2card-build](https://github.com/Microsoft/AdaptiveCards/workflows/pic2card-build/badge.svg) | [BigThinkCode](https://github.com/BigThinkcode)
-| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/DeeJayTC/adaptivecards-vue)| [Docs](https://github.com/DeeJayTC/adaptivecards-vue/blob/master/README.md) | OK | [Tim Cadenbach](https://github.com/DeeJayTC)
-
-
+|Platform|Install|Repo|Maintainer|
+|---|---|---|---|
+| ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [GitHub](https://github.com/BigThinkcode/AdaptiveCards) | [BigThinkCode](https://github.com/BigThinkcode) |
+| Pic2Card | | [GitHub](https://github.com/BigThinkcode/AdaptiveCards/blob/main/source/pic2card/README.md) | [BigThinkCode](https://github.com/BigThinkcode) |
+| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [GitHub](https://github.com/DeeJayTC/adaptivecards-vue)| [Tim Cadenbach](https://github.com/DeeJayTC)
 
 ## Contribute
 

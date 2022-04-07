@@ -1,9 +1,10 @@
 {
-	"name": "ui-tests",
+	"name": "@microsoft/ac-ui-tests",
 	"version": "0.1.0",
 	"description": "Builds the ui tests.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"private": true,
 	"main": "index.js",
 	"files": [
 		"src"
@@ -12,11 +13,12 @@
 		"clean": "rimraf lib dist",
 		"build": "tsc",
 		"lint": "eslint src/*.ts",
-		"test": "npm run build && jest ./lib/*"
+		"test": "jest ./lib/*",
+		"build-and-test": "npm run build && npm run test"
 	},
 	"devDependencies": {
-		"vkbeautify": "^0.99.3",
-		"selenium-webdriver": "^4.0.0-beta.4"
+		"selenium-webdriver": "^4.1.0",
+		"vkbeautify": "^0.99.3"
 	},
 	"dependencies": {
 		"@types/selenium-webdriver": "^4.0.15"

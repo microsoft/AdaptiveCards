@@ -2,29 +2,29 @@
 // Licensed under the MIT License.
 #pragma once
 
+#include "AdaptiveImageRenderer.g.h"
 #include "Image.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveImageRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveImageRenderer : AdaptiveImageRendererT<AdaptiveImageRenderer>
     {
-        AdaptiveRuntime(AdaptiveImageRenderer);
-
     public:
-        AdaptiveImageRenderer();
-        AdaptiveImageRenderer(Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveImageRenderer(){};
+        AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
+        winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
     };
+}
 
-    ActivatableClass(AdaptiveImageRenderer);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveImageRenderer : AdaptiveImageRendererT<AdaptiveImageRenderer, implementation::AdaptiveImageRenderer>
+    {
+    };
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { getTestCasesList } from "./file-retriever-utils";
-import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SubmitAction } from "adaptivecards";
+import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, PropertyBag, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
 export function listAllFiles(): HTMLLIElement[] {
@@ -33,6 +33,9 @@ export function listAllFiles(): HTMLLIElement[] {
 }
 
 export async function readAndRenderCard(fileName: string, callbackFunction: Function) {
+    const renderedCardSpaceDiv: HTMLElement = document.getElementById("renderedCardSpace");
+    renderedCardSpaceDiv.style.visibility = "hidden";
+    
     const response = await fetch(`samples/${fileName}`);
 
     let jsonToRender: any;
@@ -84,6 +87,16 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
                 inputsMap[input.id] = input.value;
             });
 
+            if (actionType === SubmitAction.JsonTypeName)
+            {
+                const submitAction = action as SubmitAction;
+
+                for (const [key, value] of Object.entries(submitAction.data))
+                {
+                    inputsMap[key] = value;
+                }
+            }
+
             inputsAsJson = JSON.stringify(inputsMap);
         }
         else if (actionType === OpenUrlAction.JsonTypeName) {
@@ -93,6 +106,7 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
 
         const retrievedInputsDiv: HTMLElement = document.getElementById("retrievedInputsDiv");
         retrievedInputsDiv.innerHTML = inputsAsJson;
+        retrievedInputsDiv.style.visibility = "visible";
     };
 
     // For markdown support you need a third-party library
@@ -104,7 +118,10 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
     };
 
     // Parse the card payload
-    adaptiveCard.parse(cardJson);
+    const context: SerializationContext = new SerializationContext();
+    context.targetVersion = Versions.v1_6;
+
+    adaptiveCard.parse(cardJson, context);
 
     // Render the card to an HTML element:
     callbackFunction(adaptiveCard.render());
@@ -114,4 +131,5 @@ export function cardRenderedCallback(renderedCard: HTMLElement) {
     const renderedCardDiv = document.getElementById("renderedCardSpace");
     renderedCardDiv.innerHTML = "";
     renderedCardDiv.appendChild(renderedCard);
+    renderedCardDiv.style.visibility = "visible";
 }

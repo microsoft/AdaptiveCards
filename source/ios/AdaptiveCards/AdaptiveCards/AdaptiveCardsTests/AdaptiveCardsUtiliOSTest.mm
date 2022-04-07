@@ -47,4 +47,3 @@ using namespace AdaptiveCards;
 
 
 @end
-

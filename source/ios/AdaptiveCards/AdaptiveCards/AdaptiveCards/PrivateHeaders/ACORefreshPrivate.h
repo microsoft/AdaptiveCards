@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACORefresh.h"
-#import "Refresh.h"
+#import <AdaptiveCards/ACORefresh.h>
+#import <AdaptiveCards/Refresh.h>
 
 using namespace AdaptiveCards;
 

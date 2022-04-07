@@ -1,181 +1,89 @@
 module.exports = {
-    "root": true,
-    "extends": [
+    root: true,
+    extends: [
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier"
     ],
-    "env": {
-        "browser": true,
-        "node": true
+    env: {
+        browser: true,
+        node: true
     },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "tsconfig.json",
-        "sourceType": "module"
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+        project: ["tsconfig.json"],
+        tsconfigRootDir: __dirname,
+        sourceType: "module"
     },
-    "plugins": [
-        "@typescript-eslint",
-    ],
-    "rules": {
-        //--------------------------------------------------------------------------------
-        // Syntax/naming conventions
-
-        "camelcase": "off", // disable eslint version
+    plugins: ["@typescript-eslint"],
+    ignorePatterns: ["node_modules", "__tests__", "__mocks__", "lib", "dist", ".eslintrc.js"],
+    rules: {
         "@typescript-eslint/naming-convention": [
             "error",
-            {                                   // let someGlobal : number = 42;
-                "selector": "default",          //
-                "format": ["camelCase"]         // function someFunction(someParameter: number): number {
-            },                                  //   let someVariable : number = someParameter*someParameter;
-            {                                   //   return someVariable;
-                "selector": "property",         // }
-                "format": ["camelCase"],        //
-                "leadingUnderscore": "forbid"   // class SomeClass {
-            },                                  //   publicProperty : number;
-            {                                   //   protected _protectedProperty : number;
-                "selector": "property",         //   private _privateProperty : number;
-                "modifiers": ["private"],       //   publicMemberFunction() : void { /* ... */ }
-                "format": ["camelCase"],        //   protected _protectedMemberFunction() : void { /* ... */ }
-                "leadingUnderscore": "require"  //   private _privateMemberFunction() : void { /* ... */ }
-            },                                  // }
-            {                                   //
-                "selector": "property",         // enum SomeEnum {
-                "modifiers": ["protected"],     //   FirstValue,
-                "format": ["camelCase"],        //   SecondValue
-                "leadingUnderscore": "require"  // }
+            {
+                selector: "default",
+                format: ["camelCase"]
             },
             {
-                "selector": "enum",
-                "format": ["PascalCase"]
+                selector: "variable",
+                modifiers: ["exported", "global"],
+                format: ["PascalCase"]
             },
             {
-                "selector": "enumMember",
-                "format": ["PascalCase"]
+                selector: "parameter",
+                format: ["camelCase"],
+                modifiers: ["unused"],
+                prefix: ["_"]
             },
             {
-                "selector": "class",
-                "format": ["PascalCase"]
+                // a special rule just for the pre-existing (and unchangable)
+                // `JsonTypeName` property
+                selector: "property",
+                format: ["PascalCase"],
+                modifiers: ["public"],
+                filter: {
+                    regex: "JsonTypeName",
+                    match: true
+                }
             },
             {
-                "selector": "interface",
-                "format": ["PascalCase"],
-                "prefix": ["I"]
+                selector: "property",
+                format: ["camelCase"],
+                modifiers: ["public"],
+                leadingUnderscore: "forbid"
             },
             {
-                "selector": "typeLike",
-                "format": ["PascalCase"]
+                selector: "property",
+                modifiers: ["private"],
+                format: ["camelCase"],
+                leadingUnderscore: "require"
+            },
+            {
+                selector: "property",
+                modifiers: ["protected"],
+                format: ["camelCase"],
+                leadingUnderscore: "require"
+            },
+            {
+                selector: ["enum", "enumMember", "class", "typeLike"],
+                format: ["PascalCase"]
+            },
+            {
+                selector: "interface",
+                format: ["PascalCase"],
+                prefix: ["I"]
             }
         ],
 
-        "quotes": "off", // disable eslint's version
-        "@typescript-eslint/quotes": [
-            "error",
-            "double", // use double quotes
-            {
-                "avoidEscape": true // unless using and alternative to avoid escaping (e.g. 'some "text" here')
-            }
-        ],
-
-        "semi": "off",// disable eslint's version
-        "@typescript-eslint/semi": ["error", "always"], // require semicolons
-
-        "@typescript-eslint/type-annotation-spacing": "error", // enforce spacing around `:` in type declarations
-
-        "space-before-function-paren": "off", // disable eslint's version
-        // enforce no space between function name and opening paren (e.g. `function foo()`, not `function foo ()`)
-        "@typescript-eslint/space-before-function-paren": ["error", "never"],
-
-        // same as space-before-function-paren, but for function calls
-        "func-call-spacing": "off",
-        "@typescript-eslint/func-call-spacing": "error",
-
-        // disallow multiple semicolons (e.g. `let foo = 5;;`)
-        "no-extra-semi": "off",
-        "@typescript-eslint/no-extra-semi": "error",
+        // let prettier handle quotes
+        "@typescript-eslint/quotes": "off",
 
         // disallow empty functions
-        "no-empty-function": "off", // disable eslint's version
         "@typescript-eslint/no-empty-function": "error",
 
-        // enforce 4 spaces as default indent
-        "indent": "off", // disable eslint's version
-        "@typescript-eslint/indent": "error",
-
-        // enforce brace placement
-        "brace-style": "off", // disable eslint's version
-        "@typescript-eslint/brace-style": [
-            "error", "stroustrup",
-            {
-                "allowSingleLine": true
-            }
-        ],
-
-        // enforce spacing around commas
-        "comma-spacing": "off", // disable eslint's version
-        "@typescript-eslint/comma-spacing": [
-            "error",
-            {
-                "before": false,
-                "after": true
-            }
-        ],
-
-        // enforce consistent delimiters for class/itf members
-        "@typescript-eslint/member-delimiter-style": [
-            "error",
-            {
-                "multiline": {
-                    "delimiter": "semi",
-                    "requireLast": true
-                },
-                "singleline": {
-                    "delimiter": "semi",
-                    "requireLast": false
-                }
-            }
-        ],
-
-        // TODO: need to come up with preferred order
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
-        // "@typescript-eslint/member-ordering": [
-        //   "error",
-        //   {
-        //     "default": [
-        //       'private-abstract-field',
-        //       'private-instance-field',
-        //       'private-static-field',
-        //       'private-abstract-method',
-        //       'private-static-method',
-        //       'private-instance-method',
-        //       'private-constructor',
-        //       'protected-abstract-field',
-        //       'protected-instance-field',
-        //       'protected-static-field',
-        //       'protected-abstract-method',
-        //       'protected-static-method',
-        //       'protected-instance-method',
-        //       'protected-constructor',
-        //       'public-abstract-field',
-        //       'public-static-field',
-        //       'public-instance-field',
-        //       'public-abstract-method',
-        //       'public-static-method',
-        //       'public-instance-method',
-        //       'public-constructor',
-        //       'signature',
-        //     ]
-        //   }
-        // ],
-
-        //--------------------------------------------------------------------------------
-
-
-        //--------------------------------------------------------------------------------
-        // Safety/correctness
-
-        // prevent errors/warnings on `let someVar: boolean = false;` (rule complains that you shouldn't supply a type
-        // when it can be inferred)
+        // prevent errors/warnings on `let someVar: boolean = false;` (rule
+        // complains that you shouldn't supply a type when it can be inferred)
         "@typescript-eslint/no-inferrable-types": "off",
 
         // currently turned off due to false positives
@@ -188,8 +96,8 @@ module.exports = {
         "@typescript-eslint/no-type-alias": [
             "error",
             {
-                "allowLiterals": "always", // e.g. `type SmallObject = { name: string; value: string; };`
-                "allowAliases": "in-unions" // e.g. `type MetaVariable = 'foo' | 'bar' | 'baz';`
+                allowLiterals: "always", // e.g. `type SmallObject = { name: string; value: string; };`
+                allowAliases: "in-unions" // e.g. `type MetaVariable = 'foo' | 'bar' | 'baz';`
             }
         ],
 
@@ -200,7 +108,12 @@ module.exports = {
         "@typescript-eslint/no-require-imports": "error",
 
         // disallow implicit class property declaration via constructor
-        "@typescript-eslint/no-parameter-properties": "error",
+        "@typescript-eslint/no-parameter-properties": [
+            "error",
+            {
+                allows: ["readonly"]
+            }
+        ],
 
         // disallow `foo?.bar!`
         "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
@@ -212,7 +125,7 @@ module.exports = {
         "@typescript-eslint/no-floating-promises": [
             "error",
             {
-                "ignoreVoid": true // allow disabling this check using the `void` keyword
+                ignoreVoid: true // allow disabling this check using the `void` keyword
             }
         ],
 
@@ -222,7 +135,18 @@ module.exports = {
         // disallow unnecessary null checks
         "@typescript-eslint/no-extra-non-null-assertion": "error",
 
-        // disallow `toString()` calls that would invoke `Object.toString()` (prevents `[Object object]`)
+        // allow the non-null assertion operator, as it is sometimes needed (see e.g. `MediaSource.render()`)
+        "@typescript-eslint/no-non-null-assertion": "off",
+
+        "@typescript-eslint/no-unnecessary-type-assertion": [
+            "error",
+            {
+                "typesToIgnore": [ 'string?' ]
+            }
+        ],
+
+        // disallow `toString()` calls that would invoke `Object.toString()`
+        // (prevents `[Object object]`)
         "@typescript-eslint/no-base-to-string": "error",
 
         // ban comments that disable typescript checks
@@ -238,24 +162,26 @@ module.exports = {
         // TODO: revisit -- we currently don't mark functions as `void` when we probably should
         // require functions to declare return type
         "@typescript-eslint/explicit-function-return-type": "off",
-        // "@typescript-eslint/explicit-module-boundary-types": "error",
 
         // TODO: enable at some point
-        // "@typescript-eslint/restrict-plus-operands": [
-        //   "error",
-        //   {
-        //     "checkCompoundAssignments": true
-        //   }
-        // ],
+        "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        // "@typescript-eslint/prefer-optional-chain": "error",
+        // "@typescript-eslint/prefer-readonly": "error",
+        // "@typescript-eslint/prefer-readonly-parameter-types": "error",
 
-        // when using Array.sort, require caller to supply a comparison function (otherwise, likely get incorrect sort ordering)
+        // when using Array.sort, require caller to supply a comparison function
+        // (otherwise, likely get incorrect sort ordering)
         "@typescript-eslint/require-array-sort-compare": "error",
 
         // require promise-returning functions to be marked `async`
         "@typescript-eslint/promise-function-async": "error",
 
-        // when iterating over an array in a for loop, prefer `for (item of array) {}` to traditional loop if index is
-        // only used to access array members. this can prevent correctness issues and yields cleaner-reading code.
+        // when iterating over an array in a for loop, prefer `for (item of
+        // array) {}` to traditional loop if index is only used to access array
+        // members. this can prevent correctness issues and yields
+        // cleaner-reading code.
         "@typescript-eslint/prefer-for-of": "error",
 
         // prefer the "nullish coalescing operator" to "logical or" assignments due to potential gotchas in the "logical or" case
@@ -269,23 +195,18 @@ module.exports = {
         // function foo(param: number) { /**/ };
         //    ^-- missed opportunity to share code
         //
-        // function foo param: string | number) { /**/ }; <-- nice
+        // function foo (param: string | number) { /**/ }; <-- nice
         "@typescript-eslint/unified-signatures": "error",
 
         // when using switch on an enum value, ensure that every member of the enum has a case statement only warn because
         // we have places where we're safely being non-exhaustive.
         "@typescript-eslint/switch-exhaustiveness-check": "warn",
 
-        // TODO: reenable -- currently the fixers for these create some questionable code
-        // "@typescript-eslint/prefer-optional-chain": "error",
-        // "@typescript-eslint/prefer-readonly": "error",
-        // "@typescript-eslint/prefer-readonly-parameter-types": "error",
-
-        // TODO: investigate these (revisit use of any)
-        // "@typescript-eslint/no-unsafe-call": "error",
-        // "@typescript-eslint/no-unsafe-member-access": "error",
-        // "@typescript-eslint/no-unsafe-return": "error",
+        "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
 
         // prevent class members with duplicate names
         "no-dupe-class-members": "off",
@@ -306,51 +227,35 @@ module.exports = {
         // disallow expressions that have no effect (as they may indicate a typo or mistake) e.g.
         // let a = 5;
         // a + 2; <-- this does nothing
-        "no-unused-expressions": "off",
         "@typescript-eslint/no-unused-expressions": "error",
+
+        // turn off no-unused-vars -- there doesn't appear to be a way to
+        // configure it to ignore unread parameters on methods that get
+        // overridden elsewhere
+        "@typescript-eslint/no-unused-vars": "off",
 
         // require parameters with defaults to be placed at the end of a function signature
         "@typescript-eslint/default-param-last": "error",
 
-        // don't allow dangling commas in declarations e.g.
-        // let a = [ 0,
-        //           1,
-        // ];         ^--- unnecessary comma
-        "comma-dangle": ["error", "never"],
-
         // require curly braces
-        "curly": "error",
+        curly: "error",
 
-        // prefer the use of dot notation to access properties. e.g.
-        // class Foo { public Bar: number; /*...*/ }
-        // let foo: Foo = /*...*/;
-        // foo.Bar = 7; <-- nice
-        // foo["Bar"] = 7; <-- legal but weird
-        "dot-notation": "error",
-
-        // require files to end in a single EOL
-        "eol-last": "error",
+        // don't require using `.` to access properties (e.g. `foo.property`).
+        // `.` can only be used to access properties with a "valid identifier",
+        // which precludes certain names (e.g. `123`). we don't want to preclude
+        // names since we need to be able to roundtrip arbitrary JSON.
+        "dot-notation": "off",
 
         // require use of === (as well as >==, etc.)
-        "eqeqeq": [
-            "error",
-            "smart"
-        ],
+        eqeqeq: ["error", "smart"],
 
-        // best explained in the docs: https://github.com/eslint/eslint/blob/master/docs/rules/guard-for-in.md
+        // best explained in the docs:
+        // https://github.com/eslint/eslint/blob/master/docs/rules/guard-for-in.md
         "guard-for-in": "error",
 
         // don't ban variable names
         "id-blacklist": "off",
         "id-match": "off",
-
-        // enforce line length
-        "max-len": [
-            "error",
-            {
-                "code": 140
-            }
-        ],
 
         // don't allow bitwise operators (reenable explicitly as needed)
         "no-bitwise": "error",
@@ -360,14 +265,7 @@ module.exports = {
 
         // disallow use of console logging (except for console.warn, which we use to warn site owners about lack of
         // markdown processing)
-        "no-console": [
-            "error",
-            {
-                "allow": [
-                    "warn"
-                ]
-            }
-        ],
+        "no-console": "error",
 
         // disallow invoking the debugger in code
         "no-debugger": "error",
@@ -386,15 +284,8 @@ module.exports = {
 
         // disallow shadow declarations of variables (e.g. let a = 2; let a = 5;)
         "no-redeclare": "error", // same scope
-        "no-shadow": [ // differing scopes
-            "error",
-            {
-                "hoist": "all"
-            }
-        ],
-
-        // disallow trailing spaces
-        "no-trailing-spaces": "error",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
 
         // disallow underscores at the end of names
         "no-underscore-dangle": "off",
@@ -403,41 +294,6 @@ module.exports = {
         "no-unused-labels": "error",
 
         // disallow use of `var`
-        "no-var": "error",
-
-        // require space around keywords
-        "keyword-spacing": [
-            "error",
-            {
-                "before": true,
-                "after": true
-            }
-        ],
-
-        // require empty lines
-        "padding-line-between-statements": [
-            "error",
-            // before block
-            {
-                "blankLine": "always",
-                "prev": "*",
-                "next": "multiline-block-like"
-            },
-            // after block
-            {
-                "blankLine": "always",
-                "prev": "multiline-block-like",
-                "next": "*"
-            },
-            // before return
-            {
-                "blankLine": "always",
-                "prev": "*",
-                "next": "return"
-            }
-        ],
-
-        // disallow top/bottom empty lines within blocks
-        "padded-blocks": ["error", "never"]
+        "no-var": "error"
     }
 };

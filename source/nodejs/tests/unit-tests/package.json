@@ -1,23 +1,24 @@
 {
-  "name": "unit-tests",
-  "version": "0.1.0",
-  "description": "Builds the unit tests.",
-  "author": "AdaptiveCards",
-  "license": "MIT",
-  "main": "index.js",
-  "files": [
-    "src"
-  ],
-  "scripts": {
-    "clean": "rimraf lib dist",
-    "build": "tsc",
-    "lint": "eslint src/*.ts",
-    "test": "jest ./lib/*",
-    "build-and-test": "npm run build && npm run test"
-  },
-  "devDependencies": {
-    "adaptivecards": "^2.10.0",
-    "monaco-editor": "^0.29.1",
-    "vkbeautify": "^0.99.3"
-  }
+	"name": "@microsoft/ac-unit-tests",
+	"version": "0.1.0",
+	"description": "Builds the unit tests.",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"private": true,
+	"main": "index.js",
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rimraf lib dist",
+		"build": "tsc",
+		"lint": "eslint src/*.ts",
+		"test": "jest ./lib/*",
+		"build-and-test": "npm run build && npm run test"
+	},
+	"devDependencies": {
+		"adaptivecards": "^2.10.0",
+		"monaco-editor": "^0.29.1",
+		"vkbeautify": "^0.99.3"
+	}
 }

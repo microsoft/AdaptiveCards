@@ -1,11 +1,11 @@
 {
-	"name": "adaptivecards-site",
+	"name": "@microsoft/adaptivecards-site",
 	"version": "0.8.0-alpha.0",
 	"private": true,
 	"scripts": {
 		"clean": "hexo clean",
 		"build": "hexo generate",
-		"release-deps": "npx lerna run --scope adaptivecards-site --include-dependencies release --stream",
+		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
 		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
 		"release": "hexo clean && hexo generate",
@@ -16,7 +16,7 @@
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-free": "^5.11.2",
-		"ac-typed-schema": "^0.7.0-alpha.0",
+		"@microsoft/ac-typed-schema": "^0.7.0-alpha.0",
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^3.0.0-beta.1",
 		"adaptivecards-designer": "^2.4.0-alpha.0",
@@ -43,7 +43,7 @@
 		"highlightjs": "^9.12.0",
 		"jquery": "^3.4.1",
 		"markdown-it": "^12.2.0",
-		"marked-schema": "^0.2.0-alpha.0",
+		"@microsoft/marked-schema": "^0.2.0-alpha.0",
 		"md5": "^2.2.1",
 		"minimist": "^1.2.5",
 		"monaco-editor": "^0.29.1",

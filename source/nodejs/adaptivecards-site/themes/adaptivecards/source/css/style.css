@@ -320,7 +320,7 @@ ul.action-list {
 
 .toc-todo li,
 .toc-todo a {
-  padding-left: 30px;
+  padding-left: 15px;
   padding-top: 3px;
   padding-bottom: 3px;
   margin: 0;
@@ -525,6 +525,14 @@ dir {
   color: #696969;
 }
 
+.platform-list {
+  list-style-type: none;
+  padding-left: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-before: 0;
+  margin-bottom: 0;
+}
+
 .homepage .divider {
   border-bottom: solid 1px #ddd;
   margin-top: 64px;
@@ -645,6 +653,11 @@ button .fa-check {
   color: blue;
 }
 
+.schema-content a:link,
+.schema-content a:visited {
+	text-decoration: underline;
+}
+
 /* .fa-chevron-right {
   font-size: 11px;
   font-weight: lighter;
@@ -674,7 +687,7 @@ button .fa-check {
   color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
-  white-space: nowrap;
+  white-space: break-word;
 }
 
 .ac-footer a:hover {
@@ -682,7 +695,7 @@ button .fa-check {
 }
 
 .ac-footer-link-no-chevron{
-  color: #0b78d0!important;  
+  color: #0c70c3!important;  
 }
 
 .ac-footer .post-subtitle {

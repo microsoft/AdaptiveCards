@@ -230,5 +230,7 @@
 	"The card elements to render inside the `TableCell`.": "The card elements to render inside the `TableCell`.",
 	"An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.": "An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.",
 	"Style hint for `TableCell`.": "Style hint for `TableCell`.",
-	"Allows users to filter choices in a choice set.": "Allows users to filter choices in a choice set."
+	"Allows users to filter choices in a choice set.": "Allows users to filter choices in a choice set.",
+	"URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) ot will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube.": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) ot will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube.",
+	"Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, mimeType can be omitted.": "Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, mimeType can be omitted."
 }
