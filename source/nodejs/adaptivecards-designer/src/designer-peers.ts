@@ -982,7 +982,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
     }
 
     render(context: PropertySheetContext): Adaptive.CardElement {
-        let result = new Adaptive.Container();
+        const result = new Adaptive.Container();
 
         let collection = context.target[this.collectionPropertyName];
 

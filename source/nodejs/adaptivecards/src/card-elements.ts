@@ -2513,10 +2513,8 @@ export class CaptionSource extends ContentSource {
     //#endregion
 
     constructor(url?: string, mimeType?: string, label?:string) {
-        super();
+        super(url, mimeType);
 
-        this.url = url;
-        this.mimeType = mimeType;
         this.label = label;
     }
 
