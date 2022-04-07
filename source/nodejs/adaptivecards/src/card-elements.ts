@@ -5740,8 +5740,8 @@ class ActionCollection {
         let afterSelectedAction = false;
 
         for (const renderedAction of this._renderedActions) {
-            // Remove actions after selected action from tabOrder, to skip focus directly to expanded card
-            if (afterSelectedAction) {
+            // Remove actions after selected action from tabOrder if the actions are oriented horizontally, to skip focus directly to expanded card
+            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && afterSelectedAction) {
                 renderedAction.isFocusable = false;
             }
 
