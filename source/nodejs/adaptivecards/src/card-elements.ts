@@ -5175,6 +5175,7 @@ export class ToggleVisibilityAction extends Action {
     }
 
     execute() {
+        super.execute();
         if (this.parent) {
             for (const elementId of Object.keys(this.targetElements)) {
                 const targetElement = this.parent.getRootElement().getElementById(elementId);
@@ -5667,8 +5668,8 @@ class ActionCollection {
         let afterSelectedAction = false;
 
         for (const renderedAction of this._renderedActions) {
-            // Remove actions after selected action from tabOrder, to skip focus directly to expanded card
-            if (afterSelectedAction) {
+            // Remove actions after selected action from tabOrder if the actions are oriented horizontally, to skip focus directly to expanded card
+            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && afterSelectedAction) {
                 renderedAction.isFocusable = false;
             }
 
