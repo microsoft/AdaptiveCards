@@ -52,19 +52,19 @@
             "type": "FactSet",
             "facts": [
 				{
-					"title": "Board",
+					"title": "Board:",
 					"value": "Adaptive Cards"
 				},
 				{
-					"title": "List",
+					"title": "List:",
 					"value": "Backlog"
 				},
 				{
-					"title": "Assigned to",
+					"title": "Assigned to:",
 					"value": "Matt Hidinger"
 				},
 				{
-					"title": "Due date",
+					"title": "Due date:",
 					"value": "Not set"
 				}
             ]

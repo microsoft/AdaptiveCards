@@ -26,9 +26,9 @@ class EvaluationContext {
     saveState() {
         this._stateStack.push(
             {
-            $data: this.$data,
-            $index: this.$index
-        });
+                $data: this.$data,
+                $index: this.$index
+            });
     }
 
     restoreLastState() {
@@ -40,7 +40,7 @@ class EvaluationContext {
 
         this.$data = savedContext.$data;
         this.$index = savedContext.$index;
-        }
+    }
 
     get $data(): any {
         return this._$data !== undefined ? this._$data : this.$root;
@@ -231,9 +231,9 @@ export class Template {
             }
             else {
                 return new AEL.ExpressionEvaluator(
-                type,
-                (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
-                AEL.ReturnType.String);
+                    type,
+                    (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
+                    AEL.ReturnType.String);
             }
         }
 

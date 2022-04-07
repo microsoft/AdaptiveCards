@@ -20,41 +20,120 @@ describe("test Text property on TextBlock", () => {
 
 describe("Test Templating Library", () => {
 	it("BasicTemplate", () => {
-		var inputPayload = fs.readFileSync("template-test-resources/basic-template.json", "utf8");
-		var inputData = fs.readFileSync("template-test-resources/basic-template.data.json", "utf8");
-		var expectedOutput = fs.readFileSync("template-test-resources/basic-template.output.json", "utf8");
+		const templatePayload = {
+			"type": "AdaptiveCard",
+			"version": "1.0",
+			"body": [
+				{
+					"type": "TextBlock",
+					"text": "Hello ${name}!"
+				}
+			]
+		};
+		
+		let template = new ACData.Template(templatePayload);
+		
+		let context: ACData.IEvaluationContext = {
+			$root: {
+				"name": "Adaptive Cards"
+			}
+		};
+		
+		let card = template.expand(context);
 
-		console.log(inputPayload.type);
-
-		let template = new ACData.Template(inputPayload);
-
-		let evaluationContext = {
-			$root: inputData
+		const expectedOutput = {
+			"type": "AdaptiveCard",
+			"version": "1.0",
+			"body": [ 
+				{ 
+					"type": "TextBlock", 
+					"text": "Hello Adaptive Cards!" 
+				} 
+			]
 		}
 
-		let outputPayload = template.expand(evaluationContext);
-
-		console.log(outputPayload);
-
-		expect(outputPayload).toBe(expectedOutput);
+		expect(card).toStrictEqual(expectedOutput);
 	})
 
+	it("BasicTemplateWithHost", () => {
+		const templatePayload = {
+			"type": "AdaptiveCard",
+			"version": "1.0",
+			"body": [
+				{
+					"type": "TextBlock",
+					"text": "Hello ${name}! You're using the ${$host.WindowsTheme} theme!"
+				}
+			]
+		};
+		
+		let template = new ACData.Template(templatePayload);
+		
+		let context: ACData.IEvaluationContext = {
+			$root: {
+				"name": "Adaptive Cards"
+			},
+			$host: {
+				"WindowsTheme": "Light"
+			}
+		};
+		
+		let card = template.expand(context);
+
+		const expectedOutput = {
+			"type": "AdaptiveCard",
+			"version": "1.0",
+			"body": [ 
+				{ 
+					"type": "TextBlock", 
+					"text": "Hello Adaptive Cards! You're using the Light theme!" 
+				} 
+			]
+		};
+
+		expect(card).toStrictEqual(expectedOutput);
+	});
+
 	it("ComplexTemplate", () => {
+		const templateObject = fs.readFileSync("template-test-resources/complex-template.json", "utf8");
+		const dataObject = fs.readFileSync("template-test-resources/complex-template.data.json", "utf8");
+		const outputObject = fs.readFileSync("template-test-resources/complex-template.output.json", "utf8");
 
-		var inputPayload = fs.readFileSync("template-test-resources/complex-template.json", "utf8");
-		var inputData = fs.readFileSync("template-test-resources/complex-template.data.json", "utf8");
-		var inputHostData = fs.readFileSync("template-test-resources/complex-template.host.json", "utf8");
-		var expectedOutput = fs.readFileSync("template-test-resources/complex-template.output.json", "utf8");
+		const templatePayload = JSON.parse(templateObject);
+		const inputData = JSON.parse(dataObject);
+		const expectedOutput = JSON.parse(outputObject);
 
-		let template = new ACData.Template(inputPayload);
+		let template = new ACData.Template(templatePayload);
 
-		let evaluationContext = {
+		let context = {
+			$root: inputData
+		};
+
+		let card = template.expand(context);
+
+		expect(card).toStrictEqual(expectedOutput);
+	});
+
+	it("ComplexTemplateWithHost", () => {
+		const templateObject = fs.readFileSync("template-test-resources/complex-template-host.json", "utf8");
+		const dataObject = fs.readFileSync("template-test-resources/complex-template-host.data.json", "utf8");
+		const hostObject = fs.readFileSync("template-test-resources/complex-template-host.host.json", "utf8");
+		const outputObject = fs.readFileSync("template-test-resources/complex-template-host.output.json", "utf8");
+
+		const templatePayload = JSON.parse(templateObject);
+		const inputData = JSON.parse(dataObject);
+		const inputHostData = JSON.parse(hostObject);
+		const expectedOutput = JSON.parse(outputObject);
+
+		let template = new ACData.Template(templatePayload);
+
+		let context = {
 			$root: inputData,
 			$host: inputHostData
 		}
 
-		let outputPayload = template.expand(evaluationContext);
+		let card = template.expand(context);
 
-		expect(outputPayload).toBe(expectedOutput);
+		expect(card).toStrictEqual(expectedOutput);
 	});
 });
