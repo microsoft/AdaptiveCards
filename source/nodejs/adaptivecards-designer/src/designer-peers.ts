@@ -1016,6 +1016,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
                     let textInput = new Adaptive.TextInput();
                     textInput.defaultValue = innerPropertiesList[i][key].value;
                     textInput.placeholder = innerPropertiesList[i][key].name;
+                    textInput.label = innerPropertiesList[i][key].name;
                     textInput.onValueChanged = (sender) => {
                         innerPropertiesList[i][key].value = sender.value;
                         this.collectionChanged(context, innerPropertiesList, false);
