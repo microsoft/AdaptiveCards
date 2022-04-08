@@ -1,0 +1,318 @@
+{
+    "spacing": {
+        "small": 4,
+        "default": 8,
+        "medium": 12,
+        "padding": 16,
+        "large": 20,
+        "extraLarge": 32
+    },
+    "separator": {
+        "lineThickness": 1,
+        "lineColor": "#505050"
+    },
+    "imageSizes": {
+        "small": 32,
+        "medium": 48,
+        "large": 96
+    },
+    "fontTypes": {
+        "default": {
+            "fontFamily": "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+            "fontSizes": {
+                "small": 12,
+                "default": 14,
+                "medium": 16,
+                "large": 18,
+                "extraLarge": 24
+            },
+            "fontWeights": {
+                "lighter": 200,
+                "default": 400,
+                "bolder": 600
+            }
+        },
+        "monospace": {
+            "fontFamily": "Courier New, Courier, monospace",
+            "fontSizes": {
+                "small": 12,
+                "default": 14,
+                "medium": 16,
+                "large": 18,
+                "extraLarge": 24
+            },
+            "fontWeights": {
+                "lighter": 200,
+                "default": 400,
+                "bolder": 600
+            }
+        }
+    },
+    "textStyles": {
+        "heading": {
+            "fontType": "default",
+            "size": "large",
+            "weight": "bolder",
+            "color": "default",
+            "isSubtle": false
+        }
+    },
+    "textBlock": {
+        "headingLevel": 2
+    },
+    "fontSizes": {
+        "small": 12,
+        "default": 14,
+        "medium": 16,
+        "large": 18,
+        "extraLarge": 24
+    },
+    "fontWeights": {
+        "lighter": 200,
+        "default": 400,
+        "bolder": 600
+    },
+    "containerStyles": {
+        "default": {
+            "borderColor": "#666666",
+            "backgroundColor": "#222222",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#737373"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        },
+        "emphasis": {
+            "borderColor": "#717171",
+            "backgroundColor": "#2F2F2F",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#737373"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        },
+        "accent": {
+            "borderColor": "#62A8F7",
+            "backgroundColor": "#1B3345",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#737373"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#D2D2D2"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        },
+        "good": {
+            "borderColor": "#69E569",
+            "backgroundColor": "#92C353",
+            "foregroundColors": {
+                "default": {
+                    "default": "#000000",
+                    "subtle": "#415725"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#415725"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#EBF4E0"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        },
+        "attention": {
+            "borderColor": "#FF764C",
+            "backgroundColor": "#D74553",
+            "foregroundColors": {
+                "default": {
+                    "default": "#000000",
+                    "subtle": "#601F25"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#601F25"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#F7DEE0"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        },
+        "warning": {
+            "borderColor": "#FFBC51",
+            "backgroundColor": "#F8D22A",
+            "foregroundColors": {
+                "default": {
+                    "default": "#000000",
+                    "subtle": "#6F5E12"
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#6F5E12"
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#FDF7D9"
+                },
+                "accent": {
+                    "default": "#82C7FF",
+                    "subtle": "#3AA0F3"
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#498205"
+                },
+                "warning": {
+                    "default": "#F8D22A",
+                    "subtle": "#C19C00"
+                },
+                "attention": {
+                    "default": "#D74553",
+                    "subtle": "#D13438"
+                }
+            }
+        }
+    },
+    "actions": {
+        "maxActions": 5,
+        "spacing": "Default",
+        "buttonSpacing": 12,
+        "showCard": {
+            "actionMode": "Inline",
+            "inlineTopMargin": 16,
+            "style": "Emphasis"
+        },
+        "preExpandSingleShowCardAction": false,
+        "actionsOrientation": "Horizontal",
+        "actionAlignment": "Stretch",
+        "iconSize": 20,
+        "iconPlacement": "leftOfTitle"
+    },
+    "imageSet": {
+        "imageSize": "Medium",
+        "maxImageHeight": 100
+    },
+    "factSet": {
+        "title": {
+            "size": "Default",
+            "color": "Default",
+            "isSubtle": false,
+            "weight": "Bolder",
+            "warp": true,
+            "maxWidth": 150
+        },
+        "value": {
+            "size": "Default",
+            "color": "Default",
+            "isSubtle": false,
+            "weight": "Default",
+            "wrap": true
+        },
+        "spacing": 12
+    }
+}

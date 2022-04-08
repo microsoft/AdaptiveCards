@@ -3,29 +3,26 @@
 #include "pch.h"
 
 #include "AdaptiveOpenUrlActionRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.g.cpp"
 #include "Util.h"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveOpenUrlActionRenderer::RuntimeClassInitialize() noexcept
-    try
+    winrt::UIElement AdaptiveOpenUrlActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                           winrt::AdaptiveRenderContext const& renderContext,
+                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        return S_OK;
+        try
+        {
+            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                             action.ActionTypeString(),
+                                                                             ex.message());
+            return nullptr;
+        }
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveOpenUrlActionRenderer::Render(_In_ IAdaptiveActionElement* action,
-                                                  _In_ IAdaptiveRenderContext* renderContext,
-                                                  _In_ IAdaptiveRenderArgs* renderArgs,
-                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
-    try
-    {
-        return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
-    }
-    CATCH_RETURN;
 }

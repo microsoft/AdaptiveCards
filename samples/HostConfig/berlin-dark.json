@@ -1,0 +1,107 @@
+{
+	"supportsInteractivity": true,
+	"spacing": {
+		"small": 8,
+		"default": 12,
+		"medium": 16,
+		"large": 20,
+		"extraLarge": 24,
+		"padding": 16
+	},
+	"fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif",
+	"fontSizes": {
+		"small": 12,
+		"default": 14,
+		"medium": 18,
+		"large": 20,
+		"extraLarge": 28
+	},
+	"fontWeights": {
+		"lighter": 400,
+		"default": 400,
+		"bolder": 600
+	},
+	"fontTypes": {
+		"default": {
+			"fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 18,
+				"large": 20,
+				"extraLarge": 28
+			},
+			"fontWeights": {
+				"lighter": 400,
+				"default": 400,
+				"bolder": 600
+			}
+		},
+		"monospace": {
+			"fontFamily": "'Courier New', Courier, monospace",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 18,
+				"large": 20,
+				"extraLarge": 28
+			},
+			"fontWeights": {
+				"lighter": 400,
+				"default": 400,
+				"bolder": 600
+			}
+		}
+	},
+	"containerStyles": {
+		"default": {
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#C5FFFFFF"
+				},
+				"accent": {
+					"default": "#FF60CDFF",
+					"subtle": "#60CDFF"
+				},
+				"dark": {
+					"default": "#E4000000",
+					"subtle": "#9E000000"
+				},
+				"good": {
+					"default": "#6CCB5E",
+					"subtle": "#6CCB5E"
+				},
+				"warning": {
+					"default": "#FCE100",
+					"subtle": "#FCE100"
+				},
+				"attention": {
+					"default": "#FF99A4",
+					"subtle": "#FF99A4"
+				}
+			}
+		}
+	},
+	"textStyles": {
+		"heading": {
+			"fontType": "default",
+			"size": "large",
+			"weight": "bolder",
+			"color": "default",
+			"isSubtle": false
+		}
+	},
+	"textBlock": {
+		"headingLevel": 2
+	},
+	"imageSizes": {
+		"small": 32,
+		"medium": 52,
+		"large": 100
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#FFFFFF"
+	}
+}

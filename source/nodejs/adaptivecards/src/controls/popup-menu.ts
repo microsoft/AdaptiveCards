@@ -10,22 +10,18 @@ export class PopupMenu extends PopupControl {
     private _renderedItems: Array<HTMLElement> = [];
     private _selectedIndex: number = -1;
 
-    constructor() {
-        super();
-    }
-
     protected renderContent(): HTMLElement {
-        var element = document.createElement("div");
+        const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
         element.setAttribute("role", "listbox");
 
         for (let i = 0; i < this._items.length; i++) {
-            var renderedItem = this._items.get(i).render(this.hostConfig);
+            const renderedItem = this._items.get(i).render(this.hostConfig);
             renderedItem.tabIndex = 0;
 
             element.appendChild(renderedItem);
 
-            if (i == this.selectedIndex) {
+            if (i === this.selectedIndex) {
                 renderedItem.focus();
             }
 
@@ -38,7 +34,7 @@ export class PopupMenu extends PopupControl {
     keyDown(e: KeyboardEvent) {
         super.keyDown(e);
 
-        var selectedItemIndex = this._selectedIndex;
+        let selectedItemIndex = this._selectedIndex;
 
         switch (e.key) {
             case Constants.keys.tab:
@@ -58,8 +54,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.up:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
-                }
-                else {
+                } else {
                     selectedItemIndex--;
 
                     if (selectedItemIndex < 0) {
@@ -75,8 +70,7 @@ export class PopupMenu extends PopupControl {
             case Constants.keys.down:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
-                }
-                else {
+                } else {
                     selectedItemIndex++;
 
                     if (selectedItemIndex >= this._renderedItems.length) {

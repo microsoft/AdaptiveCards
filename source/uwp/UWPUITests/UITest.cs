@@ -27,7 +27,7 @@ namespace UWPUITests
             showCardButton.Click();
 
             // Set the date on the Date control
-            TestHelpers.SetDateToUIElement(2021, 07, 16);
+            TestHelpers.SetDateToUIElement(7, 16);
 
             // Retrieve the "Add a comment" Input.Text and fill it with information
             var commentTextBox = TestHelpers.CastTo<Edit>(TestHelpers.FindElementByName("Add a comment"));
@@ -38,7 +38,7 @@ namespace UWPUITests
 
             // Verify submitted data
             Assert.AreEqual("A comment", TestHelpers.GetInputValue("comment"), "Values for input comment differ");
-            Assert.AreEqual("2021-07-16", TestHelpers.GetInputValue("dueDate"), "Values for input dueDate differ");
+            Assert.AreEqual(System.DateTime.Now.Year.ToString() + "-07-16", TestHelpers.GetInputValue("dueDate"), "Values for input dueDate differ");
         }
 
         [TestMethod]

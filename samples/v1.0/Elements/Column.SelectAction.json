@@ -20,7 +20,8 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png"
+							"url": "https://adaptivecards.io/content/cats/1.png",
+							"altText": "Cat"
 						}
 					],
 					"selectAction": {
@@ -38,12 +39,13 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png"
+							"url": "https://adaptivecards.io/content/cats/1.png",
+							"altText": "Cat"
 						}
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"tooltip": "cool link",
+						"tooltip": "another cool link",
 						"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 					}
 				},
@@ -56,12 +58,13 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/cats/1.png"
+							"url": "https://adaptivecards.io/content/cats/1.png",
+							"altText": "Cat"
 						}
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"tooltip": "cool link",
+						"tooltip": "a third cool link",
 						"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 					}
 				}

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
+import { AdaptiveCard, Carousel} from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint, Utils } from "./miscellaneous";
@@ -339,12 +340,31 @@ export class CardDesignerSurface {
                 if (verb) {
                     message += ` verb: "${verb}"`;
                 }
-                
+
+                let carouselPageId: string | undefined = undefined;
+
+                const root = action.getRootObject() as AdaptiveCard;
+
+                if (root) {
+                    for (let i = 0; i < root.getItemCount(); i++) {
+                        let element = root.getItemAt(i);
+
+                        if (element instanceof Carousel) {
+                            carouselPageId = element.currentPageId;
+                            break;
+                        }
+                    }
+                }
+
+                if (carouselPageId) {
+                    message += `\ncarousel page id: "${carouselPageId}"`;
+                }
+
                 const url = (<Adaptive.OpenUrlAction>action).url;
                 if (url) {
                     message += `\nurl: "${url}"`;
                 }
-                
+
                 const data = (<Adaptive.SubmitActionBase>action).data;
                 if (data) {
                     message += `\nSubmitted data: ${JSON.stringify(data, undefined, 4)}`;
@@ -359,6 +379,11 @@ export class CardDesignerSurface {
         if (this.fixedHeightCard) {
             renderedCard.style.height = "100%";
 
+            // truncate the content if the host container is fixed height
+            if (this.isPreviewMode)
+            {
+                renderedCard.style.overflow = "hidden";
+            }
         }
         this._cardHost.appendChild(renderedCard);
     }
@@ -519,7 +544,7 @@ export class CardDesignerSurface {
 
         this._designerSurface = document.createElement("div");
         this._designerSurface.classList.add("acd-designersurface");
-        this._designerSurface.tabIndex = 0;
+        this._designerSurface.tabIndex = -1;
         this._designerSurface.style.position = "absolute";
         this._designerSurface.style.left = "0";
         this._designerSurface.style.top = "0";

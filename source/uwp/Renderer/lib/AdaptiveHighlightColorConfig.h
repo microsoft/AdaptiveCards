@@ -2,28 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveHighlightColorConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveHighlightColorConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHighlightColorConfig>
+    struct AdaptiveHighlightColorConfig : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig>
     {
-        AdaptiveRuntime(AdaptiveHighlightColorConfig);
+        AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig const& highlightColorConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(HighlightColorConfig highlightColorConfig) noexcept;
-
-        IFACEMETHODIMP get_Default(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Default(ABI::Windows::UI::Color value);
-
-        IFACEMETHODIMP get_Subtle(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Subtle(ABI::Windows::UI::Color value);
-
-    private:
-        ABI::Windows::UI::Color m_defaultColor;
-        ABI::Windows::UI::Color m_subtleColor;
+        property<winrt::Windows::UI::Color> Default;
+        property<winrt::Windows::UI::Color> Subtle;
     };
+}
 
-    ActivatableClass(AdaptiveHighlightColorConfig);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveHighlightColorConfig
+        : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig, implementation::AdaptiveHighlightColorConfig>
+    {
+    };
 }

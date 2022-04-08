@@ -1,7 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -37,21 +36,26 @@ module.exports = (env, argv) => {
 				{
 					test: /\.css$/,
 					use: [
-						'style-loader',
-						//MiniCssExtractPlugin.loader,
+						devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
 						'css-loader'
 					]
 				}
 			]
 		},
 		plugins: [
-			//new CleanWebpackPlugin(['dist']),
 			new CopyWebpackPlugin({
-				patterns: [{
-					from: 'node_modules/adaptivecards-designer/src/containers/*',
-					to: 'containers/',
-					flatten: true
-				}]
+				patterns: [
+					{
+						from: 'node_modules/adaptivecards-designer/src/containers/**/*',
+						to: 'containers/[name][ext]'
+					},
+					{
+						// the designer expects to find its CSS here. an alternative for a consumer would
+						// be to make sure they load it themselves.
+						from: 'node_modules/adaptivecards-designer/dist/adaptivecards-designer.css',
+						to: 'adaptivecards-designer.css'
+					}
+				]
 			}),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",

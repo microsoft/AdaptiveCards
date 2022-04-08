@@ -3,61 +3,41 @@
 #include "pch.h"
 
 #include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveBase64Util.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 #include <robuffer.h>
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::Storage;
-using namespace ABI::Windows::Storage::Streams;
-using namespace ABI::Windows::UI;
-using namespace ABI::Windows::UI::Text;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Data;
-using namespace ABI::Windows::UI::Xaml::Documents;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-using namespace ABI::Windows::UI::Xaml::Markup;
-using namespace ABI::Windows::UI::Xaml::Media;
-using namespace ABI::Windows::UI::Xaml::Media::Imaging;
-using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::UI::Xaml::Input;
-using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace ABI::Windows::Web::Http;
-using namespace ABI::Windows::Web::Http::Filters;
+typedef ::AdaptiveCards::Rendering::Uwp::XamlBuilder XamlBuilder;
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+{
+    AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder)
+    {
+    }
+
+    winrt::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+    {
+        try
+        {
+            return m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs);
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
+                                                                                       cardElement.ElementTypeString(),
+                                                                                       ex.message());
+            return nullptr;
+        }
+    }
+}
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveImageRenderer::AdaptiveImageRenderer() {}
-
-    AdaptiveImageRenderer::AdaptiveImageRenderer(ComPtr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder) {}
-
-    HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveImageRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
-                                          _In_ IAdaptiveRenderContext* renderContext,
-                                          _In_ IAdaptiveRenderArgs* renderArgs,
-                                          _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
-    try
-    {
-        return m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
-    }
-    CATCH_RETURN;
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -66,501 +46,359 @@ namespace AdaptiveCards::Rendering::Uwp
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRESULT XamlBuilder::BuildImage(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                    _In_ IAdaptiveRenderContext* renderContext,
-                                    _In_ IAdaptiveRenderArgs* renderArgs,
-                                    _COM_Outptr_ IUIElement** imageControl)
+    winrt::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                             winrt::AdaptiveRenderContext const& renderContext,
+                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveImage> adaptiveImage;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveImage));
+        auto adaptiveImage = adaptiveCardElement.as<winrt::AdaptiveImage>();
 
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        auto hostConfig = renderContext.HostConfig();
+        auto url = adaptiveImage.Url();
 
-        HString url;
-        RETURN_IF_FAILED(adaptiveImage->get_Url(url.GetAddressOf()));
-
-        ComPtr<IUriRuntimeClass> imageUrl;
-        GetUrlFromString(hostConfig.Get(), url.Get(), imageUrl.GetAddressOf());
+        auto imageUrl = GetUrlFromString(hostConfig, url);
 
         if (imageUrl == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::AssetLoadFailed,
-                                      HStringReference(L"Image not found").Get());
-            *imageControl = nullptr;
-            return S_OK;
+            renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed, L"Image not found");
+            return nullptr;
         }
 
-        UINT32 pixelWidth = 0, pixelHeight = 0;
-        RETURN_IF_FAILED(adaptiveImage->get_PixelWidth(&pixelWidth));
-        RETURN_IF_FAILED(adaptiveImage->get_PixelHeight(&pixelHeight));
+        uint32_t pixelWidth = adaptiveImage.PixelWidth();
+        uint32_t pixelHeight = adaptiveImage.PixelHeight();
+
         bool hasExplicitMeasurements = (pixelWidth || pixelHeight);
         bool isAspectRatioNeeded = (pixelWidth && pixelHeight);
 
         // Get the image's size and style
-        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize size = ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None;
+        winrt::ImageSize size = winrt::ImageSize::None;
         if (!hasExplicitMeasurements)
         {
-            RETURN_IF_FAILED(adaptiveImage->get_Size(&size));
+            size = adaptiveImage.Size();
         }
 
-        if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None && !hasExplicitMeasurements)
+        if (size == winrt::ImageSize::None && !hasExplicitMeasurements)
         {
-            ComPtr<IAdaptiveImageConfig> imageConfig;
-            RETURN_IF_FAILED(hostConfig->get_Image(&imageConfig));
-            RETURN_IF_FAILED(imageConfig->get_ImageSize(&size));
+            size = hostConfig.Image().ImageSize();
         }
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle imageStyle;
-        RETURN_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
-        ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
-        RETURN_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
+        auto imageStyle = adaptiveImage.Style();
+        auto resourceResolvers = renderContext.ResourceResolvers();
+        auto backgroundColor = adaptiveImage.BackgroundColor();
+        auto isVisible = adaptiveCardElement.IsVisible();
 
-        HString backgroundColor;
-        RETURN_IF_FAILED(adaptiveImage->get_BackgroundColor(backgroundColor.GetAddressOf()));
+        winrt::FrameworkElement frameworkElement{nullptr};
 
-        boolean isVisible;
-        RETURN_IF_FAILED(adaptiveCardElement->get_IsVisible(&isVisible));
-
-        ComPtr<IFrameworkElement> frameworkElement;
-        if (imageStyle == ImageStyle_Person)
+        if (imageStyle == winrt::ImageStyle::Person)
         {
-            ComPtr<IEllipse> ellipse =
-                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
-            ComPtr<IEllipse> backgroundEllipse =
-                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+            winrt::Ellipse ellipse{};
+            winrt::Ellipse backgroundEllipse{};
 
-            Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-            bool mustHideElement{true};
+            winrt::Stretch imageStretch = (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
 
-            ComPtr<IInspectable> parentElement;
-            RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
+            auto parentElement = renderArgs.ParentElement();
 
-            ComPtr<IShape> ellipseAsShape;
-            RETURN_IF_FAILED(ellipse.As(&ellipseAsShape));
+            auto ellipseAsShape = ellipse.as<winrt::Shape>();
+            auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
 
-            SetImageOnUIElement(imageUrl.Get(),
-                                ellipse.Get(),
-                                resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
-                                parentElement.Get(),
-                                ellipseAsShape.Get(),
-                                isVisible,
-                                &mustHideElement,
-                                imageStretch);
+            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
 
-            ComPtr<IShape> backgroundEllipseAsShape;
-            RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
-
-            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None ||
-                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Stretch ||
-                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == winrt::ImageSize::None || size == winrt::ImageSize::Stretch || size == winrt::ImageSize::Auto || hasExplicitMeasurements)
             {
-                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
+                ellipse.Stretch(imageStretch);
+                backgroundEllipse.Stretch(imageStretch);
             }
             else
             {
                 // Set the stretch for the ellipse - this is different to the stretch used for the image brush
                 // above. This will force the ellipse to conform to fit within the confines of its parent.
-                Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
-                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+                ellipse.Stretch(winrt::Stretch::UniformToFill);
+                backgroundEllipse.Stretch(winrt::Stretch::UniformToFill);
             }
 
-            if (backgroundColor.Get() != nullptr)
+            if (!backgroundColor.empty())
             {
                 // Fill the background ellipse with solid color brush
-                ABI::Windows::UI::Color color;
-                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
-                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
+                auto color = GetColorFromString(HStringToUTF8(backgroundColor));
+                backgroundEllipse.Fill(winrt::SolidColorBrush{color});
 
                 // Create a grid to contain the background color ellipse and the image ellipse
-                ComPtr<IGrid> imageGrid =
-                    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                winrt::Grid imageGrid{};
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
-                ComPtr<IPanel> panel;
-                RETURN_IF_FAILED(imageGrid.As(&panel));
-
-                XamlHelpers::AppendXamlElementToPanel(backgroundEllipse.Get(), panel.Get());
-                XamlHelpers::AppendXamlElementToPanel(ellipse.Get(), panel.Get());
-
-                RETURN_IF_FAILED(imageGrid.As(&frameworkElement));
+                frameworkElement = imageGrid;
             }
             else
             {
-                RETURN_IF_FAILED(ellipse.As(&frameworkElement));
+                frameworkElement = ellipse;
             }
         }
         else
         {
-            ComPtr<IImage> xamlImage =
-                XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+            winrt::Image xamlImage{};
 
-            if (backgroundColor != nullptr)
+            if (!backgroundColor.empty())
             {
                 // Create a surrounding border with solid color background to contain the image
-                ComPtr<IBorder> border =
-                    XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+                winrt::Border border{};
+                auto color = GetColorFromString(HStringToUTF8(backgroundColor));
+                border.Background(winrt::SolidColorBrush{color});
 
-                ABI::Windows::UI::Color color;
-                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
-                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
-                RETURN_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
+                border.Child(xamlImage);
 
-                ComPtr<IUIElement> imageAsUiElement;
-                RETURN_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
-                RETURN_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
-
-                RETURN_IF_FAILED(border.As(&frameworkElement));
+                frameworkElement = border;
             }
             else
             {
-                RETURN_IF_FAILED(xamlImage.As(&frameworkElement));
+                frameworkElement = xamlImage;
             }
 
             if (isAspectRatioNeeded)
             {
-                xamlImage->put_Stretch(Stretch::Stretch_Fill);
+                xamlImage.Stretch(winrt::Stretch::Fill);
             }
 
-            ComPtr<IInspectable> parentElement;
-            RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-
-            bool mustHideElement{true};
-            SetImageOnUIElement(imageUrl.Get(),
-                                xamlImage.Get(),
-                                resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
-                                parentElement.Get(),
-                                frameworkElement.Get(),
-                                isVisible,
-                                &mustHideElement);
+            auto parentElement = renderArgs.ParentElement();
+            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
         }
 
-        ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
-        RETURN_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
+        auto sizeOptions = hostConfig.ImageSizes();
 
         if (hasExplicitMeasurements)
         {
             if (pixelWidth)
             {
-                if (imageStyle == ImageStyle_Person)
+                if (imageStyle == winrt::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                    frameworkElement.Width(pixelWidth);
                 }
                 else
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                    frameworkElement.MaxWidth(pixelWidth);
                 }
             }
 
             if (pixelHeight)
             {
-                if (imageStyle == ImageStyle_Person)
+                if (imageStyle == winrt::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_Height(pixelHeight));
+                    frameworkElement.Height(pixelHeight);
                 }
                 else
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                    frameworkElement.MaxHeight(pixelHeight);
                 }
             }
         }
         else
         {
-            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small ||
-                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium ||
-                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large)
+            if (size == winrt::ImageSize::Small || size == winrt::ImageSize::Medium || size == winrt::ImageSize::Large)
             {
-                UINT32 imageSize;
+                uint32_t imageSize;
                 switch (size)
                 {
-                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small:
+                case winrt::ImageSize::Small:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                    imageSize = sizeOptions.Small();
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium:
+                case winrt::ImageSize::Medium:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+                    imageSize = sizeOptions.Medium();
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large:
+                case winrt::ImageSize::Large:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
-
+                    imageSize = sizeOptions.Large();
                     break;
                 }
                 default:
                 {
-                    return E_UNEXPECTED;
+                    throw winrt::hresult_error(E_UNEXPECTED);
                 }
                 }
 
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
+                frameworkElement.MaxWidth(imageSize);
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
                 // aspect ratio when constrained on both axes.
-                if (imageStyle != ImageStyle_Person)
+                if (imageStyle != winrt::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
+                    frameworkElement.MaxHeight(imageSize);
                 }
             }
         }
 
-        ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
-        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+        auto adaptiveHorizontalAlignmentReference = adaptiveImage.HorizontalAlignment();
 
         // If the image doesn't have horizontal alignment set, check the render context for a parent value
         if (adaptiveHorizontalAlignmentReference == nullptr)
         {
-            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+            adaptiveHorizontalAlignmentReference = renderContext.HorizontalContentAlignment();
         }
 
-        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left;
-        if (adaptiveHorizontalAlignmentReference != nullptr)
-        {
-            RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
-        }
+        auto adaptiveHorizontalAlignment = GetValueFromRef(adaptiveHorizontalAlignmentReference, winrt::HAlignment::Left);
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
+        case winrt::HAlignment::Left:
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Left);
             break;
-        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Right:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
+        case winrt::HAlignment::Right:
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Right);
             break;
-        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Center:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
+        case winrt::HAlignment::Center:
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Center);
             break;
         }
 
-        RETURN_IF_FAILED(frameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
-        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement.Get()));
+        frameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
+        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
 
-        ComPtr<IAdaptiveActionElement> selectAction;
-        RETURN_IF_FAILED(adaptiveImage->get_SelectAction(&selectAction));
+        auto selectAction = adaptiveImage.SelectAction();
 
-        ComPtr<IUIElement> imageAsUIElement;
-        RETURN_IF_FAILED(frameworkElement.As(&imageAsUIElement));
+        winrt::hstring altText = adaptiveImage.AltText();
 
-        HString altText;
-        RETURN_IF_FAILED(adaptiveImage->get_AltText(altText.GetAddressOf()));
+        winrt::AutomationProperties::SetName(frameworkElement, altText);
 
-        ComPtr<IDependencyObject> imageAsDependencyObject;
-        RETURN_IF_FAILED(imageAsUIElement.As(&imageAsDependencyObject));
-
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
-
-        RETURN_IF_FAILED(automationPropertiesStatics->SetName(imageAsDependencyObject.Get(), altText.Get()));
-
-        ActionHelpers::HandleSelectAction(adaptiveCardElement,
-                                          selectAction.Get(),
-                                          renderContext,
-                                          imageAsUIElement.Get(),
-                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                          true,
-                                          imageControl);
-
-        return S_OK;
+        return ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                                 selectAction,
+                                                 renderContext,
+                                                 frameworkElement,
+                                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
+                                                 true);
     }
 
     template<typename T>
-    void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
-                                          _In_ T* uiElement,
-                                          _In_opt_ IAdaptiveCardResourceResolvers* resolvers,
+    void XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
+                                          T const& uiElement,
+                                          winrt::AdaptiveCardResourceResolvers const& resolvers,
                                           bool isAutoSize,
-                                          IInspectable* parentElement,
-                                          IInspectable* imageContainer,
+                                          winrt::IInspectable const& parentElement,
+                                          winrt::IInspectable const& imageContainer,
                                           bool isVisible,
-                                          _Out_ bool* mustHideElement,
-                                          ABI::Windows::UI::Xaml::Media::Stretch stretch)
+                                          winrt::Stretch stretch)
     {
-        *mustHideElement = true;
+        bool mustHideElement = true;
 
         // Get the image url scheme
-        HString schemeName;
-        THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
+        winrt::hstring schemeName = imageUrl.SchemeName();
 
         // Get the resolver for the image
-        ComPtr<IAdaptiveCardResourceResolver> resolver;
-        if (resolvers != nullptr)
+        if (resolvers)
         {
-            THROW_IF_FAILED(resolvers->Get(schemeName.Get(), &resolver));
+            auto resolver = resolvers.Get(schemeName);
             // If we have a resolver
-            if (resolver != nullptr)
+            if (resolver)
             {
                 // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
-                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+                winrt::BitmapImage bitmapImage{};
 
                 if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
-                    m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+                    this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
                 }
 
-                THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
-                ComPtr<IBitmapSource> bitmapSource;
-                bitmapImage.As(&bitmapSource);
+                bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
                 // Create the arguments to pass to the resolver
-                ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUrl));
+                auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
 
                 // And call the resolver to get the image stream
-                ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
-                THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+                auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
 
-                ComPtr<T> strongImageControl(uiElement);
-                ComPtr<XamlBuilder> strongThis(this);
-                THROW_IF_FAILED(getResourceStreamOperation->put_Completed(
-                    Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
-                            IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
-                            if (status == AsyncStatus::Completed)
+                getResourceStreamOperation.Completed(
+                    [this, weakThis = this->get_weak(), uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
+                        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation, winrt::AsyncStatus status) -> void
+                    {
+                        if (status == winrt::AsyncStatus::Completed)
+                        {
+                            if (auto strongThis = weakThis.get())
                             {
-                                // Get the random access stream
-                                ComPtr<IRandomAccessStream> randomAccessStream;
-                                RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
-
-                                if (randomAccessStream == nullptr)
+                                auto randomAccessStream = operation.GetResults();
+                                if (!randomAccessStream)
                                 {
-                                    m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
-                                    return S_OK;
+                                    this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
+                                    return;
                                 }
+                                SetImageSource(uiElement, bitmapImage, stretch);
 
-                                // Set the image source
-                                ComPtr<IImageSource> imageSource;
-                                RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+                                auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
 
-                                SetImageSource(strongImageControl.Get(), imageSource.Get(), stretch);
-
-                                ComPtr<IAsyncAction> setSourceAction;
-                                RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
-
-                                auto callbackSource = Callback<IAsyncActionCompletedHandler>(
-                                    [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
-                                        IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
-                                        if (status == AsyncStatus::Completed)
+                                setSourceAction.Completed(
+                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                        winrt::IAsyncAction const&, winrt::AsyncStatus status)
+                                    {
+                                        if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                         {
-                                            // Here should be the auto resizing, at this time we already have the image and everything set
-                                            if (isAutoSize)
+                                            if (auto strongThis = weakThis.get())
                                             {
-                                                SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                                strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                                             }
                                         }
-
-                                        return S_OK;
                                     });
-
-                                RETURN_IF_FAILED(setSourceAction->put_Completed(callbackSource.Get()));
-
-                                return S_OK;
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (auto strongThis = weakThis.get())
                             {
-                                m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
-                                return S_OK;
+                                this->m_imageLoadTracker->MarkFailedLoadBitmapImage(bitmapImage);
                             }
-                        })
-                        .Get()));
-
-                return;
+                        }
+                    });
             }
         }
 
-        INT32 isDataUriImage{};
-        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
-        if (isDataUriImage == 0)
+        if (schemeName == L"data")
         {
             // Decode base 64 string
-            HString dataPath;
-            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
-
-            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            winrt::hstring dataPath = imageUrl.Path();
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
             std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
 
-            ComPtr<IBufferFactory> bufferFactory;
-            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(),
-                                                 bufferFactory.GetAddressOf()));
+            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
 
-            ComPtr<IBuffer> buffer;
-            THROW_IF_FAILED(bufferFactory->Create(static_cast<UINT32>(decodedData.size()), buffer.GetAddressOf()));
+            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
 
-            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
-            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
+            winrt::BitmapImage bitmapImage{};
+            bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+            m_imageLoadTracker->TrackBitmapImage(bitmapImage);
 
-            BYTE* dataInternal{};
-            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
+            auto streamWriteOperation = dataWriter.StoreAsync();
 
-            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
+            streamWriteOperation.Completed(
+                [weakThis = this->get_weak(), dataWriter, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                    winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+                {
+                    if (auto strongThis = weakThis.get())
+                    {
+                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                        {
+                            stream.Seek(0);
+                            strongThis->SetImageSource(uiElement, bitmapImage);
+                            auto setSourceAction = bitmapImage.SetSourceAsync(stream);
 
-            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
-
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
-            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
-            ComPtr<IBitmapSource> bitmapSource;
-            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
-
-            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
-                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
-
-            ComPtr<IOutputStream> outputStream;
-            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
-
-            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
-            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
-
-            ComPtr<T> strongImageControl(uiElement);
-            ComPtr<XamlBuilder> strongThis(this);
-            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
-                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
-                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
-                        randomAccessStream->Seek(0);
-
-                        ComPtr<IImageSource> imageSource;
-                        RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-
-                        SetImageSource(strongImageControl.Get(), imageSource.Get());
-
-                        ComPtr<IAsyncAction> setSourceAction;
-                        RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
-
-                        auto callbackSource = Callback<IAsyncActionCompletedHandler>(
-                            [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
-                                IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
-                                if (status == AsyncStatus::Completed)
+                            setSourceAction.Completed(
+                                [weakThis, bitmapImage, isAutoSize, parentElement, imageContainer, isVisible](
+                                    winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
                                 {
-                                    if (isAutoSize)
+                                    if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                     {
-                                        SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                        if (auto strongThis = weakThis.get())
+                                        {
+                                            strongThis->SetAutoSize(bitmapImage, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                        }
                                     }
-                                }
-
-                                return S_OK;
-                            });
-
-                        RETURN_IF_FAILED(setSourceAction->put_Completed(callbackSource.Get()));
-
-                        return S_OK;
-                    })
-                    .Get()));
-
-            m_writeAsyncOperations.push_back(bufferWriteOperation);
-            *mustHideElement = false;
+                                });
+                        }
+                    }
+                });
+            m_writeAsyncOperations.push_back(streamWriteOperation);
+            mustHideElement = false;
             return;
         }
 
@@ -569,14 +407,10 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl));
+            winrt::BitmapImage bitmapImage{};
+            bitmapImage.UriSource(imageUrl);
 
-            ComPtr<IImageSource> bitmapImageSource;
-            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
-
-            SetImageSource(uiElement, bitmapImageSource.Get(), stretch);
+            SetImageSource(uiElement, bitmapImage, stretch);
 
             if (isAutoSize)
             {
@@ -589,241 +423,168 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(_In_ IUriRuntimeClass* imageUrl, _In_ T* imageControl)
+    template<typename T> void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl)
     {
-        // Create the HttpClient to load the image stream
-        ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter = XamlHelpers::CreateABIClass<IHttpBaseProtocolFilter>(
-            HStringReference(RuntimeClass_Windows_Web_Http_Filters_HttpBaseProtocolFilter));
-        THROW_IF_FAILED(httpBaseProtocolFilter->put_AllowUI(false));
-        ComPtr<IHttpFilter> httpFilter;
-        THROW_IF_FAILED(httpBaseProtocolFilter.As(&httpFilter));
-        ComPtr<IHttpClient> httpClient;
-        ComPtr<IHttpClientFactory> httpClientFactory;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Web_Http_HttpClient).Get(),
-                                             httpClientFactory.ReleaseAndGetAddressOf()));
-        THROW_IF_FAILED(httpClientFactory->Create(httpFilter.Get(), httpClient.ReleaseAndGetAddressOf()));
+        winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
+        httpBaseProtocolFilter.AllowUI(false);
+
+        winrt::HttpClient httpClient{httpBaseProtocolFilter};
 
         // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
-        ComPtr<IBitmapImage> bitmapImage =
-            XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-        m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
-        THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
-        ComPtr<IBitmapSource> bitmapSource;
-        bitmapImage.As(&bitmapSource);
-        ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
-        THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUrl, &getStreamOperation));
+        winrt::BitmapImage bitmapImage{};
+        this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
+        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
-        ComPtr<T> strongImageControl(imageControl);
-        ComPtr<XamlBuilder> strongThis(this);
-        THROW_IF_FAILED(getStreamOperation->put_Completed(
-            Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>(
-                [strongThis, this, bitmapSource, strongImageControl, bitmapImage](
-                    IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT {
-                    if (status == AsyncStatus::Completed)
+        auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
+        getStreamOperation.Completed(
+            [this, weakThis = this->get_weak(), bitmapImage, imageControl](
+                winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
+                winrt::AsyncStatus status) -> void
+            {
+                if (status == winrt::AsyncStatus::Completed)
+                {
+                    if (auto strongThis = weakThis.get())
                     {
-                        // Load the image stream into an in memory random access stream, which is what
-                        // SetSource needs
-                        ComPtr<IInputStream> imageStream;
-                        RETURN_IF_FAILED(operation->GetResults(&imageStream));
-                        ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
-                            HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
-                        ComPtr<IOutputStream> outputStream;
-                        RETURN_IF_FAILED(randomAccessStream.As(&outputStream));
-                        ComPtr<IAsyncOperationWithProgress<UINT64, UINT64>> copyStreamOperation;
-                        RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
+                        auto imageStream = operation.GetResults();
+                        winrt::InMemoryRandomAccessStream randomAccessStream{};
+                        auto copyStreamOperation = winrt::RandomAccessStream::CopyAsync(imageStream, randomAccessStream);
 
                         m_copyStreamOperations.push_back(copyStreamOperation);
-                        return copyStreamOperation->put_Completed(
-                            Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>(
-                                [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
-                                    IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
-                                    randomAccessStream->Seek(0);
 
-                                    ComPtr<IImageSource> imageSource;
-                                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-
-                                    SetImageSource(strongImageControl.Get(), imageSource.Get());
-
-                                    ComPtr<IAsyncAction> setSourceAction;
-                                    RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
-
-                                    return S_OK;
-                                })
-                                .Get());
+                        copyStreamOperation.Completed(
+                            [randomAccessStream](winrt::IAsyncOperationWithProgress<uint64_t, uint64_t> const& /*operation*/,
+                                                 winrt::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
                     }
-                    else
-                    {
-                        m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
-                        return S_OK;
-                    }
-                })
-                .Get()));
+                }
+            });
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
     template<typename T>
-    void XamlBuilder::SetImageSource(_In_ T* destination, _In_ IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch /*stretch*/)
+    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
     {
-        THROW_IF_FAILED(destination->put_Source(imageSource));
+        destination.Source(imageSource);
     };
 
     template<>
-    void XamlBuilder::SetImageSource<IEllipse>(_In_ IEllipse* destination,
-                                               _In_ IImageSource* imageSource,
-                                               ABI::Windows::UI::Xaml::Media::Stretch stretch)
+    void XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
+                                                     winrt::ImageSource const& imageSource,
+                                                     winrt::Stretch stretch)
     {
-        ComPtr<IImageBrush> imageBrush =
-            XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
-        THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
+        winrt::ImageBrush imageBrush{};
+        imageBrush.ImageSource(imageSource);
 
-        ComPtr<ITileBrush> tileBrush;
-        THROW_IF_FAILED(imageBrush.As(&tileBrush));
-        THROW_IF_FAILED(tileBrush->put_Stretch(stretch));
-
-        ComPtr<IBrush> brush;
-        THROW_IF_FAILED(imageBrush.As(&brush));
-
-        ComPtr<IShape> ellipseAsShape;
-        ComPtr<IEllipse> ellipse(destination);
-        THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
-
-        THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));
+        imageBrush.Stretch(stretch);
+        destination.Fill(imageBrush);
     };
 
     template<>
-    void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& ellipse,
+                                                  winrt::IInspectable const& parentElement,
+                                                  winrt::IInspectable const& imageContainer,
+                                                  bool isVisible,
+                                                  bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-        if (parentElement != nullptr && m_enableXamlImageHandling)
+        if (parentElement && m_enableXamlImageHandling)
         {
-            ComPtr<IInspectable> ellipseShape(imageContainer);
-            ComPtr<IShape> ellipseAsShape;
-            THROW_IF_FAILED(ellipseShape.As(&ellipseAsShape));
+            auto ellipseAsShape = imageContainer.as<winrt::Shape>();
 
-            ComPtr<IBrush> ellipseBrush;
-            THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
-            ComPtr<IImageBrush> brushAsImageBrush;
-            THROW_IF_FAILED(ellipseBrush.As(&brushAsImageBrush));
+            auto ellipseBrush = ellipseAsShape.Fill();
 
-            ComPtr<IEllipse> ellipse(destination);
+            auto brushAsImageBrush = ellipseBrush.as<winrt::ImageBrush>();
 
-            ComPtr<IUIElement> ellipseAsUIElement;
-            THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
-
-            ComPtr<IFrameworkElement> ellipseAsFrameworkElement;
-            THROW_IF_FAILED(ellipse.As(&ellipseAsFrameworkElement));
-
-            ComPtr<IImageSource> imageSource;
-            THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
-            ComPtr<IBitmapSource> imageSourceAsBitmap;
-            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+            auto imageSource = brushAsImageBrush.ImageSource();
+            auto imageSourceAsBitmap = imageSource.as<winrt::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                ellipse.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                ComPtr<IInspectable> localParentElement(parentElement);
-
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
-                WeakRef weakParent;
-                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+                auto weakParent = winrt::make_weak(parentElement);
 
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs*
-                                                                                                     /*args*/) -> HRESULT {
+                brushAsImageBrush.ImageOpened(
+                    [ellipse, weakParent, isVisible](winrt::IInspectable const& sender, winrt::RoutedEventArgs /*args*/) -> void
+                    {
                         if (isVisible)
                         {
-                            ComPtr<IImageBrush> lambdaBrushAsImageBrush;
-                            RETURN_IF_FAILED(sender->QueryInterface(IID_PPV_ARGS(&lambdaBrushAsImageBrush)));
+                            auto lambdaBrushAsImageBrush = sender.as<winrt::ImageBrush>();
 
-                            ComPtr<IImageSource> lambdaImageSource;
-                            RETURN_IF_FAILED(lambdaBrushAsImageBrush->get_ImageSource(&lambdaImageSource));
-                            ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
-                            RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));
+                            auto lambdaImageSource = lambdaBrushAsImageBrush.ImageSource();
+                            auto lamdaImageSourceAsBitmap = lambdaImageSource.as<winrt::BitmapSource>();
 
-                            ComPtr<IInspectable> lambdaParentElement;
-                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-                            if (ellipseAsFrameworkElement.Get() && lambdaParentElement.Get())
+                            auto lambdaParentElement = weakParent.get();
+                            if (ellipse && lambdaParentElement)
                             {
-                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(),
-                                                                               lambdaParentElement.Get(),
-                                                                               lambdaImageSourceAsBitmap.Get(),
-                                                                               isVisible));
+                                winrt::FrameworkElement k{nullptr};
+                                winrt::BitmapSource as{nullptr};
+
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse,
+                                                                                               lambdaParentElement,
+                                                                                               lamdaImageSourceAsBitmap,
+                                                                                               isVisible);
                             }
                         }
-                        return S_OK;
-                    }).Get(),
-                    &eventToken));
+                    });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T const& destination,
+                                  winrt::IInspectable const& parentElement,
+                                  winrt::IInspectable const&, /* imageContainer */
+                                  bool isVisible,
+                                  bool imageFiresOpenEvent)
     {
-        if (parentElement != nullptr && m_enableXamlImageHandling)
+        if (parentElement && m_enableXamlImageHandling)
         {
-            ComPtr<IImage> xamlImage(destination);
-            ComPtr<IFrameworkElement> imageAsFrameworkElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
-            ComPtr<IImageSource> imageSource;
-            THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
-            ComPtr<IBitmapSource> imageSourceAsBitmap;
-            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-
-            ComPtr<IUIElement> imageAsUIElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
+            auto xamlImage = destination.as<winrt::Image>();
+            auto imageSource = xamlImage.Source();
+            auto imageSourceAsBitmapSource = imageSource.as<winrt::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                xamlImage.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                ComPtr<IInspectable> localParentElement(parentElement);
-
                 // Take weak references to the image and parent to avoid circular references between this lambda and
                 // its parents (Parent->Image->Lambda->(Parent and Image))
-                WeakRef weakParent;
-                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+                auto weakParent = winrt::make_weak(parentElement);
 
-                WeakRef weakImage;
-                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                          /*args*/) -> HRESULT {
-                        ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
-                        RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
+                auto weakImage = winrt::make_weak(xamlImage);
 
-                        ComPtr<IInspectable> lambdaParentElement;
-                        RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-
-                        if (lambdaImageAsFrameworkElement && lambdaParentElement)
+                xamlImage.ImageOpened(
+                    [weakImage, weakParent, imageSourceAsBitmapSource, isVisible](winrt::IInspectable const& /*sender*/,
+                                                                                  winrt::RoutedEventArgs const&
+                                                                                  /*args*/) -> void
+                    {
+                        if (const auto lambdaImageAsFrameworkElement = weakImage.get())
                         {
-                            RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement.Get(),
-                                                                           lambdaParentElement.Get(),
-                                                                           imageSourceAsBitmap.Get(),
-                                                                           isVisible));
+                            if (const auto lambdaParentElement = weakParent.get())
+                            {
+                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
+                                                                                               lambdaParentElement,
+                                                                                               imageSourceAsBitmapSource,
+                                                                                               isVisible);
+                            }
                         }
-                        return S_OK;
-                    }).Get(),
-                    &eventToken));
+                    });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(imageAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
+                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
             }
         }
     }

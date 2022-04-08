@@ -132,7 +132,7 @@ namespace UWPUITests
             // return inputTextBlock?.DocumentText;
         }
 
-        public static void SetDateToUIElement(int year, int month, int day)
+        public static void SetDateToUIElement(int month, int day)
         {
             // Retrieve the date input and click on it
             // TODO: Fix UWP implementation to assign name/id to the CalendarDatePicker control
@@ -151,7 +151,7 @@ namespace UWPUITests
             MoveToMonth(currentMonth, month, calendarView);
 
             // Click on the day "16" button which in turn closes the popup
-            FindElementByName("16", calendarView).Click();
+            FindElementByName(day.ToString(), calendarView).Click();
         }
 
         private static void MoveToMonth(int currentMonth, int expectedMonth, UIObject calendarView)

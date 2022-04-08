@@ -1,11 +1,10 @@
-const path = require("path");
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
-	const devMode = mode === "development";
+	const devMode = mode === 'development';
 
 	console.info('running webpack with mode:', mode);
 
@@ -26,38 +25,30 @@ module.exports = (env, argv) => {
 			contentBase: './dist'
 		},
 		resolve: {
-			extensions: [".ts", ".tsx", ".js"]
+			extensions: [".ts", ".tsx", ".js", ".scss"]
 		},
 		module: {
 			rules: [{
-					test: /\.ts$/,
-					loader: "ts-loader",
-					exclude: /(node_modules|__tests__)/
-				},
-				{
-					test: /\.css$/,
-					use: [
-						'style-loader',
-						MiniCssExtractPlugin.loader,
-						'css-loader',
-						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
-					]
-				}
-			]
+				test: /\.ts$/,
+				loader: "ts-loader",
+				exclude: /(node_modules|__tests__)/
+			}]
 		},
 		plugins: [
 			new CopyWebpackPlugin(
 				{
 					patterns: [
 						{
-							from: 'src/adaptivecards.css',
-							to: '../lib/',
-							flatten: true
+							from: 'src/scss/adaptivecards*',
+							to: '../dist/[name][ext]'
 						},
 						{
-							from: 'src/adaptivecards.css',
-							to: '../dist/',
-							flatten: true
+							from: 'src/scss/adaptivecards*',
+							to: '../lib/[name][ext]'
+						},
+						{
+							from: 'lib/adaptivecards*.css*',
+							to: '../dist/[name][ext]'
 						}
 					]
 				}

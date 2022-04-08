@@ -33,7 +33,7 @@ export class DropDownItem {
             this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
             this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
-            this._element.setAttribute("aria-selected", "false");
+            this._element.setAttribute("aria-current", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {
                 if (e.key === Constants.keys.enter) {
@@ -164,12 +164,12 @@ export class DropDownPopupControl extends PopupControl {
         if (index >= 0 && index < this._renderedItems.length) {
             // deselect previous item (if one was selected)
             if (this._selectedIndex >= 0 && this._selectedIndex < this._renderedItems.length) {
-                this._renderedItems[this._selectedIndex].setAttribute("aria-selected", "false");
+                this._renderedItems[this._selectedIndex].setAttribute("aria-current", "false");
             }
 
             // select new item
             this._renderedItems[index].focus();
-            this._renderedItems[index].setAttribute("aria-selected", "true");
+            this._renderedItems[index].setAttribute("aria-current", "true");
 
             this._selectedIndex = index;
         }
@@ -239,7 +239,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
             this.rootElement.setAttribute("aria-labelledby", ariaLabelledByIds.join(" "));
         }
 
-        this.rootElement.setAttribute("role", "button");
+        this.rootElement.setAttribute("role", "combobox");
         this.rootElement.setAttribute("aria-haspopup", "menu");
     }
 

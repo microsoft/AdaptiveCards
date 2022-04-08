@@ -3,49 +3,41 @@
 #include "pch.h"
 
 #include "AdaptiveActionSetRenderer.h"
+#include "AdaptiveActionSetRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveActionSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** actionSetControl) noexcept
-    try
+    winrt::UIElement AdaptiveActionSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                       winrt::AdaptiveRenderContext const& renderContext,
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        try
         {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
-            return S_OK;
+            auto hostConfig = renderContext.HostConfig();
+
+            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
+                                         L"ActionSet was stripped from card because interactivity is not supported");
+
+                return nullptr;
+            }
+            else
+            {
+                auto adaptiveActionSet = cardElement.as<winrt::AdaptiveActionSet>();
+                auto actions = adaptiveActionSet.Actions();
+
+                return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildActionSetHelper(
+                    nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+            }
         }
-
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveActionSet> adaptiveActionSet;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveActionSet));
-
-        ComPtr<IVector<IAdaptiveActionElement*>> actions;
-        RETURN_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
-
-        return ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
+        catch (winrt::hresult_error const& ex)
+        {
+            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
+            return nullptr;
+        }
     }
-    CATCH_RETURN;
 }

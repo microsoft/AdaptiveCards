@@ -2,40 +2,24 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveFontSizesConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveFontSizesConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig>
+    struct AdaptiveFontSizesConfig : AdaptiveFontSizesConfigT<AdaptiveFontSizesConfig>
     {
-        AdaptiveRuntime(AdaptiveFontSizesConfig);
+        AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig const& fontSizesConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(FontSizesConfig fontSizesConfig) noexcept;
-
-        IFACEMETHODIMP get_Small(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Small(UINT32 value);
-
-        IFACEMETHODIMP get_Default(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Default(UINT32 value);
-
-        IFACEMETHODIMP get_Medium(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Medium(UINT32 value);
-
-        IFACEMETHODIMP get_Large(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Large(UINT32 value);
-
-        IFACEMETHODIMP get_ExtraLarge(_Out_ UINT32* value);
-        IFACEMETHODIMP put_ExtraLarge(UINT32 value);
-
-    private:
-        UINT32 m_default;
-        UINT32 m_small;
-        UINT32 m_medium;
-        UINT32 m_large;
-        UINT32 m_extraLarge;
+        property<uint32_t> Small;
+        property<uint32_t> Default;
+        property<uint32_t> Medium;
+        property<uint32_t> Large;
+        property<uint32_t> ExtraLarge;
     };
-
-    ActivatableClass(AdaptiveFontSizesConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveFontSizesConfig : AdaptiveFontSizesConfigT<AdaptiveFontSizesConfig, implementation::AdaptiveFontSizesConfig>
+    {
+    };
 }

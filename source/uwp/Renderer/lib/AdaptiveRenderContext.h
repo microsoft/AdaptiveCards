@@ -6,99 +6,75 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveMediaEventInvoker.h"
+#include "AdaptiveRenderContext.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<IWeakReferenceSource>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    struct DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext
+        : AdaptiveRenderContextT<AdaptiveRenderContext, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveRenderContext);
+        AdaptiveRenderContext();
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveRenderContext(Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
+                              Rendering::Uwp::AdaptiveFeatureRegistration const& featureRegistration,
+                              Rendering::Uwp::AdaptiveElementRendererRegistration const& elementRendererRegistration,
+                              Rendering::Uwp::AdaptiveActionRendererRegistration const& actionRendererRegistration,
+                              Rendering::Uwp::AdaptiveCardResourceResolvers const& resourceResolvers,
+                              winrt::ResourceDictionary const& overrideStyles,
+                              winrt::ResourceDictionary const& defaultActionSentimentStyles,
+                              winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult);
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration* elementRendererRegistration,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration* actionRendererRegistration,
-                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers* resourceResolvers,
-                                       _In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideStyles,
-                                       _In_ ABI::Windows::UI::Xaml::IResourceDictionary* defaultActionSentimentStyles,
-                                       _In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+        property<winrt::AdaptiveHostConfig> HostConfig;
+        property<winrt::AdaptiveFeatureRegistration> FeatureRegistration;
+        property<winrt::AdaptiveElementRendererRegistration> ElementRenderers;
+        property<winrt::AdaptiveActionRendererRegistration> ActionRenderers;
+        property<winrt::AdaptiveActionInvoker> ActionInvoker;
+        property<winrt::AdaptiveMediaEventInvoker> MediaEventInvoker;
+        property_opt<bool> Rtl;
+        property_opt<winrt::TextStyle> TextStyle;
+        property_opt<winrt::HAlignment> HorizontalContentAlignment;
+        property<winrt::AdaptiveCardResourceResolvers> ResourceResolvers;
+        property<winrt::ResourceDictionary> OverrideStyles;
 
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** value) override;
-        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration** value) override;
-        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration** value) override;
-        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration** value) override;
-        IFACEMETHODIMP get_ActionInvoker(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvoker** value) override;
-        IFACEMETHODIMP get_MediaEventInvoker(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker** value) override;
-        IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value) override;
-        IFACEMETHODIMP AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue,
-                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs) override;
-        IFACEMETHODIMP LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
-                                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs) override;
-        IFACEMETHODIMP LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
-                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs) override;
+        Uwp::AdaptiveInputs UserInputs();
 
-        IFACEMETHODIMP GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                                     _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue) override;
+        void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
+        void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction, Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& args);
 
-        IFACEMETHODIMP get_Rtl(_COM_Outptr_ ABI::Windows::Foundation::IReference<bool>** value) override;
-        IFACEMETHODIMP put_Rtl(_In_ ABI::Windows::Foundation::IReference<bool>* value) override;
+        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
-        IFACEMETHODIMP get_TextStyle(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>** value) override;
-        IFACEMETHODIMP put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>* value) override;
+        void AddError(winrt::ErrorStatusCode statusCode, hstring const& message);
+        void AddWarning(winrt::WarningStatusCode statusCode, hstring const& message);
 
-        IFACEMETHODIMP get_HorizontalContentAlignment(
-            _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** value) override;
-        IFACEMETHODIMP put_HorizontalContentAlignment(
-            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* value) override;
+        void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
+                               winrt::AdaptiveShowCardAction const& showCardAction,
+                               winrt::UIElement const& showCardUIElement,
+                               Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value) override;
-        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
-        IFACEMETHODIMP AddError(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message) override;
-        IFACEMETHODIMP AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode, _In_ HSTRING message) override;
+        void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
+                               winrt::AdaptiveShowCardAction const& showCardAction,
+                               winrt::UIElement const& showCardUIElement,
+                               Uwp::AdaptiveRenderArgs const& renderArgs);
 
-        HRESULT AddInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
-                                  _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+        void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 
-        HRESULT AddInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                  _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+        void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement);
 
-        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
-
-        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
-
-        HRESULT GetRenderResult(_COM_Outptr_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard** renderResult);
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
+        winrt::com_ptr<implementation::RenderedAdaptiveCard> GetRenderResult();
+        winrt::ResourceDictionary GetDefaultActionSentimentDictionary();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration> m_featureRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
-        Microsoft::WRL::WeakRef m_weakRenderResult;
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveActionInvoker> m_actionInvoker;
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventInvoker> m_mediaEventInvoker;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers> m_resourceResolvers;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentDefaultDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<bool>> m_rtl;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>> m_textStyle;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>> m_horizontalAlignment;
+        winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
+        winrt::ResourceDictionary m_actionSentimentDefaultDictionary;
     };
+}
 
-    ActivatableClass(AdaptiveRenderContext);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveRenderContext : AdaptiveRenderContextT<AdaptiveRenderContext, implementation::AdaptiveRenderContext>
+    {
+    };
 }

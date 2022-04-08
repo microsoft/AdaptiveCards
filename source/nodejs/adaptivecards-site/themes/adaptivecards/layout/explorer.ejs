@@ -20,7 +20,7 @@
 	</nav>
 
 	<div class="w3-main" style="margin-left: 200px">
-		<div class="w3-container">
+		<div class="w3-container schema-content">
 			<h1><%= page.title %></h1>
 
 			<!-- mobile nav -->
@@ -45,7 +45,7 @@
 
 			<p><%- site.data.samples.en.accwarning %></p>
 
-			<h2><%= page.element.name %></h2>
+			<h2 class='<%= page.previewClassName %>'><%= page.element.name %></h2>
 
 			<p><%- markdown(page.element.description) %></p>
 

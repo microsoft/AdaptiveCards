@@ -1,53 +1,357 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Assert from "assert";
-import * as Webdriver from "selenium-webdriver";
-import * as TestUtils from "./testUtils";
+import { ACAction, ACCarousel, ACColumn, ACColumnSet, ACContainer, ACInputChoiceSet, ACInputDate, ACInputNumber, ACInputText, ACInputTime, ACInputToggle, ACImage, ACElement } from "./card-element-utils";
+import { TestUtils } from "./test-utils";
+import { WaitUtils } from "./wait-utils";
 
 describe("Mock function", function() {
-    let driver: Webdriver.WebDriver;
-    let testUtils: TestUtils.TestUtils;
+    let utils: TestUtils;
+
+    // This is a constant value for the wait time between pressing an action and retrieving
+    // the input value. Only use this if you see some test flakiness. Value is given in ms
+    const delayForCarouselTimer: number = 6000;
+    const timeOutValueForCarousel: number = 30000;
+    const timeOutValueForSuddenJumpTest: number = 20000;
+
+    // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
+    // usually takes between 1 to 2 minutes but we have no way to determine when the server
+    // is ready to run tests. This issues is being tracked in issue #6716
+    const timeoutForServerStartupInCIBuild: number = 600000;
 
     beforeAll(async() => {
-        driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
-        await driver.get("http://127.0.0.1:8080/");
-
-        testUtils = new TestUtils.TestUtils(driver);
-    });
+        utils = TestUtils.getInstance();
+        await utils.initializeDriver();
+    }, timeoutForServerStartupInCIBuild);
 
     afterAll(async() => {
-        if (driver) {
-            await driver.quit();
-        }
+        await utils.stopDriver();
     });
 
     test("Test ActivityUpdate submit", (async() => {
-        await testUtils.goToTestCase("v1.0/ActivityUpdate");
+        await utils.goToTestCase("v1.0/ActivityUpdate");
 
-        await testUtils.clickOnActionWithTitle("Set due date");
+        await ACAction.clickOnActionWithTitle("Set due date");
 
-        await testUtils.setDateOnDateInput("dueDate", "02041993");
-        await testUtils.setTextOnTextInput("comment", "A comment");
+        let dueDateInput = await ACInputDate.getInputWithId("dueDate");
+        await dueDateInput.setDate(1993, 2, 4);
 
-        await testUtils.clickOnActionWithTitle("OK");
+        let commentInput = await ACInputText.getInputWithId("comment");
+        await commentInput.setData("A comment");
 
-        const dueDateRetrievedValue: string = await testUtils.getInputFor("dueDate");
-        Assert.strictEqual("1993-02-04", dueDateRetrievedValue);
+        await ACAction.clickOnActionWithTitle("OK");
 
-        const commentRetrievedValue: string = await testUtils.getInputFor("comment");
-        Assert.strictEqual("A comment", commentRetrievedValue);
+        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
+        Assert.strictEqual(await utils.getInputFor("comment"), "A comment");
     }));
 
     test("Test TextInput get focus on invalid submit", (async() => {
-        await testUtils.goToTestCase("v1.3/Input.Text.ErrorMessage");
+        await utils.goToTestCase("v1.3/Input.Text.ErrorMessage");
 
-        await testUtils.clickOnActionWithTitle("Submit");
+        const commentInput = await ACInputText.getInputWithId("id1");
 
-        const firstInput: Webdriver.WebElement = await testUtils.getTextInput("id1");
+        Assert.strictEqual(await commentInput.getLabel(), "Required Input.Text *");
+        Assert.strictEqual(await commentInput.isRequired(), true);
+        Assert.strictEqual(await commentInput.getErrorMessage(), undefined);
+        Assert.strictEqual(await commentInput.isFocused(), false);
 
-        const firstInputId: string = await firstInput.getAttribute("id");
-        const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");
+        await ACAction.clickOnActionWithTitle("Submit");
 
-        Assert.strictEqual(firstInputId, activeElementId);
+        Assert.strictEqual(await commentInput.getErrorMessage(), "This is a required input");
+        Assert.strictEqual(await commentInput.isFocused(), true);
     }));
+
+    test("Test interaction with Input.Number", (async() => {
+        await utils.goToTestCase("v1.3/Input.Number.ErrorMessage");
+
+        let input1 = await ACInputNumber.getInputWithId("input1");
+        await input1.setData("1");
+
+        let input2 = await ACInputNumber.getInputWithId("input2");
+        await input2.setData("5");
+
+        let input3 = await ACInputNumber.getInputWithId("input3");
+        await input3.setData("10");
+
+        let input4 = await ACInputNumber.getInputWithId("input4");
+        await input4.setData("50");
+
+        await ACAction.clickOnActionWithTitle("Submit");
+
+        Assert.strictEqual(await utils.getInputFor("input1"), "1");
+        Assert.strictEqual(await utils.getInputFor("input2"), "5");
+        Assert.strictEqual(await utils.getInputFor("input3"), "10");
+        Assert.strictEqual(await utils.getInputFor("input4"), "50");
+    }));
+
+    test("Input.ChoiceSet: Test input interaction", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        let compactChoiceSet = await ACInputChoiceSet.getInputWithId("requiredCompactId", false, false);
+        await compactChoiceSet.setData("Option 1");
+        
+        let expandedChoiceSet = await ACInputChoiceSet.getInputWithId("requiredExpandedId", true, false);
+        await expandedChoiceSet.setData("Option 2");
+
+        let multiselectChoiceSet = await ACInputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
+        await multiselectChoiceSet.setData("Option 1,Option 2");
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await utils.getInputFor("requiredCompactId"), "1");
+        Assert.strictEqual(await utils.getInputFor("requiredExpandedId"), "2");
+        Assert.strictEqual(await utils.getInputFor("requiredMultiselectId"), "1,2");
+    }));
+
+    test("Input.ChoiceSet: Test compact required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        const compactChoiceSet = await ACInputChoiceSet.getInputWithId("requiredCompactId", false, false);
+        Assert.strictEqual(await compactChoiceSet.getLabel(), "Required Input.ChoiceSet label (compact) *");
+        Assert.strictEqual(await compactChoiceSet.isRequired(), true);
+        Assert.strictEqual(await compactChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await compactChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await compactChoiceSet.getErrorMessage(), "This is a required input");
+    }));
+
+    test("Input.ChoiceSet: Test expanded required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        const expandedChoiceSet = await ACInputChoiceSet.getInputWithId("requiredExpandedId", true, false);
+        Assert.strictEqual(await expandedChoiceSet.getLabel(), "Required Input.ChoiceSet label (expanded) *");
+        Assert.strictEqual(await expandedChoiceSet.isRequired(), true);
+        Assert.strictEqual(await expandedChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await expandedChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await expandedChoiceSet.getErrorMessage(), "This is a required input");
+    }));
+
+    test("Input.ChoiceSet: Test multiselect required validation", (async() => {
+        await utils.goToTestCase("v1.3/Input.ChoiceSet.ErrorMessage");
+
+        const multiselectChoiceSet = await ACInputChoiceSet.getInputWithId("requiredMultiselectId", true, true);
+        Assert.strictEqual(await multiselectChoiceSet.getLabel(), "Required Input.ChoiceSet label (expanded, multiselect) *");
+        Assert.strictEqual(await multiselectChoiceSet.isRequired(), true);
+        Assert.strictEqual(await multiselectChoiceSet.getErrorMessage(), undefined);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await multiselectChoiceSet.validationFailed(), true);
+        Assert.strictEqual(await multiselectChoiceSet.getErrorMessage(), "This is a required input");
+    }));
+
+    test("Test interaction with Input.Time", (async() => {
+        await utils.goToTestCase("v1.3/Input.Time.ErrorMessage");
+
+        let timeInput1 = await ACInputTime.getInputWithId("input1");
+        await timeInput1.setTime(1, 9);
+
+        let timeInput4 = await ACInputTime.getInputWithId("input4");
+        await timeInput4.setTime(14, 30);
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await utils.getInputFor("input1"), "01:09");
+        Assert.strictEqual(await utils.getInputFor("input4"), "14:30");
+    }));
+
+    test("Test interaction with Input.Toggle", (async() => {
+        await utils.goToTestCase("v1.3/Input.Toggle.ErrorMessage");
+
+        let toggleInput = await ACInputToggle.getInputWithId("input2");
+        await toggleInput.set();
+
+        await ACAction.clickOnActionWithTitle("OK");
+
+        Assert.strictEqual(await utils.getInputFor("input2"), "true");
+    }));
+
+    test("Action.ShowCard: Test hidden card is shown", (async() => {
+        await utils.goToTestCase("v1.0/Action.ShowCard");
+
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
+
+        const neatAction: ACAction = await ACAction.getActionWithTitle("Neat!");
+        const neatActionIsVisible = async (params: any) => {
+            let elements = params as ACElement[];
+            return (await elements[0].elementIsVisible()) || (await elements[0].elementIsCssVisible());
+        };
+
+        await WaitUtils.waitUntilPredicateIsTrue([neatAction], neatActionIsVisible);
+
+        await neatAction.click();
+
+        Assert.strictEqual(await utils.getInputFor("neat"), "true");
+    }));
+
+    test("Image: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Image.SelectAction");
+
+        let image = await ACImage.getImage("cool link");
+        await image.click();
+        
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    }));
+
+    test("Column: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Column.SelectAction");
+
+        let firstColumn = await ACColumn.getContainerWithAction("cool link");
+        await firstColumn.click();
+        
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    }));
+
+    test("ColumnSet: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/ColumnSet.SelectAction");
+
+        let secondColumnSet = await ACColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
+        await secondColumnSet.click();
+        
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.AdaptiveCards.io");
+    }));
+
+    test("Container: Test select action can be clicked", (async() => {
+        await utils.goToTestCase("v1.0/Container.SelectAction");
+
+        let submitContainer = await ACContainer.getContainerWithAction("Submit action");
+        await submitContainer.click();
+        
+        Assert.strictEqual(await utils.getInputFor("info"), "My submit action data");
+
+        let emphasisContainer = await ACContainer.getContainerWithAction("Go to a different url");
+        await emphasisContainer.click();
+        
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://msn.com");
+    }));    
+
+    test("Carousel: Test actions are rendered and active", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.HostConfig");
+
+        await ACAction.clickOnActionWithTitle("See more");
+
+        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://adaptivecards.io");
+    }));
+
+    test("Carousel: Test page limit is honoured", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.HostConfig");
+
+        await utils.assertElementWithIdDoesNotExist("page10");
+    }));
+
+    test("Carousel: Unsupported elements are not rendered", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.ForbiddenElements");
+
+        await utils.assertElementWithIdDoesNotExist("id1");
+        await utils.assertElementWithIdDoesNotExist("id2");
+        await utils.assertElementWithIdDoesNotExist("id3");
+        await utils.assertElementWithIdDoesNotExist("id4");
+        await utils.assertElementWithIdDoesNotExist("id5");
+        await utils.assertElementWithIdDoesNotExist("id6");
+        await utils.assertElementWithIdDoesNotExist("id7");
+    }));
+
+    test("Carousel: Verify left and right buttons work", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
+
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+
+        await ACCarousel.clickOnRightArrow();
+
+        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
+
+        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
+        Assert.strictEqual(secondPageIsVisible, true);
+
+        await ACCarousel.waitForAnimationsToEnd();
+        await ACCarousel.clickOnLeftArrow();
+
+        await WaitUtils.waitUntilElementIsCssVisible("firstCarouselPage");
+
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+    }), timeOutValueForSuddenJumpTest);
+
+    test("Carousel: Unsupported actions are not rendered", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.ForbiddenActions");
+
+        let showCardAction = await ACAction.getActionWithTitle("Action.ShowCard");
+        Assert.strictEqual(showCardAction.elementWasFound(), false);
+
+        let toggleVisibilityAction = await ACAction.getActionWithTitle("Action.ToggleVisibility");
+        Assert.strictEqual(toggleVisibilityAction.elementWasFound(), false);
+    }));
+
+    // Giving this test 7 seconds to run
+    test("Carousel: Test autoplay is disabled", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
+
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+
+        // Await for 5 seconds and verify no change happened
+        await WaitUtils.waitFor(5000);
+
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+    }), 7000);
+
+    // Giving this test 9 seconds to run
+    test("Carousel: Test autoplay is applied", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
+
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+
+        // Await for 5 seconds and verify the first page is now hidden
+        await WaitUtils.waitUntilElementIsNotVisible("firstCarouselPage");
+
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
+
+        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
+        Assert.strictEqual(secondPageIsVisible, true);
+    }), timeOutValueForCarousel);
+
+    test("Carousel: Test click on navigation does not cause sudden jump", (async() => {
+        await utils.goToTestCase("v1.6/Carousel");
+
+        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, true);
+
+        // wait for 2 pages to turn
+        await WaitUtils.waitUntilElementIsCssVisible("last-carousel-page", delayForCarouselTimer * 2);
+
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
+
+        let lastPageIsVisible = await ACCarousel.isPageVisible("last-carousel-page");
+        Assert.strictEqual(lastPageIsVisible, true);
+
+        // cause the page to go the 2nd page
+        await ACCarousel.waitForAnimationsToEnd();
+        await ACCarousel.clickOnLeftArrow();
+
+        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage");
+
+        // make sure firstCarouselPage is hidden
+        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        Assert.strictEqual(firstPageIsVisible, false);
+    }), timeOutValueForSuddenJumpTest);
+
+    test("Carousel: Test rtl", (async() => {
+        await utils.goToTestCase("v1.6/Carousel.rtl");
+
+        for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
+            const pageDirection = await ACCarousel.getPageDirection(page[0])
+            Assert.strictEqual(pageDirection, page[1]);
+        }
+        
+    }), timeOutValueForCarousel);
 });

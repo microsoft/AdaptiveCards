@@ -3,3 +3,6 @@ lib/
 dist/
 node_modules/
 coverage/
+
+# CSS files should be generated from .scss, no checking in .css files
+*.css* 

@@ -2,46 +2,26 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionRendererRegistration.h"
-#include "Util.h"
+#include "AdaptiveActionRendererRegistration.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::UI;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveActionRendererRegistration::AdaptiveActionRendererRegistration() {}
-
-    HRESULT AdaptiveActionRendererRegistration::RuntimeClassInitialize() noexcept
-    try
+    void AdaptiveActionRendererRegistration::Set(winrt::hstring const& type, winrt::IAdaptiveActionRenderer const& renderer)
     {
-        m_registration = std::make_shared<RegistrationMap>();
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveActionRendererRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionRenderer* renderer)
-    {
-        ComPtr<IAdaptiveActionRenderer> localRenderer(renderer);
-        (*m_registration)[HStringToUTF8(type)] = localRenderer;
-
-        return S_OK;
+        m_registration[type] = renderer;
     }
 
-    HRESULT AdaptiveActionRendererRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveActionRenderer** result)
+    winrt::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(winrt::hstring const& type)
     {
-        *result = nullptr;
-        RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
-        if (found != m_registration->end())
+        if (const auto found = m_registration.find(type); found != m_registration.end())
         {
-            found->second.CopyTo(result);
+            return found->second;
         }
-        return S_OK;
+        else
+        {
+            return nullptr;
+        }
     }
 
-    HRESULT AdaptiveActionRendererRegistration::Remove(_In_ HSTRING type)
-    {
-        m_registration->erase(HStringToUTF8(type));
-        return S_OK;
-    }
+    void AdaptiveActionRendererRegistration::Remove(winrt::hstring const& type) { m_registration.erase(type); }
 }

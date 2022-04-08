@@ -34,7 +34,7 @@
     - "button": the current "..." overflow button
     - "target": the target to trigger popup menu or current "..." overflow button. Client can access its associated menu item actions through target.menuItems, or add this target to any UIButton to trigger the popup
     - "isRootLevelActions":  indicates if the current "..." overflow action belongs to root level actions array. If it's NO then it indicates it's ActionSet as body elements.
- 
+
  - Client callback requires to return a BOOL value. Returning NO means let SDK continue to render "..." button, while YES informs SDK don't render the current "..." button (which implies client code might grab those flyout actions (target.menuItems) and render / handle overflow actions by itself).
  */
 - (BOOL)onRenderOverflowAction:(UIButton *)button
@@ -49,5 +49,5 @@
  */
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                     alertController:(UIAlertController *)alert
-                      additionalData:(NSDictionary *)additionalData;
+                     additionalData:(NSDictionary *)additionalData;
 @end

@@ -1,0 +1,124 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+@import 'adaptivecards-base';
+@import 'adaptivecards-vars';
+
+@include base-container;
+@include base-anchor;
+
+$main-fg-color: "white";
+$border-style: 1px solid;
+$positive-hl-bg-color: #006ABC;
+$destructive-bg-color: #E50000;
+$destructive-hl-bg-color: #BF0000;
+@include base-push-button(
+    $background-color: $main-fg-color,
+    $color: #0079db,
+    $border: $border-style #B2E0FF,
+    $hover-background-color: $button-hl-bg-color,
+    $hover-color: $main-fg-color,
+    $hover-border: $border-style #73C1FD,
+    $active-background-color: #464B93,
+    $active-color: $main-fg-color,
+    $active-border: $border-style #464B93,
+    $subdued-color: #666666,
+    $subdued-border: $border-style #EEEEEE,
+    $subdued-hover-background-color: $button-hl-bg-color,
+    $subdued-hover-color: $main-fg-color,
+    $subdued-hover-border: $border-style $button-hl-bg-color,
+    $expanded-background-color: $button-hl-bg-color,
+    $expanded-color: $main-fg-color,
+    $expanded-border: $border-style $button-hl-bg-color,
+    $positive-background-color: $button-hl-bg-color,
+    $positive-color: $main-fg-color,
+    $positive-border: $border-style $button-hl-bg-color,
+    $positive-active-background-color: $positive-hl-bg-color,
+    $positive-active-border: $border-style $positive-hl-bg-color,
+    $positive-hover-background-color: $positive-hl-bg-color,
+    $positive-hover-border: $border-style $positive-hl-bg-color,
+    $destructive-background-color: $destructive-bg-color,
+    $destructive-color: $main-fg-color,
+    $destructive-border: $border-style $destructive-bg-color,
+    $destructive-active-background-color: $destructive-hl-bg-color,
+    $destructive-active-border: $border-style $destructive-hl-bg-color,
+    $destructive-hover-background-color: $destructive-hl-bg-color,
+    $destructive-hover-border: $border-style $destructive-hl-bg-color
+    );
+
+@include base-input;
+
+/* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
+
+.ac-inlineActionButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
+.ac-inlineActionButton.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton.iconOnly {
+    padding: 0;
+}
+
+.ac-inlineActionButton:hover {
+    background-color: #EEEEEE;
+}
+
+.ac-inlineActionButton:active {
+    background-color: #CCCCCC;
+}
+
+/* Applet styles */
+
+.aaf-progress-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes aaf-spinner-rotate {
+    from { transform: rotate(0) }
+    to { transform: rotate(360deg) }
+}
+
+.aaf-spinner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-width: 1.5px;
+    border-style: solid;
+    border-color: rgb(0, 120, 212) rgb(199, 224, 244) rgb(199, 224, 244) rgb(199, 224, 244);
+    animation-name: aaf-spinner-rotate;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.53, 0.21, 0.29, 0.67);
+}
+
+.aaf-cardHost {
+}
+
+.aaf-refreshButtonHost {
+    border-top: 1px solid #F1F1F1;
+}
+
+@import 'adaptivecards-carousel'

@@ -16,8 +16,8 @@
 {
     [super viewDidLoad];
     self.tableView.estimatedRowHeight = 100;
-	// use automatic row height for payload labels, so the table can update its row size when 
-	// dynamic font type font size changes.
+    // use automatic row height for payload labels, so the table can update its row size when
+    // dynamic font type font size changes.
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     NSBundle *main = [NSBundle mainBundle];
 
@@ -38,11 +38,11 @@
 {
     static NSString *reuseKey = @"ACVTabVC";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseKey];
-	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[[NSFileManager defaultManager] displayNameAtPath:pathsToFiles[indexPath.row]] attributes:@{NSParagraphStyleAttributeName : NSParagraphStyle.defaultParagraphStyle, NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[[NSFileManager defaultManager] displayNameAtPath:pathsToFiles[indexPath.row]] attributes:@{NSParagraphStyleAttributeName : NSParagraphStyle.defaultParagraphStyle, NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseKey];
         cell.textLabel.numberOfLines = 0;
-    } 
+    }
     cell.textLabel.attributedText = attributedString;
     return cell;
 }
