@@ -323,7 +323,7 @@
               "type": "null"
             }
           ],
-          "description":  "When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.",
+          "description": "When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.",
           "version": "1.5"
         },
         "speak": {
@@ -1381,7 +1381,7 @@
         "poster": {
           "type": "string",
           "format": "uri-reference",
-          "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
+          "description": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) ot will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube."
         },
         "altText": {
           "type": "string",
@@ -1421,7 +1421,8 @@
         },
         "mimeType": {
           "type": "string",
-          "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
+          "description": "Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, mimeType can be omitted.",
+          "required": false
         },
         "url": {
           "type": "string",
@@ -1432,7 +1433,6 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "mimeType",
         "url"
       ]
     },
@@ -1959,11 +1959,12 @@
         {
           "enum": [
             "compact",
-            "expanded"
+            "expanded",
+            "filtered"
           ]
         },
         {
-          "pattern": "^([c|C][o|O][m|M][p|P][a|A][c|C][t|T])|([e|E][x|X][p|P][a|A][n|N][d|D][e|E][d|D])$"
+          "pattern": "^([c|C][o|O][m|M][p|P][a|A][c|C][t|T])|([e|E][x|X][p|P][a|A][n|N][d|D][e|E][d|D])|([f|F][i|I][l|L][t|T][e|E][r|R][e|E][d|D])$"
         }
       ]
     },

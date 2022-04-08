@@ -1,11 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Represents how a card can be refreshed by making a request to the target Bot
+    /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+#if !NETSTANDARD1_3
+    [XmlType(TypeName = "Refresh")]
+#endif
     public class AdaptiveRefresh
     {
         /// <summary>

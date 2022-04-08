@@ -1,0 +1,37 @@
+parameters:
+  - name: 'sdk'
+    default: 'iphonesimulator'
+    type: string
+
+  - name: 'signingOption'
+    default: 'default'
+    type: string
+
+  - name: 'packageApp'
+    default: false
+    type: boolean
+
+  - name: 'configuration'
+    default: 'Debug'
+    type: string
+
+steps:
+- task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
+
+- task: Xcode@5
+  displayName: 'Compiling...'
+  inputs:
+    actions: 'build'
+    xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
+    scheme: 'ADCIOSVisualizer'
+    xcodeVersion: '12'
+    packageApp: ${{ parameters.packageApp }}
+    signingOption: ${{ parameters.signingOption }}
+    sdk: ${{ parameters.sdk }}
+    configuration: ${{ parameters.configuration }}
+    destinationPlatformOption: 'iOS'
+    destinationSimulators: 'iPhone 12'
