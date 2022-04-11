@@ -22,6 +22,7 @@ command :  python -m commands.generate_synthetic_dataset \
 
 """
 import argparse
+import os
 from typing import Any, Sequence, List
 import cv2
 from mystique import config
@@ -85,7 +86,6 @@ def get_synthetic_image_properties(
 def main(
     card_elements_dir_path=None,
     number_of_elements=None,
-    background_colour=None,
     bulk_img: int = None,
     save_as_zip: bool = None,
 ) -> None:
@@ -108,7 +108,7 @@ def main(
             synthetic_image_property["padded_image"],
         )
         image_with_canvas = synthetic.add_background_colour_to_generated_image(
-            synthetic_image_property["generated_image"], background_colour
+            synthetic_image_property["generated_image"]
         )
         save_img_and_annotations(image_with_canvas, annotation_xml)
     if save_as_zip:
@@ -134,12 +134,6 @@ def set_args() -> Any:
         "--card_elements_dir_path",
         default=config.ELEMENTS_DIR,
         help="Enter Card elements directory path",
-    )
-    parser.add_argument(
-        "-c",
-        "--bg_color",
-        default=config.BACKGROUND_COLOR,
-        help="Enter the background color desired for the generated image",
     )
     parser.add_argument(
         "-e",
@@ -169,10 +163,18 @@ def set_args() -> Any:
 if __name__ == "__main__":
     parser_object = set_args()
     args = parser_object.parse_args()
+
+    # Create data-set directory if not available
+    if not os.path.exists(config.GENERATED_ANNOTATION_DIR):
+        os.makedirs(config.GENERATED_ANNOTATION_DIR)
+    if not os.path.exists(config.GENERATED_ZIP_DIR):
+        os.makedirs(config.GENERATED_ZIP_DIR)
+    if not os.path.exists(config.GENERATED_IMG_DIR):
+        os.makedirs(config.GENERATED_IMG_DIR)
+
     main(
         card_elements_dir_path=args.card_elements_dir_path,
         number_of_elements=args.number_of_elements,
-        background_colour=args.bg_color,
         bulk_img=args.bulk_img,
         save_as_zip=args.save_as_zip,
     )

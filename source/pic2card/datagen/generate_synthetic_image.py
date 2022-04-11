@@ -152,33 +152,44 @@ def generate_image(reshaped_image_elements: List[Sequence]) -> List[Sequence]:
 
 
 def add_background_colour_to_generated_image(
-    generated_image: Any, background_colour: str
+    generated_image: Any,
 ) -> List[Sequence]:
     """
     Returns an image with desired color added to background of the image
     generated
 
     @ param generated_image: the image generated
-    @ param background_colour: the default or selected colour
-    @ return: overlayed_img
+    @ return: overlay_img
     """
     height, width, channels = generated_image.shape
     # creating a canvas with white background
     canvas = np.ones((height, width, channels), np.uint8) * 255
-    canvas[:] = config.CANVAS_COLOR[background_colour]
-    foreground_gray_image = cv2.cvtColor(generated_image, cv2.COLOR_RGB2GRAY)
-    mask = cv2.adaptiveThreshold(
-        src=foreground_gray_image,
-        maxValue=255,
-        adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        thresholdType=cv2.THRESH_BINARY,
-        blockSize=199,
-        C=5,
+
+    # Choose any random background color value from the config
+    canvas[:] = random.choice(list(config.CANVAS_COLOR.values()))
+
+    # Generate the mask of the generated foreground image with the pixel range of Light Grey to White
+    lower_white = np.array([220, 220, 220], dtype=np.uint8)
+    upper_white = np.array([255, 255, 255], dtype=np.uint8)
+    mask = cv2.inRange(generated_image, lower_white, upper_white)
+    # Erase the small white portions in the resulting mask
+    mask = cv2.morphologyEx(
+        mask,
+        cv2.MORPH_OPEN,
+        cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)),
     )
+
+    # Invert the mask
     mask_inv = cv2.bitwise_not(mask)
+
+    # Bitwise add the background canvas with mask to add the background color to the mask black regions
     background = cv2.bitwise_and(canvas, canvas, mask=mask)
+
+    # Bitwise add the generated foreground image to the inverted mask to add the foreground objects to the black
+    # background
     foreground = cv2.bitwise_and(
         generated_image, generated_image, mask=mask_inv
     )
-    overlayed_img = cv2.add(foreground, background)
-    return overlayed_img
+    # Now add the generated background and foreground images to get the overlay image
+    overlay_img = cv2.add(foreground, background)
+    return overlay_img

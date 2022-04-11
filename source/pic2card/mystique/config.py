@@ -150,12 +150,14 @@ LINE_ALIGNMENT_THRESHOLD = {"minimum": 0.20, "maximum": 0.75}
 MULTI_PROC = True
 
 # synthetic module config values
+# CONFIG IN BGR - MODE
 CANVAS_COLOR = {
     "WHITE": [255, 255, 255],
     "GREY": [211, 211, 211],
-    "CYAN": [238, 238, 175],
     "ROSE": [255, 228, 255],
-    "GOLD": [0, 255, 255],
+    "BEIGE": [220, 245, 245],
+    "CYAN": [238, 238, 175],
+    "LAVENDER": [250, 230, 230],
 }
 BACKGROUND_COLOR = "WHITE"
 ELEMENT_COUNT_THRESHOLD = 5
