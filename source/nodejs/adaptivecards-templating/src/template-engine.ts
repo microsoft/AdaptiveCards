@@ -56,25 +56,24 @@ class EvaluationContext {
         let version = pkg.version;
         let versionSplit = version.split('.');
 
-        let build = "";
-
+        let build;
         if (versionSplit[3]) {
             build = versionSplit[3];
         }
 
         let patchSplit = versionSplit[2].split('-');
-        let suffix = "";
 
+        let suffix;
         if (patchSplit[1]) {
             suffix = patchSplit[1];
         }
 
         let versionJson = {
-            "major": versionSplit[0],
-            "minor": versionSplit[1],
-            "patch": patchSplit[0],
+            "major": parseInt(versionSplit[0]),
+            "minor": parseInt(versionSplit[1]),
+            "patch": parseInt(patchSplit[0]),
             "suffix": suffix,
-            "build": build
+            "build": parseInt(build)
         }
 
         return versionJson;
