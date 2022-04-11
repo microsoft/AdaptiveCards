@@ -3,16 +3,19 @@
 import * as AEL from "adaptive-expressions";
 
 class EvaluationContext {
-    private static readonly _reservedFields = ["$data", "$when", "$root", "$index"];
+    private static readonly _reservedFields = ["$data", "$when", "$root", "$index", "$_acTemplateVersion"];
 
     private _stateStack: Array<{ $data: any, $index: any }> = [];
     private _$data: any;
 
     $root: any;
     $index: number;
+    $_acTemplateVersion: any;
 
     constructor(context?: IEvaluationContext) {
         if (context !== undefined) {
+            this.$_acTemplateVersion = this.generateVersionJson();
+
             this.$root = context.$root;
         }
     }
@@ -47,6 +50,35 @@ class EvaluationContext {
     set $data(value: any) {
         this._$data = value;
     }
+
+    generateVersionJson() {
+        let pkg = require('./../package.json');
+        let version = pkg.version;
+        let versionSplit = version.split('.');
+
+        let build = "";
+
+        if (versionSplit[3]) {
+            build = versionSplit[3];
+        }
+
+        let patchSplit = versionSplit[2].split('-');
+        let suffix = "";
+
+        if (patchSplit[1]) {
+            suffix = patchSplit[1];
+        }
+
+        let versionJson = {
+            "major": versionSplit[0],
+            "minor": versionSplit[1],
+            "patch": patchSplit[0],
+            "suffix": suffix,
+            "build": build
+        }
+
+        return versionJson;
+    }
 }
 
 class TemplateObjectMemory implements AEL.MemoryInterface {
@@ -55,6 +87,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     $root: any;
     $data: any;
     $index: any;
+    $_acTemplateVersion: any;
 
     constructor() {
         this._memory = new AEL.SimpleObjectMemory(this);
@@ -157,6 +190,7 @@ export class Template {
         memory.$root = context.$root;
         memory.$data = context.$data;
         memory.$index = context.$index;
+        memory.$_acTemplateVersion = context.$_acTemplateVersion;
 
         let options: AEL.Options | undefined = undefined;
 
