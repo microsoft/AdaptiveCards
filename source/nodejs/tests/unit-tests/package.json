@@ -20,6 +20,6 @@
 		"adaptivecards": "^2.10.0",
 		"monaco-editor": "^0.29.1",
 		"vkbeautify": "^0.99.3",
-		"adaptivecards-templating": "^2.4.0-alpha.0"
+		"adaptivecards-templating": "^2.3.0-alpha.0"
 	}
 }
