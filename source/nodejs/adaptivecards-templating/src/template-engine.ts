@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as AEL from "adaptive-expressions";
+const pkg = require('./../package.json');
 
 class EvaluationContext {
     private static readonly _reservedFields = ["$data", "$when", "$root", "$index", "$_acTemplateVersion"];
@@ -52,31 +53,16 @@ class EvaluationContext {
     }
 
     generateVersionJson() {
-        let pkg = require('./../package.json');
-        let version = pkg.version;
-        let versionSplit = version.split('.');
+        const version = pkg.version;
+        const versionSplit = version.split('.');
+        const patchSplit = versionSplit[2].split('-');
 
-        let build;
-        if (versionSplit[3]) {
-            build = versionSplit[3];
-        }
-
-        let patchSplit = versionSplit[2].split('-');
-
-        let suffix;
-        if (patchSplit[1]) {
-            suffix = patchSplit[1];
-        }
-
-        let versionJson = {
+        return {
             "major": parseInt(versionSplit[0]),
             "minor": parseInt(versionSplit[1]),
             "patch": parseInt(patchSplit[0]),
-            "suffix": suffix,
-            "build": parseInt(build)
+            "suffix": patchSplit[1] || "",
         }
-
-        return versionJson;
     }
 }
 
