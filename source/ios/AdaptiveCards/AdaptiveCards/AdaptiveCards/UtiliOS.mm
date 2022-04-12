@@ -683,11 +683,12 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
 
     if (markDownParser->HasHtmlTags() && ([parsedString containsString:@"\n"] || [parsedString containsString:@"\r"])) {
-        parsedString = [parsedString stringByReplacingOccurrencesOfString:@"[\\n\\r]" withString:@"<br>"
+        parsedString = [parsedString stringByReplacingOccurrencesOfString:@"[\\n\\r]"
+                                                               withString:@"<br>"
                                                                   options:NSRegularExpressionSearch
                                                                     range:NSMakeRange(0, [parsedString length])];
     }
-    
+
     NSDictionary *data = nil;
 
     FontType sharedFontType = textProperties.GetFontType().value_or(FontType::Default);
