@@ -57,7 +57,11 @@ class EvaluationContext {
     generateVersionJson() {
         const version = pkg.version;
         const versionSplit = version.split('.');
-        const patchSplit = versionSplit[2].split('-');
+
+        let patchSplit = [];
+        if (versionSplit[2]) {
+            patchSplit = versionSplit[2].split('-');
+        }
 
         return {
             "major": parseInt(versionSplit[0]),

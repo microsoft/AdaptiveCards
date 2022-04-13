@@ -147,6 +147,11 @@ describe("Test Templating Library", () => {
             loadFile("template-test-resources/complex-template-host.data.json"),
             loadFile("template-test-resources/complex-template-host.host.json"));
     });
+
+    it("TemplatingVersion", () => {
+        runTest(loadFile("template-test-resources/version-template.json"),
+            loadFile("template-test-resources/version-template.output.json"));           
+    });    
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
