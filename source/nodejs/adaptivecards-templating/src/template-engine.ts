@@ -3,17 +3,19 @@
 import * as AEL from "adaptive-expressions";
 
 class EvaluationContext {
-    private static readonly _reservedFields = ["$data", "$when", "$root", "$index"];
+    private static readonly _reservedFields = ["$data", "$when", "$root", "$index", "$host"];
 
     private _stateStack: Array<{ $data: any, $index: any }> = [];
     private _$data: any;
 
     $root: any;
+    $host: any;
     $index: number;
 
     constructor(context?: IEvaluationContext) {
         if (context !== undefined) {
             this.$root = context.$root;
+            this.$host = context.$host;
         }
     }
 
@@ -55,6 +57,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     $root: any;
     $data: any;
     $index: any;
+    $host: any;
 
     constructor() {
         this._memory = new AEL.SimpleObjectMemory(this);
@@ -84,24 +87,24 @@ export class GlobalSettings {
      * and that field is undefined or null. By default, expression evaluation will substitute an undefined
      * field with its binding expression (e.g. `${field}`). This callback makes it possible to customize that
      * behavior.
-     * 
+     *
      * **Example**
      * Given this data object:
-     * 
+     *
      * ```json
      * {
      *     firstName: "David"
      * }
      * ```
-     * 
+     *
      * The expression `${firstName} ${lastName}` will evaluate to "David ${lastName}" because the `lastName`
      * field is undefined.
-     * 
+     *
      * Now let's set the callback:
      * ```typescript
      * GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<undefined value>"; }
      * ```
-     * 
+     *
      * With that, the above expression will evaluate to "David &lt;undefined value&gt;"
      */
     static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
@@ -115,7 +118,12 @@ export interface IEvaluationContext {
      * The root data object the template will bind to. Expressions that refer to $root in the template payload
      * map to this field. Initially, $data also maps to $root.
      */
-    $root: any
+    $root?: any;
+    /**
+     * The host data object the template will bind to. Expressions that refer to $host in the template payload
+     * map to this field. This allows a host process to supply additional context to the template.
+     */
+    $host?: any;
 }
 
 /**
@@ -157,6 +165,7 @@ export class Template {
         memory.$root = context.$root;
         memory.$data = context.$data;
         memory.$index = context.$index;
+        memory.$host = context.$host;
 
         let options: AEL.Options | undefined = undefined;
 
@@ -166,9 +175,9 @@ export class Template {
                 let substitutionValue: string | undefined = undefined;
 
                 if (GlobalSettings.getUndefinedFieldValueSubstitutionString) {
-                    substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);    
+                    substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);
                 }
-        
+
                 return substitutionValue ? substitutionValue : "${" + path + "}";
             }
         }
@@ -182,7 +191,7 @@ export class Template {
 
             for (let childExpression of expression.children) {
                 let evaluationResult: { value: any; error: string };
-                
+
                 try {
                     evaluationResult = childExpression.tryEvaluate(memory, options);
                 }
@@ -203,13 +212,13 @@ export class Template {
 
             return { value: result, error: undefined };
         }
-        
+
         return expression.tryEvaluate(memory, options);
     }
 
     /**
      * Parses an interpolated string into an Expression object ready to evaluate.
-     * 
+     *
      * @param interpolatedString The interpolated string to parse. Example: "Hello ${name}"
      * @returns An Expression object if the provided interpolated string contained at least one expression (e.g. "${expression}"); the original string otherwise.
      */
@@ -262,7 +271,7 @@ export class Template {
 
     /**
      * Tries to evaluate the provided expression using the provided context.
-     * 
+     *
      * @param expression The expression to evaluate.
      * @param context The context (data) used to evaluate the expression.
      * @param allowSubstitutions Indicates if the expression evaluator should substitute undefined value with a default
@@ -374,7 +383,7 @@ export class Template {
                 if (when instanceof AEL.Expression) {
                     let evaluationResult = Template.internalTryEvaluateExpression(when, this._context, false);
                     let whenValue: boolean = false;
-                    
+
                     // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
                     if (!evaluationResult.error) {
                         whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
@@ -412,8 +421,8 @@ export class Template {
      * Initializes a new Template instance based on the provided payload.
      * Once created, the instance can be bound to different data objects
      * in a loop.
-     * 
-     * @param payload The template payload.  
+     *
+     * @param payload The template payload.
      */
     constructor(payload: any) {
         this._preparedPayload = Template.prepare(payload);
@@ -423,9 +432,9 @@ export class Template {
      * Expands the template using the provided context. Template expansion involves
      * evaluating the expressions used in the original template payload, as well as
      * repeating (expanding) parts of that payload that are bound to arrays.
-     * 
+     *
      * Example:
-     * 
+     *
      * ```typescript
      * let context = {
      *     $root: {
@@ -437,7 +446,7 @@ export class Template {
      *         ]
      *     }
      * }
-     * 
+     *
      * let templatePayload = {
      *     type: "AdaptiveCard",
      *     version: "1.2",
@@ -453,14 +462,14 @@ export class Template {
      *         }
      *     ]
      * }
-     * 
+     *
      * let template = new Template(templatePayload);
-     * 
+     *
      * let expandedTemplate = template.expand(context);
      * ```
-     * 
+     *
      * With the above code, the value of `expandedTemplate` will be
-     * 
+     *
      * ```json
      * {
      *     type: "AdaptiveCard",
@@ -481,7 +490,7 @@ export class Template {
      *     ]
      * }
      * ```
-     * 
+     *
      * @param context The context to bind the template to.
      * @returns A value representing the expanded template. The type of that value
      *   is dependent on the type of the original template payload passed to the constructor.
