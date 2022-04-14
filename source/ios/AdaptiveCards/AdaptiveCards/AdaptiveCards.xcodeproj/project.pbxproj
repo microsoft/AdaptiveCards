@@ -253,6 +253,11 @@
 		7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */; };
 		8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8404BA8C226697800091A0AD /* FeatureRegistration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8404BA8D226697800091A0AD /* FeatureRegistration.cpp */; };
+		84AE295827FFA26F00D01B82 /* ContentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84AE295327FFA26F00D01B82 /* ContentSource.cpp */; };
+		84AE295927FFA26F00D01B82 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84AE295427FFA26F00D01B82 /* CMakeLists.txt */; };
+		84AE295A27FFA26F00D01B82 /* ContentSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 84AE295527FFA26F00D01B82 /* ContentSource.h */; };
+		84AE295B27FFA26F00D01B82 /* CaptionSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 84AE295627FFA26F00D01B82 /* CaptionSource.h */; };
+		84AE295C27FFA26F00D01B82 /* CaptionSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84AE295727FFA26F00D01B82 /* CaptionSource.cpp */; };
 		C8DEDF39220CDEB00001AAED /* ActionSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8DEDF37220CDEB00001AAED /* ActionSet.cpp */; };
 		C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DEDF38220CDEB00001AAED /* ActionSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -721,6 +726,11 @@
 		7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BackgroundImage.cpp; path = ../../../../shared/cpp/ObjectModel/BackgroundImage.cpp; sourceTree = "<group>"; };
 		8404BA8C226697800091A0AD /* FeatureRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureRegistration.h; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.h; sourceTree = "<group>"; };
 		8404BA8D226697800091A0AD /* FeatureRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FeatureRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.cpp; sourceTree = "<group>"; };
+		84AE295327FFA26F00D01B82 /* ContentSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContentSource.cpp; path = ../../../../shared/cpp/ObjectModel/ContentSource.cpp; sourceTree = "<group>"; };
+		84AE295427FFA26F00D01B82 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../../../../shared/cpp/ObjectModel/CMakeLists.txt; sourceTree = "<group>"; };
+		84AE295527FFA26F00D01B82 /* ContentSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentSource.h; path = ../../../../shared/cpp/ObjectModel/ContentSource.h; sourceTree = "<group>"; };
+		84AE295627FFA26F00D01B82 /* CaptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptionSource.h; path = ../../../../shared/cpp/ObjectModel/CaptionSource.h; sourceTree = "<group>"; };
+		84AE295727FFA26F00D01B82 /* CaptionSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptionSource.cpp; path = ../../../../shared/cpp/ObjectModel/CaptionSource.cpp; sourceTree = "<group>"; };
 		92C9540BDB87B09349BF0018 /* Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1BFE0C10A542B2DABBE89DC /* Pods-AdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-AdaptiveCardsTests/Pods-AdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8DEDF37220CDEB00001AAED /* ActionSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionSet.cpp; path = ../../../../shared/cpp/ObjectModel/ActionSet.cpp; sourceTree = "<group>"; };
@@ -1303,6 +1313,11 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				84AE295727FFA26F00D01B82 /* CaptionSource.cpp */,
+				84AE295627FFA26F00D01B82 /* CaptionSource.h */,
+				84AE295427FFA26F00D01B82 /* CMakeLists.txt */,
+				84AE295327FFA26F00D01B82 /* ContentSource.cpp */,
+				84AE295527FFA26F00D01B82 /* ContentSource.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -1635,6 +1650,7 @@
 				F44873201EE2261F00FCAFAE /* ShowCardAction.h in Headers */,
 				7EF8879D21F14CDD00BAFF02 /* BackgroundImage.h in Headers */,
 				F448731B1EE2261F00FCAFAE /* OpenUrlAction.h in Headers */,
+				84AE295A27FFA26F00D01B82 /* ContentSource.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
@@ -1797,6 +1813,7 @@
 				6BFF23F12714C0F000183C59 /* ACOAuthenticationPrivate.h in Headers */,
 				6BFF23EF2714C0F000183C59 /* ACRInputLabelViewPrivate.h in Headers */,
 				6BFF23F42714C0F000183C59 /* ACOParseContextPrivate.h in Headers */,
+				84AE295B27FFA26F00D01B82 /* CaptionSource.h in Headers */,
 				6BFF23EE2714C0F000183C59 /* ACOBaseCardElementPrivate.h in Headers */,
 				6BFF23FD2714C0F000183C59 /* ACOAuthCardButtonPrivate.h in Headers */,
 				6BFF23F72714C0F000183C59 /* ACRRegistrationPrivate.h in Headers */,
@@ -1914,6 +1931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B8C768626461F1A009548FA /* checked.png in Resources */,
+				84AE295927FFA26F00D01B82 /* CMakeLists.txt in Resources */,
 				6B8C768D26461F1A009548FA /* ACRPickerView.xib in Resources */,
 				6B8C769B26462249009548FA /* ACRTextNumberField.xib in Resources */,
 				6B8C769326461F1A009548FA /* ACRTextField.xib in Resources */,
@@ -2183,6 +2201,7 @@
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
 				6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */,
 				7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */,
+				84AE295827FFA26F00D01B82 /* ContentSource.cpp in Sources */,
 				F42E517A1FEC3840008F9642 /* MarkDownParser.cpp in Sources */,
 				6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */,
 				6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */,
@@ -2211,6 +2230,7 @@
 				F4C1F5EC1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.mm in Sources */,
 				F4D402141F7DAC2C00D0356B /* ACOHostConfigParseResult.mm in Sources */,
 				6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */,
+				84AE295C27FFA26F00D01B82 /* CaptionSource.cpp in Sources */,
 				F495FC0A2022A18F0093D4DE /* ACRChoiceSetViewDataSource.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
