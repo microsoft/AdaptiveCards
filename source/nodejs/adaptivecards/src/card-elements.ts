@@ -4276,6 +4276,10 @@ export class DateInput extends Input {
         };
 
         if (this.defaultValue) {
+
+            if (this.defaultValue === "today") {
+                this.defaultValue = this.currentDate();
+            }
             this._dateInputElement.value = this.defaultValue;
         }
 
@@ -4316,6 +4320,22 @@ export class DateInput extends Input {
 
     get value(): string | undefined {
         return this._dateInputElement ? this._dateInputElement.value : undefined;
+    }
+
+    currentDate(): string {
+        const currDate = new Date();
+        let month = (currDate.getMonth() + 1).toString();
+        let day = currDate.getDate().toString();
+
+        if (month.length == 1) {
+            month = "0" + month;
+        }
+
+        if (day.length == 1) {
+            day = "0" + day;
+        }
+
+        return currDate.getFullYear() + "-" + month + "-" + day;
     }
 }
 
