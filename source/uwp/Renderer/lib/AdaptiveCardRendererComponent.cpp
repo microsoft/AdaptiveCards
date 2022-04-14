@@ -171,6 +171,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         auto actionSentimentResourceDictionary =
             winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
+        m_actionSentimentResourceDictionary.MergedDictionaries().Append(winrt::XamlControlsResources());
     }
 
     void AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
