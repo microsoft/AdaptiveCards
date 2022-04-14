@@ -189,7 +189,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
         if (actionSentiment.empty() || actionSentiment == L"default")
         {
-            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement);
+            if (auto style = TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action").try_as<winrt::Style>())
+            {
+                buttonFrameworkElement.Style(style);
+            }
+            else if (auto defaultStyle =
+                         TryGetResourceFromResourceDictionaries(resourceDictionary, L"DefaultButtonStyle").try_as<winrt::Style>())
+            {
+                // fallback to default WinUI styling
+                buttonFrameworkElement.Style(defaultStyle);
+            }
         }
         else if (actionSentiment == L"positive")
         {

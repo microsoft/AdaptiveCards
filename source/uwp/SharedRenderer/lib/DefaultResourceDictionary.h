@@ -82,112 +82,119 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
     <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.Foreground\" Color=\"#FF8B0000\" /> \
     <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.MouseOver.Foreground\" Color=\"#FFCB4040\" /> \
 \
-    <Style x:Key=\"PositiveActionDefaultStyle\" TargetType=\"Button\"> \
+    <Style x:Key=\"PositiveActionDefaultStyle\" TargetType=\"Button\" BasedOn=\"{StaticResource DefaultButtonStyle}\"> \
         <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.Foreground}\" /> \
         <Setter Property=\"Background\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.Static.Background}\" /> \
         <Setter Property=\"Template\"> \
-            <Setter.Value> \
-                <ControlTemplate TargetType=\"Button\"> \
-                    <Grid x:Name=\"RootGrid\" Background=\"{ThemeResource Adaptive.Action.Positive.Button.Static.Background}\"> \
-                        <VisualStateManager.VisualStateGroups> \
-                            <VisualStateGroup x:Name=\"CommonStates\"> \
-                                <VisualState x:Name=\"Normal\"> \
-                                    <Storyboard> \
-                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                    </Storyboard> \
-                                </VisualState> \
-                                <VisualState x:Name=\"PointerOver\"> \
-                                    <Storyboard> \
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
-                                        </ObjectAnimationUsingKeyFrames> \
-                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                    </Storyboard> \
-                                </VisualState> \
-                                <VisualState x:Name=\"Pressed\"> \
-                                    <Storyboard> \
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
-                                        </ObjectAnimationUsingKeyFrames> \
-                                        <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                    </Storyboard> \
-                                </VisualState> \
-                                <VisualState x:Name=\"Disabled\"> \
-                                    <Storyboard> \
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
-                                        </ObjectAnimationUsingKeyFrames> \
-                                    </Storyboard> \
-                                </VisualState> \
-                            </VisualStateGroup> \
-                        </VisualStateManager.VisualStateGroups> \
-                        <ContentPresenter x:Name=\"ContentPresenter\" \
-                            BorderBrush=\"{TemplateBinding BorderBrush}\" \
-                            BorderThickness=\"{TemplateBinding BorderThickness}\" \
-                            Content=\"{TemplateBinding Content}\" \
-                            ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
-                            ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
-                            Padding=\"{TemplateBinding Padding}\" \
-                            HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
-                            VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
-                            AutomationProperties.AccessibilityView=\"Raw\" /> \
-                    </Grid> \
-                </ControlTemplate> \
-            </Setter.Value> \
-        </Setter> \
-     </Style> \
-"
-                                                          "<Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\"> \
-        <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.Foreground}\" /> \
-            <Setter Property=\"Template\"> \
                 <Setter.Value> \
                     <ControlTemplate TargetType=\"Button\"> \
-                        <Grid x:Name=\"RootGrid\" Background=\"{TemplateBinding Background}\"> \
+                        <ContentPresenter x:Name=\"ContentPresenter\" AutomationProperties.AccessibilityView=\"Raw\" Background=\"{TemplateBinding Background}\" Foreground=\"{TemplateBinding Foreground}\" BackgroundSizing=\"{TemplateBinding BackgroundSizing}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" ContentTemplate=\"{TemplateBinding ContentTemplate}\" CornerRadius=\"{TemplateBinding CornerRadius}\" Content=\"{TemplateBinding Content}\" ContentTransitions=\"{TemplateBinding ContentTransitions}\" HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" Padding=\"{TemplateBinding Padding}\" VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\"> \
                             <VisualStateManager.VisualStateGroups> \
                                 <VisualStateGroup x:Name=\"CommonStates\"> \
                                     <VisualState x:Name=\"Normal\"> \
                                         <Storyboard> \
-                                            <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                            <PointerUpThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
                                         </Storyboard> \
                                     </VisualState> \
                                     <VisualState x:Name=\"PointerOver\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\"/> \
                                             </ObjectAnimationUsingKeyFrames> \
-                                            <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushPointerOver}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <PointerUpThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
                                         </Storyboard> \
                                     </VisualState> \
                                     <VisualState x:Name=\"Pressed\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\"/> \
                                             </ObjectAnimationUsingKeyFrames> \
-                                            <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushPressed}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <PointerDownThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
                                         </Storyboard> \
                                     </VisualState> \
                                     <VisualState x:Name=\"Disabled\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushDisabled}\"/> \
                                             </ObjectAnimationUsingKeyFrames> \
                                         </Storyboard> \
                                     </VisualState> \
                                 </VisualStateGroup> \
                             </VisualStateManager.VisualStateGroups> \
-                        <ContentPresenter x:Name=\"ContentPresenter\" \
-                            BorderBrush=\"{TemplateBinding BorderBrush}\" \
-                            BorderThickness=\"{TemplateBinding BorderThickness}\" \
-                            Content=\"{TemplateBinding Content}\" \
-                            ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
-                            ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
-                            Padding=\"{TemplateBinding Padding}\" \
-                            HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
-                            VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
-                            AutomationProperties.AccessibilityView=\"Raw\" /> \
-                    </Grid> \
-                </ControlTemplate> \
-            </Setter.Value> \
-        </Setter> \
+                        </ContentPresenter> \
+                    </ControlTemplate> \
+                </Setter.Value> \
+            </Setter> \
+     </Style> \
+"
+                                                          "<Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\" BasedOn=\"{StaticResource DefaultButtonStyle}\"> \
+        <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.Foreground}\" /> \
+            <Setter Property=\"Template\"> \
+                <Setter.Value> \
+                    <ControlTemplate TargetType=\"Button\"> \
+                        <ContentPresenter x:Name=\"ContentPresenter\" AutomationProperties.AccessibilityView=\"Raw\" Background=\"{TemplateBinding Background}\" Foreground=\"{TemplateBinding Foreground}\" BackgroundSizing=\"{TemplateBinding BackgroundSizing}\" BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"{TemplateBinding BorderThickness}\" ContentTemplate=\"{TemplateBinding ContentTemplate}\" CornerRadius=\"{TemplateBinding CornerRadius}\" Content=\"{TemplateBinding Content}\" ContentTransitions=\"{TemplateBinding ContentTransitions}\" HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" Padding=\"{TemplateBinding Padding}\" VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\"> \
+                            <VisualStateManager.VisualStateGroups> \
+                                <VisualStateGroup x:Name=\"CommonStates\"> \
+                                    <VisualState x:Name=\"Normal\"> \
+                                        <Storyboard> \
+                                            <PointerUpThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
+                                        </Storyboard> \
+                                    </VisualState> \
+                                    <VisualState x:Name=\"PointerOver\"> \
+                                        <Storyboard> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBackgroundPointerOver}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushPointerOver}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <PointerUpThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
+                                        </Storyboard> \
+                                    </VisualState> \
+                                    <VisualState x:Name=\"Pressed\"> \
+                                        <Storyboard> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBackgroundPressed}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushPressed}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <PointerDownThemeAnimation Storyboard.TargetName=\"ContentPresenter\"/> \
+                                        </Storyboard> \
+                                    </VisualState> \
+                                    <VisualState x:Name=\"Disabled\"> \
+                                        <Storyboard> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Background\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBackgroundDisabled}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"BorderBrush\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource ButtonBorderBrushDisabled}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\"/> \
+                                            </ObjectAnimationUsingKeyFrames> \
+                                        </Storyboard> \
+                                    </VisualState> \
+                                </VisualStateGroup> \
+                            </VisualStateManager.VisualStateGroups> \
+                        </ContentPresenter> \
+                    </ControlTemplate> \
+                </Setter.Value> \
+            </Setter> \
      </Style> \
 </ResourceDictionary>";
