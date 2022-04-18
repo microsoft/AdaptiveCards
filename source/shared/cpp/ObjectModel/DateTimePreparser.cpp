@@ -298,22 +298,39 @@ bool DateTimePreparser::TryParseSimpleTime(const std::string& string, unsigned i
 // Parses a date of the form YYYY-MM-DD
 bool DateTimePreparser::TryParseSimpleDate(const std::string& string, unsigned int& year, unsigned int& month, unsigned int& day)
 {
-    std::smatch subMatches;
-    static const std::regex dateMatch(R"regex(^(\d{4})-(\d{2})-(\d{2})$)regex");
-    if (std::regex_match(string, subMatches, dateMatch))
+    if (string == "today")
     {
-        if (subMatches[1].matched && subMatches[2].matched && subMatches[3].matched)
-        {
-            unsigned int parsedYear = std::stoul(subMatches[1]);
-            unsigned int parsedMonth = std::stoul(subMatches[2]);
-            unsigned int parsedDay = std::stoul(subMatches[3]);
+        const std::time_t currentTime = time(nullptr);
+        struct tm timeStruct;
 
-            if (IsValidDate(parsedYear, parsedMonth, parsedDay))
+        localtime_s(&timeStruct, &currentTime);
+
+        if (IsValidDate(timeStruct.tm_year + 1900, timeStruct.tm_mon + 1, timeStruct.tm_mday)) {
+            year = timeStruct.tm_year + 1900;
+            month = timeStruct.tm_mon + 1;
+            day = timeStruct.tm_mday;
+            return true;
+        }
+    }
+    else
+    {
+        std::smatch subMatches;
+        static const std::regex dateMatch(R"regex(^(\d{4})-(\d{2})-(\d{2})$)regex");
+        if (std::regex_match(string, subMatches, dateMatch))
+        {
+            if (subMatches[1].matched && subMatches[2].matched && subMatches[3].matched)
             {
-                year = parsedYear;
-                month = parsedMonth;
-                day = parsedDay;
-                return true;
+                unsigned int parsedYear = std::stoul(subMatches[1]);
+                unsigned int parsedMonth = std::stoul(subMatches[2]);
+                unsigned int parsedDay = std::stoul(subMatches[3]);
+
+                if (IsValidDate(parsedYear, parsedMonth, parsedDay))
+                {
+                    year = parsedYear;
+                    month = parsedMonth;
+                    day = parsedDay;
+                    return true;
+                }
             }
         }
     }
