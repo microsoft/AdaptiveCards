@@ -55,12 +55,14 @@ class EvaluationContext {
     }
 
     generateVersionJson() {
+        // Example version: 2.3.0-alpha
         const version = pkg.version;
         const versionSplit = version.split('.');
 
         let patchSplit = [];
-        if (versionSplit[2]) {
-            patchSplit = versionSplit[2].split('-');
+        const patchIndex = 2;
+        if (versionSplit[patchIndex]) {
+            patchSplit = versionSplit[patchIndex].split('-');
         }
 
         return {
