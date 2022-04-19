@@ -10,6 +10,7 @@ $font-family: 'Segoe UI', sans-serif;
     .ac-container, .ac-columnSet {
         &.ac-selectable {
             padding: $selectable-padding;
+            cursor: pointer;
 
             &:hover {
                 background-color: $selectable-hover-background !important;
@@ -149,7 +150,7 @@ $font-family: 'Segoe UI', sans-serif;
         text-overflow: ellipsis;
         text-align: center;
         vertical-align: middle;
-        cursor: default;
+        cursor: pointer;
         font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;

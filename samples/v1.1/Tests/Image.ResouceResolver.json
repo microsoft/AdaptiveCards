@@ -5,11 +5,13 @@
 		{
 			"type": "Image",
 			"url": "symbol:Adaptive10",
+			"altText": "Adaptive cards 1.0 logo",
 			"size": "auto"
 		},
 		{
 			"type": "Image",
 			"url": "symbol:Adaptive10",
+			"altText": "Adaptive cards 1.0 logo",
 			"size": "small"
 		}
 	]
