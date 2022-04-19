@@ -36,12 +36,14 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
              ../../shared/cpp/ObjectModel/BaseElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
+             ../../shared/cpp/ObjectModel/CaptionSource.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
              ../../shared/cpp/ObjectModel/CollectionCoreElement.cpp
              ../../shared/cpp/ObjectModel/Column.cpp
              ../../shared/cpp/ObjectModel/ColumnSet.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
+             ../../shared/cpp/ObjectModel/ContentSource.cpp
              ../../shared/cpp/ObjectModel/DateInput.cpp
              ../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp
              ../../shared/cpp/ObjectModel/DateTimePreparser.cpp

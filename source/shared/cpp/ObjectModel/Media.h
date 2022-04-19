@@ -6,6 +6,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 #include "MediaSource.h"
+#include "CaptionSource.h"
 
 namespace AdaptiveCards
 {
@@ -30,6 +31,7 @@ public:
     void SetAltText(const std::string& value);
 
     std::vector<std::shared_ptr<MediaSource>>& GetSources();
+    std::vector<std::shared_ptr<CaptionSource>>& GetCaptionSources();
 
     void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -37,6 +39,7 @@ private:
     std::string m_poster;
     std::string m_altText;
     std::vector<std::shared_ptr<MediaSource>> m_sources;
+    std::vector<std::shared_ptr<CaptionSource>> m_captionSources;
 
     void PopulateKnownPropertiesSet();
 };

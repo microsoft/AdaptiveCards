@@ -8,17 +8,17 @@
 
 package io.adaptivecards.objectmodel;
 
-public class MediaSource extends ContentSource {
+public class CaptionSource extends ContentSource {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
-  protected MediaSource(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.MediaSource_SWIGSmartPtrUpcast(cPtr), true);
+  protected CaptionSource(long cPtr, boolean cMemoryOwn) {
+    super(AdaptiveCardObjectModelJNI.CaptionSource_SWIGSmartPtrUpcast(cPtr), true);
     swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(MediaSource obj) {
+  protected static long getCPtr(CaptionSource obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -36,15 +36,27 @@ public class MediaSource extends ContentSource {
     if (swigCPtr != 0) {
       if (swigCMemOwnDerived) {
         swigCMemOwnDerived = false;
-        AdaptiveCardObjectModelJNI.delete_MediaSource(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_CaptionSource(swigCPtr);
       }
       swigCPtr = 0;
     }
     super.delete();
   }
 
-  public MediaSource() {
-    this(AdaptiveCardObjectModelJNI.new_MediaSource(), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.CaptionSource_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
+  public String GetLabel() {
+    return AdaptiveCardObjectModelJNI.CaptionSource_GetLabel(swigCPtr, this);
+  }
+
+  public void SetLabel(String value) {
+    AdaptiveCardObjectModelJNI.CaptionSource_SetLabel(swigCPtr, this, value);
+  }
+
+  public CaptionSource() {
+    this(AdaptiveCardObjectModelJNI.new_CaptionSource(), true);
   }
 
 }
