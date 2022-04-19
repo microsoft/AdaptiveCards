@@ -75,6 +75,10 @@ public class Media extends BaseCardElement {
     return new MediaSourceVector(AdaptiveCardObjectModelJNI.Media_GetSources(swigCPtr, this), false);
   }
 
+  public CaptionSourceVector GetCaptionSources() {
+    return new CaptionSourceVector(AdaptiveCardObjectModelJNI.Media_GetCaptionSources(swigCPtr, this), false);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Media_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

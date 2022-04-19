@@ -23,6 +23,8 @@
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Media.Core.h>
+#include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Data.Xml.Dom.h>
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
 #include <winrt/Windows.UI.Text.h>
@@ -32,6 +34,8 @@ namespace winrt
 	using namespace ::winrt::Windows::Foundation;
     using namespace ::winrt::Windows::Foundation::Collections;
     using namespace ::winrt::Windows::Foundation::Numerics;
+    using namespace ::winrt::Windows::Media::Core;
+    using namespace ::winrt::Windows::Media::Playback;
     using namespace ::winrt::Windows::Storage::Streams;
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
