@@ -303,7 +303,7 @@ bool DateTimePreparser::TryParseSimpleDate(const std::string& string, unsigned i
         const std::time_t currentTime = time(nullptr);
         struct tm timeStruct;
 
-        localtime_s(&timeStruct, &currentTime);
+        LOCALTIME(&timeStruct, &currentTime);
 
         if (IsValidDate(timeStruct.tm_year + 1900, timeStruct.tm_mon + 1, timeStruct.tm_mday)) {
             year = timeStruct.tm_year + 1900;
