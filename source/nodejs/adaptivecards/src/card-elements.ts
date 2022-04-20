@@ -4347,11 +4347,11 @@ export class DateInput extends Input {
         };
 
         if (this.defaultValue) {
-
             if (this.defaultValue === "today") {
-                this.defaultValue = this.currentDate();
+                this._dateInputElement.value = this.currentDate();
+            } else {
+                this._dateInputElement.value = this.defaultValue;
             }
-            this._dateInputElement.value = this.defaultValue;
         }
 
         return this._dateInputElement;
@@ -4395,17 +4395,8 @@ export class DateInput extends Input {
 
     currentDate(): string {
         const currDate = new Date();
-        let month = (currDate.getMonth() + 1).toString();
-        let day = currDate.getDate().toString();
-
-        if (month.length == 1) {
-            month = "0" + month;
-        }
-
-        if (day.length == 1) {
-            day = "0" + day;
-        }
-
+        let month = (currDate.getMonth() + 1).toString().padStart(2, "0");
+        let day = currDate.getDate().toString().padStart(2, "0");
         return currDate.getFullYear() + "-" + month + "-" + day;
     }
 }
