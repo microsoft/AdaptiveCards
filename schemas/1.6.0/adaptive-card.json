@@ -303,6 +303,11 @@
           "description": "Specifies the background image of the card.",
           "version": "1.2"
         },
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "description": "Defines various metadata properties typically not used for rendering the card",
+          "version": "1.6"
+        },
         "minHeight": {
           "type": "string",
           "description": "Specifies the minimum height of the card.",
@@ -387,6 +392,41 @@
         {
           "$ref": "#/definitions/Extendable.Element"
         }
+      ]
+    },
+    "CaptionSource": {
+      "description": "Defines a source for captions",
+      "version": "1.6",
+      "features": [
+        196
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "CaptionSource"
+          ],
+          "description": "Must be `CaptionSource`"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Mime type of associated caption file (e.g. `\"vtt\"`). For rendering in JavaScript, only `\"vtt\"` is supported, for rendering in UWP, `\"vtt\"` and `\"srt\"` are supported."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "URL to captions."
+        },
+        "label": {
+          "type": "string",
+          "description": "Label of this caption to show to the user."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mimeType",
+        "url",
+        "label"
       ]
     },
     "Column": {
@@ -1381,11 +1421,20 @@
         "poster": {
           "type": "string",
           "format": "uri-reference",
-          "description": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) ot will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube."
+          "description": "URL of an image to display before playing. Supports data URI in version 1.2+. If poster is omitted, the Media element will either use a default poster (controlled by the host application) or will attempt to automatically pull the poster from the target video service when the source URL points to a video from a Web provider such as YouTube."
         },
         "altText": {
           "type": "string",
           "description": "Alternate text describing the audio or video."
+        },
+        "captionSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CaptionSource"
+          },
+          "description": "Array of captions sources for the media element to provide.",
+          "required": false,
+          "version": "1.6"
         },
         "fallback": {},
         "height": {},
@@ -1421,7 +1470,7 @@
         },
         "mimeType": {
           "type": "string",
-          "description": "Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, mimeType can be omitted.",
+          "description": "Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, `mimeType` can be omitted.",
           "required": false
         },
         "url": {
@@ -2293,6 +2342,25 @@
         "url"
       ]
     },
+    "Metadata": {
+      "description": "Defines various metadata properties",
+      "version": "1.6",
+      "properties": {
+        "type": {
+          "enum": [
+            "Metadata"
+          ],
+          "description": "Must be `Metadata`"
+        },
+        "webUrl": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "URL that uniquely identifies the card and serves as a browser fallback that can be used by some hosts."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
     "Refresh": {
       "description": "Defines how a card can be refreshed by making a request to the target Bot.",
       "version": "1.4",
@@ -2306,6 +2374,11 @@
         "action": {
           "$ref": "#/definitions/Action.Execute",
           "description": "The action to be executed to refresh the card. Clients can run this refresh action automatically or can provide an affordance for users to trigger it manually."
+        },
+        "expires": {
+          "type": "string",
+          "description": "A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z",
+          "version": "1.6"
         },
         "userIds": {
           "type": "array",

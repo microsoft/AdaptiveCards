@@ -4,7 +4,8 @@
 		"adaptivecards*/**",
 		"marked-schema/**",
 		"spec-generator/**",
-		"ac-typed-schema/**"
+		"ac-typed-schema/**",
+		"tests/unit-tests/**"
 	],
 	"command": {
 		"publish": {
