@@ -253,6 +253,11 @@
 		7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */; };
 		8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8404BA8C226697800091A0AD /* FeatureRegistration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8404BA8D226697800091A0AD /* FeatureRegistration.cpp */; };
+		84AE295827FFA26F00D01B82 /* ContentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84AE295327FFA26F00D01B82 /* ContentSource.cpp */; };
+		84AE295927FFA26F00D01B82 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84AE295427FFA26F00D01B82 /* CMakeLists.txt */; };
+		84AE295A27FFA26F00D01B82 /* ContentSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 84AE295527FFA26F00D01B82 /* ContentSource.h */; };
+		84AE295B27FFA26F00D01B82 /* CaptionSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 84AE295627FFA26F00D01B82 /* CaptionSource.h */; };
+		84AE295C27FFA26F00D01B82 /* CaptionSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84AE295727FFA26F00D01B82 /* CaptionSource.cpp */; };
 		C8DEDF39220CDEB00001AAED /* ActionSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8DEDF37220CDEB00001AAED /* ActionSet.cpp */; };
 		C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DEDF38220CDEB00001AAED /* ActionSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -437,6 +442,10 @@
 		F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */; };
 		F4FE456E1F1985200071D9E5 /* ACRColumnSetView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE456C1F1985200071D9E5 /* ACRColumnSetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FE456F1F1985200071D9E5 /* ACRColumnSetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE456D1F1985200071D9E5 /* ACRColumnSetView.mm */; };
+		F974C5362800B8E100C1B3C7 /* CaptionSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F974C5342800B8E000C1B3C7 /* CaptionSource.cpp */; };
+		F974C5372800B8E100C1B3C7 /* CaptionSource.h in Headers */ = {isa = PBXBuildFile; fileRef = F974C5352800B8E000C1B3C7 /* CaptionSource.h */; };
+		F974C53A2800B8EA00C1B3C7 /* ContentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F974C5382800B8EA00C1B3C7 /* ContentSource.cpp */; };
+		F974C53B2800B8EA00C1B3C7 /* ContentSource.h in Headers */ = {isa = PBXBuildFile; fileRef = F974C5392800B8EA00C1B3C7 /* ContentSource.h */; };
 		F9A9E55126FE9FA000D13410 /* CollectionCoreElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A9E54F26FE9FA000D13410 /* CollectionCoreElement.cpp */; };
 		F9A9E55226FE9FA000D13410 /* CollectionCoreElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A9E55026FE9FA000D13410 /* CollectionCoreElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9A9E55526FE9FE400D13410 /* StyledCollectionElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A9E55326FE9FE400D13410 /* StyledCollectionElement.cpp */; };
@@ -717,6 +726,11 @@
 		7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BackgroundImage.cpp; path = ../../../../shared/cpp/ObjectModel/BackgroundImage.cpp; sourceTree = "<group>"; };
 		8404BA8C226697800091A0AD /* FeatureRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureRegistration.h; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.h; sourceTree = "<group>"; };
 		8404BA8D226697800091A0AD /* FeatureRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FeatureRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.cpp; sourceTree = "<group>"; };
+		84AE295327FFA26F00D01B82 /* ContentSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContentSource.cpp; path = ../../../../shared/cpp/ObjectModel/ContentSource.cpp; sourceTree = "<group>"; };
+		84AE295427FFA26F00D01B82 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../../../../shared/cpp/ObjectModel/CMakeLists.txt; sourceTree = "<group>"; };
+		84AE295527FFA26F00D01B82 /* ContentSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentSource.h; path = ../../../../shared/cpp/ObjectModel/ContentSource.h; sourceTree = "<group>"; };
+		84AE295627FFA26F00D01B82 /* CaptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptionSource.h; path = ../../../../shared/cpp/ObjectModel/CaptionSource.h; sourceTree = "<group>"; };
+		84AE295727FFA26F00D01B82 /* CaptionSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptionSource.cpp; path = ../../../../shared/cpp/ObjectModel/CaptionSource.cpp; sourceTree = "<group>"; };
 		92C9540BDB87B09349BF0018 /* Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1BFE0C10A542B2DABBE89DC /* Pods-AdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-AdaptiveCardsTests/Pods-AdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8DEDF37220CDEB00001AAED /* ActionSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionSet.cpp; path = ../../../../shared/cpp/ObjectModel/ActionSet.cpp; sourceTree = "<group>"; };
@@ -905,6 +919,10 @@
 		F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentStackView.mm; sourceTree = "<group>"; };
 		F4FE456C1F1985200071D9E5 /* ACRColumnSetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnSetView.h; sourceTree = "<group>"; };
 		F4FE456D1F1985200071D9E5 /* ACRColumnSetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRColumnSetView.mm; sourceTree = "<group>"; };
+		F974C5342800B8E000C1B3C7 /* CaptionSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptionSource.cpp; path = ../../../../shared/cpp/ObjectModel/CaptionSource.cpp; sourceTree = "<group>"; };
+		F974C5352800B8E000C1B3C7 /* CaptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptionSource.h; path = ../../../../shared/cpp/ObjectModel/CaptionSource.h; sourceTree = "<group>"; };
+		F974C5382800B8EA00C1B3C7 /* ContentSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContentSource.cpp; path = ../../../../shared/cpp/ObjectModel/ContentSource.cpp; sourceTree = "<group>"; };
+		F974C5392800B8EA00C1B3C7 /* ContentSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentSource.h; path = ../../../../shared/cpp/ObjectModel/ContentSource.h; sourceTree = "<group>"; };
 		F9A9E54F26FE9FA000D13410 /* CollectionCoreElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CollectionCoreElement.cpp; path = ../../../../shared/cpp/ObjectModel/CollectionCoreElement.cpp; sourceTree = "<group>"; };
 		F9A9E55026FE9FA000D13410 /* CollectionCoreElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollectionCoreElement.h; path = ../../../../shared/cpp/ObjectModel/CollectionCoreElement.h; sourceTree = "<group>"; };
 		F9A9E55326FE9FE400D13410 /* StyledCollectionElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StyledCollectionElement.cpp; path = ../../../../shared/cpp/ObjectModel/StyledCollectionElement.cpp; sourceTree = "<group>"; };
@@ -1295,6 +1313,11 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				84AE295727FFA26F00D01B82 /* CaptionSource.cpp */,
+				84AE295627FFA26F00D01B82 /* CaptionSource.h */,
+				84AE295427FFA26F00D01B82 /* CMakeLists.txt */,
+				84AE295327FFA26F00D01B82 /* ContentSource.cpp */,
+				84AE295527FFA26F00D01B82 /* ContentSource.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -1306,12 +1329,16 @@
 				F4F6BA2E204F18D8003741B6 /* AdaptiveCardParseWarning.cpp */,
 				F4F6BA2C204F18D8003741B6 /* AdaptiveCardParseWarning.h */,
 				6BFF99BB25FFF53D0028069F /* AuthCardButton.cpp */,
+				F974C5342800B8E000C1B3C7 /* CaptionSource.cpp */,
+				F974C5352800B8E000C1B3C7 /* CaptionSource.h */,
 				6BFF99B925FFF53D0028069F /* AuthCardButton.h */,
 				6BFF99C225FFF53D0028069F /* Authentication.cpp */,
 				6BFF99BD25FFF53D0028069F /* Authentication.h */,
 				7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */,
 				7EF8879B21F14CDD00BAFF02 /* BackgroundImage.h */,
 				F44872BF1EE2261F00FCAFAE /* BaseActionElement.cpp */,
+				F974C5382800B8EA00C1B3C7 /* ContentSource.cpp */,
+				F974C5392800B8EA00C1B3C7 /* ContentSource.h */,
 				F44872C01EE2261F00FCAFAE /* BaseActionElement.h */,
 				F44872C11EE2261F00FCAFAE /* BaseCardElement.cpp */,
 				F44872C21EE2261F00FCAFAE /* BaseCardElement.h */,
@@ -1623,6 +1650,7 @@
 				F44873201EE2261F00FCAFAE /* ShowCardAction.h in Headers */,
 				7EF8879D21F14CDD00BAFF02 /* BackgroundImage.h in Headers */,
 				F448731B1EE2261F00FCAFAE /* OpenUrlAction.h in Headers */,
+				84AE295A27FFA26F00D01B82 /* ContentSource.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
@@ -1748,12 +1776,14 @@
 				6BFF99ED2600387A0028069F /* ACOTokenExchangeResource.h in Headers */,
 				6BFF99FC26003EBA0028069F /* ACOAuthCardButton.h in Headers */,
 				6BFF99E0260012380028069F /* ACORefresh.h in Headers */,
+				F974C5372800B8E100C1B3C7 /* CaptionSource.h in Headers */,
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
 				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
 				6BFF24162714FA1D00183C59 /* AdaptiveCards.h in Headers */,
 				6BFF23F62714C0F000183C59 /* ACRRendererPrivate.h in Headers */,
 				6BFF23F52714C0F000183C59 /* ACOAdaptiveCardPrivate.h in Headers */,
 				6BFF24042714E1BD00183C59 /* ACRDateTextField.h in Headers */,
+				F974C53B2800B8EA00C1B3C7 /* ContentSource.h in Headers */,
 				6BFF23F92714C0F000183C59 /* ACORefreshPrivate.h in Headers */,
 				6BFF240C2714E3D100183C59 /* ACRSeparator.h in Headers */,
 				6BFF24022714DE3600183C59 /* ACRChoiceSetViewDataSourceCompactStyle.h in Headers */,
@@ -1783,6 +1813,7 @@
 				6BFF23F12714C0F000183C59 /* ACOAuthenticationPrivate.h in Headers */,
 				6BFF23EF2714C0F000183C59 /* ACRInputLabelViewPrivate.h in Headers */,
 				6BFF23F42714C0F000183C59 /* ACOParseContextPrivate.h in Headers */,
+				84AE295B27FFA26F00D01B82 /* CaptionSource.h in Headers */,
 				6BFF23EE2714C0F000183C59 /* ACOBaseCardElementPrivate.h in Headers */,
 				6BFF23FD2714C0F000183C59 /* ACOAuthCardButtonPrivate.h in Headers */,
 				6BFF23F72714C0F000183C59 /* ACRRegistrationPrivate.h in Headers */,
@@ -1900,6 +1931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B8C768626461F1A009548FA /* checked.png in Resources */,
+				84AE295927FFA26F00D01B82 /* CMakeLists.txt in Resources */,
 				6B8C768D26461F1A009548FA /* ACRPickerView.xib in Resources */,
 				6B8C769B26462249009548FA /* ACRTextNumberField.xib in Resources */,
 				6B8C769326461F1A009548FA /* ACRTextField.xib in Resources */,
@@ -2050,6 +2082,7 @@
 				F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */,
 				F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */,
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,
+				F974C5362800B8E100C1B3C7 /* CaptionSource.cpp in Sources */,
 				F9A9E55526FE9FE400D13410 /* StyledCollectionElement.cpp in Sources */,
 				6BFF99C825FFF53E0028069F /* ExecuteAction.cpp in Sources */,
 				F42979431F322C3E00E89914 /* ACRErrors.mm in Sources */,
@@ -2114,6 +2147,7 @@
 				F4F44BA0204CED2400A2F24C /* ACRCustomRenderer.mm in Sources */,
 				F452CD581F68CD6F005394B2 /* HostConfig.cpp in Sources */,
 				6B696CD923202B1B00E1D607 /* ACRTargetBuilderDirector.mm in Sources */,
+				F974C53A2800B8EA00C1B3C7 /* ContentSource.cpp in Sources */,
 				0D3485F126180F8F00614EB9 /* ACOActionOverflow.mm in Sources */,
 				6BCE4B232108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.mm in Sources */,
 				6BDE5C4326FEA7DC003A1DDB /* ACRBaseTarget.mm in Sources */,
@@ -2167,6 +2201,7 @@
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
 				6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */,
 				7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */,
+				84AE295827FFA26F00D01B82 /* ContentSource.cpp in Sources */,
 				F42E517A1FEC3840008F9642 /* MarkDownParser.cpp in Sources */,
 				6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */,
 				6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */,
@@ -2195,6 +2230,7 @@
 				F4C1F5EC1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.mm in Sources */,
 				F4D402141F7DAC2C00D0356B /* ACOHostConfigParseResult.mm in Sources */,
 				6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */,
+				84AE295C27FFA26F00D01B82 /* CaptionSource.cpp in Sources */,
 				F495FC0A2022A18F0093D4DE /* ACRChoiceSetViewDataSource.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
