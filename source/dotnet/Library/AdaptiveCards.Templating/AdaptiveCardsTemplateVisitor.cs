@@ -630,7 +630,12 @@ namespace AdaptiveCards.Templating
                     result.Append('"');
                     result.Append(value);
                     result.Append('"');
-                } else
+                }
+                else if (value is Boolean)
+                {
+                    result.Append(value.ToString().ToLower());
+                }
+                else
                 {
                     result.Append(value);
                 }
