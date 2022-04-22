@@ -147,6 +147,21 @@ describe("Test Templating Library", () => {
             loadFile("template-test-resources/complex-template-host.data.json"),
             loadFile("template-test-resources/complex-template-host.host.json"));
     });
+
+    it("TemplatingVersionSuccess", () => {
+        runTest(loadFile("template-test-resources/version-template-success.json"),
+            loadFile("template-test-resources/version-template-success.output.json"));           
+    });
+
+    it("TemplatingVersionFail", () => {
+        runTest(loadFile("template-test-resources/version-template-fail.json"),
+            loadFile("template-test-resources/version-template-fail-invalid.output.json"));
+    });
+
+    it("TemplateVersionInvalid", () => {
+        runTest(loadFile("template-test-resources/version-template-invalid.json"),
+            loadFile("template-test-resources/version-template-fail-invalid.output.json"));
+    });
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
