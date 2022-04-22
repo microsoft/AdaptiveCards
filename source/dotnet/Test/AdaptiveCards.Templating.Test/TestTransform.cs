@@ -13140,6 +13140,28 @@ namespace AdaptiveCards.Templating.Test
 
             AssertJsonEqual(expectedJson, st);
         }
+
+        [TestMethod]
+        public void TestBooleanProperty()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\", " +
+                "\"body\": [{ \"type\": \"TextBlock\", \"text\": \"Hello world!\", \"wrap\": \"${title != ''}\"}]}";
+
+            string expectedJson = "{\"type\": \"AdaptiveCard\", \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\", " +
+                "\"body\": [{ \"type\": \"TextBlock\", \"text\": \"Hello world!\", \"wrap\": false}]}";
+
+            Data dt = new Data()
+            {
+                title = ""
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+
+            AssertJsonEqual(expectedJson, st);
+        }
     }
     [TestClass]
     public sealed class TestRootKeyword
