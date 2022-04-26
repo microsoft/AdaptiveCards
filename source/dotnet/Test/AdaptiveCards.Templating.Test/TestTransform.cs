@@ -13162,6 +13162,56 @@ namespace AdaptiveCards.Templating.Test
 
             AssertJsonEqual(expectedJson, st);
         }
+
+        [TestMethod]
+        public void TestAppendDelimiterDataArray()
+        {
+            string cardJson = "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", " +
+                "\"type\": \"AdaptiveCard\", \"version\": \"1.3\", \"body\": [{\"type\": \"ColumnSet\"," +
+                "\"$data\": \"${foo}\", \"$when\": \"${$index==0}\"},{\"type\": \"Container\"," +
+                "\"$data\": \"${foo}\", \"$when\": \"${$index>0}\"}]}";
+
+            string expectedJson = "{\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"body\":[{\"type\":\"ColumnSet\"}" +
+                ",{\"type\":\"Container\"}]}";
+
+            var jsonData = @"{""foo"": [{ }, { }]}";
+
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestAppendDelimiter()
+        {
+            string cardJson = "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\": \"AdaptiveCard\", \"version\": \"1.3\", \"body\": [{\"items\": [{" +
+                "\"type\": \"Container\", \"$when\": \"${bar==1}\"}, {\"type\": \"ColumnSet\"," +
+                "\"$when\": \"${bar==2}\"}], \"$data\": \"${foo}\"}]}";
+
+            string expectedJson = "{\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"body\":[{\"items\":[{" +
+                "\"type\":\"Container\"}]}]}";
+
+            var jsonData = @"{""foo"": [{""bar"": 1}]}";
+
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
     }
     [TestClass]
     public sealed class TestRootKeyword
