@@ -2,20 +2,52 @@
 // Licensed under the MIT License.
 #pragma once
 
+#include "LinkButton.g.h"
+#include "LinkButtonAutomationPeer.g.h"
+
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
-    // LinkButton is a templated button that exists strictly to behave as a button but appear as a link for
-    // accessibility purposes.
-    struct LinkButton : public ::winrt::Windows::UI::Xaml::Controls::ButtonT<LinkButton>
+    // LinkButtonAutomationPeer extends WUX::ButtonAutomationPeer
+    struct LinkButtonAutomationPeer : public LinkButtonAutomationPeerT<LinkButtonAutomationPeer>
     {
-        winrt::AutomationPeer OnCreateAutomationPeer();
+    public:
+        LinkButtonAutomationPeer(Uwp::LinkButton const& owner) :
+            LinkButtonAutomationPeerT<LinkButtonAutomationPeer>(owner)
+        {
+        }
+
+        winrt::AutomationControlType GetAutomationControlTypeCore() const
+        {
+            return winrt::AutomationControlType::Hyperlink;
+        }
     };
 
-    struct LinkButtonAutomationPeer : public ::winrt::Windows::UI::Xaml::Automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
+    struct LinkButton : public LinkButtonT<LinkButton>
     {
-        LinkButtonAutomationPeer(LinkButton& linkButton);
+    public:
+        LinkButton() : LinkButtonT<LinkButton>() {}
 
-        winrt::AutomationControlType GetAutomationControlType() const;
-        winrt::AutomationControlType GetAutomationControlTypeCore() const;
+        winrt::AutomationPeer OnCreateAutomationPeer()
+        {
+            if (!_autoPeer)
+            {
+                _autoPeer = winrt::make<implementation::LinkButtonAutomationPeer>(*this);
+            }
+            return _autoPeer;
+        }
+
+    private:
+        Uwp::LinkButtonAutomationPeer _autoPeer{nullptr};
+    };
+}
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct LinkButton : LinkButtonT<LinkButton, implementation::LinkButton>
+    {
+    };
+
+    struct LinkButtonAutomationPeer : LinkButtonAutomationPeerT<LinkButtonAutomationPeer, implementation::LinkButtonAutomationPeer>
+    {
     };
 }

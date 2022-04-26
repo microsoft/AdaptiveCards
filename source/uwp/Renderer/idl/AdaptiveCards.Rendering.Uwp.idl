@@ -164,8 +164,7 @@ namespace AdaptiveCards
                 AdaptiveColorConfig Attention;
             }
 
-            interface IAdaptiveTextStyleConfig
-            {
+            interface IAdaptiveTextStyleConfig {
                 AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
                 AdaptiveCards.ObjectModel.Uwp.TextSize Size;
                 AdaptiveCards.ObjectModel.Uwp.ForegroundColor Color;
@@ -175,7 +174,7 @@ namespace AdaptiveCards
 
             runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); }
 
-            runtimeclass AdaptiveTextStylesConfig
+                                                   runtimeclass AdaptiveTextStylesConfig
             {
                 AdaptiveTextStylesConfig();
 
@@ -380,10 +379,9 @@ namespace AdaptiveCards
                 IAdaptiveCardResourceResolver Get(String scheme);
             }
 
-            interface IAdaptiveCardResourceResolver
-            {
-                Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> GetResourceStreamAsync(
-                    AdaptiveCardGetResourceStreamArgs args);
+            interface IAdaptiveCardResourceResolver {
+                Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream>
+                GetResourceStreamAsync(AdaptiveCardGetResourceStreamArgs args);
             }
 
             runtimeclass AdaptiveCardGetResourceStreamArgs
@@ -475,8 +473,7 @@ namespace AdaptiveCards
                 AdaptiveCards.ObjectModel.Uwp.AdaptiveCard ParentCard;
             }
 
-            interface IAdaptiveInputValue
-            {
+            interface IAdaptiveInputValue {
                 AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement InputElement { get; };
                 String CurrentValue { get; };
                 Windows.UI.Xaml.UIElement ErrorMessage
@@ -515,21 +512,19 @@ namespace AdaptiveCards
                 void AddWarning(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode statusCode, String message);
             }
 
-            interface IAdaptiveElementRenderer
-            {
+            interface IAdaptiveElementRenderer {
                 Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             }
 
-            interface IAdaptiveActionRenderer
-            {
+            interface IAdaptiveActionRenderer {
                 Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             }
 
-            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
+                [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTableRenderer();
             }
@@ -668,6 +663,17 @@ namespace AdaptiveCards
                 Windows.UI.Xaml.Controls.Panel ParentPanel { get; };
                 Boolean ExpectedVisibility;
                 Boolean IsStretchable;
+            }
+
+            [default_interface] runtimeclass LinkButton : Windows.UI.Xaml.Controls.Button
+            {
+                LinkButton();
+            }
+
+            [default_interface] runtimeclass LinkButtonAutomationPeer : Windows.UI.Xaml.Automation.Peers.ButtonAutomationPeer
+            {
+                LinkButtonAutomationPeer(LinkButton owner);
+                Windows.UI.Xaml.Automation.Peers.AutomationControlType GetAutomationControlTypeCore();
             }
         }
     }

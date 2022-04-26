@@ -948,7 +948,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     {
         if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
         {
-            return winrt::make<LinkButton>();
+            return winrt::LinkButton{};
         }
         else
         {
