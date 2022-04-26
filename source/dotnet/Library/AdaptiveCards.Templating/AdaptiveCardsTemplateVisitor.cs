@@ -440,6 +440,7 @@ namespace AdaptiveCards.Templating
             }
 
             int repeatsCounts = 1;
+            bool isObjAdded = false;
             var dataContext = GetCurrentDataContext();
 
             if (isArrayType && hasDataContext)
@@ -452,7 +453,7 @@ namespace AdaptiveCards.Templating
             // indicates the number of removed json object(s)
             int removedCounts = 0;
             var comma = context.COMMA();
-            string jsonPairDelimieter = (comma != null && comma.Length > 0) ? comma[0].GetText() : "";
+            string jsonPairDelimiter = (comma != null && comma.Length > 0) ? comma[0].GetText() : "";
 
             // loop for repeating obj parsed in the inner loop
             for (int iObj = 0; iObj < repeatsCounts; iObj++)
@@ -487,7 +488,7 @@ namespace AdaptiveCards.Templating
                         // a pair after first pair is added
                         if (isPairAdded && !returnedResult.IsWhen)
                         {
-                            result.Append(jsonPairDelimieter);
+                            result.Append(jsonPairDelimiter);
                         }
 
                         result.Append(returnedResult);
@@ -508,11 +509,14 @@ namespace AdaptiveCards.Templating
 
                 if (whenEvaluationResult != AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse)
                 {
-                    if (iObj != repeatsCounts - 1)
+                    if (isObjAdded)
                     {
-                        result.Append(jsonPairDelimieter);
+                        // add a delimiter, e.g ',' before appending
+                        // another object after first object is added
+                        combinedResult.Append(jsonPairDelimiter);
                     }
                     combinedResult.Append(result);
+                    isObjAdded = true;
                 }
                 else
                 {
@@ -686,17 +690,25 @@ namespace AdaptiveCards.Templating
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LSB().GetText());
             var values = context.value();
             var arrayDelimiters = context.COMMA();
+            bool isValueAdded = false;
 
             // visit each json value in json array and integrate parsed result
             for (int i = 0; i < values.Length; i++)
             {
                 var value = context.value(i);
                 var parsedResult = Visit(value);
-                result.Append(parsedResult);
-                // only add delimiter when parsedResult has not been dropped, and delimiter is needed
-                if (!parsedResult.HasItBeenDropped && i != values.Length - 1 && arrayDelimiters.Length > 0)
+
+                // only add delimiter when parsedResult has not been dropped,
+                // and a value has already been added to the array
+                if (isValueAdded && !parsedResult.HasItBeenDropped && arrayDelimiters.Length > 0)
                 {
                     result.Append(arrayDelimiters[0].GetText());
+                }
+
+                if (!parsedResult.HasItBeenDropped)
+                {
+                    result.Append(parsedResult);
+                    isValueAdded = true;
                 }
             }
 
