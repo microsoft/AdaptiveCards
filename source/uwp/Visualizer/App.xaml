@@ -9,7 +9,7 @@
     xmlns:converters="using:AdaptiveCardVisualizer.Converters">
 
     <Application.Resources>
-        <controls:XamlControlsResources>
+        <controls:XamlControlsResources ControlsResourcesVersion="Version2">
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary>
                     <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
