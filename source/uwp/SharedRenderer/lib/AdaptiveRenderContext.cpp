@@ -9,9 +9,9 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveRenderContext::AdaptiveRenderContext() :
-        HostConfig{nullptr}, FeatureRegistration{nullptr}, ElementRenderers{nullptr}, ActionRenderers{nullptr},
-        ResourceResolvers{nullptr}, OverrideStyles{nullptr}, ActionInvoker{nullptr}, MediaEventInvoker{nullptr},
-        m_weakRenderResult{nullptr}, m_actionSentimentDefaultDictionary{nullptr}
+        HostConfig{nullptr}, FeatureRegistration{nullptr}, ElementRenderers{nullptr}, ActionRenderers{nullptr}, ResourceResolvers{nullptr},
+        OverrideStyles{nullptr}, ActionInvoker{nullptr}, MediaEventInvoker{nullptr}, m_weakRenderResult{nullptr},
+        m_actionPositiveSentimentDefaultDictionary{nullptr}, m_actionDestructiveSentimentDefaultDictionary{nullptr}
     {
     }
 
@@ -21,14 +21,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                  winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
                                                  winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
                                                  winrt::ResourceDictionary const& overrideStyles,
-                                                 winrt::ResourceDictionary const& defaultActionSentimentStyles,
+                                                 winrt::ResourceDictionary const& defaultPositiveActionSentimentStyles,
+                                                 winrt::ResourceDictionary const& defaultDestructiveActionSentimentStyles,
                                                  winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult) :
         HostConfig{hostConfig},
         FeatureRegistration{featureRegistration}, ElementRenderers{elementRendererRegistration},
         ActionRenderers{actionRendererRegistration}, ResourceResolvers{resourceResolvers},
         OverrideStyles{overrideStyles}, ActionInvoker{winrt::make<implementation::AdaptiveActionInvoker>(*renderResult)},
         MediaEventInvoker{winrt::make<implementation::AdaptiveMediaEventInvoker>(*renderResult)},
-        m_weakRenderResult{*renderResult}, m_actionSentimentDefaultDictionary{defaultActionSentimentStyles}
+        m_weakRenderResult{*renderResult}, m_actionPositiveSentimentDefaultDictionary{defaultPositiveActionSentimentStyles},
+        m_actionDestructiveSentimentDefaultDictionary{defaultDestructiveActionSentimentStyles}
     {
         if (const auto originatingCard = renderResult->OriginatingCard())
         {
@@ -113,10 +115,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             return nullptr;
         }
     }
-
-    winrt::ResourceDictionary AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
+    winrt::ResourceDictionary AdaptiveRenderContext::GetDefaultActionPositiveSentimentDictionary()
     {
-        return m_actionSentimentDefaultDictionary;
+        return m_actionPositiveSentimentDefaultDictionary;
+    }
+
+    winrt::ResourceDictionary AdaptiveRenderContext::GetDefaultActionDestructiveSentimentDictionary()
+    {
+        return m_actionDestructiveSentimentDefaultDictionary;
     }
 
     winrt::com_ptr<implementation::RenderedAdaptiveCard> AdaptiveRenderContext::GetRenderResult()

@@ -91,14 +91,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 m_xamlBuilder->SetFixedDimensions(m_desiredWidth, m_desiredHeight);
             }
 
-            auto renderContext = winrt::make_self<implementation::AdaptiveRenderContext>(m_hostConfig,
-                                                                                         m_featureRegistration,
-                                                                                         *m_elementRendererRegistration,
-                                                                                         *m_actionRendererRegistration,
-                                                                                         m_resourceResolvers,
-                                                                                         m_mergedResourceDictionary,
-                                                                                         m_actionSentimentResourceDictionary,
-                                                                                         renderedCard);
+            auto renderContext =
+                winrt::make_self<implementation::AdaptiveRenderContext>(m_hostConfig,
+                                                                        m_featureRegistration,
+                                                                        *m_elementRendererRegistration,
+                                                                        *m_actionRendererRegistration,
+                                                                        m_resourceResolvers,
+                                                                        m_mergedResourceDictionary,
+                                                                        m_actionPositiveSentimentResourceDictionary,
+                                                                        m_actionDestructiveSentimentResourceDictionary,
+                                                                        renderedCard);
 
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
@@ -106,7 +108,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 renderContext->LinkCardToParent(adaptiveCard, nullptr);
                 auto xamlTreeRoot =
                     ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, *renderContext, m_xamlBuilder.get());
-                xamlTreeRoot.Resources().MergedDictionaries().Append(winrt::XamlControlsResources());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
             }
             catch (...)
@@ -162,21 +163,64 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
-        resourceDictionary.MergedDictionaries().Append(winrt::XamlControlsResources());
+        //const auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
+        const auto resourceDictionary = winrt::ResourceDictionary();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
-        auto actionSentimentResourceDictionary =
-            winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
-        m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
-        m_actionSentimentResourceDictionary.MergedDictionaries().Append(winrt::XamlControlsResources());
+        constexpr std::wstring_view positiveActionXaml = LR"(<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="ButtonBackground" Color="#FF000000"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF404040" />
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#FF404040" />
+            <SolidColorBrush x:Key="ButtonForeground" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFFFFFFF" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="ButtonBackground" Color="#FF000000"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF404040" />
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#FF404040" />
+            <SolidColorBrush x:Key="ButtonForeground" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFFFFFFF" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>)";
+        m_actionPositiveSentimentResourceDictionary =
+            winrt::XamlReader::Load(positiveActionXaml).as<winrt::ResourceDictionary>();
+
+        constexpr std::wstring_view destructiveActionXaml = LR"(<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="ButtonForeground" Color="#FF8B0000" />
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFCB4040" />
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFCB4040" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="ButtonForeground" Color="#FF8B0000" />
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFCB4040" />
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFCB4040" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>)";
+        m_actionDestructiveSentimentResourceDictionary =
+            winrt::XamlReader::Load(destructiveActionXaml).as<winrt::ResourceDictionary>();
     }
 
-    void AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName,
+    void AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(bool isPositive,
+                                                                              std::wstring_view const& resourceName,
                                                                               winrt::IInspectable const& value)
     {
-        m_actionSentimentResourceDictionary.Insert(winrt::box_value(resourceName), value);
+        const auto& resourceDictionary =
+            isPositive ? m_actionPositiveSentimentResourceDictionary : m_actionDestructiveSentimentResourceDictionary;
+        resourceDictionary.ThemeDictionaries().Lookup(winrt::box_value(L"Light")).as<winrt::ResourceDictionary>().Insert(winrt::box_value(resourceName), value);
+        resourceDictionary.ThemeDictionaries().Lookup(winrt::box_value(L"Dark")).as<winrt::ResourceDictionary>().Insert(winrt::box_value(resourceName), value);
     }
 
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
@@ -189,16 +233,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto hoverAccentColor = GenerateLHoverColor(accentColor);
         auto hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
-                                                       winrt::SolidColorBrush{accentColor});
+        TryInsertResourceToSentimentResourceDictionary(true, L"ButtonBackground", winrt::SolidColorBrush{accentColor});
+        TryInsertResourceToSentimentResourceDictionary(true, L"ButtonBackgroundPointerOver", winrt::SolidColorBrush{hoverAccentColor});
+        TryInsertResourceToSentimentResourceDictionary(true, L"ButtonBackgroundPressed", winrt::SolidColorBrush{hoverAccentColor});
 
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
-                                                       winrt::SolidColorBrush{hoverAccentColor});
-
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
-                                                       winrt::SolidColorBrush{attentionColor});
-        TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
-                                                       winrt::SolidColorBrush{hoverAttentionColor});
+        TryInsertResourceToSentimentResourceDictionary(false, L"ButtonForeground", winrt::SolidColorBrush{attentionColor});
+        TryInsertResourceToSentimentResourceDictionary(false, L"ButtonForegroundPointerOver", winrt::SolidColorBrush{hoverAttentionColor});
+        TryInsertResourceToSentimentResourceDictionary(false, L"ButtonForegroundPressed", winrt::SolidColorBrush{hoverAttentionColor});
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()

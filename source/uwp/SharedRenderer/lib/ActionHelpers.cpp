@@ -193,12 +193,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             {
                 buttonFrameworkElement.Style(style);
             }
-            else if (auto defaultStyle =
-                         TryGetResourceFromResourceDictionaries(resourceDictionary, L"DefaultButtonStyle").try_as<winrt::Style>())
-            {
-                // fallback to default WinUI styling
-                buttonFrameworkElement.Style(defaultStyle);
-            }
         }
         else if (actionSentiment == L"positive")
         {
@@ -209,15 +203,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             }
             else
             {
-                // By default, set the action background color to accent color
-                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
-
-                if (const auto positiveActionDefaultStyle =
-                        XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"PositiveActionDefaultStyle")
-                            .try_as<winrt::Style>())
-                {
-                    buttonFrameworkElement.Style(positiveActionDefaultStyle);
-                }
+                // By default, retrieve the resource dictionary stored for positive sentiment
+                buttonFrameworkElement.Resources(contextImpl->GetDefaultActionPositiveSentimentDictionary());
             }
         }
         else if (actionSentiment == L"destructive")
@@ -230,15 +217,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             }
             else
             {
-                // By default, set the action text color to attention color
-                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
-
-                if (const auto destructiveActionDefaultStyle =
-                        XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"DestructiveActionDefaultStyle")
-                            .try_as<winrt::Style>())
-                {
-                    buttonFrameworkElement.Style(destructiveActionDefaultStyle);
-                }
+                // By default, retrieve the resource dictionary stored for destructive sentiment
+                buttonFrameworkElement.Resources(contextImpl->GetDefaultActionDestructiveSentimentDictionary());
             }
         }
         else

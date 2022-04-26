@@ -80,19 +80,27 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         winrt::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
         winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
-        winrt::ResourceDictionary GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
+        winrt::ResourceDictionary GetActionPositiveSentimentResourceDictionary()
+        {
+            return m_actionPositiveSentimentResourceDictionary;
+        }
+        winrt::ResourceDictionary GetActionDestructiveSentimentResourceDictionary()
+        {
+            return m_actionDestructiveSentimentResourceDictionary;
+        }
 
         auto ResourceResolvers() { return m_resourceResolvers; }
 
     private:
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
-        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName, winrt::IInspectable const& value);
+        void TryInsertResourceToSentimentResourceDictionary(bool isPositive, std::wstring_view const& resourceName, winrt::IInspectable const& value);
         void SetMergedDictionary();
 
         winrt::ResourceDictionary m_defaultResourceDictionary;
         winrt::ResourceDictionary m_mergedResourceDictionary;
-        winrt::ResourceDictionary m_actionSentimentResourceDictionary;
+        winrt::ResourceDictionary m_actionPositiveSentimentResourceDictionary;
+        winrt::ResourceDictionary m_actionDestructiveSentimentResourceDictionary;
         winrt::AdaptiveCardResourceResolvers m_resourceResolvers;
         winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;

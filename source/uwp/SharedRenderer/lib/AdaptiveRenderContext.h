@@ -20,7 +20,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                               winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
                               winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
                               winrt::ResourceDictionary const& overrideStyles,
-                              winrt::ResourceDictionary const& defaultActionSentimentStyles,
+                              winrt::ResourceDictionary const& defaultPositiveActionSentimentStyles,
+                              winrt::ResourceDictionary const& defaultDestructiveActionSentimentStyles,
                               winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult);
 
         property<winrt::AdaptiveHostConfig> HostConfig;
@@ -61,13 +62,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement);
 
         winrt::com_ptr<implementation::RenderedAdaptiveCard> GetRenderResult();
-        winrt::ResourceDictionary GetDefaultActionSentimentDictionary();
+        winrt::ResourceDictionary GetDefaultActionPositiveSentimentDictionary();
+        winrt::ResourceDictionary GetDefaultActionDestructiveSentimentDictionary();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
         winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
-        winrt::ResourceDictionary m_actionSentimentDefaultDictionary;
+        winrt::ResourceDictionary m_actionPositiveSentimentDefaultDictionary;
+        winrt::ResourceDictionary m_actionDestructiveSentimentDefaultDictionary;
     };
 }
 
