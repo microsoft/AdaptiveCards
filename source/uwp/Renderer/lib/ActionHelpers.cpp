@@ -949,7 +949,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     {
         if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
         {
-            return winrt::make<LinkButton>();
+            return winrt::LinkButton{};
         }
         else
         {

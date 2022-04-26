@@ -167,7 +167,6 @@
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
-    <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClInclude Include="dll\CppWinRTIncludes.h" />
     <ClInclude Include="lib\ActionHelpers.h" />
@@ -228,7 +227,10 @@
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\ElementTagContent.h" />
-    <ClInclude Include="lib\LinkButton.h" />
+    <ClInclude Include="lib\LinkButton.h">
+		<DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
+		<SubType>Code</SubType>
+	</ClInclude>
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
@@ -325,6 +327,10 @@
     <ClCompile Include="lib\AdaptiveImageSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetTextConfig.cpp" />
+	<ClCompile Include="lib\LinkButton.cpp">
+		<DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
+		<SubType>Code</SubType>
+	</ClCompile>
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\TileControl.cpp" />
     <ClCompile Include="lib\Util.cpp" />
