@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as AEL from "adaptive-expressions";
+const pkg = require('./../package.json');
 
 class EvaluationContext {
-    private static readonly _reservedFields = ["$data", "$when", "$root", "$index", "$host"];
+    private static readonly _reservedFields = ["$data", "$when", "$root", "$index", "$host", "$_acTemplateVersion"];
 
     private _stateStack: Array<{ $data: any, $index: any }> = [];
     private _$data: any;
@@ -11,9 +12,12 @@ class EvaluationContext {
     $root: any;
     $host: any;
     $index: number;
+    $_acTemplateVersion: any;
 
     constructor(context?: IEvaluationContext) {
         if (context !== undefined) {
+            this.$_acTemplateVersion = this.generateVersionJson();
+
             this.$root = context.$root;
             this.$host = context.$host;
         }
@@ -49,6 +53,25 @@ class EvaluationContext {
     set $data(value: any) {
         this._$data = value;
     }
+
+    generateVersionJson() {
+        // Example version: 2.3.0-alpha
+        const version = pkg.version;
+        const versionSplit = version.split('.');
+
+        let patchSplit = [];
+        const patchIndex = 2;
+        if (versionSplit[patchIndex]) {
+            patchSplit = versionSplit[patchIndex].split('-');
+        }
+
+        return {
+            "major": parseInt(versionSplit[0]),
+            "minor": parseInt(versionSplit[1]),
+            "patch": parseInt(patchSplit[0]),
+            "suffix": patchSplit[1] || "",
+        }
+    }
 }
 
 class TemplateObjectMemory implements AEL.MemoryInterface {
@@ -58,6 +81,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     $data: any;
     $index: any;
     $host: any;
+    $_acTemplateVersion: any;
 
     constructor() {
         this._memory = new AEL.SimpleObjectMemory(this);
@@ -166,6 +190,7 @@ export class Template {
         memory.$data = context.$data;
         memory.$index = context.$index;
         memory.$host = context.$host;
+        memory.$_acTemplateVersion = context.$_acTemplateVersion;
 
         let options: AEL.Options | undefined = undefined;
 

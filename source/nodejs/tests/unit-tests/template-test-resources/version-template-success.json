@@ -1,0 +1,21 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "$when": "${$_acTemplateVersion.major >= 2}",
+            "type": "TextBlock",
+            "text": "$_acTemplateVersion.major >= 2"
+        },
+        {
+            "$when": "${$_acTemplateVersion.minor >= 0}",
+            "type": "TextBlock",
+            "text": "$_acTemplateVersion.minor >= 0"
+        },
+        {
+            "$when": "${$_acTemplateVersion.patch >= 0}",
+            "type": "TextBlock",
+            "text": "$_acTemplateVersion.patch >= 0"
+        }
+    ]
+}

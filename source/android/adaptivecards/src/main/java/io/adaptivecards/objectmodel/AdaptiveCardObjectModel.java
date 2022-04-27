@@ -301,6 +301,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return Mode.swigToEnum(AdaptiveCardObjectModelJNI.ModeFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ErrorStatusCode_t getErrorStatusCodeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ErrorStatusCode_t(AdaptiveCardObjectModelJNI.getErrorStatusCodeEnum(), false);
+  }
+
+  public static String ErrorStatusCodeToString(ErrorStatusCode t) {
+    return AdaptiveCardObjectModelJNI.ErrorStatusCodeToString(t.swigValue());
+  }
+
+  public static ErrorStatusCode ErrorStatusCodeFromString(String t) {
+    return ErrorStatusCode.swigToEnum(AdaptiveCardObjectModelJNI.ErrorStatusCodeFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t getIconPlacementEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t(AdaptiveCardObjectModelJNI.getIconPlacementEnum(), false);
   }
