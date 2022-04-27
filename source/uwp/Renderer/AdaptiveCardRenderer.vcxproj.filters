@@ -70,6 +70,7 @@
     <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
     <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />

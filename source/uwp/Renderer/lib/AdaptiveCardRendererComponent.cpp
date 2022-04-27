@@ -164,8 +164,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        //const auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
-        const auto resourceDictionary = winrt::ResourceDictionary();
+        const auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 

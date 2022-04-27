@@ -228,9 +228,9 @@
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\LinkButton.h">
-		<DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
-		<SubType>Code</SubType>
-	</ClInclude>
+        <DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
+        <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
@@ -327,10 +327,10 @@
     <ClCompile Include="lib\AdaptiveImageSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetTextConfig.cpp" />
-	<ClCompile Include="lib\LinkButton.cpp">
-		<DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
-		<SubType>Code</SubType>
-	</ClCompile>
+    <ClCompile Include="lib\LinkButton.cpp">
+        <DependentUpon>idl\AdaptiveCards.Rendering.Uwp.idl</DependentUpon>
+        <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\TileControl.cpp" />
     <ClCompile Include="lib\Util.cpp" />
