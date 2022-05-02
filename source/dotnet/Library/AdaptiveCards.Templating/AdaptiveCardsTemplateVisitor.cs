@@ -502,7 +502,8 @@ namespace AdaptiveCards.Templating
                                 Console.WriteLine($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
                                     $"expression is invalid. The $when condition has been set to false by default.");
                                 
-                            } else
+                            }
+                            else
                             {
                                 whenEvaluationResult = returnedResult.WhenEvaluationResult;
                             }
