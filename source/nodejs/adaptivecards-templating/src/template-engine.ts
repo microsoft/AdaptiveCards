@@ -413,8 +413,17 @@ export class Template {
                     if (!evaluationResult.error) {
                         whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
                     }
+                    
+                    if (!evaluationResult.value) {
+                        // Value was not found, and we should warn the client that the Expression was invalid
+                        console.warn(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
+                    }
 
                     dropObject = !whenValue;
+                } else if (when) {
+                    // If $when was provided, but it is not an AEL.Expression, drop the object
+                    console.warn(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
+                    dropObject = true;
                 }
 
                 if (!dropObject) {
