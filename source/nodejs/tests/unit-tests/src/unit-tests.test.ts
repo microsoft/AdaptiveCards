@@ -162,6 +162,58 @@ describe("Test Templating Library", () => {
         runTest(loadFile("template-test-resources/version-template-invalid.json"),
             loadFile("template-test-resources/version-template-fail-invalid.output.json"));
     });
+
+    it("TemplateWhenIsNotExpression", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "${title}",
+                    "$when": "isNotExpression"
+                }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "body": [],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        runTest(templatePayload, expectedOutput, undefined, undefined);
+    });
+
+    it("TemplateWhenIsInvalidExpression", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "${title}",
+                    "$when": "${invalidExpression}"
+                }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "body": [],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        runTest(templatePayload, expectedOutput, undefined, undefined);
+    });
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
