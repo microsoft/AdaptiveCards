@@ -75,8 +75,8 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
-            ArrayList<string> log;
-            return Expand(context, out log, nullSubstitutionOption);
+            ArrayList<string> errorLog;
+            return Expand(context, out errorLog, nullSubstitutionOption);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace AdaptiveCards.Templating
         /// <para> Default behavior is leaving templated string unchanged</para>
         /// </remarks>
         /// <param name="context">provides data context</param>
-        /// <param name="log">stores the outputed log statements from parsing the template</param>
+        /// <param name="errorLog">stores the outputed log statements from parsing the template</param>
         /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -101,13 +101,13 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(EvaluationContext context, out ArrayList<string> log, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(EvaluationContext context, out ArrayList<string> errorLog, Func<string, object> nullSubstitutionOption = null)
         {
         
             if (parseTree == null)
             {
                 // Create empty array list so that `out` parameter has a value
-                log = new ArrayList<string>();
+                errorLog = new ArrayList<string>();
                 return jsonTemplateString;
             }
 
@@ -129,9 +129,21 @@ namespace AdaptiveCards.Templating
 
             AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
 
-            log = eval.getTemplateLog();
+            errorLog = eval.getTemplateLog();
 
             return result.ToString();
+        }
+
+        /// <summary>
+        /// Wrapper method to maintain functionality if caller decides not to use log files
+        /// </summary>
+        /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
+        /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
+        /// <returns></returns>
+        public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
+        {
+            ArrayList<string> errorLog = new ArrayList<string>();
+            return Expand(rootData, out errorLog, nullSubstitutionOption);
         }
 
         /// <summary>
@@ -145,6 +157,7 @@ namespace AdaptiveCards.Templating
         /// <para> Default behavior is leaving templated string unchanged</para>
         /// </remarks>
         /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
+        /// <param name="errorLog">stores the outputed log statements from parsing the template</param>
         /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -154,13 +167,15 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(object rootData, out ArrayList<string> errorLog, Func<string, object> nullSubstitutionOption = null)
         {
-            // TODO: need to add error logging here - not so much in the template visitor??
-            // Caller will call AdaptiveCardTemplate.Expand - NOT from AdaptiveCardsTemplateVisitor
             var context = new EvaluationContext(rootData);
 
-            return Expand(context, nullSubstitutionOption);
+            errorLog = new ArrayList<string>();
+
+            string expand = Expand(context, out errorLog, nullSubstitutionOption);
+
+            return expand;
         }
     }
 }

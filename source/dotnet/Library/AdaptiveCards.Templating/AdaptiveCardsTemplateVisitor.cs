@@ -344,8 +344,20 @@ namespace AdaptiveCards.Templating
                 return result;
             }
 
+            bool isTrue = false;
+
+            try
+            {
+                isTrue = IsTrue(result.Predicate, dataContext.token);
+            }
+            catch (System.FormatException)
+            {
+                templateLog.Add($"WARN: Could not evaluate boolean expression because it could not be found in the provided data. " +
+                                    "The condition has been set to false by default.");
+            }
+
             // evaluate $when
-            result.WhenEvaluationResult = IsTrue(result.Predicate, dataContext.token) ?
+            result.WhenEvaluationResult = isTrue ?
                 AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue :
                 AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
 
@@ -507,8 +519,8 @@ namespace AdaptiveCards.Templating
                             {
                                 // The when expression could not be evaluated, so we are defaulting the value to false
                                 whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
-                                // TODO: Expose this warning to caller - documented in issue #7433
-                                Console.WriteLine($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
+
+                                templateLog.Add($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
                                     $"expression is invalid. The $when condition has been set to false by default.");
                                 
                             }
@@ -757,18 +769,7 @@ namespace AdaptiveCards.Templating
             var (value, error) = new ValueExpression(Regex.Unescape(predicate)).TryGetValue(data);
             if (error == null)
             {
-                try
-                {
-                    return bool.Parse(value as string);
-                }
-                catch (System.FormatException)
-                {
-                    // If the expression didn't evaluate to a boolean, we need to return false
-                    // TODO: Expose this warning to caller - documented in issue #7433
-                    Console.WriteLine($"WARN: Could not evaluate boolean expression because it could not be found in the provided data. " +
-                                    "The condition has been set to false by default.");
-                    return false;
-                }
+                return bool.Parse(value as string);
             }
             return true;
         }
