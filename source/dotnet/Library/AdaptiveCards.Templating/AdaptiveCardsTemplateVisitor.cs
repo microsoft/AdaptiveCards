@@ -23,6 +23,7 @@ namespace AdaptiveCards.Templating
         private Stack<DataContext> dataContext = new Stack<DataContext>();
         private readonly JToken root;
         private readonly Options options;
+        private ArrayList<string> templateLog;
 
         /// <summary>
         /// maintains data context
@@ -126,6 +127,8 @@ namespace AdaptiveCards.Templating
             {
                 NullSubstitution = nullSubstitutionOption != null? nullSubstitutionOption : (path) => $"${{{path}}}"
             };
+
+            templateLog = new ArrayList<string>();
         }
 
         /// <summary>
@@ -196,6 +199,11 @@ namespace AdaptiveCards.Templating
         private bool HasDataContext()
         {
             return dataContext.Count != 0;
+        }
+
+        public ArrayList<string> getTemplateLog()
+        {
+            return templateLog;
         }
 
         /// <summary>

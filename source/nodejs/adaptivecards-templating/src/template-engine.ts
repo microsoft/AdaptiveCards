@@ -154,6 +154,10 @@ export interface IEvaluationContext {
  * Represents a template that can be bound to data.
  */
 export class Template {
+
+    // TODO: The template class can probably store the array of warnings :)
+    private templateLog;
+
     private static prepare(node: any): any {
         if (typeof node === "string") {
             return Template.parseInterpolatedString(node);
@@ -520,9 +524,17 @@ export class Template {
      * @returns A value representing the expanded template. The type of that value
      *   is dependent on the type of the original template payload passed to the constructor.
      */
-    expand(context: IEvaluationContext): any {
+    // TODO: this method needs an `out` parameter for storing errors - look at implementation in base adaptivecards repo!
+    expand(context: IEvaluationContext, log?: Array<String>): any {
+        this.templateLog = log;
         this._context = new EvaluationContext(context);
 
-        return this.internalExpand(this._preparedPayload);
+        if (log) {
+            // Only return error/warning log if we were given an array to store the data
+            return this.internalExpand(this._preparedPayload), this.templateLog;
+        }
+        else {
+            return this.internalExpand(this._preparedPayload);
+        }
     }
 }

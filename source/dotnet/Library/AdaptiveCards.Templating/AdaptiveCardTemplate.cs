@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
 using System;
@@ -67,6 +68,18 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
+        /// Wrapper method to maintain functionality if caller decides not to use log files
+        /// </summary>
+        /// <param name="context">provides data context</param>
+        /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
+        /// <returns>json as string</returns>
+        public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
+        {
+            ArrayList<string> log;
+            return Expand(context, out log, nullSubstitutionOption);
+        }
+
+        /// <summary>
         /// Bind data in <paramref name="context"/> to the instance of AdaptiveCardTemplate
         /// </summary>
         /// <remarks>
@@ -77,6 +90,7 @@ namespace AdaptiveCards.Templating
         /// <para> Default behavior is leaving templated string unchanged</para>
         /// </remarks>
         /// <param name="context">provides data context</param>
+        /// <param name="log">stores the outputed log statements from parsing the template</param>
         /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -87,10 +101,13 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(EvaluationContext context, out ArrayList<string> log, Func<string, object> nullSubstitutionOption = null)
         {
+        
             if (parseTree == null)
             {
+                // Create empty array list so that `out` parameter has a value
+                log = new ArrayList<string>();
                 return jsonTemplateString;
             }
 
@@ -109,7 +126,12 @@ namespace AdaptiveCards.Templating
             }
 
             AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
-            return eval.Visit(parseTree).ToString();
+
+            AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
+
+            log = eval.getTemplateLog();
+
+            return result.ToString();
         }
 
         /// <summary>
@@ -134,6 +156,8 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
+            // TODO: need to add error logging here - not so much in the template visitor??
+            // Caller will call AdaptiveCardTemplate.Expand - NOT from AdaptiveCardsTemplateVisitor
             var context = new EvaluationContext(rootData);
 
             return Expand(context, nullSubstitutionOption);
