@@ -495,7 +495,19 @@ namespace AdaptiveCards.Templating
 
                         if (returnedResult.IsWhen)
                         {
-                            whenEvaluationResult = returnedResult.WhenEvaluationResult;
+                            if (returnedResult.WhenEvaluationResult == AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated)
+                            {
+                                // The when expression could not be evaluated, so we are defaulting the value to false
+                                whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
+                                // TODO: Expose this warning to caller - documented in issue #7433
+                                Console.WriteLine($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
+                                    $"expression is invalid. The $when condition has been set to false by default.");
+                                
+                            }
+                            else
+                            {
+                                whenEvaluationResult = returnedResult.WhenEvaluationResult;
+                            }
                         }
                         else
                         {
@@ -667,6 +679,15 @@ namespace AdaptiveCards.Templating
             // this node is visited only when parsing was correctly done
             // [ '{', '$when', ':', ',', 'expression'] 
             var result = Visit(context.templateExpression());
+
+            if (!result.IsWhen)
+            {
+                // We know that this result was supposed to be IsWhen since it is called from VisitTemplateWhen
+                // We create a result with `IsWhen = false` if the expression is invalid
+                // Result will now correctly follow the rest of the IsWhen logic
+                result.IsWhen = true;
+            }
+
             return result;
         }
 
@@ -728,7 +749,18 @@ namespace AdaptiveCards.Templating
             var (value, error) = new ValueExpression(Regex.Unescape(predicate)).TryGetValue(data);
             if (error == null)
             {
-                return bool.Parse(value as string);
+                try
+                {
+                    return bool.Parse(value as string);
+                }
+                catch (System.FormatException)
+                {
+                    // If the expression didn't evaluate to a boolean, we need to return false
+                    // TODO: Expose this warning to caller - documented in issue #7433
+                    Console.WriteLine($"WARN: Could not evaluate boolean expression because it could not be found in the provided data. " +
+                                    "The condition has been set to false by default.");
+                    return false;
+                }
             }
             return true;
         }
