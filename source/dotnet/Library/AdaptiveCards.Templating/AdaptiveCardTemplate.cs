@@ -75,8 +75,8 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
-            ArrayList errorLog;
-            return Expand(context, out errorLog, nullSubstitutionOption);
+            // Use discarded out parameter since caller didn't use errorLog implementation
+            return Expand(context, out _, nullSubstitutionOption);
         }
 
         /// <summary>
@@ -142,8 +142,8 @@ namespace AdaptiveCards.Templating
         /// <returns></returns>
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
-            ArrayList errorLog = new ArrayList();
-            return Expand(rootData, out errorLog, nullSubstitutionOption);
+            // Use discarded out parameter since caller didn't use errorLog implementation
+            return Expand(rootData, out _, nullSubstitutionOption);
         }
 
         /// <summary>
@@ -170,9 +170,6 @@ namespace AdaptiveCards.Templating
         public string Expand(object rootData, out ArrayList errorLog, Func<string, object> nullSubstitutionOption = null)
         {
             var context = new EvaluationContext(rootData);
-
-            errorLog = new ArrayList();
-
             return Expand(context, out errorLog, nullSubstitutionOption);
         }
     }
