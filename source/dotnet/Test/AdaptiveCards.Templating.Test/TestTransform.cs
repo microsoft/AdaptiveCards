@@ -5,8 +5,7 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
-using System.Collections.Generic;
-using Antlr4.Runtime.Misc;
+using System.Collections;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -13285,7 +13284,7 @@ namespace AdaptiveCards.Templating.Test
 
             var template = new AdaptiveCardTemplate(cardJson);
 
-            ArrayList<string> log;
+            ArrayList log;
             string st = template.Expand(context, out log);
 
             Assert.AreEqual(expectedJson, st);
@@ -13310,7 +13309,7 @@ namespace AdaptiveCards.Templating.Test
 
             var template = new AdaptiveCardTemplate(cardJson);
 
-            ArrayList<string> log;
+            ArrayList log;
             string st = template.Expand(context, out log);
 
             Assert.AreEqual(expectedJson, st);
@@ -13338,7 +13337,7 @@ namespace AdaptiveCards.Templating.Test
 
             var template = new AdaptiveCardTemplate(cardJson);
 
-            ArrayList<string> log;
+            ArrayList log;
             string st = template.Expand(dt, out log);
 
             Assert.AreEqual(expectedJson, st);

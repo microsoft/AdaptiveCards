@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Antlr4.Runtime;
-using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 
 namespace AdaptiveCards.Templating
 {
@@ -75,7 +75,7 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
-            ArrayList<string> errorLog;
+            ArrayList errorLog;
             return Expand(context, out errorLog, nullSubstitutionOption);
         }
 
@@ -101,13 +101,13 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(EvaluationContext context, out ArrayList<string> errorLog, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(EvaluationContext context, out ArrayList errorLog, Func<string, object> nullSubstitutionOption = null)
         {
         
             if (parseTree == null)
             {
                 // Create empty array list so that `out` parameter has a value
-                errorLog = new ArrayList<string>();
+                errorLog = new ArrayList();
                 return jsonTemplateString;
             }
 
@@ -142,7 +142,7 @@ namespace AdaptiveCards.Templating
         /// <returns></returns>
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
-            ArrayList<string> errorLog = new ArrayList<string>();
+            ArrayList errorLog = new ArrayList();
             return Expand(rootData, out errorLog, nullSubstitutionOption);
         }
 
@@ -167,15 +167,13 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(object rootData, out ArrayList<string> errorLog, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(object rootData, out ArrayList errorLog, Func<string, object> nullSubstitutionOption = null)
         {
             var context = new EvaluationContext(rootData);
 
-            errorLog = new ArrayList<string>();
+            errorLog = new ArrayList();
 
-            string expand = Expand(context, out errorLog, nullSubstitutionOption);
-
-            return expand;
+            return Expand(context, out errorLog, nullSubstitutionOption);
         }
     }
 }

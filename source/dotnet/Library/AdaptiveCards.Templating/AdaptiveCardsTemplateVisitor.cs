@@ -8,6 +8,7 @@ using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -23,7 +24,7 @@ namespace AdaptiveCards.Templating
         private Stack<DataContext> dataContext = new Stack<DataContext>();
         private readonly JToken root;
         private readonly Options options;
-        private ArrayList<string> templateLog;
+        private ArrayList templateLog;
 
         /// <summary>
         /// maintains data context
@@ -128,7 +129,7 @@ namespace AdaptiveCards.Templating
                 NullSubstitution = nullSubstitutionOption != null? nullSubstitutionOption : (path) => $"${{{path}}}"
             };
 
-            templateLog = new ArrayList<string>();
+            templateLog = new ArrayList();
         }
 
         /// <summary>
@@ -201,7 +202,11 @@ namespace AdaptiveCards.Templating
             return dataContext.Count != 0;
         }
 
-        public ArrayList<string> getTemplateLog()
+        /// <summary>
+        /// Getter for templateLog
+        /// </summary>
+        /// <returns>templateLog for the current AdaptiveCardsTemplateVisitor</returns>
+        public ArrayList getTemplateLog()
         {
             return templateLog;
         }
