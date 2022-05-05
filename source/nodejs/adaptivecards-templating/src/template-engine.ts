@@ -155,8 +155,7 @@ export interface IEvaluationContext {
  */
 export class Template {
 
-    // TODO: The template class can probably store the array of warnings :)
-    private templateLog;
+    private errorLog;
 
     private static prepare(node: any): any {
         if (typeof node === "string") {
@@ -420,15 +419,13 @@ export class Template {
                     
                     if (!evaluationResult.value) {
                         // Value was not found, and we should warn the client that the Expression was invalid
-                        // TODO: Expose this warning to caller - documented in issue #7433
-                        console.warn(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
+                        this.errorLog.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
                     }
 
                     dropObject = !whenValue;
                 } else if (when) {
                     // If $when was provided, but it is not an AEL.Expression, drop the object
-                    // TODO: Expose this warning to caller - documented in issue #7433
-                    console.warn(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
+                    this.errorLog.push(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
                     dropObject = true;
                 }
 
@@ -535,17 +532,22 @@ export class Template {
      * @returns A value representing the expanded template. The type of that value
      *   is dependent on the type of the original template payload passed to the constructor.
      */
-    // TODO: this method needs an `out` parameter for storing errors - look at implementation in base adaptivecards repo!
-    expand(context: IEvaluationContext, log?: Array<String>): any {
-        this.templateLog = log;
-        this._context = new EvaluationContext(context);
+    expand(context: IEvaluationContext, errorLog?: String[]): any {
+        if (errorLog) {
+            this.errorLog = errorLog;
+        } else {
+            this.errorLog = [];
+        }
 
-        if (log) {
+        this._context = new EvaluationContext(context);
+        var output = this.internalExpand(this._preparedPayload);
+
+        if (errorLog) {
             // Only return error/warning log if we were given an array to store the data
-            return this.internalExpand(this._preparedPayload), this.templateLog;
+            return [output, this.errorLog];
         }
         else {
-            return this.internalExpand(this._preparedPayload);
+            return output;
         }
     }
 }
