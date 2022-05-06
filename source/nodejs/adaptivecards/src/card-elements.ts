@@ -2188,6 +2188,14 @@ export abstract class CardElementContainer extends CardElement {
 
     allowVerticalOverflow: boolean = false;
 
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            this.getItemAt(i).releaseDOMResources();
+        }
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -2468,23 +2476,19 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource extends SerializableObject {
+export abstract class ContentSource extends SerializableObject {
     //#region Schema
 
     static readonly mimeTypeProperty = new StringProperty(Versions.v1_1, "mimeType");
     static readonly urlProperty = new StringProperty(Versions.v1_1, "url");
 
-    @property(MediaSource.mimeTypeProperty)
+    @property(ContentSource.mimeTypeProperty)
     mimeType?: string;
 
-    @property(MediaSource.urlProperty)
+    @property(ContentSource.urlProperty)
     url?: string;
 
     //#endregion
-
-    protected getSchemaKey(): string {
-        return "MediaSource";
-    }
 
     constructor(url?: string, mimeType?: string) {
         super();
@@ -2495,6 +2499,46 @@ export class MediaSource extends SerializableObject {
 
     isValid(): boolean {
         return this.mimeType && this.url ? true : false;
+    }
+}
+
+export class CaptionSource extends ContentSource {
+    //#region Schema
+
+    static readonly labelProperty = new StringProperty(Versions.v1_6, "label");
+
+    @property(CaptionSource.labelProperty)
+    label?: string;
+
+    //#endregion
+
+    constructor(url?: string, mimeType?: string, label?:string) {
+        super(url, mimeType);
+
+        this.label = label;
+    }
+
+    protected getSchemaKey(): string {
+        return "CaptionSource";
+    }
+
+    render(): HTMLElement | undefined {
+        let result: HTMLTrackElement | undefined = undefined;
+
+        if (this.isValid()) {
+            result = document.createElement("track");
+            result.src = this.url!;
+            result.kind = "captions";
+            result.label = this.label!;
+        }
+
+        return result;
+    }
+}
+
+export class MediaSource extends ContentSource {
+    protected getSchemaKey(): string {
+        return "MediaSource";
     }
 
     render(): HTMLElement | undefined {
@@ -2510,7 +2554,271 @@ export class MediaSource extends SerializableObject {
     }
 }
 
+export abstract class MediaPlayer {
+    private _posterUrl?: string;
+
+    abstract canPlay(): boolean;
+    abstract render(): HTMLElement;
+    abstract fetchVideoDetails(): Promise<void>;
+
+    play() {
+        // Do nothing in base implementation
+    }
+
+    get posterUrl(): string | undefined {
+        return this._posterUrl;
+    }
+
+    protected set posterUrl(value: string | undefined) {
+        this._posterUrl = value;
+    }
+
+    get selectedMediaType(): string | undefined {
+        return undefined;
+    }
+}
+
+export class HTML5MediaPlayer extends MediaPlayer {
+    private _selectedMediaType?: string;
+    private _selectedSources: MediaSource[] = [];
+    private _captionSources: CaptionSource[] = [];
+    private _mediaElement?: HTMLMediaElement;
+
+    private processSources() {
+        this._selectedSources = [];
+        this._captionSources = [];
+        this._selectedMediaType = undefined;
+
+        for (const source of this.owner.sources) {
+            const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
+
+            if (mimeComponents.length === 2) {
+                if (!this._selectedMediaType) {
+                    const index = HTML5MediaPlayer.supportedMediaTypes.indexOf(mimeComponents[0]);
+
+                    if (index >= 0) {
+                        this._selectedMediaType = HTML5MediaPlayer.supportedMediaTypes[index];
+                    }
+                }
+                if (mimeComponents[0] === this._selectedMediaType) {
+                    this._selectedSources.push(source);
+                }
+            }
+        }
+
+        this._captionSources.push(...this.owner.captionSources);
+    }
+
+    static readonly supportedMediaTypes = [ "audio", "video" ];
+
+    constructor(readonly owner: Media) {
+        super();
+
+        this.processSources();
+    }
+
+    canPlay(): boolean {
+        return this._selectedSources.length > 0;
+    }
+
+    async fetchVideoDetails() {
+        // Nothing to fetch for the HTML5 media player
+    }
+
+    render(): HTMLElement {
+        if (this._selectedMediaType === "video") {
+            this._mediaElement = document.createElement("video");
+        } else {
+            this._mediaElement = document.createElement("audio");
+        }
+
+        this._mediaElement.setAttribute(
+            "aria-label",
+            this.owner.altText ? this.owner.altText : Strings.defaults.mediaPlayerAriaLabel()
+        );
+        this._mediaElement.setAttribute("webkit-playsinline", "");
+        this._mediaElement.setAttribute("playsinline", "");
+        // We enable crossorigin for cases where the caption file has a different domain than
+        // the video file. If the caption file lives in a different domain than the video file
+        // and crossorigin is not set, then the caption file will fail to load.
+        this._mediaElement.setAttribute("crossorigin", "");
+        this._mediaElement.autoplay = true;
+        this._mediaElement.controls = true;
+
+        if (Utils.isMobileOS()) {
+            this._mediaElement.muted = true;
+        }
+
+        this._mediaElement.preload = "none";
+        this._mediaElement.style.width = "100%";
+
+        for (const source of this.owner.sources) {
+            const renderedSource = source.render();
+
+            Utils.appendChild(this._mediaElement, renderedSource);
+        }
+
+        for (const captionSource of this.owner.captionSources) {
+            if (captionSource.mimeType == "vtt") {
+                const renderedCaptionSource = captionSource.render();
+
+                Utils.appendChild(this._mediaElement, renderedCaptionSource);
+            }
+        }
+
+        return this._mediaElement;
+    }
+
+    play() {
+        if (this._mediaElement) {
+            this._mediaElement.play();
+        }
+    }
+
+    get selectedMediaType(): string | undefined {
+        return this._selectedMediaType;
+    }
+}
+
+export abstract class CustomMediaPlayer extends MediaPlayer {
+    constructor(matches: RegExpExecArray) {
+        super();
+    }
+}
+
+export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
+    private _videoId?: string;
+
+    constructor(matches: RegExpExecArray, readonly iFrameTitle?: string) {
+        super(matches);
+
+        if (matches.length >= 2) {
+            this._videoId = matches[1];
+        }
+    }
+
+    abstract getEmbedVideoUrl(): string;
+
+    canPlay(): boolean {
+        return this._videoId !== undefined;
+    }
+
+    render(): HTMLElement {
+        let container = document.createElement("div");
+        container.style.position = "relative";
+        container.style.width = "100%";
+        container.style.height = "0";
+        container.style.paddingBottom = "56.25%";
+
+        let iFrame = document.createElement("iframe");
+        iFrame.style.position = "absolute";
+        iFrame.style.top = "0";
+        iFrame.style.left = "0";
+        iFrame.style.width = "100%";
+        iFrame.style.height = "100%";
+        iFrame.src = this.getEmbedVideoUrl();
+        iFrame.frameBorder = "0";
+
+        if (this.iFrameTitle) {
+            iFrame.title = this.iFrameTitle;
+        }
+
+        iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iFrame.allowFullscreen = true;
+        
+        container.appendChild(iFrame);
+
+        return container;
+    }
+
+    get videoId(): string | undefined {
+        return this._videoId;
+    }
+}
+
+export class VimeoPlayer extends IFrameMediaMediaPlayer {
+    async fetchVideoDetails(): Promise<void> {
+        const oEmbedUrl = `https://vimeo.com/api/oembed.json?url=${this.getEmbedVideoUrl()}`;
+
+        let response = await fetch(oEmbedUrl);
+
+        if (response.ok) {
+            let json = await response.json();
+
+            this.posterUrl = json["thumbnail_url"];
+        }
+    }
+
+    getEmbedVideoUrl(): string {
+        return `https://player.vimeo.com/video/${this.videoId}?autoplay=1`;
+    }
+}
+
+export class DailymotionPlayer extends IFrameMediaMediaPlayer {
+    async fetchVideoDetails(): Promise<void> {
+        const apiUrl = `https://api.dailymotion.com/video/${this.videoId}?fields=thumbnail_720_url`;
+
+        let response = await fetch(apiUrl);
+
+        if (response.ok) {
+            let json = await response.json();
+
+            this.posterUrl = json["thumbnail_720_url"];
+        }
+    }
+
+    getEmbedVideoUrl(): string {
+        return  `https://www.dailymotion.com/embed/video/${this.videoId}?autoplay=1`;
+    }
+}
+
+export class YouTubePlayer extends IFrameMediaMediaPlayer {
+    private _startTimeIndex?: number;
+
+    constructor(matches: RegExpExecArray, readonly iFrameTitle?: string) {
+        super(matches, iFrameTitle);
+
+        if (matches.length >= 3 && matches[2] !== undefined) {
+            this._startTimeIndex = parseInt(matches[2]);
+        }
+    }
+
+    async fetchVideoDetails(): Promise<void> {
+        this.posterUrl = this.videoId ? `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg` : undefined;
+    }
+
+    getEmbedVideoUrl(): string {
+        let url = `https://www.youtube.com/embed/${this.videoId}?autoplay=1`;
+
+        if (this._startTimeIndex !== undefined) {
+            url += `&start=${this._startTimeIndex}`;
+        }
+
+        return url;
+    }
+}
+
+export interface ICustomMediaPlayer {
+    urlPatterns: RegExp[];
+    createMediaPlayer: (matches: RegExpExecArray) => CustomMediaPlayer
+}
+
 export class Media extends CardElement {
+    static customMediaPlayers: ICustomMediaPlayer[] = [
+        {
+            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/ig, /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/ig ],
+            createMediaPlayer: (matches) => new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
+        },
+        {
+            urlPatterns: [ /^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/ig ],
+            createMediaPlayer: (matches) => new VimeoPlayer(matches, Strings.defaults.vimeoVideoPlayer())
+        },
+        {
+            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/ig ],
+            createMediaPlayer: (matches) => new DailymotionPlayer(matches, Strings.defaults.dailymotionVideoPlayer())
+        }
+    ];
+
     //#region Schema
 
     static readonly sourcesProperty = new SerializableObjectCollectionProperty(
@@ -2518,11 +2826,19 @@ export class Media extends CardElement {
         "sources",
         MediaSource
     );
+    static readonly captionSourcesProperty = new SerializableObjectCollectionProperty(
+        Versions.v1_6,
+        "captionSources",
+        CaptionSource
+    );
     static readonly posterProperty = new StringProperty(Versions.v1_1, "poster");
     static readonly altTextProperty = new StringProperty(Versions.v1_1, "altText");
 
     @property(Media.sourcesProperty)
     sources: MediaSource[] = [];
+
+    @property(Media.captionSourcesProperty)
+    captionSources: CaptionSource[] = [];
 
     @property(Media.posterProperty)
     poster?: string;
@@ -2532,35 +2848,24 @@ export class Media extends CardElement {
 
     //#endregion
 
-    static readonly supportedMediaTypes = ["audio", "video"];
+    private _mediaPlayer: MediaPlayer;
 
-    private _selectedMediaType?: string;
-    private _selectedSources: MediaSource[];
+    private createMediaPlayer(): MediaPlayer {
+        for (let provider of Media.customMediaPlayers) {
+            for (let source of this.sources) {
+                if (source.url) {
+                    for (let pattern of provider.urlPatterns) {
+                        let matches = pattern.exec(source.url);
 
-    private getPosterUrl(): string | undefined {
-        return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
-    }
-
-    private processSources() {
-        this._selectedSources = [];
-        this._selectedMediaType = undefined;
-
-        for (const source of this.sources) {
-            const mimeComponents = source.mimeType ? source.mimeType.split("/") : [];
-
-            if (mimeComponents.length === 2) {
-                if (!this._selectedMediaType) {
-                    const index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
-
-                    if (index >= 0) {
-                        this._selectedMediaType = Media.supportedMediaTypes[index];
+                        if (matches !== null) {
+                            return provider.createMediaPlayer(matches);    
+                        }
                     }
-                }
-                if (mimeComponents[0] === this._selectedMediaType) {
-                    this._selectedSources.push(source);
                 }
             }
         }
+
+        return new HTML5MediaPlayer(this);
     }
 
     private handlePlayButtonInvoke(event: UIEvent): void {
@@ -2569,12 +2874,13 @@ export class Media extends CardElement {
             event.cancelBubble = true;
 
             if (this.renderedElement) {
-                const mediaPlayerElement = this.renderMediaPlayer();
+                const mediaPlayerElement = this._mediaPlayer.render();
 
                 this.renderedElement.innerHTML = "";
                 this.renderedElement.appendChild(mediaPlayerElement);
 
-                void mediaPlayerElement.play();
+                this._mediaPlayer.play();
+
                 mediaPlayerElement.focus();
             }
         } else {
@@ -2587,159 +2893,138 @@ export class Media extends CardElement {
         }
     }
 
-    private renderPoster(): HTMLElement {
-        const playButtonArrowWidth = 12;
-        const playButtonArrowHeight = 15;
+    private async displayPoster() {
+        if (this.renderedElement) {
+            const playButtonArrowWidth = 12;
+            const playButtonArrowHeight = 15;
 
-        const posterRootElement = document.createElement("div");
-        posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
-        posterRootElement.setAttribute("role", "contentinfo");
-        posterRootElement.setAttribute(
-            "aria-label",
-            this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
-        );
-        posterRootElement.style.position = "relative";
-        posterRootElement.style.display = "flex";
-
-        const posterUrl = this.getPosterUrl();
-
-        if (posterUrl) {
-            const posterImageElement = document.createElement("img");
-            posterImageElement.style.width = "100%";
-            posterImageElement.style.height = "100%";
-            posterImageElement.setAttribute("role", "presentation");
-
-            posterImageElement.onerror = (_e: Event) => {
-                if (posterImageElement.parentNode) {
-                    posterImageElement.parentNode.removeChild(posterImageElement);
-                }
-
-                posterRootElement.classList.add("empty");
-                posterRootElement.style.minHeight = "150px";
-            };
-
-            posterImageElement.src = posterUrl;
-
-            posterRootElement.appendChild(posterImageElement);
-        } else {
-            posterRootElement.classList.add("empty");
-            posterRootElement.style.minHeight = "150px";
-        }
-
-        if (this.hostConfig.supportsInteractivity && this._selectedSources.length > 0) {
-            const playButtonOuterElement = document.createElement("div");
-            playButtonOuterElement.tabIndex = 0;
-            playButtonOuterElement.setAttribute("role", "button");
-            playButtonOuterElement.setAttribute(
+            const posterRootElement = document.createElement("div");
+            posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
+            posterRootElement.setAttribute("role", "contentinfo");
+            posterRootElement.setAttribute(
                 "aria-label",
-                Strings.defaults.mediaPlayerPlayMedia()
+                this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
             );
-            playButtonOuterElement.className =
-                this.hostConfig.makeCssClassName("ac-media-playButton");
-            playButtonOuterElement.style.display = "flex";
-            playButtonOuterElement.style.alignItems = "center";
-            playButtonOuterElement.style.justifyContent = "center";
-            playButtonOuterElement.onclick = (e) => {
-                this.handlePlayButtonInvoke(e);
-            };
+            posterRootElement.style.position = "relative";
+            posterRootElement.style.display = "flex";
 
-            playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
-                if (e.code === "Enter" || e.code === "Space") {
-                    // space or enter
-                    this.handlePlayButtonInvoke(e);
-                }
-            };
+            let posterUrl = this.poster ? this.poster : this._mediaPlayer.posterUrl;
 
-            const playButtonInnerElement = document.createElement("div");
-            playButtonInnerElement.className = this.hostConfig.makeCssClassName(
-                "ac-media-playButton-arrow"
-            );
-            playButtonInnerElement.style.width = playButtonArrowWidth + "px";
-            playButtonInnerElement.style.height = playButtonArrowHeight + "px";
-            playButtonInnerElement.style.borderTopWidth = playButtonArrowHeight / 2 + "px";
-            playButtonInnerElement.style.borderBottomWidth = playButtonArrowHeight / 2 + "px";
-            playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
-            playButtonInnerElement.style.borderRightWidth = "0";
-            playButtonInnerElement.style.borderStyle = "solid";
-            playButtonInnerElement.style.borderTopColor = "transparent";
-            playButtonInnerElement.style.borderRightColor = "transparent";
-            playButtonInnerElement.style.borderBottomColor = "transparent";
-            playButtonInnerElement.style.transform =
-                "translate(" + playButtonArrowWidth / 10 + "px,0px)";
-
-            playButtonOuterElement.appendChild(playButtonInnerElement);
-
-            const playButtonContainer = document.createElement("div");
-            playButtonContainer.style.position = "absolute";
-            playButtonContainer.style.left = "0";
-            playButtonContainer.style.top = "0";
-            playButtonContainer.style.width = "100%";
-            playButtonContainer.style.height = "100%";
-            playButtonContainer.style.display = "flex";
-            playButtonContainer.style.justifyContent = "center";
-            playButtonContainer.style.alignItems = "center";
-
-            playButtonContainer.appendChild(playButtonOuterElement);
-            posterRootElement.appendChild(playButtonContainer);
-        }
-
-        return posterRootElement;
-    }
-
-    private renderMediaPlayer(): HTMLMediaElement {
-        let mediaElement: HTMLMediaElement;
-
-        if (this._selectedMediaType === "video") {
-            const videoPlayer = document.createElement("video");
-
-            const posterUrl = this.getPosterUrl();
-
-            if (posterUrl) {
-                videoPlayer.poster = posterUrl;
+            if (!posterUrl) {
+                posterUrl = this.hostConfig.media.defaultPoster;
             }
 
-            mediaElement = videoPlayer;
-        } else {
-            mediaElement = document.createElement("audio");
+            if (posterUrl) {
+                const posterImageElement = document.createElement("img");
+                posterImageElement.style.width = "100%";
+                posterImageElement.style.height = "100%";
+                posterImageElement.setAttribute("role", "presentation");
+
+                posterImageElement.onerror = (_e: Event) => {
+                    if (posterImageElement.parentNode) {
+                        posterImageElement.parentNode.removeChild(posterImageElement);
+                    }
+
+                    posterRootElement.classList.add("empty");
+                    posterRootElement.style.minHeight = "150px";
+                };
+
+                posterImageElement.src = posterUrl;
+
+                posterRootElement.appendChild(posterImageElement);
+            } else {
+                posterRootElement.classList.add("empty");
+                posterRootElement.style.minHeight = "150px";
+            }
+
+            if (this.hostConfig.supportsInteractivity && this._mediaPlayer.canPlay()) {
+                const playButtonOuterElement = document.createElement("div");
+                playButtonOuterElement.tabIndex = 0;
+                playButtonOuterElement.setAttribute("role", "button");
+                playButtonOuterElement.setAttribute(
+                    "aria-label",
+                    Strings.defaults.mediaPlayerPlayMedia()
+                );
+                playButtonOuterElement.className =
+                    this.hostConfig.makeCssClassName("ac-media-playButton");
+                playButtonOuterElement.style.display = "flex";
+                playButtonOuterElement.style.alignItems = "center";
+                playButtonOuterElement.style.justifyContent = "center";
+                playButtonOuterElement.onclick = (e) => {
+                    this.handlePlayButtonInvoke(e);
+                };
+
+                playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
+                    if (e.code === "Enter" || e.code === "Space") {
+                        // space or enter
+                        this.handlePlayButtonInvoke(e);
+                    }
+                };
+
+                const playButtonInnerElement = document.createElement("div");
+                playButtonInnerElement.className = this.hostConfig.makeCssClassName(
+                    "ac-media-playButton-arrow"
+                );
+                playButtonInnerElement.style.width = playButtonArrowWidth + "px";
+                playButtonInnerElement.style.height = playButtonArrowHeight + "px";
+                playButtonInnerElement.style.borderTopWidth = playButtonArrowHeight / 2 + "px";
+                playButtonInnerElement.style.borderBottomWidth = playButtonArrowHeight / 2 + "px";
+                playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
+                playButtonInnerElement.style.borderRightWidth = "0";
+                playButtonInnerElement.style.borderStyle = "solid";
+                playButtonInnerElement.style.borderTopColor = "transparent";
+                playButtonInnerElement.style.borderRightColor = "transparent";
+                playButtonInnerElement.style.borderBottomColor = "transparent";
+                playButtonInnerElement.style.transform =
+                    "translate(" + playButtonArrowWidth / 10 + "px,0px)";
+
+                playButtonOuterElement.appendChild(playButtonInnerElement);
+
+                const playButtonContainer = document.createElement("div");
+                playButtonContainer.style.position = "absolute";
+                playButtonContainer.style.left = "0";
+                playButtonContainer.style.top = "0";
+                playButtonContainer.style.width = "100%";
+                playButtonContainer.style.height = "100%";
+                playButtonContainer.style.display = "flex";
+                playButtonContainer.style.justifyContent = "center";
+                playButtonContainer.style.alignItems = "center";
+
+                playButtonContainer.appendChild(playButtonOuterElement);
+                posterRootElement.appendChild(playButtonContainer);
+            }
+
+            this.renderedElement.innerHTML = "";
+            this.renderedElement.appendChild(posterRootElement);
         }
-
-        mediaElement.setAttribute(
-            "aria-label",
-            this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel()
-        );
-        mediaElement.setAttribute("webkit-playsinline", "");
-        mediaElement.setAttribute("playsinline", "");
-        mediaElement.autoplay = true;
-        mediaElement.controls = true;
-
-        if (Utils.isMobileOS()) {
-            mediaElement.muted = true;
-        }
-
-        mediaElement.preload = "none";
-        mediaElement.style.width = "100%";
-
-        for (const source of this.sources) {
-            const renderedSource = source.render();
-
-            Utils.appendChild(mediaElement, renderedSource);
-        }
-
-        return mediaElement;
     }
 
     protected internalRender(): HTMLElement | undefined {
         const element = <HTMLElement>document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-media");
 
-        this.processSources();
-
-        element.appendChild(this.renderPoster());
-
         return element;
     }
 
     static onPlay?: (sender: Media) => void;
+
+    render(): HTMLElement | undefined {
+        let result = super.render();
+
+        if (result) {
+            this._mediaPlayer = this.createMediaPlayer();
+
+            this._mediaPlayer.fetchVideoDetails().then(() => this.displayPoster());
+        }
+
+        return result;
+    }
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        this.displayPoster();
+    }
 
     getJsonTypeName(): string {
         return "Media";
@@ -2748,10 +3033,12 @@ export class Media extends CardElement {
     getResourceInformation(): IResourceInformation[] {
         const result: IResourceInformation[] = [];
 
-        const posterUrl = this.getPosterUrl();
+        if (this._mediaPlayer) {
+            const posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
 
-        if (posterUrl) {
-            result.push({ url: posterUrl, mimeType: "image" });
+            if (posterUrl) {
+                result.push({ url: posterUrl, mimeType: "image" });
+            }
         }
 
         for (const mediaSource of this.sources) {
@@ -2765,11 +3052,22 @@ export class Media extends CardElement {
             }
         }
 
+        for (const captionSource of this.captionSources) {
+            if (captionSource.isValid()) {
+                result.push({
+                    /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion -- `captionSource.url` is of type `string | undefined`, but is validated by `isValid()` call */
+                    url: captionSource.url!,
+                    mimeType: captionSource.mimeType!
+                    /* eslint-enable @typescript-eslint/no-unnecessary-type-assertion */
+                });
+            }
+        }
+
         return result;
     }
 
     get selectedMediaType(): string | undefined {
-        return this._selectedMediaType;
+        return this._mediaPlayer.selectedMediaType;
     }
 }
 
@@ -4948,6 +5246,7 @@ export class ToggleVisibilityAction extends Action {
     }
 
     execute() {
+        super.execute();
         if (this.parent) {
             for (const elementId of Object.keys(this.targetElements)) {
                 const targetElement = this.parent.getRootElement().getElementById(elementId);
@@ -5220,6 +5519,12 @@ export class ShowCardAction extends Action {
 
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
+    releaseDOMResources() {
+        super.releaseDOMResources();
+        
+        this.card.releaseDOMResources();
+    }
+
     getJsonTypeName(): string {
         return ShowCardAction.JsonTypeName;
     }
@@ -5434,8 +5739,8 @@ class ActionCollection {
         let afterSelectedAction = false;
 
         for (const renderedAction of this._renderedActions) {
-            // Remove actions after selected action from tabOrder, to skip focus directly to expanded card
-            if (afterSelectedAction) {
+            // Remove actions after selected action from tabOrder if the actions are oriented horizontally, to skip focus directly to expanded card
+            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && afterSelectedAction) {
                 renderedAction.isFocusable = false;
             }
 
@@ -5469,6 +5774,12 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    releaseDOMResources() {
+        for (let action of this._renderedActions) {
+            action.releaseDOMResources();
+        }
     }
 
     actionExecuted(action: Action) {
@@ -5879,6 +6190,12 @@ export class ActionSet extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this);
+    }
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        this._actionCollection.releaseDOMResources();
     }
 
     isBleedingAtBottom(): boolean {
@@ -7446,6 +7763,12 @@ export abstract class ContainerWithActions extends Container {
         super();
 
         this._actionCollection = new ActionCollection(this);
+    }
+
+    releaseDOMResources() {
+        super.releaseDOMResources();
+
+        this._actionCollection.releaseDOMResources();
     }
 
     getActionCount(): number {

@@ -13118,6 +13118,157 @@ namespace AdaptiveCards.Templating.Test
             string st = template.Expand(dt);
             AssertJsonEqual(expectedJson, st);
         }
+
+        [TestMethod]
+        public void TestBooleanEvaluation()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\", " +
+                "\"size\": \"Medium\", \"text\": \"Title is ${title != ''}\"}], \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\", " +
+                "\"size\": \"Medium\", \"text\": \"Title is false\"}], \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\"}";
+
+            Data dt = new Data()
+            {
+                title = ""
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+
+            AssertJsonEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestBooleanProperty()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\", " +
+                "\"body\": [{ \"type\": \"TextBlock\", \"text\": \"Hello world!\", \"wrap\": \"${title != ''}\"}]}";
+
+            string expectedJson = "{\"type\": \"AdaptiveCard\", \"$schema\": " +
+                "\"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.5\", " +
+                "\"body\": [{ \"type\": \"TextBlock\", \"text\": \"Hello world!\", \"wrap\": false}]}";
+
+            Data dt = new Data()
+            {
+                title = ""
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+
+            AssertJsonEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestAppendDelimiterDataArray()
+        {
+            string cardJson = "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", " +
+                "\"type\": \"AdaptiveCard\", \"version\": \"1.3\", \"body\": [{\"type\": \"ColumnSet\"," +
+                "\"$data\": \"${foo}\", \"$when\": \"${$index==0}\"},{\"type\": \"Container\"," +
+                "\"$data\": \"${foo}\", \"$when\": \"${$index>0}\"}]}";
+
+            string expectedJson = "{\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"body\":[{\"type\":\"ColumnSet\"}" +
+                ",{\"type\":\"Container\"}]}";
+
+            var jsonData = @"{""foo"": [{ }, { }]}";
+
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestAppendDelimiter()
+        {
+            string cardJson = "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\": \"AdaptiveCard\", \"version\": \"1.3\", \"body\": [{\"items\": [{" +
+                "\"type\": \"Container\", \"$when\": \"${bar==1}\"}, {\"type\": \"ColumnSet\"," +
+                "\"$when\": \"${bar==2}\"}], \"$data\": \"${foo}\"}]}";
+
+            string expectedJson = "{\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"body\":[{\"items\":[{" +
+                "\"type\":\"Container\"}]}]}";
+
+            var jsonData = @"{""foo"": [{""bar"": 1}]}";
+
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestWhenNotExpression()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"notAnExpression\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            var context = new EvaluationContext();
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestWhenInvalidExpressionNoData()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"${invalidExpression}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            var context = new EvaluationContext();
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestWhenExpressionNotInData()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"${notInData}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            Data dt = new Data()
+            {
+                title = ""
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+
+            Assert.AreEqual(expectedJson, st);
+        }
     }
     [TestClass]
     public sealed class TestRootKeyword

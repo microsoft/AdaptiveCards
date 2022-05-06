@@ -8,8 +8,8 @@
 	"properties": {
 		"mimeType": {
 			"type": "string",
-			"description": "Mime type of associated media (e.g. `\"video/mp4\"`).",
-			"required": true
+			"description": "Mime type of associated media (e.g. `\"video/mp4\"`). For YouTube and other Web video URLs, `mimeType` can be omitted.",
+			"required": false
 		},
 		"url": {
 			"type": "uri-reference",

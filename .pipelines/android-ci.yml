@@ -66,3 +66,18 @@ steps:
     wrapperScript: source/android/gradlew
     cwd: source/android
     tasks: connectedAndroidTest
+
+- script: |
+   mkdir Screenshots
+   cd Screenshots
+   adb shell ls /storage/emulated/0/
+   adb pull /storage/emulated/0/Screenshots/
+  displayName: 'Pull screenshots script'
+  workingDirectory: $(Build.SourcesDirectory)
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish images from Screeenshots folder'
+  inputs:
+    PathtoPublish: '$(build.SourcesDirectory)/Screenshots'
+  condition: succeededOrFailed()

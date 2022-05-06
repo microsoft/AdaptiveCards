@@ -8,12 +8,13 @@
 
 package io.adaptivecards.objectmodel;
 
-public class MediaSource {
+public class MediaSource extends ContentSource {
   private transient long swigCPtr;
-  private transient boolean swigCMemOwn;
+  private transient boolean swigCMemOwnDerived;
 
   protected MediaSource(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
+    super(AdaptiveCardObjectModelJNI.MediaSource_SWIGSmartPtrUpcast(cPtr), true);
+    swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
@@ -22,7 +23,8 @@ public class MediaSource {
   }
 
   protected void swigSetCMemOwn(boolean own) {
-    swigCMemOwn = own;
+    swigCMemOwnDerived = own;
+    super.swigSetCMemOwn(own);
   }
 
   @SuppressWarnings("deprecation")
@@ -32,44 +34,17 @@ public class MediaSource {
 
   public synchronized void delete() {
     if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
+      if (swigCMemOwnDerived) {
+        swigCMemOwnDerived = false;
         AdaptiveCardObjectModelJNI.delete_MediaSource(swigCPtr);
       }
       swigCPtr = 0;
     }
+    super.delete();
   }
 
   public MediaSource() {
-    this(AdaptiveCardObjectModelJNI.new_MediaSource__SWIG_0(), true);
-  }
-
-  public MediaSource(MediaSource arg0) {
-    this(AdaptiveCardObjectModelJNI.new_MediaSource__SWIG_1(MediaSource.getCPtr(arg0), arg0), true);
-  }
-
-  public JsonValue SerializeToJsonValue() {
-    return new JsonValue(AdaptiveCardObjectModelJNI.MediaSource_SerializeToJsonValue(swigCPtr, this), true);
-  }
-
-  public String GetMimeType() {
-    return AdaptiveCardObjectModelJNI.MediaSource_GetMimeType(swigCPtr, this);
-  }
-
-  public void SetMimeType(String value) {
-    AdaptiveCardObjectModelJNI.MediaSource_SetMimeType(swigCPtr, this, value);
-  }
-
-  public String GetUrl() {
-    return AdaptiveCardObjectModelJNI.MediaSource_GetUrl(swigCPtr, this);
-  }
-
-  public void SetUrl(String value) {
-    AdaptiveCardObjectModelJNI.MediaSource_SetUrl(swigCPtr, this, value);
-  }
-
-  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
-    AdaptiveCardObjectModelJNI.MediaSource_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
+    this(AdaptiveCardObjectModelJNI.new_MediaSource(), true);
   }
 
 }
