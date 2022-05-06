@@ -57,7 +57,7 @@ export class MenuItem {
                 this._element.setAttribute("aria-disabled", "true");
             }
 
-            this._element.setAttribute("aria-selected", "false");
+            this._element.setAttribute("aria-current", "false");
             this._element.onmouseup = (_e) => {
                 this.click();
             };

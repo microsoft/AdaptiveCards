@@ -440,6 +440,7 @@ namespace AdaptiveCards.Templating
             }
 
             int repeatsCounts = 1;
+            bool isObjAdded = false;
             var dataContext = GetCurrentDataContext();
 
             if (isArrayType && hasDataContext)
@@ -452,7 +453,7 @@ namespace AdaptiveCards.Templating
             // indicates the number of removed json object(s)
             int removedCounts = 0;
             var comma = context.COMMA();
-            string jsonPairDelimieter = (comma != null && comma.Length > 0) ? comma[0].GetText() : "";
+            string jsonPairDelimiter = (comma != null && comma.Length > 0) ? comma[0].GetText() : "";
 
             // loop for repeating obj parsed in the inner loop
             for (int iObj = 0; iObj < repeatsCounts; iObj++)
@@ -487,14 +488,26 @@ namespace AdaptiveCards.Templating
                         // a pair after first pair is added
                         if (isPairAdded && !returnedResult.IsWhen)
                         {
-                            result.Append(jsonPairDelimieter);
+                            result.Append(jsonPairDelimiter);
                         }
 
                         result.Append(returnedResult);
 
                         if (returnedResult.IsWhen)
                         {
-                            whenEvaluationResult = returnedResult.WhenEvaluationResult;
+                            if (returnedResult.WhenEvaluationResult == AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated)
+                            {
+                                // The when expression could not be evaluated, so we are defaulting the value to false
+                                whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
+                                // TODO: Expose this warning to caller - documented in issue #7433
+                                Console.WriteLine($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
+                                    $"expression is invalid. The $when condition has been set to false by default.");
+                                
+                            }
+                            else
+                            {
+                                whenEvaluationResult = returnedResult.WhenEvaluationResult;
+                            }
                         }
                         else
                         {
@@ -508,11 +521,14 @@ namespace AdaptiveCards.Templating
 
                 if (whenEvaluationResult != AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse)
                 {
-                    if (iObj != repeatsCounts - 1)
+                    if (isObjAdded)
                     {
-                        result.Append(jsonPairDelimieter);
+                        // add a delimiter, e.g ',' before appending
+                        // another object after first object is added
+                        combinedResult.Append(jsonPairDelimiter);
                     }
                     combinedResult.Append(result);
+                    isObjAdded = true;
                 }
                 else
                 {
@@ -630,7 +646,12 @@ namespace AdaptiveCards.Templating
                     result.Append('"');
                     result.Append(value);
                     result.Append('"');
-                } else
+                }
+                else if (value is Boolean)
+                {
+                    result.Append(value.ToString().ToLower());
+                }
+                else
                 {
                     result.Append(value);
                 }
@@ -658,6 +679,15 @@ namespace AdaptiveCards.Templating
             // this node is visited only when parsing was correctly done
             // [ '{', '$when', ':', ',', 'expression'] 
             var result = Visit(context.templateExpression());
+
+            if (!result.IsWhen)
+            {
+                // We know that this result was supposed to be IsWhen since it is called from VisitTemplateWhen
+                // We create a result with `IsWhen = false` if the expression is invalid
+                // Result will now correctly follow the rest of the IsWhen logic
+                result.IsWhen = true;
+            }
+
             return result;
         }
 
@@ -681,17 +711,25 @@ namespace AdaptiveCards.Templating
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LSB().GetText());
             var values = context.value();
             var arrayDelimiters = context.COMMA();
+            bool isValueAdded = false;
 
             // visit each json value in json array and integrate parsed result
             for (int i = 0; i < values.Length; i++)
             {
                 var value = context.value(i);
                 var parsedResult = Visit(value);
-                result.Append(parsedResult);
-                // only add delimiter when parsedResult has not been dropped, and delimiter is needed
-                if (!parsedResult.HasItBeenDropped && i != values.Length - 1 && arrayDelimiters.Length > 0)
+
+                // only add delimiter when parsedResult has not been dropped,
+                // and a value has already been added to the array
+                if (isValueAdded && !parsedResult.HasItBeenDropped && arrayDelimiters.Length > 0)
                 {
                     result.Append(arrayDelimiters[0].GetText());
+                }
+
+                if (!parsedResult.HasItBeenDropped)
+                {
+                    result.Append(parsedResult);
+                    isValueAdded = true;
                 }
             }
 
@@ -711,7 +749,18 @@ namespace AdaptiveCards.Templating
             var (value, error) = new ValueExpression(Regex.Unescape(predicate)).TryGetValue(data);
             if (error == null)
             {
-                return bool.Parse(value as string);
+                try
+                {
+                    return bool.Parse(value as string);
+                }
+                catch (System.FormatException)
+                {
+                    // If the expression didn't evaluate to a boolean, we need to return false
+                    // TODO: Expose this warning to caller - documented in issue #7433
+                    Console.WriteLine($"WARN: Could not evaluate boolean expression because it could not be found in the provided data. " +
+                                    "The condition has been set to false by default.");
+                    return false;
+                }
             }
             return true;
         }

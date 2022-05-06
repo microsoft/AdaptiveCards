@@ -1,0 +1,25 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"description": "Defines a source for captions",
+	"version": "1.6",
+	"features": [
+		196
+	],
+	"properties": {
+		"mimeType": {
+			"type": "string",
+			"description": "Mime type of associated caption file (e.g. `\"vtt\"`). For rendering in JavaScript, only `\"vtt\"` is supported, for rendering in UWP, `\"vtt\"` and `\"srt\"` are supported.",
+			"required": true
+		},
+		"url": {
+			"type": "uri-reference",
+			"description": "URL to captions.",
+			"required": true
+		},
+		"label": {
+			"type": "string",
+			"description": "Label of this caption to show to the user.",
+			"required": true
+		}
+	}
+}
