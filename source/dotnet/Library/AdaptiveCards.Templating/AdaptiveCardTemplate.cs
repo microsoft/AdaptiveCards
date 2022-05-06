@@ -22,6 +22,7 @@ namespace AdaptiveCards.Templating
     {
         private IParseTree parseTree;
         private string jsonTemplateString;
+        private ArrayList templateExpansionErrors;
 
         /// <summary>
         /// <para>Creates an instance of AdaptiveCardTemplate</para>
@@ -68,34 +69,6 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// Wrapper method to maintain functionality if caller decides not to use log files
-        /// This method will call the base Expand(context, errorLog, nullSubstitutionOption)
-        /// with errorLog as a discarded parameter
-        /// </summary>
-        /// <param name="context">provides data context</param>
-        /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
-        /// <returns>json as string</returns>
-        public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
-        {
-            // Use discarded out parameter since caller didn't use errorLog implementation
-            return Expand(context, out _, nullSubstitutionOption);
-        }
-
-        /// <summary>
-        /// Wrapper method to maintain functionality if caller decides not to use log files
-        /// This method will call the base Expand(rootData, errorLog, nullSubstitutionOption)
-        /// with errorLog as a discarded parameter
-        /// </summary>
-        /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
-        /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
-        /// <returns>json as string</returns>
-        public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
-        {
-            // Use discarded out parameter since caller didn't use errorLog implementation
-            return Expand(rootData, out _, nullSubstitutionOption);
-        }
-
-        /// <summary>
         /// Bind data in <paramref name="context"/> to the instance of AdaptiveCardTemplate
         /// </summary>
         /// <remarks>
@@ -104,10 +77,8 @@ namespace AdaptiveCards.Templating
         /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
         /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
         /// <para> Default behavior is leaving templated string unchanged</para>
-        /// <para> Method has been updated to include error logging. Use Expand(context, nullSubstitutionOption) if you don't want errorLogs.</para>
         /// </remarks>
         /// <param name="context">provides data context</param>
-        /// <param name="errorLog">stores the outputed log statements from parsing the template</param>
         /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -118,13 +89,10 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(EvaluationContext context, out ArrayList errorLog, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
-        
             if (parseTree == null)
             {
-                // Create empty array list so that `out` parameter has a value
-                errorLog = new ArrayList();
                 return jsonTemplateString;
             }
 
@@ -143,10 +111,9 @@ namespace AdaptiveCards.Templating
             }
 
             AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
-
             AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
 
-            errorLog = eval.getTemplateLog();
+            templateExpansionErrors = eval.getTemplateVisitorErrors();
 
             return result.ToString();
         }
@@ -160,10 +127,8 @@ namespace AdaptiveCards.Templating
         /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
         /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
         /// <para> Default behavior is leaving templated string unchanged</para>
-        /// <para> Method has been updated to include error logging. Use Expand(rootData, nullSubstitutionOption) if you don't want errorLogs.</para>
         /// </remarks>
         /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
-        /// <param name="errorLog">stores the outputed log statements from parsing the template</param>
         /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -173,10 +138,23 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(object rootData, out ArrayList errorLog, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
             var context = new EvaluationContext(rootData);
-            return Expand(context, out errorLog, nullSubstitutionOption);
+            return Expand(context, nullSubstitutionOption);
+        }
+
+        /// <summary>
+        /// Getter method for the array of error strings
+        /// </summary>
+        /// <returns>ArrayList</returns>
+        public ArrayList GetTemplateExpansionErrors()
+        {
+            if (templateExpansionErrors != null)
+            {
+                return templateExpansionErrors;
+            }
+            return new ArrayList();
         }
     }
 }

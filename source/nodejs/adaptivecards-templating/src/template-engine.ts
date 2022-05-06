@@ -155,7 +155,7 @@ export interface IEvaluationContext {
  */
 export class Template {
 
-    private errorLog;
+    private templateExpansionErrors;
 
     private static prepare(node: any): any {
         if (typeof node === "string") {
@@ -419,13 +419,13 @@ export class Template {
                     
                     if (!evaluationResult.value) {
                         // Value was not found, and we should warn the client that the Expression was invalid
-                        this.errorLog.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
+                        this.templateExpansionErrors.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
                     }
 
                     dropObject = !whenValue;
                 } else if (when) {
                     // If $when was provided, but it is not an AEL.Expression, drop the object
-                    this.errorLog.push(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
+                    this.templateExpansionErrors.push(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
                     dropObject = true;
                 }
 
@@ -463,6 +463,7 @@ export class Template {
      */
     constructor(payload: any) {
         this._preparedPayload = Template.prepare(payload);
+        this.templateExpansionErrors = [];
     }
 
     /**
@@ -532,22 +533,16 @@ export class Template {
      * @returns A value representing the expanded template. The type of that value
      *   is dependent on the type of the original template payload passed to the constructor.
      */
-    expand(context: IEvaluationContext, errorLog?: String[]): any {
-        if (errorLog) {
-            this.errorLog = errorLog;
-        } else {
-            this.errorLog = [];
-        }
-
+    expand(context: IEvaluationContext): any {
         this._context = new EvaluationContext(context);
-        var output = this.internalExpand(this._preparedPayload);
+        return this.internalExpand(this._preparedPayload);
+    }
 
-        if (errorLog) {
-            // Only return error/warning log if we were given an array to store the data
-            return [output, this.errorLog];
-        }
-        else {
-            return output;
-        }
+    /**
+     * Getter method for the array of error strings
+     * @returns An array storing any errors that occurred while expanding the template
+     */
+    public getTemplateExpansionErrors(): string[] {
+        return this.templateExpansionErrors;
     }
 }

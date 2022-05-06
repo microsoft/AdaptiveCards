@@ -13281,14 +13281,12 @@ namespace AdaptiveCards.Templating.Test
                 "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
 
             var context = new EvaluationContext();
-
             var template = new AdaptiveCardTemplate(cardJson);
-
-            ArrayList log;
-            string st = template.Expand(context, out log);
+            string st = template.Expand(context);
 
             Assert.AreEqual(expectedJson, st);
 
+            ArrayList log = template.GetTemplateExpansionErrors();
             string expectedWarning = "WARN: Could not evaluate \"notAnExpression\" because it is not " +
                 "an expression or the expression is invalid. The $when condition has been set to false by default.";
 
@@ -13306,14 +13304,12 @@ namespace AdaptiveCards.Templating.Test
                 "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
 
             var context = new EvaluationContext();
-
             var template = new AdaptiveCardTemplate(cardJson);
-
-            ArrayList log;
-            string st = template.Expand(context, out log);
+            string st = template.Expand(context);
 
             Assert.AreEqual(expectedJson, st);
 
+            ArrayList log = template.GetTemplateExpansionErrors();
             string expectedWarning = "WARN: Could not evaluate \"${invalidExpression}\" because it is not " +
                 "an expression or the expression is invalid. The $when condition has been set to false by default.";
 
@@ -13336,12 +13332,11 @@ namespace AdaptiveCards.Templating.Test
             };
 
             var template = new AdaptiveCardTemplate(cardJson);
-
-            ArrayList log;
-            string st = template.Expand(dt, out log);
+            string st = template.Expand(dt);
 
             Assert.AreEqual(expectedJson, st);
 
+            ArrayList log = template.GetTemplateExpansionErrors();
             string expectedWarning = "WARN: Could not evaluate boolean expression " +
                 "because it could not be found in the provided data. The condition has been set to false by default.";
 
