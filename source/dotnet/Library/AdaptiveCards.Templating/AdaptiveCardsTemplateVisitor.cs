@@ -24,7 +24,7 @@ namespace AdaptiveCards.Templating
         private Stack<DataContext> dataContext = new Stack<DataContext>();
         private readonly JToken root;
         private readonly Options options;
-        private ArrayList templateVisitorErrors;
+        private ArrayList templateVisitorWarnings;
 
         /// <summary>
         /// maintains data context
@@ -129,7 +129,7 @@ namespace AdaptiveCards.Templating
                 NullSubstitution = nullSubstitutionOption != null? nullSubstitutionOption : (path) => $"${{{path}}}"
             };
 
-            templateVisitorErrors = new ArrayList();
+            templateVisitorWarnings = new ArrayList();
         }
 
         /// <summary>
@@ -203,12 +203,12 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// Getter for templateVisitorErrors
+        /// Getter for templateVisitorWarnings
         /// </summary>
         /// <returns>ArrayList</returns>
-        public ArrayList getTemplateVisitorErrors()
+        public ArrayList getTemplateVisitorWarnings()
         {
-            return templateVisitorErrors;
+            return templateVisitorWarnings;
         }
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace AdaptiveCards.Templating
             }
             catch (System.FormatException)
             {
-                templateVisitorErrors.Add($"WARN: Could not evaluate {result.Predicate} because it could not be found in the provided data. " +
+                templateVisitorWarnings.Add($"WARN: Could not evaluate {result.Predicate} because it could not be found in the provided data. " +
                                     "The condition has been set to false by default.");
             }
 
@@ -525,7 +525,7 @@ namespace AdaptiveCards.Templating
                                 // The when expression could not be evaluated, so we are defaulting the value to false
                                 whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
 
-                                templateVisitorErrors.Add($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
+                                templateVisitorWarnings.Add($"WARN: Could not evaluate {returnedResult} because it is not an expression or the " +
                                     $"expression is invalid. The $when condition has been set to false by default.");
                                 
                             }

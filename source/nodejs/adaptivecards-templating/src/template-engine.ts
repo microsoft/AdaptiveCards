@@ -155,7 +155,7 @@ export interface IEvaluationContext {
  */
 export class Template {
 
-    private templateExpansionErrors;
+    private templateExpansionWarnings;
 
     private static prepare(node: any): any {
         if (typeof node === "string") {
@@ -419,13 +419,13 @@ export class Template {
                     
                     if (!evaluationResult.value) {
                         // Value was not found, and we should warn the client that the Expression was invalid
-                        this.templateExpansionErrors.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
+                        this.templateExpansionWarnings.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
                     }
 
                     dropObject = !whenValue;
                 } else if (when) {
                     // If $when was provided, but it is not an AEL.Expression, drop the object
-                    this.templateExpansionErrors.push(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
+                    this.templateExpansionWarnings.push(`WARN: ${when} is not an Adaptive Expression. The $when condition has been set to false by default.`);
                     dropObject = true;
                 }
 
@@ -463,7 +463,6 @@ export class Template {
      */
     constructor(payload: any) {
         this._preparedPayload = Template.prepare(payload);
-        this.templateExpansionErrors = [];
     }
 
     /**
@@ -534,15 +533,16 @@ export class Template {
      *   is dependent on the type of the original template payload passed to the constructor.
      */
     expand(context: IEvaluationContext): any {
+        this.templateExpansionWarnings = [];
         this._context = new EvaluationContext(context);
         return this.internalExpand(this._preparedPayload);
     }
 
     /**
-     * Getter method for the array of error strings
-     * @returns An array storing any errors that occurred while expanding the template
+     * Getter method for the array of warning strings
+     * @returns An array storing any warnings that occurred while expanding the template
      */
-    public getTemplateExpansionErrors(): string[] {
-        return this.templateExpansionErrors;
+    public getLastTemplateExpansionWarnings(): string[] {
+        return this.templateExpansionWarnings;
     }
 }

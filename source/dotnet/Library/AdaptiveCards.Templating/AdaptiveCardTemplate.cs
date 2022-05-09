@@ -22,7 +22,7 @@ namespace AdaptiveCards.Templating
     {
         private IParseTree parseTree;
         private string jsonTemplateString;
-        private ArrayList templateExpansionErrors;
+        private ArrayList templateExpansionWarnings;
 
         /// <summary>
         /// <para>Creates an instance of AdaptiveCardTemplate</para>
@@ -113,7 +113,7 @@ namespace AdaptiveCards.Templating
             AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
             AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
 
-            templateExpansionErrors = eval.getTemplateVisitorErrors();
+            templateExpansionWarnings = eval.getTemplateVisitorWarnings();
 
             return result.ToString();
         }
@@ -145,14 +145,14 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// Getter method for the array of error strings
+        /// Getter method for the array of warning strings from the last template expansion
         /// </summary>
         /// <returns>ArrayList</returns>
-        public ArrayList GetTemplateExpansionErrors()
+        public ArrayList GetLastTemplateExpansionWarnings()
         {
-            if (templateExpansionErrors != null)
+            if (templateExpansionWarnings != null)
             {
-                return templateExpansionErrors;
+                return templateExpansionWarnings;
             }
             return new ArrayList();
         }

@@ -248,7 +248,7 @@ describe("Test Templating Library", () => {
 
         expect(card).toStrictEqual(expectedOutput);
 
-        let errorLog = template.getTemplateExpansionErrors();
+        let errorLog = template.getLastTemplateExpansionWarnings();
         let expectedWarning = "WARN: isNotExpression is not an Adaptive Expression. The $when condition has been set to false by default.";
 
         expect(errorLog[0]).toStrictEqual(expectedWarning);
@@ -287,7 +287,7 @@ describe("Test Templating Library", () => {
 
         expect(card).toStrictEqual(expectedOutput);
 
-        let errorLog = template.getTemplateExpansionErrors();
+        let errorLog = template.getLastTemplateExpansionWarnings();
         let expectedWarning = "WARN: Unable to parse the Adaptive Expression invalidExpression. The $when condition has been set to false by default.";
         
         expect(errorLog[0]).toStrictEqual(expectedWarning);

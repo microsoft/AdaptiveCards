@@ -13286,7 +13286,7 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(expectedJson, st);
 
-            ArrayList log = template.GetTemplateExpansionErrors();
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
             string expectedWarning = "WARN: Could not evaluate \"notAnExpression\" because it is not " +
                 "an expression or the expression is invalid. The $when condition has been set to false by default.";
 
@@ -13309,7 +13309,7 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(expectedJson, st);
 
-            ArrayList log = template.GetTemplateExpansionErrors();
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
             string expectedWarning = "WARN: Could not evaluate \"${invalidExpression}\" because it is not " +
                 "an expression or the expression is invalid. The $when condition has been set to false by default.";
 
@@ -13336,7 +13336,7 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(expectedJson, st);
 
-            ArrayList log = template.GetTemplateExpansionErrors();
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
             string expectedWarning = "WARN: Could not evaluate ${notInData} " +
                 "because it could not be found in the provided data. The condition has been set to false by default.";
 
