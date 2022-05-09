@@ -357,7 +357,7 @@ namespace AdaptiveCards.Templating
             }
             catch (System.FormatException)
             {
-                templateVisitorErrors.Add($"WARN: Could not evaluate boolean expression because it could not be found in the provided data. " +
+                templateVisitorErrors.Add($"WARN: Could not evaluate {result.Predicate} because it could not be found in the provided data. " +
                                     "The condition has been set to false by default.");
             }
 

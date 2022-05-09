@@ -13337,7 +13337,7 @@ namespace AdaptiveCards.Templating.Test
             Assert.AreEqual(expectedJson, st);
 
             ArrayList log = template.GetTemplateExpansionErrors();
-            string expectedWarning = "WARN: Could not evaluate boolean expression " +
+            string expectedWarning = "WARN: Could not evaluate ${notInData} " +
                 "because it could not be found in the provided data. The condition has been set to false by default.";
 
             Assert.AreEqual(expectedWarning, log[0]);
