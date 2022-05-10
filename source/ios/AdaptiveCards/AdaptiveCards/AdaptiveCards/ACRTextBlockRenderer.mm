@@ -133,6 +133,8 @@
         lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 
+    lab.editable = NO;
+
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     if (txtBlck->GetHeight() == HeightType::Auto) {
