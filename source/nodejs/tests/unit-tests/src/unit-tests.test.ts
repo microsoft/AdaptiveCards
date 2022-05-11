@@ -214,6 +214,84 @@ describe("Test Templating Library", () => {
 
         runTest(templatePayload, expectedOutput, undefined, undefined);
     });
+
+    it("TemplateWhenIsNotExpressionWithLog", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "${title}",
+                    "$when": "isNotExpression"
+                }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "body": [],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        let template = new ACData.Template(templatePayload);
+
+        let context = {
+            $root: undefined
+        };
+
+        let card = template.expand(context);
+
+        expect(card).toStrictEqual(expectedOutput);
+
+        let errorLog = template.getLastTemplateExpansionWarnings();
+        let expectedWarning = "WARN: isNotExpression is not an Adaptive Expression. The $when condition has been set to false by default.";
+
+        expect(errorLog[0]).toStrictEqual(expectedWarning);
+    });
+
+    it("TemplateWhenIsInvalidExpressionWithLog", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "${title}",
+                    "$when": "${invalidExpression}"
+                }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "body": [],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5"
+        };
+
+        let template = new ACData.Template(templatePayload);
+
+        let context = {
+            $root: undefined
+        };
+
+        let card = template.expand(context);
+
+        expect(card).toStrictEqual(expectedOutput);
+
+        let errorLog = template.getLastTemplateExpansionWarnings();
+        let expectedWarning = "WARN: Unable to parse the Adaptive Expression invalidExpression. The $when condition has been set to false by default.";
+        
+        expect(errorLog[0]).toStrictEqual(expectedWarning);
+    });
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
