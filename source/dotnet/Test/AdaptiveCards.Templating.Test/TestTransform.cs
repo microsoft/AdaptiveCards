@@ -5,7 +5,7 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -13268,6 +13268,79 @@ namespace AdaptiveCards.Templating.Test
             string st = template.Expand(dt);
 
             Assert.AreEqual(expectedJson, st);
+        }
+
+        [TestMethod]
+        public void TestWhenNotExpressionWithLog()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"notAnExpression\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            var context = new EvaluationContext();
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
+            string expectedWarning = "WARN: Could not evaluate \"notAnExpression\" because it is not " +
+                "an expression or the expression is invalid. The $when condition has been set to false by default.";
+
+            Assert.AreEqual(expectedWarning, log[0]);
+        }
+
+        [TestMethod]
+        public void TestWhenInvalidExpressionNoDataWithLog()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"${invalidExpression}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            var context = new EvaluationContext();
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+
+            Assert.AreEqual(expectedJson, st);
+
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
+            string expectedWarning = "WARN: Could not evaluate \"${invalidExpression}\" because it is not " +
+                "an expression or the expression is invalid. The $when condition has been set to false by default.";
+
+            Assert.AreEqual(expectedWarning, log[0]);
+        }
+
+        [TestMethod]
+        public void TestWhenExpressionNotInDataWithLog()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\", \"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\", \"weight\": \"Bolder\", \"text\": \"${title}\", \"$when\": \"${notInData}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.5\"}";
+
+            string expectedJson = "{\"type\":\"AdaptiveCard\",\"body\":[]," +
+                "\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\":\"1.5\"}";
+
+            Data dt = new Data()
+            {
+                title = ""
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+
+            Assert.AreEqual(expectedJson, st);
+
+            ArrayList log = template.GetLastTemplateExpansionWarnings();
+            string expectedWarning = "WARN: Could not evaluate ${notInData} " +
+                "because it could not be found in the provided data. The condition has been set to false by default.";
+
+            Assert.AreEqual(expectedWarning, log[0]);
         }
     }
     [TestClass]
