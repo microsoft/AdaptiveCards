@@ -23,6 +23,10 @@
 	<link rel="alternate" href="<%- url_for(config.feed.path) %>" title="<%= config.title %>" type="application/atom+xml">
 	<link rel="icon" href="<%- url_for('content/favicon.ico') %>">
 
+	<% if(is_current("designer")) { %>
+		<link rel="manifest" href="/manifest.json">
+	<% } %>
+
 	<% if(is_post()) { %>
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="Adaptive Cards | <%- page.title %>">

@@ -1,0 +1,17 @@
+{
+    "lang": "en-us",
+    "name": "Adaptive Cards Designer",
+    "short_name": "ACDesigner",
+    "description": "A PWA for the Adaptive Cards Designer",
+    "start_url": "/designer/",
+    "background_color": "#2f3d58",
+    "theme_color": "#2f3d58",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/content/Relecloud.png",
+            "sizes": "500x500"
+        }
+    ]
+}

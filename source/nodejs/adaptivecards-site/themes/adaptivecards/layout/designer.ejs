@@ -69,6 +69,26 @@
 		}
 
 		function initializeDesigner() {
+
+			// could add scope here??
+			// scope: '/designer/'
+			// TODO: this is only called first time around, need to figure out where to place the registration code :)
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/../service-worker.js').then(registration => {
+						console.log('SW registered: ', registration);
+					}).catch(registrationError => {
+						console.log('SW registration failed: ', registrationError);
+					});
+				});
+			}
+
+			let isPWA = window.matchMedia('(display-mode: standalone)').matches;
+
+			if (isPWA) {
+				$('#headerAreaHolder').hide();
+			}
+
 			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
 			designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
