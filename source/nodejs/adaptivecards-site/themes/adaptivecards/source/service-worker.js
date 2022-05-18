@@ -1,16 +1,12 @@
 //var fs = require("fs");
-const cacheName = 'designerCache';
+const cacheName = 'designerCache-v2';
 
 // TODO: need to get this stuff sorted out
-// Sync with canhua about what files are actually used??
-const contentToCache = ['content/cats/1.png',
-'content/cats/2.png',
-'content/cats/3.png',
-'content/connect/blog.png',
-'content/connect/friends.png',
-'content/connect/github.png',
-'content/connect/stackoverflow.png',
-'content/connect/twitter.png'];
+// Sync with canhua about what files are used by the designer
+const contentToCache = ['content/adaptive-card-200.png',
+'css/extracted.css',
+'css/style.css',
+'css/w3.css'];
 // const contentToCache = getAllFiles('/content');
 // const contentToCache.concat(getAllFiles('../../public/designer'))
 
@@ -20,43 +16,57 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 
   event.waitUntil(
-    caches.open(cacheName).then((cache) => cache.addAll(contentToCache))
+    caches.open(cacheName)
+    .then(cache => {
+      return cache.addAll(contentToCache);
+    })
   );
 });
 
-// This method hasn't been tested yet :)
+// When we activate a new service worker, we delete the outdated caches
 self.addEventListener('activate', (event) => {
   console.log("Activating service worker");
 
   // Delete all caches that are not cacheName
-  event.waitUntil(caches.keys().then((keys) => {
-    return Promise.all(keys.map((key) => {
-      if (key !== cacheName) {
-       return caches.delete(key);
-      }
-    }));
-  }));
+  // The cache name is updated for new service worker versions
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== cacheName) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
 });
 
+// The fetch listener intercepts requests for files from the network 
+// and responds with the files from the cache
 self.addEventListener('fetch', (event) => {
-  console.log("Service worker is fetching");
+  console.log('Service worker is fetching ', event.request.url);
 
   event.respondWith(
-
-    caches.match(event.request).then(response => {
+    caches.match(event.request)
+    .then(response => {
       if (response) {
+        // The request was found in the cache
+        console.log(event.request.url, ' was found in the cache.');
         return response;
       }
 
-      return fetch(event.request).then(response => {
-        if (response.status == 200) {
+      // Now we will make a network request and add the files to the cache
+      return fetch(event.request)
+      .then(response => {
+        if (response.status === 200) {
           return caches.open(cacheName).then(cache => {
-            cache.put(event.request, response.clone);
+            cache.put(event.request.url, response.clone());
             return response;
-          })
+          });
         }
-      });
-    });
+      })
+    })
   );
 });
 

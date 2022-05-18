@@ -70,12 +70,12 @@
 
 		function initializeDesigner() {
 
-			// could add scope here??
-			// scope: '/designer/'
-			// TODO: this is only called first time around, need to figure out where to place the registration code :)
+			// Register the service worker for PWA
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('/../service-worker.js').then(registration => {
+					// TODO: I believe this scope does not properly cache the header file's css
+					// TODO: waiting to see what other files need to be cached
+					navigator.serviceWorker.register('/../service-worker.js', {scope: '/designer/'}).then(registration => {
 						console.log('SW registered: ', registration);
 					}).catch(registrationError => {
 						console.log('SW registration failed: ', registrationError);
@@ -83,9 +83,9 @@
 				});
 			}
 
-			let isPWA = window.matchMedia('(display-mode: standalone)').matches;
-
-			if (isPWA) {
+			// Hide the header if the PWA is open
+			// TODO: need to call this each time we visit the designer page
+			if (window.matchMedia('(display-mode: standalone)').matches) {
 				$('#headerAreaHolder').hide();
 			}
 
