@@ -3,6 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
@@ -59,8 +60,17 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-
         textView.setPaddingRelative(0, 0, (int)spacing,0);
+
+        // FactSets TextViews are wrapped under multiple ViewGroups, and further nesting like
+        // having FactSets cards view under RecyclerViews is making Android accessibility services
+        // to skip factset data for talkBack (sometimes). So marking these TextViews as important for
+        // accessibility explicitly/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            textView.setScreenReaderFocusable(true);
+        } else {
+            textView.setFocusable(true);
+        }
         return textView;
     }
 
