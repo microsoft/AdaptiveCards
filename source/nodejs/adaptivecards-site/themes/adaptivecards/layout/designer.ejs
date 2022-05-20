@@ -45,6 +45,12 @@
 	.acd-icon-scopeTemplate::before {
 		content: "\F2B0";
 	}
+
+	@media all and (display-mode: standalone) {
+		.header-holder {
+			display: none;
+		}
+	}
 </style>
 
 
@@ -73,8 +79,6 @@
 			// Register the service worker for PWA
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', () => {
-					// TODO: I believe this scope does not properly cache the header file's css
-					// TODO: waiting to see what other files need to be cached
 					navigator.serviceWorker.register('/../service-worker.js', {scope: '/designer/'}).then(registration => {
 						console.log('SW registered: ', registration);
 					}).catch(registrationError => {
@@ -82,17 +86,6 @@
 					});
 				});
 			}
-
-			// Hide the header if the PWA is open
-			if (window.matchMedia('(display-mode: standalone)').matches) {
-				$('#headerAreaHolder').hide();
-			}
-
-			// Also listen for the PWA install event, and hide the header for initial load
-			window.addEventListener("appinstalled", e => {
-				console.log("Designer is being installed as a PWA", e);
-				$('#headerAreaHolder').hide();
-			});
 
 			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";

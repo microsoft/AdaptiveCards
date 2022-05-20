@@ -10,7 +10,7 @@
     "display": "standalone",
     "icons": [
         {
-            "src": "/content/adaptive-card-200.png",
+            "src": "/content/icons_blue/blue-512.png",
             "sizes": "200x200"
         }
     ]
