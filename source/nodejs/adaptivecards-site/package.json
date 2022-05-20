@@ -4,13 +4,13 @@
 	"private": true,
 	"scripts": {
 		"clean": "hexo clean",
-		"build": "hexo generate && npx workbox-cli injectManifest config.json",
+		"build": "hexo generate && npx workbox-cli injectManifest workbox-config.json",
 		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
 		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
-		"release": "hexo clean && hexo generate && npx workbox-cli injectManifest config.json",
+		"release": "hexo clean && hexo generate && npx workbox-cli injectManifest workbox-config.json",
 		"start": "hexo server",
-		"generate-sw": "npx workbox-cli injectManifest config.json"
+		"generate-sw": "npx workbox-cli injectManifest workbox-config.json"
 	},
 	"hexo": {
 		"version": "5.4.0"
