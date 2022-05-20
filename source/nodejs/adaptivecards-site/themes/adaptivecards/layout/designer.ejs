@@ -84,10 +84,15 @@
 			}
 
 			// Hide the header if the PWA is open
-			// TODO: need to call this each time we visit the designer page
 			if (window.matchMedia('(display-mode: standalone)').matches) {
 				$('#headerAreaHolder').hide();
 			}
+
+			// Also listen for the PWA install event, and hide the header for initial load
+			window.addEventListener("appinstalled", e => {
+				console.log("Designer is being installed as a PWA", e);
+				$('#headerAreaHolder').hide();
+			});
 
 			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
