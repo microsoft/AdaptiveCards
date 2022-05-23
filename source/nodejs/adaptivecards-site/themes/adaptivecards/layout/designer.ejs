@@ -53,6 +53,19 @@
 	}
 </style>
 
+<script type="text/javascript">
+	// Register the service worker for PWA
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker.register('/../service-worker.js', {scope: '/designer/'}).then(registration => {
+				console.log('SW registered: ', registration);
+			}).catch(registrationError => {
+				console.log('SW registration failed: ', registrationError);
+			});
+		});
+	}
+</script>
+
 
 <script type="text/javascript">
 
@@ -75,17 +88,6 @@
 		}
 
 		function initializeDesigner() {
-
-			// Register the service worker for PWA
-			if ('serviceWorker' in navigator) {
-				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('/../service-worker.js', {scope: '/designer/'}).then(registration => {
-						console.log('SW registered: ', registration);
-					}).catch(registrationError => {
-						console.log('SW registration failed: ', registrationError);
-					});
-				});
-			}
 
 			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";

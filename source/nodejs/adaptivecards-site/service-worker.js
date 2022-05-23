@@ -3,6 +3,7 @@ importScripts(
   'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js'
 );
 
+// Precache all files from workbox-config
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
 const HTML_CACHE = "html";
@@ -26,7 +27,7 @@ workbox.routing.registerRoute(
   })
 );
 
-// TODO: matching by regex might be a better way to register routes since there are a lot of destinations :)
+// TODO: could register routes with regex if we want to be more precise with caching
 workbox.routing.registerRoute(
   ({event}) => {
     return event.request.destination === 'document'},
@@ -93,6 +94,7 @@ workbox.routing.registerRoute(
 );
 
 // This route mostly caches payloads
+// We allow for a high cache so the sample cards and data are stored
 workbox.routing.registerRoute(
   ({event}) => {
     return event.request.destination === ''},
@@ -100,7 +102,7 @@ workbox.routing.registerRoute(
     cacheName: DEFAULT_CACHE,
     plugins: [
       new workbox.expiration.ExpirationPlugin({
-        maxEntries: 50,
+        maxEntries: 100,
       })
     ]
   })
