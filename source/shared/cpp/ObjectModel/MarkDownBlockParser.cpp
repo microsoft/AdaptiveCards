@@ -138,7 +138,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, 
     }
     else
     {
-        if (isEmphasisToken && parser.m_lookBehind == DelimiterType::Escape)
+        if (parser.m_lookBehind == DelimiterType::Escape)
         {
             // remove escape char from stream
             token.pop_back();
