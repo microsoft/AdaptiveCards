@@ -11,9 +11,9 @@ import {
 
 import { SelectAction } from '../actions';
 import ElementWrapper from '../elements/element-wrapper';
-import { Column } from "./column";
 import * as Constants from '../../utils/constants';
 import { ContainerWrapper } from './';
+import { Registry } from '../registration/registry';
 
 export class ColumnSet extends React.PureComponent {
 
@@ -32,11 +32,12 @@ export class ColumnSet extends React.PureComponent {
 		const children = [];
 		if (!this.payload)
 			return children;
-
+    //get Column element from Registry
+    const ColumnElement = Registry.getManager().getComponentOfType("Column");
 		// parse elements
 		payload.columns.map((element, index) => {
 			children.push(
-				<Column json={element}
+				<ColumnElement json={element}
 					columns={payload.columns}
 					configManager={this.props.configManager}
 					hasBackgroundImage={payload.parent.backgroundImage}
