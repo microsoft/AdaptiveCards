@@ -10,5 +10,5 @@
 		"designer/*",
 		"manifest.json"],
 	"swDest": "public/service-worker.js",
-	"swSrc": "service-worker.js"
+	"swSrc": "service-worker.min.js"
 }
