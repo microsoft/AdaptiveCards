@@ -136,8 +136,7 @@ export default class MarkdownFormatter extends React.PureComponent {
 						let middleIndex = group.length / 2;
 						let firstHalf = group.substring(0, middleIndex);
 						let secondHalf = group.substring(middleIndex, group.length);
-						let middle = (j < middleIndex) ? group.substring(0, middleIndex) : group.substring(middleIndex, group.length);
-						regex = regex + firstHalf + '([^' + middle + ']+)' + secondHalf;
+						regex = regex + firstHalf + '(.*?)' + secondHalf;
 					}
 					pattern = regex;
 					break;
