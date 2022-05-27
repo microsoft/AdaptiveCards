@@ -24,7 +24,7 @@
 	<link rel="icon" href="<%- url_for('content/favicon.ico') %>">
 
 	<% if(is_current("designer")) { %>
-		<link rel="manifest" href="<%- url_for('manifest.json') %>">
+		<link rel="manifest" id="pwa-manifest">
 	<% } %>
 
 	<% if(is_post()) { %>

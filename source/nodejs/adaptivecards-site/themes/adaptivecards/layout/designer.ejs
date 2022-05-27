@@ -54,6 +54,33 @@
 </style>
 
 <script type="text/javascript">
+
+	const startUrl = window.location.origin + '<%- config.root %>designer/';
+	const iconUrl = window.location.origin + '<%- config.root %>content/icons_blue/blue-512.png';
+
+	const manifest = {
+		"lang": "en-us",
+		"name": "Adaptive Cards Designer",
+		"short_name": "ACDesigner",
+		"description": "A PWA for the Adaptive Cards Designer TEST5",
+		"start_url": startUrl,
+		"background_color": "#3A96DD",
+		"theme_color": "#3A96DD",
+		"orientation": "any",
+		"display": "standalone",
+		"icons": [
+			{
+				"src": iconUrl,
+				"sizes": "512x512"
+			}
+		]
+	}; 
+
+	const manifestString = JSON.stringify(manifest); 
+	const manifestBlob = new Blob([manifestString], {type: 'application/json'});
+	const manifestURL = URL.createObjectURL(manifestBlob);
+	document.querySelector('#pwa-manifest').setAttribute('href', manifestURL);
+
 	// Register the service worker for PWA
 	if ('serviceWorker' in navigator) {
 		window.addEventListener('load', () => {
