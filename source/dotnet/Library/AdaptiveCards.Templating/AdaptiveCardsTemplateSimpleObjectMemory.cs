@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AdaptiveExpressions.Memory;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards.Templating
 {
@@ -37,9 +39,16 @@ namespace AdaptiveCards.Templating
             bool result = simpleObjectMemory.TryGetValue(path, out value);
             if (value is string)
             {
-                string serializedValue = JsonConvert.SerializeObject(value); 
-                // after serialization, the double quotes should be removed
-                value = serializedValue.Substring(1, serializedValue.Length - 2);
+                try
+                {
+                    JToken jsonObject = JToken.Parse(value as string);
+                }
+                catch (JsonReaderException)
+                {
+                    string serializedValue = JsonConvert.SerializeObject(value);
+                    // after serialization, the double quotes should be removed
+                    value = serializedValue.Substring(1, serializedValue.Length - 2);
+                }
             }
             return result;
         }
