@@ -338,7 +338,7 @@ void EmphasisParser::UpdateLookBehind(const int ch)
     }
     else if (MarkDownBlockParser::IsPunct(ch))
     {
-        m_lookBehind = (ch == '\\') ? DelimiterType::Escape : DelimiterType::Puntuation;
+        m_lookBehind = DelimiterType::Puntuation;
     }
 }
 
