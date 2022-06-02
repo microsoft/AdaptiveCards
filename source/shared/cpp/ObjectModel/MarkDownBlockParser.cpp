@@ -138,12 +138,6 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, 
     }
     else
     {
-        if (isEmphasisToken && parser.m_lookBehind == DelimiterType::Escape)
-        {
-            // remove escape char from stream
-            token.pop_back();
-        }
-
         parser.UpdateLookBehind(currentChar);
         char streamChar{};
         stream.get(streamChar);
@@ -184,13 +178,6 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser& pars
     else
     {
         parser.CaptureEmphasisToken(currentChar, token);
-
-        if (currentChar == '\\')
-        {
-            // skips escape char
-            stream.get();
-        }
-
         parser.ResetCurrentEmphasisState();
         parser.UpdateLookBehind(stream.peek());
         char streamChar{};
@@ -219,7 +206,7 @@ void EmphasisParser::Flush(const int ch, std::string& currentToken)
 
 bool EmphasisParser::IsMarkDownDelimiter(const int ch) const
 {
-    return ((ch == '*' || ch == '_') && (m_lookBehind != DelimiterType::Escape));
+    return ((ch == '*' || ch == '_'));
 }
 
 void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken(std::string& currentToken)
