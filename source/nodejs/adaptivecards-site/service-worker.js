@@ -1,7 +1,9 @@
 // Used pwa-builder as reference: https://github.com/pwa-builder/pwabuilder-serviceworkers/blob/master/serviceWorker5/pwabuilder-sw.js
-importScripts(
-  'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js'
-);
+importScripts('/workbox/workbox-v6.5.3/workbox-sw.js');
+
+workbox.setConfig({
+  modulePathPrefix: '/workbox/workbox-v6.5.3/',
+});;
 
 // Precache all files from workbox-config
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
