@@ -249,13 +249,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(Rule11_12Test_EscapeTest)
         {
             MarkDownParser parser("foo *\\**");
-            Assert::AreEqual<std::string>("<p>foo <em>*</em></p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>foo <em>\\</em>*</p>", parser.TransformToHtml());
 
             MarkDownParser parser2("foo **\\***");
-            Assert::AreEqual<std::string>("<p>foo <strong>*</strong></p>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>foo <strong>\\</strong>*</p>", parser2.TransformToHtml());
 
             MarkDownParser parser3("foo __\\___");
-            Assert::AreEqual<std::string>("<p>foo <strong>_</strong></p>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>foo <strong>\\</strong>_</p>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(Rule11_12Test_UnevenMatchingDelimiter)
@@ -433,7 +433,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithEscapedDelimiters)
         {
-            MarkDownParser parser("[[cool link!]](https://contoso.com/New%20Document%20(1\\).docx)");
+            MarkDownParser parser("[[cool link!]](https://contoso.com/New%20Document%20(1).docx)");
             Assert::AreEqual<std::string>("<p><a href=\"https://contoso.com/New%20Document%20(1).docx\">[cool link!]</a></p>", parser.TransformToHtml());
         }
 
