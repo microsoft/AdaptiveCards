@@ -55,6 +55,9 @@
 
 <script type="text/javascript">
 
+	// We need to dynamically update the start_url and icon src for the manifest
+	// Our test site inserts `/pr/pr#` into the file path, so a static manifest
+	// file does not point to the correct location
 	const startUrl = window.location.origin + '<%- config.root %>designer/';
 	const iconUrl = window.location.origin + '<%- config.root %>content/icons_blue/blue-512.png';
 
@@ -76,6 +79,8 @@
 		]
 	}; 
 
+	// Now that we have the correct manifest json, we create a url and assign
+	// it as the href for the manifest link in the header
 	const manifestString = JSON.stringify(manifest); 
 	const manifestBlob = new Blob([manifestString], {type: 'application/json'});
 	const manifestURL = URL.createObjectURL(manifestBlob);

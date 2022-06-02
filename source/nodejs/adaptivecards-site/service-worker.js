@@ -41,69 +41,26 @@ workbox.routing.registerRoute(
   })
 );
 
-workbox.routing.registerRoute(
-  ({event}) => {
-    return event.request.destination === 'script'},
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: JS_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 15,
-      })
-    ]
-  })
-);
+function registerStaleWhileRevalidate(destinationType, cache, entries) {
+  workbox.routing.registerRoute(
+    ({event}) => {
+      return event.request.destination === destinationType},
+    new workbox.strategies.StaleWhileRevalidate({
+      cacheName: cache,
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({
+          maxEntries: entries,
+        })
+      ]
+    })
+  );
+}
 
-workbox.routing.registerRoute(
-  ({event}) => {
-    return event.request.destination === 'style'},
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: STYLE_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 15,
-      })
-    ]
-  })
-);
-
-workbox.routing.registerRoute(
-  ({event}) => {
-    return event.request.destination === 'image'},
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: IMAGE_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 15,
-      })
-    ]
-  })
-);
-
-workbox.routing.registerRoute(
-  ({event}) => {
-    return event.request.destination === 'font'},
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: FONT_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 15,
-      })
-    ]
-  })
-);
+registerStaleWhileRevalidate('script', JS_CACHE, 15);
+registerStaleWhileRevalidate('style', STYLE_CACHE, 15);
+registerStaleWhileRevalidate('image', IMAGE_CACHE, 15);
+registerStaleWhileRevalidate('font', FONT_CACHE, 15);
 
 // This route mostly caches payloads
 // We allow for a high cache so the sample cards and data are stored
-workbox.routing.registerRoute(
-  ({event}) => {
-    return event.request.destination === ''},
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: DEFAULT_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 100,
-      })
-    ]
-  })
-);
+registerStaleWhileRevalidate('', DEFAULT_CACHE, 100);
