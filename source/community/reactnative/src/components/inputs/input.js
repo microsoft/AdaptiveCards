@@ -74,6 +74,13 @@ export class Input extends React.Component {
 			TextBox = this.inlineActionComponent();
 		}
 		else {
+
+			let inputTextAlign = Constants.CenterString;
+			if (isMultiline) {
+				inputTextAlign = this.styleConfig?.input?.multilineTextAlignVertical ?? inputTextAlign;
+				this.keyboardType = Constants.ReturnDefault;
+			}
+
 			TextBox = (
 				<InputContextConsumer>
 					{({ addInputItem, showErrors, inputArray }) => {
@@ -101,6 +108,8 @@ export class Input extends React.Component {
 									onBlur={this.handleBlur}
 									value={this.props.value}
 									onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
+									textAlignVertical={inputTextAlign}
+									returnKeyType={Constants.ReturnDone}
 								/>
 							</ElementWrapper>
 						);
@@ -121,7 +130,7 @@ export class Input extends React.Component {
 		const { isMultiline } = this;
 
 		// remove placeholderTextColor from styles object before using
-		const { placeholderTextColor, placeholderCursorColor, activeColor, inactiveColor, singleLineHeight, multiLineHeight, ...stylesObject } = this.styleConfig.input;
+		const { placeholderTextColor, placeholderCursorColor, activeColor, inactiveColor, singleLineHeight, multiLineHeight, multilineTextAlignVertical, ...stylesObject } = this.styleConfig.input;
 		let inputComputedStyles = [stylesObject, styles.input];
 		inputComputedStyles.push({ borderColor: this.state.isFocused ? activeColor : inactiveColor })
 		isMultiline ?
@@ -196,14 +205,17 @@ export class Input extends React.Component {
 			return null;
 		}
 
-		var returnKeyType = Constants.ReturnDone
+		let inputTextAlign = Constants.CenterString;
+		let returnKeyType = Constants.ReturnDone
 		let wrapperStyle = [styles.inlineActionWrapper];
 		wrapperStyle.push({ alignItems: Constants.CenterString })
 
 		if (isMultiline) {
+			inputTextAlign = this.styleConfig?.input?.multilineTextAlignVertical ?? inputTextAlign;
 			wrapperStyle.push({ alignItems: Constants.FlexEnd })
-			returnKeyType = Constants.ReturnDefault;
+			this.keyboardType = Constants.ReturnDefault;
 		}
+
 		if (inlineAction.type == Enums.ElementType.ActionShowCard) {
 			let error = {
 				error: Enums.ValidationError.ActionTypeNotAllowed,
@@ -244,6 +256,7 @@ export class Input extends React.Component {
 									this.textValueChanged(text);
 								}}
 								value={this.props.value}
+								textAlignVertical={inputTextAlign}
 							/>
 							<SelectAction
 								opacity={inlineAction.isEnabled === undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
