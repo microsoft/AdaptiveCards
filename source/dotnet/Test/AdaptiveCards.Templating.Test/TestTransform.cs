@@ -13342,6 +13342,131 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(expectedWarning, log[0]);
         }
+	
+	    [TestMethod]
+        public void TestJPathOnData()
+        {
+            string cardJson =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.3"",
+                      ""body"": [
+                        {
+                          ""type"": ""TextBlock"",
+                          ""text"": ""${string(jPath(FormMetaData, \""$..FieldOptions[?(@.Name == 'Title')].IsReadOnly\""))}""
+                        },
+                        {
+                          ""type"": ""Container"",
+                          ""$when"": ""${not(jPath(FormMetaData, \""$..FieldOptions[?(@.Name == 'Severity')].IsReadOnly\""))}"",
+                          ""items"": [
+                            {
+                              ""type"": ""Input.ChoiceSet"",
+                              ""id"": ""Severity"",
+                              ""style"": ""expanded"",
+                              ""choices"": [
+                                {
+                                  ""$data"": ""${jPath(FormMetaData, \""$..FieldOptions[?(@.Name == 'Severity')].Options\"")}"",
+                                  ""title"": ""${Title}"",
+                                  ""value"": ""${Value}""
+                                }
+                              ],
+                              ""label"": ""Severity of the Incident"",
+                              ""isRequired"": true,
+                              ""errorMessage"": ""Severity of the Incident""
+                            }
+                          ]
+                        }
+                      ]
+                }";
+
+            string expectedJson =
+            @"{
+                  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                  ""type"": ""AdaptiveCard"",
+                  ""version"": ""1.3"",
+                  ""body"": [
+                    {
+                      ""type"": ""TextBlock"",
+                      ""text"": ""false""
+                    },
+                    {
+                      ""type"": ""Container"",
+                      ""items"": [
+                        {
+                          ""type"": ""Input.ChoiceSet"",
+                          ""id"": ""Severity"",
+                          ""style"": ""expanded"",
+                          ""choices"": [
+                            {
+                              ""title"": ""1"",
+                              ""value"": ""1""
+                            },
+                            {
+                              ""title"": ""2"",
+                              ""value"": ""2""
+                            },
+                            {
+                              ""title"": ""3"",
+                              ""value"": ""3""
+                            },
+                            {
+                              ""title"": ""4"",
+                              ""value"": ""4""
+                            }
+                          ],
+                          ""label"": ""Severity of the Incident"",
+                          ""isRequired"": true,
+                          ""errorMessage"": ""Severity of the Incident""
+                        }
+                      ]
+                    }
+                  ]
+            }";
+
+            var context = new EvaluationContext()
+            {
+                Root =
+                @"{
+                  ""Title"": ""Issue with "",
+                  ""FormMetaData"": {
+                    ""FieldOptions"": [
+                      {
+                        ""Name"": ""Title"",
+                        ""IsReadOnly"": false,
+                        ""Options"": []
+                      },
+                      {
+                        ""Name"": ""Severity"",
+                        ""IsReadOnly"": false,
+                        ""Options"": [
+                          {
+                            ""Title"": ""1"",
+                            ""Value"": ""1""
+                          },
+                          {
+                            ""Title"": ""2"",
+                            ""Value"": ""2""
+                          },
+                          {
+                            ""Title"": ""3"",
+                            ""Value"": ""3""
+                          },
+                          {
+                            ""Title"": ""4"",
+                            ""Value"": ""4""
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }"
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(context);
+            AssertJsonEqual(expectedJson, st);
+        }
     }
     [TestClass]
     public sealed class TestRootKeyword
