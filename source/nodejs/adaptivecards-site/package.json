@@ -50,6 +50,7 @@
 		"monaco-editor": "^0.29.1",
 		"request": "^2.88.2",
 		"request-promise": "^4.2.5",
+		"workbox-cli": "^6.5.3",
 		"yaml-front-matter": "^4.1.0"
 	}
 }
