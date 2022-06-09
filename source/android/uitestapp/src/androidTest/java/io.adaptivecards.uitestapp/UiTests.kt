@@ -2,11 +2,16 @@
 // Licensed under the MIT License.
 package io.adaptivecards.uitestapp
 
+import android.view.KeyEvent
+import android.view.View
 import android.widget.DatePicker
 import org.junit.runner.RunWith
 import org.junit.Rule
 import kotlin.Throws
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.action.EspressoKey
 import org.hamcrest.Matchers
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -73,11 +78,34 @@ class UiTests {
         Espresso.onData(Matchers.`is`("TextBlock.Markdown.NumberStart.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
-        Espresso.onView(ViewMatchers.withText("1. First item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("2. Second item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("3. Third item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertElementWithTextIsDisplayed("1. First item in the list;")
+        TestHelpers.assertElementWithTextIsDisplayed("2. Second item in the list;")
+        TestHelpers.assertElementWithTextIsDisplayed("3. Third item in the list;")
 
-        Espresso.onView(ViewMatchers.withText("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertElementWithTextIsDisplayed("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun ShowCardActionKeepsFocusAfterEnter() {
+        Espresso.onData(Matchers.`is`("Action.ShowCard.IsEnabled.json")).perform(ViewActions.click())
+        TestHelpers.goToRenderedCardScreen()
+
+        var anyElement = TestHelpers.findElementWithText("Enabled")
+
+        // TODO: In this card the number of times tab has to be pressed is 5,
+        // for a more understandable and scalable version this shold be done automatically
+        for (i in 1..5) {
+            anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_TAB))
+        }
+
+        anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_ENTER))
+
+        TestHelpers.assertElementWithTextIsDisplayed("You can see this show card!")
+
+        anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_ENTER))
+
+        TestHelpers.assertElementWithTextIsNotDisplayed("You can see this show card!")
     }
 
     @Test
