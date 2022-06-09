@@ -1,0 +1,66 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+  batch: True
+
+variables:
+  solution: source/dotnet/AdaptiveCards.sln
+  buildConfiguration: Release
+  buildPlatform: any cpu
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core SDK'
+  inputs:
+    version: 5.x
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 5.x'
+  inputs:
+    versionSpec: 5.x
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(solution)'
+    feedsToUse: config
+- task: VSBuild@1
+  displayName: 'Build solution source/dotnet/AdaptiveCards.sln'
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  inputs:
+    testAssemblyVer2: |
+     **\!(ref)\*.test.dll
+     !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)\source\dotnet'
+    runInParallel: true
+    runTestsInIsolation: true
+    codeCoverageEnabled: true
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    failOnMinTestsNotRun: true
+    diagnosticsEnabled: True
+- task: PowerShell@1
+  displayName: 'Run all tests'
+  inputs:
+    scriptName: source/dotnet/RunAllTests.ps1
+- task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+  displayName: 'Component Detection'

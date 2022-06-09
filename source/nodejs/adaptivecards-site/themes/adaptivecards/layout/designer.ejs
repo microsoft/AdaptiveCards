@@ -45,7 +45,26 @@
 	.acd-icon-scopeTemplate::before {
 		content: "\F2B0";
 	}
+
+	@media all and (display-mode: standalone) {
+		.header-holder {
+			display: none;
+		}
+	}
 </style>
+
+<script type="text/javascript">
+	// Register the service worker for PWA
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker.register('<%- config.root %>service-worker.js', {scope: '<%- config.root %>designer/'}).then(registration => {
+				console.log('SW registered: ', registration);
+			}).catch(registrationError => {
+				console.log('SW registration failed: ', registrationError);
+			});
+		});
+	}
+</script>
 
 
 <script type="text/javascript">

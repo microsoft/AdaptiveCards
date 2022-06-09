@@ -4,12 +4,13 @@
 	"private": true,
 	"scripts": {
 		"clean": "hexo clean",
-		"build": "hexo generate",
+		"build": "hexo generate && npm run generate-sw",
 		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
 		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
-		"release": "hexo clean && hexo generate",
-		"start": "hexo server"
+		"release": "hexo clean && hexo generate && npm run generate-sw",
+		"start": "hexo server",
+		"generate-sw": "npx workbox-cli injectManifest workbox-config.json"
 	},
 	"hexo": {
 		"version": "5.4.0"
@@ -49,6 +50,7 @@
 		"monaco-editor": "^0.29.1",
 		"request": "^2.88.2",
 		"request-promise": "^4.2.5",
+		"workbox-cli": "^6.5.3",
 		"yaml-front-matter": "^4.1.0"
 	}
 }
