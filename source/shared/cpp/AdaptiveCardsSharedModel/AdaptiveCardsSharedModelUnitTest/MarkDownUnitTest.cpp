@@ -249,13 +249,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(Rule11_12Test_EscapeTest)
         {
             MarkDownParser parser("foo *\\**");
-            Assert::AreEqual<std::string>(R"<p>foo <em>\</em>*</p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>(R"(<p>foo <em>\</em>*</p>)", parser.TransformToHtml());
 
             MarkDownParser parser2("foo **\\***");
-            Assert::AreEqual<std::string>(R"<p>foo <strong>\</strong>*</p>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>(R"(<p>foo <strong>\</strong>*</p>)", parser2.TransformToHtml());
 
             MarkDownParser parser3("foo __\\___");
-            Assert::AreEqual<std::string>(R"<p>foo <strong>\</strong>_</p>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>(R"(<p>foo <strong>\</strong>_</p>)", parser3.TransformToHtml());
         }
 
         TEST_METHOD(Rule11_12Test_UnevenMatchingDelimiter)
