@@ -47,7 +47,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
             _hostConfig = hostconfigParseResult.config;
         }
 #if RELEASE
-        // the most of cards below v1.3 don't have updated accssibility features, but these cards do serve well as visualization test during bug bash
+        // the most of cards below v1.2 don't have updated accssibility features, but these cards do serve well as visualization test during bug bash
         // so instead of removing them, excluded these cards when built for release.
         _restrictedPaths = [NSSet setWithObjects:@"v1.0", @"v1.1", @"HostConfig", @"Templates", @"Elements", @"Tests", nil];
 #else
