@@ -51,7 +51,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
         // so instead of removing them, excluded these cards when built for release.
         _restrictedPaths = [NSSet setWithObjects:@"v1.0", @"v1.1", @"HostConfig", @"Templates", @"Elements", @"Tests", nil];
 #else
-        _restrictedPaths = [NSSet setWithObjects: @"HostConfig", @"Templates", nil];
+        _restrictedPaths = [NSSet setWithObjects:@"HostConfig", @"Templates", nil];
 #endif
         [self updateAdaptiveViewWithNewPath:_rootPath];
     }
@@ -102,7 +102,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
         BOOL isDirectory = NO;
         NSString *resourcePath = [parentDir stringByAppendingPathComponent:path];
         if ([_fileManager fileExistsAtPath:resourcePath isDirectory:&isDirectory]) {
-            if (isDirectory && ![_restrictedPaths containsObject: [_fileManager displayNameAtPath:path]]) {
+            if (isDirectory && ![_restrictedPaths containsObject:[_fileManager displayNameAtPath:path]]) {
                 actions.push_back(buildAction(resourcePath.UTF8String, [_fileManager displayNameAtPath:path].UTF8String));
             } else if ([[resourcePath pathExtension] isEqualToString:@"json"]) {
                 [filesList addObject:resourcePath];
