@@ -1384,14 +1384,24 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false) {
-        designerSurface.appendChild(this.renderedElement);
-
+    addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false, index: number = -1): number {
         if (processChildren) {
-            for (let i = 0; i < this.getChildCount(); i++) {
-                this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren);
+            let neighbor = designerSurface.children.item(index + 1);
+            designerSurface.insertBefore(this.renderedElement, neighbor);
+
+            if (this.getChildCount() >= 0) {
+                for (let i = 0; i < this.getChildCount(); i++) {
+                    // Need to update the index when we move a container element
+                    index = this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren, index + 1);
+                }
+            } else {
+                return index++;
             }
+        } else {
+            // The first time we render the card, we can append the elements in order
+            designerSurface.appendChild(this.renderedElement);
         }
+        return index;
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
