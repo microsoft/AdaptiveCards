@@ -255,7 +255,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<p>foo <strong>\\</strong>*</p>", parser2.TransformToHtml());
 
             MarkDownParser parser3("foo __\\___");
-            Assert::AreEqual<std::string>("<p>foo <strong>\\</strong>_</p>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>(R"<p>foo <strong>\</strong>_</p>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(Rule11_12Test_UnevenMatchingDelimiter)
