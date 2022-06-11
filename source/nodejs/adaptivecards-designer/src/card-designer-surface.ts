@@ -193,7 +193,6 @@ export class CardDesignerSurface {
     private _selectedPeer: DesignerPeers.DesignerPeer;
     private _draggedPeer: DesignerPeers.DesignerPeer;
     private _dropTarget: DesignerPeers.DesignerPeer;
-    private _draggedPeerIndex: number = 0;
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
@@ -824,10 +823,8 @@ export class CardDesignerSurface {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);
 
-            this.calculateDraggedPeerIndex(this._rootPeer);
-            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, true, this._draggedPeerIndex);
+            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, true, this.getDraggedPeerNeighbor());
 
-            this._draggedPeerIndex = 0;
             this._dropTarget.renderedElement.classList.remove("dragover");
 
             this._dragVisual?.parentNode.removeChild(this._dragVisual);
@@ -843,30 +840,37 @@ export class CardDesignerSurface {
         }
     }
 
-    // Outstanding issue: cannot drop an element into a ColumnSet
-    // Find the index of the designer surface where the dragged peer should be dropped
-    calculateDraggedPeerIndex(currentRoot: DesignerPeers.DesignerPeer): boolean {
-        // Need to be able to access the index of the dragged peer in the container
+    // Find the element directly above the dragged element
+    getDraggedPeerNeighbor(): HTMLElement {
         if (this._draggedPeer instanceof DesignerPeers.CardElementPeer) {
-            for (let i = 0; i < currentRoot.getChildCount(); i++) {
-                let child = currentRoot.getChildAt(i);
 
-                // We found the element if the dropTarget (container) is the current root, and we're at the correct index
-                if ((currentRoot == this._dropTarget && this._draggedPeer.cardElement.index == i)) {
-                    return true;
-                }
+            // Get the index of the dragged peer within its container
+            let draggedPeerIndex = this._draggedPeer.cardElement.index;
+            let neighboringPeer = this._dropTarget;
 
-                this._draggedPeerIndex++;
+            // If it is a valid index and is not the first element, find the neighbor
+            if (draggedPeerIndex != 0 && (draggedPeerIndex < this._dropTarget.getChildCount())) {
+                neighboringPeer = this._dropTarget.getChildAt(draggedPeerIndex - 1);
 
-                if (child.getChildCount() > 0) {
-                    // Exit the method if recursive call found the element
-                    if (this.calculateDraggedPeerIndex(child)) {
-                        return true;
-                    }
+                // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
+                if (neighboringPeer.getChildCount() > 0) {
+                    neighboringPeer = this.getLastPeerInContainer(neighboringPeer);
                 }
             }
+
+            return neighboringPeer.renderedElement;
         }
-        return false;
+        // By default, we'll return the drop target
+        return this._dropTarget.renderedElement;
+    }
+
+    // Recursive method to find a containers last element
+    getLastPeerInContainer(parentContainer: DesignerPeers.DesignerPeer): DesignerPeers.DesignerPeer {
+        let lastChildPeer = parentContainer.getChildAt(parentContainer.getChildCount() - 1);
+        if (lastChildPeer.getChildCount() > 0) {
+            lastChildPeer = this.getLastPeerInContainer(lastChildPeer);
+        }
+        return lastChildPeer;
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
