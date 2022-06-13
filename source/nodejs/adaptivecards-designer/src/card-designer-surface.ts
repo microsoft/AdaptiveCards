@@ -846,11 +846,11 @@ export class CardDesignerSurface {
 
             // Get the index of the dragged peer within its container
             let draggedPeerIndex = this._draggedPeer.cardElement.index;
-            let neighboringPeer = this._dropTarget;
+            let neighboringPeer = this._draggedPeer.parent;
 
             // If it is a valid index and is not the first element, find the neighbor
-            if (draggedPeerIndex != 0 && (draggedPeerIndex < this._dropTarget.getChildCount())) {
-                neighboringPeer = this._dropTarget.getChildAt(draggedPeerIndex - 1);
+            if (draggedPeerIndex != 0) {
+                neighboringPeer = this._draggedPeer.parent.getChildAt(draggedPeerIndex - 1);
 
                 // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
                 if (neighboringPeer.getChildCount() > 0) {
