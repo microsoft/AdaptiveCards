@@ -6,6 +6,8 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -66,7 +68,44 @@ public class RendererUtil
         return calendar;
     }
 
+    public static class SpecialTextHandleResult
+    {
+        private CharSequence m_htmlString;
+        private boolean m_hasLinks;
+
+        public SpecialTextHandleResult(CharSequence htmlString, boolean hasLinks)
+        {
+            m_htmlString = htmlString;
+            m_hasLinks = hasLinks;
+        }
+
+        public CharSequence getHtmlString()
+        {
+            return m_htmlString;
+        }
+
+        public boolean getHasLinks()
+        {
+            return m_hasLinks;
+        }
+    }
+
     public static CharSequence handleSpecialText(String textWithFormattedDates)
+    {
+        Spanned spanned = getSpecialTextSpans(textWithFormattedDates);
+        return trimHtmlString(spanned);
+    }
+
+    public static SpecialTextHandleResult handleSpecialTextAndQueryLinks(String textWithFormattedDates)
+    {
+        Spanned spanned = getSpecialTextSpans(textWithFormattedDates);
+
+        URLSpan[] spans = spanned.getSpans(0, spanned.length() - 1, URLSpan.class);
+
+        return new SpecialTextHandleResult(trimHtmlString(spanned), (spans.length > 0));
+    }
+
+    public static Spanned getSpecialTextSpans(String textWithFormattedDates)
     {
         MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
         String textString = markDownParser.TransformToHtml();
@@ -85,7 +124,8 @@ public class RendererUtil
             // Before Android N, html.fromHtml adds two newline characters to end of string
             htmlString = Html.fromHtml(textString, null, new UlTagHandler());
         }
-        return trimHtmlString(htmlString);
+
+        return htmlString;
     }
 
     public static CharSequence trimHtmlString(Spanned htmlString)
@@ -123,7 +163,7 @@ public class RendererUtil
             return htmlString;
         }
 
-        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
+        return htmlString.subSequence(numToRemoveFromStart, htmlString.length() - numToRemoveFromEnd);
     }
 
     // Class to replace ul and li tags
