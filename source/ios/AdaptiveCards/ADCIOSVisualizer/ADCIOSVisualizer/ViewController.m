@@ -689,11 +689,17 @@ CGFloat kFileBrowserWidth = 0;
                            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
                            // reload the row; it is possible that the row height, for example, is calculated without images loaded
                            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-
+                           UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
                            [self.chatWindow endUpdates];
                        } else {
-                           [self.chatWindow beginUpdates];
-                           [self.chatWindow endUpdates];
+                           // when table cell reload is complete, notify VO that layout has changed.
+                           [self.chatWindow
+                               performBatchUpdates:^(void) {
+                                   [self.chatWindow reloadData];
+                               }
+                               completion:^(BOOL finished) {
+                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
+                               }];
                        }
                    });
 }
