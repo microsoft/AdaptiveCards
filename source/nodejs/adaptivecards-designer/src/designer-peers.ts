@@ -1180,6 +1180,9 @@ export abstract class DesignerPeer extends DraggableElement {
         let element = document.createElement("div");
         element.classList.add("acd-peer");
         element.tabIndex = 0;
+		element.onfocus = (e) => {
+			this.isSelected = true;
+		};
 
         let toolTip = this.getToolTip();
 
