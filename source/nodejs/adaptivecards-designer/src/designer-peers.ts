@@ -1087,6 +1087,7 @@ export abstract class DesignerPeer extends DraggableElement {
     private _isSelected: boolean = false;
     private _inplaceEditorOverlay: HTMLElement;
     private _inplaceEditor: DesignerPeerInplaceEditor = null;
+    private _insertAfterNeighbor = false;
 
     private closeInplaceEditor(applyChanges: boolean) {
         if (this._inplaceEditor) {
@@ -1385,26 +1386,23 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false, neighbor: HTMLElement = null): HTMLElement {
-        if (processChildren) {
+    addElementsToDesignerSurface(designerSurface: HTMLElement, neighbor: HTMLElement = undefined): HTMLElement {
+        if (this.renderedElement) {
             if (neighbor) {
                 // Adds the rendered element after its neighbor
                 neighbor.after(this.renderedElement);
+
+                if (this.getChildCount() >= 0) {
+                    neighbor = this.renderedElement;
+                    for (let i = 0; i < this.getChildCount(); i++) {
+                        // We need to update the neighbor with the most recently added element
+                        neighbor = this.getChildAt(i).addElementsToDesignerSurface(designerSurface, neighbor);
+                    }
+                }
             } else {
-                // Add to the end of the html tree if there is not a neighbor
+                // The first time we render the card, we can append the elements in order
                 designerSurface.appendChild(this.renderedElement);
             }
-
-            if (this.getChildCount() >= 0) {
-                neighbor = this.renderedElement;
-                for (let i = 0; i < this.getChildCount(); i++) {
-                    // We need to update the neighbor with the most recently added element
-                    neighbor = this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren, neighbor);
-                }
-            }
-        } else {
-            // The first time we render the card, we can append the elements in order
-            designerSurface.appendChild(this.renderedElement);
         }
         return neighbor;
     }
@@ -1502,6 +1500,14 @@ export abstract class DesignerPeer extends DraggableElement {
                 this.onSelectedChanged(this);
             }
         }
+    }
+
+    get insertAfterNeighbor(): boolean {
+        return this._insertAfterNeighbor;
+    }
+
+    set insertAfterNeighbor(insertAfterNeighbor: boolean) {
+        this._insertAfterNeighbor = insertAfterNeighbor;
     }
 }
 
@@ -2270,7 +2276,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                         this.cardElement.addColumn(column);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column));
+                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
                     }
                 })
         );
@@ -2440,7 +2449,10 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
                         this.cardElement.addImage(newImage);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage));
+                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
                     }
                 })
         );
@@ -3249,8 +3261,13 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 
                         this.cardElement.addRow(row);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row));
-                        this.updateChildren();
+                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
+
+                        // TODO: I'm not sure if this call is necessary
+                        // this.updateChildren();
                     }
                 })
         );

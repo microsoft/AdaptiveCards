@@ -388,7 +388,7 @@ export class CardDesignerSurface {
         this._cardHost.appendChild(renderedCard);
     }
 
-    private addPeer(peer: DesignerPeers.DesignerPeer) {
+    private addPeer(peer: DesignerPeers.DesignerPeer, neighbor: HTMLElement = undefined) {
         if (this._allPeers.indexOf(peer) < 0) {
             this._allPeers.push(peer);
 
@@ -407,16 +407,38 @@ export class CardDesignerSurface {
             peer.onChanged = (sender: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) => { this.peerChanged(sender, updatePropertySheet); };
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
-                this.addPeer(newPeer);
+                if (newPeer.insertAfterNeighbor) {
+                    this.addPeer(newPeer, this.getPeerHTMLNeighbor(newPeer));
+                } else {
+                    this.addPeer(newPeer);
+                }
+
+                newPeer.insertAfterNeighbor = false;
+                
                 this.updateLayout();
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
 
-            peer.addElementsToDesignerSurface(this._designerSurface);
+            peer.addElementsToDesignerSurface(this._designerSurface, neighbor);
 
+            // If we process children, we need to make sure we track the child elements here as well
+            // Test scenario: when we add a row to a table, the TableRow is a container, so the children of the container must be added to the right spot as well
+            // TODO: it might be worth checking the insertAfterNeighbor variable here as well?
+            let currentNeighbor = peer;
             for (let i = 0; i < peer.getChildCount(); i++) {
-                this.addPeer(peer.getChildAt(i));
+                let currentPeer = peer.getChildAt(i);
+                if (i > 0) {
+                    // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
+                    if (currentNeighbor.getChildCount() > 0) {
+                        currentNeighbor = this.getLastPeerInContainer(currentNeighbor);
+                    }
+
+                    this.addPeer(currentPeer, currentNeighbor.renderedElement);
+                } else {
+                    this.addPeer(currentPeer, currentNeighbor.renderedElement);
+                }
+                currentNeighbor = currentPeer;
             }
         }
     }
@@ -480,6 +502,7 @@ export class CardDesignerSurface {
         return null;
     }
 
+    // Question: does showCard always add to the end?
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
         let peer = this.findCardElementPeer(action.card);
 
@@ -499,7 +522,7 @@ export class CardDesignerSurface {
                 }
             }
             else {
-                peer.addElementsToDesignerSurface(this._designerSurface, true);
+                peer.addElementsToDesignerSurface(this._designerSurface);
             }
         }
         else {
@@ -823,7 +846,7 @@ export class CardDesignerSurface {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);
 
-            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, true, this.getDraggedPeerNeighbor());
+            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, this.getPeerHTMLNeighbor(this._draggedPeer));
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
@@ -841,16 +864,16 @@ export class CardDesignerSurface {
     }
 
     // Find the element directly above the dragged element
-    getDraggedPeerNeighbor(): HTMLElement {
-        if (this._draggedPeer instanceof DesignerPeers.CardElementPeer) {
+    getPeerHTMLNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
+        if (peer instanceof DesignerPeers.CardElementPeer && peer.parent) {
 
-            // Get the index of the dragged peer within its container
-            let draggedPeerIndex = this._draggedPeer.cardElement.index;
-            let neighboringPeer = this._draggedPeer.parent;
+            // Get the index of the peer within its container
+            let peerIndex = peer.cardElement.index;
+            let neighboringPeer = peer.parent;
 
-            // If it is a valid index and is not the first element, find the neighbor
-            if (draggedPeerIndex != 0) {
-                neighboringPeer = this._draggedPeer.parent.getChildAt(draggedPeerIndex - 1);
+            // If it is not the first element, find the neighbor
+            if (peerIndex > 0) {
+                neighboringPeer = neighboringPeer.getChildAt(peerIndex - 1);
 
                 // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
                 if (neighboringPeer.getChildCount() > 0) {
@@ -860,8 +883,8 @@ export class CardDesignerSurface {
 
             return neighboringPeer.renderedElement;
         }
-        // By default, we'll return the drop target
-        return this._dropTarget.renderedElement;
+        // Return undefined if we do not know the neighbor
+        return undefined;
     }
 
     // Recursive method to find a containers last element
