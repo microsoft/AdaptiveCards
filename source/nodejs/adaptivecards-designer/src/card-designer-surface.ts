@@ -586,9 +586,16 @@ export class CardDesignerSurface {
                         }
 
                         break;
+                    case Constants.keys.backspace:	
                     case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
+                        }
+                        break;
+
+                    case Constants.keys.enter:
+                        if (this._selectedPeer instanceof DesignerPeers.ActionPeer) {
+                            this._selectedPeer.action.renderedElement.click();
                         }
 
                         break;
@@ -817,6 +824,7 @@ export class CardDesignerSurface {
 
                 if (this.selectedPeer.remove(false, true)) {
                     this.setSelectedPeer(parent);
+                    parent.focus();
                 }
             }
             finally {
