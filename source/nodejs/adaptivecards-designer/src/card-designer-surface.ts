@@ -408,7 +408,7 @@ export class CardDesignerSurface {
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
                 if (newPeer.insertAfterNeighbor) {
-                    this.addPeer(newPeer, this.getPeerHTMLNeighbor(newPeer));
+                    this.addPeer(newPeer, this.getPeerDOMNeighbor(newPeer));
                 } else {
                     this.addPeer(newPeer);
                 }
@@ -427,7 +427,7 @@ export class CardDesignerSurface {
             // TODO: it might be worth checking the insertAfterNeighbor variable here as well?
             let currentNeighbor = peer;
             for (let i = 0; i < peer.getChildCount(); i++) {
-                let currentPeer = peer.getChildAt(i);
+                const currentPeer = peer.getChildAt(i);
                 if (i > 0) {
                     // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
                     if (currentNeighbor.getChildCount() > 0) {
@@ -846,7 +846,7 @@ export class CardDesignerSurface {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);
 
-            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, this.getPeerHTMLNeighbor(this._draggedPeer));
+            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(this._draggedPeer));
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
@@ -864,11 +864,11 @@ export class CardDesignerSurface {
     }
 
     // Find the element directly above the dragged element
-    getPeerHTMLNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
+    getPeerDOMNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
         if (peer instanceof DesignerPeers.CardElementPeer && peer.parent) {
 
             // Get the index of the peer within its container
-            let peerIndex = peer.cardElement.index;
+            const peerIndex = peer.cardElement.index;
             let neighboringPeer = peer.parent;
 
             // If it is not the first element, find the neighbor

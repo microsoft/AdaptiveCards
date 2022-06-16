@@ -2276,7 +2276,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                         this.cardElement.addColumn(column);
 
-                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column);
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column);
                         newPeer.insertAfterNeighbor = true;
 
                         this.insertChild(newPeer);
@@ -2449,7 +2449,7 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
                         this.cardElement.addImage(newImage);
 
-                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage);
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage);
                         newPeer.insertAfterNeighbor = true;
 
                         this.insertChild(newPeer);
@@ -3261,7 +3261,7 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 
                         this.cardElement.addRow(row);
 
-                        let newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row);
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row);
                         newPeer.insertAfterNeighbor = true;
 
                         this.insertChild(newPeer);
