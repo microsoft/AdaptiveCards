@@ -873,25 +873,35 @@ export class CardDesignerSurface {
 
     // Find the element directly above the dragged element
     getPeerDOMNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
-        if (peer instanceof DesignerPeers.CardElementPeer && peer.parent) {
-
-            // Get the index of the peer within its container
-            const peerIndex = peer.cardElement.index;
+        if (peer.parent) {
             let neighboringPeer = peer.parent;
+            if (peer instanceof DesignerPeers.CardElementPeer) {
 
-            // If it is not the first element, find the neighbor
-            if (peerIndex > 0) {
-                neighboringPeer = neighboringPeer.getChildAt(peerIndex - 1);
+                // Get the index of the peer within its container
+                const peerIndex = peer.cardElement.index;
+    
+                // If it is not the first element, find the neighbor
+                if (peerIndex > 0) {
+                    neighboringPeer = neighboringPeer.getChildAt(peerIndex - 1);
+    
+                    // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
+                    if (neighboringPeer.getChildCount() > 0) {
+                        neighboringPeer = this.getLastPeerInContainer(neighboringPeer);
+                    }
+                }
+                
+            } else if (peer instanceof DesignerPeers.ActionPeer) {
 
-                // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
-                if (neighboringPeer.getChildCount() > 0) {
-                    neighboringPeer = this.getLastPeerInContainer(neighboringPeer);
+                // peer.parent should be an ActionSet, so we know that we can add the ActionPeer as the last child element
+                const childCount = neighboringPeer.getChildCount();
+                if (childCount > 1) {
+                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
                 }
             }
 
             return neighboringPeer.renderedElement;
         }
-        // Return undefined if we do not know the neighbor
+        // Return undefined if there is no parent
         return undefined;
     }
 

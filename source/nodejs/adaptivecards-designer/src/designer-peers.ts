@@ -2385,7 +2385,10 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action));
+        const newPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action);
+        newPeer.insertAfterNeighbor = true;
+
+        this.insertChild(newPeer);
     }
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
