@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,29 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
 
+    static class SingleLinkOnKeyListener implements View.OnKeyListener
+    {
+        Spannable spannable;
+        URLSpan urlSpan;
+
+        public SingleLinkOnKeyListener(Spannable spannable)
+        {
+            this.spannable = spannable;
+            URLSpan[] spans = spannable.getSpans(0, 1, URLSpan.class);
+            urlSpan = spans[0];
+        }
+
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent)
+        {
+            if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+            {
+                urlSpan.onClick(view);
+            }
+            return false;
+        }
+    }
+
     static class TouchTextView implements View.OnTouchListener
     {
         Spannable spannable;
@@ -135,6 +159,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         public TouchTextView (Spannable spannable)
         {
             this.spannable = spannable;
+
         }
 
         @Override
@@ -225,7 +250,9 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setOnTouchListener(new TouchTextView(new SpannableString(textHandleResult.getHtmlString())));
+
+        SpannableString spannableString = new SpannableString(textHandleResult.getHtmlString());
+        textView.setOnTouchListener(new TouchTextView(spannableString));
 
         textView.setHorizontallyScrolling(false);
         applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
@@ -247,6 +274,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         if (textHandleResult.getHasLinks())
         {
             textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+            if (textHandleResult.isALink())
+            {
+                textView.setOnKeyListener(new SingleLinkOnKeyListener(spannableString));
+            }
         }
 
         viewGroup.addView(textView);
