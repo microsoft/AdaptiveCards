@@ -38,6 +38,8 @@
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field accessibilityItem:field.inputView viewGroup:viewGroup dataSource:nil];
     field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
+    field.accessibilityHint = NSLocalizedString(@"opens the time picker", nil);
+
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {
