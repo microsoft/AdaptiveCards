@@ -3,6 +3,7 @@
 package io.adaptivecards.uitestapp
 
 import android.util.Log
+import android.view.View
 import androidx.test.espresso.DataInteraction
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
@@ -29,6 +30,20 @@ object TestHelpers {
 
     internal fun goToInputsScreen() {
         Espresso.onView(ViewMatchers.withId(R.id.navigation_inputs)).perform(ViewActions.click())
+    }
+
+    internal fun findElementWithText(text: String): ViewInteraction {
+        return Espresso.onView(ViewMatchers.withText(text))
+    }
+
+    internal fun findValidatedTextInput(validatedTextInputId: String): ViewInteraction {
+        return Espresso.onView(
+            ViewMatchers.withTagValue(
+                Matchers.`is`(
+                    TagContent(validatedTextInputId)
+                )
+            )
+        );
     }
 
     internal fun findInputInValidatedContainer(validatedContainerTagId: String): ViewInteraction {
@@ -107,11 +122,23 @@ object TestHelpers {
     }
 
     internal fun clickOnElementWithText(text: String) {
-        Espresso.onView(ViewMatchers.withText(text)).perform(ViewActions.click())
+        findElementWithText(text).perform(ViewActions.click())
     }
 
     internal fun assertInputValuePairExists(inputId: String, value: String) {
         Espresso.onData(Matchers.`is`(RetrievedInput(inputId, value)))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    internal fun assertElementWithTextIsDisplayed(text: String) {
+        assert(findElementWithText(text), ViewMatchers.isDisplayed())
+    }
+
+    internal fun assertElementWithTextIsNotDisplayed(text: String) {
+        assert(findElementWithText(text), Matchers.not(ViewMatchers.isDisplayed()))
+    }
+
+    internal fun assert(view: ViewInteraction, condition: org.hamcrest.Matcher<View>) {
+        view.check(ViewAssertions.matches(condition))
     }
 }
