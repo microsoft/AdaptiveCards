@@ -70,7 +70,7 @@ using namespace AdaptiveCards;
         self.hasValidationProperties = self.isRequired;
         auto inputLabel = choiceSet->GetLabel();
         _inputLabel = (!inputLabel.empty()) ? [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding] : @"";
-        
+
 
         // configure UI
         _listView = [[UITableView alloc] init];
