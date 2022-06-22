@@ -88,16 +88,14 @@ class UiTests {
     @Test
     @Throws(Exception::class)
     fun ShowCardActionKeepsFocusAfterEnter() {
-        Espresso.onData(Matchers.`is`("Action.ShowCard.IsEnabled.json")).perform(ViewActions.click())
+        Espresso.onData(Matchers.`is`("Test.ShowCardKeepFocus.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
         var anyElement = TestHelpers.findElementWithText("Enabled")
 
-        // TODO: In this card the number of times tab has to be pressed is 5,
-        // for a more understandable and scalable version this shold be done automatically
-        for (i in 1..5) {
-            anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_TAB))
-        }
+        TestHelpers.setTextInInput(TestHelpers.findValidatedTextInput("textLabelId"), "some text")
+
+        anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_TAB))
 
         anyElement.perform(ViewActions.pressKey(KeyEvent.KEYCODE_ENTER))
 

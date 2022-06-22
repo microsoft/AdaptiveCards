@@ -36,6 +36,16 @@ object TestHelpers {
         return Espresso.onView(ViewMatchers.withText(text))
     }
 
+    internal fun findValidatedTextInput(validatedTextInputId: String): ViewInteraction {
+        return Espresso.onView(
+            ViewMatchers.withTagValue(
+                Matchers.`is`(
+                    TagContent(validatedTextInputId)
+                )
+            )
+        );
+    }
+
     internal fun findInputInValidatedContainer(validatedContainerTagId: String): ViewInteraction {
         return Espresso.onView(
             ViewMatchers.withParent(
