@@ -124,7 +124,6 @@ public class RendererUtil
         if (spans.length == 1)
         {
             isALink = FirstAndLastSpansAreTheSame(spanned);
-
         }
 
         return new SpecialTextHandleResult(trimHtmlString(spanned), (spans.length > 0), isALink);

@@ -11,7 +11,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
