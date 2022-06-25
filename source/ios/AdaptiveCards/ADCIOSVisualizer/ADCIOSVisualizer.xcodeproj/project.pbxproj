@@ -97,7 +97,6 @@
 		6BACC09C28678410001D222B /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
 		6BACC09D28678410001D222B /* CustomInputNumberRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */; };
 		6BACC09F28678410001D222B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
-		6BACC0A028678410001D222B /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C74931A3EA41F6932989B5B /* Pods_ADCIOSVisualizer.framework */; };
 		6BACC0A228678410001D222B /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2B230354F100046B3A /* Image.Size.json */; };
 		6BACC0A328678410001D222B /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0B23034F2800046B3A /* FoodOrder.json */; };
 		6BACC0A428678410001D222B /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
@@ -368,7 +367,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BACC09F28678410001D222B /* AdaptiveCards.framework in Frameworks */,
-				6BACC0A028678410001D222B /* Pods_ADCIOSVisualizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1159,7 +1157,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1188,7 +1185,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
