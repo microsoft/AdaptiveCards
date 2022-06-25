@@ -81,6 +81,89 @@
 		6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */; };
 		6B9FAF5425D7182600D1A791 /* MockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FAF5225D7182600D1A791 /* MockRenderer.mm */; };
 		6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
+		6BACC08F28678410001D222B /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6BACC09028678410001D222B /* CustomProgressBarRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */; };
+		6BACC09128678410001D222B /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
+		6BACC09228678410001D222B /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
+		6BACC09328678410001D222B /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
+		6BACC09428678410001D222B /* ACRChatWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF1E31525539B5500DA7561 /* ACRChatWindow.mm */; };
+		6BACC09528678410001D222B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
+		6BACC09628678410001D222B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
+		6BACC09728678410001D222B /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
+		6BACC09828678410001D222B /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
+		6BACC09928678410001D222B /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
+		6BACC09A28678410001D222B /* ADCIOSVisualizer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F423C0811EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld */; };
+		6BACC09B28678410001D222B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
+		6BACC09C28678410001D222B /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
+		6BACC09D28678410001D222B /* CustomInputNumberRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */; };
+		6BACC09F28678410001D222B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
+		6BACC0A028678410001D222B /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C74931A3EA41F6932989B5B /* Pods_ADCIOSVisualizer.framework */; };
+		6BACC0A228678410001D222B /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2B230354F100046B3A /* Image.Size.json */; };
+		6BACC0A328678410001D222B /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0B23034F2800046B3A /* FoodOrder.json */; };
+		6BACC0A428678410001D222B /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
+		6BACC0A528678410001D222B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6BACC0A628678410001D222B /* ColumnSet.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2C230354F100046B3A /* ColumnSet.Spacing.json */; };
+		6BACC0A728678410001D222B /* Conflict.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA925DF5FB700629A39 /* Conflict.png */; };
+		6BACC0A828678410001D222B /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
+		6BACC0A928678410001D222B /* filebrowserHostConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA125DF5FB700629A39 /* filebrowserHostConfig.json */; };
+		6BACC0AA28678410001D222B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6BACC0AB28678410001D222B /* power_point.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA825DF5FB700629A39 /* power_point.png */; };
+		6BACC0AC28678410001D222B /* SmallVerticalLineGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA025DF5FB700629A39 /* SmallVerticalLineGray.png */; };
+		6BACC0AD28678410001D222B /* TextBlock.IsSubtle.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1F230353AB00046B3A /* TextBlock.IsSubtle.json */; };
+		6BACC0AE28678410001D222B /* Action.Execute.Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B37723E26015FA30024E527 /* Action.Execute.Auth.json */; };
+		6BACC0AF28678410001D222B /* TextBlock.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1E230353AB00046B3A /* TextBlock.Spacing.json */; };
+		6BACC0B028678410001D222B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6BACC0B128678410001D222B /* Column.Size.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A33230354F200046B3A /* Column.Size.Ratio.json */; };
+		6BACC0B228678410001D222B /* Image.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A35230354F200046B3A /* Image.json */; };
+		6BACC0B328678410001D222B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
+		6BACC0B428678410001D222B /* ActionSet.Inputs.Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */; };
+		6BACC0B528678410001D222B /* Action.Scrolling.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA725DF5FB700629A39 /* Action.Scrolling.json */; };
+		6BACC0B628678410001D222B /* image_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BCE25E5AD3500629A39 /* image_3.png */; };
+		6BACC0B728678410001D222B /* Action.Execute.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFF9A17260155240028069F /* Action.Execute.json */; };
+		6BACC0B828678410001D222B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6BACC0B928678410001D222B /* Column.Width.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A31230354F200046B3A /* Column.Width.json */; };
+		6BACC0BA28678410001D222B /* AdditionalProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */; };
+		6BACC0BB28678410001D222B /* TextBlock.Color.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A15230353AA00046B3A /* TextBlock.Color.json */; };
+		6BACC0BC28678410001D222B /* TextBlock.Lists.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1A230353AB00046B3A /* TextBlock.Lists.json */; };
+		6BACC0BD28678410001D222B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
+		6BACC0BE28678410001D222B /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA625DF5FB700629A39 /* car.png */; };
+		6BACC0BF28678410001D222B /* Image.ImageBaseUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0E23034F2800046B3A /* Image.ImageBaseUrl.json */; };
+		6BACC0C028678410001D222B /* person_m1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA325DF5FB700629A39 /* person_m1.png */; };
+		6BACC0C128678410001D222B /* person_w2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182B9E25DF5FB700629A39 /* person_w2.png */; };
+		6BACC0C228678410001D222B /* TextBlock.Wrap.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1B230353AB00046B3A /* TextBlock.Wrap.json */; };
+		6BACC0C328678410001D222B /* Image.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2E230354F100046B3A /* Image.Spacing.json */; };
+		6BACC0C428678410001D222B /* TextBlock.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A19230353AB00046B3A /* TextBlock.Size.json */; };
+		6BACC0C528678410001D222B /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A30230354F200046B3A /* Column.Spacing.json */; };
+		6BACC0C628678410001D222B /* Gray_Dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182B9A25DF5FB700629A39 /* Gray_Dot.png */; };
+		6BACC0C728678410001D222B /* location_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA425DF5FB700629A39 /* location_gray.png */; };
+		6BACC0C828678410001D222B /* Image.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2D230354F100046B3A /* Image.Style.json */; };
+		6BACC0C928678410001D222B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F423C0841EE1FB6100905679 /* Assets.xcassets */; };
+		6BACC0CA28678410001D222B /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
+		6BACC0CB28678410001D222B /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */; };
+		6BACC0CC28678410001D222B /* TextBlock.Markdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A17230353AB00046B3A /* TextBlock.Markdown.json */; };
+		6BACC0CD28678410001D222B /* LocationGreen_A.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BAA25DF5FB700629A39 /* LocationGreen_A.png */; };
+		6BACC0CE28678410001D222B /* person_w1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA225DF5FB700629A39 /* person_w1.png */; };
+		6BACC0CF28678410001D222B /* LocationBlue_B.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182B9F25DF5FB700629A39 /* LocationBlue_B.png */; };
+		6BACC0D028678410001D222B /* SeaTacMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182B9B25DF5FB700629A39 /* SeaTacMap.png */; };
+		6BACC0D128678410001D222B /* ColumnSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2F230354F100046B3A /* ColumnSet.json */; };
+		6BACC0D228678410001D222B /* TextBlock.Weight.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1D230353AB00046B3A /* TextBlock.Weight.json */; };
+		6BACC0D328678410001D222B /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
+		6BACC0D428678410001D222B /* ActivityUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0D23034F2800046B3A /* ActivityUpdate.json */; };
+		6BACC0D528678410001D222B /* TextBlock.DateTimeFormatting.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */; };
+		6BACC0D628678410001D222B /* CircleBlue_flight.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BAC25DF5FB700629A39 /* CircleBlue_flight.png */; };
+		6BACC0D728678410001D222B /* Column.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A32230354F200046B3A /* Column.json */; };
+		6BACC0D828678410001D222B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C07E1EE1FB6100905679 /* Main.storyboard */; };
+		6BACC0D928678410001D222B /* CircleGreen_coffee.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BAB25DF5FB700629A39 /* CircleGreen_coffee.png */; };
+		6BACC0DA28678410001D222B /* Column.Width.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A34230354F200046B3A /* Column.Width.Ratio.json */; };
+		6BACC0DB28678410001D222B /* TextBlock.MaxLines.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A18230353AB00046B3A /* TextBlock.MaxLines.json */; };
+		6BACC0DC28678410001D222B /* LocationRed_C.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182B9D25DF5FB700629A39 /* LocationRed_C.png */; };
+		6BACC0DD28678410001D222B /* bg_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BD225E5D7D400629A39 /* bg_image.png */; };
+		6BACC0DE28678410001D222B /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0C23034F2800046B3A /* Restaurant.json */; };
+		6BACC0DF28678410001D222B /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0923034F2800046B3A /* Feedback.json */; };
+		6BACC0E028678410001D222B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6BACC0E128678410001D222B /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
+		6BACC0E228678410001D222B /* TextBlock.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */; };
+		6BACC0E428678410001D222B /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
 		6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */; };
 		6BF1E31625539B5500DA7561 /* ACRChatWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF1E31525539B5500DA7561 /* ACRChatWindow.mm */; };
@@ -125,6 +208,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6BACC0E328678410001D222B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6BACC0E428678410001D222B /* AdaptiveCards.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F423C0D51EE1FE3A00905679 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -223,6 +317,8 @@
 		6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionSetRenderer.mm; sourceTree = "<group>"; };
 		6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionSetRenderer.h; sourceTree = "<group>"; };
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
+		6BACC0E928678410001D222B /* AdaptiveCardsRelease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdaptiveCardsRelease.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BACC0EA28678410001D222B /* AdaptiveCardsVisualizer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AdaptiveCardsVisualizer-Info.plist"; path = "/Users/inyoungwoo/Projects/AdaptiveCards/source/ios/AdaptiveCards/ADCIOSVisualizer/AdaptiveCardsVisualizer-Info.plist"; sourceTree = "<absolute>"; };
 		6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageRenderingTest.mm; sourceTree = "<group>"; };
 		6BF1E31425539B5400DA7561 /* ACRChatWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChatWindow.h; sourceTree = "<group>"; };
@@ -267,6 +363,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6BACC09E28678410001D222B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BACC09F28678410001D222B /* AdaptiveCards.framework in Frameworks */,
+				6BACC0A028678410001D222B /* Pods_ADCIOSVisualizer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F423C06F1EE1FB6100905679 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -385,6 +490,14 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		6BACC0EB2867860C001D222B /* AdaptiveCardsVisualizer */ = {
+			isa = PBXGroup;
+			children = (
+				6BACC0EA28678410001D222B /* AdaptiveCardsVisualizer-Info.plist */,
+			);
+			name = AdaptiveCardsVisualizer;
+			sourceTree = "<group>";
+		};
 		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,6 +544,7 @@
 				F423C0741EE1FB6100905679 /* ADCIOSVisualizer */,
 				F423C0911EE1FB6100905679 /* ADCIOSVisualizerTests */,
 				F423C09C1EE1FB6100905679 /* ADCIOSVisualizerUITests */,
+				6BACC0EB2867860C001D222B /* AdaptiveCardsVisualizer */,
 				F423C0731EE1FB6100905679 /* Products */,
 				6BF339E120A66A3F00DA5973 /* Frameworks */,
 				6BAC0F2A228B42EB00E42DEB /* Recovered References */,
@@ -444,6 +558,7 @@
 				F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */,
 				F423C08E1EE1FB6100905679 /* ADCIOSVisualizerTests.xctest */,
 				F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */,
+				6BACC0E928678410001D222B /* AdaptiveCardsRelease.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,6 +638,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6BACC08C28678410001D222B /* AdaptiveCardsRelease */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BACC0E628678410001D222B /* Build configuration list for PBXNativeTarget "AdaptiveCardsRelease" */;
+			buildPhases = (
+				6BACC08D28678410001D222B /* [CP] Check Pods Manifest.lock */,
+				6BACC08E28678410001D222B /* Sources */,
+				6BACC09E28678410001D222B /* Frameworks */,
+				6BACC0A128678410001D222B /* Resources */,
+				6BACC0E328678410001D222B /* Embed Frameworks */,
+				6BACC0E528678410001D222B /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdaptiveCardsRelease;
+			productName = ADCIOSVisualizer;
+			productReference = 6BACC0E928678410001D222B /* AdaptiveCardsRelease.app */;
+			productType = "com.apple.product-type.application";
+		};
 		F423C0711EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A21EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizer" */;
@@ -590,6 +725,10 @@
 				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
+					6BACC08C28678410001D222B = {
+						DevelopmentTeam = UBF8T346G9;
+						ProvisioningStyle = Automatic;
+					};
 					F423C0711EE1FB6100905679 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = UBF8T346G9;
@@ -625,11 +764,84 @@
 				F423C0711EE1FB6100905679 /* ADCIOSVisualizer */,
 				F423C08D1EE1FB6100905679 /* ADCIOSVisualizerTests */,
 				F423C0981EE1FB6100905679 /* ADCIOSVisualizerUITests */,
+				6BACC08C28678410001D222B /* AdaptiveCardsRelease */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6BACC0A128678410001D222B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BACC0A228678410001D222B /* Image.Size.json in Resources */,
+				6BACC0A328678410001D222B /* FoodOrder.json in Resources */,
+				6BACC0A428678410001D222B /* Image.SelectAction.json in Resources */,
+				6BACC0A528678410001D222B /* (null) in Resources */,
+				6BACC0A628678410001D222B /* ColumnSet.Spacing.json in Resources */,
+				6BACC0A728678410001D222B /* Conflict.png in Resources */,
+				6BACC0A828678410001D222B /* samples in Resources */,
+				6BACC0A928678410001D222B /* filebrowserHostConfig.json in Resources */,
+				6BACC0AA28678410001D222B /* (null) in Resources */,
+				6BACC0AB28678410001D222B /* power_point.png in Resources */,
+				6BACC0AC28678410001D222B /* SmallVerticalLineGray.png in Resources */,
+				6BACC0AD28678410001D222B /* TextBlock.IsSubtle.json in Resources */,
+				6BACC0AE28678410001D222B /* Action.Execute.Auth.json in Resources */,
+				6BACC0AF28678410001D222B /* TextBlock.Spacing.json in Resources */,
+				6BACC0B028678410001D222B /* (null) in Resources */,
+				6BACC0B128678410001D222B /* Column.Size.Ratio.json in Resources */,
+				6BACC0B228678410001D222B /* Image.json in Resources */,
+				6BACC0B328678410001D222B /* sample.json in Resources */,
+				6BACC0B428678410001D222B /* ActionSet.Inputs.Tests.json in Resources */,
+				6BACC0B528678410001D222B /* Action.Scrolling.json in Resources */,
+				6BACC0B628678410001D222B /* image_3.png in Resources */,
+				6BACC0B728678410001D222B /* Action.Execute.json in Resources */,
+				6BACC0B828678410001D222B /* (null) in Resources */,
+				6BACC0B928678410001D222B /* Column.Width.json in Resources */,
+				6BACC0BA28678410001D222B /* AdditionalProperties.json in Resources */,
+				6BACC0BB28678410001D222B /* TextBlock.Color.json in Resources */,
+				6BACC0BC28678410001D222B /* TextBlock.Lists.json in Resources */,
+				6BACC0BD28678410001D222B /* LaunchScreen.storyboard in Resources */,
+				6BACC0BE28678410001D222B /* car.png in Resources */,
+				6BACC0BF28678410001D222B /* Image.ImageBaseUrl.json in Resources */,
+				6BACC0C028678410001D222B /* person_m1.png in Resources */,
+				6BACC0C128678410001D222B /* person_w2.png in Resources */,
+				6BACC0C228678410001D222B /* TextBlock.Wrap.json in Resources */,
+				6BACC0C328678410001D222B /* Image.Spacing.json in Resources */,
+				6BACC0C428678410001D222B /* TextBlock.Size.json in Resources */,
+				6BACC0C528678410001D222B /* Column.Spacing.json in Resources */,
+				6BACC0C628678410001D222B /* Gray_Dot.png in Resources */,
+				6BACC0C728678410001D222B /* location_gray.png in Resources */,
+				6BACC0C828678410001D222B /* Image.Style.json in Resources */,
+				6BACC0C928678410001D222B /* Assets.xcassets in Resources */,
+				6BACC0CA28678410001D222B /* RichTextBlock.json in Resources */,
+				6BACC0CB28678410001D222B /* Input.ChoiceSet.json in Resources */,
+				6BACC0CC28678410001D222B /* TextBlock.Markdown.json in Resources */,
+				6BACC0CD28678410001D222B /* LocationGreen_A.png in Resources */,
+				6BACC0CE28678410001D222B /* person_w1.png in Resources */,
+				6BACC0CF28678410001D222B /* LocationBlue_B.png in Resources */,
+				6BACC0D028678410001D222B /* SeaTacMap.png in Resources */,
+				6BACC0D128678410001D222B /* ColumnSet.json in Resources */,
+				6BACC0D228678410001D222B /* TextBlock.Weight.json in Resources */,
+				6BACC0D328678410001D222B /* Adaptive1.0.png in Resources */,
+				6BACC0D428678410001D222B /* ActivityUpdate.json in Resources */,
+				6BACC0D528678410001D222B /* TextBlock.DateTimeFormatting.json in Resources */,
+				6BACC0D628678410001D222B /* CircleBlue_flight.png in Resources */,
+				6BACC0D728678410001D222B /* Column.json in Resources */,
+				6BACC0D828678410001D222B /* Main.storyboard in Resources */,
+				6BACC0D928678410001D222B /* CircleGreen_coffee.png in Resources */,
+				6BACC0DA28678410001D222B /* Column.Width.Ratio.json in Resources */,
+				6BACC0DB28678410001D222B /* TextBlock.MaxLines.json in Resources */,
+				6BACC0DC28678410001D222B /* LocationRed_C.png in Resources */,
+				6BACC0DD28678410001D222B /* bg_image.png in Resources */,
+				6BACC0DE28678410001D222B /* Restaurant.json in Resources */,
+				6BACC0DF28678410001D222B /* Feedback.json in Resources */,
+				6BACC0E028678410001D222B /* (null) in Resources */,
+				6BACC0E128678410001D222B /* Action.ShowCard.Style.json in Resources */,
+				6BACC0E228678410001D222B /* TextBlock.HorizontalAlignment.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F423C0701EE1FB6100905679 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -741,6 +953,46 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6BACC08D28678410001D222B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6BACC0E528678410001D222B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MicrosoftFluentUI/FluentUI.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FluentUI.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7151D08A1D6834C366376AD0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -802,6 +1054,28 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6BACC08E28678410001D222B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BACC08F28678410001D222B /* ADCResolver.m in Sources */,
+				6BACC09028678410001D222B /* CustomProgressBarRenderer.mm in Sources */,
+				6BACC09128678410001D222B /* ACVTableViewController.m in Sources */,
+				6BACC09228678410001D222B /* CustomTextBlockRenderer.mm in Sources */,
+				6BACC09328678410001D222B /* CustomActionSetRenderer.mm in Sources */,
+				6BACC09428678410001D222B /* ACRChatWindow.mm in Sources */,
+				6BACC09528678410001D222B /* ViewController.m in Sources */,
+				6BACC09628678410001D222B /* AppDelegate.m in Sources */,
+				6BACC09728678410001D222B /* CustomActionNewType.mm in Sources */,
+				6BACC09828678410001D222B /* CustomActionOpenURLRenderer.mm in Sources */,
+				6BACC09928678410001D222B /* AdaptiveFileBrowserSource.mm in Sources */,
+				6BACC09A28678410001D222B /* ADCIOSVisualizer.xcdatamodeld in Sources */,
+				6BACC09B28678410001D222B /* main.m in Sources */,
+				6BACC09C28678410001D222B /* ACRCustomSubmitTargetBuilder.mm in Sources */,
+				6BACC09D28678410001D222B /* CustomInputNumberRenderer.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F423C06E1EE1FB6100905679 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -881,6 +1155,59 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6BACC0E728678410001D222B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.2.5;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"APPRELEASE=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"APPRELEASE=1",
+				);
+				INFOPLIST_FILE = "AdaptiveCardsVisualizer-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		6BACC0E828678410001D222B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.2.5;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"APPRELEASE=1",
+				);
+				INFOPLIST_FILE = "AdaptiveCardsVisualizer-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		F423C0A01EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1007,6 +1334,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEVELOPMENT_TEAM = UBF8T346G9;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
@@ -1096,6 +1427,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6BACC0E628678410001D222B /* Build configuration list for PBXNativeTarget "AdaptiveCardsRelease" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BACC0E728678410001D222B /* Debug */,
+				6BACC0E828678410001D222B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F423C06D1EE1FB6100905679 /* Build configuration list for PBXProject "ADCIOSVisualizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
