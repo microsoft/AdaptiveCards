@@ -388,7 +388,7 @@ export class CardDesignerSurface {
         this._cardHost.appendChild(renderedCard);
     }
 
-    private addPeer(peer: DesignerPeers.DesignerPeer, neighbor: HTMLElement = undefined) {
+    private addPeer(peer: DesignerPeers.DesignerPeer, insertAfterNeighbor: boolean = false) {
         if (this._allPeers.indexOf(peer) < 0) {
             this._allPeers.push(peer);
 
@@ -407,11 +407,7 @@ export class CardDesignerSurface {
             peer.onChanged = (sender: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) => { this.peerChanged(sender, updatePropertySheet); };
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
-                if (newPeer.insertAfterNeighbor) {
-                    this.addPeer(newPeer, this.getPeerDOMNeighbor(newPeer));
-                } else {
-                    this.addPeer(newPeer);
-                }
+                this.addPeer(newPeer, newPeer.insertAfterNeighbor);
 
                 newPeer.insertAfterNeighbor = false;
                 
@@ -420,25 +416,14 @@ export class CardDesignerSurface {
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
 
-            peer.addElementsToDesignerSurface(this._designerSurface, neighbor);
+            if (insertAfterNeighbor) {
+                peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
+            } else {
+                peer.addElementsToDesignerSurface(this._designerSurface);
+            }
 
-            // If we process children, we need to make sure we track the child elements here as well
-            // Test scenario: when we add a row to a table, the TableRow is a container, so the children of the container must be added to the right spot as well
-            // TODO: it might be worth checking the insertAfterNeighbor variable here as well?
-            let currentNeighbor = peer;
             for (let i = 0; i < peer.getChildCount(); i++) {
-                const currentPeer = peer.getChildAt(i);
-                if (i > 0) {
-                    // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
-                    if (currentNeighbor.getChildCount() > 0) {
-                        currentNeighbor = this.getLastPeerInContainer(currentNeighbor);
-                    }
-
-                    this.addPeer(currentPeer, currentNeighbor.renderedElement);
-                } else {
-                    this.addPeer(currentPeer, currentNeighbor.renderedElement);
-                }
-                currentNeighbor = currentPeer;
+                this.addPeer(peer.getChildAt(i), insertAfterNeighbor);
             }
         }
     }
