@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +162,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
                 int line = layout.getLineForVertical(y);
                 int off = layout.getOffsetForHorizontal(line, x);
 
-                ClickableSpan[] link = spannable.getSpans(off, off, ClickableSpan.class);
+                URLSpan[] link = spannable.getSpans(off, off, URLSpan.class);
 
                 if (link.length != 0)
                 {
@@ -215,8 +216,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
 
-        CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
-        textView.setText(text);
+        RendererUtil.SpecialTextHandleResult textHandleResult = RendererUtil.handleSpecialTextAndQueryLinks(textWithFormattedDates);
+        textView.setText(textHandleResult.getHtmlString());
 
         if (!textBlock.GetWrap())
         {
@@ -224,7 +225,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
+        textView.setOnTouchListener(new TouchTextView(new SpannableString(textHandleResult.getHtmlString())));
 
         textView.setHorizontallyScrolling(false);
         applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
@@ -243,7 +244,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             textView.setMaxLines(1);
         }
 
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (textHandleResult.getHasLinks())
+        {
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
 
         viewGroup.addView(textView);
         return textView;
