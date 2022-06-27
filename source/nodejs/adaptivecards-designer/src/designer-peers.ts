@@ -1488,6 +1488,10 @@ export abstract class DesignerPeer extends DraggableElement {
             }
         }
     }
+
+	get children(): Array<DesignerPeer>{
+		return this._children;
+	}
 }
 
 export class ActionPeer extends DesignerPeer {
@@ -3275,4 +3279,154 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
             TablePeer.horizontalCellContentAlignmentProperty,
             TablePeer.verticalCellContentAlignmentProperty);
     }
+}
+
+export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
+
+    static readonly timerProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer");
+
+	protected isContainer(): boolean {
+		return true;
+	}
+
+	protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
+		super.internalAddCommands(context, commands);
+
+		commands.push(
+			new PeerCommand(
+				{
+					name: "Add a page",
+					isPromotable: false,
+					execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+						let page = new Adaptive.CarouselPage();
+
+						this.cardElement.addPage(page);
+
+						this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
+					}
+				}
+			)
+		)
+	}
+
+	initializeCardElement() {
+		super.initializeCardElement();
+
+		this.cardElement.onPageChanged = (index: number) => {
+
+			// Have the index start at 0 instead of 1
+			index--;
+			console.log("active slide: ", index);
+
+			for (let i = 0; i < this.getChildCount(); i++) {
+				const child = this.getChildAt(i) as CarouselPagePeer;
+				if (i === index) {
+					child.showPeers();
+				} else {
+					child.hidePeers();
+				}
+			}
+		};
+
+		this.cardElement.addPage(new Adaptive.CarouselPage());
+	}
+
+	// TODO: Are there additional properties?
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+		super.populatePropertySheet(propertySheet, defaultCategory);
+
+		propertySheet.add(
+            defaultCategory,
+            ContainerPeer.minHeightProperty,
+			CarouselPeer.timerProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
+
+        if (this.cardElement.selectAction) {
+            propertySheet.addActionProperties(
+                Adaptive.Versions.v1_0,
+                this,
+                this.cardElement.selectAction,
+                PropertySheetCategory.SelectionAction);
+        }
+	}
+
+	canDrop(peer: DesignerPeer) {
+        return false;
+    }
+
+	isDraggable(): boolean {
+        return false;
+    }
+}
+
+export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage> {
+	
+	// TODO: declare any additional properties here
+
+    protected isContainer(): boolean {
+        return true;
+    }
+
+    isDraggable(): boolean {
+        return false;
+    }
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ContainerPeer.minHeightProperty,
+            ContainerPeer.verticalContentAlignmentProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            ContainerPeer.styleProperty);
+
+        propertySheet.add(
+            "Background image",
+            ContainerPeer.backgroundImageProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
+
+		// Do we update the version here?
+        if (this.cardElement.selectAction) {
+            propertySheet.addActionProperties(
+                Adaptive.Versions.v1_0,
+                this,
+                this.cardElement.selectAction,
+                PropertySheetCategory.SelectionAction);
+        }
+
+		// TODO: add custom properties here
+    }
+
+    getBoundingRect(): Rect {
+		const rect = super.getBoundingRect();
+
+		const left = (this.cardElement.parent as Adaptive.Carousel).carouselPageContainer.offsetLeft;
+
+		rect.right = left + (rect.right - rect.left);
+		rect.left = left;
+
+		return rect;
+	}
+
+	// if we don't have access the the rendered element yet, we should set a boolean here and use it in internal render
+	// peer.style.display = "none";
+
+	// aria-hidden="true" - for screen readers?
+	// We might also want to disable focus
+	showPeers() {
+		console.log("should be visible!");
+	}
+
+	hidePeers() {
+		console.log("should be hidden!");
+	}
 }

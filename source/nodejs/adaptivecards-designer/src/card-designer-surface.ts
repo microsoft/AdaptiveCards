@@ -111,6 +111,9 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Table, DesignerPeers.TablePeer, DesignerPeerCategory.Containers, "acd-icon-table");
         this.registerPeer(Adaptive.TableRow, DesignerPeers.TableRowPeer, DesignerPeerCategory.Containers, "acd-icon-tableRow");
         this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
+		this.registerPeer(Adaptive.Carousel, DesignerPeers.CarouselPeer, DesignerPeerCategory.Containers, "acd-icon-carousel");
+		this.registerPeer(Adaptive.CarouselPage, DesignerPeers.CarouselPagePeer, DesignerPeerCategory.Containers, "acd-icon-carouselPage");
+		// TODO: what is the carousel config class?
 
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
@@ -807,6 +810,10 @@ export class CardDesignerSurface {
 
     startDrag(peer: DesignerPeers.DesignerPeer) {
         if (!this.draggedPeer) {
+			if (peer instanceof DesignerPeers.CarouselPeer) {
+				this.reassignCardElementToCarousel(peer);
+			}
+
             this._designerSurface.classList.add("dragging");
 
             this.setDraggedPeer(peer);
@@ -872,6 +879,27 @@ export class CardDesignerSurface {
             y: y - clientRect.top
         }
     }
+
+	reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
+
+		const carouselPage = carouselPeer.getChildAt(0);
+
+		if (carouselPage instanceof DesignerPeers.CardElementPeer) {
+
+			// Can't modify the list as we loop through it
+			let children = [];
+
+			for (let child of this._rootPeer.children) {
+				children.push(child);
+			}
+
+			for (let child of children) {
+				if (!(child instanceof DesignerPeers.CarouselPeer)) {
+					carouselPage.tryAdd(child);
+				}
+			}
+		}
+	}
 
     get rootPeer(): DesignerPeers.DesignerPeer {
         return this._rootPeer;

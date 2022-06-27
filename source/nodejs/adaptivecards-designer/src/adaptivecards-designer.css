@@ -434,6 +434,16 @@
     content: "\EDC2";
 }
 
+/* TODO: need to update this icon and the carouselPage icon */
+.acd-icon-carousel::before {
+    content: "\F26F";
+}
+
+/* Maybe we could find a page with a folded corner */
+.acd-icon-carouselPage::before {
+    content: "\F2C1";
+}
+
 .acd-icon-chevronDown::before {
     content: "\E70D";
 }

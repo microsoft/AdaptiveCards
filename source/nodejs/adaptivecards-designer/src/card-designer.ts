@@ -548,6 +548,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+	// TODO: move this and rename
     private preventJsonUpdate: boolean = false;
 
     private getCurrentCardEditorPayload(): string {

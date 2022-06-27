@@ -79,6 +79,10 @@ export class CarouselPage extends Container {
     get isStandalone(): boolean {
         return false;
     }
+
+	get hasVisibleSeparator(): boolean {
+		return false;
+    }
 }
 
 export class Carousel extends Container {
@@ -118,6 +122,7 @@ export class Carousel extends Container {
 
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
+	private _carouselPageContainer: HTMLElement;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -146,6 +151,16 @@ export class Carousel extends Container {
     getItemAt(index: number): CardElement {
         return this._pages[index];
     }
+
+	addPage(page: CarouselPage) {
+		if (!page.parent) {
+			this._pages.push(page);
+
+			page.setParent(this);
+		} else {
+			throw new Error(Strings.errors.pageAlreadyBelongsToAnotherCarousel());
+		}
+	}
 
     removeItem(item: CardElement): boolean {
         if (item instanceof CarouselPage) {
@@ -206,6 +221,7 @@ export class Carousel extends Container {
         }
     }
 
+	// TODO: I think we should have this create the carousel as an object instead of adding to an array
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
@@ -312,6 +328,8 @@ export class Carousel extends Container {
 
         containerForAdorners.appendChild(carouselContainer);
 
+		this._carouselPageContainer = carouselContainer;
+
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
@@ -355,6 +373,9 @@ export class Carousel extends Container {
         paginationElement: HTMLElement,
         rtl: boolean | undefined
     ): void {
+
+		const onPageChanged = this.onPageChanged;
+
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
@@ -372,7 +393,14 @@ export class Carousel extends Container {
             keyboard: {
                 enabled: true,
                 onlyInViewport: true
-            }
+            },
+			on: {
+				slideChange: (swiper: Swiper) => {
+					if (onPageChanged) {
+						onPageChanged(swiper.activeIndex);
+					}
+				}
+			}
         };
 
         if (this.timer && !this.isDesignMode()) {
@@ -417,6 +445,12 @@ export class Carousel extends Container {
             }
         );
     }
+
+	get carouselPageContainer() {
+		return this._carouselPageContainer;
+	}
+
+	onPageChanged: (index: number) => void;
 }
 
 GlobalRegistry.defaultElements.register(
