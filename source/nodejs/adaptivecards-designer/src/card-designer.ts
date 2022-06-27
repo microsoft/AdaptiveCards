@@ -38,7 +38,7 @@ export class CardDesigner extends Designer.DesignContext {
                 result.outputHtml = window["markdownit"]().render(text);
                 result.didProcess = true;
             }
-		}
+        }
     }
 
     static onProcessMarkdown: (text: string, result: Adaptive.IMarkdownProcessingResult) => void = null;
@@ -303,16 +303,16 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";
+        styleSheetLinkElement.type = "text/css";
 
-		if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
+        if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
         {
-			styleSheetLinkElement.href = this.hostContainer.styleSheet;
-		}
-		else
-		{
-			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
-		}
+            styleSheetLinkElement.href = this.hostContainer.styleSheet;
+        }
+        else
+        {
+            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
+        }
 
         let cardArea = document.getElementById("cardArea");
 
@@ -548,7 +548,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-	// TODO: move this and rename
+    // TODO: move this and rename
     private preventJsonUpdate: boolean = false;
 
     private getCurrentCardEditorPayload(): string {
@@ -1054,7 +1054,7 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     monacoModuleLoaded(monaco: any = null) {
-		if (!monaco) {
+        if (!monaco) {
             monaco = window["monaco"];
         }
 
@@ -1070,7 +1070,7 @@ export class CardDesigner extends Designer.DesignContext {
             allowComments: true
         }
 
-		// TODO: set this in our editor instead of defaults
+        // TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
         // Setup card JSON editor
@@ -1482,18 +1482,18 @@ export class CardDesigner extends Designer.DesignContext {
 
     get toolPaletteToolbox(): Toolbox {
         return this._toolPaletteToolbox;
-	}
+    }
 
     get dataToolbox(): Toolbox {
         return this._dataToolbox;
-	}
+    }
 
-	get assetPath(): string {
-		return this._assetPath;
-	}
+    get assetPath(): string {
+        return this._assetPath;
+    }
 
-	set assetPath(value: string) {
-		this._assetPath = value;
+    set assetPath(value: string) {
+        this._assetPath = value;
     }
 
     get customPaletteItems(): CustomPaletteItem[] {

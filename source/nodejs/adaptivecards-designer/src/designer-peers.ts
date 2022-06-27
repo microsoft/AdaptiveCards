@@ -1489,9 +1489,9 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-	get children(): Array<DesignerPeer>{
-		return this._children;
-	}
+    get children(): Array<DesignerPeer>{
+        return this._children;
+    }
 }
 
 export class ActionPeer extends DesignerPeer {
@@ -3285,60 +3285,60 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
 
     static readonly timerProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer");
 
-	protected isContainer(): boolean {
-		return true;
-	}
+    protected isContainer(): boolean {
+        return true;
+    }
 
-	protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
-		super.internalAddCommands(context, commands);
+    protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
+        super.internalAddCommands(context, commands);
 
-		commands.push(
-			new PeerCommand(
-				{
-					name: "Add a page",
-					isPromotable: false,
-					execute: (command: PeerCommand, clickedElement: HTMLElement) => {
-						let page = new Adaptive.CarouselPage();
+        commands.push(
+            new PeerCommand(
+                {
+                    name: "Add a page",
+                    isPromotable: false,
+                    execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+                        let page = new Adaptive.CarouselPage();
 
-						this.cardElement.addPage(page);
+                        this.cardElement.addPage(page);
 
-						this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
-					}
-				}
-			)
-		)
-	}
+                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
+                    }
+                }
+            )
+        )
+    }
 
-	initializeCardElement() {
-		super.initializeCardElement();
+    initializeCardElement() {
+        super.initializeCardElement();
 
-		this.cardElement.onPageChanged = (index: number) => {
+        this.cardElement.onPageChanged = (index: number) => {
 
-			// Have the index start at 0 instead of 1
-			index--;
-			console.log("active slide: ", index);
+            // Have the index start at 0 instead of 1
+            index--;
+            console.log("active slide: ", index);
 
-			for (let i = 0; i < this.getChildCount(); i++) {
-				const child = this.getChildAt(i) as CarouselPagePeer;
-				if (i === index) {
-					child.showPeers();
-				} else {
-					child.hidePeers();
-				}
-			}
-		};
+            for (let i = 0; i < this.getChildCount(); i++) {
+                const child = this.getChildAt(i) as CarouselPagePeer;
+                if (i === index) {
+                    child.showPeers();
+                } else {
+                    child.hidePeers();
+                }
+            }
+        };
 
-		this.cardElement.addPage(new Adaptive.CarouselPage());
-	}
+        this.cardElement.addPage(new Adaptive.CarouselPage());
+    }
 
-	// TODO: Are there additional properties?
+    // TODO: Are there additional properties?
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
-		super.populatePropertySheet(propertySheet, defaultCategory);
+        super.populatePropertySheet(propertySheet, defaultCategory);
 
-		propertySheet.add(
+        propertySheet.add(
             defaultCategory,
             ContainerPeer.minHeightProperty,
-			CarouselPeer.timerProperty);
+            CarouselPeer.timerProperty);
 
         propertySheet.add(
             PropertySheetCategory.SelectionAction,
@@ -3351,20 +3351,20 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
                 this.cardElement.selectAction,
                 PropertySheetCategory.SelectionAction);
         }
-	}
+    }
 
-	canDrop(peer: DesignerPeer) {
+    canDrop(peer: DesignerPeer) {
         return false;
     }
 
-	isDraggable(): boolean {
+    isDraggable(): boolean {
         return false;
     }
 }
 
 export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage> {
-	
-	// TODO: declare any additional properties here
+    
+    // TODO: declare any additional properties here
 
     protected isContainer(): boolean {
         return true;
@@ -3394,7 +3394,7 @@ export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage
             PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
 
-		// Do we update the version here?
+        // Do we update the version here?
         if (this.cardElement.selectAction) {
             propertySheet.addActionProperties(
                 Adaptive.Versions.v1_0,
@@ -3403,30 +3403,30 @@ export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage
                 PropertySheetCategory.SelectionAction);
         }
 
-		// TODO: add custom properties here
+        // TODO: add custom properties here
     }
 
     getBoundingRect(): Rect {
-		const rect = super.getBoundingRect();
+        const rect = super.getBoundingRect();
 
-		const left = (this.cardElement.parent as Adaptive.Carousel).carouselPageContainer.offsetLeft;
+        const left = (this.cardElement.parent as Adaptive.Carousel).carouselPageContainer.offsetLeft;
 
-		rect.right = left + (rect.right - rect.left);
-		rect.left = left;
+        rect.right = left + (rect.right - rect.left);
+        rect.left = left;
 
-		return rect;
-	}
+        return rect;
+    }
 
-	// if we don't have access the the rendered element yet, we should set a boolean here and use it in internal render
-	// peer.style.display = "none";
+    // if we don't have access the the rendered element yet, we should set a boolean here and use it in internal render
+    // peer.style.display = "none";
 
-	// aria-hidden="true" - for screen readers?
-	// We might also want to disable focus
-	showPeers() {
-		console.log("should be visible!");
-	}
+    // aria-hidden="true" - for screen readers?
+    // We might also want to disable focus
+    showPeers() {
+        console.log("should be visible!");
+    }
 
-	hidePeers() {
-		console.log("should be hidden!");
-	}
+    hidePeers() {
+        console.log("should be hidden!");
+    }
 }

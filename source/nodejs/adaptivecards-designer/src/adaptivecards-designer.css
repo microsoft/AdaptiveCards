@@ -44,7 +44,7 @@
 }
 
 .acd-designersurface {
-	outline: none;
+    outline: none;
 }
 
 .acd-hidden {
@@ -434,14 +434,12 @@
     content: "\EDC2";
 }
 
-/* TODO: need to update this icon and the carouselPage icon */
 .acd-icon-carousel::before {
     content: "\F26F";
 }
 
-/* Maybe we could find a page with a folded corner */
 .acd-icon-carouselPage::before {
-    content: "\F2C1";
+    content: "\EF6B";
 }
 
 .acd-icon-chevronDown::before {
@@ -1266,29 +1264,29 @@ a.default-ac-anchor:visited:active {
 }
 
 .error-info {
-	display: flex;
-	justify-content: center;
-	color: red;
+    display: flex;
+    justify-content: center;
+    color: red;
 }
 
 .sample-info-text {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 
 .acd-spinner-host {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	opacity:.4;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity:.4;
 }
 
 .acd-image-spinner {
-	position: absolute;
-	width: 28px;
-	height: 28px;
-	top:50%;
-	left:50%;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    top:50%;
+    left:50%;
 }
 
 .acd-conversion-text {
