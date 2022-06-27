@@ -81,13 +81,15 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t50",
-							"color": "dark"
+							"color": "dark",
+							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
 							"color": "dark",
-							"spacing": "none"
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -116,13 +118,15 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t50",
-							"color": "dark"
+							"color": "dark",
+							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
 							"color": "dark",
-							"spacing": "none"
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -151,13 +155,15 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t59",
-							"color": "dark"
+							"color": "dark",
+							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
 							"color": "dark",
-							"spacing": "none"
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -186,13 +192,15 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t50",
-							"color": "dark"
+							"color": "dark",
+							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
 							"color": "dark",
-							"spacing": "none"
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
