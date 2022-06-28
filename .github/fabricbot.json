@@ -1,0 +1,655 @@
+{
+  "version": "1.0",
+  "tasks": [
+    {
+      "taskType": "trigger",
+      "capabilityId": "CodeFlowLink",
+      "subCapability": "CodeFlowLink",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Pull Request Management] Add a CodeFlow link to new pull requests"
+      },
+      "id": "e9z4lcr_U"
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestReviewResponder",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Pull Request Management] Add \"Needs: Author Feedback\" label to pull requests when changes are requested",
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "submitted"
+              }
+            },
+            {
+              "name": "isReviewState",
+              "parameters": {
+                "state": "changes_requested"
+              }
+            }
+          ]
+        },
+        "actions": [
+          {
+            "name": "addLabel",
+            "parameters": {
+              "label": "Needs: Author Feedback"
+            }
+          }
+        ],
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request_review"
+        ]
+      },
+      "id": "gdNEg5qdsL"
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Pull Request Management] Remove needs author feedback label when the author responds to a pull request",
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isActivitySender",
+              "parameters": {
+                "user": {
+                  "type": "author"
+                }
+              }
+            },
+            {
+              "operator": "not",
+              "operands": [
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "closed"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "hasLabel",
+              "parameters": {
+                "label": "Needs: Author Feedback"
+              }
+            }
+          ]
+        },
+        "actions": [
+          {
+            "name": "removeLabel",
+            "parameters": {
+              "label": "Needs: Author Feedback"
+            }
+          }
+        ],
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ]
+      },
+      "id": "TOH05Fvo0n"
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestCommentResponder",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Pull Request Management] Remove needs author feedback label when the author comments on a pull request",
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isActivitySender",
+              "parameters": {
+                "user": {
+                  "type": "author"
+                }
+              }
+            },
+            {
+              "name": "hasLabel",
+              "parameters": {
+                "label": "Needs: Author Feedback"
+              }
+            }
+          ]
+        },
+        "actions": [
+          {
+            "name": "removeLabel",
+            "parameters": {
+              "label": "Needs: Author Feedback"
+            }
+          }
+        ],
+        "eventType": "pull_request",
+        "eventNames": [
+          "issue_comment"
+        ]
+      },
+      "id": "i3fHLDVT2G"
+    },
+    {
+      "taskType": "scheduled",
+      "capabilityId": "ScheduledSearch",
+      "subCapability": "ScheduledSearch",
+      "version": "1.1",
+      "config": {
+        "taskName": "[Pull Request Management: Progress Tracking] Add no recent activity label to non-spec pull requests without activity for 5 days",
+        "frequency": [
+          {
+            "weekDay": 0,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 1,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 2,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 3,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 4,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 5,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          },
+          {
+            "weekDay": 6,
+            "hours": [
+              9
+            ],
+            "timezoneOffset": -7
+          }
+        ],
+        "searchTerms": [
+          {
+            "name": "isPr",
+            "parameters": {}
+          },
+          {
+            "name": "isOpen",
+            "parameters": {}
+          },
+          {
+            "name": "noActivitySince",
+            "parameters": {
+              "days": 5
+            }
+          },
+          {
+            "name": "noLabel",
+            "parameters": {
+              "label": "no-recent-activity"
+            }
+          },
+          {
+            "name": "noLabel",
+            "parameters": {
+              "label": "Spec"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "name": "addLabel",
+            "parameters": {
+              "label": "no-recent-activity"
+            }
+          },
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Hi @${issueAuthor}. This pull request has had no recent activity for the past **5 days** . Please take the necessary actions (review, address feedback or commit if reviewed already) to move this along. "
+            }
+          }
+        ]
+      },
+      "id": "KWeCsQw0yV"
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssueCommentResponder",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Issue Management: General Progress] Remove no recent activity label when an issue is commented on",
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "hasLabel",
+              "parameters": {
+                "label": "no-recent-activity"
+              }
+            },
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "edited"
+              }
+            }
+          ]
+        },
+        "actions": [
+          {
+            "name": "removeLabel",
+            "parameters": {
+              "label": "no-recent-activity"
+            }
+          },
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Staleness reset by ${contextualAuthor}"
+            }
+          }
+        ],
+        "eventType": "issue",
+        "eventNames": [
+          "issue_comment"
+        ]
+      },
+      "id": "uZsW7QcaPO",
+      "disabled": false
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "ReleaseAnnouncement",
+      "subCapability": "ReleaseAnnouncement",
+      "version": "1.0",
+      "config": {
+        "taskName": "[Release Management] Announce a new package has been released",
+        "prReply": ":tada:`${pkgName}@${version}` has been released which fixes this issue.:tada:\n\nHandy links:\n* [Release Notes](https://github.com/${owner}/${repo}/releases/tag/${version})\n* [AdaptiveCards Website](https://adaptivecards.io)\n* [Official NPM Designer Release](https://www.npmjs.com/package/adaptivecards-designer)\n* [Official NPM Templating Release](https://www.npmjs.com/package/adaptivecards-templating)\n* [Official NPM Renderer Release](https://www.npmjs.com/package/adaptivecards)\n* [Official Nuget Templating Release](https://www.nuget.org/packages/${pkgName}.Templating)\n* [Official Nuget Renderer Release](https://www.nuget.org/packages/${pkgName}.Rendering)\n* [Official Maven Renderer Release](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22adaptivecards-android%22)\n* [Official CocoaPod Renderer Release](https://cocoapods.org/pods/AdaptiveCards)",
+        "conditionalPrReplies": [],
+        "issueReply": ":tada:This issue is now fixed by #${prNumber} and successfully released as part of our `${pkgName}@${version}` offering.:tada:\n\nHandy links:\n* [Release Notes](https://github.com/${owner}/${repo}/releases/tag/${version})\n* [AdaptiveCards Website](https://adaptivecards.io)\n* [Official NPM Designer Release](https://www.npmjs.com/package/adaptivecards-designer)\n* [Official NPM Templating Release](https://www.npmjs.com/package/adaptivecards-templating)\n* [Official NPM Renderer Release](https://www.npmjs.com/package/adaptivecards)\n* [Official Nuget Templating Release](https://www.nuget.org/packages/AdaptiveCards.Templating)\n* [Official Nuget Renderer Release](https://www.nuget.org/packages/${pkgName})\n* [Official Maven Renderer Release](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22adaptivecards-android%22)\n* [Official CocoaPod Renderer Release](https://cocoapods.org/pods/AdaptiveCards)",
+        "conditionalIssueReplies": [],
+        "referencedPrsRegex": "https:\\/\\/github.com\\/microsoft\\/AdaptiveCards\\/(?:issues|pull)\\/([0-9]{4,5})",
+        "packageRegex": "^(.*) (v?(?:[0-9]+\\.)+[0-9]+)$"
+      },
+      "id": "PVM42vUyk",
+      "disabled": true
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "id": "YilC8zdCk",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "opened"
+              }
+            },
+            {
+              "name": "isActivitySender",
+              "parameters": {
+                "user": "productboard-ac"
+              }
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "taskName": "[Issue Management: Feature Handling from ProductBoard] Add \"Feature\" label to  issues created by \" productboard-ac\" and remove from bug triage boards",
+        "actions": [
+          {
+            "name": "addLabel",
+            "parameters": {
+              "label": "Feature"
+            }
+          },
+          {
+            "name": "removeFromProject",
+            "parameters": {
+              "projectName": "Triage"
+            }
+          },
+          {
+            "name": "addToProject",
+            "parameters": {
+              "projectName": "Feature Roadmap",
+              "columnName": "Needs triage"
+            }
+          }
+        ]
+      },
+      "disabled": false
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "id": "QR8sGHBR1",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prIncludesModifiedFile",
+                  "parameters": {
+                    "pathFilter": "source/nodejs/adaptivecards"
+                  }
+                },
+                {
+                  "name": "prIncludesModifiedFile",
+                  "parameters": {
+                    "pathFilter": "source/nodejs/adaptivecards-site"
+                  }
+                },
+                {
+                  "name": "prIncludesModifiedFile",
+                  "parameters": {
+                    "pathFilter": "source/nodejs/adaptivecards-designer"
+                  }
+                },
+                {
+                  "name": "prIncludesModifiedFile",
+                  "parameters": {
+                    "pathFilter": "source/nodejs/adaptivecards-visualizer"
+                  }
+                }
+              ]
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "opened"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "[Pull Request Management: Quality] For JS-related PRs update the PR with a comment on the link to the Azure website deployment for PR testing",
+        "actions": [
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Hi @${issueAuthor}. Thanks for helping make the AdaptiveCards JS renderer + tooling better. As additional verification, once the JS build succeeds, please go to the [test site](https://adaptivecardsci.z5.web.core.windows.net/pr/${number}) to test out your website/designer changes."
+            }
+          }
+        ]
+      },
+      "disabled": false
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "id": "I_s5WJbM_",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "hasLabel",
+              "parameters": {
+                "label": "no-recent-activity"
+              }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "synchronize"
+                  }
+                },
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "review_requested"
+                  }
+                },
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "closed"
+                  }
+                },
+                {
+                  "name": "isAction",
+                  "parameters": {
+                    "action": "merged"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "[Pull Request Management: Reviews] Remove the \"no-recent-activity\" label from pull requests",
+        "actions": [
+          {
+            "name": "removeLabel",
+            "parameters": {
+              "label": "no-recent-activity"
+            }
+          },
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Staleness reset by ${contextualAuthor}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "id": "orW9KVK1ZPohorneez5Wx",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "opened"
+              }
+            },
+            {
+              "operator": "not",
+              "operands": [
+                {
+                  "name": "isActivitySender",
+                  "parameters": {
+                    "user": "productboard-ac"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "actions": [
+          {
+            "name": "addToProject",
+            "parameters": {
+              "projectName": "Triage",
+              "columnName": "Not Triaged"
+            }
+          }
+        ],
+        "taskName": "[Issue Management] Add newly opened issues to the Triage project"
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "id": "jpWJBJFUhqkobUfx-Qap7",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "labelAdded",
+              "parameters": {
+                "label": "MSTeams-Developer-Support"
+              }
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "actions": [
+          {
+            "name": "closeIssue",
+            "parameters": {}
+          }
+        ],
+        "taskName": "[Issue Management] Auto-Close Teams Developer Support items - Wajeed Shaikh has a bot to move them to the correct repo"
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "id": "pmk-7xpyIPlKHNRgatDLS",
+      "config": {
+        "conditions": {
+          "operator": "or",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "opened"
+              }
+            },
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "reopened"
+              }
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "taskName": "Holiday OOF",
+        "actions": [
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Many of our core contributors are taking some much needed vacation time throughout December 2021. Thank you for being patient while we recharge and return to normal responsiveness in January 2022. In the meantime, please feel free to continue to pose questions, open issues, and make feature requests - you may not get a response right away, but we'll reply once we're back in January. Thanks!"
+            }
+          }
+        ]
+      },
+      "disabled": true
+    }
+  ],
+  "userGroups": [
+    {
+      "_id": "5ddc384a90bf2e113c0e8872",
+      "groupType": "GitHub",
+      "name": "AdaptiveCards-Code Reviewers",
+      "githubUserNames": [
+        "shalinijoshi19",
+        "paulcam206",
+        "rebeccaanne",
+        "nesalang",
+        "almedina-ms",
+        "dclaux",
+        "matthidinger"
+      ],
+      "description": "AdaptiveCards core team for code reviews",
+      "modifiedBy": {
+        "upn": "shalinij@microsoft.com",
+        "timestamp": "2019-11-25T20:23:38.305Z"
+      },
+      "assignmentSchemes": [
+        {
+          "target": "All",
+          "lastAssignedIndex": 552
+        }
+      ]
+    }
+  ]
+}
