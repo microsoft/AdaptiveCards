@@ -36,21 +36,7 @@ namespace AdaptiveCards.Templating
         /// <returns>True if the memory contains an element with the specified key; otherwise, false</returns>
         public bool TryGetValue(string path, out object value)
         {
-            bool result = simpleObjectMemory.TryGetValue(path, out value);
-            if (value is string)
-            {
-                try
-                {
-                    JToken jsonObject = JToken.Parse(value as string);
-                }
-                catch (JsonReaderException)
-                {
-                    string serializedValue = JsonConvert.SerializeObject(value);
-                    // after serialization, the double quotes should be removed
-                    value = serializedValue.Substring(1, serializedValue.Length - 2);
-                }
-            }
-            return result;
+            return simpleObjectMemory.TryGetValue(path, out value);
         }
 
         /// <summary>
