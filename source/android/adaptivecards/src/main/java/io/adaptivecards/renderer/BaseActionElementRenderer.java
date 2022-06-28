@@ -340,6 +340,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             if (m_isInlineShowCardAction)
             {
                 handleInlineShowCardAction(view);
+                view.requestFocus();
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {

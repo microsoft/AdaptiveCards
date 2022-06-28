@@ -13097,6 +13097,45 @@ namespace AdaptiveCards.Templating.Test
                 Assert.Fail();
             }
         }
+        [TestMethod]
+        public void TestSerialization()
+        {
+            string cardJson = "{ \"type\": \"AdaptiveCard\"," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"version\": \"1.3\"," +
+                "\"body\": [" +
+                "{" +
+                "\"id\": \"stringWithJson\"," +
+                "\"type\": \"TextBlock\"," +
+                "\"text\": \"String With JSON - ${jsonStringify(stringWithJson)}\"," +
+                "\"wrap\": true" +
+                "}" +
+                "]}";
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(new { stringWithJson = @"{""number1"":23}" });
+            try
+            {
+                var jsonOb = Newtonsoft.Json.JsonConvert.DeserializeObject(st);
+                string expectedJson = "{ \"type\": \"AdaptiveCard\"," + 
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," + 
+                "\"version\": \"1.3\"," + 
+                "\"body\": [" + 
+                "{" + 
+                "\"id\": \"stringWithJson\"," + 
+                "\"type\": \"TextBlock\"," + 
+                @"""text"": ""String With JSON - \""{\\\""number1\\\"":23}\""""," + 
+                "\"wrap\": true" + 
+                "}" + 
+                "]}";
+                AssertJsonEqual(expectedJson, st);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                Assert.Fail();
+            }
+        }
 
         [TestMethod]
         public void TestWithUnicode()
