@@ -1,0 +1,31 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+	        "type": "Input.Text",
+		    "id": "textLabelId",
+		    "style": "text",
+		    "label": "A random textblock",
+            "errorMessage": "Error message",
+            "maxLength": 10
+	    }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "Enabled",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "You can see this show card!",
+                        "wrap": true
+                    }
+                ]
+            }
+        }
+    ]
+}  

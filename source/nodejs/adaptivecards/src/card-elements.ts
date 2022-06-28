@@ -6039,6 +6039,9 @@ class ActionCollection {
                 action.render(_isDesignMode);
 
                 if (action.renderedElement) {
+                    if (_isDesignMode) {
+                        action.renderedElement.tabIndex = -1;
+                    }
                     if (
                         hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal &&
                         hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch

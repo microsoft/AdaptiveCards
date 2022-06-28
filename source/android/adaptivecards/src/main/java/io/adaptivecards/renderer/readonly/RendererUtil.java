@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.style.URLSpan;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -66,7 +67,69 @@ public class RendererUtil
         return calendar;
     }
 
+    public static class SpecialTextHandleResult
+    {
+        private CharSequence m_htmlString;
+        private boolean m_hasLinks;
+        private boolean m_isALink;
+
+        public SpecialTextHandleResult(CharSequence htmlString, boolean hasLinks, boolean isALink)
+        {
+            m_htmlString = htmlString;
+            m_hasLinks = hasLinks;
+            m_isALink = isALink;
+        }
+
+        public CharSequence getHtmlString()
+        {
+            return m_htmlString;
+        }
+
+        public boolean getHasLinks()
+        {
+            return m_hasLinks;
+        }
+
+        public boolean isALink()
+        {
+            return m_isALink;
+        }
+    }
+
     public static CharSequence handleSpecialText(String textWithFormattedDates)
+    {
+        Spanned spanned = getSpecialTextSpans(textWithFormattedDates);
+        return trimHtmlString(spanned);
+    }
+
+    private static boolean FirstAndLastSpansAreTheSame(Spanned spanned)
+    {
+        URLSpan[] firstSpan = spanned.getSpans(0, 1, URLSpan.class);
+        URLSpan[] lastSpan = spanned.getSpans(spanned.length() - 2, spanned.length(), URLSpan.class);
+
+        // as there is only one span in the whole string then the first and last characters must have only one span
+        return (firstSpan.length == 1 && lastSpan.length == 1);
+    }
+
+    public static SpecialTextHandleResult handleSpecialTextAndQueryLinks(String textWithFormattedDates)
+    {
+        Spanned spanned = getSpecialTextSpans(textWithFormattedDates);
+
+        URLSpan[] spans = spanned.getSpans(0, spanned.length(), URLSpan.class);
+
+        boolean isALink = false;
+
+        // if there is only one span that uses the whole size of the string then the whole string is
+        // just one link
+        if (spans.length == 1)
+        {
+            isALink = FirstAndLastSpansAreTheSame(spanned);
+        }
+
+        return new SpecialTextHandleResult(trimHtmlString(spanned), (spans.length > 0), isALink);
+    }
+
+    public static Spanned getSpecialTextSpans(String textWithFormattedDates)
     {
         MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
         String textString = markDownParser.TransformToHtml();
@@ -85,7 +148,8 @@ public class RendererUtil
             // Before Android N, html.fromHtml adds two newline characters to end of string
             htmlString = Html.fromHtml(textString, null, new UlTagHandler());
         }
-        return trimHtmlString(htmlString);
+
+        return htmlString;
     }
 
     public static CharSequence trimHtmlString(Spanned htmlString)
@@ -123,7 +187,7 @@ public class RendererUtil
             return htmlString;
         }
 
-        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
+        return htmlString.subSequence(numToRemoveFromStart, htmlString.length() - numToRemoveFromEnd);
     }
 
     // Class to replace ul and li tags
