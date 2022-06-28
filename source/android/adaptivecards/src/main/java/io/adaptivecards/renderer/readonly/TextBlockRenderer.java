@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
+import static android.content.Context.ACCESSIBILITY_SERVICE;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -11,11 +13,12 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -128,6 +131,29 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
 
+    static class SingleLinkOnKeyListener implements View.OnKeyListener
+    {
+        Spannable spannable;
+        URLSpan urlSpan;
+
+        public SingleLinkOnKeyListener(Spannable spannable)
+        {
+            this.spannable = spannable;
+            URLSpan[] spans = spannable.getSpans(0, 1, URLSpan.class);
+            urlSpan = spans[0];
+        }
+
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent)
+        {
+            if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+            {
+                urlSpan.onClick(view);
+            }
+            return false;
+        }
+    }
+
     static class TouchTextView implements View.OnTouchListener
     {
         Spannable spannable;
@@ -135,6 +161,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         public TouchTextView (Spannable spannable)
         {
             this.spannable = spannable;
+
         }
 
         @Override
@@ -190,6 +217,42 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
     }
 
+    private void applyAccessibilityProperties(TextView textView, Context context, RendererUtil.SpecialTextHandleResult textHandleResult)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        {
+            textView.setScreenReaderFocusable(true);
+        }
+        textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+
+        if (textHandleResult.getHasLinks())
+        {
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            if (textHandleResult.isALink())
+            {
+                textView.setOnKeyListener(new SingleLinkOnKeyListener(new SpannableString(textHandleResult.getHtmlString())));
+            }
+        }
+
+        AccessibilityManager am = (AccessibilityManager)context.getSystemService(ACCESSIBILITY_SERVICE);
+        am.addAccessibilityStateChangeListener(new AccessibilityManager.AccessibilityStateChangeListener() {
+            @Override
+            public void onAccessibilityStateChanged(boolean b)
+            {
+                boolean isEnabled = am.isEnabled();
+                if (b && isEnabled)
+                {
+                    textView.setFocusable(true);
+                }
+                else
+                {
+                    textView.setFocusable(false);
+                }
+            }
+        });
+        textView.setFocusable(am.isEnabled());
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -217,15 +280,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
 
         RendererUtil.SpecialTextHandleResult textHandleResult = RendererUtil.handleSpecialTextAndQueryLinks(textWithFormattedDates);
-        textView.setText(textHandleResult.getHtmlString());
-
-        if (!textBlock.GetWrap())
-        {
-            textView.setMaxLines(1);
-        }
+        CharSequence htmlString = textHandleResult.getHtmlString();
+        textView.setText(htmlString);
 
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setOnTouchListener(new TouchTextView(new SpannableString(textHandleResult.getHtmlString())));
+        textView.setOnTouchListener(new TouchTextView(new SpannableString(htmlString)));
 
         textView.setHorizontallyScrolling(false);
         applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
@@ -233,6 +292,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         applyTextColor(textView, hostConfig, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle(), renderArgs);
         applyHorizontalAlignment(textView, textBlock.GetHorizontalAlignment(), renderArgs);
         applyAccessibilityHeading(textView, textBlock.GetStyle());
+        applyAccessibilityProperties(textView, context, textHandleResult);
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())
@@ -242,11 +302,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         else if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
-        }
-
-        if (textHandleResult.getHasLinks())
-        {
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         viewGroup.addView(textView);
