@@ -6,7 +6,6 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 
 import org.xml.sax.Attributes;
@@ -72,11 +71,13 @@ public class RendererUtil
     {
         private CharSequence m_htmlString;
         private boolean m_hasLinks;
+        private boolean m_isALink;
 
-        public SpecialTextHandleResult(CharSequence htmlString, boolean hasLinks)
+        public SpecialTextHandleResult(CharSequence htmlString, boolean hasLinks, boolean isALink)
         {
             m_htmlString = htmlString;
             m_hasLinks = hasLinks;
+            m_isALink = isALink;
         }
 
         public CharSequence getHtmlString()
@@ -88,6 +89,11 @@ public class RendererUtil
         {
             return m_hasLinks;
         }
+
+        public boolean isALink()
+        {
+            return m_isALink;
+        }
     }
 
     public static CharSequence handleSpecialText(String textWithFormattedDates)
@@ -96,13 +102,31 @@ public class RendererUtil
         return trimHtmlString(spanned);
     }
 
+    private static boolean FirstAndLastSpansAreTheSame(Spanned spanned)
+    {
+        URLSpan[] firstSpan = spanned.getSpans(0, 1, URLSpan.class);
+        URLSpan[] lastSpan = spanned.getSpans(spanned.length() - 2, spanned.length(), URLSpan.class);
+
+        // as there is only one span in the whole string then the first and last characters must have only one span
+        return (firstSpan.length == 1 && lastSpan.length == 1);
+    }
+
     public static SpecialTextHandleResult handleSpecialTextAndQueryLinks(String textWithFormattedDates)
     {
         Spanned spanned = getSpecialTextSpans(textWithFormattedDates);
 
-        URLSpan[] spans = spanned.getSpans(0, spanned.length() - 1, URLSpan.class);
+        URLSpan[] spans = spanned.getSpans(0, spanned.length(), URLSpan.class);
 
-        return new SpecialTextHandleResult(trimHtmlString(spanned), (spans.length > 0));
+        boolean isALink = false;
+
+        // if there is only one span that uses the whole size of the string then the whole string is
+        // just one link
+        if (spans.length == 1)
+        {
+            isALink = FirstAndLastSpansAreTheSame(spanned);
+        }
+
+        return new SpecialTextHandleResult(trimHtmlString(spanned), (spans.length > 0), isALink);
     }
 
     public static Spanned getSpecialTextSpans(String textWithFormattedDates)
