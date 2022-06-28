@@ -1191,6 +1191,9 @@ export abstract class DesignerPeer extends DraggableElement {
         }
 
         element.style.position = "absolute";
+        // Issue: I believe this stops us from interacting with the elements - this could be okay since it shouldn't be an issue in preview mode
+        // Ensure that the peer is in front of the card
+        element.style.zIndex = "10";
 
         return element;
     }
@@ -1790,6 +1793,7 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     updateChildren(initializeCardElement?: boolean) {
+        // Remove all peers from the designer surface
         for (let i = 0; i < this.getChildCount(); i++) {
             let existingPeer = this.getChildAt(i);
 
@@ -1809,13 +1813,21 @@ export class CardElementPeer extends DesignerPeer {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
-                    this.insertChild(
-                        CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(
-                            this.designerSurface,
-                            this,
-                            this.cardElement.getItemAt(i),
-                            initializeCardElement),
-                        i);
+
+                    const peer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(
+                        this.designerSurface,
+                        this,
+                        this.cardElement.getItemAt(i),
+                        initializeCardElement);
+
+                    this.insertChild(peer, i);
+
+                    if (!peer.isVisible()) {                        
+                        peer.renderedElement.style.display = "none";
+
+                        // aria-hidden="true" - for screen readers?
+                        // We might also want to disable focus
+                    }
                 }
             }
         }
@@ -1998,6 +2010,10 @@ export class CardElementPeer extends DesignerPeer {
 
     get cardElement(): Adaptive.CardElement {
         return <Adaptive.CardElement>this.getCardObject();
+    }
+
+    isVisible(): boolean {
+        return true;
     }
 }
 
@@ -3302,7 +3318,8 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
 
                         this.cardElement.addPage(page);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
+                        this.updateChildren();
+                        //this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
                     }
                 }
             )
@@ -3314,17 +3331,10 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
 
         this.cardElement.onPageChanged = (index: number) => {
 
-            // Have the index start at 0 instead of 1
-            index--;
-            console.log("active slide: ", index);
-
-            for (let i = 0; i < this.getChildCount(); i++) {
-                const child = this.getChildAt(i) as CarouselPagePeer;
-                if (i === index) {
-                    child.showPeers();
-                } else {
-                    child.hidePeers();
-                }
+            // Only need to listen to the event if there are multiple pages
+            if (this.getChildCount() > 1) {
+                // TODO: testing
+                this.updateLayout();
             }
         };
 
@@ -3365,7 +3375,6 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
 export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage> {
     
     // TODO: declare any additional properties here
-
     protected isContainer(): boolean {
         return true;
     }
@@ -3417,16 +3426,17 @@ export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage
         return rect;
     }
 
-    // if we don't have access the the rendered element yet, we should set a boolean here and use it in internal render
-    // peer.style.display = "none";
+    isVisible(): boolean {
+        const parentCarousel = (this.parent as CarouselPeer);
 
-    // aria-hidden="true" - for screen readers?
-    // We might also want to disable focus
-    showPeers() {
-        console.log("should be visible!");
-    }
+        if (parentCarousel.getChildCount() == 1) {
+            return true;
+        }
 
-    hidePeers() {
-        console.log("should be hidden!");
+        const pageElement = this.cardElement;
+
+        const testBool = pageElement === parentCarousel.cardElement.currentPage;
+
+        return testBool;
     }
 }

@@ -204,6 +204,15 @@ export class Carousel extends Container {
         return undefined;
     }
 
+    get currentPage(): CarouselPage | undefined {
+        if (this._carousel?.slides?.length) {
+            const activePage = this._pages[this._carousel.activeIndex];
+
+            return activePage;
+        }
+        return undefined;
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 

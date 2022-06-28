@@ -479,7 +479,8 @@ export class CardDesigner extends Designer.DesignContext {
     private _jsonUpdateTimer: any;
     private _cardUpdateTimer: any;
     private _updateLayoutTimer: any;
-    private _preventCardUpdate: boolean = false;
+    private _cardPreventUpdate: boolean = false;
+    private _jsonPreventUpdate: boolean = false;
 
     private cardPayloadChanged() {
         if (this.onCardPayloadChanged) {
@@ -527,29 +528,26 @@ export class CardDesigner extends Designer.DesignContext {
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
-            this._preventCardUpdate = true;
+            this._cardPreventUpdate = true;
 
-            if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
+            if (!this._jsonPreventUpdate && this._isMonacoEditorLoaded) {
                 let cardPayload = this._designerSurface.getCardPayloadAsObject();
 
                 this.setCardPayload(cardPayload, addToUndoStack);
             }
         }
         finally {
-            this._preventCardUpdate = false;
+            this._cardPreventUpdate = false;
         }
     }
 
     private scheduleUpdateJsonFromCard() {
         clearTimeout(this._jsonUpdateTimer);
 
-        if (!this.preventJsonUpdate) {
+        if (!this._jsonPreventUpdate) {
             this._jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
         }
     }
-
-    // TODO: move this and rename
-    private preventJsonUpdate: boolean = false;
 
     private getCurrentCardEditorPayload(): string {
         return this._isMonacoEditorLoaded ? this._cardEditor.getValue() : Constants.defaultPayload;
@@ -561,7 +559,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private updateCardFromJson(addToUndoStack: boolean) {
         try {
-            this.preventJsonUpdate = true;
+            this._jsonPreventUpdate = true;
 
             let currentEditorPayload = this.getCurrentCardEditorPayload();
 
@@ -574,20 +572,20 @@ export class CardDesigner extends Designer.DesignContext {
                 }
             }
 
-            if (!this._preventCardUpdate) {
+            if (!this._cardPreventUpdate) {
                 this.designerSurface.setCardPayloadAsString(currentEditorPayload);
 
                 this.cardPayloadChanged();
             }
         } finally {
-            this.preventJsonUpdate = false;
+            this._jsonPreventUpdate = false;
         }
     }
 
     private scheduleUpdateCardFromJson() {
         clearTimeout(this._cardUpdateTimer);
 
-        if (!this._preventCardUpdate) {
+        if (!this._cardPreventUpdate) {
             this._cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
         }
     }
