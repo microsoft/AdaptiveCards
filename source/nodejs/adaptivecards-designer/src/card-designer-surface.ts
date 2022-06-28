@@ -388,7 +388,7 @@ export class CardDesignerSurface {
         this._cardHost.appendChild(renderedCard);
     }
 
-    private addPeer(peer: DesignerPeers.DesignerPeer) {
+    private addPeer(peer: DesignerPeers.DesignerPeer, insertAfterNeighbor: boolean = false) {
         if (this._allPeers.indexOf(peer) < 0) {
             this._allPeers.push(peer);
 
@@ -407,16 +407,23 @@ export class CardDesignerSurface {
             peer.onChanged = (sender: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) => { this.peerChanged(sender, updatePropertySheet); };
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
             peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
-                this.addPeer(newPeer);
+                this.addPeer(newPeer, newPeer.insertAfterNeighbor);
+
+                newPeer.insertAfterNeighbor = false;
+                
                 this.updateLayout();
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
 
-            peer.addElementsToDesignerSurface(this._designerSurface);
+            if (insertAfterNeighbor) {
+                peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
+            } else {
+                peer.addElementsToDesignerSurface(this._designerSurface);
+            }
 
             for (let i = 0; i < peer.getChildCount(); i++) {
-                this.addPeer(peer.getChildAt(i));
+                this.addPeer(peer.getChildAt(i), insertAfterNeighbor);
             }
         }
     }
@@ -480,6 +487,7 @@ export class CardDesignerSurface {
         return null;
     }
 
+    // Question: does showCard always add to the end?
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
         let peer = this.findCardElementPeer(action.card);
 
@@ -499,7 +507,7 @@ export class CardDesignerSurface {
                 }
             }
             else {
-                peer.addElementsToDesignerSurface(this._designerSurface, true);
+                peer.addElementsToDesignerSurface(this._designerSurface);
             }
         }
         else {
@@ -563,9 +571,16 @@ export class CardDesignerSurface {
                         }
 
                         break;
+                    case Constants.keys.backspace:	
                     case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
+                        }
+                        break;
+
+                    case Constants.keys.enter:
+                        if (this._selectedPeer instanceof DesignerPeers.ActionPeer) {
+                            this._selectedPeer.action.renderedElement.click();
                         }
 
                         break;
@@ -794,6 +809,7 @@ export class CardDesignerSurface {
 
                 if (this.selectedPeer.remove(false, true)) {
                     this.setSelectedPeer(parent);
+                    parent.focus();
                 }
             }
             finally {
@@ -822,7 +838,8 @@ export class CardDesignerSurface {
         if (this.draggedPeer) {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);
-            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, true);
+
+            this.draggedPeer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(this._draggedPeer));
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
@@ -837,6 +854,49 @@ export class CardDesignerSurface {
 
             this._designerSurface.classList.remove("dragging");
         }
+    }
+
+    // Find the element directly above the dragged element
+    getPeerDOMNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
+        if (peer.parent) {
+            let neighboringPeer = peer.parent;
+            if (peer instanceof DesignerPeers.CardElementPeer) {
+
+                // Get the index of the peer within its container
+                const peerIndex = peer.cardElement.index;
+    
+                // If it is not the first element, find the neighbor
+                if (peerIndex > 0) {
+                    neighboringPeer = neighboringPeer.getChildAt(peerIndex - 1);
+    
+                    // If the neighbor has children (i.e. has elements below it in the html tree), find its last child
+                    if (neighboringPeer.getChildCount() > 0) {
+                        neighboringPeer = this.getLastPeerInContainer(neighboringPeer);
+                    }
+                }
+                
+            } else if (peer instanceof DesignerPeers.ActionPeer) {
+
+                // peer.parent should be an ActionSet, so we know that we can add the ActionPeer as the last child element
+                const childCount = neighboringPeer.getChildCount();
+                if (childCount > 1) {
+                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
+                }
+            }
+
+            return neighboringPeer.renderedElement;
+        }
+        // Return undefined if there is no parent
+        return undefined;
+    }
+
+    // Recursive method to find a containers last element
+    getLastPeerInContainer(parentContainer: DesignerPeers.DesignerPeer): DesignerPeers.DesignerPeer {
+        let lastChildPeer = parentContainer.getChildAt(parentContainer.getChildCount() - 1);
+        if (lastChildPeer.getChildCount() > 0) {
+            lastChildPeer = this.getLastPeerInContainer(lastChildPeer);
+        }
+        return lastChildPeer;
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
