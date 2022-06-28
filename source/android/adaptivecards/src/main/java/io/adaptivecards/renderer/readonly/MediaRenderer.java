@@ -20,30 +20,17 @@ import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MergingMediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.SingleSampleMediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.common.collect.ImmutableList;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,6 +41,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.Media;
+import io.adaptivecards.objectmodel.MediaSource;
 import io.adaptivecards.objectmodel.MediaSourceVector;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
@@ -101,7 +89,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         @Override
         public void onClick(View v)
         {
-            if(!m_alreadyClicked)
+            if (!m_alreadyClicked)
             {
                 if (m_allowedInlinePlayback)
                 {
@@ -113,6 +101,13 @@ public class MediaRenderer extends BaseCardElementRenderer
                     m_mediaView.setVisibility(View.VISIBLE);
                 }
                 m_posterLayout.setClickable(false);
+
+                if (m_mediaView instanceof StyledPlayerView)
+                {
+                    StyledPlayerView styledPlayerView = (StyledPlayerView) m_mediaView;
+                    styledPlayerView.getPlayer().play();
+                }
+
                 m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
 
                 m_alreadyClicked = true;
@@ -247,7 +242,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         }
     }
 
-    static class PlayerListener implements Player.Listener
+    class PlayerListener implements Player.Listener
     {
         private MediaOnCompletionListener m_onCompletionListener = null;
 
@@ -289,36 +284,30 @@ public class MediaRenderer extends BaseCardElementRenderer
         io.adaptivecards.objectmodel.MediaSource mediaSource = media.GetSources().get(0);
         MediaItem.Builder mediaItemBuilder = new MediaItem.Builder().setUri(Uri.parse(mediaSource.GetUrl()));
 
-
         CaptionSourceVector captionSources = media.GetCaptionSources();
         int captionSourcesCount = captionSources.size();
-        if (captionSourcesCount > 0)
+        for (int i = 0; i < captionSourcesCount; ++i)
         {
-            for (int i = 0; i < captionSourcesCount; ++i)
+            CaptionSource captionSource = media.GetCaptionSources().get(i);
+            if (captionSource.GetMimeType().contains("vtt"))
             {
-                CaptionSource captionSource = media.GetCaptionSources().get(i);
-                if (captionSource.GetMimeType().contains("vtt"))
-                {
-                    Uri subtitleUri = Uri.parse(captionSource.GetUrl());
+                Uri subtitleUri = Uri.parse(captionSource.GetUrl());
 
-                    MediaItem.SubtitleConfiguration.Builder subtitleConfigurationBuilder = new MediaItem.SubtitleConfiguration.Builder(subtitleUri);
-                    subtitleConfigurationBuilder.setLabel(captionSource.GetLabel());
-                    subtitleConfigurationBuilder.setLanguage("en");
-                    subtitleConfigurationBuilder.setMimeType(MimeTypes.TEXT_VTT);
-                    subtitleConfigurationBuilder.setSelectionFlags(C.SELECTION_FLAG_DEFAULT);
+                MediaItem.SubtitleConfiguration.Builder subtitleConfigurationBuilder = new MediaItem.SubtitleConfiguration.Builder(subtitleUri);
+                subtitleConfigurationBuilder.setLabel(captionSource.GetLabel());
+                subtitleConfigurationBuilder.setMimeType(MimeTypes.TEXT_VTT);
+                subtitleConfigurationBuilder.setSelectionFlags(C.SELECTION_FLAG_DEFAULT);
 
-                    mediaItemBuilder.setSubtitleConfigurations(new ArrayList<>(Arrays.asList(subtitleConfigurationBuilder.build())));
-                }
+                mediaItemBuilder.setSubtitleConfigurations(ImmutableList.of(subtitleConfigurationBuilder.build()));
             }
         }
 
         MediaItem mediaItem = mediaItemBuilder.build();
-        MediaSource playerMediaSource = new DefaultMediaSourceFactory(dataSourceFactory, new DefaultExtractorsFactory()).createMediaSource(mediaItem);
+        com.google.android.exoplayer2.source.MediaSource playerMediaSource = new DefaultMediaSourceFactory(dataSourceFactory, new DefaultExtractorsFactory()).createMediaSource(mediaItem);
         player.setMediaSource(playerMediaSource);
 
         playerView.setPlayer(player);
 
-        player.setPlayWhenReady(true);
         player.prepare();
 
         player.addListener(new PlayerListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler)));
@@ -367,7 +356,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             {
                 for (int i = 0; i < sourcesSize; i++)
                 {
-                    io.adaptivecards.objectmodel.MediaSource mediaSource = mediaSources.get(i);
+                    MediaSource mediaSource = mediaSources.get(i);
                     String mimeType = mediaSource.GetMimeType();
 
                     if (isSupportedMimeType(mimeType))
