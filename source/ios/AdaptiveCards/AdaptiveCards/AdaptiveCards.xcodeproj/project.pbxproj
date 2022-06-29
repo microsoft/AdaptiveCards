@@ -295,7 +295,7 @@
 		F42979461F322C9000E89914 /* ACRNumericTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42979441F322C9000E89914 /* ACRNumericTextField.mm */; };
 		F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979451F322C9000E89914 /* ACRNumericTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F429794C1F32684900E89914 /* ACRDateTextField.mm */; };
-		F42C2F4A20351954008787B0 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		F42C2F4A20351954008787B0 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516B1FEC383E008F9642 /* MarkDownParsedResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E516C1FEC383E008F9642 /* MarkDownBlockParser.cpp */; };
 		F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516D1FEC383F008F9642 /* MarkDownHtmlGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -409,7 +409,7 @@
 		F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */; };
 		F4F44B8020478C6F00A2F24C /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7E20478C6F00A2F24C /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7F20478C6F00A2F24C /* Util.cpp */; };
-		F4F44B8D204A11D000A2F24C /* (null) in Headers */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Public, ); }; };
+		F4F44B8D204A11D000A2F24C /* BuildFile in Headers */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8E204A145200A2F24C /* ACOBaseCardElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B882048F82F00A2F24C /* ACOBaseCardElement.mm */; };
 		F4F44B8F204A148200A2F24C /* ACOBaseCardElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B8A2048F83F00A2F24C /* ACOBaseCardElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B90204A14EF00A2F24C /* ACRColumnRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F42741221EFB274C00399FBB /* ACRColumnRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -731,6 +731,7 @@
 		84AE295527FFA26F00D01B82 /* ContentSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentSource.h; path = ../../../../shared/cpp/ObjectModel/ContentSource.h; sourceTree = "<group>"; };
 		84AE295627FFA26F00D01B82 /* CaptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptionSource.h; path = ../../../../shared/cpp/ObjectModel/CaptionSource.h; sourceTree = "<group>"; };
 		84AE295727FFA26F00D01B82 /* CaptionSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptionSource.cpp; path = ../../../../shared/cpp/ObjectModel/CaptionSource.cpp; sourceTree = "<group>"; };
+		9240A5BA903EB4E235296A01 /* Pods-AdaptiveCards.apprelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards.apprelease.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards/Pods-AdaptiveCards.apprelease.xcconfig"; sourceTree = "<group>"; };
 		92C9540BDB87B09349BF0018 /* Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1BFE0C10A542B2DABBE89DC /* Pods-AdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-AdaptiveCardsTests/Pods-AdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8DEDF37220CDEB00001AAED /* ActionSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionSet.cpp; path = ../../../../shared/cpp/ObjectModel/ActionSet.cpp; sourceTree = "<group>"; };
@@ -740,6 +741,7 @@
 		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
 		F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetRenderer.mm; sourceTree = "<group>"; };
@@ -974,6 +976,8 @@
 				7749A56FE5104914C2BA9D02 /* Pods-AdaptiveCardsTests-AdaptiveCards.release.xcconfig */,
 				75D7DB0E51EC8A155E83E2D0 /* Pods-ADCIOSVisualizer-AdaptiveCardsTests.debug.xcconfig */,
 				45580A4A0B0DE521608DDA3A /* Pods-ADCIOSVisualizer-AdaptiveCardsTests.release.xcconfig */,
+				9240A5BA903EB4E235296A01 /* Pods-AdaptiveCards.apprelease.xcconfig */,
+				ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -1699,7 +1703,7 @@
 				F4F44B91204A152100A2F24C /* ACRColumnSetRenderer.h in Headers */,
 				F43110431F357487001AAE30 /* ACRInputTableView.h in Headers */,
 				F4F44B94204A157B00A2F24C /* ACRImageRenderer.h in Headers */,
-				F4F44B8D204A11D000A2F24C /* (null) in Headers */,
+				F4F44B8D204A11D000A2F24C /* BuildFile in Headers */,
 				F4F44B8F204A148200A2F24C /* ACOBaseCardElement.h in Headers */,
 				F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */,
 				F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */,
@@ -2188,7 +2192,7 @@
 				F4C1F5DE1F218F920018CB78 /* ACRInputNumberRenderer.mm in Sources */,
 				F448731A1EE2261F00FCAFAE /* OpenUrlAction.cpp in Sources */,
 				F4CAE7831F75AB9000545555 /* ACOAdaptiveCard.mm in Sources */,
-				F42C2F4A20351954008787B0 /* (null) in Sources */,
+				F42C2F4A20351954008787B0 /* BuildFile in Sources */,
 				F4CA74A02016B3B9002041DF /* ACRTapGestureRecognizerEventHandler.mm in Sources */,
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
 				6BDE5C4626FEA7DC003A1DDB /* ACRShowCardTarget.mm in Sources */,
@@ -2274,6 +2278,132 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6BC1C77E286BBC800084D1D9 /* AppRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1.2.5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "ADAPTIVECARDS_USE_FLUENT_TOOLTIPS=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = AppRelease;
+		};
+		6BC1C77F286BBC800084D1D9 /* AppRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9240A5BA903EB4E235296A01 /* Pods-AdaptiveCards.apprelease.xcconfig */;
+			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1.2.5;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = AdaptiveCards/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdaptiveCards",
+				);
+				MACH_O_TYPE = mh_dylib;
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCards;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = AppRelease;
+		};
+		6BC1C780286BBC800084D1D9 /* AppRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = AdaptiveCardsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCardsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+			};
+			name = AppRelease;
+		};
+		6BC1C781286BBC800084D1D9 /* AppRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = AppRelease;
+		};
 		F423C0C71EE1FBAA00905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2539,6 +2669,7 @@
 			buildConfigurations = (
 				F423C0C71EE1FBAA00905679 /* Debug */,
 				F423C0C81EE1FBAA00905679 /* Release */,
+				6BC1C77E286BBC800084D1D9 /* AppRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2548,6 +2679,7 @@
 			buildConfigurations = (
 				F423C0CA1EE1FBAA00905679 /* Debug */,
 				F423C0CB1EE1FBAA00905679 /* Release */,
+				6BC1C77F286BBC800084D1D9 /* AppRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2557,6 +2689,7 @@
 			buildConfigurations = (
 				F423C0CD1EE1FBAA00905679 /* Debug */,
 				F423C0CE1EE1FBAA00905679 /* Release */,
+				6BC1C780286BBC800084D1D9 /* AppRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2566,6 +2699,7 @@
 			buildConfigurations = (
 				F47ACEE21F62495B0010BEF0 /* Debug */,
 				F47ACEE31F62495B0010BEF0 /* Release */,
+				6BC1C781286BBC800084D1D9 /* AppRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
