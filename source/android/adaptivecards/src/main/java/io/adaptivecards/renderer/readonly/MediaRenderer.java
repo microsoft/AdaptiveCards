@@ -234,15 +234,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         return playButtonView;
     }
 
-    static class ControllerVisibilityListener implements StyledPlayerView.ControllerVisibilityListener
-    {
-        @Override
-        public void onVisibilityChanged(int visibility) {
-
-        }
-    }
-
-    class PlayerListener implements Player.Listener
+    private class PlayerListener implements Player.Listener
     {
         private MediaOnCompletionListener m_onCompletionListener = null;
 
@@ -273,7 +265,6 @@ public class MediaRenderer extends BaseCardElementRenderer
         playerView.setUseController(true);
         playerView.setControllerHideOnTouch(true);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
-        playerView.setControllerVisibilityListener(new ControllerVisibilityListener());
         playerView.setShowSubtitleButton(true);
         playerView.setControllerShowTimeoutMs(4000);
         playerView.setControllerHideOnTouch(true);
