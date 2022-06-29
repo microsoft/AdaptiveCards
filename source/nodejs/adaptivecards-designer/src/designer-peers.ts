@@ -3335,13 +3335,15 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
     }
 }
 
-export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
+// TODO: update to extend container peer
+export class CarouselPeer extends ContainerPeer {
 
     static readonly timerProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer");
 
-    protected isContainer(): boolean {
-        return true;
-    }
+    // // TODO: Don't think we need?
+    // protected isContainer(): boolean {
+    //     return true;
+    // }
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3354,10 +3356,9 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
                     execute: (command: PeerCommand, clickedElement: HTMLElement) => {
                         let page = new Adaptive.CarouselPage();
 
-                        this.cardElement.addPage(page);
+                        (this.cardElement as Adaptive.Carousel).addPage(page);
 
                         this.updateChildren();
-                        //this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, page));
                     }
                 }
             )
@@ -3367,38 +3368,43 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
     initializeCardElement() {
         super.initializeCardElement();
 
-        this.cardElement.onPageChanged = (index: number) => {
+        const carouselPeer = this;
+
+        (this.cardElement as Adaptive.Carousel).onPageChanged = (index: number) => {
 
             // Only need to listen to the event if there are multiple pages
-            if (this.getChildCount() > 1) {
-                // TODO: testing
-                this.updateLayout();
+            if (index > 1) {
+                carouselPeer.updateChildren();
             }
         };
 
-        this.cardElement.addPage(new Adaptive.CarouselPage());
+        (this.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
     }
 
     // TODO: Are there additional properties?
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.remove(CardElementPeer.isVisibleProperty,
+            ContainerPeer.bleedProperty, 
+            ContainerPeer.styleProperty);
+
         propertySheet.add(
             defaultCategory,
-            ContainerPeer.minHeightProperty,
+            // ContainerPeer.minHeightProperty,
             CarouselPeer.timerProperty);
 
-        propertySheet.add(
-            PropertySheetCategory.SelectionAction,
-            ContainerPeer.selectActionProperty);
+        // propertySheet.add(
+        //     PropertySheetCategory.SelectionAction,
+        //     ContainerPeer.selectActionProperty);
 
-        if (this.cardElement.selectAction) {
-            propertySheet.addActionProperties(
-                Adaptive.Versions.v1_0,
-                this,
-                this.cardElement.selectAction,
-                PropertySheetCategory.SelectionAction);
-        }
+        // if (this.cardElement.selectAction) {
+        //     propertySheet.addActionProperties(
+        //         Adaptive.Versions.v1_0,
+        //         this,
+        //         this.cardElement.selectAction,
+        //         PropertySheetCategory.SelectionAction);
+        // }
     }
 
     canDrop(peer: DesignerPeer) {
@@ -3410,53 +3416,18 @@ export class CarouselPeer extends TypedCardElementPeer<Adaptive.Carousel> {
     }
 }
 
-export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage> {
-    
-    // TODO: declare any additional properties here
-    protected isContainer(): boolean {
-        return true;
-    }
+export class CarouselPagePeer extends ContainerPeer {
 
     isDraggable(): boolean {
         return false;
     }
 
-    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
-        super.populatePropertySheet(propertySheet, defaultCategory);
-        
-        propertySheet.add(
-            PropertySheetCategory.LayoutCategory,
-            ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
-
-        propertySheet.add(
-            PropertySheetCategory.StyleCategory,
-            ContainerPeer.styleProperty);
-
-        propertySheet.add(
-            "Background image",
-            ContainerPeer.backgroundImageProperty);
-
-        propertySheet.add(
-            PropertySheetCategory.SelectionAction,
-            ContainerPeer.selectActionProperty);
-
-        // Do we update the version here?
-        if (this.cardElement.selectAction) {
-            propertySheet.addActionProperties(
-                Adaptive.Versions.v1_0,
-                this,
-                this.cardElement.selectAction,
-                PropertySheetCategory.SelectionAction);
-        }
-
-        // TODO: add custom properties here
-    }
-
     getBoundingRect(): Rect {
         const rect = super.getBoundingRect();
 
-        const left = (this.cardElement.parent as Adaptive.Carousel).carouselPageContainer.offsetLeft;
+        const carousel = this.cardElement.parent as Adaptive.Carousel;
+
+        const left = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
 
         rect.right = left + (rect.right - rect.left);
         rect.left = left;
@@ -3464,16 +3435,17 @@ export class CarouselPagePeer extends TypedCardElementPeer<Adaptive.CarouselPage
         return rect;
     }
 
+    // Debug this method - comparison is not correct
     isVisible(): boolean {
         const parentCarousel = (this.parent as CarouselPeer);
 
-        if (parentCarousel.getChildCount() == 1) {
+        if (parentCarousel.getChildCount() === 1) {
             return true;
         }
 
-        const pageElement = this.cardElement;
+        const pageElement = this.cardElement as Adaptive.CarouselPage;
 
-        const testBool = pageElement === parentCarousel.cardElement.currentPage;
+        const testBool = pageElement === (parentCarousel.cardElement as Adaptive.Carousel).currentPage;
 
         return testBool;
     }

@@ -49,7 +49,6 @@ import {
 import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
-import { Carousel } from "./carousel";
 
 export function renderSeparation(
     hostConfig: HostConfig,
@@ -779,6 +778,10 @@ export abstract class CardElement extends CardObject {
 
     get parent(): CardElement | undefined {
         return <CardElement>this._parent;
+    }
+
+    getElementSingletonBehavior(): ElementSingletonBehavior {
+        return ElementSingletonBehavior.NotAllowed;
     }
 }
 
@@ -6899,23 +6902,14 @@ export class Container extends ContainerBase {
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
-        context.serializeArray(target, this.getItemsCollectionPropertyName(), this._items);
+        const collectionPropertyName = this.getItemsCollectionPropertyName();
 
-
-        // TODO: the entire page doesn't render for some reason - will look into later
-        // console.log("type: ", (target.type === "AdaptiveCard"));
-        // console.log("version: ", (target.version === "1.6"));
-        // console.log("items length: ", (this._items.length === 1));
-        // console.log("is carousel: ", (this._items[0] instanceof Carousel))
-
-
-        // const collectionPropertyName = this.getItemsCollectionPropertyName();
-
-        // if ((target.type === "AdaptiveCard") && (target.version === "1.6") && (this._items.length === 1) && (this._items[0] instanceof Carousel)) {
-        // 	context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
-        // } else {
-        // 	context.serializeArray(target, collectionPropertyName, this._items);
-        // }
+        if ((this._items.length === 1) && (this._items[0].getElementSingletonBehavior() === ElementSingletonBehavior.Only)) {
+            // If the element is only allowed in a singleton context, parse it to an object instead of an array
+        	context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
+        } else {
+        	context.serializeArray(target, collectionPropertyName, this._items);
+        }
     }
 
     protected get isSelectable(): boolean {

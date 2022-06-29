@@ -144,6 +144,10 @@ export class Carousel extends Container {
         return "Carousel";
     }
 
+    getElementSingletonBehavior(): ElementSingletonBehavior {
+        return ElementSingletonBehavior.Only;
+    }
+
     getItemCount(): number {
         return this._pages.length;
     }
@@ -204,11 +208,18 @@ export class Carousel extends Container {
         return undefined;
     }
 
+    // TODO: debug this method for isVisible()
     get currentPage(): CarouselPage | undefined {
-        if (this._carousel?.slides?.length) {
-            const activePage = this._pages[this._carousel.activeIndex];
+        // if (this._carousel?.slides?.length) {
+            //const activePage = this._pages[this._carousel.activeIndex];
 
-            return activePage;
+        //     return activePage;
+        // }
+        // return undefined;
+
+        if (this._carousel) {
+            // I think activeIndex starts at 1
+            return this.getItemAt(this._carousel.activeIndex - 1) as CarouselPage;
         }
         return undefined;
     }
@@ -293,6 +304,7 @@ export class Carousel extends Container {
             "swiper-button-prev",
             "ac-carousel-left"
         );
+        prevElementDiv.style.zIndex = "20";
         containerForAdorners.appendChild(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
@@ -300,6 +312,7 @@ export class Carousel extends Container {
             "swiper-button-next",
             "ac-carousel-right"
         );
+        nextElementDiv.style.zIndex = "20";
         containerForAdorners.appendChild(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
@@ -307,6 +320,7 @@ export class Carousel extends Container {
             "swiper-pagination",
             "ac-carousel-pagination"
         );
+        pagination.style.zIndex = "20";
         containerForAdorners.appendChild(pagination);
 
         const requestedNumberOfPages: number = Math.min(
