@@ -321,6 +321,10 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                         elementWillBeVisible = false;
                     }
 
+                    String newVisibilityText = elementWillBeVisible ? " Expanded" : " Collapsed";
+
+                    v.announceForAccessibility(elementId + newVisibilityText);
+
                     BaseCardElementRenderer.setVisibility(elementWillBeVisible, foundView, viewGroupsToUpdate);
 
                 }
