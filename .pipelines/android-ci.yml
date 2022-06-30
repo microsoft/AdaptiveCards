@@ -26,6 +26,7 @@ steps:
     wrapperScript: source/android/gradlew
     cwd: source/android
     publishJUnitResults: false
+    jdkVersionOption: 1.11
 
 - bash: |
    #!/usr/bin/env bash
