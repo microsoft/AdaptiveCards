@@ -209,7 +209,7 @@
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
 						"targetElements": [
-							"cardContent1",
+							"airTravelExpenseDetails",
 							"chevronDown1",
 							"chevronUp1"
 						]
@@ -238,7 +238,7 @@
 		},
 		{
 			"type": "Container",
-			"id": "cardContent1",
+			"id": "airTravelExpenseDetails",
 			"isVisible": false,
 			"items": [
 				{
@@ -344,7 +344,7 @@
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
 						"targetElements": [
-							"cardContent2",
+							"autoMobileExpenseDetails",
 							"chevronDown2",
 							"chevronUp2"
 						]
@@ -373,7 +373,7 @@
 		},
 		{
 			"type": "Container",
-			"id": "cardContent2",
+			"id": "autoMobileExpenseDetails",
 			"isVisible": false,
 			"items": [
 				{
@@ -473,7 +473,7 @@
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
 						"targetElements": [
-							"cardContent3",
+							"excessBaggageCostDetails",
 							"chevronDown3",
 							"chevronUp3"
 						]
@@ -502,7 +502,7 @@
 		},
 		{
 			"type": "Container",
-			"id": "cardContent3",
+			"id": "excessBaggageCostDetails",
 			"isVisible": false,
 			"items": [
 				{
