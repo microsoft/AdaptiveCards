@@ -67,6 +67,7 @@ steps:
     wrapperScript: source/android/gradlew
     cwd: source/android
     tasks: connectedAndroidTest
+    jdkVersionOption: 1.11
 
 - script: |
    mkdir Screenshots
