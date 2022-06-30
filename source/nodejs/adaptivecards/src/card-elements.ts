@@ -4656,7 +4656,12 @@ export abstract class Action extends CardObject {
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
     private _isFocusable: boolean = true;
-    private _isDesignMode: boolean;
+
+    isDesignMode(): boolean {
+        const rootElement = this.getRootObject();
+
+        return (rootElement instanceof CardElement) && rootElement.isDesignMode();
+    }
 
     protected updateCssClasses() {
         if (this.parent && this.renderedElement) {
@@ -4676,7 +4681,7 @@ export abstract class Action extends CardObject {
                 }
             }
 
-            this.renderedElement.tabIndex = !this._isDesignMode && this.isFocusable ? 0 : -1;
+            this.renderedElement.tabIndex = !this.isDesignMode() && this.isFocusable ? 0 : -1;
 
             switch (this._state) {
                 case ActionButtonState.Normal:
@@ -4764,7 +4769,7 @@ export abstract class Action extends CardObject {
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = this.isEffectivelyEnabled() && !this._isDesignMode ? 0 : -1;
+        element.tabIndex = this.isEffectivelyEnabled() && !this.isDesignMode() ? 0 : -1;
 
         element.setAttribute("role", this.getAriaRole());
 
@@ -4802,7 +4807,7 @@ export abstract class Action extends CardObject {
         return super.parse(source, context ? context : new SerializationContext());
     }
 
-    render(isDesignMode: boolean) {
+    render() {
         const buttonElement = document.createElement("button");
         buttonElement.type = "button";
         buttonElement.style.display = "flex";
@@ -4818,8 +4823,6 @@ export abstract class Action extends CardObject {
         };
 
         this._renderedElement = buttonElement;
-
-        this._isDesignMode = isDesignMode;
 
         this.renderButtonContent();
         this.updateCssClasses();
@@ -5260,8 +5263,8 @@ export class ToggleVisibilityAction extends Action {
         return ToggleVisibilityAction.JsonTypeName;
     }
 
-    render(isDesignMode: boolean) {
-        super.render(isDesignMode);
+    render() {
+        super.render();
 
         this.updateAriaControlsAttribute();
     }
@@ -5896,7 +5899,7 @@ class ActionCollection {
         }
     }
 
-    render(orientation: Enums.Orientation, _isDesignMode: boolean): HTMLElement | undefined {
+    render(orientation: Enums.Orientation): HTMLElement | undefined {
         // Cache hostConfig for better perf
         const hostConfig = this._owner.hostConfig;
 
@@ -6036,7 +6039,7 @@ class ActionCollection {
 
             for (let i = 0; i < primaryActions.length; i++) {
                 const action = primaryActions[i];
-                action.render(_isDesignMode);
+                action.render();
 
                 if (action.renderedElement) {
                     if (
@@ -6202,8 +6205,7 @@ export class ActionSet extends CardElement {
         return this._actionCollection.render(
             this.orientation !== undefined
                 ? this.orientation
-                : this.hostConfig.actions.actionsOrientation,
-            this.isDesignMode()
+                : this.hostConfig.actions.actionsOrientation
         );
     }
 
@@ -7729,8 +7731,7 @@ export abstract class ContainerWithActions extends Container {
 
         if (element) {
             const renderedActions = this._actionCollection.render(
-                this.hostConfig.actions.actionsOrientation,
-                this.isDesignMode()
+                this.hostConfig.actions.actionsOrientation
             );
 
             if (renderedActions) {
