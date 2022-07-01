@@ -1087,6 +1087,7 @@ export abstract class DesignerPeer extends DraggableElement {
     private _isSelected: boolean = false;
     private _inplaceEditorOverlay: HTMLElement;
     private _inplaceEditor: DesignerPeerInplaceEditor = null;
+    private _insertAfterNeighbor = false;
 
     private closeInplaceEditor(applyChanges: boolean) {
         if (this._inplaceEditor) {
@@ -1179,6 +1180,10 @@ export abstract class DesignerPeer extends DraggableElement {
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
         element.classList.add("acd-peer");
+        element.tabIndex = 0;
+		element.onfocus = (e) => {
+			this.isSelected = true;
+		};
 
         let toolTip = this.getToolTip();
 
@@ -1384,14 +1389,25 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
-    addElementsToDesignerSurface(designerSurface: HTMLElement, processChildren: boolean = false) {
-        designerSurface.appendChild(this.renderedElement);
+    addElementsToDesignerSurface(designerSurface: HTMLElement, neighbor: HTMLElement = undefined): HTMLElement {
+        if (this.renderedElement) {
+            if (neighbor) {
+                // Adds the rendered element after its neighbor
+                neighbor.after(this.renderedElement);
 
-        if (processChildren) {
-            for (let i = 0; i < this.getChildCount(); i++) {
-                this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren);
+                if (this.getChildCount() >= 0) {
+                    neighbor = this.renderedElement;
+                    for (let i = 0; i < this.getChildCount(); i++) {
+                        // We need to update the neighbor with the most recently added element
+                        neighbor = this.getChildAt(i).addElementsToDesignerSurface(designerSurface, neighbor);
+                    }
+                }
+            } else {
+                // The first time we render the card, we can append the elements in order
+                designerSurface.appendChild(this.renderedElement);
             }
         }
+        return neighbor;
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
@@ -1487,6 +1503,14 @@ export abstract class DesignerPeer extends DraggableElement {
                 this.onSelectedChanged(this);
             }
         }
+    }
+
+    get insertAfterNeighbor(): boolean {
+        return this._insertAfterNeighbor;
+    }
+
+    set insertAfterNeighbor(insertAfterNeighbor: boolean) {
+        this._insertAfterNeighbor = insertAfterNeighbor;
     }
 }
 
@@ -2122,7 +2146,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             "Background image",
@@ -2210,7 +2235,8 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,
@@ -2255,7 +2281,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                         this.cardElement.addColumn(column);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column));
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, column);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
                     }
                 })
         );
@@ -2317,6 +2346,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
             new EnumPropertyEditor(Adaptive.Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
         ]
     );
+    static readonly rtlProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "rtl", "Present right to left");
 
     protected isContainer(): boolean {
         return true;
@@ -2328,7 +2358,8 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,
@@ -2358,7 +2389,10 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action));
+        const newPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action);
+        newPeer.insertAfterNeighbor = true;
+
+        this.insertChild(newPeer);
     }
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
@@ -2425,7 +2459,10 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
                         this.cardElement.addImage(newImage);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage));
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newImage);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
                     }
                 })
         );
@@ -3234,8 +3271,13 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 
                         this.cardElement.addRow(row);
 
-                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row));
-                        this.updateChildren();
+                        const newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row);
+                        newPeer.insertAfterNeighbor = true;
+
+                        this.insertChild(newPeer);
+
+                        // TODO: I'm not sure if this call is necessary
+                        // this.updateChildren();
                     }
                 })
         );

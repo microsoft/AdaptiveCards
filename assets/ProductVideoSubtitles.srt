@@ -1,0 +1,44 @@
+1
+00:00:01,895 --> 00:00:04,460
+Content is currency 
+
+2
+00:00:04,520 --> 00:00:09,000
+And the driving force behind successful apps and experiences
+
+3
+00:00:09,000 --> 00:00:16,000
+But it's becoming harder for businesses to keep pace at a vast world of innovative content
+
+4
+00:00:16,000 --> 00:00:20,000
+Adaptive Cards provide a flexible JSON based schema that's beautiful by default
+
+5
+00:00:20,000 --> 00:00:24,000
+empowering you to be open to any content.
+
+6
+00:00:24,000 --> 00:00:32,670
+As a purely declarative solution Adaptive Cards provide the performance and security you need to deliver engaging experiences.
+
+7
+00:00:32,915 --> 00:00:40,000
+Native renderers for all major platforms ensure your content comes across fast and fluid. 
+
+8
+00:00:40,162 --> 00:00:51,097
+With built-in separation of layout and styling integration is easy and bringing fresh new content faster than ever from an ever growing network of providers
+
+9
+00:00:51,236 --> 00:00:58,226
+All built on open source and open development practices, enabling innovation that benefits everyone.
+
+10
+00:00:58,386 --> 00:01:05,586
+Adaptive Cards give you effortless and endless possibilities to shape the future of your experiences 
+
+11
+00:01:05,787 --> 00:01:14,547
+Open yourself up to content with Adaptive Cards
+
