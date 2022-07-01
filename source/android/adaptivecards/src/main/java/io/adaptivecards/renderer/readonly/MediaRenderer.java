@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
+import static com.google.android.exoplayer2.Player.EVENT_PLAYBACK_STATE_CHANGED;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import androidx.fragment.app.FragmentManager;
 import android.view.View;
@@ -15,7 +18,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.CaptionSource;
+import io.adaptivecards.objectmodel.CaptionSourceVector;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
@@ -52,7 +73,7 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private class PosterOnClickListener implements View.OnClickListener
     {
-        public PosterOnClickListener(ImageView poster, ImageView playButton, FullscreenVideoView mediaView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler, ViewGroup posterLayout)
+        public PosterOnClickListener(ImageView poster, ImageView playButton, View mediaView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler, ViewGroup posterLayout)
         {
             m_poster = poster;
             m_playButton = playButton;
@@ -68,7 +89,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         @Override
         public void onClick(View v)
         {
-            if(!m_alreadyClicked)
+            if (!m_alreadyClicked)
             {
                 if (m_allowedInlinePlayback)
                 {
@@ -80,6 +101,13 @@ public class MediaRenderer extends BaseCardElementRenderer
                     m_mediaView.setVisibility(View.VISIBLE);
                 }
                 m_posterLayout.setClickable(false);
+
+                if (m_mediaView instanceof StyledPlayerView)
+                {
+                    StyledPlayerView styledPlayerView = (StyledPlayerView) m_mediaView;
+                    styledPlayerView.getPlayer().play();
+                }
+
                 m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
 
                 m_alreadyClicked = true;
@@ -89,7 +117,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         private ViewGroup m_posterLayout;
         private ImageView m_poster;
         private ImageView m_playButton;
-        private FullscreenVideoView m_mediaView;
+        private View m_mediaView;
         private boolean m_allowedInlinePlayback = true;
         private boolean m_alreadyClicked = false;
 
@@ -154,7 +182,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         }
         poster.SetAltText(media.GetAltText());
 
-        if(!poster.GetUrl().isEmpty())
+        if (!poster.GetUrl().isEmpty())
         {
             // Draw poster in posterLayout
             poster.SetImageSize(ImageSize.Auto);
@@ -183,7 +211,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         RelativeLayout.LayoutParams playButtonLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         playButtonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        if(!playButtonUrl.isEmpty())
+        if (!playButtonUrl.isEmpty())
         {
             Image playButton = new Image();
             playButton.SetUrl(playButtonUrl);
@@ -206,18 +234,94 @@ public class MediaRenderer extends BaseCardElementRenderer
         return playButtonView;
     }
 
-    private FullscreenVideoView renderMediaPlayer(
-            Context context,
-            ViewGroup viewGroup,
-            Media media,
-            HostConfig hostConfig)
+    private class PlayerListener implements Player.Listener
+    {
+        private MediaOnCompletionListener m_onCompletionListener = null;
+
+        public PlayerListener(MediaOnCompletionListener onCompletionListener)
+        {
+            m_onCompletionListener = onCompletionListener;
+        }
+
+        @Override
+        public void onEvents(Player player, Player.Events events)
+        {
+            if (events.contains(EVENT_PLAYBACK_STATE_CHANGED))
+            {
+                m_onCompletionListener.onCompletion(null);
+            }
+        }
+    }
+
+    private View renderNewMediaPlayer(
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        ViewGroup viewGroup,
+        Media media,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig)
+    {
+        StyledPlayerView playerView = new StyledPlayerView(context);
+        playerView.setUseController(true);
+        playerView.setControllerHideOnTouch(true);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+        playerView.setShowSubtitleButton(true);
+        playerView.setControllerShowTimeoutMs(4000);
+        playerView.setControllerHideOnTouch(true);
+
+        ExoPlayer player = new ExoPlayer.Builder(context).setTrackSelector(new DefaultTrackSelector(context)).build();
+
+        DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
+        io.adaptivecards.objectmodel.MediaSource mediaSource = media.GetSources().get(0);
+        MediaItem.Builder mediaItemBuilder = new MediaItem.Builder().setUri(Uri.parse(mediaSource.GetUrl()));
+
+        CaptionSourceVector captionSources = media.GetCaptionSources();
+        int captionSourcesCount = captionSources.size();
+        for (int i = 0; i < captionSourcesCount; ++i)
+        {
+            CaptionSource captionSource = media.GetCaptionSources().get(i);
+            if (captionSource.GetMimeType().contains("vtt"))
+            {
+                Uri subtitleUri = Uri.parse(captionSource.GetUrl());
+
+                MediaItem.SubtitleConfiguration.Builder subtitleConfigurationBuilder = new MediaItem.SubtitleConfiguration.Builder(subtitleUri);
+                subtitleConfigurationBuilder.setLabel(captionSource.GetLabel());
+                subtitleConfigurationBuilder.setMimeType(MimeTypes.TEXT_VTT);
+                subtitleConfigurationBuilder.setSelectionFlags(C.SELECTION_FLAG_DEFAULT);
+
+                mediaItemBuilder.setSubtitleConfigurations(ImmutableList.of(subtitleConfigurationBuilder.build()));
+            }
+        }
+
+        MediaItem mediaItem = mediaItemBuilder.build();
+        com.google.android.exoplayer2.source.MediaSource playerMediaSource = new DefaultMediaSourceFactory(dataSourceFactory, new DefaultExtractorsFactory()).createMediaSource(mediaItem);
+        player.setMediaSource(playerMediaSource);
+
+        playerView.setPlayer(player);
+
+        player.prepare();
+
+        player.addListener(new PlayerListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler)));
+
+        viewGroup.addView(playerView);
+
+        return playerView;
+    }
+
+    private View renderOldMediaPlayer(
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        ViewGroup viewGroup,
+        Media media,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig)
     {
         final FullscreenVideoView mediaView = new FullscreenVideoLayout(context);
 
         final MediaSourceVector mediaSources = media.GetSources();
         final long sourcesSize = mediaSources.size();
 
-        if(sourcesSize > 0)
+        if (sourcesSize > 0)
         {
             final boolean isAudio = mediaSources.get(0).GetMimeType().startsWith("audio");
             boolean registeredOnlineMediaLoader = false;
@@ -230,16 +334,16 @@ public class MediaRenderer extends BaseCardElementRenderer
                 if (onlineMediaLoader != null)
                 {
                     mediaView.setDataSource(onlineMediaLoader.loadOnlineMedia(mediaSources, new IMediaDataSourceOnPreparedListener() {
-                            @Override
-                            public void prepareMediaPlayer() {
-                                mediaView.prepare();
-                            }
-                        }), isAudio);
+                        @Override
+                        public void prepareMediaPlayer() {
+                            mediaView.prepare();
+                        }
+                    }), isAudio);
                     registeredOnlineMediaLoader = true;
                 }
             }
 
-            if(!registeredOnlineMediaLoader)
+            if (!registeredOnlineMediaLoader)
             {
                 for (int i = 0; i < sourcesSize; i++)
                 {
@@ -262,17 +366,50 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaView.setShouldAutoplay(true);
         mediaView.setContentDescription(media.GetAltText());
 
-        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
-        videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        mediaView.setLayoutParams(videoViewLayoutParams);
-
-        mediaView.setVisibility(View.GONE);
+        mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
         viewGroup.addView(mediaView);
 
         return mediaView;
+    }
+
+    private View renderMediaPlayer(
+            RenderedAdaptiveCard renderedCard,
+            Context context,
+            ViewGroup viewGroup,
+            Media media,
+            ICardActionHandler cardActionHandler,
+            HostConfig hostConfig)
+    {
+        final long sourcesSize = media.GetSources().size();
+
+        View playerView = null;
+
+        // If there's a video or audio to render proceed
+        if (sourcesSize > 0)
+        {
+            IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
+
+            // if the onlineMediaLoader is null we can proceed using the new loader
+            if (onlineMediaLoader == null)
+            {
+                playerView = renderNewMediaPlayer(renderedCard, context, viewGroup, media, cardActionHandler, hostConfig);
+            }
+            else
+            {
+                playerView = renderOldMediaPlayer(renderedCard, context, viewGroup, media, cardActionHandler, hostConfig);
+            }
+        }
+
+        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+        videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        playerView.setLayoutParams(videoViewLayoutParams);
+        playerView.setVisibility(View.GONE);
+
+        return playerView;
     }
 
     @Override
@@ -295,10 +432,9 @@ public class MediaRenderer extends BaseCardElementRenderer
         RelativeLayout posterLayout = new RelativeLayout(context);
         ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, hostConfig, renderArgs);
         ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, renderArgs);
-        FullscreenVideoView mediaView = renderMediaPlayer(context, posterLayout, media, hostConfig);
+        View mediaView = renderMediaPlayer(renderedCard, context, posterLayout, media, cardActionHandler, hostConfig);
 
         posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler, posterLayout));
-        mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
         mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);

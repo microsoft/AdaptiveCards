@@ -1,0 +1,50 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+project.ext {
+    compileSdkVersion = 32
+    minSdkVersion = 19
+    // From sdk version 21 multidex is enabled by default
+    uiTestAppMinSdkVersion = 21
+    targetSdkVersion = 30
+    appTargetSdkVersion = 29
+    
+    // Upgrading this requires [Internal ref: b/193254928] to be fixed, or some
+    // additional robolectric config.
+    dexmakerVersion = '2.28.1'
+    junitVersion = '4.12'
+    
+    // Packages versions
+    androidxMultidexVersion = '2.0.1'
+
+    kotlinAnnotationsVersion = '1.5.31'
+    androidxAnnotationVersion = '1.3.0'
+    androidxAppCompatVersion = '1.3.1'
+    androidxCollectionVersion = '1.1.0'
+    androidxConstraintLayoutVersion = '2.0.4'
+    androidFlexboxVersion = '1.0.0'
+    androidxKotlinCoreVersion = '1.6.0'
+    androidExoPlayerVersion = '2.18.0'
+    androidxGridLayoutVersion = '1.0.0'
+    androidxEspressoCoreVersion = '3.1.0'
+
+
+    androidxCoreVersion = '1.7.0'
+    androidxFuturesVersion = '1.1.0'
+    androidxMediaVersion = '1.4.3'
+    androidxMedia2Version = '1.2.0'
+    androidxMultidexVersion = '2.0.1'
+    androidxRecyclerViewVersion = '1.2.1'
+    androidxMaterialVersion = '1.4.0'
+    androidxTestCoreVersion = '1.4.0'
+    androidxTestJUnitVersion = '1.1.3'
+    androidxTestRunnerVersion = '1.4.0'
+    androidxTestRulesVersion = '1.4.0'
+    androidxTestServicesStorageVersion = '1.4.0'
+    androidxTestTruthVersion = '1.4.0'
+    truthVersion = '1.1.3'
+    okhttpVersion = '4.9.2'
+    modulePrefix = ':'
+    if (gradle.ext.has('exoplayerModulePrefix')) {
+        modulePrefix += gradle.ext.exoplayerModulePrefix
+    }
+}
