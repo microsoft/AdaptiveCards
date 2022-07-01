@@ -8,13 +8,12 @@ android {
     compileSdkVersion project.ext.compileSdkVersion
     defaultConfig {
         applicationId "io.adaptivecards.uitestapp"
-        minSdkVersion project.ext.minSdkVersion
+        minSdkVersion project.ext.uiTestAppMinSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
         versionCode 2
         versionName "1.0.1"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -45,7 +44,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.multidex:multidex:' + androidxMultidexVersion
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'

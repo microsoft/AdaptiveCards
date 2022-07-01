@@ -3,6 +3,8 @@
 project.ext {
     compileSdkVersion = 32
     minSdkVersion = 19
+    // From sdk version 21 multidex is enabled by default
+    uiTestAppMinSdkVersion = 21
     targetSdkVersion = 30
     appTargetSdkVersion = 29
     
