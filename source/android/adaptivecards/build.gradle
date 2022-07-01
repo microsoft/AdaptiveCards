@@ -17,6 +17,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         externalNativeBuild {
             cmake {
@@ -177,6 +178,7 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:' + androidxEspressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    implementation 'androidx.multidex:multidex:' + androidxMultidexVersion
     implementation 'androidx.appcompat:appcompat:' + androidxAppCompatVersion
     implementation 'androidx.constraintlayout:constraintlayout:' + androidxConstraintLayoutVersion
     implementation 'com.google.android:flexbox:' + androidFlexboxVersion
