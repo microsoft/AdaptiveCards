@@ -2,12 +2,6 @@
 	"type": "AdaptiveCard",
 	"body": [
 		{
-			"type": "Table",
-			
-		}
-
-
-		{
 			"type": "ColumnSet",
 			"horizontalAlignment": "Center",
 			"columns": [
