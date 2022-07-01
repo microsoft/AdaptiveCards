@@ -535,7 +535,7 @@ using namespace AdaptiveCards;
 {
     // if the current view is accessibilityElement, subviews become inaccessible after
     // they are incorporated into the current view.
-    // gather accessibility labels from subviewsto ensure the context is not lost
+    // gather accessibility labels from subviews to ensure the context is not lost
     // when this happens
     if (self.isAccessibilityElement) {
         return [self gatherAccessibilityLabelsFromSubviews];
@@ -547,7 +547,7 @@ using namespace AdaptiveCards;
 - (NSString *)gatherAccessibilityLabelsFromSubviews
 {
     NSMutableArray<NSString *> *mergedA11yLabels = [[NSMutableArray alloc] init];
-    // include accessibility of current view
+    // include a11y labels of current view
     if (super.accessibilityLabel && super.accessibilityLabel.length) {
         [mergedA11yLabels addObject:super.accessibilityLabel];
     }
