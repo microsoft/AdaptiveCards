@@ -41,7 +41,7 @@
     const auto style = choiceSet->GetChoiceSetStyle();
     if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *compactStyleView = [[ACRChoiceSetCompactStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
-        inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:compactStyleView accessibilityItem:compactStyleView viewGroup:viewGroup dataSource:nil];
+        inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:compactStyleView accessibilityItem:compactStyleView viewGroup:viewGroup dataSource:nil];
     } else {
         ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
         choiceSetView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
@@ -59,7 +59,7 @@
         choiceSetView.delegate = dataSource;
         choiceSetView.dataSource = dataSource;
 
-        inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView accessibilityItem:choiceSetView viewGroup:viewGroup dataSource:dataSource];
+        inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:choiceSetView accessibilityItem:choiceSetView viewGroup:viewGroup dataSource:dataSource];
         choiceSetView.isAccessibilityElement = NO;
         choiceSetView.shouldGroupAccessibilityChildren = YES;
     }
