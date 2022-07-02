@@ -27,6 +27,7 @@
 @property NSNumber *key;
 @property NSNumber *iconPlacement;
 @property BOOL hasSelectAction;
+@property BOOL subtreeHasSelectAction;
 @property BOOL isFirstRowAsHeaders;
 @property ContainerStyle style;
 @end
@@ -34,10 +35,28 @@
 @implementation ACOContextProperties
 @end
 
+@interface ACOSelectActionProperties : NSObject
+@property BOOL hasSelectAction;
+@property BOOL subtreeHasSelectAction;
+@end
+
+@implementation ACOSelectActionProperties
+
+- (instancetype)init:(BOOL)hasSelectAction
+{
+    self = [super init];
+    if (self) {
+        _hasSelectAction = hasSelectAction;
+    }
+    return self;
+}
+
+@end
+
 @implementation ACORenderContext {
     NSMutableDictionary<NSNumber *, NSMutableArray *> *_internalIdContext;
     NSMutableArray<NSNumber *> *_rtlContext;
-    NSMutableArray<NSNumber *> *_selectActionContext;
+    NSMutableArray<ACOSelectActionProperties *> *_selectActionContext;
     NSMutableArray<NSNumber *> *_actionIconPlacementContext;
     NSMutableArray<NSNumber *> *_firstRowsAsheadersContext;
     NSMutableArray<NSNumber *> *_verticalAlignmentContext;
@@ -86,8 +105,15 @@
 - (BOOL)hasSelectAction
 {
     if (_selectActionContext && [_selectActionContext count]) {
-        NSNumber *number = [_selectActionContext lastObject];
-        return [number boolValue];
+        return [_selectActionContext lastObject].hasSelectAction;
+    }
+    return NO;
+}
+
+- (BOOL)subtreeHasSelectAction
+{
+    if (_selectActionContext && [_selectActionContext count]) {
+        return [_selectActionContext lastObject].subtreeHasSelectAction;
     }
     return NO;
 }
@@ -171,7 +197,8 @@
 
     if (properties.hasSelectAction) {
         shouldPush = YES;
-        [_selectActionContext addObject:[NSNumber numberWithBool:properties.hasSelectAction]];
+        ACOSelectActionProperties *selectActionProperties = [[ACOSelectActionProperties alloc] init:properties.hasSelectAction];
+        [_selectActionContext addObject:selectActionProperties];
         [contexts addObject:_selectActionContext];
     }
 
@@ -304,6 +331,11 @@
     if (contexts) {
         for (NSMutableArray *context in contexts) {
             [context removeLastObject];
+            // when popping a selectAction, update the parent context's subtree attribute
+            // to reflect the existance of child select action
+            if (context == _selectActionContext && context.count > 1) {
+                ((ACOSelectActionProperties *)context.lastObject).subtreeHasSelectAction = YES;
+            }
         }
         [_internalIdContext removeObjectForKey:key];
     }
