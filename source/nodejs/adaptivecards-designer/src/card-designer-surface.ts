@@ -397,6 +397,14 @@ export class CardDesignerSurface {
 
             peer.render();
 
+			if (peer instanceof DesignerPeers.CardElementPeer) {
+				if (!peer.isVisible()) {   
+					peer.renderedElement.style.display = "none";
+				} else {
+					peer.renderedElement.style.display = "initial";
+				}
+			}
+
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
                 if (peer.isSelected) {
                     this.setSelectedPeer(peer);

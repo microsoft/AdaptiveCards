@@ -1846,12 +1846,6 @@ export class CardElementPeer extends DesignerPeer {
 
                     this.insertChild(peer, i);
 
-                    if (!peer.isVisible()) {                        
-                        peer.renderedElement.style.display = "none";
-
-                        // aria-hidden="true" - for screen readers?
-                        // We might also want to disable focus
-                    }
                 }
             }
         }
@@ -2037,6 +2031,9 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     isVisible(): boolean {
+        if (this.parent instanceof CardElementPeer) {
+            return this.parent.isVisible();
+        }
         return true;
     }
 }
@@ -3335,15 +3332,9 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
     }
 }
 
-// TODO: update to extend container peer
 export class CarouselPeer extends ContainerPeer {
 
     static readonly timerProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer");
-
-    // // TODO: Don't think we need?
-    // protected isContainer(): boolean {
-    //     return true;
-    // }
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3372,9 +3363,9 @@ export class CarouselPeer extends ContainerPeer {
 
         (this.cardElement as Adaptive.Carousel).onPageChanged = (index: number) => {
 
-            // Only need to listen to the event if there are multiple pages
-            if (index > 1) {
-                carouselPeer.updateChildren();
+            if ((carouselPeer.cardElement as Adaptive.Carousel).currentIndex != index) {
+                (carouselPeer.cardElement as Adaptive.Carousel).currentIndex = index;
+                this.designerSurface.render();
             }
         };
 
@@ -3391,20 +3382,7 @@ export class CarouselPeer extends ContainerPeer {
 
         propertySheet.add(
             defaultCategory,
-            // ContainerPeer.minHeightProperty,
             CarouselPeer.timerProperty);
-
-        // propertySheet.add(
-        //     PropertySheetCategory.SelectionAction,
-        //     ContainerPeer.selectActionProperty);
-
-        // if (this.cardElement.selectAction) {
-        //     propertySheet.addActionProperties(
-        //         Adaptive.Versions.v1_0,
-        //         this,
-        //         this.cardElement.selectAction,
-        //         PropertySheetCategory.SelectionAction);
-        // }
     }
 
     canDrop(peer: DesignerPeer) {
@@ -3418,6 +3396,8 @@ export class CarouselPeer extends ContainerPeer {
 
 export class CarouselPagePeer extends ContainerPeer {
 
+    // Maybe we want to store a page index here? but I guess we can always grab the index from the list of children
+
     isDraggable(): boolean {
         return false;
     }
@@ -3427,15 +3407,16 @@ export class CarouselPagePeer extends ContainerPeer {
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
 
-        const left = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
+        if (carousel) {
+            const left = carousel.renderedElement?.offsetLeft + carousel.carouselPageContainer.offsetLeft;
 
-        rect.right = left + (rect.right - rect.left);
-        rect.left = left;
+            rect.right = left + (rect.right - rect.left);
+            rect.left = left;
+        }
 
         return rect;
     }
 
-    // Debug this method - comparison is not correct
     isVisible(): boolean {
         const parentCarousel = (this.parent as CarouselPeer);
 
@@ -3443,10 +3424,6 @@ export class CarouselPagePeer extends ContainerPeer {
             return true;
         }
 
-        const pageElement = this.cardElement as Adaptive.CarouselPage;
-
-        const testBool = pageElement === (parentCarousel.cardElement as Adaptive.Carousel).currentPage;
-
-        return testBool;
+        return ((parentCarousel.cardElement as Adaptive.Carousel).currentPage) === (this.cardElement as Adaptive.CarouselPage);
     }
 }

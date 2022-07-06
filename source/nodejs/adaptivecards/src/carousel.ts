@@ -124,6 +124,8 @@ export class Carousel extends Container {
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
 
+    currentIndex: number = 0;
+
     protected forbiddenChildElements(): string[] {
         return [
             ToggleVisibilityAction.JsonTypeName,
@@ -208,18 +210,21 @@ export class Carousel extends Container {
         return undefined;
     }
 
-    // TODO: debug this method for isVisible()
+    // potentially refactor to isCurrentPage(carouselPage)
     get currentPage(): CarouselPage | undefined {
-        // if (this._carousel?.slides?.length) {
-            //const activePage = this._pages[this._carousel.activeIndex];
-
-        //     return activePage;
-        // }
-        // return undefined;
-
         if (this._carousel) {
-            // I think activeIndex starts at 1
-            return this.getItemAt(this._carousel.activeIndex - 1) as CarouselPage;
+
+            const activeIndex = this._carousel.activeIndex;
+            const wrapper = this._carousel.$wrapperEl[0];
+            const activePage = wrapper.children.item(activeIndex);
+
+            for (const page of this._renderedPages) {
+                const renderedElement = page.renderedElement;
+
+                if (renderedElement === activePage) {
+                    return page;
+                }
+            }
         }
         return undefined;
     }
@@ -241,7 +246,6 @@ export class Carousel extends Container {
         }
     }
 
-    // TODO: I think we should have this create the carousel as an object instead of adding to an array
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
@@ -420,10 +424,11 @@ export class Carousel extends Container {
             on: {
                 slideChange: (swiper: Swiper) => {
                     if (onPageChanged) {
-                        onPageChanged(swiper.activeIndex);
-                    }
+                        onPageChanged(swiper.activeIndex - (swiper.loopedSlides || 0));
+                    } 
                 }
-            }
+            },
+            initialSlide: this.currentIndex
         };
 
         if (this.timer && !this.isDesignMode()) {
@@ -471,6 +476,10 @@ export class Carousel extends Container {
 
     get carouselPageContainer() {
         return this._carouselPageContainer;
+    }
+
+    get carousel(): Swiper | undefined {
+        return this._carousel;
     }
 
     onPageChanged: (index: number) => void;

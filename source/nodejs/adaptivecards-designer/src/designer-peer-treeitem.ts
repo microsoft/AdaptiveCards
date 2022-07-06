@@ -1,7 +1,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { Carousel } from "adaptivecards";
 import { BaseTreeItem } from "./base-tree-item";
-import { DesignerPeer } from "./designer-peers";
+import { CarouselPagePeer, CarouselPeer, DesignerPeer } from "./designer-peers";
 
 export class DesignerPeerTreeItem extends BaseTreeItem {
     private computeLevel() {
@@ -57,5 +58,29 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
 
     getChildAt(index: number): BaseTreeItem {
         return this.owner.getChildAt(index).treeItem;
+    }
+
+    protected click(e: MouseEvent) {
+        super.click(e);
+
+        let currentPeer = this.owner;
+
+        while (currentPeer) {
+            if (currentPeer instanceof CarouselPagePeer) {
+
+                const carouselPeer = currentPeer.parent as CarouselPeer;
+                if (carouselPeer) {
+
+                    const carouselElement = (carouselPeer.cardElement as Carousel);
+                    if (carouselElement && carouselElement.carousel) {
+                        const index = carouselPeer.children.indexOf(currentPeer) + (carouselElement.carousel.loopedSlides || 0);
+                        carouselElement.carousel.slideTo(index);
+                    }
+                }
+                
+                break;
+            }
+            currentPeer = currentPeer.parent;
+        }
     }
 }
