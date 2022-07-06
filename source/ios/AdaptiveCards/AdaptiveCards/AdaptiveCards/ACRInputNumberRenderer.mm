@@ -47,7 +47,7 @@
     numInput.delegate = numberInputHandler;
     numInput.text = numberInputHandler.text;
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput accessibilityItem:numInput viewGroup:viewGroup dataSource:numberInputHandler];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:numInputBlck inputView:numInput accessibilityItem:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 
     [viewGroup addArrangedSubview:inputLabelView];
 
