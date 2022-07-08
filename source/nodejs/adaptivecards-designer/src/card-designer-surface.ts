@@ -405,6 +405,10 @@ export class CardDesignerSurface {
                 }
             }
 
+            if (peer instanceof DesignerPeers.CarouselPeer) {
+                peer.attachOnPageChange();
+            }
+
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
                 if (peer.isSelected) {
                     this.setSelectedPeer(peer);
@@ -429,9 +433,8 @@ export class CardDesignerSurface {
             peer.onMouseEnter = (sender: DesignerPeers.DesignerPeer) => { 
                 // After initial render, the carousel child element peers need to have their layout updating to ensure the correct location
                 // TODO: peer is in the wrong place for adding a column/table cell/image
-                for (let i = 0; i < this._allPeers.length; i++) {
-                    this._allPeers[i].updateLayout();
-                }
+                // TODO: update so updateLayout is called less frequently
+                this.updateLayout();
             };
 
             if (insertAfterNeighbor) {

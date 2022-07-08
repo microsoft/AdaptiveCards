@@ -3359,25 +3359,7 @@ export class CarouselPeer extends ContainerPeer {
     initializeCardElement() {
         super.initializeCardElement();
 
-        const carouselPeer = this;
-
-        (carouselPeer.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, loopIndex: number) => {
-            const carouselElement = carouselPeer.cardElement as Adaptive.Carousel;
-
-            if (activeIndex === 0) {
-                // Index 0 is a duplicate slide, and we should slide to the end
-                carouselElement.carousel?.slideTo(carouselPeer.getChildCount())
-            } else if (activeIndex === (carouselPeer.getChildCount() + 1)) {
-                // Last index is a duplicate slide, and we should slide to the beginning
-                carouselElement.carousel?.slideTo(1);
-            } else if (carouselElement.currentIndex != (activeIndex - loopIndex)) {
-                // Valid index, rerender the card
-                carouselElement.currentIndex = activeIndex - loopIndex;
-                this.designerSurface.render();
-            }
-        };
-
-        (carouselPeer.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
+        (this.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
     }
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -3398,6 +3380,24 @@ export class CarouselPeer extends ContainerPeer {
 
     isDraggable(): boolean {
         return false;
+    }
+
+    attachOnPageChange() {
+        (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, loopIndex: number) => {
+            const carouselElement = this.cardElement as Adaptive.Carousel;
+
+            if (activeIndex === 0) {
+                // Index 0 is a duplicate slide, and we should slide to the end
+                carouselElement.carousel?.slideTo(this.getChildCount())
+            } else if (activeIndex === (this.getChildCount() + 1)) {
+                // Last index is a duplicate slide, and we should slide to the beginning
+                carouselElement.carousel?.slideTo(1);
+            } else if (carouselElement.currentIndex != (activeIndex - loopIndex)) {
+                // Valid index, rerender the card
+                carouselElement.currentIndex = activeIndex - loopIndex;
+                this.designerSurface.render();
+            }
+        };
     }
 }
 

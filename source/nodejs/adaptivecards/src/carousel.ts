@@ -407,8 +407,6 @@ export class Carousel extends Container {
         rtl: boolean | undefined
     ): void {
 
-        const onPageChanged = this.onPageChanged;
-
         const swiperOptions: SwiperOptions = {
             loop: true,
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
@@ -429,8 +427,8 @@ export class Carousel extends Container {
             },
             on: {
                 slideChange: (swiper: Swiper) => {
-                    if (onPageChanged) {
-                        onPageChanged(swiper.activeIndex, swiper.loopedSlides || 0);
+                    if (this.onPageChanged) {
+                        this.onPageChanged(swiper.activeIndex, swiper.loopedSlides || 0);
                     } 
                 }
             },
