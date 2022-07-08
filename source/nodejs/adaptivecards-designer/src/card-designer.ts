@@ -1056,6 +1056,7 @@ export class CardDesigner extends Designer.DesignContext {
             monaco = window["monaco"];
         }
 
+		// TODO: the uri here needs to be updated to allow for an object or array for the carousel
         let monacoConfiguration = {
             schemas: [
                 {

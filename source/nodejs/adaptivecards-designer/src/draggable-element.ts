@@ -79,6 +79,12 @@ export abstract class DraggableElement {
         }
     }
 
+	protected mouseEnter(e: MouseEvent) {
+		if (this.onMouseEnter) {
+			this.onMouseEnter(this);
+		}
+	}
+
     protected internalUpdateCssStyles() {
         // Do nothing in base implementation
     }
@@ -97,6 +103,7 @@ export abstract class DraggableElement {
     onEndDrag: (sender: DraggableElement) => void;
     onClick: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
+	onMouseEnter: (sender: DraggableElement) => void;
 
     isDraggable(): boolean {
         return true;
@@ -135,6 +142,7 @@ export abstract class DraggableElement {
             }
         };
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
+		dragSourceElement.onmouseenter = (e: MouseEvent) => { this.mouseEnter(e); };
 
         if (this.isDraggable()) {
             dragSourceElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };

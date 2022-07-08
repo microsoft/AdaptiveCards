@@ -202,29 +202,35 @@ export class Carousel extends Container {
         }
     }
 
+	isCurrentPage(page: CarouselPage): boolean {
+		if (this._carousel) {
+			let activeIndex = this._carousel.activeIndex;
+
+			// the first and last slides are duplicate elements so the carousel runs continuously
+			// to get the correct _renderedPage, we need to adjust the index
+
+			// TODO: need to confim that the activeIndex will always be off by this amount
+			if (activeIndex === (this._pages.length + 1)) {
+				// Reached the last element, go back to the beginning
+				activeIndex = 0;
+			} else if (activeIndex === 0) {
+				// Reached the first element, go to the end
+				activeIndex = this._pages.length - 1;
+			} else {
+				// for all other elements, we need to shift the index back by 1
+				activeIndex--;
+			}
+
+			return page === this._pages[activeIndex];
+		}
+
+		return false;
+	}
+
     get currentPageId(): string | undefined {
         if (this._carousel?.slides?.length) {
             const activeSlide = this._carousel.slides[this._carousel.activeIndex] as HTMLElement;
             return activeSlide.id;
-        }
-        return undefined;
-    }
-
-    // potentially refactor to isCurrentPage(carouselPage)
-    get currentPage(): CarouselPage | undefined {
-        if (this._carousel) {
-
-            const activeIndex = this._carousel.activeIndex;
-            const wrapper = this._carousel.$wrapperEl[0];
-            const activePage = wrapper.children.item(activeIndex);
-
-            for (const page of this._renderedPages) {
-                const renderedElement = page.renderedElement;
-
-                if (renderedElement === activePage) {
-                    return page;
-                }
-            }
         }
         return undefined;
     }
@@ -424,7 +430,7 @@ export class Carousel extends Container {
             on: {
                 slideChange: (swiper: Swiper) => {
                     if (onPageChanged) {
-                        onPageChanged(swiper.activeIndex - (swiper.loopedSlides || 0));
+                        onPageChanged(swiper.activeIndex, swiper.loopedSlides || 0);
                     } 
                 }
             },
@@ -482,7 +488,7 @@ export class Carousel extends Container {
         return this._carousel;
     }
 
-    onPageChanged: (index: number) => void;
+    onPageChanged: (activeIndex: number, loopIndex: number) => void;
 }
 
 GlobalRegistry.defaultElements.register(

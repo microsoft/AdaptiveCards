@@ -3361,18 +3361,25 @@ export class CarouselPeer extends ContainerPeer {
 
         const carouselPeer = this;
 
-        (this.cardElement as Adaptive.Carousel).onPageChanged = (index: number) => {
+        (carouselPeer.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, loopIndex: number) => {
+            const carouselElement = carouselPeer.cardElement as Adaptive.Carousel;
 
-            if ((carouselPeer.cardElement as Adaptive.Carousel).currentIndex != index) {
-                (carouselPeer.cardElement as Adaptive.Carousel).currentIndex = index;
+            if (activeIndex === 0) {
+                // Index 0 is a duplicate slide, and we should slide to the end
+                carouselElement.carousel?.slideTo(carouselPeer.getChildCount())
+            } else if (activeIndex === (carouselPeer.getChildCount() + 1)) {
+                // Last index is a duplicate slide, and we should slide to the beginning
+                carouselElement.carousel?.slideTo(1);
+            } else if (carouselElement.currentIndex != (activeIndex - loopIndex)) {
+                // Valid index, rerender the card
+                carouselElement.currentIndex = activeIndex - loopIndex;
                 this.designerSurface.render();
             }
         };
 
-        (this.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
+        (carouselPeer.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
     }
 
-    // TODO: Are there additional properties?
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
@@ -3396,34 +3403,28 @@ export class CarouselPeer extends ContainerPeer {
 
 export class CarouselPagePeer extends ContainerPeer {
 
-    // Maybe we want to store a page index here? but I guess we can always grab the index from the list of children
-
     isDraggable(): boolean {
         return false;
     }
 
     getBoundingRect(): Rect {
-        const rect = super.getBoundingRect();
+        const boundingRect = super.getBoundingRect();
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
+        const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
-        if (carousel) {
-            const left = carousel.renderedElement?.offsetLeft + carousel.carouselPageContainer.offsetLeft;
+        const leftOffset = carousel.renderedElement?.offsetLeft + carousel.carouselPageContainer.offsetLeft;
 
-            rect.right = left + (rect.right - rect.left);
-            rect.left = left;
-        }
+        boundingRect.right = leftOffset + boundingRect.width;
+        boundingRect.left = leftOffset;
+        boundingRect.bottom = boundingRect.top + containerClientRect.height;
 
-        return rect;
+        return boundingRect;
     }
 
     isVisible(): boolean {
         const parentCarousel = (this.parent as CarouselPeer);
 
-        if (parentCarousel.getChildCount() === 1) {
-            return true;
-        }
-
-        return ((parentCarousel.cardElement as Adaptive.Carousel).currentPage) === (this.cardElement as Adaptive.CarouselPage);
+        return (parentCarousel.cardElement as Adaptive.Carousel).isCurrentPage(this.cardElement as Adaptive.CarouselPage);
     }
 }

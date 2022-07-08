@@ -259,7 +259,7 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this.renderCard()
+        this.renderCard();
         this.updateLayout();
 
         if (updatePropertySheet && this.onSelectedPeerChanged) {
@@ -397,13 +397,13 @@ export class CardDesignerSurface {
 
             peer.render();
 
-			if (peer instanceof DesignerPeers.CardElementPeer) {
-				if (!peer.isVisible()) {   
-					peer.renderedElement.style.display = "none";
-				} else {
-					peer.renderedElement.style.display = "initial";
-				}
-			}
+            if (peer instanceof DesignerPeers.CardElementPeer) {
+                if (!peer.isVisible()) {   
+                    peer.renderedElement.style.display = "none";
+                } else {
+                    peer.renderedElement.style.display = "initial";
+                }
+            }
 
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
                 if (peer.isSelected) {
@@ -426,6 +426,13 @@ export class CardDesignerSurface {
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
+            peer.onMouseEnter = (sender: DesignerPeers.DesignerPeer) => { 
+                // After initial render, the carousel child element peers need to have their layout updating to ensure the correct location
+                // TODO: peer is in the wrong place for adding a column/table cell/image
+                for (let i = 0; i < this._allPeers.length; i++) {
+                    this._allPeers[i].updateLayout();
+                }
+            };
 
             if (insertAfterNeighbor) {
                 peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
@@ -447,7 +454,7 @@ export class CardDesignerSurface {
         var result: DesignerPeers.DesignerPeer = null;
         var lookDeeper = currentPeer instanceof DesignerPeers.ActionPeer;
 
-        if (!lookDeeper) {
+        if (!lookDeeper && (currentPeer as DesignerPeers.CardElementPeer)?.isVisible()) {
             var boundingRect = currentPeer.getBoundingRect();
 
             lookDeeper = boundingRect.isInside(pointerPosition);
