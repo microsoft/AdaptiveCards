@@ -202,30 +202,30 @@ export class Carousel extends Container {
         }
     }
 
-	isCurrentPage(page: CarouselPage): boolean {
-		if (this._carousel) {
-			let activeIndex = this._carousel.activeIndex;
+    isCurrentPage(page: CarouselPage): boolean {
+        if (this._carousel) {
+            let activeIndex = this._carousel.activeIndex;
 
-			// the first and last slides are duplicate elements so the carousel runs continuously
-			// to get the correct _renderedPage, we need to adjust the index
+            // the first and last slides are duplicate elements so the carousel runs continuously
+            // to get the correct _renderedPage, we need to adjust the index
 
-			// TODO: need to confim that the activeIndex will always be off by this amount
-			if (activeIndex === (this._pages.length + 1)) {
-				// Reached the last element, go back to the beginning
-				activeIndex = 0;
-			} else if (activeIndex === 0) {
-				// Reached the first element, go to the end
-				activeIndex = this._pages.length - 1;
-			} else {
-				// for all other elements, we need to shift the index back by 1
-				activeIndex--;
-			}
+            // TODO: need to confim that the activeIndex will always be off by this amount
+            if (activeIndex === (this._pages.length + 1)) {
+                // Reached the last element, go back to the beginning
+                activeIndex = 0;
+            } else if (activeIndex === 0) {
+                // Reached the first element, go to the end
+                activeIndex = this._pages.length - 1;
+            } else {
+                // for all other elements, we need to shift the index back by 1
+                activeIndex--;
+            }
 
-			return page === this._pages[activeIndex];
-		}
+            return page === this._pages[activeIndex];
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     get currentPageId(): string | undefined {
         if (this._carousel?.slides?.length) {
