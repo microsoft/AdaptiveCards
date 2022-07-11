@@ -3397,6 +3397,8 @@ export class CarouselPeer extends ContainerPeer {
                 carouselElement.currentIndex = activeIndex - loopIndex;
                 this.designerSurface.render();
             }
+
+            this.designerSurface.needsLayoutUpdate = true;
         };
     }
 }

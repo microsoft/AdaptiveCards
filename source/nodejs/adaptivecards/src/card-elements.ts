@@ -6906,9 +6906,9 @@ export class Container extends ContainerBase {
 
         if ((this._items.length === 1) && (this._items[0].getElementSingletonBehavior() === ElementSingletonBehavior.Only)) {
             // If the element is only allowed in a singleton context, parse it to an object instead of an array
-        	context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
+            context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
         } else {
-        	context.serializeArray(target, collectionPropertyName, this._items);
+            context.serializeArray(target, collectionPropertyName, this._items);
         }
     }
 

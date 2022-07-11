@@ -202,6 +202,7 @@ export class CardDesignerSurface {
     private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
     private _dragVisual?: HTMLElement;
+    private _needsLayoutUpdate: boolean = true;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -430,12 +431,6 @@ export class CardDesignerSurface {
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
-            peer.onMouseEnter = (sender: DesignerPeers.DesignerPeer) => { 
-                // After initial render, the carousel child element peers need to have their layout updating to ensure the correct location
-                // TODO: peer is in the wrong place for adding a column/table cell/image
-                // TODO: update so updateLayout is called less frequently
-                this.updateLayout();
-            };
 
             if (insertAfterNeighbor) {
                 peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
@@ -644,6 +639,11 @@ export class CardDesignerSurface {
                 this._dragVisual.style.height = renderedCardObjectRect.height + "px";
 
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
+            }
+
+            if (this._needsLayoutUpdate) {
+                this._needsLayoutUpdate = false;
+                this.updateLayout();
             }
         }
 
@@ -878,6 +878,8 @@ export class CardDesignerSurface {
             }
 
             this._designerSurface.classList.remove("dragging");
+
+            this._needsLayoutUpdate = true;
         }
     }
 
@@ -1017,5 +1019,9 @@ export class CardDesignerSurface {
             this.renderCard();
             this.updateLayout(false);
         }
+    }
+
+    set needsLayoutUpdate(needsUpdate: boolean) {
+        this._needsLayoutUpdate = needsUpdate;
     }
 }
