@@ -1,6 +1,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import {
+    AdaptiveCard,
     ActionType,
     CardElement,
     Container,
@@ -116,8 +117,17 @@ export class Carousel extends Container {
 
     //#endregion
 
+    get currentEventType(): Enums.CarouselEventType {
+        return this._currentEventType;
+    }
+
+    set currentEventType(eventType: Enums.CarouselEventType) {
+        this._currentEventType = eventType;
+    }
+
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
+    private _currentEventType: Enums.CarouselEventType;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -185,6 +195,13 @@ export class Carousel extends Container {
         if (this._carousel?.slides?.length) {
             const activeSlide = this._carousel.slides[this._carousel.activeIndex] as HTMLElement;
             return activeSlide.id;
+        }
+        return undefined;
+    }
+
+    get currentPageIndex(): number | undefined {
+        if (this._carousel?.slides?.length) {
+            return this._carousel.realIndex;
         }
         return undefined;
     }
@@ -393,6 +410,22 @@ export class Carousel extends Container {
             carousel.autoplay?.start();
         });
 
+        carousel.on('navigationNext',  () => {
+            raiseCarouselEvent(this, Enums.CarouselEventType.NextNavigationInteractionType);
+        });
+
+        carousel.on('navigationPrev',  () => {
+            raiseCarouselEvent(this, Enums.CarouselEventType.PreviousNavigationInteractionType);
+        });
+
+        carousel.on('slideChangeTransitionEnd',  () => {
+            raiseCarouselEvent(this, Enums.CarouselEventType.PaginationInteractionType);
+        });
+
+        carousel.on('autoplay',  () => {
+            raiseCarouselEvent(this, Enums.CarouselEventType.AutoplayType);
+        });
+
         this._carousel = carousel;
     }
 
@@ -417,6 +450,32 @@ export class Carousel extends Container {
             }
         );
     }
+}
+
+export class CarouselEvent {
+    type : Enums.CarouselEventType;
+    carouselId : string | undefined;
+    activeCarouselPageId : string | undefined;
+    activeCarouselPageIndex : number | undefined;
+    constructor(carousel : Carousel) {
+        this.carouselId = carousel.id;
+        this.activeCarouselPageIndex = carousel.currentPageIndex;
+        this.activeCarouselPageId = (this.activeCarouselPageIndex != undefined) ? carousel.getItemAt(this.activeCarouselPageIndex).id : undefined; 
+        this.type = carousel.currentEventType;
+    }
+}
+
+function raiseCarouselEvent(carousel: Carousel, eventType : Enums.CarouselEventType) {
+    const card = carousel.getRootElement() as AdaptiveCard;
+    const onCarouselEventHandler =
+        card && card.onCarouselEvent
+            ? card.onCarouselEvent
+            : AdaptiveCard.onCarouselEvent;
+
+    if (onCarouselEventHandler && eventType == Enums.CarouselEventType.PaginationInteractionType) {
+        onCarouselEventHandler(new CarouselEvent(carousel));
+    }
+    carousel.currentEventType = eventType;
 }
 
 GlobalRegistry.defaultElements.register(

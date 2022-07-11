@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
+import { Carousel, CarouselEvent } from "./carousel";
 import {
     PaddingDefinition,
     GlobalSettings,
@@ -11,7 +12,7 @@ import {
     StringWithSubstitutions,
     ContentTypes,
     IInput,
-    IResourceInformation
+    IResourceInformation,
 } from "./shared";
 import * as Utils from "./utils";
 import {
@@ -8143,6 +8144,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
+    static onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
     static onDisplayOverflowActionMenu?: (
         actions: readonly Action[],
@@ -8288,6 +8290,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
     onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
