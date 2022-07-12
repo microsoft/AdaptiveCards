@@ -389,7 +389,10 @@ export class CardDesignerSurface {
                 renderedCard.style.overflow = "hidden";
             }
         }
-        this._cardHost.appendChild(renderedCard);
+
+        if (this._cardHost.innerHTML === "") {
+            this._cardHost.appendChild(renderedCard);
+        }
     }
 
     private addPeer(peer: DesignerPeers.DesignerPeer, insertAfterNeighbor: boolean = false) {
@@ -835,6 +838,8 @@ export class CardDesignerSurface {
             }
             finally {
                 this.endUpdate(true);
+
+                this._needsLayoutUpdate = true;
             }
         }
     }

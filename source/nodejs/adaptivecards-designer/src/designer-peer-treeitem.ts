@@ -1,8 +1,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Carousel } from "adaptivecards";
 import { BaseTreeItem } from "./base-tree-item";
-import { CarouselPagePeer, CarouselPeer, DesignerPeer } from "./designer-peers";
+import { DesignerPeer, CardElementPeer } from "./designer-peers";
 
 export class DesignerPeerTreeItem extends BaseTreeItem {
     private computeLevel() {
@@ -66,18 +65,7 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
         let currentPeer = this.owner;
 
         while (currentPeer) {
-            if (currentPeer instanceof CarouselPagePeer) {
-
-                const carouselPeer = currentPeer.parent as CarouselPeer;
-                if (carouselPeer) {
-
-                    const carouselElement = (carouselPeer.cardElement as Carousel);
-                    if (carouselElement && carouselElement.carousel) {
-                        const index = carouselPeer.children.indexOf(currentPeer) + (carouselElement.carousel.loopedSlides || 0);
-                        carouselElement.carousel.slideTo(index);
-                    }
-                }
-                
+            if (currentPeer instanceof CardElementPeer && currentPeer.bringCardElementIntoView()) {
                 break;
             }
             currentPeer = currentPeer.parent;

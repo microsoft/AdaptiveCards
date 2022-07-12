@@ -2036,6 +2036,10 @@ export class CardElementPeer extends DesignerPeer {
         }
         return true;
     }
+
+    bringCardElementIntoView(): boolean {
+        return false;
+    }
 }
 
 export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardElement> extends CardElementPeer {
@@ -3386,6 +3390,7 @@ export class CarouselPeer extends ContainerPeer {
         (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, loopIndex: number) => {
             const carouselElement = this.cardElement as Adaptive.Carousel;
 
+            // TODO: Refactor to use realIndex
             if (activeIndex === 0) {
                 // Index 0 is a duplicate slide, and we should slide to the end
                 carouselElement.carousel?.slideTo(this.getChildCount())
@@ -3413,13 +3418,16 @@ export class CarouselPagePeer extends ContainerPeer {
         const boundingRect = super.getBoundingRect();
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
-        const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
-        const leftOffset = carousel.renderedElement?.offsetLeft + carousel.carouselPageContainer.offsetLeft;
+        if (carousel) {
+            const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
-        boundingRect.right = leftOffset + boundingRect.width;
-        boundingRect.left = leftOffset;
-        boundingRect.bottom = boundingRect.top + containerClientRect.height;
+            const leftOffset = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
+
+            boundingRect.right = leftOffset + boundingRect.width;
+            boundingRect.left = leftOffset;
+            boundingRect.bottom = boundingRect.top + containerClientRect?.height;
+        }
 
         return boundingRect;
     }
@@ -3428,5 +3436,20 @@ export class CarouselPagePeer extends ContainerPeer {
         const parentCarousel = (this.parent as CarouselPeer);
 
         return (parentCarousel.cardElement as Adaptive.Carousel).isCurrentPage(this.cardElement as Adaptive.CarouselPage);
+    }
+
+    bringCardElementIntoView(): boolean {
+        const carouselPeer = this.parent as CarouselPeer;
+
+        if (carouselPeer) {
+
+            const carouselElement = (carouselPeer.cardElement as Adaptive.Carousel);
+            if (carouselElement && carouselElement.carousel) {
+                const index = carouselPeer.children.indexOf(this) + (carouselElement.carousel.loopedSlides || 0);
+                carouselElement.carousel.slideTo(index);
+            }
+        }
+
+        return true;
     }
 }

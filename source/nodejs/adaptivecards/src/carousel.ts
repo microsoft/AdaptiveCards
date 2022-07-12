@@ -204,6 +204,7 @@ export class Carousel extends Container {
 
     isCurrentPage(page: CarouselPage): boolean {
         if (this._carousel) {
+            // TODO: refactor to use currentPageIndex() from Joseph's PR
             let activeIndex = this._carousel.activeIndex;
 
             // the first and last slides are duplicate elements so the carousel runs continuously
@@ -357,7 +358,7 @@ export class Carousel extends Container {
 
         carouselContainer.appendChild(carouselWrapper);
 
-        carouselContainer.tabIndex = 0;
+        carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
 
         containerForAdorners.appendChild(carouselContainer);
 
