@@ -466,12 +466,7 @@ export class CarouselEvent {
 }
 
 function raiseCarouselEvent(carousel: Carousel, eventType : Enums.CarouselInteractionEvent) {
-    const card = carousel.getRootElement() as AdaptiveCard;
-    const onCarouselEventHandler =
-        card && card.onCarouselEvent
-            ? card.onCarouselEvent
-            : AdaptiveCard.onCarouselEvent;
-
+    const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
     if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
         onCarouselEventHandler(new CarouselEvent(carousel));
     }
