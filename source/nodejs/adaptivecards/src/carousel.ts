@@ -117,17 +117,17 @@ export class Carousel extends Container {
 
     //#endregion
 
-    get currentEventType(): Enums.CarouselEventType {
+    get currentEventType(): Enums.CarouselInteractionEvent {
         return this._currentEventType;
     }
 
-    set currentEventType(eventType: Enums.CarouselEventType) {
+    set currentEventType(eventType: Enums.CarouselInteractionEvent) {
         this._currentEventType = eventType;
     }
 
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
-    private _currentEventType: Enums.CarouselEventType;
+    private _currentEventType: Enums.CarouselInteractionEvent;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -200,7 +200,7 @@ export class Carousel extends Container {
     }
 
     get currentPageIndex(): number | undefined {
-        if (this._carousel?.slides?.length) {
+        if (this._carousel) {
             return this._carousel.realIndex;
         }
         return undefined;
@@ -411,19 +411,19 @@ export class Carousel extends Container {
         });
 
         carousel.on('navigationNext',  () => {
-            raiseCarouselEvent(this, Enums.CarouselEventType.NextNavigationInteractionType);
+            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.NavigationNext);
         });
 
         carousel.on('navigationPrev',  () => {
-            raiseCarouselEvent(this, Enums.CarouselEventType.PreviousNavigationInteractionType);
+            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.NavigationPrevious);
         });
 
         carousel.on('slideChangeTransitionEnd',  () => {
-            raiseCarouselEvent(this, Enums.CarouselEventType.PaginationInteractionType);
+            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.Pagination);
         });
 
         carousel.on('autoplay',  () => {
-            raiseCarouselEvent(this, Enums.CarouselEventType.AutoplayType);
+            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.Autoplay);
         });
 
         this._carousel = carousel;
@@ -453,7 +453,7 @@ export class Carousel extends Container {
 }
 
 export class CarouselEvent {
-    type : Enums.CarouselEventType;
+    type : Enums.CarouselInteractionEvent;
     carouselId : string | undefined;
     activeCarouselPageId : string | undefined;
     activeCarouselPageIndex : number | undefined;
@@ -465,14 +465,14 @@ export class CarouselEvent {
     }
 }
 
-function raiseCarouselEvent(carousel: Carousel, eventType : Enums.CarouselEventType) {
+function raiseCarouselEvent(carousel: Carousel, eventType : Enums.CarouselInteractionEvent) {
     const card = carousel.getRootElement() as AdaptiveCard;
     const onCarouselEventHandler =
         card && card.onCarouselEvent
             ? card.onCarouselEvent
             : AdaptiveCard.onCarouselEvent;
 
-    if (onCarouselEventHandler && eventType == Enums.CarouselEventType.PaginationInteractionType) {
+    if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
         onCarouselEventHandler(new CarouselEvent(carousel));
     }
     carousel.currentEventType = eventType;
