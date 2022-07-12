@@ -123,8 +123,7 @@ export class Carousel extends Container {
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
-
-    currentIndex: number = 0;
+    private _currentIndex: number = 0;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -159,13 +158,8 @@ export class Carousel extends Container {
     }
 
     addPage(page: CarouselPage) {
-        if (!page.parent) {
-            this._pages.push(page);
-
-            page.setParent(this);
-        } else {
-            throw new Error(Strings.errors.pageAlreadyBelongsToAnotherCarousel());
-        }
+        this._pages.push(page);
+        page.setParent(this);
     }
 
     removeItem(item: CardElement): boolean {
@@ -315,7 +309,6 @@ export class Carousel extends Container {
             "swiper-button-prev",
             "ac-carousel-left"
         );
-        prevElementDiv.style.zIndex = "20";
         containerForAdorners.appendChild(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
@@ -323,7 +316,6 @@ export class Carousel extends Container {
             "swiper-button-next",
             "ac-carousel-right"
         );
-        nextElementDiv.style.zIndex = "20";
         containerForAdorners.appendChild(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
@@ -331,8 +323,14 @@ export class Carousel extends Container {
             "swiper-pagination",
             "ac-carousel-pagination"
         );
-        pagination.style.zIndex = "20";
         containerForAdorners.appendChild(pagination);
+
+        if (this.isDesignMode()) {
+            // If we are in design mode, we need to ensure these elements are in front of the peers
+            prevElementDiv.style.zIndex = "20";
+            nextElementDiv.style.zIndex = "20";
+            pagination.style.zIndex = "20";
+        }
 
         const requestedNumberOfPages: number = Math.min(
             this._pages.length,
@@ -433,7 +431,7 @@ export class Carousel extends Container {
                     } 
                 }
             },
-            initialSlide: this.currentIndex
+            initialSlide: this._currentIndex
         };
 
         if (this.timer && !this.isDesignMode()) {
@@ -485,6 +483,14 @@ export class Carousel extends Container {
 
     get carousel(): Swiper | undefined {
         return this._carousel;
+    }
+
+    get currentIndex(): number {
+        return this._currentIndex;
+    }
+
+    set currentIndex(currentIndex: number) {
+        this._currentIndex = currentIndex;
     }
 
     onPageChanged: (activeIndex: number, loopIndex: number) => void;

@@ -402,11 +402,7 @@ export class CardDesignerSurface {
             peer.render();
 
             if (peer instanceof DesignerPeers.CardElementPeer) {
-                if (!peer.isVisible()) {   
-                    peer.renderedElement.style.display = "none";
-                } else {
-                    peer.renderedElement.style.display = "initial";
-                }
+                peer.renderedElement.style.display =  peer.isVisible() ? "initial" : "none";
             }
 
             if (peer instanceof DesignerPeers.CarouselPeer) {
@@ -644,6 +640,8 @@ export class CardDesignerSurface {
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
             }
 
+            // For the carousel, the child elements need their location updated after rendering/updating the card
+            // If _needsLayoutUpdate flag is set, we will update the layout when the pointer moves
             if (this._needsLayoutUpdate) {
                 this._needsLayoutUpdate = false;
                 this.updateLayout();
@@ -839,6 +837,7 @@ export class CardDesignerSurface {
             finally {
                 this.endUpdate(true);
 
+                // Need to update the layout for the carousel now that an element has been removed
                 this._needsLayoutUpdate = true;
             }
         }
@@ -884,6 +883,7 @@ export class CardDesignerSurface {
 
             this._designerSurface.classList.remove("dragging");
 
+            // Need to update the layout for the carousel now that a new element is added
             this._needsLayoutUpdate = true;
         }
     }
@@ -972,7 +972,7 @@ export class CardDesignerSurface {
         if (carouselPage instanceof DesignerPeers.CardElementPeer) {
 
             // Can't modify the list as we loop through it
-            let children = [];
+            const children = [];
 
             for (let child of this._rootPeer.children) {
                 children.push(child);

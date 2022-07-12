@@ -3403,6 +3403,7 @@ export class CarouselPeer extends ContainerPeer {
                 this.designerSurface.render();
             }
 
+            // Since the carousel changed, we will need to update the designer surface layout
             this.designerSurface.needsLayoutUpdate = true;
         };
     }
