@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { Carousel, CarouselEvent } from "./carousel";
+import { CarouselEvent } from "./carousel";
 import {
     PaddingDefinition,
     GlobalSettings,

@@ -411,19 +411,19 @@ export class Carousel extends Container {
         });
 
         carousel.on('navigationNext',  () => {
-            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.NavigationNext);
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationNext);
         });
 
         carousel.on('navigationPrev',  () => {
-            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.NavigationPrevious);
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationPrevious);
         });
 
         carousel.on('slideChangeTransitionEnd',  () => {
-            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.Pagination);
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination);
         });
 
         carousel.on('autoplay',  () => {
-            raiseCarouselEvent(this, Enums.CarouselInteractionEvent.Autoplay);
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
         this._carousel = carousel;
@@ -450,6 +450,23 @@ export class Carousel extends Container {
             }
         );
     }
+
+    private createCarouselEvent (type : Enums.CarouselInteractionEvent): CarouselEvent
+    {
+        let currentPageId : string | undefined;
+        if (this.currentPageIndex != undefined) {
+            currentPageId = this.getItemAt(this.currentPageIndex).id;
+        }
+        return new CarouselEvent(type, this.id, currentPageId, this.currentPageIndex);   
+    }
+
+    private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
+        const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
+        if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
+            onCarouselEventHandler(this.createCarouselEvent(this.currentEventType));
+        }
+        this.currentEventType = eventType;
+    }
 }
 
 export class CarouselEvent {
@@ -457,20 +474,17 @@ export class CarouselEvent {
     carouselId : string | undefined;
     activeCarouselPageId : string | undefined;
     activeCarouselPageIndex : number | undefined;
-    constructor(carousel : Carousel) {
-        this.carouselId = carousel.id;
-        this.activeCarouselPageIndex = carousel.currentPageIndex;
-        this.activeCarouselPageId = (this.activeCarouselPageIndex != undefined) ? carousel.getItemAt(this.activeCarouselPageIndex).id : undefined; 
-        this.type = carousel.currentEventType;
-    }
-}
 
-function raiseCarouselEvent(carousel: Carousel, eventType : Enums.CarouselInteractionEvent) {
-    const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
-    if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
-        onCarouselEventHandler(new CarouselEvent(carousel));
+    constructor(type : Enums.CarouselInteractionEvent,
+        carouselId : string | undefined,
+        activeCarouselPageId : string | undefined,
+        activeCarouselPageIndex : number | undefined)
+    {
+        this.carouselId = carouselId;
+        this.activeCarouselPageIndex = activeCarouselPageIndex;
+        this.activeCarouselPageId = activeCarouselPageId;
+        this.type = type;
     }
-    carousel.currentEventType = eventType;
 }
 
 GlobalRegistry.defaultElements.register(
