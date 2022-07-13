@@ -220,4 +220,8 @@ using namespace AdaptiveCards;
     return constraint;
 }
 
+- (NSString *)accessibilityLabel
+{
+    return self.subviews.count ? self.subviews[0].accessibilityLabel : super.accessibilityLabel;
+}
 @end

@@ -2167,7 +2167,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             "Background image",
@@ -2255,7 +2256,8 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,
@@ -2365,6 +2367,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
             new EnumPropertyEditor(Adaptive.Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
         ]
     );
+    static readonly rtlProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "rtl", "Present right to left");
 
     protected isContainer(): boolean {
         return true;
@@ -2376,7 +2379,8 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
-            ContainerPeer.verticalContentAlignmentProperty);
+            ContainerPeer.verticalContentAlignmentProperty,
+            ContainerPeer.rtlProperty);
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,

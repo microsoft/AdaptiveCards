@@ -3416,7 +3416,8 @@ export class TextInput extends Input {
 
     private setupInput(input: HTMLInputElement | HTMLTextAreaElement) {
         input.style.flex = "1 1 auto";
-        input.tabIndex = 0;
+
+        input.tabIndex = this.isDesignMode() ? -1 : 0;
 
         if (this.placeholder) {
             input.placeholder = this.placeholder;
@@ -3680,7 +3681,7 @@ export class ToggleInput extends Input {
             this._checkboxInputElement.setAttribute("aria-required", "true");
         }
 
-        this._checkboxInputElement.tabIndex = 0;
+        this._checkboxInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
         if (this.defaultValue === this.valueOn) {
             this._checkboxInputElement.checked = true;
@@ -3877,6 +3878,8 @@ export class ChoiceSetInput extends Input {
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
 
+        element.tabIndex = this.isDesignMode() ? -1 : 0;
+
         this._toggleInputs = [];
         this._labels = [];
 
@@ -3893,6 +3896,8 @@ export class ChoiceSetInput extends Input {
             if (this.isRequired) {
                 input.setAttribute("aria-required", "true");
             }
+
+            input.tabIndex = this.isDesignMode() ? -1 : 0;
 
             if (choice.value) {
                 input.value = choice.value;
@@ -4037,6 +4042,8 @@ export class ChoiceSetInput extends Input {
                     this._textInput.setAttribute("aria-label", this.placeholder);
                 }
 
+                this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
+
                 const dataList = document.createElement("datalist");
                 dataList.id = Utils.generateUniqueId();
 
@@ -4048,6 +4055,8 @@ export class ChoiceSetInput extends Input {
                         option.value = choice.title;
                         option.setAttribute("aria-label", choice.title);
                     }
+
+                    option.tabIndex = this.isDesignMode() ? -1 : 0;
 
                     dataList.appendChild(option);
                 }
@@ -4066,6 +4075,8 @@ export class ChoiceSetInput extends Input {
                     "ac-choiceSetInput-compact"
                 );
                 this._selectElement.style.width = "100%";
+
+                this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
                 const placeholderOption = document.createElement("option");
                 placeholderOption.selected = true;
@@ -4087,6 +4098,8 @@ export class ChoiceSetInput extends Input {
                         option.text = choice.title;
                         option.setAttribute("aria-label", choice.title);
                     }
+
+                    option.tabIndex = this.isDesignMode() ? -1 : 0;
 
                     if (choice.value === this.defaultValue) {
                         option.selected = true;
@@ -4251,8 +4264,9 @@ export class NumberInput extends Input {
             "ac-numberInput"
         );
         this._numberInputElement.style.width = "100%";
-        this._numberInputElement.tabIndex = 0;
 
+        this._numberInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
+        
         if (this.defaultValue !== undefined) {
             this._numberInputElement.valueAsNumber = this.defaultValue;
         }
@@ -4340,6 +4354,8 @@ export class DateInput extends Input {
             this._dateInputElement.placeholder = this.placeholder;
             this._dateInputElement.setAttribute("aria-label", this.placeholder);
         }
+
+        this._dateInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
         this._dateInputElement.className = this.hostConfig.makeCssClassName(
             "ac-input",
@@ -4480,6 +4496,8 @@ export class TimeInput extends Input {
             this._timeInputElement.placeholder = this.placeholder;
             this._timeInputElement.setAttribute("aria-label", this.placeholder);
         }
+
+        this._timeInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
         if (this.defaultValue) {
             this._timeInputElement.value = this.defaultValue;
@@ -4644,6 +4662,12 @@ export abstract class Action extends CardObject {
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
     private _isFocusable: boolean = true;
 
+    isDesignMode(): boolean {
+        const rootElement = this.getRootObject();
+
+        return (rootElement instanceof CardElement) && rootElement.isDesignMode();
+    }
+
     protected updateCssClasses() {
         if (this.parent && this.renderedElement) {
             const hostConfig = this.parent.hostConfig;
@@ -4662,7 +4686,7 @@ export abstract class Action extends CardObject {
                 }
             }
 
-            this.renderedElement.tabIndex = this.isFocusable ? 0 : -1;
+            this.renderedElement.tabIndex = !this.isDesignMode() && this.isFocusable ? 0 : -1;
 
             switch (this._state) {
                 case ActionButtonState.Normal:
@@ -4750,7 +4774,7 @@ export abstract class Action extends CardObject {
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = this.isEffectivelyEnabled() ? 0 : -1;
+        element.tabIndex = this.isEffectivelyEnabled() && !this.isDesignMode() ? 0 : -1;
 
         element.setAttribute("role", this.getAriaRole());
 
@@ -5880,7 +5904,7 @@ class ActionCollection {
         }
     }
 
-    render(orientation: Enums.Orientation, _isDesignMode: boolean): HTMLElement | undefined {
+    render(orientation: Enums.Orientation): HTMLElement | undefined {
         // Cache hostConfig for better perf
         const hostConfig = this._owner.hostConfig;
 
@@ -6023,9 +6047,6 @@ class ActionCollection {
                 action.render();
 
                 if (action.renderedElement) {
-                    if (_isDesignMode) {
-                        action.renderedElement.tabIndex = -1;
-                    }
                     if (
                         hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal &&
                         hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch
@@ -6189,8 +6210,7 @@ export class ActionSet extends CardElement {
         return this._actionCollection.render(
             this.orientation !== undefined
                 ? this.orientation
-                : this.hostConfig.actions.actionsOrientation,
-            this.isDesignMode()
+                : this.hostConfig.actions.actionsOrientation
         );
     }
 
@@ -7728,8 +7748,7 @@ export abstract class ContainerWithActions extends Container {
 
         if (element) {
             const renderedActions = this._actionCollection.render(
-                this.hostConfig.actions.actionsOrientation,
-                this.isDesignMode()
+                this.hostConfig.actions.actionsOrientation
             );
 
             if (renderedActions) {
