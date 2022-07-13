@@ -117,17 +117,17 @@ export class Carousel extends Container {
 
     //#endregion
 
-    get currentEventType(): Enums.CarouselInteractionEvent {
-        return this._currentEventType;
+    get previousEventType(): Enums.CarouselInteractionEvent {
+        return this._previousEventType;
     }
 
-    set currentEventType(eventType: Enums.CarouselInteractionEvent) {
-        this._currentEventType = eventType;
+    set previousEventType(eventType: Enums.CarouselInteractionEvent) {
+        this._previousEventType = eventType;
     }
 
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
-    private _currentEventType: Enums.CarouselInteractionEvent;
+    private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -200,10 +200,7 @@ export class Carousel extends Container {
     }
 
     get currentPageIndex(): number | undefined {
-        if (this._carousel) {
-            return this._carousel.realIndex;
-        }
-        return undefined;
+        return this._carousel?.realIndex;
     }
 
     protected internalParse(source: any, context: SerializationContext) {
@@ -462,29 +459,20 @@ export class Carousel extends Container {
 
     private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
         const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
+        // pagination event is triggered on slide transition end event 
         if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
-            onCarouselEventHandler(this.createCarouselEvent(this.currentEventType));
+	    // returns the event type that causes slide transition
+            onCarouselEventHandler(this.createCarouselEvent(this.previousEventType));
         }
-        this.currentEventType = eventType;
+        this.previousEventType = eventType;
     }
 }
 
 export class CarouselEvent {
-    type : Enums.CarouselInteractionEvent;
-    carouselId : string | undefined;
-    activeCarouselPageId : string | undefined;
-    activeCarouselPageIndex : number | undefined;
-
-    constructor(type : Enums.CarouselInteractionEvent,
-        carouselId : string | undefined,
-        activeCarouselPageId : string | undefined,
-        activeCarouselPageIndex : number | undefined)
-    {
-        this.carouselId = carouselId;
-        this.activeCarouselPageIndex = activeCarouselPageIndex;
-        this.activeCarouselPageId = activeCarouselPageId;
-        this.type = type;
-    }
+    constructor(public type : Enums.CarouselInteractionEvent,
+        public carouselId : string | undefined,
+        public activeCarouselPageId : string | undefined,
+        public activeCarouselPageIndex : number | undefined) {}
 }
 
 GlobalRegistry.defaultElements.register(
