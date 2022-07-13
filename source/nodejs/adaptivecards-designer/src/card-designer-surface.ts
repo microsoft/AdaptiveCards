@@ -745,6 +745,8 @@ export class CardDesignerSurface {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
+        this._needsLayoutUpdate = true;
+
         // If we want to have the same peer selected after rendering the card,
         // store the current selected peer's card element before the peers recreated
         if (this._shouldPersistSelectedElement && this._selectedPeer && this._selectedPeer instanceof DesignerPeers.CardElementPeer) {
@@ -991,6 +993,9 @@ export class CardDesignerSurface {
             // Reassigning all elements to the carousel page ensures carousel's singleton behavior
             this._rootPeer.children.filter((child) => !(child instanceof DesignerPeers.CarouselPeer)).forEach((e) => {carouselPage.tryAdd(e);});
         }
+
+        // Now that the carousel has children, update the layout
+        this._needsLayoutUpdate = true;
     }
 
     get rootPeer(): DesignerPeers.DesignerPeer {
