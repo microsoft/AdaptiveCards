@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { AdaptiveCard, Carousel} from "adaptivecards";
+import { AdaptiveCard, CardElement, Carousel} from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint, Utils } from "./miscellaneous";
@@ -203,6 +203,9 @@ export class CardDesignerSurface {
     private _isPreviewMode: boolean = false;
     private _dragVisual?: HTMLElement;
     private _needsLayoutUpdate: boolean = true;
+    private _shouldPersistSelectedElement = false;
+    private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
+    private _persistentSelectedCardElement: CardElement;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -403,6 +406,12 @@ export class CardDesignerSurface {
 
             if (peer instanceof DesignerPeers.CardElementPeer) {
                 peer.renderedElement.style.display =  peer.isVisible() ? "initial" : "none";
+
+                // If we have a card element that we want to be selected after rendering, save the corresponding peer
+                if (this._persistentSelectedCardElement && this._persistentSelectedCardElement == peer.cardElement) {
+                    this._persistentSelectedPeer = peer;
+                    this._persistentSelectedCardElement = null;
+                }
             }
 
             if (peer instanceof DesignerPeers.CarouselPeer) {
@@ -639,13 +648,6 @@ export class CardDesignerSurface {
 
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
             }
-
-            // For the carousel, the child elements need their location updated after rendering/updating the card
-            // If _needsLayoutUpdate flag is set, we will update the layout when the pointer moves
-            if (this._needsLayoutUpdate) {
-                this._needsLayoutUpdate = false;
-                this.updateLayout();
-            }
         }
 
         this._designerSurface.onpointerup = (e: PointerEvent) => {
@@ -743,6 +745,13 @@ export class CardDesignerSurface {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
+        // If we want to have the same peer selected after rendering the card,
+        // store the current selected peer's card element before the peers recreated
+        if (this._shouldPersistSelectedElement && this._selectedPeer && this._selectedPeer instanceof DesignerPeers.CardElementPeer) {
+            this._persistentSelectedCardElement = this._selectedPeer.cardElement;
+            this._shouldPersistSelectedElement = false;
+        }
+
         this.setSelectedPeer(null);
 
         this.renderCard();
@@ -781,6 +790,13 @@ export class CardDesignerSurface {
         this._designerSurface.appendChild(this._peerCommandsHostElement);
 
         this.updateLayout();
+
+        // If we have a persistent selected peer, select the peer
+        // We should only reach this point is _shouldPersistSelectedElement = true prior to rendering the card
+        if (this._persistentSelectedPeer) {
+            this.setSelectedPeer(this._persistentSelectedPeer);
+            this._persistentSelectedPeer = null;
+        }
     }
 
     getCardPayloadAsObject(): object {
@@ -970,19 +986,10 @@ export class CardDesignerSurface {
         const carouselPage = carouselPeer.getChildAt(0);
 
         if (carouselPage instanceof DesignerPeers.CardElementPeer) {
-
-            // Can't modify the list as we loop through it
-            const children = [];
-
-            for (let child of this._rootPeer.children) {
-                children.push(child);
-            }
-
-            for (let child of children) {
-                if (!(child instanceof DesignerPeers.CarouselPeer)) {
-                    carouselPage.tryAdd(child);
-                }
-            }
+            // Filter the root peer's children for all non-carousel peers
+            // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
+            // Reassigning all elements to the carousel page ensures carousel's singleton behavior
+            this._rootPeer.children.filter((child) => !(child instanceof DesignerPeers.CarouselPeer)).forEach((e) => {carouselPage.tryAdd(e);});
         }
     }
 
@@ -1026,7 +1033,15 @@ export class CardDesignerSurface {
         }
     }
 
+    get needsLayoutUpdate(): boolean {
+        return this._needsLayoutUpdate;
+    }
+
     set needsLayoutUpdate(needsUpdate: boolean) {
         this._needsLayoutUpdate = needsUpdate;
+    }
+
+    set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
+        this._shouldPersistSelectedElement = shouldPersistSelectedElement;
     }
 }

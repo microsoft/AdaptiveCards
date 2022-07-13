@@ -3420,13 +3420,11 @@ export class CarouselPagePeer extends ContainerPeer {
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
 
-        if (carousel) {
+        if (carousel && carousel.carouselPageContainer) {
             const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
-            const leftOffset = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
-
-            boundingRect.right = leftOffset + boundingRect.width;
-            boundingRect.left = leftOffset;
+            boundingRect.left = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
+            boundingRect.right = boundingRect.left + containerClientRect?.width;
             boundingRect.bottom = boundingRect.top + containerClientRect?.height;
         }
 
@@ -3443,9 +3441,10 @@ export class CarouselPagePeer extends ContainerPeer {
         const carouselPeer = this.parent as CarouselPeer;
 
         if (carouselPeer) {
-
             const carouselElement = (carouselPeer.cardElement as Adaptive.Carousel);
             if (carouselElement && carouselElement.carousel) {
+                this.designerSurface.shouldPersistSelectedElement = true;
+
                 const index = carouselPeer.children.indexOf(this) + (carouselElement.carousel.loopedSlides || 0);
                 carouselElement.carousel.slideTo(index);
             }

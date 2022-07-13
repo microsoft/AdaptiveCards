@@ -1027,6 +1027,13 @@ export class CardDesigner extends Designer.DesignContext {
                 this._draggedElement.style.left = adjustedPosition.x - 10 + "px";
                 this._draggedElement.style.top = adjustedPosition.y - 10 + "px";
             }
+
+            // For the carousel, the child elements need their location updated after rendering/updating the card
+            // If _needsLayoutUpdate flag is set, we will update the layout when the pointer moves
+            if (this.designerSurface.needsLayoutUpdate) {
+                this.designerSurface.needsLayoutUpdate = false;
+                this.designerSurface.updateLayout();
+            }
         }
     }
 
@@ -1056,7 +1063,7 @@ export class CardDesigner extends Designer.DesignContext {
             monaco = window["monaco"];
         }
 
-		// TODO: the uri here needs to be updated to allow for an object or array for the carousel
+        // TODO: the uri here needs to be updated to allow for an object or array for the carousel
         let monacoConfiguration = {
             schemas: [
                 {
