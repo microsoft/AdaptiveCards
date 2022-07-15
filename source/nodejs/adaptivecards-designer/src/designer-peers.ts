@@ -1415,6 +1415,10 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this.removeElementsFromDesignerSurface();
 
+            if (this instanceof CarouselPeer) {
+                this.designerSurface.containsCarousel = false;
+            }
+
             this.peerRemoved(this);
         }
 
@@ -1917,6 +1921,16 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     canDrop(peer: DesignerPeer) {
+        let parent = this.parent;
+
+        while (parent) {
+            if (parent instanceof CarouselPagePeer) { 
+                return parent.canDrop(peer);
+            }
+
+            parent = parent.parent;
+        } 
+
         return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer;
     }
 
@@ -2216,7 +2230,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                 PropertySheetCategory.SelectionAction);
         }
     }
-}
+
+    canDrop(peer: DesignerPeer) {
+        return !this.designerSurface.containsCarousel;
+    }}
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);

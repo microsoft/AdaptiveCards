@@ -218,6 +218,13 @@ export class CardDesigner extends Designer.DesignContext {
                         const peer = paletteItem.createPeer(this, this.designerSurface);
 
                         if (this.designerSurface.rootPeer.tryAdd(peer)) {
+
+                            if (peer.cardElement.getJsonTypeName() === "Carousel") {
+                                this.designerSurface.reassignCardElementToCarousel(peer as DesignerPeers.CarouselPeer);
+
+                                this.designerSurface.containsCarousel = true;
+                            }
+
                             peer.isSelected = true;
                         };
                     }

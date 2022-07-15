@@ -206,6 +206,7 @@ export class CardDesignerSurface {
     private _shouldPersistSelectedElement = false;
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
+    private _containsCarousel: boolean = false;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -415,6 +416,7 @@ export class CardDesignerSurface {
             }
 
             if (peer instanceof DesignerPeers.CarouselPeer) {
+                this._containsCarousel = true;
                 peer.attachOnPageChange();
             }
 
@@ -747,6 +749,8 @@ export class CardDesignerSurface {
 
         this._needsLayoutUpdate = true;
 
+        this._containsCarousel = false;
+
         // If we want to have the same peer selected after rendering the card,
         // store the current selected peer's card element before the peers recreated
         if (this._shouldPersistSelectedElement && this._selectedPeer && this._selectedPeer instanceof DesignerPeers.CardElementPeer) {
@@ -893,6 +897,10 @@ export class CardDesignerSurface {
             this._dragVisual?.parentNode.removeChild(this._dragVisual);
             this._dragVisual = undefined;
 
+            if (this.draggedPeer instanceof DesignerPeers.CarouselPeer) {
+                this._containsCarousel = true;
+            }
+
             this.setDraggedPeer(null);
 
             if (this.onEndDrag) {
@@ -988,10 +996,17 @@ export class CardDesignerSurface {
         const carouselPage = carouselPeer.getChildAt(0);
 
         if (carouselPage instanceof DesignerPeers.CardElementPeer) {
-            // Filter the root peer's children for all non-carousel peers
+            // Filter the root peer's children for all non-carousel peers that are not forbidden child elements
             // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
             // Reassigning all elements to the carousel page ensures carousel's singleton behavior
-            this._rootPeer.children.filter((child) => !(child instanceof DesignerPeers.CarouselPeer)).forEach((e) => {carouselPage.tryAdd(e);});
+            const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
+            this._rootPeer.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer) && 
+                !forbiddenChildElements.includes(child.getCardObject().getJsonTypeName())))
+                .forEach((e) => {carouselPage.tryAdd(e);});
+
+            // The remaining children on the rootPeer are forbidden elements, so we should remove them
+            this._rootPeer.children.filter((child) => !(child instanceof DesignerPeers.CarouselPeer)).forEach((e) => {e.remove(false, true);});
         }
 
         // Now that the carousel has children, update the layout
@@ -1048,5 +1063,13 @@ export class CardDesignerSurface {
 
     set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
         this._shouldPersistSelectedElement = shouldPersistSelectedElement;
+    }
+
+    get containsCarousel(): boolean {
+        return this._containsCarousel;
+    }
+
+    set containsCarousel(containsCarousel: boolean) {
+        this._containsCarousel = containsCarousel;
     }
 }
