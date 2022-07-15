@@ -426,6 +426,8 @@ export class StringArrayPropertyEditor extends BaseStringPropertyEditor {
 }
 
 export class NumberPropertyEditor extends SingleInputPropertyEditor {
+    protected _input: Adaptive.NumberInput;
+
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         try {
             context.target[this.propertyName] = parseFloat(value);
@@ -437,10 +439,12 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.NumberInput();
-        input.defaultValue = this.getPropertyValue(context);
+
+        input.defaultValue = this.getPropertyValue(context) ? this.getPropertyValue(context) : this.defaultValue;
         input.placeholder = "(not set)";
 
-        return input;
+        this._input = input;
+        return this._input;
     }
 
     constructor(
@@ -679,6 +683,31 @@ export class SizeAndUnitPropertyEditor extends NumberPropertyEditor {
         readonly defaultValue: number | undefined = undefined,
         readonly causesPropertySheetRefresh: boolean = false) {
         super(targetVersion, propertyName, label, defaultValue, causesPropertySheetRefresh);
+    }
+}
+
+export class CarouselTimerPropertyEditor extends NumberPropertyEditor {
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        try {
+            const parsedValue = parseFloat(value);
+            const minAutoplayDelay = context.designContext.hostContainer.getHostConfig().carousel.minAutoplayDelay;
+
+            if (parsedValue < minAutoplayDelay) {
+
+                // TODO: This causes a strange bug - basically cannot clear NumberInput and type a new number
+                // Need to update where we call setPropertyValue/at least display a visual warning
+                this._input.value = minAutoplayDelay;
+
+                console.warn(Adaptive.Strings.errors.tooLittleTimeDelay);
+                context.target[this.propertyName] = minAutoplayDelay;                
+            } else {
+                context.target[this.propertyName] = parsedValue;
+            }
+        }
+        catch {
+            context.target[this.propertyName] = this.defaultValue;
+        }
     }
 }
 
@@ -1892,7 +1921,8 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
-        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+        // Even though Carousel is a Container, we do not want to be able to drop peers
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer && !(this.cardElement instanceof Adaptive.Carousel)) {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
 
@@ -3342,7 +3372,8 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 
 export class CarouselPeer extends ContainerPeer {
 
-    static readonly timerProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
+    // Question: What do we want the default value to be here?
+    static readonly timerProperty = new CarouselTimerPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3400,6 +3431,7 @@ export class CarouselPeer extends ContainerPeer {
         (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, realIndex: number) => {
             const carouselElement = this.cardElement as Adaptive.Carousel;
 
+            // TODO: I think this is stopping the peers from updating every time/when we click the arrows and there's only one page
             if (carouselElement.currentIndex !== realIndex) {
                 if (activeIndex === 0) {
                     // Index 0 is a duplicate slide, and we should slide to the end
@@ -3462,5 +3494,9 @@ export class CarouselPagePeer extends ContainerPeer {
         }
 
         return true;
+    }
+
+    canDrop(peer: DesignerPeer) {
+        return !((this.cardElement as Adaptive.CarouselPage).getForbiddenChildElements().includes(peer.getCardObject().getJsonTypeName()));
     }
 }

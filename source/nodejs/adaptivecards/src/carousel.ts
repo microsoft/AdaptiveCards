@@ -63,6 +63,26 @@ export class CarouselPage extends Container {
         return [ShowCardAction, ToggleVisibilityAction];
     }
 
+    getForbiddenChildElements(): string[] {
+        return this.forbiddenChildElements();
+    }
+
+    protected forbiddenChildElements(): string[] {
+        return [
+            ToggleVisibilityAction.JsonTypeName,
+            ShowCardAction.JsonTypeName,
+            "Media",
+            "ActionSet",
+            "Input.Text",
+            "Input.Date",
+            "Input.Time",
+            "Input.Number",
+            "Input.ChoiceSet",
+            "Input.Toggle",
+            ...super.forbiddenChildElements()
+        ];
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -113,9 +133,9 @@ export class Carousel extends Container {
     set timer(value: number | undefined) {
         if (value && value < this.hostConfig.carousel.minAutoplayDelay) {
             console.warn(Strings.errors.tooLittleTimeDelay);
-            this.timer = this.hostConfig.carousel.minAutoplayDelay;
+            this.setValue(Carousel.timerProperty, this.hostConfig.carousel.minAutoplayDelay);
         } else {
-            this.timer = value;
+            this.setValue(Carousel.timerProperty, value);
         }
     }
 
@@ -135,6 +155,7 @@ export class Carousel extends Container {
     private _currentIndex: number = 0;
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
+    // Question: Why do we place this on the Carousel instead of the CarouselPage?
     protected forbiddenChildElements(): string[] {
         return [
             ToggleVisibilityAction.JsonTypeName,

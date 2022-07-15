@@ -4313,6 +4313,12 @@ export class NumberInput extends Input {
     get value(): number | undefined {
         return this._numberInputElement ? this._numberInputElement.valueAsNumber : undefined;
     }
+
+    set value(value: number | undefined) {
+        if (value && this._numberInputElement) {
+            this._numberInputElement.value = value.toString();
+        }
+    }
 }
 
 export class DateInput extends Input {
