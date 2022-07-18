@@ -37,7 +37,7 @@
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:dateInput inputView:dateField accessibilityItem:dateField.inputView viewGroup:viewGroup dataSource:nil];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:dateInput inputView:dateField accessibilityItem:dateField.inputView viewGroup:viewGroup dataSource:nil];
     dateField.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     dateField.accessibilityHint = NSLocalizedString(@"opens the date picker", nil);
 

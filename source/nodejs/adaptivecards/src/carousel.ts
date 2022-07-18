@@ -1,6 +1,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import {
+    AdaptiveCard,
     ActionType,
     CardElement,
     Container,
@@ -116,8 +117,17 @@ export class Carousel extends Container {
 
     //#endregion
 
+    get previousEventType(): Enums.CarouselInteractionEvent {
+        return this._previousEventType;
+    }
+
+    set previousEventType(eventType: Enums.CarouselInteractionEvent) {
+        this._previousEventType = eventType;
+    }
+
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
+    private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
     protected forbiddenChildElements(): string[] {
         return [
@@ -187,6 +197,10 @@ export class Carousel extends Container {
             return activeSlide.id;
         }
         return undefined;
+    }
+
+    get currentPageIndex(): number | undefined {
+        return this._carousel?.realIndex;
     }
 
     protected internalParse(source: any, context: SerializationContext) {
@@ -393,6 +407,22 @@ export class Carousel extends Container {
             carousel.autoplay?.start();
         });
 
+        carousel.on('navigationNext',  () => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationNext);
+        });
+
+        carousel.on('navigationPrev',  () => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationPrevious);
+        });
+
+        carousel.on('slideChangeTransitionEnd',  () => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination);
+        });
+
+        carousel.on('autoplay',  () => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
+        });
+
         this._carousel = carousel;
     }
 
@@ -417,6 +447,32 @@ export class Carousel extends Container {
             }
         );
     }
+
+    private createCarouselEvent (type : Enums.CarouselInteractionEvent): CarouselEvent
+    {
+        let currentPageId : string | undefined;
+        if (this.currentPageIndex != undefined) {
+            currentPageId = this.getItemAt(this.currentPageIndex).id;
+        }
+        return new CarouselEvent(type, this.id, currentPageId, this.currentPageIndex);   
+    }
+
+    private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
+        const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
+        // pagination event is triggered on slide transition end event 
+        if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
+	    // returns the event type that causes slide transition
+            onCarouselEventHandler(this.createCarouselEvent(this.previousEventType));
+        }
+        this.previousEventType = eventType;
+    }
+}
+
+export class CarouselEvent {
+    constructor(public type : Enums.CarouselInteractionEvent,
+        public carouselId : string | undefined,
+        public activeCarouselPageId : string | undefined,
+        public activeCarouselPageIndex : number | undefined) {}
 }
 
 GlobalRegistry.defaultElements.register(
