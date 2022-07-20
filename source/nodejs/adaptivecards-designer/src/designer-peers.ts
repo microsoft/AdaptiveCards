@@ -360,6 +360,7 @@ export class StringPropertyEditor extends BaseStringPropertyEditor {
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
                         clickedElement.setAttribute("aria-expanded", "true");
 
+                        // Question: why does FieldPicker need dataStructure?
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
                             clickedElement.setAttribute("aria-expanded", "false");
@@ -1181,9 +1182,9 @@ export abstract class DesignerPeer extends DraggableElement {
         let element = document.createElement("div");
         element.classList.add("acd-peer");
         element.tabIndex = 0;
-		element.onfocus = (e) => {
-			this.isSelected = true;
-		};
+        element.onfocus = (e) => {
+            this.isSelected = true;
+        };
 
         let toolTip = this.getToolTip();
 

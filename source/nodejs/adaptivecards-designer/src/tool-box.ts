@@ -25,6 +25,7 @@ export class Toolbox {
     private _orientation: ToolboxOrientation;
     private _isRestoring: boolean = false;
     private _collapsedTabContainer: HTMLElement;
+    private _isVisible = true;
 
     private getDimensionSettingName(): string {
         return "Toolbox" + this.id + (this._orientation == ToolboxOrientation.Vertical ? "Height" : "Width");
@@ -44,6 +45,23 @@ export class Toolbox {
         if (this.onToggled) {
             this.onToggled(this);
         }
+    }
+
+    private updateVisibility() {
+        if (this._collapsedTabContainer) {
+            if (!this._isVisible) {
+                this.hideToolbox();
+            } else {
+                this._collapsedTabContainer.appendChild(this._headerRootElement);
+            }
+        }
+    }
+
+    private hideToolbox() {
+        if (this.isExpanded) {
+            this.collapse();
+        }
+        this._collapsedTabContainer.removeChild(this._headerRootElement);
     }
 
     onToggled: (sender: Toolbox) => void;
@@ -153,6 +171,10 @@ export class Toolbox {
         this._renderedElement.appendChild(this._headerRootElement);
         this._renderedElement.appendChild(this._contentHost);
 
+        if (!this._isVisible) {
+            this.hideToolbox();
+        }
+
         this.updateContent();
     }
 
@@ -220,7 +242,7 @@ export class Toolbox {
     }
 
     restoreState() {
-        if (this.renderedElement && !this._isRestoring) {
+        if (this.renderedElement && !this._isRestoring && this.isVisible) {
             this._isRestoring = true;
 
             try {
@@ -237,7 +259,7 @@ export class Toolbox {
 
                 let isExpandedSetting = SettingsManager.tryLoadBooleanSetting("Toolbox" + this.id + "IsExpanded", true);
 
-                if (isExpandedSetting.succeeded) {
+                if (isExpandedSetting.succeeded && this.isVisible) {
                     if (isExpandedSetting.value) {
                         this.expand();
                     }
@@ -289,5 +311,17 @@ export class Toolbox {
             this.renderedElement.classList.add("acd-toolbox-no-stretch");
             this.renderedElement.classList.remove("acd-toolbox-stretch");
         }
+    }
+
+    set isVisible(value: boolean) {
+        if (this._isVisible != value) {
+            this._isVisible = value;
+
+            this.updateVisibility();
+        }
+    }
+
+    get isVisible() {
+        return this._isVisible;
     }
 }

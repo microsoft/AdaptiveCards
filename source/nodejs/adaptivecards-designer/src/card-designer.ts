@@ -27,6 +27,7 @@ import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
+import { BerlinContainer } from "./containers";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -38,7 +39,7 @@ export class CardDesigner extends Designer.DesignContext {
                 result.outputHtml = window["markdownit"]().render(text);
                 result.didProcess = true;
             }
-		}
+        }
     }
 
     static onProcessMarkdown: (text: string, result: Adaptive.IMarkdownProcessingResult) => void = null;
@@ -48,6 +49,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _isAttached: boolean = false;
     private _cardEditor: monaco.editor.IStandaloneCodeEditor;
     private _sampleDataEditor: monaco.editor.IStandaloneCodeEditor;
+    private _sampleHostDataEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
     private _deviceEmulations: Array<DeviceEmulation>;
     private _isMonacoEditorLoaded: boolean = false;
@@ -68,10 +70,14 @@ export class CardDesigner extends Designer.DesignContext {
     private _jsonEditorsPanel: SidePanel;
     private _cardEditorToolbox: Toolbox;
     private _sampleDataEditorToolbox: Toolbox;
+    private _sampleHostDataEditorToolbox: Toolbox;
     private _dataToolbox: Toolbox;
     private _assetPath: string;
+    // Question: what is _dataStructure used for?
     private _dataStructure: FieldDefinition;
+    private _hostDataStructure: FieldDefinition;
     private _sampleData: any;
+    private _sampleHostData: any;
     private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
     private _sampleCatalogue: SampleCatalogue = new SampleCatalogue();
@@ -303,16 +309,16 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";
+        styleSheetLinkElement.type = "text/css";
 
-		if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
+        if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
         {
-			styleSheetLinkElement.href = this.hostContainer.styleSheet;
-		}
-		else
-		{
-			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
-		}
+            styleSheetLinkElement.href = this.hostContainer.styleSheet;
+        }
+        else
+        {
+            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
+        }
 
         let cardArea = document.getElementById("cardArea");
 
@@ -406,6 +412,8 @@ export class CardDesigner extends Designer.DesignContext {
 
         this.updateCardFromJson(false);
         this.updateSampleData();
+        
+        this._sampleHostDataEditorToolbox.isVisible = (this._hostContainer instanceof BerlinContainer) && Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleHostDataEditorToolbox;
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
 
@@ -468,6 +476,11 @@ export class CardDesigner extends Designer.DesignContext {
                 this.updateToolboxLayout(this._sampleDataEditorToolbox, jsonEditorsPaneRect);
                 this._sampleDataEditor.layout();
             }
+
+            if (this._sampleHostDataEditorToolbox) {
+                this.updateToolboxLayout(this._sampleHostDataEditorToolbox, jsonEditorsPaneRect);
+                this._sampleHostDataEditor.layout();
+            }
         }
     }
 
@@ -525,6 +538,13 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+    // TODO: use this method when we have samples with host parameters
+    private setSampleHostDataPayload(payload: any) {
+        if (this._isMonacoEditorLoaded && this._sampleHostDataEditor) {
+            this._sampleHostDataEditor.setValue(JSON.stringify(payload, null, 4));
+        }
+    }
+
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
             this._preventCardUpdate = true;
@@ -556,6 +576,10 @@ export class CardDesigner extends Designer.DesignContext {
 
     private getCurrentSampleDataEditorPayload(): string {
         return this._isMonacoEditorLoaded && this._sampleDataEditor ? this._sampleDataEditor.getValue() : "";
+    }
+
+    private getCurrentSampleHostDataEditorPayload(): string {
+        return this._isMonacoEditorLoaded && this._sampleHostDataEditor ? this._sampleHostDataEditor.getValue() : "";
     }
 
     private updateCardFromJson(addToUndoStack: boolean) {
@@ -948,11 +972,26 @@ export class CardDesigner extends Designer.DesignContext {
         if (this._sampleDataEditor) {
             this._sampleDataEditor.layout();
         }
+
+        if (this._sampleHostDataEditor) {
+            this._sampleHostDataEditor.layout();
+        }
     }
 
     private updateSampleData() {
         try {
             this._sampleData = JSON.parse(this.getCurrentSampleDataEditorPayload());
+
+            this.scheduleUpdateCardFromJson();
+        }
+        catch {
+            // Swallow expression, the payload isn't a valid JSON document
+        }
+    }
+
+    private updateSampleHostData() {
+        try {
+            this._sampleHostData = JSON.parse(this.getCurrentSampleHostDataEditorPayload());
 
             this.scheduleUpdateCardFromJson();
         }
@@ -1053,7 +1092,7 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     monacoModuleLoaded(monaco: any = null) {
-		if (!monaco) {
+        if (!monaco) {
             monaco = window["monaco"];
         }
 
@@ -1069,7 +1108,7 @@ export class CardDesigner extends Designer.DesignContext {
             allowComments: true
         }
 
-		// TODO: set this in our editor instead of defaults
+        // TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
         // Setup card JSON editor
@@ -1122,6 +1161,41 @@ export class CardDesigner extends Designer.DesignContext {
                     if (!this.lockDataStructure) {
                         try {
                             this.dataStructure = FieldDefinition.deriveFrom(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                        }
+                        catch {
+                            // Swallow exception
+                        }
+                    }
+                });
+        }
+
+        if (this._sampleHostDataEditorToolbox) {
+            // Setup sample host data JSON editor
+            this._sampleHostDataEditorToolbox.content = document.createElement("div");
+            this._sampleHostDataEditorToolbox.content.setAttribute("role", "region");
+            this._sampleHostDataEditorToolbox.content.setAttribute("aria-label", "sample host data editor");
+            this._sampleHostDataEditorToolbox.content.classList.add("acd-code-editor");
+
+            this._sampleHostDataEditor = monaco.editor.create(
+                this._sampleHostDataEditorToolbox.content,
+                {
+                    folding: true,
+                    fontSize: 13.5,
+                    language: 'json',
+                    minimap: {
+                        enabled: false
+                    }
+                }
+            );
+
+            this._sampleHostDataEditor.onDidChangeModelContent(
+                () => {
+                    // Maybe we want just updateSampleData?
+                    this.updateSampleHostData();
+
+                    if (!this.lockDataStructure) {
+                        try {
+                            this.hostDataStructure = FieldDefinition.deriveFrom(JSON.parse(this.getCurrentSampleHostDataEditorPayload()));
                         }
                         catch {
                             // Swallow exception
@@ -1253,6 +1327,17 @@ export class CardDesigner extends Designer.DesignContext {
             this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
         }
 
+        if (Shared.GlobalSettings.enableDataBindingSupport) {
+            this._sampleHostDataEditorToolbox = new Toolbox("sampleHostDataEditor", Strings.toolboxes.sampleHostDataEditor.title);
+            this._sampleHostDataEditorToolbox.content = document.createElement("div");
+            this._sampleHostDataEditorToolbox.content.style.padding = "8px";
+            this._sampleHostDataEditorToolbox.content.innerText = Strings.loadingEditor;
+
+            this._sampleHostDataEditorToolbox.isVisible = Shared.GlobalSettings.showSampleHostDataEditorToolbox && (this._hostContainer instanceof BerlinContainer);
+
+            this._jsonEditorsPanel.addToolbox(this._sampleHostDataEditorToolbox);
+        }
+
         this._jsonEditorsPanel.attachTo(document.getElementById("jsonEditorPanel"));
 
         // Property sheet panel
@@ -1310,6 +1395,15 @@ export class CardDesigner extends Designer.DesignContext {
         this._isAttached = true;
 
         this.recreateDesignerSurface();
+    }
+
+    createAndAddSampleHostDataEditorToolbox() {
+        this._sampleHostDataEditorToolbox = new Toolbox("sampleHostDataEditor", Strings.toolboxes.sampleHostDataEditor.title);
+        this._sampleHostDataEditorToolbox.content = document.createElement("div");
+        this._sampleHostDataEditorToolbox.content.style.padding = "8px";
+        this._sampleHostDataEditorToolbox.content.innerText = Strings.loadingEditor;
+
+        this._jsonEditorsPanel.addToolbox(this._sampleHostDataEditorToolbox);
     }
 
     clearUndoStack() {
@@ -1409,6 +1503,17 @@ export class CardDesigner extends Designer.DesignContext {
         this.buildDataExplorer();
     }
 
+    get hostDataStructure(): FieldDefinition {
+        return this._hostDataStructure;
+    }
+
+    set hostDataStructure(value: FieldDefinition) {
+        this._hostDataStructure = value;
+
+        // Question: Do we need a host data explorer?
+        // this.buildDataExplorer();
+    }
+
     get sampleData(): any {
         return this._sampleData;
     }
@@ -1417,6 +1522,16 @@ export class CardDesigner extends Designer.DesignContext {
         this._sampleData = value;
 
         this.setSampleDataPayload(value);
+    }
+
+    get sampleHostData(): any {
+        return this._sampleHostDataEditorToolbox.isVisible ? this._sampleHostData : "";
+    }
+
+    set sampleHostData(value: any) {
+        this._sampleHostData = value;
+
+        this.setSampleHostDataPayload(value);
     }
 
     get bindingPreviewMode(): Designer.BindingPreviewMode {
@@ -1481,18 +1596,18 @@ export class CardDesigner extends Designer.DesignContext {
 
     get toolPaletteToolbox(): Toolbox {
         return this._toolPaletteToolbox;
-	}
+    }
 
     get dataToolbox(): Toolbox {
         return this._dataToolbox;
-	}
+    }
 
-	get assetPath(): string {
-		return this._assetPath;
-	}
+    get assetPath(): string {
+        return this._assetPath;
+    }
 
-	set assetPath(value: string) {
-		this._assetPath = value;
+    set assetPath(value: string) {
+        this._assetPath = value;
     }
 
     get customPaletteItems(): CustomPaletteItem[] {
