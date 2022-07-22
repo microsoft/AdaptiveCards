@@ -1922,16 +1922,18 @@ export class CardElementPeer extends DesignerPeer {
 
     canDrop(peer: DesignerPeer) {
         let parent = this.parent;
+        let parentCanContainElement = true;
 
         while (parent) {
             if (parent instanceof CarouselPagePeer) { 
-                return parent.canDrop(peer);
+                parentCanContainElement = parent.canDrop(peer);
+                break;
             }
 
             parent = parent.parent;
         } 
 
-        return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer;
+        return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer && parentCanContainElement;
     }
 
     tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
@@ -3447,7 +3449,7 @@ export class CarouselPeer extends ContainerPeer {
 
     attachOnPageChange() {
         (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, realIndex: number) => {
-                const carouselElement = this.cardElement as Adaptive.Carousel;
+            const carouselElement = this.cardElement as Adaptive.Carousel;
 
             if (activeIndex === 0) {
                 // Index 0 is a duplicate slide, and we should slide to the end
