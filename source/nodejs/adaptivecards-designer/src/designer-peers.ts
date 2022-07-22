@@ -3408,7 +3408,8 @@ export class CarouselPeer extends ContainerPeer {
                         this.updateChildren();
 
                         // We've added a new carousel page, so the carousel peers need a layout update
-                        this.designerSurface.needsLayoutUpdate = true;
+                        this.designerSurface.queueLayoutUpdate();
+
                     }
                 }
             )
@@ -3421,7 +3422,7 @@ export class CarouselPeer extends ContainerPeer {
         (this.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
 
         // After initializing, we'll need to update the layout
-        this.designerSurface.needsLayoutUpdate = true;
+        this.designerSurface.queueLayoutUpdate();
     }
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -3446,25 +3447,21 @@ export class CarouselPeer extends ContainerPeer {
 
     attachOnPageChange() {
         (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, realIndex: number) => {
-            const carouselElement = this.cardElement as Adaptive.Carousel;
+                const carouselElement = this.cardElement as Adaptive.Carousel;
 
-            // TODO: I think this is stopping the peers from updating every time/when we click the arrows and there's only one page
-            if (carouselElement.currentIndex !== realIndex) {
-                if (activeIndex === 0) {
-                    // Index 0 is a duplicate slide, and we should slide to the end
-                    carouselElement.carousel?.slideTo(this.getChildCount())
-                } else if (activeIndex === (this.getChildCount() + 1)) {
-                    // Last index is a duplicate slide, and we should slide to the beginning
-                    carouselElement.carousel?.slideTo(1);
-                } else {
-                    // Valid index, rerender the card
-                    carouselElement.currentIndex = realIndex;
-                    this.designerSurface.render();
-                }
-
-                // Since the carousel changed, we will need to update the designer surface layout
-                this.designerSurface.needsLayoutUpdate = true;
+            if (activeIndex === 0) {
+                // Index 0 is a duplicate slide, and we should slide to the end
+                carouselElement.carousel?.slideTo(this.getChildCount())
+            } else if (activeIndex === (this.getChildCount() + 1)) {
+                // Last index is a duplicate slide, and we should slide to the beginning
+                carouselElement.carousel?.slideTo(1);
+            } else if (activeIndex !== realIndex) {
+                // Valid index, rerender the card
+                carouselElement.currentIndex = realIndex;
+                this.designerSurface.render();
             }
+
+            this.designerSurface.queueLayoutUpdate();
         };
     }
 }

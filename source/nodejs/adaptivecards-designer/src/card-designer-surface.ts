@@ -202,7 +202,6 @@ export class CardDesignerSurface {
     private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
     private _dragVisual?: HTMLElement;
-    private _needsLayoutUpdate: boolean = true;
     private _shouldPersistSelectedElement = false;
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
@@ -647,6 +646,7 @@ export class CardDesignerSurface {
 
                 this._dragVisual.style.width = renderedCardObjectRect.width + "px";
                 this._dragVisual.style.height = renderedCardObjectRect.height + "px";
+                this._dragVisual.style.zIndex = "500";
 
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
             }
@@ -747,8 +747,6 @@ export class CardDesignerSurface {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
-        this._needsLayoutUpdate = true;
-
         this._containsCarousel = false;
 
         // If we want to have the same peer selected after rendering the card,
@@ -803,6 +801,8 @@ export class CardDesignerSurface {
             this.setSelectedPeer(this._persistentSelectedPeer);
             this._persistentSelectedPeer = null;
         }
+
+        this.queueLayoutUpdate();
     }
 
     getCardPayloadAsObject(): object {
@@ -859,8 +859,16 @@ export class CardDesignerSurface {
             finally {
                 this.endUpdate(true);
 
+                // If we've removed a Carousel page, we need to make sure that the carousel flips back to the correct page
+                if (this.selectedPeer instanceof DesignerPeers.CarouselPeer) {
+                    const carousel = this.selectedPeer.cardElement as Carousel;
+                    if (carousel?.onPageChanged) {
+                        carousel.onPageChanged(-1, 0);
+                    }
+                }
+
                 // Need to update the layout for the carousel now that an element has been removed
-                this._needsLayoutUpdate = true;
+                this.queueLayoutUpdate();
             }
         }
     }
@@ -910,7 +918,7 @@ export class CardDesignerSurface {
             this._designerSurface.classList.remove("dragging");
 
             // Need to update the layout for the carousel now that a new element is added
-            this._needsLayoutUpdate = true;
+            this.queueLayoutUpdate();
         }
     }
 
@@ -1010,7 +1018,14 @@ export class CardDesignerSurface {
         }
 
         // Now that the carousel has children, update the layout
-        this._needsLayoutUpdate = true;
+        this.queueLayoutUpdate();
+    }
+
+    queueLayoutUpdate() {
+        setTimeout(() => {
+                    this.updateLayout();
+            },
+            5);
     }
 
     get rootPeer(): DesignerPeers.DesignerPeer {
@@ -1051,14 +1066,6 @@ export class CardDesignerSurface {
             this.renderCard();
             this.updateLayout(false);
         }
-    }
-
-    get needsLayoutUpdate(): boolean {
-        return this._needsLayoutUpdate;
-    }
-
-    set needsLayoutUpdate(needsUpdate: boolean) {
-        this._needsLayoutUpdate = needsUpdate;
     }
 
     set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
