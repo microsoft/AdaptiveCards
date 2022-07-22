@@ -3480,7 +3480,7 @@ export class CarouselPagePeer extends ContainerPeer {
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
 
-        if (carousel && carousel.carouselPageContainer) {
+        if (carousel?.carouselPageContainer) {
             const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
             boundingRect.left = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
