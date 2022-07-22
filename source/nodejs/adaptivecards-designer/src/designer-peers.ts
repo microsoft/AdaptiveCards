@@ -440,7 +440,7 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.NumberInput();
 
-        input.defaultValue = this.getPropertyValue(context) ? this.getPropertyValue(context) : this.defaultValue;
+        input.defaultValue = this.getPropertyValue(context) ?? this.defaultValue;
         input.placeholder = "(not set)";
 
         this._input = input;
@@ -3477,7 +3477,7 @@ export class CarouselPagePeer extends ContainerPeer {
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
 
-        if (carousel && carousel.carouselPageContainer) {
+        if (carousel?.carouselPageContainer) {
             const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
 
             boundingRect.left = carousel.renderedElement.offsetLeft + carousel.carouselPageContainer.offsetLeft;
