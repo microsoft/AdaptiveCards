@@ -47,13 +47,13 @@ class OpenSampleItem {
         element.setAttribute("role", "listitem");
         element.onclick = this.props.onClick ?? (
             (e) => {
-                this.cardSelected();
+                this.onCardSelected();
             })
 
         element.onkeyup = this.props.onKeyEvent ?? (
             (e) => {
                 if (e.key === Constants.keys.enter) {
-                    this.cardSelected();
+                    this.onCardSelected();
                 }
             })
 
@@ -104,7 +104,7 @@ class OpenSampleItem {
         return element;
     }
 
-    cardSelected() {
+    onCardSelected() {
         if (this.onComplete) {
             if (this.props.cardData instanceof Function) {
                 const cardData = this.props.cardData(this.onComplete);
