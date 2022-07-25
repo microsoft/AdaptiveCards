@@ -538,7 +538,6 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    // TODO: use this method when we have samples with host parameters
     private setSampleHostDataPayload(payload: any) {
         if (this._isMonacoEditorLoaded && this._sampleHostDataEditor) {
             this._sampleHostDataEditor.setValue(JSON.stringify(payload, null, 4));
@@ -760,6 +759,19 @@ export class CardDesigner extends Designer.DesignContext {
                         } else {
                             this.setSampleDataPayload({});
                         }
+
+                        if (dialog.output.sampleHostData) {
+                            try {
+                                let sampleHostDataPayload = JSON.parse(dialog.output.sampleHostData);
+
+                                this.setSampleHostDataPayload(sampleHostDataPayload);
+                                this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
+                            } catch {
+                                alert("The card host data could not be loaded.")
+                            }
+                        } else {
+                            this.setSampleHostDataPayload({});
+                        }
                     }
                     if (newCardButton) {
                         newCardButton.focus();
@@ -906,6 +918,19 @@ export class CardDesigner extends Designer.DesignContext {
                     }
                 } else {
                     this.setSampleDataPayload({});
+                }
+
+                if (dialog.output.sampleHostData) {
+                    try {
+                        let sampleHostDataPayload = JSON.parse(dialog.output.sampleData);
+
+                        this.setSampleHostDataPayload(sampleHostDataPayload);
+                        this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
+                    } catch {
+                        alert("The card host data could not be loaded.")
+                    }
+                } else {
+                    this.setSampleHostDataPayload({});
                 }
             }
 
@@ -1525,7 +1550,7 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     get sampleHostData(): any {
-        return this._sampleHostDataEditorToolbox.isVisible ? this._sampleHostData : "";
+        return this._sampleHostDataEditorToolbox.isVisible ? this._sampleHostData : "{}";
     }
 
     set sampleHostData(value: any) {

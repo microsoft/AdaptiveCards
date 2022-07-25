@@ -41,9 +41,9 @@ export class Toolbox {
         }
     }
 
-    private toggled() {
+    private toggled(saveState: boolean = true) {
         if (this.onToggled) {
-            this.onToggled(this);
+            this.onToggled(this, saveState);
         }
     }
 
@@ -53,18 +53,19 @@ export class Toolbox {
                 this.hideToolbox();
             } else {
                 this._collapsedTabContainer.appendChild(this._headerRootElement);
+                this.restoreState();
             }
         }
     }
 
     private hideToolbox() {
         if (this.isExpanded) {
-            this.collapse();
+            this.collapse(false);
         }
         this._collapsedTabContainer.removeChild(this._headerRootElement);
     }
 
-    onToggled: (sender: Toolbox) => void;
+    onToggled: (sender: Toolbox, saveState?: boolean) => void;
 
     readonly id: string;
     readonly title: string;
@@ -178,7 +179,7 @@ export class Toolbox {
         this.updateContent();
     }
 
-    collapse() {
+    collapse(saveState: boolean = true) {
         if (this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-collapsed");
             this._headerIconElement.classList.remove("acd-icon-header-expanded");
@@ -194,7 +195,7 @@ export class Toolbox {
 
             this._isExpanded = false;
 
-            this.toggled();
+            this.toggled(saveState);
         }
     }
 
