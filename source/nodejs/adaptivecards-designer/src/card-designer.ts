@@ -669,11 +669,9 @@ export class CardDesigner extends Designer.DesignContext {
                                 dialog.close()
                                 this.launchJsonSchemaPopup()
                             },
-                            onKeyEvent: (e: KeyboardEvent) => {
-                                if (e.key === ControlConstants.keys.enter) {
-                                    dialog.close();
-                                    this.launchJsonSchemaPopup();
-                                }
+                            onKeyEnterEvent: (e: KeyboardEvent) => {
+                                dialog.close();
+                                this.launchJsonSchemaPopup();
                             },
                             cardData: {
                                 thumbnail: () => {
@@ -696,11 +694,9 @@ export class CardDesigner extends Designer.DesignContext {
                                     dialog.close()
                                     this.launchImagePopup()
                                 },
-                                onKeyEvent: (e: KeyboardEvent) => {
-                                    if (e.key === ControlConstants.keys.enter) {
-                                        dialog.close();
-                                        this.launchImagePopup();
-                                    }
+                                onKeyEnterEvent: (e: KeyboardEvent) => {
+                                    dialog.close();
+                                    this.launchImagePopup();
                                 },
                                 cardData: {
                                     thumbnail: () => {

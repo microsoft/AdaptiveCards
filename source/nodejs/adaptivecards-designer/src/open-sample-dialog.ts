@@ -19,7 +19,7 @@ type CardDataProvider = (callback?: CardDataCallback) => CardData | void;
 interface OpenSampleItemProps {
     label: string,
     onClick?: (ev: MouseEvent) => any,
-    onKeyEvent?: (ev: KeyboardEvent) => any,
+    onKeyEnterEvent?: (ev: KeyboardEvent) => any,
     cardData?: CardData | CardDataProvider,
 }
 
@@ -50,12 +50,29 @@ class OpenSampleItem {
                 this.onCardSelected();
             })
 
-        element.onkeyup = this.props.onKeyEvent ?? (
-            (e) => {
-                if (e.key === Constants.keys.enter) {
-                    this.onCardSelected();
-                }
-            })
+        element.onkeyup = (e: KeyboardEvent) => {
+            switch (e.key) {
+                case Constants.keys.enter:
+                    if (this.props.onKeyEnterEvent) {
+                        this.props.onKeyEnterEvent(e);
+                    } else {
+                        this.onCardSelected();
+                    }
+                    break;
+                case Constants.keys.down:
+                    if (element.nextSibling) {
+                        (element.nextSibling as HTMLElement).focus();
+                    }
+                    break;
+                case Constants.keys.up:
+                    if (element.previousSibling) {
+                        (element.previousSibling as HTMLElement).focus();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
         const thumbnailHost = document.createElement("div");
         thumbnailHost.className = "acd-open-sample-item-thumbnail";
