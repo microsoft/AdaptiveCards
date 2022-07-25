@@ -113,7 +113,6 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
         this.registerPeer(Adaptive.Carousel, DesignerPeers.CarouselPeer, DesignerPeerCategory.Containers, "acd-icon-carousel");
         this.registerPeer(Adaptive.CarouselPage, DesignerPeers.CarouselPagePeer, DesignerPeerCategory.Containers, "acd-icon-carouselPage");
-        // TODO: what is the carousel config class?
 
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
@@ -206,6 +205,7 @@ export class CardDesignerSurface {
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
     private _containsCarousel: boolean = false;
+    private _currentCarouselPage: DesignerPeers.CarouselPagePeer;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -417,6 +417,8 @@ export class CardDesignerSurface {
             if (peer instanceof DesignerPeers.CarouselPeer) {
                 this._containsCarousel = true;
                 peer.attachOnPageChange();
+            } else if (peer instanceof DesignerPeers.CarouselPagePeer) {
+                peer.assignCurrentCarouselPage();
             }
 
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
@@ -748,6 +750,7 @@ export class CardDesignerSurface {
         this._allPeers = [];
 
         this._containsCarousel = false;
+        this._currentCarouselPage = undefined;
 
         // If we want to have the same peer selected after rendering the card,
         // store the current selected peer's card element before the peers recreated
@@ -801,8 +804,6 @@ export class CardDesignerSurface {
             this.setSelectedPeer(this._persistentSelectedPeer);
             this._persistentSelectedPeer = null;
         }
-
-        this.queueLayoutUpdate();
     }
 
     getCardPayloadAsObject(): object {
@@ -866,9 +867,6 @@ export class CardDesignerSurface {
                         carousel.onPageChanged(-1, 0);
                     }
                 }
-
-                // Need to update the layout for the carousel now that an element has been removed
-                this.queueLayoutUpdate();
             }
         }
     }
@@ -916,9 +914,6 @@ export class CardDesignerSurface {
             }
 
             this._designerSurface.classList.remove("dragging");
-
-            // Need to update the layout for the carousel now that a new element is added
-            this.queueLayoutUpdate();
         }
     }
 
@@ -1013,19 +1008,9 @@ export class CardDesignerSurface {
                 !forbiddenChildElements.includes(child.getCardObject().getJsonTypeName())))
                 .forEach((e) => {carouselPage.tryAdd(e);});
 
-            // The remaining children on the rootPeer are forbidden elements, so we should remove them
-            this._rootPeer.children.filter((child) => !(child instanceof DesignerPeers.CarouselPeer)).forEach((e) => {e.remove(false, true);});
+            // Remove forbidden elements from the remaining children
+            this._rootPeer.children.filter((child) => (!(child instanceof DesignerPeers.CarouselPeer) && (forbiddenChildElements.includes(child.getCardObject().getJsonTypeName())))).forEach((e) => {e.remove(false, true);});
         }
-
-        // Now that the carousel has children, update the layout
-        this.queueLayoutUpdate();
-    }
-
-    queueLayoutUpdate() {
-        setTimeout(() => {
-                    this.updateLayout();
-            },
-            5);
     }
 
     get rootPeer(): DesignerPeers.DesignerPeer {
@@ -1078,5 +1063,13 @@ export class CardDesignerSurface {
 
     set containsCarousel(containsCarousel: boolean) {
         this._containsCarousel = containsCarousel;
+    }
+
+    get currentCarouselPage(): DesignerPeers.CarouselPagePeer {
+        return this._currentCarouselPage;
+    }
+
+    set currentCarouselPage(value: DesignerPeers.CarouselPagePeer) {
+        this._currentCarouselPage = value;
     }
 }

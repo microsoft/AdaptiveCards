@@ -1417,6 +1417,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             if (this instanceof CarouselPeer) {
                 this.designerSurface.containsCarousel = false;
+                this.designerSurface.currentCarouselPage = undefined;
             }
 
             this.peerRemoved(this);
@@ -2018,10 +2019,11 @@ export class CardElementPeer extends DesignerPeer {
         let designSurfaceOffset = this.designerSurface.getDesignerSurfaceOffset();
         let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
 
+        let returnRect = undefined;
         if (this.cardElement.hasVisibleSeparator) {
             let separatorBoundingRect = this.cardElement.separatorElement.getBoundingClientRect();
 
-            return new Rect(
+            returnRect = new Rect(
                 Math.min(separatorBoundingRect.top, cardElementBoundingRect.top) - designSurfaceOffset.y,
                 Math.max(separatorBoundingRect.right, cardElementBoundingRect.right) - designSurfaceOffset.x,
                 Math.max(separatorBoundingRect.bottom, cardElementBoundingRect.bottom) - designSurfaceOffset.y,
@@ -2029,13 +2031,22 @@ export class CardElementPeer extends DesignerPeer {
             )
         }
         else {
-            return new Rect(
+            returnRect = new Rect(
                 cardElementBoundingRect.top - designSurfaceOffset.y,
                 cardElementBoundingRect.right - designSurfaceOffset.x,
                 cardElementBoundingRect.bottom - designSurfaceOffset.y,
                 cardElementBoundingRect.left - designSurfaceOffset.x
             );
         }
+
+        if (this.designerSurface.containsCarousel && this.designerSurface.currentCarouselPage && !(this instanceof AdaptiveCardPeer) && !(this instanceof CarouselPeer) && !(this instanceof CarouselPagePeer)) {
+            if (!this.designerSurface.currentCarouselPage.peerInCorrectLocation({x: returnRect.x, y: returnRect.y})) {
+                returnRect.left = returnRect.left - this.designerSurface.currentCarouselPage.pageOffset;
+                returnRect.right = returnRect.right - this.designerSurface.currentCarouselPage.pageOffset;
+            }
+        }
+
+        return returnRect;
     }
 
     getCardObjectBoundingRect(): Rect {
@@ -2135,7 +2146,13 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
-                availableActions.push(typeRegistration);
+                if (this.designerSurface.containsCarousel) {
+                    if (typeRegistration.typeName !== "Action.ToggleVisibility" && typeRegistration.typeName !== "Action.ShowCard") {
+                        availableActions.push(typeRegistration);
+                    }
+                } else {
+                    availableActions.push(typeRegistration);
+                }
             }
         }
 
@@ -2595,12 +2612,21 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             let designSurfaceOffset = this.designerSurface.getDesignerSurfaceOffset();
             let actionBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
 
-            return new Rect(
+            let returnRect = new Rect(
                 actionBoundingRect.top - designSurfaceOffset.y,
                 actionBoundingRect.right - designSurfaceOffset.x,
                 actionBoundingRect.bottom - designSurfaceOffset.y,
                 actionBoundingRect.left - designSurfaceOffset.x
             );
+            
+            if (this.designerSurface.containsCarousel && this.designerSurface.currentCarouselPage) {
+                if (!this.designerSurface.currentCarouselPage.peerInCorrectLocation({x: returnRect.right, y: returnRect.bottom})) {
+                    returnRect.left = returnRect.left - this.designerSurface.currentCarouselPage.pageOffset;
+                    returnRect.right = returnRect.right - this.designerSurface.currentCarouselPage.pageOffset;
+                }
+            }
+
+            return returnRect;
         }
         else {
             return super.getBoundingRect();
@@ -3408,10 +3434,6 @@ export class CarouselPeer extends ContainerPeer {
                         (this.cardElement as Adaptive.Carousel).addPage(page);
 
                         this.updateChildren();
-
-                        // We've added a new carousel page, so the carousel peers need a layout update
-                        this.designerSurface.queueLayoutUpdate();
-
                     }
                 }
             )
@@ -3422,9 +3444,6 @@ export class CarouselPeer extends ContainerPeer {
         super.initializeCardElement();
 
         (this.cardElement as Adaptive.Carousel).addPage(new Adaptive.CarouselPage());
-
-        // After initializing, we'll need to update the layout
-        this.designerSurface.queueLayoutUpdate();
     }
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -3463,12 +3482,14 @@ export class CarouselPeer extends ContainerPeer {
                 this.designerSurface.render();
             }
 
-            this.designerSurface.queueLayoutUpdate();
+            this.designerSurface.currentCarouselPage = this.children[carouselElement.currentIndex] as CarouselPagePeer;
         };
     }
 }
 
 export class CarouselPagePeer extends ContainerPeer {
+
+    private _pageOffset: number = 0;
 
     isDraggable(): boolean {
         return false;
@@ -3478,6 +3499,7 @@ export class CarouselPagePeer extends ContainerPeer {
         const boundingRect = super.getBoundingRect();
 
         const carousel = this.cardElement.parent as Adaptive.Carousel;
+        const initialLeft = boundingRect.left;
 
         if (carousel?.carouselPageContainer) {
             const containerClientRect = carousel.carouselPageContainer.getBoundingClientRect();
@@ -3487,7 +3509,13 @@ export class CarouselPagePeer extends ContainerPeer {
             boundingRect.bottom = boundingRect.top + containerClientRect?.height;
         }
 
+        this._pageOffset = initialLeft - boundingRect.left;
         return boundingRect;
+    }
+
+    peerInCorrectLocation(currentLocation: IPoint): boolean {
+        const rect = this.getBoundingRect();
+        return rect.isInside(currentLocation);
     }
 
     isVisible(): boolean {
@@ -3514,5 +3542,17 @@ export class CarouselPagePeer extends ContainerPeer {
 
     canDrop(peer: DesignerPeer) {
         return !((this.cardElement as Adaptive.CarouselPage).getForbiddenChildElements().includes(peer.getCardObject().getJsonTypeName()));
+    }
+
+    assignCurrentCarouselPage() {
+        const parentCarousel = (this.parent as CarouselPeer);
+
+        if ((parentCarousel.cardElement as Adaptive.Carousel).isCurrentPage(this.cardElement as Adaptive.CarouselPage)) {
+            this.designerSurface.currentCarouselPage = this;
+        }
+    }
+
+    get pageOffset(): number {
+        return this._pageOffset;
     }
 }
