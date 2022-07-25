@@ -5739,6 +5739,19 @@ class ActionCollection {
 
             raiseInlineCardExpandedEvent(action, true);
         }
+
+        if (!this._owner.isDesignMode()) {
+            for (let i = 0; i < action.card.getItemCount(); i++) {
+                const element = this.getNearestFocusableElement(action.card.getItemAt(i));
+                if (element instanceof Input) {
+                    element.focus();
+                    break;
+                } else if (element instanceof Action) {
+                    element.renderedElement?.focus();
+                    break;
+                }
+            }
+        }
     }
 
     private collapseExpandedAction() {
@@ -5791,6 +5804,30 @@ class ActionCollection {
             !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()),
             raiseEvent
         );
+    }
+
+    getNearestFocusableElement(childElement: CardObject): CardObject | undefined {
+        if (childElement instanceof Input) {
+            return childElement;
+        }
+
+        if (childElement instanceof CardElementContainer) {
+            for (let i = 0; i < childElement.getItemCount(); i++) {
+                const element = this.getNearestFocusableElement(childElement.getItemAt(i));
+
+                if (element) {
+                    return element;
+                }
+            }
+        } else if (childElement instanceof ActionSet) {
+            for (let i = 0; i < childElement.getActionCount(); i++) {
+                if (childElement.getActionAt(i)?.isFocusable) {
+                    return childElement.getActionAt(i);
+                }
+            }
+        }
+
+        return undefined;
     }
 
     private _items: Action[] = [];
