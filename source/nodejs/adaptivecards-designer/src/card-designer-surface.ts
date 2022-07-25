@@ -873,7 +873,7 @@ export class CardDesignerSurface {
                 neighboringPeer = neighboringPeer.parent;
                 neighboringPeer = neighboringPeer.getChildAt(neighboringPeer.getChildCount() - 1);
 
-            }else if (peer instanceof DesignerPeers.CardElementPeer) {
+            } else if (peer instanceof DesignerPeers.CardElementPeer) {
 
                 // Get the index of the peer within its container
                 const peerIndex = peer.cardElement.index;
