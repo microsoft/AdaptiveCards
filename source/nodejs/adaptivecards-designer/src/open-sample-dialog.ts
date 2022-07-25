@@ -9,7 +9,7 @@ import { Dialog } from "./dialog";
 export interface CardData {
     cardPayload?: string
     sampleData?: string,
-	sampleHostData?: string,
+    sampleHostData?: string,
     thumbnail?: HTMLElement | (() => HTMLElement)
 }
 
@@ -208,7 +208,7 @@ export class OpenSampleDialog extends Dialog {
                                                 return callback({
                                                     cardPayload: entry.cardPayload,
                                                     sampleData: entry.sampleData,
-													sampleHostData: "{}",
+                                                    sampleHostData: "{}",
                                                     thumbnail: card.renderedElement,
                                                 });
                                             }
