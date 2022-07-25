@@ -5,6 +5,7 @@ import * as ACData from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import { CatalogueEntry, SampleCatalogue } from "./catalogue";
 import { Dialog } from "./dialog";
+import { Constants } from "adaptivecards-controls";
 
 export interface CardData {
     cardPayload?: string
@@ -17,7 +18,8 @@ type CardDataProvider = (callback?: CardDataCallback) => CardData | void;
 
 interface OpenSampleItemProps {
     label: string,
-    onClick?: (ev: MouseEvent) => any
+    onClick?: (ev: MouseEvent) => any,
+	onKeyEvent?: (ev: KeyboardEvent) => any,
     cardData?: CardData | CardDataProvider,
 }
 
@@ -45,17 +47,15 @@ class OpenSampleItem {
         element.setAttribute("role", "listitem");
         element.onclick = this.props.onClick ?? (
             (e) => {
-                if (this.onComplete) {
-                    if (this.props.cardData instanceof Function) {
-                        const cardData = this.props.cardData(this.onComplete);
-                        if (cardData) {
-                            this.onComplete(cardData);
-                        }
-                    } else if (this.props.cardData) {
-                        this.onComplete(this.props.cardData);
-                    }
-                }
+				this.cardSelected();
             })
+
+		element.onkeyup = this.props.onKeyEvent ?? (
+			(e) => {
+				if (e.key === Constants.keys.enter) {
+					this.cardSelected();
+				}
+			})
 
         const thumbnailHost = document.createElement("div");
         thumbnailHost.className = "acd-open-sample-item-thumbnail";
@@ -103,6 +103,19 @@ class OpenSampleItem {
 
         return element;
     }
+
+	cardSelected() {
+		if (this.onComplete) {
+			if (this.props.cardData instanceof Function) {
+				const cardData = this.props.cardData(this.onComplete);
+				if (cardData) {
+					this.onComplete(cardData);
+				}
+			} else if (this.props.cardData) {
+				this.onComplete(this.props.cardData);
+			}
+		}
+	}
 }
 
 
