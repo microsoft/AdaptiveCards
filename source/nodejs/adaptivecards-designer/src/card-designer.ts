@@ -28,6 +28,7 @@ import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
 import { BerlinContainer } from "./containers";
+import { Constants as ControlConstants } from "adaptivecards-controls";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -691,6 +692,12 @@ export class CardDesigner extends Designer.DesignContext {
                                 dialog.close()
                                 this.launchJsonSchemaPopup()
                             },
+                            onKeyEvent: (e: KeyboardEvent) => {
+                                if (e.key === ControlConstants.keys.enter) {
+                                    dialog.close();
+                                    this.launchJsonSchemaPopup();
+                                }
+                            },
                             cardData: {
                                 thumbnail: () => {
                                     const thumbnail = document.createElement("div");
@@ -711,6 +718,12 @@ export class CardDesigner extends Designer.DesignContext {
                                 onClick: () => {
                                     dialog.close()
                                     this.launchImagePopup()
+                                },
+                                onKeyEvent: (e: KeyboardEvent) => {
+                                    if (e.key === ControlConstants.keys.enter) {
+                                        dialog.close();
+                                        this.launchImagePopup();
+                                    }
                                 },
                                 cardData: {
                                     thumbnail: () => {
