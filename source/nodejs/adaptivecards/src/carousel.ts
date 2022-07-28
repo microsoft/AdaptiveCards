@@ -227,32 +227,6 @@ export class Carousel extends Container {
         }
     }
 
-    isCurrentPage(page: CarouselPage): boolean {
-        if (this._carousel) {
-            // TODO: refactor to use currentPageIndex() from Joseph's PR
-            let activeIndex = this._carousel.activeIndex;
-
-            // the first and last slides are duplicate elements so the carousel runs continuously
-            // to get the correct _renderedPage, we need to adjust the index
-
-            // TODO: need to confim that the activeIndex will always be off by this amount
-            if (activeIndex === (this._pages.length + 1)) {
-                // Reached the last element, go back to the beginning
-                activeIndex = 0;
-            } else if (activeIndex === 0) {
-                // Reached the first element, go to the end
-                activeIndex = this._pages.length - 1;
-            } else {
-                // for all other elements, we need to shift the index back by 1
-                activeIndex--;
-            }
-
-            return page === this._pages[activeIndex];
-        }
-
-        return false;
-    }
-
     get currentPageId(): string | undefined {
         if (this._carousel?.slides?.length) {
             const activeSlide = this._carousel.slides[this._carousel.activeIndex] as HTMLElement;
@@ -442,7 +416,7 @@ export class Carousel extends Container {
     ): void {
 
         const swiperOptions: SwiperOptions = {
-            loop: true,
+            loop: !this.isDesignMode(),
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
                 el: paginationElement,
@@ -481,26 +455,15 @@ export class Carousel extends Container {
         });
 
         carousel.on('navigationNext',  (swiper: Swiper) => {
-            if (this.onPageChanged) {
-                this.onPageChanged(swiper.activeIndex, swiper.realIndex);
-            } 
-
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationNext);
         });
 
         carousel.on('navigationPrev',  (swiper: Swiper) => {
-            if (this.onPageChanged) {
-                this.onPageChanged(swiper.activeIndex, swiper.realIndex);
-            }
-
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationPrevious);
         });
 
         carousel.on('slideChangeTransitionEnd',  (swiper: Swiper) => {
-            if (this.onPageChanged) {
-                this.onPageChanged(swiper.activeIndex, swiper.realIndex);
-            }
-
+			this.currentIndex = swiper.realIndex;
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination); 
         });
 
@@ -533,12 +496,12 @@ export class Carousel extends Container {
         );
     }
 
+	slideTo(index: number) {
+		this._carousel?.slideTo(index);
+	}
+
     get carouselPageContainer() {
         return this._carouselPageContainer;
-    }
-
-    get carousel(): Swiper | undefined {
-        return this._carousel;
     }
 
     get currentIndex(): number {
@@ -549,7 +512,6 @@ export class Carousel extends Container {
         this._currentIndex = currentIndex;
     }
 
-    onPageChanged: (activeIndex: number, loopIndex: number) => void;
     private createCarouselEvent (type : Enums.CarouselInteractionEvent): CarouselEvent
     {
         let currentPageId : string | undefined;

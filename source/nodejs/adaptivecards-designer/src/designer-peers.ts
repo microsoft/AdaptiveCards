@@ -2252,7 +2252,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
     canDrop(peer: DesignerPeer) {
         return !this.designerSurface.containsCarousel;
-    }}
+    }
+}
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);
@@ -3465,26 +3466,6 @@ export class CarouselPeer extends ContainerPeer {
     isDraggable(): boolean {
         return false;
     }
-
-    attachOnPageChange() {
-        (this.cardElement as Adaptive.Carousel).onPageChanged = (activeIndex: number, realIndex: number) => {
-            const carouselElement = this.cardElement as Adaptive.Carousel;
-
-            if (activeIndex === 0) {
-                // Index 0 is a duplicate slide, and we should slide to the end
-                carouselElement.carousel?.slideTo(this.getChildCount())
-            } else if (activeIndex === (this.getChildCount() + 1)) {
-                // Last index is a duplicate slide, and we should slide to the beginning
-                carouselElement.carousel?.slideTo(1);
-            } else if (activeIndex !== realIndex) {
-                // Valid index, rerender the card
-                carouselElement.currentIndex = realIndex;
-                this.designerSurface.render();
-            }
-
-            this.designerSurface.currentCarouselPage = this.children[carouselElement.currentIndex] as CarouselPagePeer;
-        };
-    }
 }
 
 export class CarouselPagePeer extends ContainerPeer {
@@ -3521,20 +3502,17 @@ export class CarouselPagePeer extends ContainerPeer {
     isVisible(): boolean {
         const parentCarousel = (this.parent as CarouselPeer);
 
-        return (parentCarousel.cardElement as Adaptive.Carousel).isCurrentPage(this.cardElement as Adaptive.CarouselPage);
+        return this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex];
     }
 
     bringCardElementIntoView(): boolean {
         const carouselPeer = this.parent as CarouselPeer;
 
-        if (carouselPeer) {
-            const carouselElement = (carouselPeer.cardElement as Adaptive.Carousel);
-            if (carouselElement && carouselElement.carousel) {
-                this.designerSurface.shouldPersistSelectedElement = true;
+        if (carouselPeer && carouselPeer.cardElement) {
+            this.designerSurface.shouldPersistSelectedElement = true;
 
-                const index = carouselPeer.children.indexOf(this) + (carouselElement.carousel.loopedSlides || 0);
-                carouselElement.carousel.slideTo(index);
-            }
+            const index = carouselPeer.children.indexOf(this);
+            (carouselPeer.cardElement as Adaptive.Carousel).slideTo(index);
         }
 
         return true;
@@ -3547,7 +3525,7 @@ export class CarouselPagePeer extends ContainerPeer {
     assignCurrentCarouselPage() {
         const parentCarousel = (this.parent as CarouselPeer);
 
-        if ((parentCarousel.cardElement as Adaptive.Carousel).isCurrentPage(this.cardElement as Adaptive.CarouselPage)) {
+        if (this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex]) {
             this.designerSurface.currentCarouselPage = this;
         }
     }

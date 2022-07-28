@@ -416,7 +416,6 @@ export class CardDesignerSurface {
 
             if (peer instanceof DesignerPeers.CarouselPeer) {
                 this._containsCarousel = true;
-                peer.attachOnPageChange();
             } else if (peer instanceof DesignerPeers.CarouselPagePeer) {
                 peer.assignCurrentCarouselPage();
             }
@@ -698,6 +697,12 @@ export class CardDesignerSurface {
         this._card.hostConfig = this.context.hostContainer.getHostConfig();
         this._card.designMode = true;
 
+        Adaptive.AdaptiveCard.onCarouselEvent = (e: Adaptive.CarouselEvent) => {
+            if (!this._isPreviewMode) {
+                this.render();
+            }
+        }
+
         this.render();
     }
 
@@ -860,12 +865,10 @@ export class CardDesignerSurface {
             finally {
                 this.endUpdate(true);
 
-                // If we've removed a Carousel page, we need to make sure that the carousel flips back to the correct page
+                // If we've removed a Carousel page, we need render the designer surface again
                 if (this.selectedPeer instanceof DesignerPeers.CarouselPeer) {
-                    const carousel = this.selectedPeer.cardElement as Carousel;
-                    if (carousel?.onPageChanged) {
-                        carousel.onPageChanged(-1, 0);
-                    }
+                    (this.selectedPeer.cardElement as Carousel).currentIndex = 0;
+                    this.render();
                 }
             }
         }
@@ -994,24 +997,36 @@ export class CardDesignerSurface {
         }
     }
 
-    reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
+	reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
+		const carouselPage = carouselPeer.getChildAt(0);
+		if (carouselPage instanceof DesignerPeers.CardElementPeer) {
+			// Filter the root peer's children for all non-carousel peers that are not forbidden child elements
+			// Then, reassign (via tryAdd) each element from the root peer to the current carousel page
+			// Reassigning all elements to the carousel page ensures carousel's singleton behavior
+			const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
+			this.searchAndRemoveForbiddenElements(this._rootPeer, forbiddenChildElements);
+		    this._rootPeer.children.filter((child) => 
+				(!(child instanceof DesignerPeers.CarouselPeer)))
+				.forEach((e) => {carouselPage.tryAdd(e);});
+		}
+	}
 
-        const carouselPage = carouselPeer.getChildAt(0);
-
-        if (carouselPage instanceof DesignerPeers.CardElementPeer) {
-            // Filter the root peer's children for all non-carousel peers that are not forbidden child elements
-            // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
-            // Reassigning all elements to the carousel page ensures carousel's singleton behavior
-            const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
-            this._rootPeer.children.filter((child) => 
-                (!(child instanceof DesignerPeers.CarouselPeer) && 
-                !forbiddenChildElements.includes(child.getCardObject().getJsonTypeName())))
-                .forEach((e) => {carouselPage.tryAdd(e);});
-
-            // Remove forbidden elements from the remaining children
-            this._rootPeer.children.filter((child) => (!(child instanceof DesignerPeers.CarouselPeer) && (forbiddenChildElements.includes(child.getCardObject().getJsonTypeName())))).forEach((e) => {e.remove(false, true);});
-        }
-    }
+	private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
+		// Remove forbidden elements
+		peerToSearch.children.filter((child) => 
+			(!(child instanceof DesignerPeers.CarouselPeer) && 
+			forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
+			.forEach((e) => {
+				e.remove(false, true);
+			});
+		// If a peer is a container, we should see if it contains forbidden elements as well
+		peerToSearch.children.forEach((e) => {
+			if (!(e instanceof DesignerPeers.CarouselPeer) && e instanceof DesignerPeers.CardElementPeer 
+				&& (e.cardElement instanceof Adaptive.Container || e.cardElement instanceof Adaptive.StylableCardElementContainer)) {
+				this.searchAndRemoveForbiddenElements(e, forbiddenElements);
+			}        
+		});
+	}
 
     get rootPeer(): DesignerPeers.DesignerPeer {
         return this._rootPeer;
