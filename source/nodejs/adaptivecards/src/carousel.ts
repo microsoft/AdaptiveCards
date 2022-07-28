@@ -463,7 +463,7 @@ export class Carousel extends Container {
         });
 
         carousel.on('slideChangeTransitionEnd',  (swiper: Swiper) => {
-			this.currentIndex = swiper.realIndex;
+            this.currentIndex = swiper.realIndex;
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination); 
         });
 
@@ -496,9 +496,9 @@ export class Carousel extends Container {
         );
     }
 
-	slideTo(index: number) {
-		this._carousel?.slideTo(index);
-	}
+    slideTo(index: number) {
+        this._carousel?.slideTo(index);
+    }
 
     get carouselPageContainer() {
         return this._carouselPageContainer;
@@ -525,7 +525,7 @@ export class Carousel extends Container {
         const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
         // pagination event is triggered on slide transition end event 
         if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
-	    // returns the event type that causes slide transition
+        // returns the event type that causes slide transition
             onCarouselEventHandler(this.createCarouselEvent(this.previousEventType));
         }
         this.previousEventType = eventType;
