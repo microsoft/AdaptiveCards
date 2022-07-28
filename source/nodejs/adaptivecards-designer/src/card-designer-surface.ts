@@ -513,7 +513,6 @@ export class CardDesignerSurface {
         return null;
     }
 
-    // Question: does showCard always add to the end?
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
         let peer = this.findCardElementPeer(action.card);
 
@@ -522,6 +521,7 @@ export class CardDesignerSurface {
                 let registration = CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
 
                 peer = new registration.peerType(peer, this, registration, action.card);
+                peer.insertAfterNeighbor = true;
 
                 let parentPeer = this.findActionPeer(action);
 
@@ -533,7 +533,7 @@ export class CardDesignerSurface {
                 }
             }
             else {
-                peer.addElementsToDesignerSurface(this._designerSurface);
+                peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
             }
         }
         else {
@@ -924,7 +924,20 @@ export class CardDesignerSurface {
     getPeerDOMNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
         if (peer.parent) {
             let neighboringPeer = peer.parent;
-            if (peer instanceof DesignerPeers.CardElementPeer) {
+            if (neighboringPeer instanceof DesignerPeers.ActionSetPeer) {
+                // A new action is being added to an ActionSet, so we can add the ActionPeer as the last child element
+                const childCount = neighboringPeer.getChildCount();
+                if (childCount > 1) {
+                    // Subtract 2 because the child count already includes the action being currently added
+                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
+                }
+
+            } else if (neighboringPeer instanceof DesignerPeers.ActionPeer) {
+                // neighboringPeer should be the parent so we can get the last element in the actionSet
+                neighboringPeer = neighboringPeer.parent;
+                neighboringPeer = neighboringPeer.getChildAt(neighboringPeer.getChildCount() - 1);
+
+            } else if (peer instanceof DesignerPeers.CardElementPeer) {
 
                 // Get the index of the peer within its container
                 const peerIndex = peer.cardElement.index;
@@ -939,13 +952,6 @@ export class CardDesignerSurface {
                     }
                 }
                 
-            } else if (peer instanceof DesignerPeers.ActionPeer) {
-
-                // peer.parent should be an ActionSet, so we know that we can add the ActionPeer as the last child element
-                const childCount = neighboringPeer.getChildCount();
-                if (childCount > 1) {
-                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
-                }
             }
 
             return neighboringPeer.renderedElement;
