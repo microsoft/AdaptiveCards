@@ -1003,36 +1003,48 @@ export class CardDesignerSurface {
         }
     }
 
-	reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
-		const carouselPage = carouselPeer.getChildAt(0);
-		if (carouselPage instanceof DesignerPeers.CardElementPeer) {
-			// Filter the root peer's children for all non-carousel peers that are not forbidden child elements
-			// Then, reassign (via tryAdd) each element from the root peer to the current carousel page
-			// Reassigning all elements to the carousel page ensures carousel's singleton behavior
-			const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
-			this.searchAndRemoveForbiddenElements(this._rootPeer, forbiddenChildElements);
-		    this._rootPeer.children.filter((child) => 
-				(!(child instanceof DesignerPeers.CarouselPeer)))
-				.forEach((e) => {carouselPage.tryAdd(e);});
-		}
-	}
+    reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
+        const carouselPage = carouselPeer.getChildAt(0);
+        if (carouselPage instanceof DesignerPeers.CardElementPeer) {
+            // Filter the root peer's children for all non-carousel peers that are not forbidden child elements
+            // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
+            // Reassigning all elements to the carousel page ensures carousel's singleton behavior
+            const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
+            this.searchAndRemoveForbiddenElements(this._rootPeer, forbiddenChildElements);
+            this._rootPeer.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer)))
+                .forEach((e) => {carouselPage.tryAdd(e);});
+        }
+    }
 
-	private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
-		// Remove forbidden elements
-		peerToSearch.children.filter((child) => 
-			(!(child instanceof DesignerPeers.CarouselPeer) && 
-			forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
-			.forEach((e) => {
-				e.remove(false, true);
-			});
-		// If a peer is a container, we should see if it contains forbidden elements as well
-		peerToSearch.children.forEach((e) => {
-			if (!(e instanceof DesignerPeers.CarouselPeer) && e instanceof DesignerPeers.CardElementPeer 
-				&& (e.cardElement instanceof Adaptive.Container || e.cardElement instanceof Adaptive.StylableCardElementContainer)) {
-				this.searchAndRemoveForbiddenElements(e, forbiddenElements);
-			}        
-		});
-	}
+    private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
+        if (peerToSearch.children) {
+            // Remove forbidden elements
+            peerToSearch.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer) && 
+                forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
+                .forEach((e) => {
+                    e.remove(false, true);
+                });
+            // If a peer is a container, we should see if it contains forbidden elements as well
+            peerToSearch.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer) && child instanceof DesignerPeers.CardElementPeer 
+                && (child.cardElement instanceof Adaptive.Container || child.cardElement instanceof Adaptive.StylableCardElementContainer)))
+                .forEach((e) => {
+                    this.searchAndRemoveForbiddenElements(e, forbiddenElements);
+                });
+
+            // If the carousel was not dropped on the root peer, we should reassign it
+            peerToSearch.children.filter((child) => 
+                (child instanceof DesignerPeers.CarouselPeer))
+                .forEach((e) => {
+                    if (e.parent !== this._rootPeer) {
+                        this._rootPeer.tryAdd(e);
+                    }
+                })
+        }
+        
+    }
 
     get rootPeer(): DesignerPeers.DesignerPeer {
         return this._rootPeer;
