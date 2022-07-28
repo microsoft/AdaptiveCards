@@ -360,7 +360,7 @@ export class StringPropertyEditor extends BaseStringPropertyEditor {
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
                         clickedElement.setAttribute("aria-expanded", "true");
 
-                        // Question: why does FieldPicker need dataStructure?
+                        // TODO: Add host parameter to field picker
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
                             clickedElement.setAttribute("aria-expanded", "false");

@@ -74,7 +74,6 @@ export class CardDesigner extends Designer.DesignContext {
     private _sampleHostDataEditorToolbox: Toolbox;
     private _dataToolbox: Toolbox;
     private _assetPath: string;
-    // Question: what is _dataStructure used for?
     private _dataStructure: FieldDefinition;
     private _hostDataStructure: FieldDefinition;
     private _sampleData: any;
@@ -1547,9 +1546,6 @@ export class CardDesigner extends Designer.DesignContext {
 
     set hostDataStructure(value: FieldDefinition) {
         this._hostDataStructure = value;
-
-        // Question: Do we need a host data explorer?
-        // this.buildDataExplorer();
     }
 
     get sampleData(): any {
