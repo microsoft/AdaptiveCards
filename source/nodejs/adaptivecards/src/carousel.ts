@@ -7,13 +7,15 @@ import {
     Container,
     SerializationContext,
     ShowCardAction,
-    ToggleVisibilityAction
+    ToggleVisibilityAction,
+    RichTextBlock
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
     NumProperty,
     property,
     PropertyBag,
+    SerializableObjectProperty,
     SerializableObjectSchema,
     Versions
 } from "./serialization";
@@ -114,6 +116,10 @@ export class Carousel extends Container {
             this.timer = value;
         }
     }
+
+    static readonly headerProperty = new SerializableObjectProperty(Versions.v1_6, "header", RichTextBlock);
+    @property(Carousel.headerProperty)
+    header? : RichTextBlock;
 
     //#endregion
 
@@ -241,6 +247,15 @@ export class Carousel extends Container {
         const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
 
+        if (this.header) {
+            this.header.setParent(this);
+            let renderedHeader = this.header?.render();
+            if (renderedHeader) {
+                Utils.appendChild(cardLevelContainer, renderedHeader);
+                renderedHeader.className = this.hostConfig.makeCssClassName("ac-carousel-header");
+            }
+        }
+
         cardLevelContainer.appendChild(containerForAdorners);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
@@ -296,6 +311,7 @@ export class Carousel extends Container {
             "swiper-pagination",
             "ac-carousel-pagination"
         );
+
         containerForAdorners.appendChild(pagination);
 
         const requestedNumberOfPages: number = Math.min(

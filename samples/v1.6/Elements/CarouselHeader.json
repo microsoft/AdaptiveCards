@@ -1,0 +1,56 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": 
+	{
+		"type": "Carousel",
+		"header": {
+			"type": "RichTextBlock",
+			"inlines": [
+				{
+					"type": "TextRun",
+					"text": "Photo Album\r\r",
+					"size": "ExtraLarge"
+				}
+			],
+			"horizontalAlignment": "Center"
+		},
+		"pages": [
+			{
+				"type": "CarouselPage",
+				"id": "firstPage",
+				"items": [
+					{
+						"type": "Image",
+						"url": "https://picsum.photos/300",
+						"altText": "Cliff"
+					}
+				],
+				"rtl": false
+			},
+			{
+				"type": "CarouselPage",
+				"id": "secondPage",
+				"items": [
+					{
+						"type": "Image",
+						"url": "https://picsum.photos/300/300",
+						"altText": "rainy day"
+					}
+				]
+			},
+			{
+				"type": "CarouselPage",
+				"id": "thirdPage",
+				"items": [
+					{
+						"type": "Image",
+						"url": "https://picsum.photos/id/100/300/300",
+						"altText": "beach"
+					}
+				]
+			}
+		]
+	}
+}
