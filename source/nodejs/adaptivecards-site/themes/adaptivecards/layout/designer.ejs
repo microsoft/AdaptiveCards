@@ -305,6 +305,7 @@
 					"version": "1.0"
 				});
 			}
+			designer.sampleHostData = {};
 		}
 
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
@@ -314,6 +315,7 @@
 		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
 		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		ACDesigner.GlobalSettings.showSampleHostDataEditorToolbox = true;
 		ACDesigner.GlobalSettings.showVersionPicker = true;
 
 		<% if (page.previewFeaturesEnabled) { %>
