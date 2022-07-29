@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 project.ext {
     compileSdkVersion = 32
-    minSdkVersion = 19
+    minSdkVersion = 21
     // From sdk version 21 multidex is enabled by default
     uiTestAppMinSdkVersion = 21
     targetSdkVersion = 30
