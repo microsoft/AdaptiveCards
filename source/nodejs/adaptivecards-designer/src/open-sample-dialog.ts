@@ -9,7 +9,8 @@ import { Constants } from "adaptivecards-controls";
 
 export interface CardData {
     cardPayload?: string
-    sampleData?: string
+    sampleData?: string,
+    sampleHostData?: string,
     thumbnail?: HTMLElement | (() => HTMLElement)
 }
 
@@ -237,6 +238,7 @@ export class OpenSampleDialog extends Dialog {
                                                 return callback({
                                                     cardPayload: entry.cardPayload,
                                                     sampleData: entry.sampleData,
+                                                    sampleHostData: "{}",
                                                     thumbnail: card.renderedElement,
                                                 });
                                             }

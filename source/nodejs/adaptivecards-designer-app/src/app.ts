@@ -17,6 +17,7 @@ window.onload = function () {
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
     ACDesigner.GlobalSettings.showDataStructureToolbox = false;
     ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+    ACDesigner.GlobalSettings.showSampleHostDataEditorToolbox = true;
 
     // Uncomment to configure default toolbox titles
     /*

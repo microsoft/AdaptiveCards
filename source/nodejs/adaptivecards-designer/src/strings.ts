@@ -9,6 +9,9 @@ export class Strings {
         sampleDataEditor: {
             title: "SAMPLE DATA EDITOR"
         },
+        sampleHostDataEditor: {
+            title: "SAMPLE HOST DATA EDITOR"
+        },
         propertySheet: {
             title: "ELEMENT PROPERTIES",
             commands: {
