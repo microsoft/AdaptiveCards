@@ -408,7 +408,7 @@ export class CardDesignerSurface {
                 peer.renderedElement.style.display =  peer.isVisible() ? "initial" : "none";
 
                 // If we have a card element that we want to be selected after rendering, save the corresponding peer
-                if (this._persistentSelectedCardElement && this._persistentSelectedCardElement == peer.cardElement) {
+                if (this._persistentSelectedCardElement && this._persistentSelectedCardElement === peer.cardElement) {
                     this._persistentSelectedPeer = peer;
                     this._persistentSelectedCardElement = null;
                 }
@@ -647,6 +647,8 @@ export class CardDesignerSurface {
 
                 this._dragVisual.style.width = renderedCardObjectRect.width + "px";
                 this._dragVisual.style.height = renderedCardObjectRect.height + "px";
+
+                // When dragging on a new element, we set the zIndex higher so that it is always visible
                 this._dragVisual.style.zIndex = "500";
 
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
