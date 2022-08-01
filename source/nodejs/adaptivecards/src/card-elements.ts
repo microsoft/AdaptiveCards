@@ -2353,7 +2353,16 @@ export abstract class CardElementContainer extends CardElement {
             }
         }
 
-        // if not found in children, defer to parent implementation
+        // If not found in children, check the actions
+        for (let i = 0; i < this.getActionCount(); i++) {
+            target = this.getActionAt(i)?.findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in children or actions, defer to parent implementation
         return super.findDOMNodeOwner(node);
     }
 }
@@ -8309,6 +8318,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
     onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
