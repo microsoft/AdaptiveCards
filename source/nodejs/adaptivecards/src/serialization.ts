@@ -110,8 +110,8 @@ export class Versions {
     static readonly v1_5 = new Version(1, 5);
     // If preview tag is added/removed from any version,
     // don't forget to update .ac-schema-version-1-?::after too in adaptivecards-site\themes\adaptivecards\source\css\style.css
-    static readonly v1_6 = new Version(1, 6, "1.6 Preview");
-    static readonly latest = Versions.v1_5;
+    static readonly v1_6 = new Version(1, 6);
+    static readonly latest = Versions.v1_6;
     /* eslint-enable @typescript-eslint/naming-convention */
 
     static getAllDeclaredVersions(): Version[] {
