@@ -2040,7 +2040,11 @@ export class CardElementPeer extends DesignerPeer {
             );
         }
 
+        // If we are displaying a carousel, we need to make sure that all of the child peers are in the correct location
+        // First check if the carousel exists and we know the current carousel page
+        // Since the AdapativeCard, Carousel, and CarouselPage are not children elements, we should not adjust the location
         if (this.designerSurface.containsCarousel && this.designerSurface.currentCarouselPage && !(this instanceof AdaptiveCardPeer) && !(this instanceof CarouselPeer) && !(this instanceof CarouselPagePeer)) {
+            // If the peer location is not within the carousel page, we need to adjust it by the pageOffset
             if (!this.designerSurface.currentCarouselPage.peerInCorrectLocation({x: returnRect.x, y: returnRect.y})) {
                 returnRect.left = returnRect.left - this.designerSurface.currentCarouselPage.pageOffset;
                 returnRect.right = returnRect.right - this.designerSurface.currentCarouselPage.pageOffset;
