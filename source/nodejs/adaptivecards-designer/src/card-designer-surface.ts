@@ -177,8 +177,10 @@ export abstract class DesignContext {
     abstract get hostContainer(): HostContainer;
     abstract get targetVersion(): Adaptive.Version;
     abstract get dataStructure(): FieldDefinition;
+    abstract get hostDataStructure(): FieldDefinition;
     abstract get bindingPreviewMode(): BindingPreviewMode;
     abstract get sampleData(): any;
+    abstract get sampleHostData(): any;
 }
 
 export class CardDesignerSurface {
@@ -302,10 +304,14 @@ export class CardDesignerSurface {
                     let evaluationContext: ACData.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
+                        evaluationContext = { $root: this.context.sampleData, 
+                            $host: this.context.sampleHostData 
+                        };
                     }
                     else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData(),
+                            $host: this.context.hostDataStructure.dataType.generateSampleData()
+                        };
                     }
 
                     outputPayload = template.expand(evaluationContext);
@@ -681,10 +687,14 @@ export class CardDesignerSurface {
                     let evaluationContext: ACData.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
+                        evaluationContext = { $root: this.context.sampleData, 
+                            $host: this.context.sampleHostData 
+                        };
                     }
                     else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData(),
+                            $host: this.context.hostDataStructure.dataType.generateSampleData()
+                        };
                     }
 
                     let evaluationResult = ACData.Template.tryEvaluateExpression(expression, evaluationContext, true);

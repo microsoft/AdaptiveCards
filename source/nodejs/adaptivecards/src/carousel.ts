@@ -522,7 +522,11 @@ export class Carousel extends Container {
     }
 
     private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
-        const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
+        const card = this.parent ? (this.parent.getRootElement() as AdaptiveCard) : undefined;
+        const onCarouselEventHandler = 
+            card && card.onCarouselEvent
+                ? card.onCarouselEvent
+                : AdaptiveCard.onCarouselEvent;
         // pagination event is triggered on slide transition end event 
         if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
         // returns the event type that causes slide transition
