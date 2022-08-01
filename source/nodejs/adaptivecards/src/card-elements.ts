@@ -8506,7 +8506,8 @@ export class SerializationContext extends BaseSerializationContext {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
-            const oldForbiddenTypes = this._forbiddenTypes;
+            const oldForbiddenTypes = new Set<string>();
+            this._forbiddenTypes.forEach((type) => {oldForbiddenTypes.add(type)});
             forbiddenTypes.forEach((type) => {
                 this._forbiddenTypes.add(type);
             });
