@@ -1053,7 +1053,7 @@ export class CardDesignerSurface {
                     if (e.parent !== this._rootPeer) {
                         this._rootPeer.tryAdd(e);
                     }
-                })
+                });
         }
         
     }
