@@ -8318,6 +8318,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
     onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 

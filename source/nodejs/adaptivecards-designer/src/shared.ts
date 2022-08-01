@@ -4,6 +4,7 @@ export class GlobalSettings {
     static enableDataBindingSupport: boolean = false;
     static showDataStructureToolbox: boolean = false;
     static showSampleDataEditorToolbox: boolean = false;
+    static showSampleHostDataEditorToolbox: boolean = false;
     static showVersionPicker: boolean = false;
     static selectedHostContainerControlsTargetVersion: boolean = true;
     static showTargetVersionMismatchWarning: boolean = true;
