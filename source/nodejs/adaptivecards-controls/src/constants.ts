@@ -39,7 +39,7 @@ export class Constants {
         down: "ArrowDown",
         delete: "Delete",
         backspace: "Backspace",
-		left: "ArrowLeft",
-		right: "ArrowRight"
+        left: "ArrowLeft",
+        right: "ArrowRight"
     } as const;
 }
