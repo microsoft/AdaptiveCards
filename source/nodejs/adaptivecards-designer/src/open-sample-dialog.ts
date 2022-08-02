@@ -69,6 +69,16 @@ class OpenSampleItem {
                         (element.previousSibling as HTMLElement).focus();
                     }
                     break;
+				case Constants.keys.right:
+                    if (element.nextSibling) {
+                        (element.nextSibling as HTMLElement).focus();
+                    }
+                    break;
+                case Constants.keys.left:
+                    if (element.previousSibling) {
+                        (element.previousSibling as HTMLElement).focus();
+                    }
+                    break;
                 default:
                     break;
             }
