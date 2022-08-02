@@ -5847,10 +5847,17 @@ class ActionCollection {
 
         if (Array.isArray(source)) {
             for (const jsonAction of source) {
+                let forbiddenActions: string[] = [];
+
+                // If the action owner is a ContainerWithActions, we should check for forbidden actions
+                if (this._owner instanceof ContainerWithActions) {
+                    forbiddenActions = this._owner.getForbiddenActionNames();
+                }
+
                 const action = context.parseAction(
                     this._owner,
                     jsonAction,
-                    [],
+                    forbiddenActions,
                     !this._owner.isDesignMode()
                 );
 
@@ -7897,6 +7904,14 @@ export abstract class ContainerWithActions extends Container {
                 return this._actionCollection.expandedAction !== undefined;
             }
         }
+    }
+
+    getForbiddenActionNames(): string[] {
+        // If the container can host singletons, and the only child element is a carousel, we should restrict the actions.
+        if (this.canHostSingletons() && this.getItemCount() === 1 && this.getItemAt(0).getJsonTypeName() === "Carousel") {
+            return ["Action.ToggleVisibility", "Action.ShowCard"];
+        }
+        return [];
     }
 
     get isStandalone(): boolean {
