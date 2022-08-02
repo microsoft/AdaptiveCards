@@ -25,7 +25,9 @@ interface OpenSampleItemProps {
 }
 
 class OpenSampleItem {
-    onComplete: CardDataCallback
+    onComplete: CardDataCallback;
+    onNavigateToNextList?: () => void;
+    onNavigateToPreviousList?: () => void;
 
     constructor(readonly props: OpenSampleItemProps) { }
 
@@ -61,24 +63,16 @@ class OpenSampleItem {
                     }
                     break;
                 case Constants.keys.down:
-                    if (element.nextSibling) {
-                        (element.nextSibling as HTMLElement).focus();
-                    }
+                    this.navigateToNextElement(element);
                     break;
                 case Constants.keys.up:
-                    if (element.previousSibling) {
-                        (element.previousSibling as HTMLElement).focus();
-                    }
+                    this.navigateToPreviousElement(element);
                     break;
-				case Constants.keys.right:
-                    if (element.nextSibling) {
-                        (element.nextSibling as HTMLElement).focus();
-                    }
+                case Constants.keys.right:
+                    this.navigateToNextElement(element);
                     break;
                 case Constants.keys.left:
-                    if (element.previousSibling) {
-                        (element.previousSibling as HTMLElement).focus();
-                    }
+                    this.navigateToPreviousElement(element);
                     break;
                 default:
                     break;
@@ -132,6 +126,26 @@ class OpenSampleItem {
         return element;
     }
 
+    navigateToNextElement(element: HTMLElement) {
+        if (element.nextSibling) {
+            (element.nextSibling as HTMLElement).focus();
+        } else {
+            if (this.onNavigateToNextList) {
+                this.onNavigateToNextList();
+            }
+        }
+    }
+
+    navigateToPreviousElement(element: HTMLElement) {
+        if (element.previousSibling) {
+            (element.previousSibling as HTMLElement).focus();
+        } else {
+            if (this.onNavigateToPreviousList) {
+                this.onNavigateToPreviousList();
+            }
+        }
+    }
+
     onCardSelected() {
         if (this.onComplete) {
             if (this.props.cardData instanceof Function) {
@@ -153,6 +167,7 @@ export interface OpenSampleDialogProps {
 }
 
 export class OpenSampleDialog extends Dialog {
+    private _listElements: HTMLElement[] = [];
     private _output: CardData;
     private static _builtinItems: OpenSampleItemProps[] = [
         {
@@ -190,6 +205,7 @@ export class OpenSampleDialog extends Dialog {
         const listElement = document.createElement("div");
         listElement.className = "acd-open-sample-item-container";
         listElement.setAttribute("role", "list");
+        this._listElements.push(listElement);
 
         for (const item of items) {
             if (!item) continue;
@@ -197,6 +213,22 @@ export class OpenSampleDialog extends Dialog {
             itemElement.onComplete = (output: CardData) => {
                 this._output = output;
                 this.close();
+            }
+            itemElement.onNavigateToNextList = () => {
+                // Find the index of the current list
+                const currentIndex = this._listElements.indexOf(listElement);
+                // If the next index has a valid list, we want to navigate to the first element
+                if (this._listElements.at(currentIndex + 1)?.firstChild) {
+                    (this._listElements.at(currentIndex + 1).firstChild as HTMLElement).focus();
+                }
+            }
+            itemElement.onNavigateToPreviousList = () => {
+                // Find the index of the current list
+                const currentIndex = this._listElements.indexOf(listElement);
+                // If the previous index has a valid list, we want to navigate to the last element
+                if ((currentIndex - 1 >= 0) && this._listElements.at(currentIndex - 1)?.lastChild) {
+                    (this._listElements.at(currentIndex - 1).lastChild as HTMLElement).focus();
+                }
             }
 
             listElement.appendChild(itemElement.render());
