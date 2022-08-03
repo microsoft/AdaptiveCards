@@ -1,1 +1,41 @@
-{"name":"@microsoft/adaptivecards-ui-testapp","version":"1.1.0-alpha.0","description":"Harness for UI testing for the Adaptive Cards rendering library","author":"AdaptiveCards","license":"MIT","homepage":"https://adaptivecards.io","private":true,"keywords":["adaptivecards","adaptive","cards","microsoft","bot"],"main":"lib/adaptivecards-ui-testapp.js","types":"lib/adaptivecards-ui-testapp.d.ts","files":["dist","src"],"scripts":{"clean":"rimraf build lib dist","build":"webpack","watch":"webpack --watch","start":"webpack-dev-server --open","lint":"eslint src/**/*.ts","iterate":"webpack --cache --mode=production --progress","release":"npm run clean && webpack --mode=production"},"dependencies":{"adaptivecards-controls":"^0.10.0-alpha.0","remarkable":"^2.0.1"},"devDependencies":{"adaptive-expressions":"^4.11.0","adaptivecards":"^3.0.0-beta.2","adaptivecards-controls":"^0.9.0","adaptivecards-templating":"^2.3.0-alpha.0"}}
+{
+	"name": "@microsoft/adaptivecards-ui-testapp",
+	"version": "1.1.0-alpha.0",
+	"description": "Harness for UI testing for the Adaptive Cards rendering library",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"private": true,
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
+	"main": "lib/adaptivecards-ui-testapp.js",
+	"types": "lib/adaptivecards-ui-testapp.d.ts",
+	"files": [
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"clean": "rimraf build lib dist",
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"start": "webpack-dev-server --open",
+		"lint": "eslint src/**/*.ts",
+		"iterate": "webpack --cache --mode=production --progress",
+		"release": "npm run clean && webpack --mode=production"
+	},
+	"dependencies": {
+		"adaptivecards-controls": "^0.10.0-alpha.0",
+		"remarkable": "^2.0.1"
+	},
+	"devDependencies": {
+		"adaptive-expressions": "^4.11.0",
+		"adaptivecards": "^3.0.0-beta.2",
+		"adaptivecards-controls": "^0.9.0",
+		"adaptivecards-templating": "^2.3.0-alpha.0"
+	}
+}
