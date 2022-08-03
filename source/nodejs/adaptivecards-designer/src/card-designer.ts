@@ -9,7 +9,7 @@ import * as DesignerPeers from "./designer-peers";
 import { Pic2Card } from "./pic2card";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { OpenJsonSchemaDialog } from "./open-json-schema-dialog";
-import { HostContainer } from "./containers/host-container";
+import { ColorTheme, ContainerSize, HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
@@ -431,8 +431,16 @@ export class CardDesigner extends Designer.DesignContext {
         this.recreateDesignerSurface();
 
         if (this._deviceEmulationChoicePicker) {
-            this._deviceEmulationChoicePicker.isEnabled = !!this.hostContainer.enableDeviceEmulation
-            this.activeDeviceEmulationChanged()
+            this._deviceEmulationChoicePicker.isEnabled = !!this.hostContainer.enableDeviceEmulation;
+            this.activeDeviceEmulationChanged();
+        }
+
+        if (this._containerSizeChoicePicker) {
+            this._containerSizeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleSizes;
+        }
+
+        if (this._containerThemeChoicePicker) {
+            this._containerThemeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleThemes;
         }
 
         if (this.onActiveHostContainerChanged) {
@@ -664,6 +672,8 @@ export class CardDesigner extends Designer.DesignContext {
     private _togglePreviewButton: ToolbarButton;
     private _helpButton: ToolbarButton;
     private _preventRecursiveSetTargetVersion = false;
+    private _containerSizeChoicePicker: ToolbarChoicePicker;
+    private _containerThemeChoicePicker: ToolbarChoicePicker;
 
     private prepareToolbar() {
         if (Shared.GlobalSettings.showVersionPicker) {
@@ -901,6 +911,54 @@ export class CardDesigner extends Designer.DesignContext {
             this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
 
             this.updateFullLayout();
+        }
+
+        if (HostContainer.supportedContainerSizes) {
+            this._containerSizeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerSizePicker);
+            this._containerSizeChoicePicker.separator = true;
+            this._containerSizeChoicePicker.label = "Select container size:"
+
+            const sizes = HostContainer.supportedContainerSizes;
+
+            for (let i = 0; i < sizes.length; i++) {
+                this._containerSizeChoicePicker.choices.push(
+                    {
+                        name: sizes[i],
+                        value: sizes[i],
+                    }
+                );
+            }
+
+            this._containerSizeChoicePicker.onChanged = (sender) => {
+                this.hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
+                this.recreateDesignerSurface();
+            };
+
+            this.toolbar.addElement(this._containerSizeChoicePicker);
+        }
+
+        if (HostContainer.supportedContainerThemes) {
+            this._containerThemeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerThemePicker);
+            this._containerThemeChoicePicker.separator = true;
+            this._containerThemeChoicePicker.label = "Select color theme:"
+
+            const themes = HostContainer.supportedContainerThemes;
+
+            for (let i = 0; i < themes.length; i++) {
+                this._containerThemeChoicePicker.choices.push(
+                    {
+                        name: themes[i],
+                        value: themes[i],
+                    }
+                );
+            }
+
+            this._containerThemeChoicePicker.onChanged = (sender) => {
+                this.hostContainer.colorTheme = this._containerThemeChoicePicker.value as ColorTheme;
+                this.recreateDesignerSurface();
+            };
+
+            this.toolbar.addElement(this._containerThemeChoicePicker);
         }
     }
 
@@ -1274,6 +1332,14 @@ export class CardDesigner extends Designer.DesignContext {
 
         if (this._deviceEmulationChoicePicker) {
             this._deviceEmulationChoicePicker.isEnabled = !!this._hostContainer.enableDeviceEmulation;
+        }
+
+        if (this._containerSizeChoicePicker) {
+            this._containerSizeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleSizes;
+        }
+
+        if (this._containerThemeChoicePicker) {
+            this._containerThemeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleThemes;
         }
 
         root.classList.add("acd-designer-root");
@@ -1681,5 +1747,7 @@ export module CardDesigner {
         static readonly CopyJSON = "__copyJsonButton";
         static readonly TogglePreview = "__togglePreviewButton";
         static readonly Help = "__helpButton";
+        static readonly ContainerSizePicker = "__containerSizePicker";
+        static readonly ContainerThemePicker = "__containerThemePicker";
     }
 }

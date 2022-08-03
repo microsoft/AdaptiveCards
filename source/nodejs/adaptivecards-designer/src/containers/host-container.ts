@@ -3,17 +3,28 @@
 import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version, Versions } from "adaptivecards";
 import * as hostConfig from "../hostConfigs/sample.json";
 
+export enum ContainerSize {
+    Small = "Small",
+    Medium = "Medium",
+    Large = "Large"
+};
+
+export enum ColorTheme {
+    Light = "Light",
+    Dark = "Dark"
+};
+
 export abstract class HostContainer {
     private _cardHost: HTMLElement;
     private _elementsRegistry = new CardObjectRegistry<CardElement>();
     private _actionsRegistry = new CardObjectRegistry<Action>();
 
     readonly name: string;
-    readonly styleSheet: string;
+    private _styleSheet: string;
 
     constructor(name: string, styleSheet: string) {
         this.name = name;
-        this.styleSheet = styleSheet;
+        this._styleSheet = styleSheet;
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
@@ -79,5 +90,41 @@ export abstract class HostContainer {
 
     get enableDeviceEmulation(): boolean {
         return false;
+    }
+
+    // if various containers support different sizes in the future, we can override this method
+    static get supportedContainerSizes(): string[] {
+        return Object.values(ContainerSize);
+    }
+
+    get supportsMultipleSizes(): boolean {
+        // By default, we do not support different container sizes
+        return false;
+    }
+
+    // if various containers support different themes in the future, we can override this method
+    static get supportedContainerThemes(): string[] {
+        return Object.values(ColorTheme);
+    }
+
+    get supportsMultipleThemes(): boolean {
+        // By default, we do not support different color themes
+        return false;
+    }
+
+    set styleSheet(value: string) {
+        this._styleSheet = value;
+    }
+
+    get styleSheet() {
+        return this._styleSheet;
+    }
+
+    set containerSize(value: ContainerSize) {
+        // Not handled by the host container by default
+    }
+
+    set colorTheme(value: ColorTheme) {
+        // Not handled by the host container by default
     }
 }
