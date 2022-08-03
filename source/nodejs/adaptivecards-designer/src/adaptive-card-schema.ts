@@ -147,6 +147,7 @@ export const adaptiveCardSchema =
           "$ref": "#/definitions/Actions"
         },
         "body": {
+          "type": ["object", "array"],
           "description": "The Card Elements to show in the primary card region",
           "$ref": "#/definitions/CardElements"
         }
