@@ -2353,7 +2353,16 @@ export abstract class CardElementContainer extends CardElement {
             }
         }
 
-        // if not found in children, defer to parent implementation
+        // If not found in children, check the actions
+        for (let i = 0; i < this.getActionCount(); i++) {
+            target = this.getActionAt(i)?.findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in children or actions, defer to parent implementation
         return super.findDOMNodeOwner(node);
     }
 }
