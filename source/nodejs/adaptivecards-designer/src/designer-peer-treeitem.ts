@@ -1,7 +1,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { BaseTreeItem } from "./base-tree-item";
-import { DesignerPeer } from "./designer-peers";
+import { DesignerPeer, CardElementPeer } from "./designer-peers";
 
 export class DesignerPeerTreeItem extends BaseTreeItem {
     private computeLevel() {
@@ -57,5 +57,18 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
 
     getChildAt(index: number): BaseTreeItem {
         return this.owner.getChildAt(index).treeItem;
+    }
+
+    protected click(e: MouseEvent) {
+        super.click(e);
+
+        let currentPeer = this.owner;
+
+        while (currentPeer) {
+            if (currentPeer instanceof CardElementPeer && currentPeer.bringCardElementIntoView()) {
+                break;
+            }
+            currentPeer = currentPeer.parent;
+        }
     }
 }
