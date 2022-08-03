@@ -780,6 +780,10 @@ export abstract class CardElement extends CardObject {
     get parent(): CardElement | undefined {
         return <CardElement>this._parent;
     }
+
+    getElementSingletonBehavior(): ElementSingletonBehavior {
+        return ElementSingletonBehavior.NotAllowed;
+    }
 }
 
 export class ActionProperty extends PropertyDefinition {
@@ -2177,8 +2181,9 @@ export abstract class CardElementContainer extends CardElement {
         return false;
     }
 
+    // Carousel should always be forbidden unless it is singleton
     protected forbiddenChildElements(): string[] {
-        return [];
+        return ["Carousel"];
     }
 
     abstract getItemCount(): number;
@@ -2353,7 +2358,16 @@ export abstract class CardElementContainer extends CardElement {
             }
         }
 
-        // if not found in children, defer to parent implementation
+        // If not found in children, check the actions
+        for (let i = 0; i < this.getActionCount(); i++) {
+            target = this.getActionAt(i)?.findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in children or actions, defer to parent implementation
         return super.findDOMNodeOwner(node);
     }
 }
@@ -4308,6 +4322,12 @@ export class NumberInput extends Input {
     get value(): number | undefined {
         return this._numberInputElement ? this._numberInputElement.valueAsNumber : undefined;
     }
+
+    set value(value: number | undefined) {
+        if (value && this._numberInputElement) {
+            this._numberInputElement.value = value.toString();
+        }
+    }
 }
 
 export class DateInput extends Input {
@@ -5864,10 +5884,17 @@ class ActionCollection {
 
         if (Array.isArray(source)) {
             for (const jsonAction of source) {
+                let forbiddenActions: string[] = [];
+
+                // If the action owner is a ContainerWithActions, we should check for forbidden actions
+                if (this._owner instanceof ContainerWithActions) {
+                    forbiddenActions = this._owner.getForbiddenActionNames();
+                }
+
                 const action = context.parseAction(
                     this._owner,
                     jsonAction,
-                    [],
+                    forbiddenActions,
                     !this._owner.isDesignMode()
                 );
 
@@ -6914,7 +6941,6 @@ export class Container extends ContainerBase {
 
         let jsonItems = source[this.getItemsCollectionPropertyName()];
 
-        let parsingSingletonObject = false;
         if (
             !Array.isArray(jsonItems) &&
             typeof jsonItems === "object" &&
@@ -6924,20 +6950,26 @@ export class Container extends ContainerBase {
             if (typeName) {
                 const registration = context.elementRegistry.findByName(typeName);
                 if (registration?.singletonBehavior !== ElementSingletonBehavior.NotAllowed) {
-                    jsonItems = [jsonItems];
-                    parsingSingletonObject = true;
+                    const element = context.parseElement(
+                        this, 
+                        jsonItems, 
+                        [], 
+                        !this.isDesignMode(), 
+                        true
+                    );
+
+                    if (element) {
+                        this.insertItemAt(element, -1, true);
+                    }
                 }
             }
-        }
-
-        if (Array.isArray(jsonItems)) {
+        } else if (Array.isArray(jsonItems)) {
             for (const item of jsonItems) {
                 const element = context.parseElement(
                     this,
                     item,
                     this.forbiddenChildElements(),
-                    !this.isDesignMode(),
-                    parsingSingletonObject
+                    !this.isDesignMode()
                 );
 
                 if (element) {
@@ -6950,7 +6982,14 @@ export class Container extends ContainerBase {
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
-        context.serializeArray(target, this.getItemsCollectionPropertyName(), this._items);
+        const collectionPropertyName = this.getItemsCollectionPropertyName();
+
+        if ((this._items.length === 1) && (this._items[0].getElementSingletonBehavior() === ElementSingletonBehavior.Only)) {
+            // If the element is only allowed in a singleton context, parse it to an object instead of an array
+            context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
+        } else {
+            context.serializeArray(target, collectionPropertyName, this._items);
+        }
     }
 
     protected get isSelectable(): boolean {
@@ -7904,6 +7943,14 @@ export abstract class ContainerWithActions extends Container {
         }
     }
 
+    getForbiddenActionNames(): string[] {
+        // If the container can host singletons, and the only child element is a carousel, we should restrict the actions.
+        if (this.canHostSingletons() && this.getItemCount() === 1 && this.getItemAt(0).getJsonTypeName() === "Carousel") {
+            return ["Action.ToggleVisibility", "Action.ShowCard"];
+        }
+        return [];
+    }
+
     get isStandalone(): boolean {
         return false;
     }
@@ -8346,6 +8393,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
     onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
@@ -8504,19 +8552,23 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypes: Set<string>,
         allowFallback: boolean,
         createInstanceCallback: (typeName: string | undefined) => T | undefined,
-        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void
+        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void,
+        parsingSingletonObject: boolean = false
     ): T | undefined {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
-            const oldForbiddenTypes = this._forbiddenTypes;
+            const oldForbiddenTypes = new Set<string>();
+            this._forbiddenTypes.forEach((type) => {oldForbiddenTypes.add(type)});
             forbiddenTypes.forEach((type) => {
                 this._forbiddenTypes.add(type);
             });
 
             const typeName = Utils.parseString(source["type"]);
 
-            if (typeName && this._forbiddenTypes.has(typeName)) {
+            const ignoreForbiddenType = parsingSingletonObject && (typeName === "Carousel");
+
+            if (typeName && this._forbiddenTypes.has(typeName) && !ignoreForbiddenType) {
                 logParseEvent(typeName, Enums.TypeErrorType.ForbiddenType);
             } else {
                 let tryToFallback = false;
@@ -8589,7 +8641,8 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void
+        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void,
+        parsingSingletonObject: boolean = false
     ): T | undefined {
         const forbiddenTypes = new Set<string>(forbiddenTypeNames);
         const result = this.internalParseCardObject(
@@ -8598,7 +8651,8 @@ export class SerializationContext extends BaseSerializationContext {
             forbiddenTypes,
             allowFallback,
             createInstanceCallback,
-            logParseEvent
+            logParseEvent,
+            parsingSingletonObject
         );
 
         if (result !== undefined) {
@@ -8637,7 +8691,8 @@ export class SerializationContext extends BaseSerializationContext {
                         Strings.errors.elementTypeNotAllowed(typeName)
                     );
                 }
-            }
+            },
+            _parsingSingletonObject
         );
     }
 
