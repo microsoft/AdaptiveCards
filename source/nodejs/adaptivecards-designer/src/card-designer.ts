@@ -437,10 +437,32 @@ export class CardDesigner extends Designer.DesignContext {
 
         if (this._containerSizeChoicePicker) {
             this._containerSizeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleSizes;
+
+            // Update the host parameter data with the value of the choice picker
+            if (this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
+                this.updateHostDataSizeProperty();
+
+                // If the container properties do not align with the choice picker, update the property and recreate the designer surface
+                if (this._containerSizeChoicePicker.value !== this._hostContainer.containerSize) {
+                    this._hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
+                    this.recreateDesignerSurface();
+                }
+            }
         }
 
         if (this._containerThemeChoicePicker) {
             this._containerThemeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleThemes;
+
+            // Update the host parameter data with the value of the choice picker
+            if (this._containerThemeChoicePicker.isEnabled && this._sampleHostData) {
+                this.updateHostDataThemeProperty();
+
+                // If the container properties do not align with the choice picker, update the property and recreate the designer surface
+                if (this._containerThemeChoicePicker.value !== this._hostContainer.colorTheme) {
+                    this._hostContainer.colorTheme = this._containerThemeChoicePicker.value as ColorTheme;
+                    this.recreateDesignerSurface();
+                }
+            }
         }
 
         if (this.onActiveHostContainerChanged) {
@@ -792,6 +814,9 @@ export class CardDesigner extends Designer.DesignContext {
                             try {
                                 let sampleHostDataPayload = JSON.parse(dialog.output.sampleHostData);
 
+                                // Update the container property choice pickers because the host data payload has been updated
+                                this.updateContainerPropertyChoicePickers();
+
                                 this.setSampleHostDataPayload(sampleHostDataPayload);
                                 this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
                             } catch {
@@ -799,6 +824,10 @@ export class CardDesigner extends Designer.DesignContext {
                             }
                         } else {
                             this.setSampleHostDataPayload({});
+
+                            // Update the size and theme properties based on the current state of the choice pickers
+                            this.updateHostDataSizeProperty();
+                            this.updateHostDataThemeProperty();
                         }
                     }
                     if (newCardButton) {
@@ -930,8 +959,13 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._containerSizeChoicePicker.onChanged = (sender) => {
+                // Update container size and rerender the designer surface
                 this.hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
                 this.recreateDesignerSurface();
+
+                if (this._sampleHostData) {
+                    this.updateHostDataSizeProperty();
+                }
             };
 
             this.toolbar.addElement(this._containerSizeChoicePicker);
@@ -954,8 +988,13 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._containerThemeChoicePicker.onChanged = (sender) => {
+                // Update the container theme and rerender the designer surface
                 this.hostContainer.colorTheme = this._containerThemeChoicePicker.value as ColorTheme;
                 this.recreateDesignerSurface();
+
+                if (this._sampleHostData) {
+                    this.updateHostDataThemeProperty();
+                }
             };
 
             this.toolbar.addElement(this._containerThemeChoicePicker);
@@ -1000,6 +1039,9 @@ export class CardDesigner extends Designer.DesignContext {
                     try {
                         let sampleHostDataPayload = JSON.parse(dialog.output.sampleData);
 
+                        // Update the container property choice pickers because the host data payload has been updated
+                        this.updateContainerPropertyChoicePickers();
+
                         this.setSampleHostDataPayload(sampleHostDataPayload);
                         this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
                     } catch {
@@ -1007,6 +1049,10 @@ export class CardDesigner extends Designer.DesignContext {
                     }
                 } else {
                     this.setSampleHostDataPayload({});
+
+                    // Update the size and theme properties based on the current state of the choice pickers
+                    this.updateHostDataSizeProperty();
+                    this.updateHostDataThemeProperty();
                 }
             }
 
@@ -1094,10 +1140,92 @@ export class CardDesigner extends Designer.DesignContext {
         try {
             this._sampleHostData = JSON.parse(this.getCurrentSampleHostDataEditorPayload());
 
+            // Since we have new host data, we should update the container property choice pickers
+            this.updateContainerPropertyChoicePickers();
+
             this.scheduleUpdateCardFromJson();
         }
         catch {
             // Swallow expression, the payload isn't a valid JSON document
+        }
+    }
+
+    // Update the size property within the sample host data payload
+    private updateHostDataSizeProperty() {
+        if (this._containerSizeChoicePicker?.value) {
+            const value = this._containerSizeChoicePicker.value;
+            const currentValue = this._sampleHostData.Size || this._sampleHostData.size;
+
+            // only update the payload if the value has changed
+            if (currentValue !== value) {
+                if (this._sampleHostData.Size) {
+                    this._sampleHostData.Size = value;
+                } else {
+                    this._sampleHostData.size = value;
+                }
+    
+                this.setSampleHostDataPayload(this._sampleHostData);
+                this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
+            }
+        }
+    }
+
+    // Update the theme property within the sample host data payload
+    private updateHostDataThemeProperty() {
+        if (this._containerThemeChoicePicker?.value) {
+            const value = this._containerThemeChoicePicker.value;
+            const currentValue = this._sampleHostData.Theme || this._sampleHostData.theme;
+
+            // only update the payload if the value has changed
+            if (currentValue !== value) {
+                if (this._sampleHostData.Theme) {
+                    this._sampleHostData.Theme = value;
+                } else {
+                    this._sampleHostData.theme = value;
+                }
+        
+                this.setSampleHostDataPayload(this._sampleHostData);
+                this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
+            }
+        } 
+    }
+
+    // When host properties have been changed, we should make sure that the changes are reflected in the corresponding choice picker
+    private updateContainerPropertyChoicePickers() {
+        // check for both `size` and `Size` in the host data payload
+        if (this._containerSizeChoicePicker && (this._sampleHostData.size || this._sampleHostData.Size)) {
+            const size = ((this._sampleHostData.size || this._sampleHostData.Size) as String).toLowerCase();
+
+            // only update the choice picker if the value is different
+            if (size !== this._containerSizeChoicePicker.value.toLowerCase()) {
+                const choices = this._containerSizeChoicePicker.choices;
+
+                // search for the matching choice and update the selectedIndex
+                for (let i = 0; i < choices.length; i++) {
+                    if (choices.at(i).name.toLowerCase() === size) {
+                        this._containerSizeChoicePicker.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // check for both `theme` and `Theme` in the host data payload
+        if (this._containerThemeChoicePicker && (this._sampleHostData.theme || this._sampleHostData.Theme)) {
+            const theme = ((this._sampleHostData.theme || this._sampleHostData.Theme) as String).toLowerCase();
+
+            // only update the choice picker if the value is different
+            if (theme !== this._containerThemeChoicePicker.value.toLowerCase()) {
+                const choices = this._containerThemeChoicePicker.choices;
+
+                // search for the matching choice and update the selectedIndex
+                for (let i = 0; i < choices.length; i++) {
+                    if (choices.at(i).name.toLowerCase() === theme) {
+                        this._containerThemeChoicePicker.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     }
 
