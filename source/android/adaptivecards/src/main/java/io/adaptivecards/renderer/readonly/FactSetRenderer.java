@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 
+import java.util.Locale;
+
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.Fact;
@@ -103,6 +105,10 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
+            if (TextUtils.isEmpty(fact.GetLanguage()))
+            {
+                fact.SetLanguage(Locale.getDefault().getLanguage());
+            }
             DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
 
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
