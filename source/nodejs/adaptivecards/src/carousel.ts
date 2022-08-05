@@ -1,6 +1,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import {
+    AdaptiveCard,
     ActionType,
     CardElement,
     Container,
@@ -62,6 +63,26 @@ export class CarouselPage extends Container {
         return [ShowCardAction, ToggleVisibilityAction];
     }
 
+    getForbiddenChildElements(): string[] {
+        return this.forbiddenChildElements();
+    }
+
+    protected forbiddenChildElements(): string[] {
+        return [
+            ToggleVisibilityAction.JsonTypeName,
+            ShowCardAction.JsonTypeName,
+            "Media",
+            "ActionSet",
+            "Input.Text",
+            "Input.Date",
+            "Input.Time",
+            "Input.Number",
+            "Input.ChoiceSet",
+            "Input.Toggle",
+            ...super.forbiddenChildElements()
+        ];
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -77,6 +98,10 @@ export class CarouselPage extends Container {
     }
 
     get isStandalone(): boolean {
+        return false;
+    }
+
+    get hasVisibleSeparator(): boolean {
         return false;
     }
 }
@@ -108,17 +133,29 @@ export class Carousel extends Container {
     set timer(value: number | undefined) {
         if (value && value < this.hostConfig.carousel.minAutoplayDelay) {
             console.warn(Strings.errors.tooLittleTimeDelay);
-            this.timer = this.hostConfig.carousel.minAutoplayDelay;
+            this.setValue(Carousel.timerProperty, this.hostConfig.carousel.minAutoplayDelay);
         } else {
-            this.timer = value;
+            this.setValue(Carousel.timerProperty, value);
         }
     }
 
     //#endregion
 
+    get previousEventType(): Enums.CarouselInteractionEvent {
+        return this._previousEventType;
+    }
+
+    set previousEventType(eventType: Enums.CarouselInteractionEvent) {
+        this._previousEventType = eventType;
+    }
+
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
+    private _carouselPageContainer: HTMLElement;
+    private _currentIndex: number = 0;
+    private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
+    // Question: Why do we place this on the Carousel instead of the CarouselPage?
     protected forbiddenChildElements(): string[] {
         return [
             ToggleVisibilityAction.JsonTypeName,
@@ -139,12 +176,21 @@ export class Carousel extends Container {
         return "Carousel";
     }
 
+    getElementSingletonBehavior(): ElementSingletonBehavior {
+        return ElementSingletonBehavior.Only;
+    }
+
     getItemCount(): number {
         return this._pages.length;
     }
 
     getItemAt(index: number): CardElement {
         return this._pages[index];
+    }
+
+    addPage(page: CarouselPage) {
+        this._pages.push(page);
+        page.setParent(this);
     }
 
     removeItem(item: CardElement): boolean {
@@ -187,6 +233,10 @@ export class Carousel extends Container {
             return activeSlide.id;
         }
         return undefined;
+    }
+
+    get currentPageIndex(): number | undefined {
+        return this._carousel?.realIndex;
     }
 
     protected internalParse(source: any, context: SerializationContext) {
@@ -284,6 +334,13 @@ export class Carousel extends Container {
         );
         containerForAdorners.appendChild(pagination);
 
+        if (this.isDesignMode()) {
+            // If we are in design mode, we need to ensure these elements are in front of the peers
+            prevElementDiv.style.zIndex = "20";
+            nextElementDiv.style.zIndex = "20";
+            pagination.style.zIndex = "20";
+        }
+
         const requestedNumberOfPages: number = Math.min(
             this._pages.length,
             this.hostConfig.carousel.maxCarouselPages
@@ -308,9 +365,11 @@ export class Carousel extends Container {
 
         carouselContainer.appendChild(carouselWrapper);
 
-        carouselContainer.tabIndex = 0;
+        carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
 
         containerForAdorners.appendChild(carouselContainer);
+
+        this._carouselPageContainer = carouselContainer;
 
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
@@ -355,8 +414,9 @@ export class Carousel extends Container {
         paginationElement: HTMLElement,
         rtl: boolean | undefined
     ): void {
+
         const swiperOptions: SwiperOptions = {
-            loop: true,
+            loop: !this.isDesignMode(),
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
                 el: paginationElement,
@@ -372,7 +432,8 @@ export class Carousel extends Container {
             keyboard: {
                 enabled: true,
                 onlyInViewport: true
-            }
+            },
+            initialSlide: this._currentIndex
         };
 
         if (this.timer && !this.isDesignMode()) {
@@ -391,6 +452,23 @@ export class Carousel extends Container {
 
         carouselContainer.addEventListener("mouseleave", function (_event) {
             carousel.autoplay?.start();
+        });
+
+        carousel.on('navigationNext',  (swiper: Swiper) => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationNext);
+        });
+
+        carousel.on('navigationPrev',  (swiper: Swiper) => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationPrevious);
+        });
+
+        carousel.on('slideChangeTransitionEnd',  (swiper: Swiper) => {
+            this.currentIndex = swiper.realIndex;
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination); 
+        });
+
+        carousel.on('autoplay',  () => {
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
         this._carousel = carousel;
@@ -417,6 +495,52 @@ export class Carousel extends Container {
             }
         );
     }
+
+    slideTo(index: number) {
+        this._carousel?.slideTo(index);
+    }
+
+    get carouselPageContainer() {
+        return this._carouselPageContainer;
+    }
+
+    get currentIndex(): number {
+        return this._currentIndex;
+    }
+
+    set currentIndex(currentIndex: number) {
+        this._currentIndex = currentIndex;
+    }
+
+    private createCarouselEvent (type : Enums.CarouselInteractionEvent): CarouselEvent
+    {
+        let currentPageId : string | undefined;
+        if (this.currentPageIndex != undefined) {
+            currentPageId = this.getItemAt(this.currentPageIndex).id;
+        }
+        return new CarouselEvent(type, this.id, currentPageId, this.currentPageIndex);   
+    }
+
+    private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
+        const card = this.parent ? (this.parent.getRootElement() as AdaptiveCard) : undefined;
+        const onCarouselEventHandler = 
+            card && card.onCarouselEvent
+                ? card.onCarouselEvent
+                : AdaptiveCard.onCarouselEvent;
+        // pagination event is triggered on slide transition end event 
+        if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
+        // returns the event type that causes slide transition
+            onCarouselEventHandler(this.createCarouselEvent(this.previousEventType));
+        }
+        this.previousEventType = eventType;
+    }
+}
+
+export class CarouselEvent {
+    constructor(public type : Enums.CarouselInteractionEvent,
+        public carouselId : string | undefined,
+        public activeCarouselPageId : string | undefined,
+        public activeCarouselPageIndex : number | undefined) {}
 }
 
 GlobalRegistry.defaultElements.register(

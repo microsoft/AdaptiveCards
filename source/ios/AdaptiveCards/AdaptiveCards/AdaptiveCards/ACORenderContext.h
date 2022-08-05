@@ -15,6 +15,7 @@
 
 @interface ACORenderContext : NSObject
 
+@property (readonly) BOOL childHasSelectAction;
 @property (readonly) ACRRtl rtl;
 @property (readonly) BOOL hasSelectAction;
 @property (readonly) BOOL allHasActionIcons;

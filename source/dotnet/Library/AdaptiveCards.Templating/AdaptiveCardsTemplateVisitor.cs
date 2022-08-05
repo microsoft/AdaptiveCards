@@ -172,11 +172,19 @@ namespace AdaptiveCards.Templating
                 throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            var (value, error) = new ValueExpression("=" + jpath).TryGetValue(parentDataContext.AELMemory);
+            var (value, error) = new ValueExpression("=" + Regex.Unescape(jpath)).TryGetValue(parentDataContext.AELMemory);
             if (error == null)
             {
-                var serializedValue = JsonConvert.SerializeObject(value);
-                dataContext.Push(new DataContext(serializedValue, parentDataContext.RootDataContext));
+                if (value is JToken jvalue)
+                {
+                    dataContext.Push(new DataContext(jvalue, parentDataContext.RootDataContext));
+
+                }
+                else
+                {
+                    var serializedValue = JsonConvert.SerializeObject(value);
+                    dataContext.Push(new DataContext(serializedValue, parentDataContext.RootDataContext));
+                }
             }
             else
             {
@@ -665,21 +673,14 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                // if isTemplatedString, it's a leaf node, and if it's string, the text should be wrapped with double quotes
-                if (isTemplatedString && value is string) 
+                string s = JsonConvert.SerializeObject(value);
+                // after serialization, the double quotes should be removed
+                if (value is string && !isTemplatedString)
                 {
-                    result.Append('"');
-                    result.Append(value);
-                    result.Append('"');
+                    s = s.Substring(1, s.Length - 2);
                 }
-                else if (value is Boolean)
-                {
-                    result.Append(value.ToString().ToLower());
-                }
-                else
-                {
-                    result.Append(value);
-                }
+
+                result.Append(s);
             }
             else
             {
