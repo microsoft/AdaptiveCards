@@ -56,9 +56,11 @@ class OpenSampleItem {
         element.onkeyup = (e: KeyboardEvent) => {
             switch (e.key) {
                 case Constants.keys.enter:
+                    // If onKeyEnterEvent has been specified, we will follow that logic for selecting an OpenSampleItem
                     if (this.props.onKeyEnterEvent) {
                         this.props.onKeyEnterEvent(e);
                     } else {
+                        // If onKeyEnterEvent is not specified, we assume OpenSampleItem should be selected and loaded as usual
                         this.onCardSelected();
                     }
                     break;
@@ -218,7 +220,7 @@ export class OpenSampleDialog extends Dialog {
                 // Find the index of the current list
                 const currentIndex = this._listElements.indexOf(listElement);
                 // If the next index has a valid list, we want to navigate to the first element
-                if (this._listElements.at(currentIndex + 1)?.firstChild) {
+                if ((currentIndex !== -1) && (currentIndex + 1 < this._listElements.length) && this._listElements.at(currentIndex + 1)?.firstChild) {
                     (this._listElements.at(currentIndex + 1).firstChild as HTMLElement).focus();
                 }
             }
@@ -226,7 +228,7 @@ export class OpenSampleDialog extends Dialog {
                 // Find the index of the current list
                 const currentIndex = this._listElements.indexOf(listElement);
                 // If the previous index has a valid list, we want to navigate to the last element
-                if ((currentIndex - 1 >= 0) && this._listElements.at(currentIndex - 1)?.lastChild) {
+                if ((currentIndex !== -1) && (currentIndex - 1 >= 0) && this._listElements.at(currentIndex - 1)?.lastChild) {
                     (this._listElements.at(currentIndex - 1).lastChild as HTMLElement).focus();
                 }
             }
