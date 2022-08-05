@@ -22,6 +22,7 @@ export class BerlinContainer extends HostContainer {
     }
 
     public renderTo(hostElement: HTMLElement) {
+        this.cardHost.classList.remove("berlin-small-card", "berlin-medium-card", "berlin-large-card");
         this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
         const outerFrame = document.createElement("div");
         outerFrame.classList.add("berlin-outer-container");
