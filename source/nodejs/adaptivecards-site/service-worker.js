@@ -5,6 +5,14 @@ workbox.setConfig({
   modulePathPrefix: "node_modules/workbox/"
 });
 
+self.addEventListener("install", (e) => {
+     self.skipWaiting();
+})
+
+self.addEventListener("activate", (e) => {
+    e.waitUntil(clients.claim());
+})
+
 // Precache all files from workbox-config
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
