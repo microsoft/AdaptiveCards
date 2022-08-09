@@ -1,42 +1,40 @@
 .ac-adaptiveCard {
     border: 0px;
     padding: 48px 16px 16px 16px !important;
-    border-radius: 4px !important;
+    border-radius: 8px !important;
 }
 
 .berlin-outer-container {
     border: 1px solid rgba(0, 0, 0, 0.0578);
-    padding: 1px 1px;
-    background: linear-gradient(rgba(246, 246, 246, 0.5), rgba(246, 246, 246, 0.5)), linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+    background: #f6f6f6;
     width: 300px;
     border-radius: 8px;
-	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.065);
 	box-sizing: border-box;
+	position: relative;
 }
 
 .berlin-header {
-    height: 40px;
-    width: 300px;
+    height: 48px;
+    width: 298px;
     position: absolute;
     z-index: 1;
     display: flex;
     justify-content: space-around;
-    border: 1px dashed green
+	padding: 16px;
+	border-radius: 8px 8px 0px 0px;
 }
 
 .berlin-large-container {
-    width: 304px;
-    height: 466px;
+    height: 462px;
 }
 
 .berlin-medium-container {
-    width: 304px;
-    height: 308px;
+    height: 304px;
 }
 
 .berlin-small-container {
-    width: 304px;
-    height: 150px;
+    height: 146px;
 }
 
 
@@ -368,4 +366,32 @@ a.ac-anchor:hover {
 .swiper-pagination-bullet.swiper-pagination-bullet-active{
 	height:6px !important;
 	width:6px !important;
+}
+
+.berlin-header-text {
+	margin: auto;
+	margin-left: 0px;
+	font-size: 12px;
+	line-height: 16px;
+	color: rgba(0, 0, 0, 0.8956);
+}
+
+.berlin-header-add-button {
+	height: 16px;
+	width: 16px;
+	background: inherit;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 16px;
+	color: rgba(0, 0, 0, 0.8956);
+	border-radius: 2px;
+	margin: auto;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+.berlin-header-add-button::before {
+	font-family: 'FabricMDL2Icons';
+	content: "\E712";
 }
