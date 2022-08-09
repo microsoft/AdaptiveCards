@@ -118,3 +118,69 @@ All elements not mentioned above are allowed inside a carousel.
 
 - [ ] Should custom elements (card elements **and** actions) be allowed in carousel? Controllable by custom element author?
 - [ ] Should we rethink allowing carousel cards inside of an `Action.ShowCard`?
+
+# Header with Per Line Text Style
+Supporting different text styling such as different fonts per line of text is not a must for this feature but we have to consider it as customers may request for it in the future.
+
+![image](https://user-images.githubusercontent.com/4112696/183519757-156a18a9-73e7-47d9-8e00-ad84d0070f99.png)
+
+
+In order to make the current implementation future proof such that it won't require us investing in this area repeatedly, there are four options we can consider. 
+   
+**option 1**: Use TextBlock and defer implementing line specific styling until it's asked as it's not required.
+
+**option 2a**: Use RichTextBlock, and add `style` option to RichTextBlock's TextRun as we did for TextBlock.
+
+**option 2b**: Use RichTextBlock, and have Carousel renderer to set header a11y role to the inlines.
+
+**option 3**: Use Container and leave it to Card author to update a11y role header using TextBlock.  
+
+###  Example of  proposed new schema of 2a
+```json
+"header": 
+{
+      "type": "RichTextBlock",
+      "inlines": [
+        "This is the first inline. ",
+        {
+          "type": "TextRun",
+          "text": "We support colors,",
+          "color": "good",
+          "style": "header"
+        }
+    ]
+}
+```
+
+## option 1: 
+### pro: 
+Easy to implement and ready to ship.
+### cons:
+Could force users to change their old payload.
+## option 2a:
+### pro:
+Meets all of the requirement and fairly easy to implement
+### con:
+Must implement for all of the renders at some point; verification and publishing patches for them
+## option 2b:
+### pro:
+Same pro of option2a + doesn't have to implement for all of the renderers since a11y role is implemented at the carousel renderer.
+### cons:
+All of TextRuns in RichTextBlock get the a11y header role; there isn't way to designate a specific TextRun to be a a11y header.
+## option 3:
+### pro:
+Gives the author the most options to implement their design vision
+### con:
+We have to clearly communicate that `Container` has to be a parent element to users.
+Can be cumbersome to use if user just wants to have a simple text based header.
+Issues of enforcing forbidden items. Should we enforce the same policy of Carousel to it?
+Will the policy diverge in the future, and if so, how do we keep track and maintain it?
+
+# Spacing
+This feature applies to spacing between header and carousel.
+
+## option 1
+Have users to specify spacing by using new line characters such as '\n' and '\r'.
+
+## option 2
+Make use of spacing property in Carousel
