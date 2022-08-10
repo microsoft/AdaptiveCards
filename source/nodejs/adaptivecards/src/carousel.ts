@@ -270,6 +270,7 @@ export class Carousel extends Container {
         }
 
         const cardLevelContainer: HTMLElement = document.createElement("div");
+        cardLevelContainer.className = this.hostConfig.makeCssClassName("ac-carousel-card-level-container");
 
         const carouselContainer: HTMLElement = document.createElement("div");
         carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
