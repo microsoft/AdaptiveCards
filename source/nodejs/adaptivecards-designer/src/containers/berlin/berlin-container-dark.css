@@ -375,7 +375,7 @@ a.ac-anchor:hover {
     color: #FFFFFF;
 }
 
-.berlin-header-add-button {
+.berlin-header-more-button {
     height: 16px;
     width: 16px;
     background: inherit;
@@ -390,7 +390,7 @@ a.ac-anchor:hover {
     margin-left: 0px;
 }
 
-.berlin-header-add-button::before {
+.berlin-header-more-button::before {
     font-family: 'FabricMDL2Icons';
     content: "\E712";
 }
