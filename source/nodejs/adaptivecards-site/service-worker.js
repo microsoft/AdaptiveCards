@@ -59,7 +59,7 @@ function registerNetworkFirst(destinationType, cache, entries) {
 }
 
 // TODO: could register routes with regex if we want to be more precise with caching
-registerNetworkFirst("document", "HTML_CACHE", 10)
+registerNetworkFirst("document", HTML_CACHE, 10)
 registerNetworkFirst("script", JS_CACHE, 15);
 registerNetworkFirst("style", STYLE_CACHE, 15);
 registerNetworkFirst("image", IMAGE_CACHE, 15);
