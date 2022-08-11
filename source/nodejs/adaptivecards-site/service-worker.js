@@ -42,27 +42,12 @@ workbox.routing.registerRoute(
   })
 );
 
-// TODO: could register routes with regex if we want to be more precise with caching
-workbox.routing.registerRoute(
-  ({ event }) => {
-    return event.request.destination === "document";
-  },
-  new workbox.strategies.NetworkFirst({
-    cacheName: HTML_CACHE,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 10
-      })
-    ]
-  })
-);
-
-function registerStaleWhileRevalidate(destinationType, cache, entries) {
+function registerNetworkFirst(destinationType, cache, entries) {
   workbox.routing.registerRoute(
     ({ event }) => {
       return event.request.destination === destinationType;
     },
-    new workbox.strategies.StaleWhileRevalidate({
+    new workbox.strategies.NetworkFirst({
       cacheName: cache,
       plugins: [
         new workbox.expiration.ExpirationPlugin({
@@ -73,11 +58,13 @@ function registerStaleWhileRevalidate(destinationType, cache, entries) {
   );
 }
 
-registerStaleWhileRevalidate("script", JS_CACHE, 15);
-registerStaleWhileRevalidate("style", STYLE_CACHE, 15);
-registerStaleWhileRevalidate("image", IMAGE_CACHE, 15);
-registerStaleWhileRevalidate("font", FONT_CACHE, 15);
+// TODO: could register routes with regex if we want to be more precise with caching
+registerNetworkFirst("document", "HTML_CACHE", 10)
+registerNetworkFirst("script", JS_CACHE, 15);
+registerNetworkFirst("style", STYLE_CACHE, 15);
+registerNetworkFirst("image", IMAGE_CACHE, 15);
+registerNetworkFirst("font", FONT_CACHE, 15);
 
 // This route mostly caches payloads
 // We allow for a high cache so the sample cards and data are stored
-registerStaleWhileRevalidate("", DEFAULT_CACHE, 100);
+registerNetworkFirst("", DEFAULT_CACHE, 100);
