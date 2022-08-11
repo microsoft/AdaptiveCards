@@ -58,7 +58,7 @@ export class BerlinContainer extends HostContainer {
     }
 
     get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_5;
+        return Adaptive.Versions.v1_6;
     }
 
     get isFixedHeight(): boolean {
