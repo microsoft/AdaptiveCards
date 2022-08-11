@@ -69,9 +69,9 @@ export class BerlinContainer extends HostContainer {
         return this._colorTheme === ColorTheme.Light ? "#D2D2D2" : "#616161";
     }
 
-    get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_5;
-    }
+	get targetVersion(): Adaptive.Version {
+		return Adaptive.Versions.v1_6;
+	}
 
     public static allContainers(): BerlinContainer[] {
         let containers: BerlinContainer[] = [];
