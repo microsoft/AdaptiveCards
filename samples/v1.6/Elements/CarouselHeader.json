@@ -2,20 +2,23 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.6",
-	"body": 
-	{
+	"body": {
 		"type": "Carousel",
-		"header": {
-			"type": "RichTextBlock",
-			"inlines": [
-				{
-					"type": "TextRun",
-					"text": "Photo Album\r\r",
-					"size": "ExtraLarge"
-				}
-			],
-			"horizontalAlignment": "Center"
-		},
+		"header": [
+			{
+				"type": "TextBlock",
+				"text": "Photo Album",
+				"size": "ExtraLarge",
+				"style": "heading",
+				"horizontalAlignment": "Center"
+			},
+			{
+				"text": "Landscapes",
+				"size": "Large",
+				"horizontalAlignment": "Center"
+			}
+		],
+		"spacing": "Small",
 		"pages": [
 			{
 				"type": "CarouselPage",
@@ -23,11 +26,10 @@
 				"items": [
 					{
 						"type": "Image",
-						"url": "https://picsum.photos/300",
-						"altText": "Cliff"
+						"url": "https://picsum.photos/id/100/300/300",
+						"altText": "beach"
 					}
-				],
-				"rtl": false
+				]
 			},
 			{
 				"type": "CarouselPage",
@@ -35,8 +37,8 @@
 				"items": [
 					{
 						"type": "Image",
-						"url": "https://picsum.photos/300/300",
-						"altText": "rainy day"
+						"url": "https://picsum.photos/id/110/300/300",
+						"altText": "sunset"
 					}
 				]
 			},
@@ -46,8 +48,8 @@
 				"items": [
 					{
 						"type": "Image",
-						"url": "https://picsum.photos/id/100/300/300",
-						"altText": "beach"
+						"url": "https://picsum.photos/id/120/300/300",
+						"altText": "starlit night sky"
 					}
 				]
 			}

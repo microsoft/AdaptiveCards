@@ -8,14 +8,15 @@ import {
     SerializationContext,
     ShowCardAction,
     ToggleVisibilityAction,
-    RichTextBlock
+    TextBlock,
+    renderSeparation
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
     NumProperty,
     property,
     PropertyBag,
-    SerializableObjectProperty,
+    SerializableObjectCollectionProperty,
     SerializableObjectSchema,
     Versions
 } from "./serialization";
@@ -141,9 +142,9 @@ export class Carousel extends Container {
         }
     }
 
-    static readonly headerProperty = new SerializableObjectProperty(Versions.v1_6, "header", RichTextBlock);
+    static readonly headerProperty = new SerializableObjectCollectionProperty(Versions.v1_6, "header", TextBlock);
     @property(Carousel.headerProperty)
-    header? : RichTextBlock;
+    header? : TextBlock[];
 
     //#endregion
 
@@ -159,6 +160,7 @@ export class Carousel extends Container {
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
     private _currentIndex: number = 0;
+    private _renderedHeaders: HTMLElement[] = [];
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
     // Question: Why do we place this on the Carousel instead of the CarouselPage?
@@ -285,11 +287,20 @@ export class Carousel extends Container {
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
 
         if (this.header) {
-            this.header.setParent(this);
-            let renderedHeader = this.header?.render();
-            if (renderedHeader) {
-                Utils.appendChild(cardLevelContainer, renderedHeader);
-                renderedHeader.className = this.hostConfig.makeCssClassName("ac-carousel-header");
+            for (let adaptiveTextBlock of this.header as Array<CardElement>)
+            {
+                adaptiveTextBlock.setParent(this);
+                let renderedHeader = adaptiveTextBlock.render();
+                if (renderedHeader) {
+                    if (this._renderedHeaders.length > 0 && adaptiveTextBlock.separatorElement) {
+                        adaptiveTextBlock.separatorElement.style.flex = "0 0 auto";
+
+                        Utils.appendChild(cardLevelContainer, adaptiveTextBlock.separatorElement);
+                    }
+
+                    Utils.appendChild(cardLevelContainer, renderedHeader);
+                    this._renderedHeaders.push(renderedHeader);
+                }
             }
         }
 
@@ -378,6 +389,21 @@ export class Carousel extends Container {
                     this._renderedPages.push(page);
                 }
             }
+        }
+
+        if (this._renderedHeaders.length > 0 && this._renderedPages.length > 0) {
+            Utils.appendChild(
+                carouselContainer,
+                renderSeparation(
+                    this.hostConfig,
+                    {
+                        spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
+                        lineThickness: this.separator ? this.hostConfig.separator.lineThickness : undefined,
+                        lineColor: this.separator ? this.hostConfig.separator.lineColor : undefined
+                    },
+                    Enums.Orientation.Horizontal
+                )
+            );
         }
 
         carouselContainer.appendChild(carouselWrapper);
