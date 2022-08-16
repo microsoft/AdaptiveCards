@@ -65,6 +65,26 @@ export class CarouselPage extends Container {
         return [ShowCardAction, ToggleVisibilityAction];
     }
 
+    getForbiddenChildElements(): string[] {
+        return this.forbiddenChildElements();
+    }
+
+    protected forbiddenChildElements(): string[] {
+        return [
+            ToggleVisibilityAction.JsonTypeName,
+            ShowCardAction.JsonTypeName,
+            "Media",
+            "ActionSet",
+            "Input.Text",
+            "Input.Date",
+            "Input.Time",
+            "Input.Number",
+            "Input.ChoiceSet",
+            "Input.Toggle",
+            ...super.forbiddenChildElements()
+        ];
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -80,6 +100,10 @@ export class CarouselPage extends Container {
     }
 
     get isStandalone(): boolean {
+        return false;
+    }
+
+    get hasVisibleSeparator(): boolean {
         return false;
     }
 }
@@ -111,9 +135,9 @@ export class Carousel extends Container {
     set timer(value: number | undefined) {
         if (value && value < this.hostConfig.carousel.minAutoplayDelay) {
             console.warn(Strings.errors.tooLittleTimeDelay);
-            this.timer = this.hostConfig.carousel.minAutoplayDelay;
+            this.setValue(Carousel.timerProperty, this.hostConfig.carousel.minAutoplayDelay);
         } else {
-            this.timer = value;
+            this.setValue(Carousel.timerProperty, value);
         }
     }
 
@@ -133,8 +157,11 @@ export class Carousel extends Container {
 
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
+    private _carouselPageContainer: HTMLElement;
+    private _currentIndex: number = 0;
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
+    // Question: Why do we place this on the Carousel instead of the CarouselPage?
     protected forbiddenChildElements(): string[] {
         return [
             ToggleVisibilityAction.JsonTypeName,
@@ -155,12 +182,21 @@ export class Carousel extends Container {
         return "Carousel";
     }
 
+    getElementSingletonBehavior(): ElementSingletonBehavior {
+        return ElementSingletonBehavior.Only;
+    }
+
     getItemCount(): number {
         return this._pages.length;
     }
 
     getItemAt(index: number): CardElement {
         return this._pages[index];
+    }
+
+    addPage(page: CarouselPage) {
+        this._pages.push(page);
+        page.setParent(this);
     }
 
     removeItem(item: CardElement): boolean {
@@ -240,6 +276,7 @@ export class Carousel extends Container {
         }
 
         const cardLevelContainer: HTMLElement = document.createElement("div");
+        cardLevelContainer.className = this.hostConfig.makeCssClassName("ac-carousel-card-level-container");
 
         const carouselContainer: HTMLElement = document.createElement("div");
         carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
@@ -314,6 +351,13 @@ export class Carousel extends Container {
 
         containerForAdorners.appendChild(pagination);
 
+        if (this.isDesignMode()) {
+            // If we are in design mode, we need to ensure these elements are in front of the peers
+            prevElementDiv.style.zIndex = "20";
+            nextElementDiv.style.zIndex = "20";
+            pagination.style.zIndex = "20";
+        }
+
         const requestedNumberOfPages: number = Math.min(
             this._pages.length,
             this.hostConfig.carousel.maxCarouselPages
@@ -338,9 +382,11 @@ export class Carousel extends Container {
 
         carouselContainer.appendChild(carouselWrapper);
 
-        carouselContainer.tabIndex = 0;
+        carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
 
         containerForAdorners.appendChild(carouselContainer);
+
+        this._carouselPageContainer = carouselContainer;
 
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
@@ -385,8 +431,9 @@ export class Carousel extends Container {
         paginationElement: HTMLElement,
         rtl: boolean | undefined
     ): void {
+
         const swiperOptions: SwiperOptions = {
-            loop: true,
+            loop: !this.isDesignMode(),
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
                 el: paginationElement,
@@ -402,7 +449,8 @@ export class Carousel extends Container {
             keyboard: {
                 enabled: true,
                 onlyInViewport: true
-            }
+            },
+            initialSlide: this._currentIndex
         };
 
         if (this.timer && !this.isDesignMode()) {
@@ -423,16 +471,17 @@ export class Carousel extends Container {
             carousel.autoplay?.start();
         });
 
-        carousel.on('navigationNext',  () => {
+        carousel.on('navigationNext',  (swiper: Swiper) => {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationNext);
         });
 
-        carousel.on('navigationPrev',  () => {
+        carousel.on('navigationPrev',  (swiper: Swiper) => {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.NavigationPrevious);
         });
 
-        carousel.on('slideChangeTransitionEnd',  () => {
-            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination);
+        carousel.on('slideChangeTransitionEnd',  (swiper: Swiper) => {
+            this.currentIndex = swiper.realIndex;
+            this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Pagination); 
         });
 
         carousel.on('autoplay',  () => {
@@ -464,6 +513,22 @@ export class Carousel extends Container {
         );
     }
 
+    slideTo(index: number) {
+        this._carousel?.slideTo(index);
+    }
+
+    get carouselPageContainer() {
+        return this._carouselPageContainer;
+    }
+
+    get currentIndex(): number {
+        return this._currentIndex;
+    }
+
+    set currentIndex(currentIndex: number) {
+        this._currentIndex = currentIndex;
+    }
+
     private createCarouselEvent (type : Enums.CarouselInteractionEvent): CarouselEvent
     {
         let currentPageId : string | undefined;
@@ -474,10 +539,14 @@ export class Carousel extends Container {
     }
 
     private raiseCarouselEvent(eventType : Enums.CarouselInteractionEvent) {
-        const onCarouselEventHandler = AdaptiveCard.onCarouselEvent;
+        const card = this.parent ? (this.parent.getRootElement() as AdaptiveCard) : undefined;
+        const onCarouselEventHandler = 
+            card && card.onCarouselEvent
+                ? card.onCarouselEvent
+                : AdaptiveCard.onCarouselEvent;
         // pagination event is triggered on slide transition end event 
         if (onCarouselEventHandler && eventType == Enums.CarouselInteractionEvent.Pagination) {
-	    // returns the event type that causes slide transition
+        // returns the event type that causes slide transition
             onCarouselEventHandler(this.createCarouselEvent(this.previousEventType));
         }
         this.previousEventType = eventType;
