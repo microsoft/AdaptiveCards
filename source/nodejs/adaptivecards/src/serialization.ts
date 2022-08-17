@@ -1086,10 +1086,23 @@ export abstract class SerializableObject {
         }
     }
 
-    protected getValue(prop: PropertyDefinition): any {
-        return this._propertyBag.hasOwnProperty(prop.getInternalName())
-            ? this._propertyBag[prop.getInternalName()]
-            : prop.defaultValue;
+    protected getValue(prop: PropertyDefinition, overrideProperty: boolean = false): any {
+        const name = prop.getInternalName();
+        if (this._propertyBag.hasOwnProperty(name)) {
+            const currentValue = this._propertyBag[name];
+
+            if (overrideProperty && this._rawProperties.hasOwnProperty(name)) {
+                const overrideValue = this._rawProperties[name];
+
+                if (currentValue !== overrideValue && typeof overrideValue === "string" && overrideValue.includes("${")) {
+                    return overrideValue;
+                }
+            }
+            return currentValue;
+        } else if (overrideProperty && this._rawProperties.hasOwnProperty(name)) {
+            return this._rawProperties[name];
+        }
+        return prop.defaultValue;
     }
 
     protected setValue(prop: PropertyDefinition, value: any) {
@@ -1154,7 +1167,7 @@ export abstract class SerializableObject {
                 prop.targetVersion.compareTo(context.targetVersion) <= 0 &&
                 serializedProperties.indexOf(prop.name) === -1
             ) {
-                prop.toJSON(this, target, this.getValue(prop), context);
+                prop.toJSON(this, target, this.getValue(prop, GlobalSettings.enableFullJsonRoundTrip), context);
 
                 serializedProperties.push(prop.name);
             }
