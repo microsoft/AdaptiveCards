@@ -33,12 +33,14 @@ export class BerlinContainer extends HostContainer {
         outerFrame.appendChild(header);
 
         const headerText = document.createElement("p");
+        headerText.className = "berlin-header-text";
         headerText.textContent = "Berlin Header";
         header.appendChild(headerText);
 
-        const moreButton = document.createElement("button");
-        moreButton.className = "berlin-header-add-button";
-        moreButton.textContent = "...";
+        const moreButton = document.createElement("div");
+        moreButton.className = "berlin-header-more-button";
+        moreButton.setAttribute("role", "button");
+        moreButton.tabIndex = 0;
         header.appendChild(moreButton);
 
         const innerFrame = document.createElement("div");
