@@ -1086,20 +1086,20 @@ export abstract class SerializableObject {
         }
     }
 
-    protected getValue(prop: PropertyDefinition, overrideProperty: boolean = false): any {
+    protected getValue(prop: PropertyDefinition, shouldOverrideProperty: boolean = false): any {
         const name = prop.getInternalName();
         if (this._propertyBag.hasOwnProperty(name)) {
-            const currentValue = this._propertyBag[name];
+            const propertyBagValue = this._propertyBag[name];
 
-            if (overrideProperty && this._rawProperties.hasOwnProperty(name)) {
-                const overrideValue = this._rawProperties[name];
+            if (shouldOverrideProperty && this._rawProperties.hasOwnProperty(name)) {
+                const rawPropertyValue = this._rawProperties[name];
 
-                if (currentValue !== overrideValue && typeof overrideValue === "string" && overrideValue.includes("${")) {
-                    return overrideValue;
+                if (propertyBagValue !== rawPropertyValue && typeof rawPropertyValue === "string" && rawPropertyValue.includes("${")) {
+                    return rawPropertyValue;
                 }
             }
-            return currentValue;
-        } else if (overrideProperty && this._rawProperties.hasOwnProperty(name)) {
+            return propertyBagValue;
+        } else if (shouldOverrideProperty && this._rawProperties.hasOwnProperty(name)) {
             return this._rawProperties[name];
         }
         return prop.defaultValue;
