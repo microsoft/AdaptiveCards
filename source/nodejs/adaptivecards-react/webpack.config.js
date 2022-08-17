@@ -18,7 +18,11 @@ module.exports = (env, argv) => {
             globalObject: 'this'
         },
         devtool: devMode ? 'inline-source-map' : 'source-map',
-        devServer: { contentBase: './dist' },
+        devServer: {
+            static: {
+                directory: './dist'
+            }
+        },
         externals: {
             'react': 'React',
         },

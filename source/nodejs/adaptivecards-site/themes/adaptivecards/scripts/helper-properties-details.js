@@ -3,7 +3,7 @@
 "use strict";
 
 var typedschema = require("@microsoft/ac-typed-schema");
-var marked = require("marked");
+const { marked } = require("marked");
 var fs = require("fs");
 var path = require("path");
 
@@ -22,10 +22,10 @@ hexo.extend.helper.register('properties_details', function (locals, properties, 
 
 		// mark header with class name like ac-schema-version-1.5
 		html +=  `<div class="ac-schema-version-${elementVersion?.replace(/\./, '-')}" style="display: flex;">`
-		html += marked(typedschema.markdown.createPropertyDetailsHeader(property, 3), { headerPrefix: "dedupe-header" });
+		html += marked.parse(typedschema.markdown.createPropertyDetailsHeader(property, 3), { headerPrefix: "dedupe-header" });
 		html += '</div>'
 
-		html += marked(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion, false /* include header */));
+		html += marked.parse(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion, false /* include header */));
 		html += '</div>'
 
 
