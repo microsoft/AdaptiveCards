@@ -417,6 +417,7 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
+        this.applyRTL(cardLevelContainer);
 
         this.initializeCarouselControl(
             carouselContainer,
