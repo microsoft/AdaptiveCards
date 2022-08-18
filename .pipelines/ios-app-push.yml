@@ -1,0 +1,42 @@
+parameters:
+  - name: appVersion
+    displayName: Update version of app
+    type: string
+    default: 2.4.0-beta
+    values:
+      - 2.4.0-beta
+
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+trigger: none
+
+schedules:
+  - cron: "1 7 1,15 * *"
+    displayName: Send Heartbeat 
+    branches:
+      include:
+        - main
+pool:
+  vmImage: 'macos-latest'
+
+steps:
+  - bash: | 
+     echo "Adaptive Version ${{appVersion}}.$BUILD_NUMBER"
+     xcrun agvtool new-version -all ${ACIOSVERSION}.$BUILD_NUMBER
+    workingDirectory: source/ios/AdaptiveCards/ADCIOSVisualizer
+    displayName: 'Bash - update sample app version'
+    env:
+      BUILD_NUMBER: $(BUILD_BUILDNUMBER)
+  - template: templates/ios-install-cert-template.yml
+  - template: templates/ios-spec-lint-template.yml
+  - task: AppCenterDistribute@3
+    inputs:
+      serverEndpoint: 'Microsoft App Center'
+      appSlug: 'Adaptive-Cards/Adaptive-Cards-iOS-Visualizer'
+      appFile: '**/*.ipa'
+      symbolsDsymFiles: '**/*.dSYM'
+      symbolsIncludeParentDirectory: true
+      releaseNotesOption: 'input'
+      releaseNotesInput: 'Nightly Build from main'
+      destinationType: 'groups'
