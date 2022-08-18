@@ -29,7 +29,6 @@ steps:
     env:
       BUILD_NUMBER: $(Build.BuildNumber)
   - template: templates/ios-install-cert-template.yml
-  - template: templates/ios-spec-lint-template.yml
   - task: AppCenterDistribute@3
     inputs:
       serverEndpoint: 'Microsoft App Center'
