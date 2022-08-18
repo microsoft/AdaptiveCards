@@ -23,7 +23,7 @@ pool:
 steps:
   - bash: | 
      echo "Adaptive Version ${{appVersion}}.$BUILD_NUMBER"
-     xcrun agvtool new-version -all ${ACIOSVERSION}.$BUILD_NUMBER
+     xcrun agvtool new-version -all ${appVersion}.$BUILD_NUMBER
     workingDirectory: source/ios/AdaptiveCards/ADCIOSVisualizer
     displayName: 'Bash - update sample app version'
     env:
