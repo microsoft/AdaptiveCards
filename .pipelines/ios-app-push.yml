@@ -27,7 +27,7 @@ steps:
     workingDirectory: source/ios/AdaptiveCards/ADCIOSVisualizer
     displayName: 'Bash - update sample app version'
     env:
-      BUILD_NUMBER: $(BUILD_BUILDNUMBER)
+      BUILD_NUMBER: $(Build.BuildNumber)
   - template: templates/ios-install-cert-template.yml
   - template: templates/ios-spec-lint-template.yml
   - task: AppCenterDistribute@3
