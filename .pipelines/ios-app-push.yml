@@ -12,8 +12,8 @@ pr: none
 trigger: none
 
 schedules:
-  - cron: "1 7 1,15 * *"
-    displayName: Send Heartbeat 
+  - cron: "0 3 * * 1"
+    displayName: Publish iOS App
     branches:
       include:
         - main
