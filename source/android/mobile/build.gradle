@@ -38,6 +38,10 @@ android {
             }
         }
     }
+
+    lintOptions {
+        disable 'ObsoleteLintCustomCheck'
+    }
 }
 
 dependencies {
