@@ -49,6 +49,8 @@ task copyTestFiles(type: Copy)
 
 copyTestFiles {
     description = 'Copies test files to the assets folder'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     from '../../../samples/Tests'
     from '../../../samples/v1.0/Elements'
     from '../../../samples/v1.0/Scenarios'
