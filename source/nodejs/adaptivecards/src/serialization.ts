@@ -1088,19 +1088,11 @@ export abstract class SerializableObject {
 
     protected getValue(prop: PropertyDefinition, shouldOverrideProperty: boolean = false): any {
         const name = prop.getInternalName();
-        if (this._propertyBag.hasOwnProperty(name)) {
-            const propertyBagValue = this._propertyBag[name];
 
-            if (shouldOverrideProperty && this._rawProperties.hasOwnProperty(name)) {
-                const rawPropertyValue = this._rawProperties[name];
-
-                if (propertyBagValue !== rawPropertyValue && typeof rawPropertyValue === "string" && rawPropertyValue.includes("${")) {
-                    return rawPropertyValue;
-                }
-            }
-            return propertyBagValue;
-        } else if (shouldOverrideProperty && this._rawProperties.hasOwnProperty(name)) {
-            return this._rawProperties[name];
+		if (shouldOverrideProperty && this._rawProperties.hasOwnProperty(name)) {
+			return this._rawProperties[name];
+		} else if (this._propertyBag.hasOwnProperty(name)) {
+			return this._propertyBag[name];
         }
         return prop.defaultValue;
     }
