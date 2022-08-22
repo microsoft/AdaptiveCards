@@ -68,6 +68,7 @@ steps:
     cwd: source/android
     tasks: connectedAndroidTest
     jdkVersionOption: 1.11
+  enabled: false
 
 - script: |
    mkdir Screenshots
