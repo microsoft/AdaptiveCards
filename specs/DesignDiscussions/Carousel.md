@@ -124,27 +124,27 @@ As a result, author can shortcircuits specifying the type. When this happens, re
 Implied type shall be remained `TextBlock` even when additional types are added to the list of supported types in the future.
 ```
 {
-  "type": "Carousel",
-  "header": [
-    {
-      "text": "cat picture",
-      "isSubtle": true,
-	  "size": "small"
-    },
-    {
-      "text": "Top Cat Picture",
-      "weight": "bolder",
-	  "style": "heading,
-	  "size": "large"
-    },
-    {
-      "text": "Washington",
-      "isSubtle": true
-    }
-  ],
-  "pages ": 
-  ...
-  }
+    "type": "Carousel",
+    "header": [
+        {
+            "text": "cat picture",
+            "isSubtle": true,
+            "size": "small"
+        },
+        {
+            "text": "Top Cat Picture",
+            "weight": "bolder",
+            "style": "heading,
+            "size": "large"
+        },
+        {
+            "text": "Washington",
+            "isSubtle": true
+        }
+    ],
+    "pages": 
+    ...
+}
 ```
 
 ## Spacing
