@@ -60,6 +60,7 @@ steps:
    echo "Emulator started"
    
   displayName: Creation of emulator for testing
+  enabled: false
 
 - task: Gradle@2
   displayName: gradlew test
