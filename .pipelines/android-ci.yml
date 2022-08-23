@@ -63,7 +63,6 @@ steps:
 
 - task: Gradle@2
   displayName: gradlew test
-  enabled: false
   inputs:
     wrapperScript: source/android/gradlew
     cwd: source/android
@@ -75,13 +74,11 @@ steps:
    cd Screenshots
    adb shell ls /storage/emulated/0/
    adb pull /storage/emulated/0/Screenshots/
-  enabled: false
   displayName: 'Pull screenshots script'
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
-  enabled: false
   displayName: 'Publish images from Screeenshots folder'
   inputs:
     PathtoPublish: '$(build.SourcesDirectory)/Screenshots'
