@@ -75,6 +75,7 @@ steps:
    cd Screenshots
    adb shell ls /storage/emulated/0/
    adb pull /storage/emulated/0/Screenshots/
+  enabled: false
   displayName: 'Pull screenshots script'
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
