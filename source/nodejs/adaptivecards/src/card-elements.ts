@@ -805,16 +805,18 @@ export class ActionProperty extends PropertyDefinition {
     toJSON(
         sender: SerializableObject,
         target: PropertyBag,
-        value: Action | undefined,
+        value: any,
         context: SerializationContext
     ) {
-        context.serializeValue(
-            target,
-            this.name,
-            value ? value.toJSON(context) : undefined,
-            undefined,
-            true
-        );
+        if (value instanceof Action || value === undefined) {
+            context.serializeValue(
+                target,
+                this.name,
+                value ? value.toJSON(context) : undefined,
+                undefined,
+                true
+            );
+        }
     }
 
     constructor(
@@ -823,6 +825,10 @@ export class ActionProperty extends PropertyDefinition {
         readonly forbiddenActionTypes: string[] = []
     ) {
         super(targetVersion, name, undefined);
+    }
+
+    canOverride(): boolean {
+        return false;
     }
 }
 
@@ -1846,14 +1852,18 @@ class ImageDimensionProperty extends PropertyDefinition {
     toJSON(
         sender: SerializableObject,
         target: PropertyBag,
-        value: number | undefined,
+        value: any,
         context: BaseSerializationContext
     ) {
-        context.serializeValue(
-            target,
-            this.name,
-            typeof value === "number" && !isNaN(value) ? value + "px" : undefined
-        );
+        if (typeof value === "string" && GlobalSettings.enableFullJsonRoundTrip) {
+            context.serializeValue(target, this.name, value);
+        } else if (typeof value === "number" || value === undefined) {
+            context.serializeValue(
+                target,
+                this.name,
+                typeof value === "number" && !isNaN(value) ? value + "px" : undefined
+            );
+        }
     }
 
     constructor(
@@ -5333,16 +5343,22 @@ class StringWithSubstitutionProperty extends PropertyDefinition {
     toJSON(
         sender: SerializableObject,
         target: PropertyBag,
-        value: StringWithSubstitutions,
+        value: any,
         context: BaseSerializationContext
     ): void {
-        context.serializeValue(target, this.name, value.getOriginal());
+        if (value instanceof StringWithSubstitutions) {
+            context.serializeValue(target, this.name, value.getOriginal());
+        }
     }
 
     constructor(readonly targetVersion: Version, readonly name: string) {
         super(targetVersion, name, undefined, () => {
             return new StringWithSubstitutions();
         });
+    }
+
+    canOverride(): boolean {
+        return false;
     }
 }
 
@@ -7956,20 +7972,26 @@ export class RefreshActionProperty extends PropertyDefinition {
     toJSON(
         sender: SerializableObject,
         target: PropertyBag,
-        value: ExecuteAction | undefined,
+        value: any,
         context: SerializationContext
     ) {
-        context.serializeValue(
-            target,
-            this.name,
-            value ? value.toJSON(context) : undefined,
-            undefined,
-            true
-        );
+        if (value instanceof ExecuteAction || value === undefined) {
+            context.serializeValue(
+                target,
+                this.name,
+                value ? value.toJSON(context) : undefined,
+                undefined,
+                true
+            );
+        }
     }
 
     constructor(readonly targetVersion: Version, readonly name: string) {
         super(targetVersion, name, undefined);
+    }
+
+    canOverride(): boolean {
+        return false;
     }
 }
 
