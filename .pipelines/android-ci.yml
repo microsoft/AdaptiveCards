@@ -81,6 +81,7 @@ steps:
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
+  enabled: false
   displayName: 'Publish images from Screeenshots folder'
   inputs:
     PathtoPublish: '$(build.SourcesDirectory)/Screenshots'
