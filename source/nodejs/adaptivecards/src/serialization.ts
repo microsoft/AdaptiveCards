@@ -197,7 +197,9 @@ export abstract class BaseSerializationContext {
             propertyValue === undefined ||
             propertyValue === defaultValue
         ) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         } else {
             target[propertyName] = propertyValue;
         }
@@ -214,7 +216,9 @@ export abstract class BaseSerializationContext {
             propertyValue === undefined ||
             propertyValue === defaultValue
         ) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         } else {
             target[propertyName] = propertyValue;
         }
@@ -232,7 +236,9 @@ export abstract class BaseSerializationContext {
             propertyValue === defaultValue ||
             isNaN(propertyValue)
         ) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         } else {
             target[propertyName] = propertyValue;
         }
@@ -250,7 +256,9 @@ export abstract class BaseSerializationContext {
             propertyValue === undefined ||
             propertyValue === defaultValue
         ) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         } else {
             target[propertyName] = enumType[propertyValue];
         }
@@ -283,7 +291,9 @@ export abstract class BaseSerializationContext {
 
         if (items.length === 0) {
             if (target.hasOwnProperty(propertyName) && Array.isArray(target[propertyName])) {
-                delete target[propertyName];
+                if (!GlobalSettings.enableFullJsonRoundTrip) {
+                    delete target[propertyName];
+                }
             }
         } else {
             this.serializeValue(target, propertyName, items);
@@ -1093,7 +1103,7 @@ export abstract class SerializableObject {
     }
 
     protected setValue(prop: PropertyDefinition, value: any) {
-        if (value === undefined || value === null) {
+        if ((value === undefined || value === null) && (!GlobalSettings.enableFullJsonRoundTrip || !this._rawProperties.hasOwnProperty(prop.getInternalName()))) {
             delete this._propertyBag[prop.getInternalName()];
         } else {
             this._propertyBag[prop.getInternalName()] = value;
