@@ -138,3 +138,8 @@ export function getAttributeValueAsInt(element: HTMLElement, attributeName: stri
 
     return defaultValue;
 }
+
+export function clearElement(element: HTMLElement) : void {
+    //@ts-ignore-next-line -- Typescript's DOM lib hasn't yet been updated to understand TrustedTypes
+    element.innerHTML = window.trustedTypes?.emptyHTML ?? "";
+}
