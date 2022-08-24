@@ -38,6 +38,8 @@ export class Constants {
         up: "ArrowUp",
         down: "ArrowDown",
         delete: "Delete",
-        backspace: "Backspace"
+        backspace: "Backspace",
+        left: "ArrowLeft",
+        right: "ArrowRight"
     } as const;
 }
