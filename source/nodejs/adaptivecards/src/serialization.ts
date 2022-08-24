@@ -1103,7 +1103,7 @@ export abstract class SerializableObject {
     }
 
     protected setValue(prop: PropertyDefinition, value: any) {
-        if ((value === undefined || value === null) && (!GlobalSettings.enableFullJsonRoundTrip || !this._rawProperties.hasOwnProperty(prop.getInternalName()))) {
+        if (value === undefined || value === null) {
             delete this._propertyBag[prop.getInternalName()];
         } else {
             this._propertyBag[prop.getInternalName()] = value;
