@@ -64,6 +64,7 @@ steps:
 
 - task: Gradle@2
   displayName: gradlew test
+  enabled: false
   inputs:
     wrapperScript: source/android/gradlew
     cwd: source/android
