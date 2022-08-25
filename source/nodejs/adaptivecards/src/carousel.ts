@@ -7,13 +7,16 @@ import {
     Container,
     SerializationContext,
     ShowCardAction,
-    ToggleVisibilityAction
+    ToggleVisibilityAction,
+    TextBlock,
+    renderSeparation
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
     NumProperty,
     property,
     PropertyBag,
+    SerializableObjectCollectionProperty,
     SerializableObjectSchema,
     Versions
 } from "./serialization";
@@ -139,6 +142,10 @@ export class Carousel extends Container {
         }
     }
 
+    static readonly headerProperty = new SerializableObjectCollectionProperty(Versions.v1_6, "header", TextBlock);
+    @property(Carousel.headerProperty)
+    header? : TextBlock[];
+
     //#endregion
 
     get previousEventType(): Enums.CarouselInteractionEvent {
@@ -153,6 +160,7 @@ export class Carousel extends Container {
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
     private _currentIndex: number = 0;
+    private _renderedHeaders: HTMLElement[] = [];
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
     // Question: Why do we place this on the Carousel instead of the CarouselPage?
@@ -278,6 +286,24 @@ export class Carousel extends Container {
         const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
 
+        if (this.header) {
+            for (let adaptiveTextBlock of this.header as Array<CardElement>)
+            {
+                adaptiveTextBlock.setParent(this);
+                const renderedHeader = adaptiveTextBlock.render();
+                if (renderedHeader) {
+                    if (this._renderedHeaders.length > 0 && adaptiveTextBlock.separatorElement) {
+                        adaptiveTextBlock.separatorElement.style.flex = "0 0 auto";
+
+                        Utils.appendChild(cardLevelContainer, adaptiveTextBlock.separatorElement);
+                    }
+
+                    Utils.appendChild(cardLevelContainer, renderedHeader);
+                    this._renderedHeaders.push(renderedHeader);
+                }
+            }
+        }
+
         cardLevelContainer.appendChild(containerForAdorners);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
@@ -333,6 +359,7 @@ export class Carousel extends Container {
             "swiper-pagination",
             "ac-carousel-pagination"
         );
+
         containerForAdorners.appendChild(pagination);
 
         if (this.isDesignMode()) {
@@ -364,6 +391,21 @@ export class Carousel extends Container {
             }
         }
 
+        if (this._renderedHeaders.length > 0 && this._renderedPages.length > 0) {
+            Utils.appendChild(
+                carouselContainer,
+                renderSeparation(
+                    this.hostConfig,
+                    {
+                        spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
+                        lineThickness: this.separator ? this.hostConfig.separator.lineThickness : undefined,
+                        lineColor: this.separator ? this.hostConfig.separator.lineColor : undefined
+                    },
+                    Enums.Orientation.Horizontal
+                )
+            );
+        }
+
         carouselContainer.appendChild(carouselWrapper);
 
         carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
@@ -375,6 +417,7 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
+        this.applyRTL(cardLevelContainer);
 
         this.initializeCarouselControl(
             carouselContainer,
