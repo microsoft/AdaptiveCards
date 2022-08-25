@@ -290,7 +290,7 @@ export class Carousel extends Container {
             for (let adaptiveTextBlock of this.header as Array<CardElement>)
             {
                 adaptiveTextBlock.setParent(this);
-                let renderedHeader = adaptiveTextBlock.render();
+                const renderedHeader = adaptiveTextBlock.render();
                 if (renderedHeader) {
                     if (this._renderedHeaders.length > 0 && adaptiveTextBlock.separatorElement) {
                         adaptiveTextBlock.separatorElement.style.flex = "0 0 auto";
