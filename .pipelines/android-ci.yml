@@ -60,9 +60,11 @@ steps:
    echo "Emulator started"
    
   displayName: Creation of emulator for testing
+  enabled: false
 
 - task: Gradle@2
   displayName: gradlew test
+  enabled: false
   inputs:
     wrapperScript: source/android/gradlew
     cwd: source/android
@@ -75,11 +77,13 @@ steps:
    adb shell ls /storage/emulated/0/
    adb pull /storage/emulated/0/Screenshots/
   displayName: 'Pull screenshots script'
+  enabled: false
   workingDirectory: $(Build.SourcesDirectory)
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish images from Screeenshots folder'
+  enabled: false
   inputs:
     PathtoPublish: '$(build.SourcesDirectory)/Screenshots'
   condition: succeededOrFailed()
