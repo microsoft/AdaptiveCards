@@ -3,12 +3,6 @@
 import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version, Versions } from "adaptivecards";
 import * as hostConfig from "../hostConfigs/sample.json";
 
-export enum ContainerSize {
-    Small = "Small",
-    Medium = "Medium",
-    Large = "Large"
-};
-
 export enum ColorTheme {
     Light = "Light",
     Dark = "Dark"
@@ -92,11 +86,6 @@ export abstract class HostContainer {
         return false;
     }
 
-    // if various containers support different sizes in the future, we can override this method
-    static get supportedContainerSizes(): string[] {
-        return Object.values(ContainerSize);
-    }
-
     get supportsMultipleSizes(): boolean {
         // By default, we do not support different container sizes
         return false;
@@ -118,10 +107,6 @@ export abstract class HostContainer {
 
     get styleSheet() {
         return this._styleSheet;
-    }
-
-    set containerSize(value: ContainerSize) {
-        // Not handled by the host container by default
     }
 
     set colorTheme(value: ColorTheme) {
