@@ -5,7 +5,7 @@ trigger: none
 
 pool:
   name: Azure Pipelines
-  vmImage: vs2017-win2016
+  vmImage: windows-2019
   demands: java
 
 parameters:
@@ -45,6 +45,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:build'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
 
     - task: Gradle@2
       displayName: 'Gradle Unsigned Publication'
@@ -53,6 +54,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
 
     - task: Powershell@2
       name: prepareSigningTask
@@ -103,6 +105,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
       env:
         AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
         AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
@@ -126,6 +129,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:publishSignedReleasePublicationToSonatypeStagingRepository'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
       env:
         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
         AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
@@ -147,6 +151,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:closeRepository'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
       env:
         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
         
@@ -172,6 +177,7 @@ stages:
         workingDirectory: source/android
         tasks: 'adaptivecards:releaseRepository'
         publishJUnitResults: false
+        jdkVersionOption: 1.11
       env:
         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
 
