@@ -292,6 +292,37 @@ describe("Test Templating Library", () => {
         
         expect(errorLog[0]).toStrictEqual(expectedWarning);
     });
+
+    it("TemplateAdaptiveCardArray", () => {
+        runTest(loadFile("template-test-resources/template-array.json"),
+            loadFile("template-test-resources/template-array.output.json"),
+            loadFile("template-test-resources/template-array.data.json"));
+    });
+
+    it("TemplateAdaptiveCardArrayComplex", () => {
+        runTest(loadFile("template-test-resources/template-array-complex.json"),
+            loadFile("template-test-resources/template-array-complex.output.json"),
+            undefined,
+            loadFile("template-test-resources/template-array-complex.host.json"));
+    });
+
+    it("TemplateAdaptiveCardArrayFailure", () => {
+        const template = new ACData.Template(loadFile("template-test-resources/template-array-complex-failure.json"));
+        
+        const context = {
+            $host: {
+                "carousel": true
+            }
+        };
+
+        const card = template.expand(context);
+        expect(card).toBeUndefined();
+
+        const errorLog = template.getLastTemplateExpansionWarnings();
+        const expectedWarning = "ERROR: The expanded template contained an array of 2 cards. Please modify your template so it only contains one card after expansion.";
+
+        expect(errorLog[0]).toStrictEqual(expectedWarning);
+    })
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {

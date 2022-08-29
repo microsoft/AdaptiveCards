@@ -535,7 +535,21 @@ export class Template {
     expand(context: IEvaluationContext): any {
         this.templateExpansionWarnings = [];
         this._context = new EvaluationContext(context);
-        return this.internalExpand(this._preparedPayload);
+
+        const result = this.internalExpand(this._preparedPayload);
+
+        // If the result is an array, we need to confirm that there is only one card after expansion
+        if (Array.isArray(result)) {
+            if (result.length === 1) {
+                return result[0];
+            } else {
+                // There were either no resulting cards or too many cards, so we will add an error to the templateExpansionWarnings
+                this.templateExpansionWarnings.push(`ERROR: The expanded template contained an array of ${result.length} cards. Please modify your template so it only contains one card after expansion.`);
+                return undefined;
+            }
+        }
+
+        return result;
     }
 
     /**

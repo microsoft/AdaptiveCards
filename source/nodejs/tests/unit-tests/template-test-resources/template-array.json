@@ -1,0 +1,28 @@
+[
+    {
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5",
+        "$when": "${test}",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "To be displayed if test === true",
+                "wrap": true
+            }
+        ]
+    },
+    {
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.5",
+        "$when": "${!test}",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "To be displayed if test === false",
+                "wrap": true
+            }
+        ]
+    }
+]
