@@ -1675,3 +1675,21 @@ a.default-ac-anchor:visited:active {
         padding-right: 3px;
     }
 }
+
+.popup-message {
+    left: 50%;
+    bottom: 40px;
+    padding: 8px;
+    color: white;
+    background-color: #2D7BB7;
+    position: fixed;
+    box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.5);
+    transform: translate(-50%);
+    z-index: 5;
+}
+
+@media (forced-colors: active) {
+    .popup-message {
+        background-color: ActiveBorder;
+    }
+}

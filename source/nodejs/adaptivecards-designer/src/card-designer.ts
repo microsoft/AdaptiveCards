@@ -1477,6 +1477,15 @@ export class CardDesigner extends Designer.DesignContext {
 
             this.setCardPayload(card, false);
             this.updateToolbar();
+
+            const undoSuccessPopup = document.createElement("p");
+            undoSuccessPopup.textContent = "Successfully undid your last change";
+            undoSuccessPopup.className = "popup-message";
+            undoSuccessPopup.setAttribute("role", "alert");
+
+            document.body.appendChild(undoSuccessPopup);
+
+            setTimeout(() => { undoSuccessPopup.remove(); }, 3000);
         }
     }
 
@@ -1488,6 +1497,15 @@ export class CardDesigner extends Designer.DesignContext {
 
             this.setCardPayload(payload, false);
             this.updateToolbar();
+            
+            const redoSuccessPopup = document.createElement("p");
+            redoSuccessPopup.textContent = "Successfully redid your last change";
+            redoSuccessPopup.className = "popup-message";
+            redoSuccessPopup.setAttribute("role", "alert");
+
+            document.body.appendChild(redoSuccessPopup);
+
+            setTimeout(() => { redoSuccessPopup.remove(); }, 3000);
         }
     }
 
