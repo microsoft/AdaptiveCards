@@ -813,14 +813,14 @@ export class CardDesigner extends Designer.DesignContext {
                                 this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
 
                                 // If the new data has size, update the choice picker value; otherwise, update the data based on the choice picker
-                                if (this._sampleHostData.size) {
+                                if (this._sampleHostData.widgetSize) {
                                     this.updateContainerSizeChoicePicker();
                                 } else {
                                     this.updateHostDataSizeProperty();
                                 }
 
                                 // If the new data has theme, update the choice picker value; otherwise, update the data based on the choice picker
-                                if (this._sampleHostData.theme) {
+                                if (this._sampleHostData.hostTheme) {
                                     this.updateContainerThemeChoicePicker();
                                 } else {
                                     this.updateHostDataThemeProperty();
@@ -1065,14 +1065,14 @@ export class CardDesigner extends Designer.DesignContext {
                         this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
 
                         // If the new data has size, update the choice picker value; otherwise, update the data based on the choice picker
-                        if (this._sampleHostData.size) {
+                        if (this._sampleHostData.widgetSize) {
                             this.updateContainerSizeChoicePicker();
                         } else {
                             this.updateHostDataSizeProperty();
                         }
 
                         // If the new data has theme, update the choice picker value; otherwise, update the data based on the choice picker
-                        if (this._sampleHostData.theme) {
+                        if (this._sampleHostData.hostTheme) {
                             this.updateContainerThemeChoicePicker();
                         } else {
                             this.updateHostDataThemeProperty();
@@ -1189,11 +1189,11 @@ export class CardDesigner extends Designer.DesignContext {
     private updateHostDataSizeProperty() {
         if (this._containerSizeChoicePicker?.value) {
             const value = this._containerSizeChoicePicker.value.toLowerCase();
-            const currentValue = this._sampleHostData.size;
+            const currentValue = this._sampleHostData.widgetSize;
 
             // only update the payload if the value has changed
             if (currentValue !== value) {
-                this._sampleHostData.size = value;
+                this._sampleHostData.widgetSize = value;
     
                 this.setSampleHostDataPayload(this._sampleHostData);
                 this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
@@ -1205,11 +1205,11 @@ export class CardDesigner extends Designer.DesignContext {
     private updateHostDataThemeProperty() {
         if (this._containerThemeChoicePicker?.value) {
             const value = this._containerThemeChoicePicker.value.toLowerCase();
-            const currentValue =  this._sampleHostData.theme;
+            const currentValue =  this._sampleHostData.hostTheme;
 
             // only update the payload if the value has changed
             if (currentValue !== value) {
-                this._sampleHostData.theme = value;
+                this._sampleHostData.hostTheme = value;
         
                 this.setSampleHostDataPayload(this._sampleHostData);
                 this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
@@ -1220,8 +1220,8 @@ export class CardDesigner extends Designer.DesignContext {
     // Update the container size choice picker based on the host data value
     private updateContainerSizeChoicePicker() {
         // check for `size` in the host data payload
-        if (this._containerSizeChoicePicker && this._sampleHostData.size) {
-            const size = this._sampleHostData.size as String;
+        if (this._containerSizeChoicePicker && this._sampleHostData.widgetSize) {
+            const size = this._sampleHostData.widgetSize as String;
 
             // only update the choice picker if the value is different
             if (size !== this._containerSizeChoicePicker.value.toLowerCase()) {
@@ -1241,8 +1241,8 @@ export class CardDesigner extends Designer.DesignContext {
     // Update the container theme choice picker based on the host data value
     private updateContainerThemeChoicePicker() {
         // check for `theme` in the host data payload
-        if (this._containerThemeChoicePicker && this._sampleHostData.theme) {
-            const theme = this._sampleHostData.theme as String;
+        if (this._containerThemeChoicePicker && this._sampleHostData.hostTheme) {
+            const theme = this._sampleHostData.hostTheme as String;
 
             // only update the choice picker if the value is different
             if (theme !== this._containerThemeChoicePicker.value.toLowerCase()) {
