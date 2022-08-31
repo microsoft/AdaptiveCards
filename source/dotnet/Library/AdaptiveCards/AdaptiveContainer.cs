@@ -66,5 +66,25 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
+
+        /// <summary>
+        /// Determines how to align the background image horizontally.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
+        /// <summary>
+        /// Determines how to align the background image vertically.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalAlignment), "top")]
+        public AdaptiveVerticalAlignment VerticalAlignment { get; set; }
     }
 }

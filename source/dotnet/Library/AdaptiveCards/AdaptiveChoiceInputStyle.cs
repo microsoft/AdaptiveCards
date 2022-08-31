@@ -19,6 +19,11 @@ namespace AdaptiveCards
         /// <summary>
         /// Expanded display i.e. Checkbox or Radio buttons.
         /// </summary>
-        Expanded
+        Expanded,
+
+        /// <summary>
+        /// Allows users to filter choices in a choice set.
+        /// </summary>
+        Filtered
     }
 }
