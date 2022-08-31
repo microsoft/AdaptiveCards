@@ -28,7 +28,6 @@ import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
 import { BerlinContainer } from "./containers";
-import { Constants as ControlConstants } from "adaptivecards-controls";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -81,6 +80,8 @@ export class CardDesigner extends Designer.DesignContext {
     private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
     private _sampleCatalogue: SampleCatalogue = new SampleCatalogue();
+    private _designerSurfaceHiddenElement: HTMLElement;
+    private _isPayloadCardArray: boolean = false;
 
     private togglePreview() {
         this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
@@ -88,6 +89,9 @@ export class CardDesigner extends Designer.DesignContext {
         if (this._designerSurface.isPreviewMode) {
             this._togglePreviewButton.toolTip = "Return to Design mode";
             this._designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
+
+            // We never want to hide the designer surface in preview mode
+            this.updateDesignerSurfaceDisplay(false);
         }
         else {
             this._togglePreviewButton.toolTip = "Switch to Preview mode";
@@ -106,8 +110,12 @@ export class CardDesigner extends Designer.DesignContext {
                     '<div style="padding: 8px; display: flex; justify-content: center;">' +
                         '<div>The Card Structure isn\'t available in Preview mode.</div>' +
                     '</div>';
-            }
-            else {
+            } else if (this._isPayloadCardArray) {
+                this.treeViewToolbox.content.innerHTML =
+                    '<div style="padding: 8px; display: flex; justify-content: center;">' +
+                        '<div>The Card Structure isn\'t available for this payload.</div>' +
+                    '</div>';
+            } else {
                 let treeView = new TreeView(this.designerSurface.rootPeer.treeItem);
 
                 this._treeViewToolbox.content.appendChild(treeView.render());
@@ -449,9 +457,21 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     private targetVersionChanged() {
+        // Question: is there a specific reason that we get the payload from the designerSurface first?
         let cardPayload = this.designerSurface.getCardPayloadAsObject();
 
-        if (typeof cardPayload === "object") {
+        if (this._isPayloadCardArray) {
+            cardPayload = JSON.parse(this.getCurrentCardEditorPayload());
+        }
+
+        if (Array.isArray(cardPayload)) {
+
+            for (let card of cardPayload) {
+                card["version"] = this.targetVersion.toString();
+            }
+            this.setCardPayload(cardPayload, false);
+
+        } else if (typeof cardPayload === "object") {
             cardPayload["version"] = this.targetVersion.toString();
 
             this.setCardPayload(cardPayload, false);
@@ -591,22 +611,30 @@ export class CardDesigner extends Designer.DesignContext {
         try {
             this._jsonPreventUpdate = true;
 
-            let currentEditorPayload = this.getCurrentCardEditorPayload();
+            const currentEditorPayload = this.getCurrentCardEditorPayload();
+            const currentEditorPayloadObject = JSON.parse(currentEditorPayload);
 
-            if (addToUndoStack) {
-                try {
-                    this.addToUndoStack(JSON.parse(currentEditorPayload));
+            this._isPayloadCardArray = Array.isArray(currentEditorPayloadObject);
+            if (!this._isPayloadCardArray || (this._isPayloadCardArray && this.designerSurface.isPreviewMode)) {
+                this.updateDesignerSurfaceDisplay(false);
+                if (addToUndoStack) {
+                    try {
+                        this.addToUndoStack(currentEditorPayloadObject);
+                    }
+                    catch {
+                        // Swallow the parse error
+                    }
                 }
-                catch {
-                    // Swallow the parse error
+
+                if (!this._cardPreventUpdate) {
+                    this.designerSurface.setCardPayloadAsString(currentEditorPayload);
+
+                    this.cardPayloadChanged();
                 }
+            } else {
+                this.updateDesignerSurfaceDisplay(true);
             }
-
-            if (!this._cardPreventUpdate) {
-                this.designerSurface.setCardPayloadAsString(currentEditorPayload);
-
-                this.cardPayloadChanged();
-            }
+            
         } finally {
             this._jsonPreventUpdate = false;
         }
@@ -617,6 +645,16 @@ export class CardDesigner extends Designer.DesignContext {
 
         if (!this._cardPreventUpdate) {
             this._cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
+        }
+    }
+
+    private updateDesignerSurfaceDisplay(shouldHideDesignerSurface: boolean) {
+        if (shouldHideDesignerSurface) {
+            this._designerHostElement.classList.add("acd-hidden");
+            this._designerSurfaceHiddenElement.classList.remove("acd-hidden");
+        } else {
+            this._designerSurfaceHiddenElement.classList.add("acd-hidden");
+            this._designerHostElement.classList.remove("acd-hidden");
         }
     }
 
@@ -1288,6 +1326,7 @@ export class CardDesigner extends Designer.DesignContext {
                         '<div class="acd-designer-card-header">CARD PREVIEW</div>' +
                         '<div id="cardArea" class="acd-designer-cardArea" role="region" aria-label="card preview">' +
                             '<div style="flex: 1 1 100%; overflow: auto;">' +
+                                '<div id="designerSurfaceHiddenText" class="acd-designersurface-hidden-text acd-hidden">This card payload can only be viewed in Preview mode.</div>' +
                                 '<div id="designerHost" class="acd-designer-host"></div>' +
                             '</div>' +
                             '<div id="errorPane" class="acd-error-pane acd-hidden"></div>' +
@@ -1427,6 +1466,7 @@ export class CardDesigner extends Designer.DesignContext {
         treeViewPanel.attachTo(document.getElementById("treeViewPanel"));
 
         this._designerHostElement = document.getElementById("designerHost");
+        this._designerSurfaceHiddenElement = document.getElementById("designerSurfaceHiddenText");
 
         window.addEventListener("pointermove", (e: PointerEvent) => { this.handlePointerMove(e); });
         window.addEventListener("resize", () => { this.scheduleLayoutUpdate(); });

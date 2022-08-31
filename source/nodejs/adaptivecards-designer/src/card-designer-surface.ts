@@ -208,6 +208,7 @@ export class CardDesignerSurface {
     private _persistentSelectedCardElement: CardElement;
     private _containsCarousel: boolean = false;
     private _currentCarouselPage: DesignerPeers.CarouselPagePeer;
+    private _currentPayload: any;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -290,7 +291,12 @@ export class CardDesignerSurface {
         let cardToRender: Adaptive.AdaptiveCard = this.card;
 
         if (asPreview) {
-            let inputPayload = this.card.toJSON(this._serializationContext);
+
+            let inputPayload = this._currentPayload;
+
+            if (!this._currentPayload) {
+                inputPayload = this.card.toJSON(this._serializationContext);
+            }
 
             cardToRender = new Adaptive.AdaptiveCard();
             cardToRender.hostConfig = this.card.hostConfig;
@@ -315,13 +321,18 @@ export class CardDesignerSurface {
                     }
 
                     outputPayload = template.expand(evaluationContext);
+
+                    // TODO: If the template expansion results in AdaptiveCard[].length != 1, outputPayload will be undefined
+                    // TODO: We need to display the templating warnings/errors to the user (#7442) so it is clear why the card isn't displayed
                 }
                 catch (e) {
                     console.log("Template expansion error: " + e.message);
                 }
             }
 
-            cardToRender.parse(outputPayload, this._serializationContext);
+            if (outputPayload) {
+                cardToRender.parse(outputPayload, this._serializationContext);
+            }
         }
 
         return cardToRender;
@@ -830,8 +841,13 @@ export class CardDesignerSurface {
     setCardPayloadAsObject(payload: object) {
         this._serializationContext.clearEvents();
 
-        this.card.parse(payload, this._serializationContext);
-
+        if (!Array.isArray(payload)) {
+            this.card.parse(payload, this._serializationContext);
+            this._currentPayload = undefined;
+        } else {
+            // No need to parse the card here since templating will need to be applied first
+            this._currentPayload = payload;
+        }
         this.render();
     }
 

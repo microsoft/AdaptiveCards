@@ -1675,3 +1675,10 @@ a.default-ac-anchor:visited:active {
         padding-right: 3px;
     }
 }
+
+.acd-designersurface-hidden-text {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
