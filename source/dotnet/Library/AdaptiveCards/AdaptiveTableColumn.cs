@@ -13,7 +13,7 @@ namespace AdaptiveCards
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
-    [XmlType(TypeName = "TableColumn")]
+    [XmlType(TypeName = TypeName)]
 #endif
     public class AdaptiveTableColumn
     {

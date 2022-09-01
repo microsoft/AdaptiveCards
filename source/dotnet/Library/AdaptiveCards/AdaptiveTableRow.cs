@@ -13,18 +13,26 @@ namespace AdaptiveCards
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
-    [XmlType(TypeName = "Fact")]
+    [XmlType(TypeName = TypeName)]
 #endif
-    public class AdaptiveTableRow
+    public class AdaptiveTableRow : AdaptiveTypedElement
     {
         /// <inheritdoc />
         public const string TypeName = "TableRow";
+
+        /// <inheritdoc />
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public override string Type { get; set; } = TypeName;
+
 
         /// <summary>
         /// Initializes an empty Fact.
         /// </summary>
         public AdaptiveTableRow()
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a Fact with the given properties.
@@ -33,33 +41,109 @@ namespace AdaptiveCards
         /// <param name="value">The value of the Fact.</param>
         public AdaptiveTableRow(string title, string value)
         {
-            Title = title;
-            Value = value;
         }
 
         /// <summary>
-        /// The Fact's title.
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveSpacing.Default"/>.
         /// </summary>
-        [JsonRequired]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        public string Title { get; set; }
+        [DefaultValue(typeof(AdaptiveSpacing), "default")]
+        public AdaptiveSpacing Spacing { get; set; }
 
         /// <summary>
-        /// The Fact's value.
+        /// Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
         /// </summary>
-        [JsonRequired]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        public string Value { get; set; }
+        [DefaultValue(false)]
+        public bool Separator { get; set; }
 
         /// <summary>
-        /// (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment.
+        /// The style used to display this element. See <see cref="AdaptiveContainerStyle" />.
         /// </summary>
+        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
-        public string Speak { get; set; }
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveContainerStyle? Style { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls XML serialization of style.
+        /// </summary>
+        // The XML serializer doesn't handle nullable value types. This allows serialization if non-null.
+        [JsonIgnore]
+        [XmlAttribute("Style")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public AdaptiveContainerStyle StyleXml { get { return (Style.HasValue) ? Style.Value : AdaptiveContainerStyle.Default; } set { Style = value; } }
+
+        /// <summary>
+        /// Determines whether to serialize the style for XML.
+        /// </summary>
+        public bool ShouldSerializeStyleXml() => this.Style.HasValue;
+#endif
+
+        /// <summary>
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Auto"/>.
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
+
+        /// <summary>
+        /// Determines whether the height property should be serialized or not.
+        /// </summary>
+        public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
+
+        /// <summary>
+        /// Indicates whether the element should be visible when the card has been rendered.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(true)]
+        public bool IsVisible { get; set; } = true;
+
+        /// <summary>
+        /// Determines how to align the content horizontally.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
+        /// <summary>
+        /// Determines how to align the content horizontally.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalCellContentAlignment { get; set; }
+
+        /// <summary>
+        /// Determines how to align the content horizontally.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalAlignment), "top")]
+        public AdaptiveVerticalAlignment VerticalCellContentAlignment { get; set; }
+
     }
 }

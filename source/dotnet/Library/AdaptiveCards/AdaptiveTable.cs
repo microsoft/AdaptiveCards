@@ -11,7 +11,7 @@ namespace AdaptiveCards
     /// Represents the Table element.
     /// </summary>
 #if !NETSTANDARD1_3
-    [XmlType(TypeName = AdaptiveColumnSet.TypeName)]
+    [XmlType(TypeName = TypeName)]
 #endif
     public class AdaptiveTable : AdaptiveElement
     {
