@@ -168,6 +168,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveMedia))]
         [XmlElement(typeof(AdaptiveActionSet))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
+        [XmlElement(typeof(AdaptiveTable))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
