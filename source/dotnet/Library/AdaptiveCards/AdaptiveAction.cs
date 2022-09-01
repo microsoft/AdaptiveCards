@@ -78,7 +78,7 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         [DefaultValue(null)]
-        public AdaptiveActionMode? Mode { get; set; }
+        public AdaptiveActionMode? Mode { get; set; } = null;
 
 #if !NETSTANDARD1_3
         /// <summary>
@@ -93,6 +93,7 @@ namespace AdaptiveCards
         /// Determines whether to serialize the style for XML.
         /// </summary>
         public bool ShouldSerializeStyleXml() => this.Mode.HasValue;
+#endif
 
 
         /// <summary>
