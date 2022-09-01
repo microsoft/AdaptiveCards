@@ -208,7 +208,7 @@ export class CardDesignerSurface {
     private _persistentSelectedCardElement: CardElement;
     private _containsCarousel: boolean = false;
     private _currentCarouselPage: DesignerPeers.CarouselPagePeer;
-    private _currentPayload: any;
+    private _arrayPayload: object | undefined;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -291,12 +291,7 @@ export class CardDesignerSurface {
         let cardToRender: Adaptive.AdaptiveCard = this.card;
 
         if (asPreview) {
-
-            let inputPayload = this._currentPayload;
-
-            if (!this._currentPayload) {
-                inputPayload = this.card.toJSON(this._serializationContext);
-            }
+            const inputPayload = this._arrayPayload ? this._arrayPayload : this.card.toJSON(this._serializationContext);
 
             cardToRender = new Adaptive.AdaptiveCard();
             cardToRender.hostConfig = this.card.hostConfig;
@@ -843,10 +838,10 @@ export class CardDesignerSurface {
 
         if (!Array.isArray(payload)) {
             this.card.parse(payload, this._serializationContext);
-            this._currentPayload = undefined;
+            this._arrayPayload = undefined;
         } else {
             // No need to parse the card here since templating will need to be applied first
-            this._currentPayload = payload;
+            this._arrayPayload = payload;
         }
         this.render();
     }

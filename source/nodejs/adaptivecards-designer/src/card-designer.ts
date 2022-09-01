@@ -106,21 +106,24 @@ export class CardDesigner extends Designer.DesignContext {
             this._treeViewToolbox.content.innerHTML = "";
 
             if (this.designerSurface.isPreviewMode) {
-                this.treeViewToolbox.content.innerHTML =
-                    '<div style="padding: 8px; display: flex; justify-content: center;">' +
-                        '<div>The Card Structure isn\'t available in Preview mode.</div>' +
-                    '</div>';
+                this.disableTreeView("The Card Structure isn't available in Preview mode.");
             } else if (this._isPayloadCardArray) {
-                this.treeViewToolbox.content.innerHTML =
-                    '<div style="padding: 8px; display: flex; justify-content: center;">' +
-                        '<div>The Card Structure isn\'t available for this payload.</div>' +
-                    '</div>';
+                this.disableTreeView("The Card Structure isn't available for this payload because multiple Adaptive Cards are defined.");
             } else {
                 let treeView = new TreeView(this.designerSurface.rootPeer.treeItem);
 
                 this._treeViewToolbox.content.appendChild(treeView.render());
             }
         }
+    }
+
+    private disableTreeView(displayText: string) {
+        let treeViewDisabledElement = document.createElement("div");
+        treeViewDisabledElement.style.padding = "8px";
+        treeViewDisabledElement.style.display = "flex";
+        treeViewDisabledElement.style.justifyContent = "center";
+        treeViewDisabledElement.textContent = displayText;
+        this._treeViewToolbox.content.appendChild(treeViewDisabledElement);
     }
 
     private buildDataExplorer() {
@@ -458,11 +461,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private targetVersionChanged() {
         // Question: is there a specific reason that we get the payload from the designerSurface first?
-        let cardPayload = this.designerSurface.getCardPayloadAsObject();
-
-        if (this._isPayloadCardArray) {
-            cardPayload = JSON.parse(this.getCurrentCardEditorPayload());
-        }
+        const cardPayload = this._isPayloadCardArray ? JSON.parse(this.getCurrentCardEditorPayload()) : this.designerSurface.getCardPayloadAsObject();
 
         if (Array.isArray(cardPayload)) {
 
@@ -633,6 +632,7 @@ export class CardDesigner extends Designer.DesignContext {
                 }
             } else {
                 this.updateDesignerSurfaceDisplay(true);
+                this.buildTreeView();
             }
             
         } finally {
