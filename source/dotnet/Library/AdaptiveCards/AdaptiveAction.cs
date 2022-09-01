@@ -72,12 +72,28 @@ namespace AdaptiveCards
         /// <remarks>
         /// Values are: "primary" or "secondary"
         /// </remarks>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveActionMode>), true)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
-        [DefaultValue(typeof(AdaptiveActionMode), "primary")]
-        public AdaptiveActionMode Mode { get; set; } = AdaptiveActionMode.Primary;
+        [DefaultValue(null)]
+        public AdaptiveActionMode? Mode { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// The XML serializer doesn't handle nullable value types. This allows serialization if non-null.
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute("Mode")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public AdaptiveActionMode ModeXml { get { return (Mode.HasValue) ? Mode.Value : AdaptiveActionMode.Primary; } set { Mode = value; } }
+
+        /// <summary>
+        /// Determines whether to serialize the style for XML.
+        /// </summary>
+        public bool ShouldSerializeStyleXml() => this.Mode.HasValue;
+
 
         /// <summary>
         ///     Is this action enabled or disabled?
