@@ -615,7 +615,7 @@ export class CardDesigner extends Designer.DesignContext {
             const currentEditorPayloadObject = JSON.parse(currentEditorPayload);
 
             this._isPayloadCardArray = Array.isArray(currentEditorPayloadObject);
-            if (!this._isPayloadCardArray || (this._isPayloadCardArray && this.designerSurface.isPreviewMode)) {
+            if (!this._isPayloadCardArray || this.designerSurface.isPreviewMode) {
                 this.updateDesignerSurfaceDisplay(false);
                 if (addToUndoStack) {
                     try {
@@ -649,13 +649,8 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     private updateDesignerSurfaceDisplay(shouldHideDesignerSurface: boolean) {
-        if (shouldHideDesignerSurface) {
-            this._designerHostElement.classList.add("acd-hidden");
-            this._designerSurfaceHiddenElement.classList.remove("acd-hidden");
-        } else {
-            this._designerSurfaceHiddenElement.classList.add("acd-hidden");
-            this._designerHostElement.classList.remove("acd-hidden");
-        }
+        this._designerHostElement.classList.toggle("acd-hidden", shouldHideDesignerSurface);
+        this._designerSurfaceHiddenElement.classList.toggle("acd-hidden", !shouldHideDesignerSurface);
     }
 
     private _isEdgeHTML?: boolean = undefined;
