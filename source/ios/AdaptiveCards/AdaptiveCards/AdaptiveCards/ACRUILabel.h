@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElement.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRUILabel : UITextView <UITextViewDelegate>

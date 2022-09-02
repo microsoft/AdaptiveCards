@@ -5,10 +5,10 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOActionOverflow.h"
-#import "ACOAdaptiveCardPrivate.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "BaseActionElement.h"
+#import <AdaptiveCards/ACOActionOverflow.h>
+#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/BaseActionElement.h>
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

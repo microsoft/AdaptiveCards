@@ -5,9 +5,9 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOFillerSpaceManager.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOFillerSpaceManager.h>
+#import <AdaptiveCards/ACRView.h>
 
 @implementation ACRColumnView
 

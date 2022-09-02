@@ -4,7 +4,7 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRIBaseCardElementRenderer.h"
+#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
 #import <Foundation/Foundation.h>
 @interface ACRBaseCardElementRenderer : NSObject <ACRIBaseCardElementRenderer>
 - (void)setSeparationConfig:(UIView *)viewGroup;

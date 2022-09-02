@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRAggregateTarget.h"
-#import "ACRButton.h"
-#import "ACRQuickReplyMultilineView.h"
-#import "ACRTextField.h"
+#import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACRQuickReplyMultilineView.h>
+#import <AdaptiveCards/ACRTextField.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRQuickReplyView : UIView <ACRIQuickReply>

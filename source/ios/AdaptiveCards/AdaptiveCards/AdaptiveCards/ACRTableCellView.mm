@@ -5,9 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRTableCellView.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
+#import <AdaptiveCards/ACRTableCellView.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
 
 @implementation ACRTableCellView {
     ACRTableCellDefinition *_definition;

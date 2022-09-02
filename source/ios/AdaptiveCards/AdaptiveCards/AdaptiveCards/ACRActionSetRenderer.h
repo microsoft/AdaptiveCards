@@ -5,8 +5,8 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
-#import "ACRBaseCardElementRenderer.h"
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 
 @interface ACRActionSetRenderer : ACRBaseCardElementRenderer <ACRIBaseActionSetRenderer>
 

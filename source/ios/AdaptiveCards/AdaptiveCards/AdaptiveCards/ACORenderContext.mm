@@ -5,19 +5,19 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACORenderContext.h"
-#import "ACOAdaptiveCardPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ActionSet.h"
-#import "BaseElement.h"
-#import "Column.h"
-#import "ColumnSet.h"
-#import "Container.h"
-#import "Table.h"
-#import "TableCell.h"
-#import "TableRow.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACORenderContext.h>
+#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ActionSet.h>
+#import <AdaptiveCards/BaseElement.h>
+#import <AdaptiveCards/Column.h>
+#import <AdaptiveCards/ColumnSet.h>
+#import <AdaptiveCards/Container.h>
+#import <AdaptiveCards/Table.h>
+#import <AdaptiveCards/TableCell.h>
+#import <AdaptiveCards/TableRow.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 
 @interface ACOContextProperties : NSObject

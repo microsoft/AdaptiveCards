@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRErrors.h"
+#import <AdaptiveCards/ACRErrors.h>
 
 NSString *const ACRInputErrorDomain = @"ACRInputErrorDomain";
 NSString *const ACRParseErrorDomain = @"ACRParseErrorDomain";

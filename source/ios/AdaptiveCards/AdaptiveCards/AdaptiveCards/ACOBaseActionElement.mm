@@ -4,14 +4,14 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOBaseActionElement.h"
-#import "ACRRegistrationPrivate.h"
-#import "BaseActionElement.h"
-#import "ExecuteAction.h"
-#import "OpenUrlAction.h"
-#import "SubmitAction.h"
-#import "UnknownAction.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACRRegistrationPrivate.h>
+#import <AdaptiveCards/BaseActionElement.h>
+#import <AdaptiveCards/ExecuteAction.h>
+#import <AdaptiveCards/OpenUrlAction.h>
+#import <AdaptiveCards/SubmitAction.h>
+#import <AdaptiveCards/UnknownAction.h>
+#import <AdaptiveCards/UtiliOS.h>
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

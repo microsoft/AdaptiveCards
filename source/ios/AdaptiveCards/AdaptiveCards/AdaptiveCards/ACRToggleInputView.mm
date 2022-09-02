@@ -5,8 +5,8 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRToggleInputView.h"
-#import "ACOBundle.h"
+#import <AdaptiveCards/ACRToggleInputView.h>
+#import <AdaptiveCards/ACOBundle.h>
 #import <Foundation/Foundation.h>
 
 @implementation ACRToggleInputView

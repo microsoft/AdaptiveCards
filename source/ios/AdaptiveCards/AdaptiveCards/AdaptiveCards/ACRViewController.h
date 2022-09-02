@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOHostConfig.h"
+#import <AdaptiveCards/ACOAdaptiveCard.h>
+#import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/ACOWarning.h>
 #import <AdaptiveCards/ACRActionDelegate.h>
 #import <Foundation/Foundation.h>

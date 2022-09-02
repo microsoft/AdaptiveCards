@@ -5,16 +5,16 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRActionOverflowRenderer.h"
-#import "ACOActionOverflow.h"
-#import "ACOAdaptiveCardPrivate.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRButton.h"
-#import "ACRIContentHoldingView.h"
-#import "ACROverflowTarget.h"
-#import "ACRView.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRActionOverflowRenderer.h>
+#import <AdaptiveCards/ACOActionOverflow.h>
+#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACROverflowTarget.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRActionOverflowRenderer
 

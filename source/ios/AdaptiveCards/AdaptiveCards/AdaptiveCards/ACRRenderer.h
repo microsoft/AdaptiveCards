@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOHostConfig.h"
+#import <AdaptiveCards/ACOAdaptiveCard.h>
+#import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/ACRRenderResult.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>

@@ -5,7 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRColumnSetView.h"
+#import <AdaptiveCards/ACRColumnSetView.h>
 
 @implementation ACRColumnSetView
 

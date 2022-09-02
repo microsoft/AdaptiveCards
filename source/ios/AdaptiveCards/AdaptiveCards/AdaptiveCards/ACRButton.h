@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRView.h"
+#import <AdaptiveCards/ACRView.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRButton : UIButton

@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseCardElementRenderer.h"
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 
 @interface ACRInputChoiceSetRenderer : ACRBaseCardElementRenderer
 

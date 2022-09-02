@@ -6,8 +6,8 @@
 //
 //
 //
-#import "ACOBaseActionElementPrivate.h"
-#import "ACORefreshPrivate.h"
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACORefreshPrivate.h>
 
 @implementation ACORefresh {
     std::shared_ptr<Refresh> _refreshElement;

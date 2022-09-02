@@ -7,7 +7,7 @@
 //
 @class ACRBaseCardElementRenderer;
 
-#import "ACOBaseCardElement.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
 #import <AdaptiveCards/ACRBaseActionElementRenderer.h>
 #import <AdaptiveCards/ACRTargetBuilder.h>
 

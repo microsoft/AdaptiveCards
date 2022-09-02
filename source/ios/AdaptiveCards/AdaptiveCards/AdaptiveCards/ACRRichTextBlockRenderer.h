@@ -5,7 +5,7 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseCardElementRenderer.h"
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 
 @interface ACRRichTextBlockRenderer : ACRBaseCardElementRenderer
 

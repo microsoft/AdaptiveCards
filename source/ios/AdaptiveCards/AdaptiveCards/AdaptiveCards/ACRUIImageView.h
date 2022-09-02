@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElement.h"
-#import "ACREnums.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACREnums.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRUIImageView : UIImageView

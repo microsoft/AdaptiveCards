@@ -4,12 +4,12 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOBaseCardElement.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRErrors.h"
-#import "AdaptiveCardParseException.h"
-#import "Enums.h"
-#import "TextBlock.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRErrors.h>
+#import <AdaptiveCards/AdaptiveCardParseException.h>
+#import <AdaptiveCards/Enums.h>
+#import <AdaptiveCards/TextBlock.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

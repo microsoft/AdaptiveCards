@@ -5,11 +5,11 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRTextInputHandler.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRInputLabelView.h"
-#import "NumberInput.h"
-#import "TextInput.h"
+#import <AdaptiveCards/ACRTextInputHandler.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/NumberInput.h>
+#import <AdaptiveCards/TextInput.h>
 
 
 @implementation ACRTextInputHandler

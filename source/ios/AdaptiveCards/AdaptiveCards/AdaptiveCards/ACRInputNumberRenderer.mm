@@ -5,16 +5,16 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRInputNumberRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOBundle.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRInputLabelViewPrivate.h"
-#import "ACRNumericTextField.h"
-#import "ACRTextInputHandler.h"
-#import "NumberInput.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRInputNumberRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOBundle.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/ACRInputLabelViewPrivate.h>
+#import <AdaptiveCards/ACRNumericTextField.h>
+#import <AdaptiveCards/ACRTextInputHandler.h>
+#import <AdaptiveCards/NumberInput.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRInputNumberRenderer
 

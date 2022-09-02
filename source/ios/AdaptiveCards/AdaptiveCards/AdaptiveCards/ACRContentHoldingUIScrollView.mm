@@ -5,7 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRContentHoldingUIScrollView.h"
+#import <AdaptiveCards/ACRContentHoldingUIScrollView.h>
 
 @implementation ACRContentHoldingUIScrollView
 

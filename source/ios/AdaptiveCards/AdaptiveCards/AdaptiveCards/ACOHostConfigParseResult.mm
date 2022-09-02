@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOHostConfigParseResult.h"
+#import <AdaptiveCards/ACOHostConfigParseResult.h>
 
 @implementation ACOHostConfigParseResult
 

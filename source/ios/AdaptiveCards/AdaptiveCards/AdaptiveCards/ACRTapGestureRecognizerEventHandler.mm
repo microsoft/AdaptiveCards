@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRTapGestureRecognizerEventHandler.h"
+#import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
 
 @implementation ACRTapGestureRecognizerEventHandler
 

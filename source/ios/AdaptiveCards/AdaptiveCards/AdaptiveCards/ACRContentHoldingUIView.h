@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRContentStackView.h"
-#import "ACRImageProperties.h"
+#import <AdaptiveCards/ACRContentStackView.h>
+#import <AdaptiveCards/ACRImageProperties.h>
 #import <UIKit/UIKit.h>
 
 const extern NSInteger eACRUILabelTag;

@@ -5,7 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseCardElementRenderer.h"
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 
 @interface ACRTableRenderer : ACRBaseCardElementRenderer
 

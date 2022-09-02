@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCardParseResult.h"
+#import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
 
 @implementation ACOAdaptiveCardParseResult
 

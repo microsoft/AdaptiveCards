@@ -5,7 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACOWarning.h"
+#import <AdaptiveCards/ACOWarning.h>
 
 @implementation ACOWarning
 

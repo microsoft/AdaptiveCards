@@ -4,7 +4,7 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACOResourceResolvers.h"
+#import <AdaptiveCards/ACOResourceResolvers.h>
 #import <Foundation/Foundation.h>
 
 @implementation ACOResourceResolvers {

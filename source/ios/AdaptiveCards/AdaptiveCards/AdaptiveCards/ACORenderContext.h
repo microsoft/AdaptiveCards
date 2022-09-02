@@ -5,10 +5,10 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseActionElement.h"
-#import "ACOBaseCardElement.h"
-#import "ACOHostConfig.h"
-#import "ACOVisibilityManager.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACOVisibilityManager.h>
 #import <Foundation/Foundation.h>
 
 @class ACOAdaptiveCard;

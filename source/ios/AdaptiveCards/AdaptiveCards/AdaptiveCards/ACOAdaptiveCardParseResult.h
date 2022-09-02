@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRParseWarning.h"
+#import <AdaptiveCards/ACRParseWarning.h>
 #import <Foundation/Foundation.h>
 
 @class ACOAdaptiveCard;

@@ -5,19 +5,19 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRMediaRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOMediaEventPrivate.h"
-#import "ACRAggregateTarget.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRImageProperties.h"
-#import "ACRMediaTarget.h"
-#import "ACRTapGestureRecognizerFactory.h"
-#import "ACRUIImageView.h"
-#import "ACRView.h"
-#import "SharedAdaptiveCard.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRMediaRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACOMediaEventPrivate.h>
+#import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/ACRImageProperties.h>
+#import <AdaptiveCards/ACRMediaTarget.h>
+#import <AdaptiveCards/ACRTapGestureRecognizerFactory.h>
+#import <AdaptiveCards/ACRUIImageView.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/UtiliOS.h>
 #import <AVKit/AVKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 

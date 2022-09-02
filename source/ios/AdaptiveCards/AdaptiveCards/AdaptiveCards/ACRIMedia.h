@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOMediaEvent.h"
+#import <AdaptiveCards/ACOAdaptiveCard.h>
+#import <AdaptiveCards/ACOMediaEvent.h>
 #import <AVKit/AVKit.h>
 #import <UIKit/UIKit.h>
 

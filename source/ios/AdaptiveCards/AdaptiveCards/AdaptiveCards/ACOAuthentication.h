@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAuthCardButton.h"
-#import "ACOTokenExchangeResource.h"
+#import <AdaptiveCards/ACOAuthCardButton.h>
+#import <AdaptiveCards/ACOTokenExchangeResource.h>
 #import <Foundation/Foundation.h>
 
 @interface ACOAuthentication : NSObject

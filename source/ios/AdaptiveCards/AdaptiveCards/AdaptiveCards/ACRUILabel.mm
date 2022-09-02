@@ -5,9 +5,9 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRUILabel.h"
-#import "ACRAggregateTarget.h"
-#import "ACRContentHoldingUIView.h"
+#import <AdaptiveCards/ACRUILabel.h>
+#import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
 
 @implementation ACRUILabel
 

@@ -5,9 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAuthCardButtonPrivate.h"
-#import "ACOAuthenticationPrivate.h"
-#import "ACOTokenExchangeResourcePrivate.h"
+#import <AdaptiveCards/ACOAuthCardButtonPrivate.h>
+#import <AdaptiveCards/ACOAuthenticationPrivate.h>
+#import <AdaptiveCards/ACOTokenExchangeResourcePrivate.h>
 
 @implementation ACOAuthentication {
     std::shared_ptr<Authentication> _adaptiveAuthentication;

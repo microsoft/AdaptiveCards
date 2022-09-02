@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOEnums.h"
-#import "ACOParseContext.h"
+#import <AdaptiveCards/ACOEnums.h>
+#import <AdaptiveCards/ACOParseContext.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

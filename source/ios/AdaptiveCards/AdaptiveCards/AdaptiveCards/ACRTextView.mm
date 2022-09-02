@@ -5,11 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRTextView.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRInputLabelView.h"
-#import "TextInput.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRTextView.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/TextInput.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRTextView {
     BOOL _isShowingPlaceholder;

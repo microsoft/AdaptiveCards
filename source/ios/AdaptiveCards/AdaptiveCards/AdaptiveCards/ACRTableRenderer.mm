@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRTableRenderer.h"
-#import "ACRTableView.h"
+#import <AdaptiveCards/ACRTableRenderer.h>
+#import <AdaptiveCards/ACRTableView.h>
 
 @implementation ACRTableRenderer
 

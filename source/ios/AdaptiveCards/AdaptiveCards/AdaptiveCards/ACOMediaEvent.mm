@@ -6,7 +6,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOMediaEventPrivate.h"
+#import <AdaptiveCards/ACOMediaEventPrivate.h>
 
 @implementation ACOMediaSource
 

@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACREnums.h"
+#import <AdaptiveCards/ACREnums.h>
 #import <Foundation/Foundation.h>
 
 @interface ACRParseWarning : NSObject

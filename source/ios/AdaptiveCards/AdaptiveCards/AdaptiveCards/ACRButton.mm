@@ -5,12 +5,12 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRButton.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOBundle.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRUIImageView.h"
-#import "ACRViewPrivate.h"
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOBundle.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRUIImageView.h>
+#import <AdaptiveCards/ACRViewPrivate.h>
 
 @implementation ACRButton
 

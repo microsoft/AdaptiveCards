@@ -5,14 +5,14 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRTableView.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRTableRow.h"
-#import "Table.h"
-#import "TableCell.h"
-#import "TableColumnDefinition.h"
-#import "TableRow.h"
+#import <AdaptiveCards/ACRTableView.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRTableRow.h>
+#import <AdaptiveCards/Table.h>
+#import <AdaptiveCards/TableCell.h>
+#import <AdaptiveCards/TableColumnDefinition.h>
+#import <AdaptiveCards/TableRow.h>
 
 @implementation ACRTableView {
     NSMutableArray<ACRColumnDefinition *> *_columnDefinitions;

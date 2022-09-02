@@ -5,10 +5,10 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOActionOverflow.h"
-#import "ACRBaseTarget.h"
-#import "ACRIContentHoldingView.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACOActionOverflow.h>
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRView.h>
 #import <UIKit/UIKit.h>
 
 @interface ACROverflowMenuItem : NSObject

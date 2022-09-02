@@ -5,9 +5,9 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOMediaEvent.h"
-#import "ACRTapGestureRecognizerEventHandler.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACOMediaEvent.h>
+#import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
+#import <AdaptiveCards/ACRView.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
 

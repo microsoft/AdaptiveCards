@@ -5,28 +5,28 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRInputRenderer.h"
-#import "ACOBaseActionElement.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOBundle.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRActionOpenURLRenderer.h"
-#import "ACRAggregateTarget.h"
-#import "ACRButton.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRInputLabelViewPrivate.h"
-#import "ACRQuickReplyMultilineView.h"
-#import "ACRQuickReplyView.h"
-#import "ACRSeparator.h"
-#import "ACRShowCardTarget.h"
-#import "ACRTextField.h"
-#import "ACRTextInputHandler.h"
-#import "ACRTextView.h"
-#import "ACRToggleVisibilityTarget.h"
-#import "ACRUIImageView.h"
-#import "TextInput.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRInputRenderer.h>
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOBundle.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRActionOpenURLRenderer.h>
+#import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/ACRInputLabelViewPrivate.h>
+#import <AdaptiveCards/ACRQuickReplyMultilineView.h>
+#import <AdaptiveCards/ACRQuickReplyView.h>
+#import <AdaptiveCards/ACRSeparator.h>
+#import <AdaptiveCards/ACRShowCardTarget.h>
+#import <AdaptiveCards/ACRTextField.h>
+#import <AdaptiveCards/ACRTextInputHandler.h>
+#import <AdaptiveCards/ACRTextView.h>
+#import <AdaptiveCards/ACRToggleVisibilityTarget.h>
+#import <AdaptiveCards/ACRUIImageView.h>
+#import <AdaptiveCards/TextInput.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRInputRenderer
 

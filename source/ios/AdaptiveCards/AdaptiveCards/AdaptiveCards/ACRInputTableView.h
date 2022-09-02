@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRIBaseInputHandler.h"
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRInputTableView : UITableView

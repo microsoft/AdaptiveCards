@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
 
 @interface ACRActionToggleVisibilityRenderer : ACRBaseActionElementRenderer
 

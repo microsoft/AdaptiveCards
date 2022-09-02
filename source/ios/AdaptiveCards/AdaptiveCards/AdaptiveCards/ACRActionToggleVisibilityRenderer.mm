@@ -5,14 +5,14 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRActionToggleVisibilityRenderer.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRBaseActionElementRenderer.h"
-#import "ACRButton.h"
-#import "ACRToggleVisibilityTarget.h"
-#import "ToggleVisibilityAction.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRActionToggleVisibilityRenderer.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACRToggleVisibilityTarget.h>
+#import <AdaptiveCards/ToggleVisibilityAction.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRActionToggleVisibilityRenderer
 

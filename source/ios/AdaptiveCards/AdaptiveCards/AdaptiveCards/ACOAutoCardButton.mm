@@ -7,7 +7,7 @@
 //
 //
 //
-#import "ACOAuthCardButtonPrivate.h"
+#import <AdaptiveCards/ACOAuthCardButtonPrivate.h>
 
 @implementation ACOAuthCardButton {
     std::shared_ptr<AuthCardButton> _adaptiveAuthCardButton;

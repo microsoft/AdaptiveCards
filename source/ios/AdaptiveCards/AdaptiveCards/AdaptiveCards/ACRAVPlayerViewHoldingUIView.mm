@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRAVPlayerViewHoldingUIView.h"
+#import <AdaptiveCards/ACRAVPlayerViewHoldingUIView.h>
 
 @implementation ACRAVPlayerViewHoldingUIView
 

@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOBaseActionElement.h"
+#import <AdaptiveCards/ACOAdaptiveCard.h>
+#import <AdaptiveCards/ACOBaseActionElement.h>
 #import <Foundation/Foundation.h>
 
 @class ACROverflowMenuItem;

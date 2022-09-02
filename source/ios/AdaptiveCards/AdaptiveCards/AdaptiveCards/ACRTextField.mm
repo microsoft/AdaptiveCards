@@ -5,10 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRTextField.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRInputLabelView.h"
-#import "TextInput.h"
+#import <AdaptiveCards/ACRTextField.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/TextInput.h>
 
 
 @implementation ACRTextField

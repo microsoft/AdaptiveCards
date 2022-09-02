@@ -4,7 +4,7 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRContentStackView.h"
+#import <AdaptiveCards/ACRContentStackView.h>
 
 @interface ACRColumnSetView : ACRContentStackView
 

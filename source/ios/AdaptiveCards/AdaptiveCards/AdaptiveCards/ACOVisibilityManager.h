@@ -5,7 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOFillerSpaceManager.h"
+#import <AdaptiveCards/ACOFillerSpaceManager.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,13 +5,13 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOHostConfig.h"
-#import "ACORenderContext.h"
-#import "ACOWarning.h"
-#import "ACRActionDelegate.h"
-#import "ACRColumnView.h"
-#import "ACRIMedia.h"
+#import <AdaptiveCards/ACOAdaptiveCard.h>
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACORenderContext.h>
+#import <AdaptiveCards/ACOWarning.h>
+#import <AdaptiveCards/ACRActionDelegate.h>
+#import <AdaptiveCards/ACRColumnView.h>
+#import <AdaptiveCards/ACRIMedia.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

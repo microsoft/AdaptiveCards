@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOIResourceResolver.h"
+#import <AdaptiveCards/ACOIResourceResolver.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

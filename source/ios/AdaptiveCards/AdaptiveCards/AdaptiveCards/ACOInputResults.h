@@ -6,8 +6,8 @@
 //
 //
 
-#import "ACRIBaseInputHandler.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import <AdaptiveCards/ACRView.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRNumericTextField.h"
+#import <AdaptiveCards/ACRNumericTextField.h>
 
 
 @implementation ACRNumericTextField {

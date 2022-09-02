@@ -5,17 +5,17 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRTapGestureRecognizerFactory.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACRAggregateTarget.h"
-#import "ACRShowCardTarget.h"
-#import "ACRToggleVisibilityTarget.h"
-#import "ACRUILabel.h"
-#import "OpenUrlAction.h"
-#import "ShowCardAction.h"
-#import "SubmitAction.h"
-#import "ToggleVisibilityAction.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRTapGestureRecognizerFactory.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRShowCardTarget.h>
+#import <AdaptiveCards/ACRToggleVisibilityTarget.h>
+#import <AdaptiveCards/ACRUILabel.h>
+#import <AdaptiveCards/OpenUrlAction.h>
+#import <AdaptiveCards/ShowCardAction.h>
+#import <AdaptiveCards/SubmitAction.h>
+#import <AdaptiveCards/ToggleVisibilityAction.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 using namespace AdaptiveCards;
 

@@ -5,9 +5,9 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseActionElement.h"
-#import "ACOBaseCardElement.h"
-#import "ACOHostConfig.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOHostConfig.h>
 #import <UIKit/UIKit.h>
 
 @class ACRView;

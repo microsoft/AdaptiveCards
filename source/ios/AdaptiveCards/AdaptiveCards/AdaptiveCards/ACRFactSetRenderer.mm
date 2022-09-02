@@ -4,19 +4,19 @@
 //
 //  Copyright Â© 2017 Microsoft. All rights reserved.
 //
-#import "ACRFactSetRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOFillerSpaceManager.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRColumnSetView.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRRegistration.h"
-#import "ACRSeparator.h"
-#import "ACRTextBlockRenderer.h"
-#import "ACRUILabel.h"
-#import "Fact.h"
-#import "FactSet.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRFactSetRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOFillerSpaceManager.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRColumnSetView.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/ACRRegistration.h>
+#import <AdaptiveCards/ACRSeparator.h>
+#import <AdaptiveCards/ACRTextBlockRenderer.h>
+#import <AdaptiveCards/ACRUILabel.h>
+#import <AdaptiveCards/Fact.h>
+#import <AdaptiveCards/FactSet.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRFactSetRenderer
 

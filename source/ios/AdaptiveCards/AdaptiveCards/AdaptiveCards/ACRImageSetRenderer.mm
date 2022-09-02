@@ -5,13 +5,13 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRImageSetRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRImageSetUICollectionView.h"
-#import "ImageSet.h"
-#import "SharedAdaptiveCard.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRImageSetRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRImageSetUICollectionView.h>
+#import <AdaptiveCards/ImageSet.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/UtiliOS.h>
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

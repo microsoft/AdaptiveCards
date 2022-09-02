@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRParseWarningPrivate.h"
+#import <AdaptiveCards/ACRParseWarningPrivate.h>
 
 using namespace AdaptiveCards;
 

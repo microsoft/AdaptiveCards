@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRUIImageView.h"
-#import "ACRContentHoldingUIView.h"
+#import <AdaptiveCards/ACRUIImageView.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
 
 @implementation ACRUIImageView
 

@@ -5,7 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseTarget.h"
+#import <AdaptiveCards/ACRBaseTarget.h>
 #import <UIKit/UIKit.h>
 #if defined(ADAPTIVECARDS_USE_FLUENT_TOOLTIPS)
 #import <FluentUI/FluentUI-Swift.h>

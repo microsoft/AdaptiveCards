@@ -6,8 +6,8 @@
 //
 //
 
-#import "ACOInputResults.h"
-#import "ACRViewPrivate.h"
+#import <AdaptiveCards/ACOInputResults.h>
+#import <AdaptiveCards/ACRViewPrivate.h>
 
 @implementation ACOInputResults {
     __weak ACRView *_view;

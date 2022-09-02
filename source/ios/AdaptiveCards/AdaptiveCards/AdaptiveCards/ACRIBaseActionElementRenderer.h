@@ -5,9 +5,9 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseActionElement.h"
-#import "ACOHostConfig.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACRView.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRIContentHoldingView.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/ACOInputResults.h>
 #import <AdaptiveCards/ACRBaseTarget.h>
 #import <UIKit/UIKit.h>

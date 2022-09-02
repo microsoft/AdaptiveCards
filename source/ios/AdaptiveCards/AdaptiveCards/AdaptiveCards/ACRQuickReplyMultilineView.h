@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRButton.h"
-#import "ACRTextView.h"
+#import <AdaptiveCards/ACRButton.h>
+#import <AdaptiveCards/ACRTextView.h>
 #import <UIKit/UIKit.h>
 @protocol ACRIQuickReply
 - (ACRButton *)getButton;

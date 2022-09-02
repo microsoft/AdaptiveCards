@@ -4,7 +4,7 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRRenderResult.h"
+#import <AdaptiveCards/ACRRenderResult.h>
 
 @implementation ACRRenderResult
 

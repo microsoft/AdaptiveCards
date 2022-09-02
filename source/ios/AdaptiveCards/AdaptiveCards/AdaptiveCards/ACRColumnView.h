@@ -4,10 +4,10 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOVisibilityManager.h"
-#import "ACRColumnSetView.h"
-#import "ACRContentStackView.h"
-#import "ACRIBaseInputHandler.h"
+#import <AdaptiveCards/ACOVisibilityManager.h>
+#import <AdaptiveCards/ACRColumnSetView.h>
+#import <AdaptiveCards/ACRContentStackView.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
 
 @class ACRSeparator;
 

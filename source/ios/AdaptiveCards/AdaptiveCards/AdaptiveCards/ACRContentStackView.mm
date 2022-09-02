@@ -6,11 +6,11 @@
 //
 
 #include "ACRContentStackView.h"
-#import "ACOBaseCardElementPrivate.h"
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #include "ACOHostConfigPrivate.h"
-#import "ACRShowCardTarget.h"
-#import "ACRViewPrivate.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRShowCardTarget.h>
+#import <AdaptiveCards/ACRViewPrivate.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 using namespace AdaptiveCards;
 

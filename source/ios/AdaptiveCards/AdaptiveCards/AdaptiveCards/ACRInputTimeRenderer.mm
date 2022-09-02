@@ -5,12 +5,12 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRInputTimeRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRDateTextField.h"
-#import "ACRInputLabelViewPrivate.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRInputTimeRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRDateTextField.h>
+#import <AdaptiveCards/ACRInputLabelViewPrivate.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRInputTimeRenderer
 

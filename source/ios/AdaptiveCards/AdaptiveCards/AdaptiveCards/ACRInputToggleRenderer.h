@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseCardElementRenderer.h"
-#import "ACRIBaseInputHandler.h"
+#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
 
 @interface ACRInputToggleRenderer : ACRBaseCardElementRenderer
 

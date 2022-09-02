@@ -2,21 +2,21 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRActionSetRenderer.h"
-#import "ACOActionOverflowPrivate.h"
-#import "ACOAdaptiveCardPrivate.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRBaseActionElementRenderer.h"
-#import "ACRColumnSetView.h"
-#import "ACRColumnView.h"
-#import "ACRContentHoldingUIScrollView.h"
-#import "ACRIContentHoldingView.h"
-#import "ACRRegistration.h"
-#import "ACRRenderer.h"
-#import "ActionSet.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRActionSetRenderer.h>
+#import <AdaptiveCards/ACOActionOverflowPrivate.h>
+#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
+#import <AdaptiveCards/ACRColumnSetView.h>
+#import <AdaptiveCards/ACRColumnView.h>
+#import <AdaptiveCards/ACRContentHoldingUIScrollView.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRRegistration.h>
+#import <AdaptiveCards/ACRRenderer.h>
+#import <AdaptiveCards/ActionSet.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRActionSetRenderer
 

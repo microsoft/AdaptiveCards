@@ -5,14 +5,14 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRToggleVisibilityTarget.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOVisibilityManager.h"
-#import "ACRRendererPrivate.h"
-#import "ACRView.h"
-#import "BaseActionElement.h"
-#import "ToggleVisibilityTarget.h"
+#import <AdaptiveCards/ACRToggleVisibilityTarget.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACOVisibilityManager.h>
+#import <AdaptiveCards/ACRRendererPrivate.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/BaseActionElement.h>
+#import <AdaptiveCards/ToggleVisibilityTarget.h>
 
 @implementation ACRToggleVisibilityTarget {
     ACOHostConfig *_config;

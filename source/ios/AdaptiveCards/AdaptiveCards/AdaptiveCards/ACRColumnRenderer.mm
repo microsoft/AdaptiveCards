@@ -5,15 +5,15 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRColumnRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRColumnSetView.h"
-#import "ACRColumnView.h"
-#import "ACRRendererPrivate.h"
-#import "Column.h"
-#import "SharedAdaptiveCard.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRColumnRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRColumnSetView.h>
+#import <AdaptiveCards/ACRColumnView.h>
+#import <AdaptiveCards/ACRRendererPrivate.h>
+#import <AdaptiveCards/Column.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRColumnRenderer
 

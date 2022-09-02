@@ -4,7 +4,7 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACORemoteResourceInformationPrivate.h"
+#import <AdaptiveCards/ACORemoteResourceInformationPrivate.h>
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

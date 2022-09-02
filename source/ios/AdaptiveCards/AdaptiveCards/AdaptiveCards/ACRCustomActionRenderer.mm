@@ -5,14 +5,14 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import "ACRCustomActionRenderer.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRRegistration.h"
-#import "SharedAdaptiveCard.h"
-#import "UnknownAction.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRCustomActionRenderer.h>
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRContentHoldingUIView.h>
+#import <AdaptiveCards/ACRRegistration.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/UnknownAction.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 // this is an entry point to custom parsing and rendering
 // it will call a registered custom parser to deserialize, then the deserialized object is rendered by calling

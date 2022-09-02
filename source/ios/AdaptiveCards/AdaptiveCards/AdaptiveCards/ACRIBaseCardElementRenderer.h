@@ -6,9 +6,9 @@
 //
 //
 
-#import "ACOHostConfig.h"
-#import "ACRContentStackView.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACRContentStackView.h>
+#import <AdaptiveCards/ACRView.h>
 #import <UIKit/UIKit.h>
 
 @protocol ACRIBaseCardElementRenderer

@@ -5,14 +5,14 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRInputChoiceSetRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRChoiceSetCompactStyleView.h"
-#import "ACRInputLabelViewPrivate.h"
-#import "ACRInputTableView.h"
-#import "ChoiceSetInput.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRInputChoiceSetRenderer.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRChoiceSetCompactStyleView.h>
+#import <AdaptiveCards/ACRInputLabelViewPrivate.h>
+#import <AdaptiveCards/ACRInputTableView.h>
+#import <AdaptiveCards/ChoiceSetInput.h>
+#import <AdaptiveCards/UtiliOS.h>
 #import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 
 @implementation ACRInputChoiceSetRenderer

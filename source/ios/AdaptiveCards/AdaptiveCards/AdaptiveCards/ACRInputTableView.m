@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRInputTableView.h"
-#import "ACOBundle.h"
+#import <AdaptiveCards/ACRInputTableView.h>
+#import <AdaptiveCards/ACOBundle.h>
 #import <Foundation/Foundation.h>
 
 @implementation ACRInputTableView

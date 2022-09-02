@@ -7,8 +7,8 @@
 //
 //
 
-#import "ACOBaseActionElementPrivate.h"
-#import "ACOTokenExchangeResourcePrivate.h"
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOTokenExchangeResourcePrivate.h>
 
 @implementation ACOTokenExchangeResource {
     std::shared_ptr<TokenExchangeResource> _adaptiveTokenExchangeResource;

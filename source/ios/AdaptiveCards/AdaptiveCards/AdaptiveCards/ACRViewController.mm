@@ -5,10 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRViewController.h"
-#import "ACOAdaptiveCardPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACRViewController.h>
+#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRView.h>
 
 using namespace AdaptiveCards;
 

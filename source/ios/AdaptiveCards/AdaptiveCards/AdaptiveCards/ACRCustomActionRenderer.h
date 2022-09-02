@@ -5,7 +5,7 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
 
 @interface ACRCustomActionRenderer : ACRBaseActionElementRenderer
 

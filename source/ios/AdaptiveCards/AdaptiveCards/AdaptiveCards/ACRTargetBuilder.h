@@ -5,7 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRView.h"
+#import <AdaptiveCards/ACRView.h>
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, ACRTargetCapability) {

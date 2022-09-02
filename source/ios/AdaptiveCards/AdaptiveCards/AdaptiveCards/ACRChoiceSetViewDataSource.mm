@@ -5,9 +5,9 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACOBundle.h"
-#import "ACRInputLabelView.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACOBundle.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/UtiliOS.h>
 #import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 #import <Foundation/Foundation.h>
 

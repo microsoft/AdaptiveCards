@@ -5,8 +5,8 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElement.h"
-#import "ACRIBaseInputHandler.h"
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRTextField : UITextField <UITextFieldDelegate>

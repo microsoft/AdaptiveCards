@@ -5,14 +5,14 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRTableRow.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRRegistration.h"
-#import "ACRTableCellRenderer.h"
-#import "ACRTableCellView.h"
-#import "TableRow.h"
-#import "UtiliOS.h"
+#import <AdaptiveCards/ACRTableRow.h>
+#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/ACRRegistration.h>
+#import <AdaptiveCards/ACRTableCellRenderer.h>
+#import <AdaptiveCards/ACRTableCellView.h>
+#import <AdaptiveCards/TableRow.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation ACRColumnDefinition
 

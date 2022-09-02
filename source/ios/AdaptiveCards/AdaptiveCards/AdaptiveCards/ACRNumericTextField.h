@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRTextField.h"
+#import <AdaptiveCards/ACRTextField.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRNumericTextField : ACRTextField
