@@ -33,6 +33,7 @@ import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.IChoiceSetListener;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -58,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -442,6 +444,35 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             autoCompleteTextInputHandler.setView(autoCompleteTextView);
         }
         renderedCard.registerInputHandler(autoCompleteTextInputHandler, renderArgs.getContainerCardId());
+        long autoCompleteTextViewId = Util.getViewId(autoCompleteTextView);
+
+        class ChoicesListener implements IChoiceSetListener {
+            String m_query;
+            List<String> m_items;
+            Boolean areChoicesFetched;
+
+            ChoicesListener() {
+                m_query = "";
+                areChoicesFetched = true;
+                m_items = new ArrayList<>();
+            }
+
+            public void setQuery(String query) {
+                this.m_query = query;
+                this.areChoicesFetched = false;
+            }
+
+            public void updateChoices(String query, List<String> updatedChoices) {
+                if (m_query.equalsIgnoreCase(query)) {
+                    this.m_items = updatedChoices;
+                    this.areChoicesFetched = true;
+                }
+            }
+
+            public List<String> getItems() {
+                return this.m_items;
+            }
+        }
 
         class FilteredChoiceSetAdapter extends ArrayAdapter<String>
         {
@@ -451,13 +482,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             // m_originalItemsList contains the items provided by the card author when the element was created
             List<String> m_items, m_originalItemsList;
 
+            ChoicesListener mChoicesListener;
+
             FilteredChoiceSetAdapter(Context context, int resource,
-                                     Vector<String> items, boolean mustWrap)
+                                     Vector<String> items, boolean mustWrap, ChoicesListener choiceSetListener)
             {
                 super(context, resource, items);
                 m_mustWrap = mustWrap;
                 m_items = items;
                 m_originalItemsList = new ArrayList<>(items);
+                mChoicesListener = choiceSetListener;
             }
 
             @Override
@@ -502,6 +536,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                     FilterResults filterResults = new FilterResults();
 
+                    String lowerCaseConstraint = constraint.toString().toLowerCase();
+                    mChoicesListener.setQuery(lowerCaseConstraint);
+                    CardRendererRegistration.getInstance().notifyInputChoiceQueryChange(autoCompleteTextViewId, lowerCaseConstraint);
+
                     // Due to the time it takes for evaluating all options, this part of the code has
                     // to be synchronized, otherwise the worker thread that calls the publishResults
                     // function will throw an illegalstateexception or a concurrentmodificationexception
@@ -512,7 +550,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                         // isEmpty compares against null and 0-length strings
                         if (!TextUtils.isEmpty(constraint))
                         {
-                            String lowerCaseConstraint = constraint.toString().toLowerCase();
+                            //String lowerCaseConstraint = constraint.toString().toLowerCase();
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                             {
@@ -535,8 +573,15 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                             filteredSuggestions = m_originalItemsList;
                         }
 
-                        filterResults.values = filteredSuggestions;
-                        filterResults.count = filteredSuggestions.size();
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch(Exception e) {
+
+                        }
+
+                        m_items = mChoicesListener.getItems();
+                        filterResults.values = m_items;
+                        filterResults.count = m_items.size();
 
                         return filterResults;
                     }
@@ -559,10 +604,14 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         }
 
+        ChoicesListener choicesListener = new ChoicesListener();
+        renderedCard.registerForTypeAheadHandler(autoCompleteTextViewId, choicesListener);
+
         autoCompleteTextView.setAdapter(new FilteredChoiceSetAdapter(context,
                                             android.R.layout.select_dialog_item,
                                             titleList,
-                                            choiceSetInput.GetWrap()));
+                                            choiceSetInput.GetWrap(),
+                                            choicesListener));
         autoCompleteTextView.setFocusable(true);
         if (valueIndex != -1)
         {

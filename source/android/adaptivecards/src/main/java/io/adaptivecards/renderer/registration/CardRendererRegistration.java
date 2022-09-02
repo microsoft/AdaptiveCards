@@ -61,6 +61,7 @@ import io.adaptivecards.renderer.input.ToggleInputRenderer;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputWatcher;
+import io.adaptivecards.renderer.inputhandler.ITypeAheadSearchWatcher;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 import io.adaptivecards.renderer.readonly.ColumnRenderer;
@@ -146,6 +147,10 @@ public class CardRendererRegistration
         m_InputWatcher = inputWatcher;
     }
 
+    public void setTypeAheadSearchWatcher(ITypeAheadSearchWatcher typeAheadSearchWatcher) {
+        m_TypeAheadSearchWatcher = typeAheadSearchWatcher;
+    }
+
     public IInputWatcher getInputWatcher() {
         return m_InputWatcher;
     }
@@ -155,6 +160,14 @@ public class CardRendererRegistration
         if (m_InputWatcher != null)
         {
             m_InputWatcher.onInputChange(id, value);
+        }
+    }
+
+    public void notifyInputChoiceQueryChange(Long id, String query)
+    {
+        if (m_TypeAheadSearchWatcher != null)
+        {
+            m_TypeAheadSearchWatcher.onSearchQueryChange(id, query);
         }
     }
 
@@ -615,6 +628,7 @@ public class CardRendererRegistration
 
     private static CardRendererRegistration s_instance = null;
     private IInputWatcher m_InputWatcher = null;
+    private ITypeAheadSearchWatcher m_TypeAheadSearchWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private HashMap<String, IBaseActionElementRenderer> m_typeToRenderActionMap = new HashMap<String, IBaseActionElementRenderer>();
     private IActionLayoutRenderer m_actionLayoutRenderer = null;

@@ -30,6 +30,7 @@ import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.inputhandler.ITypeAheadSearchWatcher;
 import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
@@ -46,6 +47,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,7 +57,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-        implements ICardActionHandler, IInputWatcher
+        implements ICardActionHandler, IInputWatcher, ITypeAheadSearchWatcher
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -72,6 +75,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private TextView m_selectedHostConfigText;
     private Timer m_timer=new Timer();
     private final long DELAY = 1000; // milliseconds
+    private RenderedAdaptiveCard mRenderedAdaptiveCard;
 
     // Options for custom elements
     private Switch m_customActions;
@@ -121,6 +125,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_configEditText.addTextChangedListener(watcher);
 
         renderImporterCard(true);
+    }
+
+    @Override
+    public void onSearchQueryChange(Long id, String query) {
+        List<String> updatedChoices = new ArrayList<>();
+        updatedChoices.add("a");
+        updatedChoices.add("ab");
+        updatedChoices.add("abc");
+
+        if (mRenderedAdaptiveCard != null) {
+            mRenderedAdaptiveCard.updateInputSetChoices(id, query, updatedChoices);
+        }
     }
 
     public class SwitchListener implements CompoundButton.OnCheckedChangeListener
@@ -368,6 +384,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             registerCustomFeatures();
 
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
+            mRenderedAdaptiveCard = renderedCard;
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
@@ -392,8 +409,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             importerLayout.removeAllViews();
 
             CardRendererRegistration.getInstance().setInputWatcher(this);
-
+            CardRendererRegistration.getInstance().setTypeAheadSearchWatcher(this);
             RenderedAdaptiveCard importerCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this);
+            mRenderedAdaptiveCard = importerCard;
             importerLayout.addView(importerCard.getView());
         }
         catch (Exception ex)

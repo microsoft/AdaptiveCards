@@ -5,6 +5,7 @@ package io.adaptivecards.renderer;
 import android.view.View;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -23,6 +24,7 @@ public class RenderedAdaptiveCard {
     private Map<Long, Vector<IInputHandler>> inputsInCard;
     private Map<Long, Long> parentCardForCard;
     private Map<String, String> prevalidatedInputs;
+    private Map<Long, IChoiceSetListener> choiceSetInputListeners;
 
     private boolean lastValidationResult = false;
 
@@ -36,6 +38,7 @@ public class RenderedAdaptiveCard {
         this.inputsInCard = new HashMap<>();
         this.parentCardForCard = new HashMap<>();
         this.prevalidatedInputs = new HashMap<>();
+        this.choiceSetInputListeners = new HashMap<>();
     }
 
     public View getView()
@@ -190,6 +193,18 @@ public class RenderedAdaptiveCard {
     {
         long actionId = Util.getViewId(renderedAction);
         setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
+    }
+
+    public void registerForTypeAheadHandler(long autoCompleteTextViewId, IChoiceSetListener choiceSetListener)
+    {
+        choiceSetInputListeners.put(autoCompleteTextViewId, choiceSetListener);
+    }
+
+    public void updateInputSetChoices(long autoCompleteTextViewId, String query, List<String> updatedChoices) {
+        IChoiceSetListener choiceSetListener = choiceSetInputListeners.get(autoCompleteTextViewId);
+        if (choiceSetListener != null) {
+            choiceSetListener.updateChoices(query, updatedChoices);
+        }
     }
 
     protected boolean isActionSubmitable(View action)
