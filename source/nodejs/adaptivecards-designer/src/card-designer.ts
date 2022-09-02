@@ -1472,16 +1472,8 @@ export class CardDesigner extends Designer.DesignContext {
             let card = this._undoStack[this._undoStackIndex];
 
             this.setCardPayload(card, false);
+            this.displayPopup("Undo Complete");
             this.updateToolbar();
-
-            const undoSuccessPopup = document.createElement("p");
-            undoSuccessPopup.textContent = "Successfully undid your last change";
-            undoSuccessPopup.className = "popup-message";
-            undoSuccessPopup.setAttribute("role", "alert");
-
-            document.body.appendChild(undoSuccessPopup);
-
-            setTimeout(() => { undoSuccessPopup.remove(); }, 3000);
         }
     }
 
@@ -1492,17 +1484,20 @@ export class CardDesigner extends Designer.DesignContext {
             let payload = this._undoStack[this._undoStackIndex];
 
             this.setCardPayload(payload, false);
+            this.displayPopup("Redo Complete");
             this.updateToolbar();
-            
-            const redoSuccessPopup = document.createElement("p");
-            redoSuccessPopup.textContent = "Successfully redid your last change";
-            redoSuccessPopup.className = "popup-message";
-            redoSuccessPopup.setAttribute("role", "alert");
-
-            document.body.appendChild(redoSuccessPopup);
-
-            setTimeout(() => { redoSuccessPopup.remove(); }, 3000);
         }
+    }
+
+    private displayPopup(message: string) {
+        const popup = document.createElement("p");
+        popup.textContent = message;
+        popup.className = "popup-message";
+        popup.setAttribute("role", "alert");
+
+        document.body.appendChild(popup);
+
+        setTimeout(() => { popup.remove(); }, 3000);
     }
 
     showHelp() {
