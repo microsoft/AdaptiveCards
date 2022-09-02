@@ -59,7 +59,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlAttribute]
 #endif
         [DefaultValue(true)]
         public bool IsVisible { get; set; } = true;
