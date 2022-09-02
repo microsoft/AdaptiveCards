@@ -206,11 +206,11 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         if (!this._isEnabled) {
             this.rootElement.classList.add("disabled");
             this.rootElement.setAttribute("aria-disabled", "true");
-			this.rootElement.tabIndex = -1;
+            this.rootElement.tabIndex = -1;
         } else {
             this.rootElement.classList.remove("disabled");
             this.rootElement.removeAttribute("aria-disabled");
-			this.rootElement.tabIndex = 0;
+            this.rootElement.tabIndex = 0;
         }
     }
 
