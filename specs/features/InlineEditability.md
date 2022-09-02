@@ -106,7 +106,7 @@ Since this property is inherited to all Input fields, it will be supported by al
 
 ## Open Question:
 
-### 1 When Value is not provided by bot with "readWrite" style
+### 1. When Value is not provided by bot with "readWrite" style
 There can be cases where bot chooses for "readWrite" style but it does not provide initial value for the Input Fields as it is not mandatory. How do we handle such cases?
 
 Possible options:
@@ -115,7 +115,7 @@ Possible options:
 
 2. we do not support when `value` is not provided and we fallback to `default` style.
 
-### 2 How do we support inLineAction for Input.Text with "readWrite" style
+### 2. How do we support inLineAction for Input.Text with "readWrite" style
 
 inlineAction is Input.Text specific property which allows a action button placed next to 
 value field which user can click to perform action related to that input field. inLineAction supports "Action.Submit", "Action.Execute", "Action.OpenUrl", "Action.ToggleVisibility"
