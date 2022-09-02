@@ -401,7 +401,6 @@ a.ac-anchor:hover {
 
 @media(forced-colors: active) {
     .swiper-pagination-bullet {
-        forced-color-adjust: none;
-        background:rgba(255, 255, 255, 0.5442) !important;
+        background-color: ButtonBorder !important;
     }
 }
