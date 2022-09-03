@@ -54,11 +54,19 @@ let package = Package(
                 LinkerSetting.linkedFramework("QuartzCore")
             ]
             ),
-        .testTarget(
-            name:"AdaptiveCardsTest",
-            dependencies: ["AdaptiveCards"],
-            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests"
-        )
+//        .testTarget(
+//            name:"AdaptiveCardsTest",
+//            dependencies: ["ObjectModel", "AdaptiveCards"],
+//            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests",
+//            cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
+//            linkerSettings:[
+//                LinkerSetting.linkedFramework("AVFoundation"),
+//                LinkerSetting.linkedFramework("AVKit"),
+//                LinkerSetting.linkedFramework("UIKit"),
+//                LinkerSetting.linkedFramework("CoreGraphics"),
+//                LinkerSetting.linkedFramework("QuartzCore")
+//            ]
+//        )
     ],
     cxxLanguageStandard: CXXLanguageStandard.cxx17
 )

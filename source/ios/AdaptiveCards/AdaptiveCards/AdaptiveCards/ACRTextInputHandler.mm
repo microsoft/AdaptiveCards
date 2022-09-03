@@ -5,11 +5,19 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTextInputHandler.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACRInputLabelView.h"
+#import "NumberInput.h"
+#import "TextInput.h"
+#else
 #import <AdaptiveCards/ACRTextInputHandler.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/NumberInput.h>
 #import <AdaptiveCards/TextInput.h>
+#endif
 
 
 @implementation ACRTextInputHandler

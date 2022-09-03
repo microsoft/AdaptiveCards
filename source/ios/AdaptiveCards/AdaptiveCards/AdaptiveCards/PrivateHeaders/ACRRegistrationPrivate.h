@@ -1,5 +1,10 @@
-#include <AdaptiveCards/ACRRegistration.h>
-#include <AdaptiveCards/FeatureRegistration.h>
+#ifdef SWIFT_PACKAGE
+#import "ACRRegistration.h"
+#import "FeatureRegistration.h"
+#else
+#import <AdaptiveCards/ACRRegistration.h>
+#import <AdaptiveCards/FeatureRegistration.h>
+#endif
 
 using namespace AdaptiveCards;
 

@@ -4,6 +4,15 @@
 //
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACRImageProperties.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "Enums.h"
+#import "Image.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRImageProperties.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -11,6 +20,7 @@
 #import <AdaptiveCards/Image.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @implementation ACRImageProperties

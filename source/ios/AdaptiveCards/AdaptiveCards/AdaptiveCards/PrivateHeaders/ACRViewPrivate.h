@@ -6,6 +6,18 @@
 //
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOInputResults.h"
+#import "ACRErrors.h"
+#import "ACRRegistration.h"
+#import "ACRTargetBuilderDirector.h"
+#import "ACRView.h"
+#import "ActionParserRegistration.h"
+#import "BackgroundImage.h"
+#import "Image.h"
+#import "SharedAdaptiveCard.h"
+#import "StyledCollectionElement.h"
+#else
 #import <AdaptiveCards/ACOInputResults.h>
 #import <AdaptiveCards/ACRErrors.h>
 #import <AdaptiveCards/ACRRegistration.h>
@@ -16,6 +28,7 @@
 #import <AdaptiveCards/Image.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/StyledCollectionElement.h>
+#endif
 
 using namespace AdaptiveCards;
 

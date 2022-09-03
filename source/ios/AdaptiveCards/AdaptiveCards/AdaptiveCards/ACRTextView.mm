@@ -5,11 +5,19 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTextView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACRInputLabelView.h"
+#import "TextInput.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRTextView.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/TextInput.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRTextView {
     BOOL _isShowingPlaceholder;

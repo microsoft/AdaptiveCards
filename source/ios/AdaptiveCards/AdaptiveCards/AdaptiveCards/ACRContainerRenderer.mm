@@ -5,6 +5,17 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRContainerRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRColumnView.h"
+#import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
+#import "Container.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRContainerRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -14,6 +25,7 @@
 #import <AdaptiveCards/Container.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRContainerRenderer
 

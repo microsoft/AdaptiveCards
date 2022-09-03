@@ -5,11 +5,19 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOParseContext.h"
+#import "ACOParseContextPrivate.h"
+#import "ACRRegistration.h"
+#import "BaseElement.h"
+#import "ParseContext.h"
+#else
 #import <AdaptiveCards/ACOParseContext.h>
 #import <AdaptiveCards/ACOParseContextPrivate.h>
 #import <AdaptiveCards/ACRRegistration.h>
 #import <AdaptiveCards/BaseElement.h>
 #import <AdaptiveCards/ParseContext.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

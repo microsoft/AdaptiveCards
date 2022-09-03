@@ -5,7 +5,11 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOWarning.h"
+#else
 #import <AdaptiveCards/ACOWarning.h>
+#endif
 
 @implementation ACOWarning
 

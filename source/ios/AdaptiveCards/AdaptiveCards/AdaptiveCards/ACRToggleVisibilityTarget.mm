@@ -5,6 +5,16 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRToggleVisibilityTarget.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOVisibilityManager.h"
+#import "ACRRendererPrivate.h"
+#import "ACRView.h"
+#import "BaseActionElement.h"
+#import "ToggleVisibilityTarget.h"
+#else
 #import <AdaptiveCards/ACRToggleVisibilityTarget.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -13,6 +23,7 @@
 #import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/BaseActionElement.h>
 #import <AdaptiveCards/ToggleVisibilityTarget.h>
+#endif
 
 @implementation ACRToggleVisibilityTarget {
     ACOHostConfig *_config;

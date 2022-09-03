@@ -5,7 +5,11 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRView.h"
+#else
 #import <AdaptiveCards/ACRView.h>
+#endif
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN

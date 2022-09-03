@@ -5,6 +5,25 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRRichTextBlockRenderer.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRAggregateTarget.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRRegistration.h"
+#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRUILabel.h"
+#import "ACRView.h"
+#import "DateTimePreparsedToken.h"
+#import "DateTimePreparser.h"
+#import "HostConfig.h"
+#import "MarkDownParser.h"
+#import "RichTextBlock.h"
+#import "TextRun.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRRichTextBlockRenderer.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
@@ -22,6 +41,7 @@
 #import <AdaptiveCards/RichTextBlock.h>
 #import <AdaptiveCards/TextRun.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRRichTextBlockRenderer
 

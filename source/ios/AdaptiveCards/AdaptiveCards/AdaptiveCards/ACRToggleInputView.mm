@@ -5,8 +5,13 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRToggleInputView.h"
+#import "ACOBundle.h"
+#else
 #import <AdaptiveCards/ACRToggleInputView.h>
 #import <AdaptiveCards/ACOBundle.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @implementation ACRToggleInputView

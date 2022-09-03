@@ -5,6 +5,20 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRInputToggleRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRColumnSetView.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "ACRInputTableView.h"
+#import "ACRSeparator.h"
+#import "ACRToggleInputDataSource.h"
+#import "ACRToggleInputView.h"
+#import "ToggleInput.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRInputToggleRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -17,6 +31,7 @@
 #import <AdaptiveCards/ACRToggleInputView.h>
 #import <AdaptiveCards/ToggleInput.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRInputToggleRenderer
 

@@ -5,12 +5,21 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOBundle.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "ACRQuickReplyView.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACOBundle.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRIContentHoldingView.h>
 #import <AdaptiveCards/ACRInputLabelViewPrivate.h>
 #import <AdaptiveCards/ACRQuickReplyView.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRInputLabelView
 

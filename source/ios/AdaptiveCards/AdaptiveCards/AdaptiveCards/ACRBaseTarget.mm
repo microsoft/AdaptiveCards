@@ -5,7 +5,11 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRBaseTarget.h"
+#else
 #import <AdaptiveCards/ACRBaseTarget.h>
+#endif
 #import <UIKit/UIKit.h>
 #if defined(ADAPTIVECARDS_USE_FLUENT_TOOLTIPS)
 #import <FluentUI/FluentUI-Swift.h>

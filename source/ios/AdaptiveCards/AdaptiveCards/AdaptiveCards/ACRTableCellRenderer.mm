@@ -5,6 +5,15 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTableCellRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRRendererPrivate.h"
+#import "ACRTableCellView.h"
+#import "TableCell.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRTableCellRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -12,6 +21,7 @@
 #import <AdaptiveCards/ACRTableCellView.h>
 #import <AdaptiveCards/TableCell.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRTableCellRenderer
 

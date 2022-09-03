@@ -4,6 +4,25 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRBaseCardElementRenderer.h"
+#import "ACRColumnSetView.h"
+#import "ACRColumnView.h"
+#import "ACRContentHoldingUIScrollView.h"
+#import "ACRImageRenderer.h"
+#import "ACRRegistration.h"
+#import "ACRRendererPrivate.h"
+#import "ACRSeparator.h"
+#import "ACRUIImageView.h"
+#import "ACRViewController.h"
+#import "ACRViewPrivate.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
@@ -21,6 +40,7 @@
 #import <AdaptiveCards/ACRViewController.h>
 #import <AdaptiveCards/ACRViewPrivate.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 using namespace AdaptiveCards;
 

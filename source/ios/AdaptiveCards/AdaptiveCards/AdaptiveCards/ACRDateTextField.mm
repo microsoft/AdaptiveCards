@@ -5,12 +5,21 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRDateTextField.h"
+#import "ACOBundle.h"
+#import "ACRInputLabelView.h"
+#import "DateInput.h"
+#import "DateTimePreparser.h"
+#import "TimeInput.h"
+#else
 #import <AdaptiveCards/ACRDateTextField.h>
 #import <AdaptiveCards/ACOBundle.h>
 #import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/DateInput.h>
 #import <AdaptiveCards/DateTimePreparser.h>
 #import <AdaptiveCards/TimeInput.h>
+#endif
 
 using namespace AdaptiveCards;
 

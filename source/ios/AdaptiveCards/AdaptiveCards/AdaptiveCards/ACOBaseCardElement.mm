@@ -4,10 +4,17 @@
 //
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseCardElement.h"
+#import "ACRRegistrationPrivate.h"
+#import "BaseCardElement.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACOBaseCardElement.h>
 #import <AdaptiveCards/ACRRegistrationPrivate.h>
 #import <AdaptiveCards/BaseCardElement.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

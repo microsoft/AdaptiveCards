@@ -5,10 +5,17 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTextField.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACRInputLabelView.h"
+#import "TextInput.h"
+#else
 #import <AdaptiveCards/ACRTextField.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/TextInput.h>
+#endif
 
 
 @implementation ACRTextField

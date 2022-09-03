@@ -5,8 +5,13 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOEnums.h"
+#import "ACOParseContext.h"
+#else
 #import <AdaptiveCards/ACOEnums.h>
 #import <AdaptiveCards/ACOParseContext.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @class ACOFeatureRegistration;

@@ -5,7 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRNumericTextField.h"
+#else
 #import <AdaptiveCards/ACRNumericTextField.h>
+#endif
 
 
 @implementation ACRNumericTextField {

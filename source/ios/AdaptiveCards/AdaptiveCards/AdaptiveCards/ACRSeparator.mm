@@ -5,11 +5,19 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRSeparator.h"
+#import "ACRContentStackView.h"
+#import "HostConfig.h"
+#import "TextBlock.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRSeparator.h>
 #import <AdaptiveCards/ACRContentStackView.h>
 #import <AdaptiveCards/HostConfig.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

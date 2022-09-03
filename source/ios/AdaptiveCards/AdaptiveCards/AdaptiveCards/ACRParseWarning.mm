@@ -5,7 +5,11 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRParseWarningPrivate.h"
+#else
 #import <AdaptiveCards/ACRParseWarningPrivate.h>
+#endif
 
 using namespace AdaptiveCards;
 

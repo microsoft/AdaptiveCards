@@ -5,6 +5,16 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRActionExecuteRenderer.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRAggregateTarget.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRButton.h"
+#import "ExecuteAction.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRActionExecuteRenderer.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -13,6 +23,7 @@
 #import <AdaptiveCards/ACRButton.h>
 #import <AdaptiveCards/ExecuteAction.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRActionExecuteRenderer
 

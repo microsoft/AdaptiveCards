@@ -5,6 +5,21 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTextBlockRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRRegistration.h"
+#import "ACRUILabel.h"
+#import "ACRView.h"
+#import "DateTimePreparsedToken.h"
+#import "DateTimePreparser.h"
+#import "HostConfig.h"
+#import "MarkDownParser.h"
+#import "TextBlock.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRTextBlockRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -18,6 +33,7 @@
 #import <AdaptiveCards/MarkDownParser.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRTextBlockRenderer
 

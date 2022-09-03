@@ -4,12 +4,21 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseCardElement.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRErrors.h"
+#import "AdaptiveCardParseException.h"
+#import "Enums.h"
+#import "TextBlock.h"
+#else
 #import <AdaptiveCards/ACOBaseCardElement.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRErrors.h>
 #import <AdaptiveCards/AdaptiveCardParseException.h>
 #import <AdaptiveCards/Enums.h>
 #import <AdaptiveCards/TextBlock.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

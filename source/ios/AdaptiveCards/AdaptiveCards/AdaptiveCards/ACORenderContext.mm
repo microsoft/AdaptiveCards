@@ -5,6 +5,21 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACORenderContext.h"
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ActionSet.h"
+#import "BaseElement.h"
+#import "Column.h"
+#import "ColumnSet.h"
+#import "Container.h"
+#import "Table.h"
+#import "TableCell.h"
+#import "TableRow.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACORenderContext.h>
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
@@ -18,6 +33,7 @@
 #import <AdaptiveCards/TableCell.h>
 #import <AdaptiveCards/TableRow.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 
 @interface ACOContextProperties : NSObject

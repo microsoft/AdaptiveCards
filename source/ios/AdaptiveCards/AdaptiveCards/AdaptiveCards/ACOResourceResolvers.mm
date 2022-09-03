@@ -4,7 +4,11 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOResourceResolvers.h"
+#else
 #import <AdaptiveCards/ACOResourceResolvers.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @implementation ACOResourceResolvers {

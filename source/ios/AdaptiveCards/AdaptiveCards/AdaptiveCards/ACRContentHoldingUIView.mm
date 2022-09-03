@@ -5,6 +5,15 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRContentHoldingUIView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACREnums.h"
+#import "ACRUILabel.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRContentHoldingUIView.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -12,6 +21,7 @@
 #import <AdaptiveCards/ACRUILabel.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 const NSInteger eACRUILabelTag = 0x1234;
 const NSInteger eACRUIFactSetTag = 0x1235;

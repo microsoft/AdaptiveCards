@@ -5,7 +5,11 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRColumnSetView.h"
+#else
 #import <AdaptiveCards/ACRColumnSetView.h>
+#endif
 
 @implementation ACRColumnSetView
 

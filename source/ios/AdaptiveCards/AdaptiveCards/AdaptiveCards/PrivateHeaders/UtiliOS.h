@@ -4,6 +4,20 @@
 //  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACORenderContext.h"
+#import "ACOVisibilityManager.h"
+#import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
+#import "ACRSeparator.h"
+#import "ACRViewPrivate.h"
+#import "BaseCardElement.h"
+#import "RichTextElementProperties.h"
+#import "StyledCollectionElement.h"
+#import "TextBlock.h"
+#import "TextRun.h"
+#import "UnknownAction.h"
+#else
 #import <AdaptiveCards/ACORenderContext.h>
 #import <AdaptiveCards/ACOVisibilityManager.h>
 #import <AdaptiveCards/ACRErrors.h>
@@ -16,6 +30,7 @@
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/TextRun.h>
 #import <AdaptiveCards/UnknownAction.h>
+#endif
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

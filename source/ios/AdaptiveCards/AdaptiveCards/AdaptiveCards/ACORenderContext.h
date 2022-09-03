@@ -5,10 +5,17 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseActionElement.h"
+#import "ACOBaseCardElement.h"
+#import "ACOHostConfig.h"
+#import "ACOVisibilityManager.h"
+#else
 #import <AdaptiveCards/ACOBaseActionElement.h>
 #import <AdaptiveCards/ACOBaseCardElement.h>
 #import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/ACOVisibilityManager.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @class ACOAdaptiveCard;

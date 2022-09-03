@@ -4,6 +4,22 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOAdaptiveCardParseResult.h"
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOAuthenticationPrivate.h"
+#import "ACOBundle.h"
+#import "ACORefreshPrivate.h"
+#import "ACORemoteResourceInformationPrivate.h"
+#import "ACRErrors.h"
+#import "ACRIBaseInputHandler.h"
+#import "ACRParseWarningPrivate.h"
+#import "AdaptiveCardParseException.h"
+#import "AdaptiveCardParseWarning.h"
+#import "ParseResult.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
 #import <AdaptiveCards/ACOAuthenticationPrivate.h>
@@ -18,6 +34,7 @@
 #import <AdaptiveCards/ParseResult.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

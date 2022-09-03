@@ -5,6 +5,43 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRButton.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRIBaseCardElementRenderer.h"
+#import "ACRImageRenderer.h"
+#import "ACRRegistrationPrivate.h"
+#import "ACRRendererPrivate.h"
+#import "ACRTextBlockRenderer.h"
+#import "ACRUIImageView.h"
+#import "ACRUILabel.h"
+#import "ACRViewPrivate.h"
+#import "ActionSet.h"
+#import "AdaptiveBase64Util.h"
+#import "BackgroundImage.h"
+#import "Column.h"
+#import "ColumnSet.h"
+#import "Container.h"
+#import "Enums.h"
+#import "Fact.h"
+#import "FactSet.h"
+#import "ImageSet.h"
+#import "MarkDownParser.h"
+#import "Media.h"
+#import "RichTextBlock.h"
+#import "RichTextElementProperties.h"
+#import "SharedAdaptiveCard.h"
+#import "Table.h"
+#import "TableCell.h"
+#import "TableRow.h"
+#import "TextBlock.h"
+#import "TextInput.h"
+#import "TextRun.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -40,6 +77,7 @@
 #import <AdaptiveCards/TextInput.h>
 #import <AdaptiveCards/TextRun.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;

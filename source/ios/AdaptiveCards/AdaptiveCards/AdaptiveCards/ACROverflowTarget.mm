@@ -5,12 +5,21 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACROverflowTarget.h"
+#import "ACOActionOverflow.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRShowCardTarget.h"
+#import "ACRViewPrivate.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACROverflowTarget.h>
 #import <AdaptiveCards/ACOActionOverflow.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACRShowCardTarget.h>
 #import <AdaptiveCards/ACRViewPrivate.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 NSString *const ACROverflowTargetIsRootLevelKey = @"isAtRootLevel";
 

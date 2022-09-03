@@ -5,7 +5,11 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOIResourceResolver.h"
+#else
 #import <AdaptiveCards/ACOIResourceResolver.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -4,10 +4,17 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRView.h"
+#import "ACRBaseTarget.h"
+#import "ACRIContentHoldingView.h"
+#else
 #import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
 #import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/ACRBaseTarget.h>
 #import <AdaptiveCards/ACRIContentHoldingView.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

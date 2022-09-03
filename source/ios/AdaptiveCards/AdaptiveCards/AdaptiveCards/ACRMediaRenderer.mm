@@ -5,6 +5,21 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRMediaRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOMediaEventPrivate.h"
+#import "ACRAggregateTarget.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRImageProperties.h"
+#import "ACRMediaTarget.h"
+#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRUIImageView.h"
+#import "ACRView.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRMediaRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -18,6 +33,7 @@
 #import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 #import <AVKit/AVKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 

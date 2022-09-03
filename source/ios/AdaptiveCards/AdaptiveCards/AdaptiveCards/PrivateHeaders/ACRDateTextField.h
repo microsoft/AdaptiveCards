@@ -5,10 +5,17 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRIBaseInputHandler.h"
+#import "ACRTextField.h"
+#import "BaseInputElement.h"
+#import "SharedAdaptiveCard.h"
+#else
 #import <AdaptiveCards/ACRIBaseInputHandler.h>
 #import <AdaptiveCards/ACRTextField.h>
 #import <AdaptiveCards/BaseInputElement.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRDateTextField : ACRTextField <ACRIBaseInputHandler>

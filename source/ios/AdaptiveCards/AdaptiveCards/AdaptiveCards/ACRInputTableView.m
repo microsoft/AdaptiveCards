@@ -5,8 +5,13 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRInputTableView.h"
+#import "ACOBundle.h"
+#else
 #import <AdaptiveCards/ACRInputTableView.h>
 #import <AdaptiveCards/ACOBundle.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @implementation ACRInputTableView

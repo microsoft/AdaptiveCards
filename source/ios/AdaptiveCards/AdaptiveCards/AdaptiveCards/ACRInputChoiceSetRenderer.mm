@@ -5,6 +5,17 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRInputChoiceSetRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRChoiceSetCompactStyleView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "ACRInputTableView.h"
+#import "ChoiceSetInput.h"
+#import "UtiliOS.h"
+#import "ACRChoiceSetViewDataSource.h"
+#else
 #import <AdaptiveCards/ACRInputChoiceSetRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -14,6 +25,7 @@
 #import <AdaptiveCards/ChoiceSetInput.h>
 #import <AdaptiveCards/UtiliOS.h>
 #import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
+#endif
 
 @implementation ACRInputChoiceSetRenderer
 

@@ -6,10 +6,17 @@
 //
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRInputLabelView.h"
+#import "ACRView.h"
+#import "BaseInputElement.h"
+#import "SharedAdaptiveCard.h"
+#else
 #import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/BaseInputElement.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
+#endif
 
 using namespace AdaptiveCards;
 

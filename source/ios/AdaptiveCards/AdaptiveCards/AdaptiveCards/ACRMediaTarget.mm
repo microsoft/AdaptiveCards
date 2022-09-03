@@ -5,10 +5,17 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRMediaTarget.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRAVPlayerViewHoldingUIView.h"
+#import "ACRContentHoldingUIView.h"
+#else
 #import <AdaptiveCards/ACRMediaTarget.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRAVPlayerViewHoldingUIView.h>
 #import <AdaptiveCards/ACRContentHoldingUIView.h>
+#endif
 
 // tags for easy accessing of subviews
 const int playIconTag = 0x49434F4E;

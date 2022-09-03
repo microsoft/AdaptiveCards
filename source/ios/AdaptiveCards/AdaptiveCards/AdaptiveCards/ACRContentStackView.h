@@ -5,9 +5,15 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOVisibilityManager.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRTapGestureRecognizerEventHandler.h"
+#else
 #import <AdaptiveCards/ACOVisibilityManager.h>
 #import <AdaptiveCards/ACRIContentHoldingView.h>
 #import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView, ACOIVisibilityManagerFacade> {

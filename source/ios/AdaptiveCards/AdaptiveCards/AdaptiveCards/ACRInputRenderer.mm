@@ -5,6 +5,30 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRInputRenderer.h"
+#import "ACOBaseActionElement.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOBundle.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRActionOpenURLRenderer.h"
+#import "ACRAggregateTarget.h"
+#import "ACRButton.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "ACRQuickReplyMultilineView.h"
+#import "ACRQuickReplyView.h"
+#import "ACRSeparator.h"
+#import "ACRShowCardTarget.h"
+#import "ACRTextField.h"
+#import "ACRTextInputHandler.h"
+#import "ACRTextView.h"
+#import "ACRToggleVisibilityTarget.h"
+#import "ACRUIImageView.h"
+#import "TextInput.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRInputRenderer.h>
 #import <AdaptiveCards/ACOBaseActionElement.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
@@ -27,6 +51,7 @@
 #import <AdaptiveCards/ACRUIImageView.h>
 #import <AdaptiveCards/TextInput.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRInputRenderer
 

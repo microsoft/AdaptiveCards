@@ -5,9 +5,15 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRTargetBuilder.h"
+#import "ACRView.h"
+#else
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACRTargetBuilder.h>
 #import <AdaptiveCards/ACRView.h>
+#endif
 #import <Foundation/Foundation.h>
 
 // protocol all TargetBuild should implement

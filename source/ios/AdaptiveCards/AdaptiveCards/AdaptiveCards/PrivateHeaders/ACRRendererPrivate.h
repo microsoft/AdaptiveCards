@@ -6,12 +6,21 @@
 //
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRBaseCardElementRenderer.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRRenderer.h"
+#import "BackgroundImage.h"
+#import "HostConfig.h"
+#import "SharedAdaptiveCard.h"
+#else
 #import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 #import <AdaptiveCards/ACRIContentHoldingView.h>
 #import <AdaptiveCards/ACRRenderer.h>
 #import <AdaptiveCards/BackgroundImage.h>
 #import <AdaptiveCards/HostConfig.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,9 +5,15 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOFillerSpaceManager.h"
+#import "ACRView.h"
+#else
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOFillerSpaceManager.h>
 #import <AdaptiveCards/ACRView.h>
+#endif
 
 @implementation ACRColumnView
 

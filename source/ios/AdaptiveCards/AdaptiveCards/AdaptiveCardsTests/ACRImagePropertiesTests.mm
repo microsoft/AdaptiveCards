@@ -5,7 +5,11 @@
 //  Copyright © 2022 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRImageProperties.h"
+#else
 #import <AdaptiveCards/ACRImageProperties.h>
+#endif
 #import <XCTest/XCTest.h>
 
 @interface ACRImagePropertiesTests : XCTestCase

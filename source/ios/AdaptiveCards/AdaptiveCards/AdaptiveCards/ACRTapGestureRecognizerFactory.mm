@@ -5,6 +5,19 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRTapGestureRecognizerFactory.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRAggregateTarget.h"
+#import "ACRShowCardTarget.h"
+#import "ACRToggleVisibilityTarget.h"
+#import "ACRUILabel.h"
+#import "OpenUrlAction.h"
+#import "ShowCardAction.h"
+#import "SubmitAction.h"
+#import "ToggleVisibilityAction.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRTapGestureRecognizerFactory.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACRAggregateTarget.h>
@@ -16,6 +29,7 @@
 #import <AdaptiveCards/SubmitAction.h>
 #import <AdaptiveCards/ToggleVisibilityAction.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 using namespace AdaptiveCards;
 

@@ -5,7 +5,11 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRAVPlayerViewHoldingUIView.h"
+#else
 #import <AdaptiveCards/ACRAVPlayerViewHoldingUIView.h>
+#endif
 
 @implementation ACRAVPlayerViewHoldingUIView
 

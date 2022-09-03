@@ -5,7 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRParseWarning.h"
+#else
 #import <AdaptiveCards/ACRParseWarning.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @class ACOAdaptiveCard;

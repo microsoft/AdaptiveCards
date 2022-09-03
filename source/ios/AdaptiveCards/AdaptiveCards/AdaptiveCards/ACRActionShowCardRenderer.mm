@@ -5,6 +5,16 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRActionShowCardRenderer.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRButton.h"
+#import "ACRShowCardTarget.h"
+#import "ShowCardAction.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRActionShowCardRenderer.h>
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -13,6 +23,7 @@
 #import <AdaptiveCards/ACRShowCardTarget.h>
 #import <AdaptiveCards/ShowCardAction.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRActionShowCardRenderer
 

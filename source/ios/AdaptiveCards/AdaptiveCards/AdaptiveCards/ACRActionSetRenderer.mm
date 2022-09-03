@@ -2,6 +2,23 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRActionSetRenderer.h"
+#import "ACOActionOverflowPrivate.h"
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRColumnSetView.h"
+#import "ACRColumnView.h"
+#import "ACRContentHoldingUIScrollView.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRRegistration.h"
+#import "ACRRenderer.h"
+#import "ActionSet.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRActionSetRenderer.h>
 #import <AdaptiveCards/ACOActionOverflowPrivate.h>
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
@@ -17,6 +34,7 @@
 #import <AdaptiveCards/ACRRenderer.h>
 #import <AdaptiveCards/ActionSet.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRActionSetRenderer
 

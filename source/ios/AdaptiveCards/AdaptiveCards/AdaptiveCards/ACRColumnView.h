@@ -4,10 +4,17 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+#import "ACOVisibilityManager.h"
+#import "ACRColumnSetView.h"
+#import "ACRContentStackView.h"
+#import "ACRIBaseInputHandler.h"
+#else
 #import <AdaptiveCards/ACOVisibilityManager.h>
 #import <AdaptiveCards/ACRColumnSetView.h>
 #import <AdaptiveCards/ACRContentStackView.h>
 #import <AdaptiveCards/ACRIBaseInputHandler.h>
+#endif
 
 @class ACRSeparator;
 

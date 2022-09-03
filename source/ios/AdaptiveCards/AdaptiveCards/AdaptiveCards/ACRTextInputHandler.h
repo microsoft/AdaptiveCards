@@ -5,8 +5,13 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOBaseCardElement.h"
+#import "ACRIBaseInputHandler.h"
+#else
 #import <AdaptiveCards/ACOBaseCardElement.h>
 #import <AdaptiveCards/ACRIBaseInputHandler.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRTextInputHandler : NSObject <ACRIBaseInputHandler, UITextFieldDelegate>

@@ -5,6 +5,43 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRRegistration.h"
+#import "ACOBaseActionElement.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOParseContextPrivate.h"
+#import "ACRActionExecuteRenderer.h"
+#import "ACRActionOpenURLRenderer.h"
+#import "ACRActionOverflowRenderer.h"
+#import "ACRActionSetRenderer.h"
+#import "ACRActionShowCardRenderer.h"
+#import "ACRActionSubmitRenderer.h"
+#import "ACRActionToggleVisibilityRenderer.h"
+#import "ACRColumnRenderer.h"
+#import "ACRColumnSetRenderer.h"
+#import "ACRColumnSetView.h"
+#import "ACRColumnView.h"
+#import "ACRContainerRenderer.h"
+#import "ACRCustomActionRenderer.h"
+#import "ACRCustomRenderer.h"
+#import "ACRFactSetRenderer.h"
+#import "ACRImageRenderer.h"
+#import "ACRImageSetRenderer.h"
+#import "ACRInputChoiceSetRenderer.h"
+#import "ACRInputDateRenderer.h"
+#import "ACRInputNumberRenderer.h"
+#import "ACRInputRenderer.h"
+#import "ACRInputTimeRenderer.h"
+#import "ACRInputToggleRenderer.h"
+#import "ACRMediaRenderer.h"
+#import "ACRRichTextBlockRenderer.h"
+#import "ACRTableCellRenderer.h"
+#import "ACRTableRenderer.h"
+#import "ACRTextBlockRenderer.h"
+#import "BaseCardElement.h"
+#import "FeatureRegistration.h"
+#import "HostConfig.h"
+#else
 #import <AdaptiveCards/ACRRegistration.h>
 #import <AdaptiveCards/ACOBaseActionElement.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
@@ -40,6 +77,7 @@
 #import <AdaptiveCards/BaseCardElement.h>
 #import <AdaptiveCards/FeatureRegistration.h>
 #import <AdaptiveCards/HostConfig.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,6 +5,18 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACRActionOverflowRenderer.h"
+#import "ACOActionOverflow.h"
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRButton.h"
+#import "ACRIContentHoldingView.h"
+#import "ACROverflowTarget.h"
+#import "ACRView.h"
+#import "UtiliOS.h"
+#else
 #import <AdaptiveCards/ACRActionOverflowRenderer.h>
 #import <AdaptiveCards/ACOActionOverflow.h>
 #import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
@@ -15,6 +27,7 @@
 #import <AdaptiveCards/ACROverflowTarget.h>
 #import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/UtiliOS.h>
+#endif
 
 @implementation ACRActionOverflowRenderer
 

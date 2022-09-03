@@ -5,8 +5,13 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+#import "ACOAuthCardButton.h"
+#import "ACOTokenExchangeResource.h"
+#else
 #import <AdaptiveCards/ACOAuthCardButton.h>
 #import <AdaptiveCards/ACOTokenExchangeResource.h>
+#endif
 #import <Foundation/Foundation.h>
 
 @interface ACOAuthentication : NSObject
