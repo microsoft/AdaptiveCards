@@ -446,52 +446,31 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         renderedCard.registerInputHandler(autoCompleteTextInputHandler, renderArgs.getContainerCardId());
         long autoCompleteTextViewId = Util.getViewId(autoCompleteTextView);
 
-        class ChoicesListener implements IChoiceSetListener {
-            String m_query;
-            List<String> m_items;
-            Boolean areChoicesFetched;
-
-            ChoicesListener() {
-                m_query = "";
-                areChoicesFetched = true;
-                m_items = new ArrayList<>();
-            }
-
-            public void setQuery(String query) {
-                this.m_query = query;
-                this.areChoicesFetched = false;
-            }
-
-            public void updateChoices(String query, List<String> updatedChoices) {
-                if (m_query.equalsIgnoreCase(query)) {
-                    this.m_items = updatedChoices;
-                    this.areChoicesFetched = true;
-                }
-            }
-
-            public List<String> getItems() {
-                return this.m_items;
-            }
-        }
-
-        class FilteredChoiceSetAdapter extends ArrayAdapter<String>
+        class FilteredChoiceSetAdapter extends ArrayAdapter<String> implements IChoiceSetListener
         {
             boolean m_mustWrap = false;
 
             // m_items contains the items currently being displayed as suggestions
             // m_originalItemsList contains the items provided by the card author when the element was created
             List<String> m_items, m_originalItemsList;
-
-            ChoicesListener mChoicesListener;
+            String m_query;
 
             FilteredChoiceSetAdapter(Context context, int resource,
-                                     Vector<String> items, boolean mustWrap, ChoicesListener choiceSetListener)
+                                     Vector<String> items, boolean mustWrap // ChoicesData choicesData
+            )
             {
                 super(context, resource, items);
                 m_mustWrap = mustWrap;
                 m_items = items;
                 m_originalItemsList = new ArrayList<>(items);
-                mChoicesListener = choiceSetListener;
+                m_query = "";
+            }
+
+            public void updateChoices(String query, List<String> updatedChoices) {
+                if (m_query.equalsIgnoreCase(query)) {
+                    this.m_items = updatedChoices;
+                    notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -537,8 +516,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     FilterResults filterResults = new FilterResults();
 
                     String lowerCaseConstraint = constraint.toString().toLowerCase();
-                    mChoicesListener.setQuery(lowerCaseConstraint);
-                    CardRendererRegistration.getInstance().notifyInputChoiceQueryChange(autoCompleteTextViewId, lowerCaseConstraint);
+                    m_query = lowerCaseConstraint;
+
+                    CardRendererRegistration.getInstance().notifyInputChoiceQueryChange(
+                        autoCompleteTextViewId,
+                        lowerCaseConstraint
+                        //, choicesData
+                        );
 
                     // Due to the time it takes for evaluating all options, this part of the code has
                     // to be synchronized, otherwise the worker thread that calls the publishResults
@@ -579,9 +563,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                         }
 
-                        m_items = mChoicesListener.getItems();
-                        filterResults.values = m_items;
-                        filterResults.count = m_items.size();
+                        filterResults.values = filteredSuggestions;
+                        filterResults.count = filteredSuggestions.size();
 
                         return filterResults;
                     }
@@ -590,29 +573,33 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults filterResults)
                 {
-                    if (filterResults != null && filterResults.count > 0)
-                    {
-                        m_items = (ArrayList<String>) filterResults.values;
-                        notifyDataSetChanged();
-                    }
-                    else
-                    {
-                        notifyDataSetInvalidated();
-                    }
+//                    if (filterResults != null && filterResults.count > 0)
+//                    {
+//                        m_items = (ArrayList<String>) filterResults.values;
+//                        notifyDataSetChanged();
+//                    }
+//                    else
+//                    {
+//                        notifyDataSetInvalidated();
+//                    }
                 }
             };
-
         }
 
-        ChoicesListener choicesListener = new ChoicesListener();
-        renderedCard.registerForTypeAheadHandler(autoCompleteTextViewId, choicesListener);
 
-        autoCompleteTextView.setAdapter(new FilteredChoiceSetAdapter(context,
-                                            android.R.layout.select_dialog_item,
-                                            titleList,
-                                            choiceSetInput.GetWrap(),
-                                            choicesListener));
+        FilteredChoiceSetAdapter filteredChoiceSetAdapter = new FilteredChoiceSetAdapter(
+            context,
+            android.R.layout.select_dialog_item,
+            titleList,
+            choiceSetInput.GetWrap()
+            // ,choiceSetInput.GetChoicesData()
+            );
+
+        renderedCard.registerForTypeAheadHandler(autoCompleteTextViewId, filteredChoiceSetAdapter);
+
+        autoCompleteTextView.setAdapter(filteredChoiceSetAdapter);
         autoCompleteTextView.setFocusable(true);
+
         if (valueIndex != -1)
         {
             autoCompleteTextView.setText(titleList.get(valueIndex));

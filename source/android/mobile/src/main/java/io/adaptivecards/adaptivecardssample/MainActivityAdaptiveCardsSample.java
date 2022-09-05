@@ -133,9 +133,24 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         updatedChoices.add("a");
         updatedChoices.add("ab");
         updatedChoices.add("abc");
+        updatedChoices.add("abcd");
+        updatedChoices.add("abcde");
+        updatedChoices.add("abcdef");
+        updatedChoices.add("abcdefg");
+        updatedChoices.add("abcdefgh");
+
+        if (query == null)
+            query = "";
+        query = query.trim();
+
+        List<String> result = new ArrayList();
+        for (String s : updatedChoices) {
+            if (s.contains(query))
+                result.add(s);
+        }
 
         if (mRenderedAdaptiveCard != null) {
-            mRenderedAdaptiveCard.updateInputSetChoices(id, query, updatedChoices);
+            mRenderedAdaptiveCard.updateInputSetChoices(id, query, result);
         }
     }
 
