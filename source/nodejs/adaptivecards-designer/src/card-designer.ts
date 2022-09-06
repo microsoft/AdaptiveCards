@@ -870,18 +870,8 @@ export class CardDesigner extends Designer.DesignContext {
             this.toolbar.addElement(this._hostContainerChoicePicker);
         }
 
-        let supportsTheme = false;
-        let supportsSize = false;
-
-        // If any of the containers support size or theme, we should go ahead and create the choice pickers
-        for (let container of this._hostContainers) {
-            if (container.supportsMultipleThemes) {
-                supportsTheme = true;
-            }
-            if (container.supportsMultipleSizes) {
-                supportsSize = true;
-            }
-        }
+        const supportsTheme = this._hostContainers.some((x) => { return x.supportsMultipleThemes; });
+        const supportsSize = this._hostContainers.some((x) => { return x.supportsMultipleSizes; });
 
         if (supportsTheme) {
             this._containerThemeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerThemePicker);
