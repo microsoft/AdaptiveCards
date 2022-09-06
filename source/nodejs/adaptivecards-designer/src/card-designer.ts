@@ -438,7 +438,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._containerSizeChoicePicker.isHidden = !(!!this.hostContainer.supportsMultipleSizes);
 
             // Update the host parameter data with the value of the choice picker
-            if (this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
+            if ((this._hostContainer instanceof BerlinContainer) && this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
                 this.updateHostDataSizeProperty();
 
                 // If the container properties do not align with the choice picker, update the property and recreate the designer surface
