@@ -359,6 +359,14 @@ a.ac-anchor:hover {
     height:4px !important;
     width:4px !important;
     vertical-align:middle;
+    position: relative;
+}
+
+.swiper-pagination-bullet::after {
+    content:'';
+    position: absolute;
+    top:-4px; bottom: -4px;
+    left:-4px; right:-4px;
 }
 
 .swiper-pagination-bullet:hover {
@@ -396,4 +404,10 @@ a.ac-anchor:hover {
 .berlin-header-more-button::before {
     font-family: 'FabricMDL2Icons';
     content: "\E712";
+}
+
+@media(forced-colors: active) {
+    .swiper-pagination-bullet {
+        background-color: ButtonBorder !important;
+    }
 }
