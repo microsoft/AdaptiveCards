@@ -52,5 +52,13 @@
 		"request-promise": "^4.2.6",
 		"workbox-cli": "^6.5.4",
 		"yaml-front-matter": "^4.1.1"
+	},
+	"overrides": {
+		"workbox-cli": {
+			"got": "^11.8.5"
+		},
+		"hexo-reading-time": {
+			"html-to-text": "^8.2.1"
+		}
 	}
 }
