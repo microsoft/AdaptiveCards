@@ -282,7 +282,7 @@ export class Calendar extends InputControl {
     attach(rootElement: HTMLElement) {
         super.attach(rootElement);
 
-        Utils.clearElement(rootElement);
+        Utils.setInnerHtml(rootElement, "");
         rootElement.appendChild(this._rootContainerElement);
     }
 
