@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "BaseCardElement.h"
 #include "MarkDownHtmlGenerator.h"
-#include "MarkDownParsedResult.h"
 #include <iomanip>
+#include "BaseCardElement.h"
+#include "MarkDownParsedResult.h"
 
 namespace AdaptiveCards
 {
