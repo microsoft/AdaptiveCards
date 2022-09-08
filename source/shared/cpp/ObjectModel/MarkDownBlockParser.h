@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "MarkDownHtmlGenerator.h"
-#include <iomanip>
 #include "BaseCardElement.h"
+#include "MarkDownHtmlGenerator.h"
 #include "MarkDownParsedResult.h"
+#include <iomanip>
 
 namespace AdaptiveCards
 {
@@ -159,8 +159,8 @@ private:
     // Matches LinkDestination Run syntax of link
     bool MatchAtLinkDestinationRun(std::stringstream&);
 
-    int m_linkDestinationStart = 0;
-    int m_linkDestinationEnd = 0;
+    int m_leftParenthesisCounts = 0;
+    int m_positionOfLinkDestinationEndToken = 0;
     std::stringstream::pos_type m_parsingCurrentPos = 0;
 
     // holds intermediate result of LinkText

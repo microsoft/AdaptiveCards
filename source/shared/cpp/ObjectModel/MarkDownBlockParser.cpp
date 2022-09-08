@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+#include "MarkDownBlockParser.h"
 #include "pch.h"
 #include <iostream>
-#include "MarkDownBlockParser.h"
 
 using namespace AdaptiveCards;
 
@@ -436,7 +436,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        ++m_linkDestinationStart;
+        ++m_leftParenthesisCounts;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -460,31 +460,38 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     // identify where the destination value ends by marking the position
     // e.g: ([ab()c])()()() end = 7
     m_parsingCurrentPos = lookahead.tellg();
-    int i = static_cast<int>(m_parsingCurrentPos);
-    while (lookahead.peek() != EOF && m_linkDestinationStart > 0)
-    {
-        char c;
-        lookahead.get(c);
+    auto currentPosition = static_cast<int>(m_parsingCurrentPos);
+    m_positionOfLinkDestinationEndToken = -1;
 
-        if (c == '(')
+    while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
+    {
+        char token;
+
+        lookahead.get(token);
+
+        if (token == '(')
         {
-            ++m_linkDestinationStart;
+            ++m_leftParenthesisCounts;
         }
-        else if (c == ')')
+        else if (token == ')')
         {
-            --m_linkDestinationStart;
+            --m_leftParenthesisCounts;
         }
-        if (m_linkDestinationStart == 0)
+
+        if (m_leftParenthesisCounts == 0)
         {
-            m_linkDestinationEnd = i;
+            m_positionOfLinkDestinationEndToken = currentPosition;
         }
-        ++i;
+        ++currentPosition;
     }
+
     lookahead.clear();
+
     lookahead.seekg(m_parsingCurrentPos, std::ios::beg);
 
+    // Link destination end token is not detected if the position of linkDestinationEndToken is not moved
     // control key is detected, syntax check failed
-    if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
+    if (m_positionOfLinkDestinationEndToken == -1 || MarkDownBlockParser::IsCntrl(lookahead.peek()))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -503,7 +510,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
     }
 
     m_parsingCurrentPos = lookahead.tellg();
-    while (m_parsingCurrentPos <= m_linkDestinationEnd && lookahead.peek() != EOF)
+    while (m_parsingCurrentPos <= m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
     {
         if (lookahead.peek() == '[')
         {
