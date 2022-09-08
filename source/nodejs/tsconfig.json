@@ -10,7 +10,8 @@
 		"jsx": "react",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"declaration": true
+		"declaration": true,
+		"types": ["trusted-types"]
 	},
 	"exclude": [
 		"node_modules",

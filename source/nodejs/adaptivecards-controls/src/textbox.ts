@@ -147,7 +147,7 @@ export class TextBox extends InputControl {
         this._editBox.placeholder = this._placeholder;
         this._editBox.onChange = () => { this.editBoxChanged(); }
 
-        Utils.clearElement(this.rootElement);
+        Utils.setInnerHtml(this.rootElement, "");
         this.rootElement.appendChild(this._editBox.element);
     }
 

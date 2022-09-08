@@ -162,7 +162,7 @@ export class Calendar extends InputControl {
 
         var month = newDate.getMonth();
 
-        Utils.clearElement(this._miniCalendarElement);
+        Utils.setInnerHtml(this._miniCalendarElement, "");
 
         this._miniCalendarElement.classList.remove(
             "ms-ctrl-slide",

@@ -265,8 +265,3 @@ export function clearElementChildren(element: HTMLElement) {
         element.removeChild(element.firstChild);
     }
 }
-
-export function clearElement(element: HTMLElement): void {
-    //@ts-ignore-next-line -- Typescript's DOM lib hasn't yet been updated to understand TrustedTypes
-    element.innerHTML = window.trustedTypes?.emptyHTML ?? "";
-}

@@ -51,6 +51,15 @@ import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 
+const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards', {
+    createHTML: value => value,
+});
+
+function clearElement(element: HTMLElement) : void {
+    const trustedHtml = ttPolicy?.createHTML("") ?? "";
+    element.innerHTML = trustedHtml as string;
+}
+
 export function renderSeparation(
     hostConfig: HostConfig,
     separationDefinition: ISeparationDefinition,
@@ -2038,7 +2047,7 @@ export class Image extends CardElement {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
-                    Utils.clearElement(this.renderedElement);
+                    this.renderedElement;
 
                     if (card && card.designMode) {
                         const errorElement = document.createElement("div");
@@ -2919,8 +2928,7 @@ export class Media extends CardElement {
 
             if (this.renderedElement) {
                 const mediaPlayerElement = this._mediaPlayer.render();
-
-                Utils.clearElement(this.renderedElement);
+                clearElement(this.renderedElement);
                 this.renderedElement.appendChild(mediaPlayerElement);
 
                 this._mediaPlayer.play();
@@ -3038,7 +3046,7 @@ export class Media extends CardElement {
                 posterRootElement.appendChild(playButtonContainer);
             }
 
-            Utils.clearElement(this.renderedElement);
+            clearElement(this.renderedElement);
             this.renderedElement.appendChild(posterRootElement);
         }
     }
@@ -5734,7 +5742,7 @@ class ActionCollection {
     }
 
     private refreshContainer() {
-        Utils.clearElement(this._actionCardContainer);
+        clearElement(this._actionCardContainer);
 
         if (!this._actionCard) {
             this._actionCardContainer.style.marginTop = "0px";
