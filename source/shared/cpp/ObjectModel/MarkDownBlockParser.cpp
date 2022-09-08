@@ -459,9 +459,9 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 
     // identify where the destination value ends by marking the position
     // e.g: ([ab()c])()()() end = 7
-    m_parsingCurrentPos = lookahead.tellg();
-    auto currentPosition = static_cast<int>(m_parsingCurrentPos);
-    m_positionOfLinkDestinationEndToken = -1;
+    const std::streamoff initialPosition = lookahead.tellg();
+    auto currentPosition = initialPosition;
+    m_positionOfLinkDestinationEndToken = 0;
 
     while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
     {
@@ -471,27 +471,29 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 
         if (token == '(')
         {
-            ++m_leftParenthesisCounts;
+            m_leftParenthesisCounts++;
         }
         else if (token == ')')
         {
-            --m_leftParenthesisCounts;
+            m_leftParenthesisCounts--;
         }
 
         if (m_leftParenthesisCounts == 0)
         {
             m_positionOfLinkDestinationEndToken = currentPosition;
         }
-        ++currentPosition;
+
+        currentPosition++;
     }
 
     lookahead.clear();
 
-    lookahead.seekg(m_parsingCurrentPos, std::ios::beg);
+    // reset stream
+    lookahead.seekg(initialPosition, std::ios::beg);
 
     // Link destination end token is not detected if the position of linkDestinationEndToken is not moved
-    // control key is detected, syntax check failed
-    if (m_positionOfLinkDestinationEndToken == -1 || MarkDownBlockParser::IsCntrl(lookahead.peek()))
+    // or control key is detected
+    if (!m_positionOfLinkDestinationEndToken || MarkDownBlockParser::IsCntrl(lookahead.peek()))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -509,8 +511,8 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
-    m_parsingCurrentPos = lookahead.tellg();
-    while (m_parsingCurrentPos <= m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
+    std::streamoff currentPos = lookahead.tellg();
+    while (currentPos < m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
     {
         if (lookahead.peek() == '[')
         {
@@ -523,10 +525,13 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         {
             ParseBlock(lookahead);
         }
-        m_parsingCurrentPos = int(lookahead.tellg());
+        currentPos = lookahead.tellg();
     }
 
-    m_parsedResult.PopBack();
+    if (lookahead.peek() == ')')
+    {
+        lookahead.get();
+    }
 
     return true;
 }
