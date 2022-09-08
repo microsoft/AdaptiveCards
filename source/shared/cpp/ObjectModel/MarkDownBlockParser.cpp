@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+#include "MarkDownBlockParser.h"
 #include "pch.h"
 #include <iostream>
-#include "MarkDownBlockParser.h"
 
 using namespace AdaptiveCards;
 
