@@ -23,10 +23,6 @@ export interface Props {
     hostConfig?: object;
 }
 
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards-react', {
-    createHTML: value => value,
-});
-
 const propTypes = {
     /** The card schema.  It must comply with the card schema. [More Info](https://docs.microsoft.com/en-us/adaptive-cards/create/cardschema) */
     payload: PropTypes.object.isRequired,
@@ -128,7 +124,7 @@ export const AdaptiveCard = ({
         try {
             card.parse(payload);
             const result = card.render() as HTMLElement;
-            const trustedHtml = ttPolicy?.createHTML("") ?? "";
+            const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
             targetRef.current.innerHTML = trustedHtml as string;
             targetRef.current.appendChild(result);
         } catch (cardRenderError) {

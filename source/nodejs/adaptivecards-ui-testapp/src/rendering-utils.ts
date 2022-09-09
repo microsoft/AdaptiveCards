@@ -135,7 +135,7 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
 
 export function cardRenderedCallback(renderedCard: HTMLElement) {
     const renderedCardDiv = document.getElementById("renderedCardSpace");
-    const trustedHtml = ttPolicy?.createHTML("") ?? "";
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
     renderedCardDiv.innerHTML = trustedHtml as string;
     renderedCardDiv.appendChild(renderedCard);
     renderedCardDiv.style.visibility = "visible";
