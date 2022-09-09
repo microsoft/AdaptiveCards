@@ -2030,15 +2030,11 @@ export class CardElementPeer extends DesignerPeer {
         }
 
         // If we are displaying a carousel, we need to make sure that all of the child peers are in the correct location
-        // First check if the peer has a parent that is a CarouselPagePeer
-        // Then see if the parentCarouselPagePeer is the current page before adjusting the location
-        if (this.parentCarouselPagePeer) {
-            if (this.parentCarouselPagePeer.isCurrentPage) {
-                if (!this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.x, y: returnRect.y })) {
-                    returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
-                    returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
-                }
-            }
+        // First check if the peer has a parent that is a CarouselPagePeer and it is the visible page
+        // Then see if the bounding rect needs to be adjusted
+        if (this.parentCarouselPagePeer?.isVisible() && !this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.x, y: returnRect.y })) {
+            returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
+            returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
         }
 
         return returnRect;
@@ -2603,15 +2599,11 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             );
 
             // If we are displaying a carousel, we need to make sure that all of the child peers are in the correct location
-            // First check if the peer has a parent that is a CarouselPagePeer
-            // Then see if the parentCarouselPagePeer is the current page before adjusting the location
-            if (this.parentCarouselPagePeer) {
-                if (this.parentCarouselPagePeer.isCurrentPage) {
-                    if (!this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.right, y: returnRect.bottom })) {
-                        returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
-                        returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
-                    }
-                }
+            // First check if the peer has a parent that is a CarouselPagePeer and it is the visible page
+            // Then see if the bounding rect needs to be adjusted
+            if (this.parentCarouselPagePeer?.isVisible() && !this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.right, y: returnRect.bottom })) {
+                returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
+                returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
             }
 
             return returnRect;
@@ -3446,7 +3438,6 @@ export class CarouselPeer extends ContainerPeer {
 
 export class CarouselPagePeer extends ContainerPeer {
     private _pageOffset: number = 0;
-    private _isCurrentPage: boolean = false;
 
     isDraggable(): boolean {
         return false;
@@ -3498,19 +3489,7 @@ export class CarouselPagePeer extends ContainerPeer {
         return !(this.cardElement as Adaptive.CarouselPage).getForbiddenChildElements().includes(peer.getCardObject().getJsonTypeName());
     }
 
-    assignCurrentCarouselPage() {
-        const parentCarousel = this.parent as CarouselPeer;
-
-        if (this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex]) {
-            this._isCurrentPage = true;
-        }
-    }
-
     get pageOffset(): number {
         return this._pageOffset;
-    }
-
-    get isCurrentPage(): boolean {
-        return this._isCurrentPage;
     }
 }

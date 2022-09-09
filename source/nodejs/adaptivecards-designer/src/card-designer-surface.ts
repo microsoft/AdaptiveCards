@@ -418,10 +418,6 @@ export class CardDesignerSurface {
                 }
             }
 
-            if (peer instanceof DesignerPeers.CarouselPagePeer) {
-                peer.assignCurrentCarouselPage();
-            }
-
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
                 if (peer.isSelected) {
                     this.setSelectedPeer(peer);
