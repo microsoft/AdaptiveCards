@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import { Constants } from "./constants";
 import { InputControl } from "./inputcontrol";
-import { setInnerHtml } from "./utils";
+import { clearElement } from "./utils";
 
 export class CheckBox extends InputControl {
     // Used to generate unique Ids
@@ -70,7 +70,7 @@ export class CheckBox extends InputControl {
 
         labelElement.appendChild(this._spanElement);
 
-        setInnerHtml(rootElement, "");
+        clearElement(rootElement);
         rootElement.appendChild(this._checkboxElement);
         rootElement.appendChild(labelElement);
     }

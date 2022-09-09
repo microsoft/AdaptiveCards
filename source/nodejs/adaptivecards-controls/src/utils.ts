@@ -139,11 +139,7 @@ export function getAttributeValueAsInt(element: HTMLElement, attributeName: stri
     return defaultValue;
 }
 
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards-controls', {
-    createHTML: value => value,
-});
-
-export function setInnerHtml(element: HTMLElement, htmlContent: string) : void {
-    const trustedHtml = ttPolicy?.createHTML(htmlContent) ?? htmlContent;
+export function clearElement(element: HTMLElement) : void {
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
     element.innerHTML = trustedHtml as string;
 }

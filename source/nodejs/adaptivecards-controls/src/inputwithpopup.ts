@@ -189,7 +189,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     private updateLabel() {
         if (this._labelElement) {
             if (this._value) {
-                Utils.setInnerHtml(this._labelElement, this.getValueAsString());
+                this._labelElement.innerText = this.getValueAsString();
                 this._labelElement.classList.remove("placeholder");
             }
             else {
