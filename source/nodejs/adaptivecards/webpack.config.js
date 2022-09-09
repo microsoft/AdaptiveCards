@@ -22,7 +22,9 @@ module.exports = (env, argv) => {
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist'
+			static: {
+				directory: './dist'
+			}
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js", ".scss"]
