@@ -468,7 +468,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     // else won't get marked
     while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
     {
-        char token {};
+        char token{};
 
         lookahead.get(token);
 
@@ -510,7 +510,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
     // TODO this check is not needed; remove it in next iteration
     // validation is done in MatchAtLinkDestinationStart
-	// move parenthesis check to here
+    // move parenthesis check to here
     if (lookahead.peek() > 0 &&
         (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
