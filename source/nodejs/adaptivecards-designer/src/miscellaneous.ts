@@ -40,15 +40,6 @@ export class Rect {
 	}
 }
 
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards-designer', {
-    createHTML: value => value,
-});
-
-export function setInnerHtml(element: HTMLElement, htmlContent: string) : void {
-    const trustedHtml = ttPolicy?.createHTML(htmlContent) ?? htmlContent;
-    element.innerHTML = trustedHtml as string;
-}
-
 export class Utils {
 	public static isAbsoluteUrl(urlString: string): boolean {
 		return urlString.indexOf('http://') === 0

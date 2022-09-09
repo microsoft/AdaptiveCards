@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 import { DropDown, DropDownItem } from "adaptivecards-controls";
 import { v4 as uuidv4 } from "uuid";
-import { setInnerHtml } from "./miscellaneous";
 
 export enum ToolbarElementAlignment {
     Left,
@@ -335,7 +334,7 @@ export class Toolbar {
     attachTo(element: HTMLElement) {
         this._attachedTo = element;
         this._attachedTo.className = "acd-toolbar";
-        setInnerHtml(this._attachedTo, "");
+        this._attachedTo.innerHTML = "";
 
         let leftElements: Array<ToolbarElement> = [];
         let rightElements: Array<ToolbarElement> = [];

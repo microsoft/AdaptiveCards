@@ -1,7 +1,5 @@
 import { Dialog } from "./dialog";
-import { Pic2Card } from "./pic2card";
-import { setInnerHtml } from "./miscellaneous"
-
+import { Pic2Card	 } from "./pic2card";
 export class FetchManager {
     private pic2cardService = Pic2Card.pic2cardService !== '' ? Pic2Card.pic2cardService : process.env.PIC_TO_CARD_PREDICTION_API;
     private headers = {
@@ -101,8 +99,8 @@ export class OpenImageDialog extends Dialog {
         this._buttonContainer.className = "acd-upload-button-container";
         const fileNote = document.createElement("div");
         fileNote.className = "acd-image-file-note";
-        setInnerHtml(fileNote,
-            `By using the upload feature you agree to our <a href=${privacyLink} target='_blank'><span class='link'> image usage policy</span></a>`);
+        fileNote.innerHTML =
+            `By using the upload feature you agree to our <a href=${privacyLink} target='_blank'><span class='link'> image usage policy</span></a>`;
         type !== "file" &&
             this._buttonContainer.appendChild(this.renderCheckbox());
         this._buttonContainer.appendChild(
@@ -154,8 +152,8 @@ export class OpenImageDialog extends Dialog {
         const labelElement = <HTMLInputElement>document.createElement("LABEL");
         labelElement.className = "acd-label-element";
         labelElement.setAttribute("for", "template-option");
-        setInnerHtml(labelElement,
-            "Create Adaptive Card with <a href='https://aka.ms/ACTemplating' target='_blank'><span class='link'>template bindings</span></a> and sample data");
+        labelElement.innerHTML =
+            "Create Adaptive Card with <a href='https://aka.ms/ACTemplating' target='_blank'><span class='link'>template bindings</span></a> and sample data";
         return labelElement;
     }
 
@@ -343,8 +341,8 @@ export class OpenImageDialog extends Dialog {
         this._renderedElement.className = "acd-pic2card-container";
         const poweredByContainer = document.createElement("div");
         poweredByContainer.className = "acd-poweredby-title";
-        setInnerHtml(poweredByContainer, 
-            "Powered By <a class='poweredby-link' href='https://www.bigthinkcode.com/' target='_blank'><span class='link'>BigThinkCode</span></a>");
+        poweredByContainer.innerHTML =
+            "Powered By <a class='poweredby-link' href='https://www.bigthinkcode.com/' target='_blank'><span class='link'>BigThinkCode</span></a>";
         const container = document.createElement("div");
         container.className = "acd-sample-container";
 

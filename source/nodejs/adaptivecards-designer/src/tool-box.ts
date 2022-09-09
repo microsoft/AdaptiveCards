@@ -1,6 +1,5 @@
 import { SettingsManager } from "./settings-manager";
 import { Constants } from "adaptivecards-controls";
-import { setInnerHtml } from "./miscellaneous";
 
 export interface IToolboxCommand {
     title: string;
@@ -34,7 +33,7 @@ export class Toolbox {
 
     private updateContent() {
         if (this._contentHost) {
-            setInnerHtml(this._contentHost, "");
+            this._contentHost.innerHTML = "";
 
             if (this._content) {
                 this._contentHost.appendChild(this._content);
@@ -87,7 +86,7 @@ export class Toolbox {
         this.stretch = this.stretch; // trigger CSS class painting based on defaults
 
         this._headerRootElement = document.createElement("div");
-        setInnerHtml(this._headerRootElement, "");
+        this._headerRootElement.innerHTML = "";
         this._headerRootElement.className = "acd-toolbox-header";
 
         let headerContentElement = document.createElement("div");

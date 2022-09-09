@@ -51,12 +51,8 @@ import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards', {
-    createHTML: value => value,
-});
-
 function clearElement(element: HTMLElement) : void {
-    const trustedHtml = ttPolicy?.createHTML("") ?? "";
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
     element.innerHTML = trustedHtml as string;
 }
 

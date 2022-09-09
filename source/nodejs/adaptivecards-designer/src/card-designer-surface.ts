@@ -10,7 +10,6 @@ import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
-import { setInnerHtml } from "./miscellaneous";
 
 export enum BindingPreviewMode {
     NoPreview,
@@ -245,7 +244,7 @@ export class CardDesignerSurface {
 
             this._selectedPeer = value;
 
-            setInnerHtml(this._peerCommandsHostElement, "");
+            this._peerCommandsHostElement.innerHTML = "";
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
@@ -329,7 +328,7 @@ export class CardDesignerSurface {
     }
 
     private renderCard() {
-        setInnerHtml(this._cardHost, "");
+        this._cardHost.innerHTML = "";
 
         if (this.onCardValidated) {
             let allValidationEvents: Adaptive.IValidationEvent[] = [];
@@ -672,7 +671,7 @@ export class CardDesignerSurface {
 
         rootElement.appendChild(this._designerSurface);
 
-        setInnerHtml(this.context.hostContainer.cardHost, "");
+        this.context.hostContainer.cardHost.innerHTML = "";
         this.context.hostContainer.cardHost.appendChild(rootElement);
 
         this._card = new Adaptive.AdaptiveCard();
@@ -764,7 +763,7 @@ export class CardDesignerSurface {
     }
 
     render() {
-        setInnerHtml(this._designerSurface, "");
+        this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
         this._containsCarousel = false;

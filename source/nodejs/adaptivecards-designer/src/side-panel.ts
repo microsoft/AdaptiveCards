@@ -1,7 +1,6 @@
 import { Splitter } from "./splitter";
 import { Toolbox, ToolboxOrientation } from "./tool-box";
 import { SettingsManager } from "./settings-manager";
-import { setInnerHtml } from "./miscellaneous";
 
 export enum SidePanelAlignment {
     Top,
@@ -244,7 +243,7 @@ export class SidePanel {
             }
         }
 
-        setInnerHtml(this._attachedTo, "");
+        this._attachedTo.innerHTML = "";
 
         if (this.isVertical) {
             if (this.size) {
