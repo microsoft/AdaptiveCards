@@ -2183,7 +2183,7 @@ export abstract class CardElementContainer extends CardElement {
 
     // Carousel should always be forbidden unless it is singleton
     protected forbiddenChildElements(): string[] {
-        return ["Carousel"];
+        return [];
     }
 
     abstract getItemCount(): number;
@@ -6904,29 +6904,7 @@ export class Container extends ContainerBase {
 
         let jsonItems = source[this.getItemsCollectionPropertyName()];
 
-        if (
-            !Array.isArray(jsonItems) &&
-            typeof jsonItems === "object" &&
-            this.canHostSingletons()
-        ) {
-            const typeName = Utils.parseString(jsonItems["type"]);
-            if (typeName) {
-                const registration = context.elementRegistry.findByName(typeName);
-                if (registration?.singletonBehavior !== ElementSingletonBehavior.NotAllowed) {
-                    const element = context.parseElement(
-                        this, 
-                        jsonItems, 
-                        [], 
-                        !this.isDesignMode(), 
-                        true
-                    );
-
-                    if (element) {
-                        this.insertItemAt(element, -1, true);
-                    }
-                }
-            }
-        } else if (Array.isArray(jsonItems)) {
+        if (Array.isArray(jsonItems)) {
             for (const item of jsonItems) {
                 const element = context.parseElement(
                     this,
@@ -6947,12 +6925,7 @@ export class Container extends ContainerBase {
 
         const collectionPropertyName = this.getItemsCollectionPropertyName();
 
-        if ((this._items.length === 1) && (this._items[0].getElementSingletonBehavior() === ElementSingletonBehavior.Only)) {
-            // If the element is only allowed in a singleton context, parse it to an object instead of an array
-            context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
-        } else {
-            context.serializeArray(target, collectionPropertyName, this._items);
-        }
+        context.serializeArray(target, collectionPropertyName, this._items);
     }
 
     protected get isSelectable(): boolean {
