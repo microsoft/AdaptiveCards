@@ -463,9 +463,12 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
     auto currentPosition = initialPosition;
     m_positionOfLinkDestinationEndToken = 0;
 
+    // checks if lparen and rparen are balanced
+    // if there are balanced parenthesis, it will get marked
+    // else won't get marked
     while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
     {
-        char token;
+        char token {};
 
         lookahead.get(token);
 
@@ -480,6 +483,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 
         if (m_leftParenthesisCounts == 0)
         {
+            // when parenthesis are balanced, mark the position
             m_positionOfLinkDestinationEndToken = currentPosition;
         }
 
@@ -504,6 +508,9 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
+    // TODO this check is not needed; remove it in next iteration
+    // validation is done in MatchAtLinkDestinationStart
+	// move parenthesis check to here
     if (lookahead.peek() > 0 &&
         (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
@@ -511,12 +518,17 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
+    // starting from lparen position + 1, scan tokens until rparen - 1 position
     std::streamoff currentPos = lookahead.tellg();
     while (currentPos < m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
     {
+        // TODO this needs to be cleaned-up for performance and
+        // for correctly handling nested link parsing in next iteration
+        // inner most nested link should be detected
+        // the code here removes l-bracket, so that nested link parsing
+        // doesn't happen.
         if (lookahead.peek() == '[')
         {
-            // we found an opening in the destination. Catch it.
             char c{};
             lookahead.get(c);
             m_parsedResult.AddNewTokenToParsedResult(c);
@@ -528,6 +540,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         currentPos = lookahead.tellg();
     }
 
+    // end of link match, remove rparen
     if (lookahead.peek() == ')')
     {
         lookahead.get();
