@@ -217,6 +217,7 @@ export class ToolbarChoicePicker extends ToolbarElement {
     private _dropDown: DropDown;
     private _labelledById: string; // id to use for our label element
     private _isEnabled: boolean = true;
+    private _isHidden: boolean = false;
 
     protected internalRender(): HTMLElement {
         this._dropDown = new DropDown();
@@ -269,8 +270,20 @@ export class ToolbarChoicePicker extends ToolbarElement {
         if (!this.isEnabled) {
             this.renderedElement.classList.add("acd-toolbar-picker-disabled");
             this.renderedElement.setAttribute("aria-disabled", "true");
+            this.renderedElement.tabIndex = -1;
+            this._dropDown.isEnabled = false;
         } else {
             this.renderedElement.classList.remove("acd-toolbar-picker-disabled");
+            this.renderedElement.removeAttribute("aria-disabled");
+            this.renderedElement.tabIndex = 0;
+            this._dropDown.isEnabled = true;
+        }
+
+        if (this.isHidden) {
+            this.renderedElement.classList.add("acd-toolbar-picker-hidden");
+            this.renderedElement.setAttribute("aria-disabled", "true");
+        } else {
+            this.renderedElement.classList.remove("acd-toolbar-picker-hidden");
             this.renderedElement.removeAttribute("aria-disabled");
         }
     }
@@ -299,6 +312,15 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
     set isEnabled(value: boolean) {
         this._isEnabled = value;
+        this.updateLayout();
+    }
+
+    get isHidden(): boolean {
+        return this._isHidden;
+    }
+
+    set isHidden(value: boolean) {
+        this._isHidden = value;
         this.updateLayout();
     }
 }
