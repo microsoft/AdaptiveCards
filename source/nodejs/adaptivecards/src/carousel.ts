@@ -82,6 +82,7 @@ export class CarouselPage extends Container {
             "Input.Number",
             "Input.ChoiceSet",
             "Input.Toggle",
+            "Carousel",
             ...super.forbiddenChildElements()
         ];
     }
