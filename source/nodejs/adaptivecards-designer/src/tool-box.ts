@@ -1,5 +1,6 @@
 import { SettingsManager } from "./settings-manager";
 import { Constants } from "adaptivecards-controls";
+import { Utils } from "./miscellaneous";
 
 export interface IToolboxCommand {
     title: string;
@@ -33,7 +34,7 @@ export class Toolbox {
 
     private updateContent() {
         if (this._contentHost) {
-            this._contentHost.innerHTML = "";
+            Utils.clearElement(this._contentHost);
 
             if (this._content) {
                 this._contentHost.appendChild(this._content);
@@ -86,7 +87,7 @@ export class Toolbox {
         this.stretch = this.stretch; // trigger CSS class painting based on defaults
 
         this._headerRootElement = document.createElement("div");
-        this._headerRootElement.innerHTML = "";
+        Utils.clearElement(this._headerRootElement);
         this._headerRootElement.className = "acd-toolbox-header";
 
         let headerContentElement = document.createElement("div");
