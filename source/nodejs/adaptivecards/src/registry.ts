@@ -3,35 +3,10 @@
 import { CardElement, Action } from "./card-elements";
 import { SerializableObject, Version, Versions } from "./serialization";
 
-/**
- * Describes whether a certain element can be parsed in a "singleton" context.
- * Specifically, is the element allowed to exist as an object in a context where the
- * parent expects an Array of elements (e.g. `Carousel` and `AdaptiveCard.body`)
- *
- * @example - Singleton element in a container (note `items` contains an `object` rather than an `Array<object>`)
- * ```json
- * {
- *     "type": "Container",
- *     "items": {
- *         "type": "AllowedSingletonElement"
- *     }
- * }
- * ```
- */
-export enum ElementSingletonBehavior {
-    /** Element only valid in a singleton context. */
-    Only,
-    /** Element is allowed in a singleton context, but not required to be a singleton. */
-    Allowed,
-    /** Element is not allowed to exist in a singleton context. */
-    NotAllowed
-}
-
 export interface ITypeRegistration<T extends SerializableObject> {
     typeName: string;
     objectType: { new (): T };
     schemaVersion: Version;
-    singletonBehavior: ElementSingletonBehavior;
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
@@ -54,8 +29,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
             target.register(
                 typeRegistration.typeName,
                 typeRegistration.objectType,
-                typeRegistration.schemaVersion,
-                typeRegistration.singletonBehavior
+                typeRegistration.schemaVersion
             );
         }
     }
@@ -63,8 +37,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     register(
         typeName: string,
         objectType: { new (): T },
-        schemaVersion: Version = Versions.v1_0,
-        singletonBehavior: ElementSingletonBehavior = ElementSingletonBehavior.NotAllowed
+        schemaVersion: Version = Versions.v1_0
     ) {
         let registrationInfo = this.findByName(typeName);
 
@@ -74,8 +47,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
             registrationInfo = {
                 typeName: typeName,
                 objectType: objectType,
-                schemaVersion: schemaVersion,
-                singletonBehavior: singletonBehavior
+                schemaVersion: schemaVersion
             };
         }
 
