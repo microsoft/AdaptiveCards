@@ -1,27 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer } from "../host-container";
+import { HostContainer, ColorTheme } from "../host-container";
 import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
 import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
 
-enum ContainerSize {
+export enum ContainerSize {
     Small = "Small",
     Medium = "Medium",
     Large = "Large"
 };
 
-enum ColorTheme {
-    Light = "Light",
-    Dark = "Dark"
-};
-
 export class BerlinContainer extends HostContainer {
-    private readonly _containerSize: ContainerSize;
-    private readonly _colorTheme: ColorTheme;
+    private _containerSize: ContainerSize;
+    private _colorTheme: ColorTheme;
 
     constructor(size: ContainerSize, theme: ColorTheme) {
-        super(`Berlin - ${theme} - ${size} (Test)`,
+        super("Berlin (Test)",
             `containers/berlin-container-${theme.toLowerCase()}.css`);
         this._containerSize = size;
         this._colorTheme = theme;
@@ -33,6 +28,7 @@ export class BerlinContainer extends HostContainer {
     }
 
     public renderTo(hostElement: HTMLElement) {
+        this.cardHost.classList.remove("berlin-small-card", "berlin-medium-card", "berlin-large-card");
         this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
         const outerFrame = document.createElement("div");
         outerFrame.classList.add("berlin-outer-container");
@@ -69,21 +65,32 @@ export class BerlinContainer extends HostContainer {
         return this._colorTheme === ColorTheme.Light ? "#D2D2D2" : "#616161";
     }
 
-	get targetVersion(): Adaptive.Version {
-		return Adaptive.Versions.v1_6;
-	}
-
-    public static allContainers(): BerlinContainer[] {
-        let containers: BerlinContainer[] = [];
-        for (const size in ContainerSize) {
-            for (const theme in ColorTheme) {
-                containers.push(new BerlinContainer(size as ContainerSize, theme as ColorTheme));
-            }
-        }
-        return containers;
+    get targetVersion(): Adaptive.Version {
+        return Adaptive.Versions.v1_6;
     }
 
     get isFixedHeight(): boolean {
         return true;
+    }
+
+    set containerSize(value: ContainerSize) {
+        this._containerSize = value;
+    }
+
+    set colorTheme(value: ColorTheme) {
+        this._colorTheme = value;
+        this.styleSheet = `containers/berlin-container-${this._colorTheme.toLowerCase()}.css`
+    }
+
+    get supportsMultipleSizes(): boolean {
+        return true;
+    }
+
+    get supportsMultipleThemes(): boolean {
+        return true;
+    }
+	
+    static get supportedContainerSizes(): string[] {
+        return Object.values(ContainerSize);
     }
 }

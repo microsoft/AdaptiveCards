@@ -9,7 +9,7 @@ import * as DesignerPeers from "./designer-peers";
 import { Pic2Card } from "./pic2card";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { OpenJsonSchemaDialog } from "./open-json-schema-dialog";
-import { HostContainer } from "./containers/host-container";
+import { ColorTheme, HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
@@ -27,8 +27,7 @@ import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
-import { BerlinContainer } from "./containers";
-import { Constants as ControlConstants } from "adaptivecards-controls";
+import { BerlinContainer, ContainerSize } from "./containers";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -431,8 +430,38 @@ export class CardDesigner extends Designer.DesignContext {
         this.recreateDesignerSurface();
 
         if (this._deviceEmulationChoicePicker) {
-            this._deviceEmulationChoicePicker.isEnabled = !!this.hostContainer.enableDeviceEmulation
-            this.activeDeviceEmulationChanged()
+            this._deviceEmulationChoicePicker.isHidden = !(!!this.hostContainer.enableDeviceEmulation);
+            this.activeDeviceEmulationChanged();
+        }
+
+        if (this._containerSizeChoicePicker) {
+            this._containerSizeChoicePicker.isHidden = !(!!this.hostContainer.supportsMultipleSizes);
+
+            // Update the host parameter data with the value of the choice picker
+            if ((this._hostContainer instanceof BerlinContainer) && this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
+                this.updateHostDataSizeProperty();
+
+                // If the container properties do not align with the choice picker, update the property and recreate the designer surface
+                if (this._containerSizeChoicePicker.value !== (this._hostContainer as BerlinContainer).containerSize) {
+                    (this._hostContainer as BerlinContainer).containerSize = this._containerSizeChoicePicker.value as ContainerSize;
+                    this.recreateDesignerSurface();
+                }
+            }
+        }
+
+        if (this._containerThemeChoicePicker) {
+            this._containerThemeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleThemes;
+
+            // Update the host parameter data with the value of the choice picker
+            if (this._containerThemeChoicePicker.isEnabled && this._sampleHostData) {
+                this.updateHostDataThemeProperty();
+
+                // If the container properties do not align with the choice picker, update the property and recreate the designer surface
+                if (this._containerThemeChoicePicker.value !== this._hostContainer.colorTheme) {
+                    this._hostContainer.colorTheme = this._containerThemeChoicePicker.value as ColorTheme;
+                    this.recreateDesignerSurface();
+                }
+            }
         }
 
         if (this.onActiveHostContainerChanged) {
@@ -664,6 +693,8 @@ export class CardDesigner extends Designer.DesignContext {
     private _togglePreviewButton: ToolbarButton;
     private _helpButton: ToolbarButton;
     private _preventRecursiveSetTargetVersion = false;
+    private _containerSizeChoicePicker: ToolbarChoicePicker;
+    private _containerThemeChoicePicker: ToolbarChoicePicker;
 
     private prepareToolbar() {
         if (Shared.GlobalSettings.showVersionPicker) {
@@ -780,11 +811,30 @@ export class CardDesigner extends Designer.DesignContext {
 
                                 this.setSampleHostDataPayload(sampleHostDataPayload);
                                 this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
+
+                                // If the new data has size, update the choice picker value; otherwise, update the data based on the choice picker
+                                if (this._sampleHostData.widgetSize) {
+                                    this.updateContainerSizeChoicePicker();
+                                } else {
+                                    this.updateHostDataSizeProperty();
+                                }
+
+                                // If the new data has theme, update the choice picker value; otherwise, update the data based on the choice picker
+                                if (this._sampleHostData.hostTheme) {
+                                    this.updateContainerThemeChoicePicker();
+                                } else {
+                                    this.updateHostDataThemeProperty();
+                                }
+
                             } catch {
                                 alert("The card host data could not be loaded.")
                             }
                         } else {
                             this.setSampleHostDataPayload({});
+
+                            // Update the size and theme properties based on the current state of the choice pickers
+                            this.updateHostDataSizeProperty();
+                            this.updateHostDataThemeProperty();
                         }
                     }
                     if (newCardButton) {
@@ -818,6 +868,69 @@ export class CardDesigner extends Designer.DesignContext {
             };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
+        }
+
+        const supportsTheme = this._hostContainers.some((x) => { return x.supportsMultipleThemes; });
+        const supportsSize = this._hostContainers.some((x) => { return x.supportsMultipleSizes; });
+
+        if (supportsTheme) {
+            this._containerThemeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerThemePicker);
+            this._containerThemeChoicePicker.separator = false;
+            this._containerThemeChoicePicker.label = "Theme:"
+
+            const themes = HostContainer.supportedContainerThemes;
+
+            for (let i = 0; i < themes.length; i++) {
+                this._containerThemeChoicePicker.choices.push(
+                    {
+                        name: themes[i],
+                        value: themes[i],
+                    }
+                );
+            }
+
+            this._containerThemeChoicePicker.onChanged = (sender) => {
+                // Update the container theme and rerender the designer surface
+                this.hostContainer.colorTheme = this._containerThemeChoicePicker.value as ColorTheme;
+                this.recreateDesignerSurface();
+
+                if (this._sampleHostData) {
+                    this.updateHostDataThemeProperty();
+                }
+            };
+
+            this.toolbar.addElement(this._containerThemeChoicePicker);
+        }
+
+        if (supportsSize) {
+            this._containerSizeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerSizePicker);
+            this._containerSizeChoicePicker.separator = false;
+            this._containerSizeChoicePicker.label = "Container size:"
+
+            const sizes = BerlinContainer.supportedContainerSizes;
+
+            for (let i = 0; i < sizes.length; i++) {
+                this._containerSizeChoicePicker.choices.push(
+                    {
+                        name: sizes[i],
+                        value: sizes[i],
+                    }
+                );
+            }
+
+            this._containerSizeChoicePicker.onChanged = (sender) => {
+                if (this.hostContainer instanceof BerlinContainer) {
+                    // Update container size and rerender the designer surface
+                    this.hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
+                    this.recreateDesignerSurface();
+
+                    if (this._sampleHostData) {
+                        this.updateHostDataSizeProperty();
+                    }
+                }
+            };
+
+            this.toolbar.addElement(this._containerSizeChoicePicker);
         }
 
         if (this._deviceEmulations && this._deviceEmulations.length > 0) {
@@ -940,11 +1053,30 @@ export class CardDesigner extends Designer.DesignContext {
 
                         this.setSampleHostDataPayload(sampleHostDataPayload);
                         this.hostDataStructure = FieldDefinition.deriveFrom(sampleHostDataPayload);
+
+                        // If the new data has size, update the choice picker value; otherwise, update the data based on the choice picker
+                        if (this._sampleHostData.widgetSize) {
+                            this.updateContainerSizeChoicePicker();
+                        } else {
+                            this.updateHostDataSizeProperty();
+                        }
+
+                        // If the new data has theme, update the choice picker value; otherwise, update the data based on the choice picker
+                        if (this._sampleHostData.hostTheme) {
+                            this.updateContainerThemeChoicePicker();
+                        } else {
+                            this.updateHostDataThemeProperty();
+                        }
+
                     } catch {
                         alert("The card host data could not be loaded.")
                     }
                 } else {
                     this.setSampleHostDataPayload({});
+
+                    // Update the size and theme properties based on the current state of the choice pickers
+                    this.updateHostDataSizeProperty();
+                    this.updateHostDataThemeProperty();
                 }
             }
 
@@ -1032,10 +1164,88 @@ export class CardDesigner extends Designer.DesignContext {
         try {
             this._sampleHostData = JSON.parse(this.getCurrentSampleHostDataEditorPayload());
 
+            // Since we have new host data, we should update the container property choice pickers
+            this.updateContainerSizeChoicePicker();
+            this.updateContainerThemeChoicePicker();
+
             this.scheduleUpdateCardFromJson();
         }
         catch {
             // Swallow expression, the payload isn't a valid JSON document
+        }
+    }
+
+    // Update the size property within the sample host data payload
+    private updateHostDataSizeProperty() {
+        if (this._containerSizeChoicePicker?.value) {
+            const value = this._containerSizeChoicePicker.value.toLowerCase();
+            const currentValue = this._sampleHostData.widgetSize;
+
+            // only update the payload if the value has changed
+            if (currentValue !== value) {
+                this._sampleHostData.widgetSize = value;
+    
+                this.setSampleHostDataPayload(this._sampleHostData);
+                this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
+            }
+        }
+    }
+
+    // Update the theme property within the sample host data payload
+    private updateHostDataThemeProperty() {
+        if (this._containerThemeChoicePicker?.value) {
+            const value = this._containerThemeChoicePicker.value.toLowerCase();
+            const currentValue =  this._sampleHostData.hostTheme;
+
+            // only update the payload if the value has changed
+            if (currentValue !== value) {
+                this._sampleHostData.hostTheme = value;
+        
+                this.setSampleHostDataPayload(this._sampleHostData);
+                this.hostDataStructure = FieldDefinition.deriveFrom(this._sampleHostData);
+            }
+        } 
+    }
+
+    // Update the container size choice picker based on the host data value
+    private updateContainerSizeChoicePicker() {
+        // check for `size` in the host data payload
+        if (this._containerSizeChoicePicker && this._sampleHostData.widgetSize) {
+            const size = this._sampleHostData.widgetSize as String;
+
+            // only update the choice picker if the value is different
+            if (size !== this._containerSizeChoicePicker.value.toLowerCase()) {
+                const choices = this._containerSizeChoicePicker.choices;
+
+                // search for the matching choice and update the selectedIndex
+                for (let i = 0; i < choices.length; i++) {
+                    if (choices.at(i).value.toLowerCase() === size.toLowerCase()) {
+                        this._containerSizeChoicePicker.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // Update the container theme choice picker based on the host data value
+    private updateContainerThemeChoicePicker() {
+        // check for `theme` in the host data payload
+        if (this._containerThemeChoicePicker && this._sampleHostData.hostTheme) {
+            const theme = this._sampleHostData.hostTheme as String;
+
+            // only update the choice picker if the value is different
+            if (theme !== this._containerThemeChoicePicker.value.toLowerCase()) {
+                const choices = this._containerThemeChoicePicker.choices;
+
+                // search for the matching choice and update the selectedIndex
+                for (let i = 0; i < choices.length; i++) {
+                    if (choices.at(i).value.toLowerCase() === theme.toLowerCase()) {
+                        this._containerThemeChoicePicker.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -1269,7 +1479,15 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         if (this._deviceEmulationChoicePicker) {
-            this._deviceEmulationChoicePicker.isEnabled = !!this._hostContainer.enableDeviceEmulation;
+            this._deviceEmulationChoicePicker.isHidden = !(!!this._hostContainer.enableDeviceEmulation);
+        }
+
+        if (this._containerSizeChoicePicker) {
+            this._containerSizeChoicePicker.isHidden = !(!!this.hostContainer.supportsMultipleSizes);
+        }
+
+        if (this._containerThemeChoicePicker) {
+            this._containerThemeChoicePicker.isEnabled = !!this.hostContainer.supportsMultipleThemes;
         }
 
         root.classList.add("acd-designer-root");
@@ -1677,5 +1895,7 @@ export module CardDesigner {
         static readonly CopyJSON = "__copyJsonButton";
         static readonly TogglePreview = "__togglePreviewButton";
         static readonly Help = "__helpButton";
+        static readonly ContainerSizePicker = "__containerSizePicker";
+        static readonly ContainerThemePicker = "__containerThemePicker";
     }
 }

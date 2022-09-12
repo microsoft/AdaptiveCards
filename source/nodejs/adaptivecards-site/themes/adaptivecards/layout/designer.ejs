@@ -101,9 +101,9 @@
 					window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 				}
 			);
-			hostDocsButton.separator = false;
+			hostDocsButton.separator = true;
 			hostDocsButton.toolTip = "Learn more about the Host Apps";
-			designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+			designer.toolbar.insertElementBefore(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.Undo);
 
 			let templateDocsButton = new ACDesigner.ToolbarButton(
 				"templateDocs",

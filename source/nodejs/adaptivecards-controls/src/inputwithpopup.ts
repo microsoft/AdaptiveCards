@@ -177,11 +177,14 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     private _popupControl: TPopupControl;
     private _placeholderText: string;
     private _value: TValue;
+    private _isEnabled: boolean = true;
 
     protected keyDown(e: KeyboardEvent) {
         switch (e.key) {
             case Constants.keys.enter:
-                this.popup();
+                if (this._isEnabled) {
+                    this.popup();
+                }
                 break;
         }
     }
@@ -196,6 +199,18 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
                 this._labelElement.innerText = this._placeholderText ? this._placeholderText : "";
                 this._labelElement.classList.add("placeholder");
             }
+        }
+    }
+
+    private updateLayout() {
+        if (!this._isEnabled) {
+            this.rootElement.classList.add("disabled");
+            this.rootElement.setAttribute("aria-disabled", "true");
+            this.rootElement.tabIndex = -1;
+        } else {
+            this.rootElement.classList.remove("disabled");
+            this.rootElement.removeAttribute("aria-disabled");
+            this.rootElement.tabIndex = 0;
         }
     }
 
@@ -231,11 +246,13 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         window.addEventListener("resize", (e) => { this.closePopup(true); });
 
         this.rootElement.onclick = (e) => {
-            if (this.isOpen) {
-                this.closePopup(true);
-            }
-            else {
-                this.popup();
+            if (this._isEnabled) {
+                if (this.isOpen) {
+                    this.closePopup(true);
+                }
+                else {
+                    this.popup();
+                }
             }
         };
 
@@ -306,6 +323,13 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
 
             this.updateLabel();
             this.valueChanged();
+        }
+    }
+
+    set isEnabled(value: boolean) {
+        if (this._isEnabled !== value) {
+            this._isEnabled = value;
+            this.updateLayout();
         }
     }
 }
