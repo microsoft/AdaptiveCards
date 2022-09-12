@@ -20,7 +20,7 @@ import {
     SerializableObjectSchema,
     Versions
 } from "./serialization";
-import { GlobalRegistry, ElementSingletonBehavior } from "./registry";
+import { GlobalRegistry } from "./registry";
 import { TypeErrorType, ValidationEvent } from "./enums";
 import { Strings } from "./strings";
 import {
@@ -183,10 +183,6 @@ export class Carousel extends Container {
 
     getJsonTypeName(): string {
         return "Carousel";
-    }
-
-    getElementSingletonBehavior(): ElementSingletonBehavior {
-        return ElementSingletonBehavior.Only;
     }
 
     getItemCount(): number {
@@ -591,6 +587,5 @@ export class CarouselEvent {
 GlobalRegistry.defaultElements.register(
     "Carousel",
     Carousel,
-    Versions.v1_6,
-    ElementSingletonBehavior.Only
+    Versions.v1_6
 );
