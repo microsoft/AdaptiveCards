@@ -244,7 +244,7 @@ export class CardDesignerSurface {
 
             this._selectedPeer = value;
 
-            Utils.clearElement(this._peerCommandsHostElement);
+            this._peerCommandsHostElement.innerHTML = "";
 
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
@@ -328,7 +328,7 @@ export class CardDesignerSurface {
     }
 
     private renderCard() {
-        Utils.clearElement(this._cardHost);
+        this._cardHost.innerHTML = "";
 
         if (this.onCardValidated) {
             let allValidationEvents: Adaptive.IValidationEvent[] = [];
@@ -671,7 +671,7 @@ export class CardDesignerSurface {
 
         rootElement.appendChild(this._designerSurface);
 
-        Utils.clearElement(this.context.hostContainer.cardHost);
+        this.context.hostContainer.cardHost.innerHTML = "";
         this.context.hostContainer.cardHost.appendChild(rootElement);
 
         this._card = new Adaptive.AdaptiveCard();
@@ -763,7 +763,7 @@ export class CardDesignerSurface {
     }
 
     render() {
-        Utils.clearElement(this._designerSurface);
+        this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
         this._containsCarousel = false;

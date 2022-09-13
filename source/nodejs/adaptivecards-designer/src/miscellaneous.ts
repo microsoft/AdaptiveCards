@@ -39,22 +39,8 @@ export class Rect {
 		return this.bottom - this.top;
 	}
 }
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards-designer', {
-    createHTML: value => value,
-});
-
 
 export class Utils {
-    public static setInnerHtml(element: HTMLElement, htmlContent: string) : void {
-        const trustedHtml = ttPolicy?.createHTML(htmlContent) ?? htmlContent;
-        element.innerHTML = trustedHtml as string;
-    }
-
-    public static clearElement(element: HTMLElement) : void {
-        const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
-        element.innerHTML = trustedHtml as string;
-    }
-
 	public static isAbsoluteUrl(urlString: string): boolean {
 		return urlString.indexOf('http://') === 0
 		|| urlString.indexOf('https://') === 0;

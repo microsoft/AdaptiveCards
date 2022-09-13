@@ -1,7 +1,6 @@
 import { Splitter } from "./splitter";
 import { Toolbox, ToolboxOrientation } from "./tool-box";
 import { SettingsManager } from "./settings-manager";
-import { Utils } from "./miscellaneous";
 
 export enum SidePanelAlignment {
     Top,
@@ -244,7 +243,7 @@ export class SidePanel {
             }
         }
 
-        Utils.clearElement(this._attachedTo);
+        this._attachedTo.innerHTML = "";
 
         if (this.isVertical) {
             if (this.size) {
