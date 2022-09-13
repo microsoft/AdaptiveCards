@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 import { Constants } from "./constants";
 import { InputControl } from "./inputcontrol";
+import { clearElement } from "./utils";
 
 export class RadioButton extends InputControl {
     // Used to generate unique Ids
@@ -75,7 +76,7 @@ export class RadioButton extends InputControl {
 
         labelElement.appendChild(this._spanElement);
 
-        rootElement.innerHTML = "";
+        clearElement(rootElement);
         rootElement.appendChild(this._checkboxElement);
         rootElement.appendChild(labelElement);
     }
