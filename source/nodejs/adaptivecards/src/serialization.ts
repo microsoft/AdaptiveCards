@@ -291,9 +291,7 @@ export abstract class BaseSerializationContext {
 
         if (items.length === 0) {
             if (target.hasOwnProperty(propertyName) && Array.isArray(target[propertyName])) {
-                if (!GlobalSettings.enableFullJsonRoundTrip) {
-                    delete target[propertyName];
-                }
+                delete target[propertyName];
             }
         } else {
             this.serializeValue(target, propertyName, items);
