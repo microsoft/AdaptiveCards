@@ -28,5 +28,9 @@ export default payloads = [
     {
         "title": "Cafe",
         "json": require('./cafe.json')
+    },
+    {
+        "title": "Bulleted Hyperlink",
+        "json": require('./bulletedHyperlink.json')
     }
 ]

@@ -1,0 +1,59 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "Container",
+                    "spacing": "large",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Link Type: [Normal Text Link](https://bing.com)",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "spacing": "large",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Bulleted Text Link",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "- [Bing.com](https://bing.com)",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "- [Microsoft.com](https://microsoft.com)SUFFIX",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "- PREFIX[Microsoft.com](https://microsoft.com)",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "- PREFIX[Microsoft.com](https://microsoft.com)SUFFIX",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3"
+}

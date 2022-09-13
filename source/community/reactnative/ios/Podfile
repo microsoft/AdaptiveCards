@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 target 'RNAdaptiveCards' do
   config = use_native_modules!
@@ -16,7 +16,8 @@ target 'RNAdaptiveCards' do
   # For enabling Flipper.
   # Note that if you use_framework!, flipper will not work.
   # Disable these lines if you are doing use_framework!
-  use_flipper!({ 'Flipper-Folly' => '2.3.0' }) # update this part
+  #use_flipper!({ 'Flipper-Folly' => '2.3.0' }) # update this part
+  use_flipper!({  'Flipper-Folly' => '~> 2.6',"Flipper-DoubleConversion" => "1.1.7"})
   post_install do |installer|
     flipper_post_install(installer)
   end

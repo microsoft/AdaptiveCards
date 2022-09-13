@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "2.2.26",
+  "version": "2.2.27",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -20,7 +20,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "patch-package"
   },
   "repository": {
     "url": "https://github.com/Bigthinkcode/AdaptiveCards/tree/main/source/community/reactnative",
@@ -42,19 +43,20 @@
     "eslint": "^6.5.1",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react": "17.0.2",
+    "react-native": "0.68.2",
     "react-test-renderer": "16.13.1",
-    "rnpm-plugin-windows": "^0.2.11"
+    "rnpm-plugin-windows": "^0.2.11",
+	"patch-package": "^6.4.7"
   },
   "dependencies": {
-    "@react-native-community/datetimepicker": "^3.0.9",
-    "@react-native-picker/picker": "^1.9.11",
+    "@react-native-community/datetimepicker": "^6.0.2",
+    "@react-native-picker/picker": "^2.4.1",
     "adaptivecards-templating": "1.0.0-rc.0",
     "antlr4ts": "^0.5.0-alpha.3",
     "assert": "^2.0.0",
-    "react-native-video": "^4.4.2",
-    "react-native-keyboard-aware-scroll-view": "^0.9.5"
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-video": "^5.2.0"
   },
   "jest": {
     "preset": "react-native",
