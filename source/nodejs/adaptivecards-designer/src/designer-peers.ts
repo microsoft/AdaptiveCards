@@ -3469,7 +3469,7 @@ export class CarouselPagePeer extends ContainerPeer {
     isVisible(): boolean {
         const parentCarousel = this.parent as CarouselPeer;
 
-        return this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex];
+        return this === parentCarousel?.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex];
     }
 
     bringCardElementIntoView(): boolean {
