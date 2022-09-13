@@ -226,3 +226,10 @@ export function clearElementChildren(element: HTMLElement) {
         element.removeChild(element.firstChild);
     }
 }
+
+export function addCancelSelectActionEventHandler(element: HTMLElement) {
+    element.onclick = (e) => {
+        e.preventDefault();
+        e.cancelBubble = true;
+    };
+}

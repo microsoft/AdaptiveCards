@@ -317,6 +317,7 @@ export class Carousel extends Container {
             "ac-carousel-left"
         );
         containerForAdorners.appendChild(prevElementDiv);
+        Utils.addCancelSelectActionEventHandler(prevElementDiv);
 
         const nextElementDiv: HTMLElement = document.createElement("div");
         nextElementDiv.className = this.hostConfig.makeCssClassName(
@@ -324,12 +325,15 @@ export class Carousel extends Container {
             "ac-carousel-right"
         );
         containerForAdorners.appendChild(nextElementDiv);
+        Utils.addCancelSelectActionEventHandler(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
         pagination.className = this.hostConfig.makeCssClassName(
             "swiper-pagination",
             "ac-carousel-pagination"
         );
+        Utils.addCancelSelectActionEventHandler(pagination);
+
         containerForAdorners.appendChild(pagination);
 
         if (this.isDesignMode()) {
