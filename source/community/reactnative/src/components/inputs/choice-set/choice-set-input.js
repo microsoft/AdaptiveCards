@@ -216,7 +216,7 @@ export class ChoiceSetInput extends React.Component {
 		let picker = (
 			<Picker
 				mode={'dropdown'}
-				style={(Platform.OS === Constants.PlatformAndroid) && { width: '100%', height: '100%', position: 'absolute', opacity: 0 }}
+				style={(Platform.OS === Constants.PlatformAndroid) && { width: '100%', height: '100%', position: 'absolute', opacity: 0, accessible: false }}
 				itemStyle={this.styleConfig.picker}
 				selectedValue={this.getPickerInitialValue(addInputItem)}
 				onValueChange={

@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "2.2.27",
+  "version": "2.2.28",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -47,7 +47,7 @@
     "react-native": "0.68.2",
     "react-test-renderer": "16.13.1",
     "rnpm-plugin-windows": "^0.2.11",
-	"patch-package": "^6.4.7"
+    "patch-package": "^6.4.7"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^6.0.2",
