@@ -12,7 +12,7 @@ import {
     StringWithSubstitutions,
     ContentTypes,
     IInput,
-    IResourceInformation,
+    IResourceInformation
 } from "./shared";
 import * as Utils from "./utils";
 import {
@@ -50,6 +50,11 @@ import {
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+
+function clearElement(element: HTMLElement) : void {
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
+    element.innerHTML = trustedHtml as string;
+}
 
 export function renderSeparation(
     hostConfig: HostConfig,
@@ -690,7 +695,7 @@ export abstract class CardElement extends CardObject {
 
         for (let i = 0; i < this.getActionCount(); i++) {
             let action = this.getActionAt(i);
-            
+
             if (action) {
                 result.push(action);
             }
@@ -1069,7 +1074,8 @@ export class TextBlock extends BaseTextBlock {
                     this._computedLineHeight * this.maxLines + "px";
             }
 
-            this.renderedElement.innerHTML = this._originalInnerHtml;
+            const originalHtml = TextBlock._ttRoundtripPolicy?.createHTML(this._originalInnerHtml) ?? this._originalInnerHtml;
+            this.renderedElement.innerHTML = originalHtml as string;
         }
     }
 
@@ -1082,12 +1088,12 @@ export class TextBlock extends BaseTextBlock {
             const isTextOnly = !children.length;
             const truncationSupported =
                 isTextOnly ||
-                (children.length === 1 && (<HTMLElement>children[0]).tagName.toLowerCase() === "p");
+                (children.length === 1 && (<HTMLElement>children[0]).tagName.toLowerCase() === "p" && !(<HTMLElement>children[0]).children.length);
 
             if (truncationSupported) {
                 const element = isTextOnly ? this.renderedElement : <HTMLElement>children[0];
 
-                Utils.truncate(element, maxHeight, this._computedLineHeight);
+                Utils.truncateText(element, maxHeight, this._computedLineHeight);
 
                 return true;
             }
@@ -1095,6 +1101,22 @@ export class TextBlock extends BaseTextBlock {
 
         return false;
     }
+
+    // Markdown processing is handled outside of Adaptive Cards. It's up to the host to ensure that markdown is safely
+    // processed.
+    private static readonly _ttMarkdownPolicy = window.trustedTypes?.createPolicy(
+        "markdownPassthroughPolicy",
+        { createHTML: (value) => value }
+    );
+
+    // When "advanced" truncation is enabled (see GlobalSettings.useAdvancedCardBottomTruncation and
+    // GlobalSettings.useAdvancedTextBlockTruncation), we store the original pre-truncation content in
+    // _originalInnerHtml so that we can restore/recalculate truncation later if space availability has changed (see
+    // TextBlock.restoreOriginalContent())
+    private static readonly _ttRoundtripPolicy = window.trustedTypes?.createPolicy(
+        "restoreContentsPolicy",
+        { createHTML: (value) => value }
+    );
 
     protected setText(value: string) {
         super.setText(value);
@@ -1216,7 +1238,10 @@ export class TextBlock extends BaseTextBlock {
             if (this._treatAsPlainText) {
                 element.innerText = this._processedText;
             } else {
-                element.innerHTML = this._processedText;
+                const processedHtml =
+                    TextBlock._ttMarkdownPolicy?.createHTML(this._processedText) ??
+                    this._processedText;
+                element.innerHTML = processedHtml as string;
             }
 
             if (element.firstElementChild instanceof HTMLElement) {
@@ -2014,7 +2039,7 @@ export class Image extends CardElement {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
-                    this.renderedElement.innerHTML = "";
+                    this.renderedElement;
 
                     if (card && card.designMode) {
                         const errorElement = document.createElement("div");
@@ -2522,7 +2547,7 @@ export class CaptionSource extends ContentSource {
 
     //#endregion
 
-    constructor(url?: string, mimeType?: string, label?:string) {
+    constructor(url?: string, mimeType?: string, label?: string) {
         super(url, mimeType);
 
         this.label = label;
@@ -2619,7 +2644,7 @@ export class HTML5MediaPlayer extends MediaPlayer {
         this._captionSources.push(...this.owner.captionSources);
     }
 
-    static readonly supportedMediaTypes = [ "audio", "video" ];
+    static readonly supportedMediaTypes = ["audio", "video"];
 
     constructor(readonly owner: Media) {
         super();
@@ -2733,9 +2758,10 @@ export abstract class IFrameMediaMediaPlayer extends CustomMediaPlayer {
             iFrame.title = this.iFrameTitle;
         }
 
-        iFrame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iFrame.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iFrame.allowFullscreen = true;
-        
+
         container.appendChild(iFrame);
 
         return container;
@@ -2778,7 +2804,7 @@ export class DailymotionPlayer extends IFrameMediaMediaPlayer {
     }
 
     getEmbedVideoUrl(): string {
-        return  `https://www.dailymotion.com/embed/video/${this.videoId}?autoplay=1`;
+        return `https://www.dailymotion.com/embed/video/${this.videoId}?autoplay=1`;
     }
 }
 
@@ -2794,7 +2820,9 @@ export class YouTubePlayer extends IFrameMediaMediaPlayer {
     }
 
     async fetchVideoDetails(): Promise<void> {
-        this.posterUrl = this.videoId ? `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg` : undefined;
+        this.posterUrl = this.videoId
+            ? `https://img.youtube.com/vi/${this.videoId}/maxresdefault.jpg`
+            : undefined;
     }
 
     getEmbedVideoUrl(): string {
@@ -2810,22 +2838,28 @@ export class YouTubePlayer extends IFrameMediaMediaPlayer {
 
 export interface ICustomMediaPlayer {
     urlPatterns: RegExp[];
-    createMediaPlayer: (matches: RegExpExecArray) => CustomMediaPlayer
+    createMediaPlayer: (matches: RegExpExecArray) => CustomMediaPlayer;
 }
 
 export class Media extends CardElement {
     static customMediaPlayers: ICustomMediaPlayer[] = [
         {
-            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/ig, /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/ig ],
-            createMediaPlayer: (matches) => new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
+            urlPatterns: [
+                /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/gi,
+                /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/gi
+            ],
+            createMediaPlayer: (matches) =>
+                new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
         },
         {
-            urlPatterns: [ /^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/ig ],
-            createMediaPlayer: (matches) => new VimeoPlayer(matches, Strings.defaults.vimeoVideoPlayer())
+            urlPatterns: [/^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/gi],
+            createMediaPlayer: (matches) =>
+                new VimeoPlayer(matches, Strings.defaults.vimeoVideoPlayer())
         },
         {
-            urlPatterns: [ /^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/ig ],
-            createMediaPlayer: (matches) => new DailymotionPlayer(matches, Strings.defaults.dailymotionVideoPlayer())
+            urlPatterns: [/^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/gi],
+            createMediaPlayer: (matches) =>
+                new DailymotionPlayer(matches, Strings.defaults.dailymotionVideoPlayer())
         }
     ];
 
@@ -2868,7 +2902,7 @@ export class Media extends CardElement {
                         let matches = pattern.exec(source.url);
 
                         if (matches !== null) {
-                            return provider.createMediaPlayer(matches);    
+                            return provider.createMediaPlayer(matches);
                         }
                     }
                 }
@@ -2885,8 +2919,7 @@ export class Media extends CardElement {
 
             if (this.renderedElement) {
                 const mediaPlayerElement = this._mediaPlayer.render();
-
-                this.renderedElement.innerHTML = "";
+                clearElement(this.renderedElement);
                 this.renderedElement.appendChild(mediaPlayerElement);
 
                 this._mediaPlayer.play();
@@ -3004,7 +3037,7 @@ export class Media extends CardElement {
                 posterRootElement.appendChild(playButtonContainer);
             }
 
-            this.renderedElement.innerHTML = "";
+            clearElement(this.renderedElement);
             this.renderedElement.appendChild(posterRootElement);
         }
     }
@@ -3752,7 +3785,9 @@ export class ToggleInput extends Input {
     }
 
     isDirty(): boolean {
-        return this._checkboxInputElement ? this._checkboxInputElement.checked !== this._oldCheckboxValue : false;
+        return this._checkboxInputElement
+            ? this._checkboxInputElement.checked !== this._oldCheckboxValue
+            : false;
     }
 
     get value(): string | undefined {
@@ -4271,7 +4306,7 @@ export class NumberInput extends Input {
         this._numberInputElement.style.width = "100%";
 
         this._numberInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
-        
+
         if (this.defaultValue !== undefined) {
             this._numberInputElement.valueAsNumber = this.defaultValue;
         }
@@ -4676,7 +4711,7 @@ export abstract class Action extends CardObject {
     isDesignMode(): boolean {
         const rootElement = this.getRootObject();
 
-        return (rootElement instanceof CardElement) && rootElement.isDesignMode();
+        return rootElement instanceof CardElement && rootElement.isDesignMode();
     }
 
     protected updateCssClasses() {
@@ -4803,15 +4838,16 @@ export abstract class Action extends CardObject {
         if (this.title) {
             element.setAttribute("aria-label", this.title);
             element.title = this.title;
-        }
-        else {
+        } else {
             element.removeAttribute("aria-label");
             element.removeAttribute("title");
         }
 
         if (this.tooltip) {
             const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title ? "aria-description" : "aria-label"
+                ? this.title
+                    ? "aria-description"
+                    : "aria-label"
                 : "aria-description";
 
             element.setAttribute(targetAriaAttribute, this.tooltip);
@@ -4882,7 +4918,7 @@ export abstract class Action extends CardObject {
     }
 
     getAllActions(): Action[] {
-        return [ this ];
+        return [this];
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -4992,17 +5028,21 @@ export abstract class SubmitActionBase extends Action {
             context.serializeValue(target, prop.name, value);
         }
     );
-    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(Versions.v1_6, "disabledUnlessAssociatedInputsChange", false);
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(
+        Versions.v1_6,
+        "disabledUnlessAssociatedInputsChange",
+        false
+    );
 
     @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
     @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
-    
+
     @property(SubmitActionBase.disabledUnlessAssociatedInputsChangeProperty)
     disabledUnlessAssociatedInputsChange: boolean = false;
-    
+
     //#endregion
 
     private _isPrepared: boolean = false;
@@ -5099,8 +5139,10 @@ export abstract class SubmitActionBase extends Action {
 
     isEffectivelyEnabled(): boolean {
         let result = super.isEffectivelyEnabled();
-        
-        return this.disabledUnlessAssociatedInputsChange ? result && this._areReferencedInputsDirty : result;
+
+        return this.disabledUnlessAssociatedInputsChange
+            ? result && this._areReferencedInputsDirty
+            : result;
     }
 
     get data(): object | undefined {
@@ -5561,7 +5603,7 @@ export class ShowCardAction extends Action {
 
     releaseDOMResources() {
         super.releaseDOMResources();
-        
+
         this.card.releaseDOMResources();
     }
 
@@ -5691,7 +5733,7 @@ class ActionCollection {
     }
 
     private refreshContainer() {
-        this._actionCardContainer.innerHTML = "";
+        clearElement(this._actionCardContainer);
 
         if (!this._actionCard) {
             this._actionCardContainer.style.marginTop = "0px";
@@ -5780,7 +5822,10 @@ class ActionCollection {
 
         for (const renderedAction of this._renderedActions) {
             // Remove actions after selected action from tabOrder if the actions are oriented horizontally, to skip focus directly to expanded card
-            if (this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && afterSelectedAction) {
+            if (
+                this._owner.hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal &&
+                afterSelectedAction
+            ) {
                 renderedAction.isFocusable = false;
             }
 
@@ -6485,9 +6530,11 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             if (ignoreBackgroundImages) {
                 currentElementHasBackgroundImage = false;
-            }
-            else {
-                currentElementHasBackgroundImage = currentElement instanceof Container ? currentElement.backgroundImage.isValid() : false;
+            } else {
+                currentElementHasBackgroundImage =
+                    currentElement instanceof Container
+                        ? currentElement.backgroundImage.isValid()
+                        : false;
             }
 
             if (currentElement instanceof StylableCardElementContainer) {
@@ -6924,7 +6971,10 @@ export class Container extends ContainerBase {
     }
 
     getEffectivePadding(): PaddingDefinition {
-        if (GlobalSettings.removePaddingFromContainersWithBackgroundImage && !this.getHasBackground(true)) {
+        if (
+            GlobalSettings.removePaddingFromContainersWithBackgroundImage &&
+            !this.getHasBackground(true)
+        ) {
             return new PaddingDefinition();
         }
 
@@ -8477,7 +8527,9 @@ export class SerializationContext extends BaseSerializationContext {
 
         if (source && typeof source === "object") {
             const oldForbiddenTypes = new Set<string>();
-            this._forbiddenTypes.forEach((type) => {oldForbiddenTypes.add(type)});
+            this._forbiddenTypes.forEach((type) => {
+                oldForbiddenTypes.add(type);
+            });
             forbiddenTypes.forEach((type) => {
                 this._forbiddenTypes.add(type);
             });
