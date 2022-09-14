@@ -10,6 +10,7 @@ export * from "./host-config";
 export * from "./registry";
 export * from "./card-object";
 export * from "./card-elements";
+export * from "./carousel";
 export * from "./table";
 export * from "./channel-adapter";
 export * from "./activity-request";

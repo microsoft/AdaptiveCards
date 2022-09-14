@@ -35,6 +35,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Bottom, "bottom"},
             {AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing"},
             {AdaptiveCardSchemaKey::Buttons, "buttons"},
+            {AdaptiveCardSchemaKey::CaptionSources, "captionSources"},
             {AdaptiveCardSchemaKey::Card, "card"},
             {AdaptiveCardSchemaKey::CellSpacing, "cellSpacing"},
             {AdaptiveCardSchemaKey::Cells, "cells"},
@@ -377,4 +378,13 @@ namespace AdaptiveCards
     DEFINE_ADAPTIVECARD_ENUM(Mode, {
             {Mode::Primary, "primary"},
             {Mode::Secondary, "secondary"}});
+
+    DEFINE_ADAPTIVECARD_ENUM(ErrorStatusCode, {
+            {ErrorStatusCode::InvalidJson, "InvalidJson"},
+            {ErrorStatusCode::RenderFailed, "RenderFailed"},
+            {ErrorStatusCode::RequiredPropertyMissing, "RequiredPropertyMissing"},
+            {ErrorStatusCode::InvalidPropertyValue, "InvalidPropertyValue"},
+            {ErrorStatusCode::UnsupportedParserOverride, "UnsupportedParserOverride"},
+            {ErrorStatusCode::IdCollision, "IdCollision"},
+            {ErrorStatusCode::CustomError, "CustomError"}});
 }

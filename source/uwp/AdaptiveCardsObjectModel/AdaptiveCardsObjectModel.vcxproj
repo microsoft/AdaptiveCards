@@ -128,6 +128,8 @@
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
+    <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
+    <ClCompile Include="lib\AdaptiveContentSource.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveRefresh.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="lib\AdaptiveAuthCardButton.h" />
     <ClInclude Include="lib\AdaptiveAuthentication.h" />
     <ClInclude Include="lib\AdaptiveBackgroundImage.h" />
+    <ClInclude Include="lib\AdaptiveCaptionSource.h" />
+    <ClInclude Include="lib\AdaptiveContentSource.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputParser.h" />
     <ClInclude Include="lib\AdaptiveColumnParser.h" />

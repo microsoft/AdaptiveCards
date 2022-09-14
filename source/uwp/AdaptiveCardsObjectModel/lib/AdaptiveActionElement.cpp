@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             sharedCardElement.SetFallbackContent(std::static_pointer_cast<::AdaptiveCards::BaseElement>(fallbackSharedModel));
         }
 
-        if (AdditionalProperties.get() != nullptr)
+        if (AdditionalProperties.get())
         {
             sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
         }

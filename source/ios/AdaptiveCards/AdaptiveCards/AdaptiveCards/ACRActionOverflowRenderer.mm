@@ -46,8 +46,6 @@
             [target setInputs:inputs superview:superview];
         }
 
-        button.accessibilityTraits |= UIAccessibilityTraitLink;
-
         [button setContentCompressionResistancePriority:UILayoutPriorityRequired
                                                 forAxis:UILayoutConstraintAxisVertical];
 
@@ -57,8 +55,8 @@
         BOOL shouldRender = YES;
         if ([rootView.acrActionDelegate
                 respondsToSelector:@selector(onRenderOverflowAction:
-                                             forTarget:
-                                             isAtRootLevelActions:)]) {
+                                                          forTarget:
+                                                          isAtRootLevelActions:)]) {
 
             BOOL isAtRootLevelActions = ((ACOActionOverflow *)acoElem).isAtRootLevel;
 

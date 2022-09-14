@@ -2,22 +2,24 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveNumberInputRenderer.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveNumberInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveNumberInputRenderer : AdaptiveNumberInputRendererT<AdaptiveNumberInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveNumberInputRenderer);
-
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        Windows::UI::Xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                            winrt::AdaptiveRenderContext const& renderContext,
+                                            winrt::AdaptiveRenderArgs const& renderArgs);
     };
 
-    ActivatableClass(AdaptiveNumberInputRenderer);
+}
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveNumberInputRenderer
+        : AdaptiveNumberInputRendererT<AdaptiveNumberInputRenderer, implementation::AdaptiveNumberInputRenderer>
+    {
+    };
 }

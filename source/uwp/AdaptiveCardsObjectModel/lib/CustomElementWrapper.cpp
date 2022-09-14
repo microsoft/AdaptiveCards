@@ -5,7 +5,7 @@
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    CustomElementWrapper::CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement) :
+    CustomElementWrapper::CustomElementWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)
     {
         BaseElement::SetId(GetCardElementId());

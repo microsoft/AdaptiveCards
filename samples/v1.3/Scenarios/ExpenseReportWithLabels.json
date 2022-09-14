@@ -548,58 +548,100 @@
 			]
 		},
 		{
-			"type": "ColumnSet",
+			"type": "Table",
 			"spacing": "large",
 			"separator": true,
+			"firstRowAsHeaders": false,
+			"showGridLines": false,
 			"columns": [
 				{
-					"type": "Column",
-					"items": [
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "right",
-							"text": "Total Expense Amount \t",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "right",
-							"text": "Non-reimbursable Amount",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "right",
-							"text": "Advance Amount",
-							"wrap": true
-						}
-					],
-					"width": "stretch"
+					"width": 3
 				},
 				{
-					"type": "Column",
-					"items": [
+					"width": 1
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
 						{
-							"type": "TextBlock",
-							"text": "404.30",
-							"wrap": true
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Total Expense Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
 						},
 						{
-							"type": "TextBlock",
-							"text": "(-) 0.00 \t",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
-							"text": "(-) 0.00 \t",
-							"wrap": true
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "404.30",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
 						}
-					],
-					"width": "auto"
+					]
 				},
 				{
-					"type": "Column",
-					"width": "auto"
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Non-reimbursable Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "(-) 0.00",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Advance Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "(-) 0.00",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						}
+					]
 				}
 			]
 		},

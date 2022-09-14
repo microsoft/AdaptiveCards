@@ -2,32 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveShowCardActionConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveShowCardActionConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardActionConfig>
+    struct AdaptiveShowCardActionConfig : AdaptiveShowCardActionConfigT<AdaptiveShowCardActionConfig>
     {
-        AdaptiveRuntime(AdaptiveShowCardActionConfig);
+        AdaptiveShowCardActionConfig(::AdaptiveCards::ShowCardActionConfig const& showCardActionConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig showCardActionConfig) noexcept;
-
-        IFACEMETHODIMP get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionMode* value);
-        IFACEMETHODIMP put_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode value);
-
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style);
-        IFACEMETHODIMP put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style);
-
-        IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
-        IFACEMETHODIMP put_InlineTopMargin(UINT32 value);
-
-    private:
-        ABI::AdaptiveCards::Rendering::Uwp::ActionMode m_actionMode;
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle m_containerStyle;
-        UINT32 m_inlineTopMargin;
+        property<winrt::AdaptiveCards::Rendering::Uwp::ActionMode> ActionMode;
+        property<winrt::ContainerStyle> Style;
+        property<uint32_t> InlineTopMargin;
     };
-
-    ActivatableClass(AdaptiveShowCardActionConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveShowCardActionConfig
+        : AdaptiveShowCardActionConfigT<AdaptiveShowCardActionConfig, implementation::AdaptiveShowCardActionConfig>
+    {
+    };
 }

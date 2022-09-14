@@ -215,15 +215,16 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(Par
 
 void Image::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
+    m_knownProperties.insert(
+        {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
 }
 
 void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

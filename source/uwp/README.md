@@ -16,6 +16,14 @@ Since Adaptive Cards are hosted directly within the Windows OS we had implementa
 
 To run the test project, see the [AdaptiveCardTestApp](AdaptiveCardTestApp/README.md) folder
 
+## Testing
+
+The UWP Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | UWPUnitTests | [Location](./UWPUnitTests) |
+| UI tests | UWPUITests | [Location](./UWPUITests) |
 ## How to add a new NuGet package
 
 Due to limitations in our build system and Test infrastructure libraries used for UI tests, the process to add new NuGet packages has changed. The new process requires us to push any NuGet packages to a new NuGet feed called `AdaptiveCards-public` where we can have packages that come from any number of sources.

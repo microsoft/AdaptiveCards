@@ -1,9 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Note the "weird" way these readonly fields are declared is to work around
-// a breaking change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-// and adopt this syntax for all other static readonly fields.
+/*
+    This should really be a string enum, e.g.
+
+        export enum ContainerStyle {
+            Default = "default",
+            Emphasis = "emphasis"
+        }
+
+    However, some hosts do not use a version of TypeScript
+    recent enough to understand string enums. This is
+    a compatible construct that does not require using
+    a more recent version of TypeScript.
+
+    Also note the "weird" way these readonly fields are declared is to work around
+    a breaking change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    and adopt this syntax for all other static readonly fields.
+*/
+/* eslint-disable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention */
+export class ContainerStyle {
+    static readonly Default: "default" = "default";
+    static readonly Emphasis: "emphasis" = "emphasis";
+    static readonly Accent: "accent" = "accent";
+    static readonly Good: "good" = "good";
+    static readonly Attention: "attention" = "attention";
+    static readonly Warning: "warning" = "warning";
+}
+
 export class ActionStyle {
     static readonly Default: "default" = "default";
     static readonly Positive: "positive" = "positive";
@@ -14,6 +38,7 @@ export class ActionMode {
     static readonly Primary: "primary" = "primary";
     static readonly Secondary: "secondary" = "secondary";
 }
+/* eslint-enable @typescript-eslint/no-extraneous-class, @typescript-eslint/naming-convention */
 
 export enum Size {
     Auto,
@@ -127,32 +152,6 @@ export enum InputTextStyle {
     Password
 }
 
-/*
-    This should really be a string enum, e.g.
-
-        export enum ContainerStyle {
-            Default = "default",
-            Emphasis = "emphasis"
-        }
-
-    However, some hosts do not use a version of TypeScript
-    recent enough to understand string enums. This is
-    a compatible construct that does not require using
-    a more recent version of TypeScript.
-
-    Also note the "weird" way these readonly fields are declared is to work around
-    a breaking change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    and adopt this syntax for all other static readonly fields.
-*/
-export class ContainerStyle {
-    static readonly Default: "default" = "default";
-    static readonly Emphasis: "emphasis" = "emphasis";
-    static readonly Accent: "accent" = "accent";
-    static readonly Good: "good" = "good";
-    static readonly Attention: "attention" = "attention";
-    static readonly Warning: "warning" = "warning";
-}
-
 export enum ValidationPhase {
     Parse,
     ToJSON,
@@ -201,4 +200,11 @@ export enum LogLevel {
     Info,
     Warning,
     Error
+}
+
+export enum CarouselInteractionEvent {
+    NavigationNext,
+    NavigationPrevious,
+    Pagination,
+    Autoplay
 }

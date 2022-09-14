@@ -2,24 +2,20 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+#include "AdaptiveCardConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveCardConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardConfig>
+    struct AdaptiveCardConfig : AdaptiveCardConfigT<AdaptiveCardConfig>
     {
-        AdaptiveRuntime(AdaptiveCardConfig);
+        AdaptiveCardConfig(::AdaptiveCards::AdaptiveCardConfig const& adaptiveCardConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept;
-
-        IFACEMETHODIMP get_AllowCustomStyle(_Out_ boolean* allowCustomStyle);
-        IFACEMETHODIMP put_AllowCustomStyle(boolean allowCustomStyle);
-
-    private:
-        boolean m_allowCustomStyle;
+        property<bool> AllowCustomStyle;
     };
-
-    ActivatableClass(AdaptiveCardConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveCardConfig : AdaptiveCardConfigT<AdaptiveCardConfig, implementation::AdaptiveCardConfig>
+    {
+    };
 }

@@ -1,0 +1,12 @@
+#!/bin/sh
+HUSKY_SH="$(dirname "$0")/_/husky.sh"
+if [ -f $HUSKY_SH ]; then
+    . $HUSKY_SH
+    cd source/nodejs
+    NODEJS_FILES_CHANGED=`git status . --short | wc -l`
+    # npx lint-staged is disabled because of https://github.com/microsoft/AdaptiveCards/issues/6895
+    #if [ $NODEJS_FILES_CHANGED != "0" ]; then
+    #    npx lint-staged
+    #fi
+fi
+

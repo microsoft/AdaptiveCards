@@ -69,14 +69,15 @@ using namespace AdaptiveCards;
         self.isRequired = _validator.isRequired;
         self.hasValidationProperties = self.isRequired;
         auto inputLabel = choiceSet->GetLabel();
-        if (!inputLabel.empty()) {
-            _inputLabel = [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding];
-        }
+        _inputLabel = (!inputLabel.empty()) ? [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding] : @"";
+
 
         // configure UI
         _listView = [[UITableView alloc] init];
         _listView.dataSource = self;
         _listView.delegate = self;
+        _listView.accessibilityIdentifier = [NSString stringWithUTF8String:choiceSet->GetId().c_str()];
+
         self.filteredListView = _listView;
 
         _view = [[UIView alloc] init];
@@ -343,6 +344,8 @@ using namespace AdaptiveCards;
     cell.textLabel.text = [_filteredDataSource getItemAt:indexPath.row];
     cell.textLabel.numberOfLines = _wrapLines;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
+    cell.accessibilityValue = [NSString stringWithFormat:@"%ld of %ld", indexPath.row + 1, [self tableView:tableView numberOfRowsInSection:0]];
+    cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@, %@", self.id, cell.textLabel.text];
     cell.accessibilityTraits = UIAccessibilityTraitButton;
     return cell;
 }

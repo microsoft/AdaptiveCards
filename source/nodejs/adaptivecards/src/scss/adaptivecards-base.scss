@@ -1,0 +1,305 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+$font-family: 'Segoe UI', sans-serif;
+
+@mixin base-container (
+    $selectable-padding: 0px,
+    $selectable-hover-background: rgba(0, 0, 0, 0.1),
+    $selectable-active-background: rgba(0, 0, 0, 0.15)
+) {
+    .ac-container, .ac-columnSet {
+        &.ac-selectable {
+            padding: $selectable-padding;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $selectable-hover-background !important;
+            }
+
+            &:active {
+                background-color: $selectable-active-background !important;
+            }
+        }
+    }
+}
+
+.ac-image.ac-selectable {
+    cursor: pointer;
+}
+
+.ac-image.ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-image.ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.ac-media-poster {
+}
+
+.ac-media-poster.empty {
+    height: 200px;
+    background-color: #F2F2F2;
+}
+
+.ac-media-playButton {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #EEEEEE;
+    border-radius: 28px;
+    box-shadow: 0px 0px 10px #EEEEEE;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: black;
+    cursor: pointer;
+}
+
+.ac-media-playButton-arrow {
+    color: black;
+}
+
+.ac-media-playButton:hover {
+    background-color: white;
+}
+
+@mixin base-anchor(
+    $color: #005A9E,
+    $color-visited: #005A9E,
+    $color-active: #004D84,
+    $color-active-visited: #004D84
+) {
+    a.ac-anchor {
+        text-decoration: none
+    }
+    
+    a.ac-anchor:link {
+        color: $color
+    }
+
+    a.ac-anchor:visited {
+        color: $color-visited
+    }
+
+    a.ac-anchor:link:active {
+        color: $color-active
+    }
+
+    a.ac-anchor:visited:active {
+        color: $color-active-visited
+    }
+}
+
+@mixin base-push-button(
+    $font-size: 14px, 
+    $font-weight: 600, 
+    $height: null,
+    $padding: 4px 10px 5px 10px, 
+    $user-select: none,
+    
+    $background-color: null,
+    $active-background-color: null,
+    $subdued-background-color: null,
+    $subdued-hover-background-color: null,
+    $subdued-active-background-color: null,
+    $hover-background-color: null,
+    $expanded-background-color: null,
+    $expanded-active-background-color: null,
+    
+    $color: null,
+    $active-color: null,
+    $subdued-color: null,
+    $subdued-hover-color: null,
+    $subdued-active-color: null,
+    $hover-color: null,
+    $expanded-color: null,
+    $expanded-active-color: null,
+
+    $border: none, 
+    $active-border: null,
+    $subdued-border: null,
+    $subdued-hover-border: null,
+    $subdued-active-border: null,
+    $hover-border: null,
+    $expanded-border: null,
+    $expanded-active-border: null,
+
+    $positive-background-color: null,
+    $positive-color: null,
+    $positive-border: null,
+    $positive-active-background-color: null,
+    $positive-active-border: null,
+    $positive-hover-background-color: null,
+    $positive-hover-border: null,
+
+    $destructive-background-color: null,
+    $destructive-color: null,
+    $destructive-border: null,
+    $destructive-active-background-color: null,
+    $destructive-active-border: null,
+    $destructive-hover-background-color: null,
+    $destructive-hover-border: null,
+
+    $expandable-font-family: 'FabricMDL2Icons',
+    $expandable-font-size: 10px,
+    $expandable-font-weight: 900,
+    $expandable-content: '\E70D',
+    $expanded-content: '\E70E'
+) {
+    .ac-pushButton {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        font-family: $font-family;
+        font-size: $font-size;
+        font-weight: $font-weight;
+        padding: $padding;
+        user-select: $user-select;
+        height: $height;
+        
+        background-color: $background-color;
+        color: $color;    
+        border: $border;
+
+        &:hover {
+            background-color: $hover-background-color;
+            color: $hover-color;
+            border: $hover-border;
+        }
+
+        &:active {
+            background-color: $active-background-color;
+            color: $active-color;
+            border: $active-border;
+        }
+
+        &.subdued {
+            background-color: $subdued-background-color;
+            color: $subdued-color;
+            border: $subdued-border;
+
+            &:hover {
+                background-color: $subdued-hover-background-color;
+                color: $subdued-hover-color;
+                border: $subdued-hover-border;
+            }
+
+            &:active {
+                background-color: $subdued-active-background-color;
+                color: $subdued-active-color;
+                border: $subdued-active-border;
+            }
+        }
+
+        &.expanded {
+            background-color: $expanded-background-color;
+            color: $expanded-color;
+            border: $expanded-border;
+        }
+
+        &.expandable {
+            &:after {
+                font-family: $expandable-font-family;
+                font-size: $expandable-font-size;
+                font-weight: $expandable-font-weight;
+                content: $expandable-content;
+            }
+
+            &.expanded:after {
+                content: $expanded-content;
+            }
+        }
+
+        &.style-positive {
+            background-color: $positive-background-color;
+            color: $positive-color;
+            border: $positive-border;
+            
+            &:hover {
+                background-color: $positive-hover-background-color;
+                border: $positive-hover-border
+            }
+
+            &:active {
+                background-color: $positive-active-background-color;
+                border: $positive-active-border
+            }
+        }
+
+        &.style-destructive {
+            background-color: $destructive-background-color;
+            color: $destructive-color;
+            border: $destructive-border;
+            
+            &:hover {
+                background-color: $destructive-hover-background-color;
+                border: $destructive-hover-border
+            }
+
+            &:active {
+                background-color: $destructive-active-background-color;
+                border: $destructive-active-border
+            }
+        }
+    }
+}
+
+@mixin base-input(
+    $font-size: 14px,
+    $padding: 4px 8px 4px 8px,
+    $color: black,
+    $border: 1px solid #DDDDDD,
+    $hover-border: null,
+    $background-color: null,
+    $hover-background-color: null,
+    $validation-failed-border: 1px solid red !important,
+    $validation-failed-outline: 1px solid red
+    ) {
+
+    .ac-input {
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color;
+        
+        &.ac-textInput {
+            resize: none;
+        }
+
+        &.ac-textInput.ac-multiline {
+            height: 72px;
+        }
+
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput {
+            height: 31px;
+        }
+
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.ac-multichoiceInput {
+            border: $border;
+            padding: $padding;
+            background-color: $background-color;
+
+            &:hover {
+                border: $hover-border;
+                background-color: $hover-background-color;
+            }
+        }
+
+        &.ac-textInput,
+        &.ac-numberInput,
+        &.ac-dateInput,
+        &.ac-timeInput,
+        &.ac-multichoiceInput.ac-choiceSetInput-compact {
+            &.ac-input-validation-failed {
+                border: $validation-failed-border;
+            }
+        }
+
+        &.ac-toggleInput, &.ac-choiceSetInput-expanded, &.ac-choiceSetInput-multiSelect {
+            &.ac-input-validation-failed {
+                outline: $validation-failed-outline;
+            }
+        }
+    }
+}
+

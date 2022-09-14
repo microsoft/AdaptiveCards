@@ -179,8 +179,8 @@ using namespace AdaptiveCards;
 
     CGFloat height = 1.0f;
 
-    CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
-    height = width * ratios.height;
+    ACRAspectRatio ratios = [ACRImageProperties convertToAspectRatio:self.imageProperties.contentSize];
+    height = width * ratios.heightToWidth;
 
     // adjust intrinsic contentsize of superview
     // substract the previous intrinsic content size from the view group
@@ -220,4 +220,8 @@ using namespace AdaptiveCards;
     return constraint;
 }
 
+- (NSString *)accessibilityLabel
+{
+    return self.subviews.count ? self.subviews[0].accessibilityLabel : super.accessibilityLabel;
+}
 @end

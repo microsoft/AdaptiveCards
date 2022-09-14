@@ -5,6 +5,7 @@
   - Image
   - Media
   - MediaSource
+  - CaptionSource
   - RichTextBlock
   - TextRun
 - Containers:
@@ -38,3 +39,4 @@
   - Authentication
   - TokenExchangeResource
   - AuthCardButton
+  - Metadata

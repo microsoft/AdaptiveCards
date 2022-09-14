@@ -4095,6 +4095,10 @@ This is necessary for XML serialization. You should use the [Url](#F-Url 'Url') 
 
 AdaptiveCards
 
+##### Summary
+
+Represents how a card can be refreshed by making a request to the target Bot
+
 <a name='P-AdaptiveCards-AdaptiveRefresh-Action'></a>
 ### Action `property`
 

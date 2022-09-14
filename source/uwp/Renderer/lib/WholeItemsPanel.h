@@ -2,62 +2,52 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include <windows.ui.xaml.shapes.h>
+#include "WholeItemsPanel.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::IWholeItemsPanel,
-                                              ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
+    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
     {
-        AdaptiveRuntimeStringClass(WholeItemsPanel);
-
     public:
-        HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();
+        WholeItemsPanel() = default;
 
-        // IFrameworkElementOverrides
-        virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
-            /* [in] */ ABI::Windows::Foundation::Size availableSize,
-            /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
+        winrt::Size MeasureOverride(winrt::Size const& availableSize);
+        winrt::Size ArrangeOverride(winrt::Size const& finalSize);
 
-        virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
-            /* [in] */ ABI::Windows::Foundation::Size finalSize,
-            /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
+        virtual void OnApplyTemplate(void);
 
-        virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
-
-        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult) noexcept;
+        virtual winrt::hstring GetAltText();
 
         // Method used inside the component to reduce the number of temporary allocations
-        _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);
+        void AppendAltText(std::wstring& buffer);
 
         void SetMainPanel(bool value);
         void SetAdaptiveHeight(bool value);
-        static void SetBleedMargin(UINT bleedMargin);
+        static void SetBleedMargin(uint32_t bleedMargin);
 
-        virtual HRESULT STDMETHODCALLTYPE IsAllContentClippedOut(__RPC__out boolean* pResult);
-        virtual HRESULT STDMETHODCALLTYPE IsTruncated(__RPC__out boolean* pResult);
+        virtual bool IsAllContentClippedOut() { return ((m_measuredCount > 0) && (m_visibleCount == 0)); }
+        virtual bool IsTruncated() { return m_isTruncated; }
 
-        void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment);
+        void AddElementToStretchablesList(winrt::UIElement const& element);
+        bool IsUIElementInStretchableList(winrt::UIElement const& element);
+        void SetVerticalContentAlignment(winrt::VerticalContentAlignment verticalContentAlignment)
+        {
+            m_verticalContentAlignment = verticalContentAlignment;
+        }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        static UINT s_bleedMargin;
+        static uint32_t s_bleedMargin;
 
-        unsigned int m_visibleCount{};
-        unsigned int m_measuredCount{};
+        uint32_t m_visibleCount{};
+        uint32_t m_measuredCount{};
 
-        unsigned int m_stretchableItemCount{};
+        uint32_t m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment m_verticalContentAlignment{};
+        winrt::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel
@@ -71,21 +61,23 @@ namespace AdaptiveCards::Rendering::Uwp
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
-        _Check_return_ HRESULT IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel, _Out_ bool* childTruncated);
+        bool IsAnySubgroupTruncated(winrt::Panel const& panel);
 
-        static _Check_return_ HRESULT LayoutCroppedImage(_In_ ABI::Windows::UI::Xaml::Shapes::IShape* pShape,
-                                                         _In_ double availableWidth,
-                                                         _In_ double availableHeight);
+        static void LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight);
 
-        static void AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer);
+        static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 
-        static _Check_return_ HRESULT AppendAltTextToUIElement(_In_ ABI::Windows::UI::Xaml::IUIElement* pUIElement,
-                                                               _Inout_ std::wstring& buffer);
+        static void AppendAltTextToUIElement(winrt::UIElement const& pUIElement, std::wstring& buffer);
 
-        static _Check_return_ HRESULT GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement* pElement, _Out_ HSTRING* pResult);
+        static winrt::hstring GetAltAsString(winrt::UIElement const& element);
 
-        static bool HasExplicitSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
+        static bool HasExplicitSize(winrt::FrameworkElement const& element);
     };
+}
 
-    ActivatableClass(WholeItemsPanel);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct WholeItemsPanel : WholeItemsPanelT<WholeItemsPanel, implementation::WholeItemsPanel>
+    {
+    };
 }

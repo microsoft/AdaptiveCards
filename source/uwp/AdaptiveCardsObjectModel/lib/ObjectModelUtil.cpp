@@ -105,7 +105,7 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(static_cast<std::wstring_view>(in));
 }
 
-template<typename TImpl, typename TSrc> auto GetSharedModel(_In_ TSrc const& item)
+template<typename TImpl, typename TSrc> auto GetSharedModel(TSrc const& item)
 {
     if (auto adaptiveElement = peek_innards<TImpl>(item))
     {
@@ -203,7 +203,7 @@ std::shared_ptr<AdaptiveCards::BaseActionElement> GenerateSharedAction(winrt::Ad
 }
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
-    _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> const& actions)
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> const& actions)
 {
     std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> containedElements;
     for (auto&& action : actions)
@@ -429,12 +429,12 @@ winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const&
     return result;
 }
 
-std::string JsonObjectToString(_In_ winrt::Windows::Data::Json::IJsonObject const& inputJson)
+std::string JsonObjectToString(winrt::Windows::Data::Json::IJsonObject const& inputJson)
 {
     return HStringToUTF8(JsonObjectToHString(inputJson));
 }
 
-winrt::hstring JsonObjectToHString(_In_ winrt::Windows::Data::Json::IJsonObject const& inputJson)
+winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::IJsonObject const& inputJson)
 {
     if (!inputJson)
     {
@@ -477,13 +477,13 @@ winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& js
     return StringToJsonObject(ParseUtil::JsonToString(jsonCppValue));
 }
 
-Json::Value JsonObjectToJsonCpp(_In_ winrt::Windows::Data::Json::IJsonObject const& jsonObject)
+Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject)
 {
     return ParseUtil::GetJsonValueFromString(JsonObjectToString(jsonObject));
 }
 
 void RemoteResourceElementToRemoteResourceInformationVector(
-    _In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
     std::vector<RemoteResourceInformation>& resourceUris)
 {
     for (auto&& resourceInformation : remoteResourceElement.GetResourceInformation())
@@ -517,7 +517,7 @@ SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardP
 }
 
 void AdaptiveWarningsToSharedWarnings(
-    _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     for (auto&& adaptiveWarning : adaptiveWarnings)

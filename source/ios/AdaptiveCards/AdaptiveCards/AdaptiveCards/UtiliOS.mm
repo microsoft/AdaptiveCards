@@ -682,6 +682,13 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     auto markdownString = markDownParser->TransformToHtml();
     NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
 
+    if (markDownParser->HasHtmlTags() && ([parsedString containsString:@"\n"] || [parsedString containsString:@"\r"])) {
+        parsedString = [parsedString stringByReplacingOccurrencesOfString:@"[\\n\\r]"
+                                                               withString:@"<br>"
+                                                                  options:NSRegularExpressionSearch
+                                                                    range:NSMakeRange(0, [parsedString length])];
+    }
+
     NSDictionary *data = nil;
 
     FontType sharedFontType = textProperties.GetFontType().value_or(FontType::Default);
@@ -891,19 +898,6 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
         key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
     }
     return key;
-}
-
-CGSize getAspectRatio(CGSize size)
-{
-    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
-    if (size.width > 0) {
-        heightToWidthRatio = size.height / size.width;
-    }
-
-    if (size.height > 0) {
-        widthToHeightRatio = size.width / size.height;
-    }
-    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
 }
 
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)

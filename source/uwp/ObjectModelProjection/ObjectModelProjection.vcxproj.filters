@@ -72,6 +72,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableRow.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CaptionSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ContentSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -151,6 +153,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CaptionSource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

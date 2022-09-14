@@ -2,42 +2,37 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "TextInput.h"
+#include "AdaptiveTextInputRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveTextInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveTextInputRenderer : AdaptiveTextInputRendererT<AdaptiveTextInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveTextInputRenderer);
-
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveTextInputRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        HRESULT AdaptiveTextInputRenderer::RenderTextBox(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                                         _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textInputControl);
+        winrt::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                                     winrt::AdaptiveRenderContext const& renderContext,
+                                                                                     winrt::AdaptiveRenderArgs const& renderArgs);
 
-        HRESULT AdaptiveTextInputRenderer::RenderPasswordBox(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textInputControl);
+        winrt::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                                                         winrt::AdaptiveRenderArgs const& renderArgs);
 
-        HRESULT HandleLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                          ABI::Windows::UI::Xaml::IUIElement* textBox,
-                                          ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                          ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                          ABI::Windows::UI::Xaml::IUIElement** inputLayout,
-                                          ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
+        std::tuple<winrt::UIElement, winrt::Border> HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                                                              winrt::UIElement const& textBox,
+                                                                              winrt::AdaptiveRenderContext const& renderContext,
+                                                                              winrt::AdaptiveRenderArgs const& renderArgs);
     };
-
-    ActivatableClass(AdaptiveTextInputRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveTextInputRenderer : AdaptiveTextInputRendererT<AdaptiveTextInputRenderer, implementation::AdaptiveTextInputRenderer>
+    {
+    };
 }

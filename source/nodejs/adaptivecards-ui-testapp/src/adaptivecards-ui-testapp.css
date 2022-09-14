@@ -16,12 +16,12 @@ body {
 }
 
 .main {
-    width: 80vw;
+    width: 60vw;
     height: 100vh;
 }
 
 .testCasesDiv {
-    width: 20vw;
+    width: 40vw;
     height: 100vh;
 }
 
@@ -31,11 +31,22 @@ body {
     height: 80vh;
 }
 
-#retrievedInputsDiv
+.inputsDiv
 {
+    display: flex;
     width: 100vw;
     height: 20vh;
     background-color: rgb(240, 238, 238);
+}
+
+#hideInputsDiv
+{
+    width: 10vw;
+}
+
+#retrievedInputsDiv
+{
+    width: 90vw;
 }
 
 #renderedCardSpace

@@ -324,12 +324,20 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
     };
 
-    runtimeclass AdaptiveMediaSource
-    {
-        AdaptiveMediaSource();
-
+    interface IContentSource{
         String MimeType;
         String Url;
+    };
+
+    [default_interface] runtimeclass AdaptiveCaptionSource : IContentSource
+    {
+        AdaptiveCaptionSource();
+        String Label;
+    };
+
+    [default_interface] runtimeclass AdaptiveMediaSource : IContentSource
+    {
+        AdaptiveMediaSource();
     };
 
     runtimeclass AdaptiveMedia : IAdaptiveCardElement
@@ -340,6 +348,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         String AltText;
 
         Windows.Foundation.Collections.IVector<AdaptiveMediaSource> Sources { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveCaptionSource> CaptionSources { get; };
     };
 
     runtimeclass AdaptiveBackgroundImage
@@ -409,6 +418,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         UInt32 MinHeight;
         AdaptiveRefresh Refresh;
         AdaptiveAuthentication Authentication;
+        Windows.Foundation.IReference<Boolean> Rtl;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();

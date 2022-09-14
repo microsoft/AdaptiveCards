@@ -258,8 +258,8 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const int ch) const
     {
         // non-EOF extended chars (i.e. < 0) are treated as non-space non-punctuation characters
         return (!MarkDownBlockParser::IsSpace(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
-            !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
+               !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
+               !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
     }
     return false;
 }
@@ -369,8 +369,8 @@ void EmphasisParser::CaptureEmphasisToken(const int ch, std::string& currentToke
 void LinkParser::Match(std::stringstream& stream)
 {
     // link syntax check, match keyword at each stage
-    if (MatchAtLinkInit(stream) && MatchAtLinkTextRun(stream) && MatchAtLinkTextEnd(stream) &&
-        MatchAtLinkDestinationStart(stream) && MatchAtLinkDestinationRun(stream))
+    bool capturedLink = (MatchAtLinkInit(stream) && MatchAtLinkTextRun(stream) && MatchAtLinkTextEnd(stream));
+    if (capturedLink && MatchAtLinkDestinationStart(stream) && MatchAtLinkDestinationRun(stream))
     {
         /// Link is in correct syntax, capture it as link
         CaptureLinkToken();
@@ -436,6 +436,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
+        ++m_leftParenthesisCounts;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -449,40 +450,67 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
-    // if peeked char is EOF or extended char, this isn't a match
+    // handles [xx](
     if (lookahead.peek() < 0)
-    {
-        return false;
-    }
-
-    // control key is detected, syntax check failed
-    if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
     }
 
-    if (lookahead.peek() == ')')
+    // identify where the destination value ends by marking the position
+    // e.g: ([ab()c])()()() end = 7
+    const std::streamoff initialPosition = lookahead.tellg();
+    auto currentPosition = initialPosition;
+    m_positionOfLinkDestinationEndToken = 0;
+
+    // checks if lparen and rparen are balanced
+    // if there are balanced parenthesis, it will get marked
+    // else won't get marked
+    while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
     {
-        lookahead.get();
-        return true;
+        char token{};
+
+        lookahead.get(token);
+
+        if (token == '(')
+        {
+            m_leftParenthesisCounts++;
+        }
+        else if (token == ')')
+        {
+            m_leftParenthesisCounts--;
+        }
+
+        if (m_leftParenthesisCounts == 0)
+        {
+            // when parenthesis are balanced, mark the position
+            m_positionOfLinkDestinationEndToken = currentPosition;
+        }
+
+        currentPosition++;
     }
 
-    // parses destination
-    ParseBlock(lookahead);
+    lookahead.clear();
 
-    if (lookahead.peek() == ')')
+    // reset stream
+    lookahead.seekg(initialPosition, std::ios::beg);
+
+    // Link destination end token is not detected if the position of linkDestinationEndToken is not moved
+    // or control key is detected
+    if (!m_positionOfLinkDestinationEndToken || MarkDownBlockParser::IsCntrl(lookahead.peek()))
     {
-        return true;
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return false;
     }
 
-    m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-    return false;
+    return true;
 }
-
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
+    // TODO this check is not needed; remove it in next iteration
+    // validation is done in MatchAtLinkDestinationStart
+    // move parenthesis check to here
     if (lookahead.peek() > 0 &&
         (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
@@ -490,14 +518,34 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
+    // starting from lparen position + 1, scan tokens until rparen - 1 position
+    std::streamoff currentPos = lookahead.tellg();
+    while (currentPos < m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
+    {
+        // TODO this needs to be cleaned-up for performance and
+        // for correctly handling nested link parsing in next iteration
+        // inner most nested link should be detected
+        // the code here removes l-bracket, so that nested link parsing
+        // doesn't happen.
+        if (lookahead.peek() == '[')
+        {
+            char c{};
+            lookahead.get(c);
+            m_parsedResult.AddNewTokenToParsedResult(c);
+        }
+        else
+        {
+            ParseBlock(lookahead);
+        }
+        currentPos = lookahead.tellg();
+    }
+
+    // end of link match, remove rparen
     if (lookahead.peek() == ')')
     {
         lookahead.get();
-        return true;
     }
 
-    // parses destination
-    ParseBlock(lookahead);
     return true;
 }
 

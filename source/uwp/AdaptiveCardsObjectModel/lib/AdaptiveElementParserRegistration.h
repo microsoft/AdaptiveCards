@@ -48,7 +48,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     class SharedModelElementParser : public ::AdaptiveCards::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& parserRegistration);
+        SharedModelElementParser(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& parserRegistration);
 
         // AdaptiveCards::BaseCardElementParser
         std::shared_ptr<::AdaptiveCards::BaseCardElement> Deserialize(::AdaptiveCards::ParseContext& context,
@@ -71,10 +71,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
     };
 
     template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser>
-    auto FromJson(_In_ winrt::Windows::Data::Json::JsonObject const& jsonObject,
-                  _In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration const& elementParserRegistration,
-                  _In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration const& actionParserRegistration,
-                  _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings)
+    auto FromJson(winrt::Windows::Data::Json::JsonObject const& jsonObject,
+                  winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration const& elementParserRegistration,
+                  winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration const& actionParserRegistration,
+                  winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings)
     {
         auto elementParserRegistrationImpl =
             peek_innards<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveElementParserRegistration>(

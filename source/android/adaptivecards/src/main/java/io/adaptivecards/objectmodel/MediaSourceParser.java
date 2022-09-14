@@ -36,14 +36,6 @@ public class MediaSourceParser {
     }
   }
 
-  public MediaSourceParser() {
-    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser__SWIG_0(), true);
-  }
-
-  public MediaSourceParser(MediaSourceParser arg0) {
-    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser__SWIG_1(MediaSourceParser.getCPtr(arg0), arg0), true);
-  }
-
   public static MediaSource Deserialize(ParseContext context, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
@@ -52,6 +44,10 @@ public class MediaSourceParser {
   public static MediaSource DeserializeFromString(ParseContext context, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
+  }
+
+  public MediaSourceParser() {
+    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser(), true);
   }
 
 }

@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAuthentication.h"
-#import "Authentication.h"
+#import <AdaptiveCards/ACOAuthentication.h>
+#import <AdaptiveCards/Authentication.h>
 
 using namespace AdaptiveCards;
 

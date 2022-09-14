@@ -5,9 +5,9 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseTarget.h"
-#import "ACRIContentHoldingView.h"
-#import "ACRView.h"
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/ShowCardAction.h>
 #import <UIKit/UIKit.h>
