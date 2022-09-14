@@ -172,33 +172,5 @@
 	    		}
 	    	]
 	    }
-    ],
-	"actions": [
-		{
-			"type": "Action.ShowCard",
-			"title": "Action.ShowCard",
-			"card": {
-				"type": "AdaptiveCard",
-				"body": [
-					{
-						"type": "TextBlock",
-						"text": "What do you think?"
-					}
-				],
-				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "Neat!"
-					}
-				]
-			}
-		},
-		{
-			"type": "Action.ToggleVisibility",
-			"title": "Action.ToggleVisibility",
-			"targetElements": [
-				"id1"
-			]
-		}
-	]
+    ]
 }
