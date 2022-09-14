@@ -434,14 +434,6 @@
     content: "\EDC2";
 }
 
-.acd-icon-carousel::before {
-    content: "\F26F";
-}
-
-.acd-icon-carouselPage::before {
-    content: "\EF6B";
-}
-
 .acd-icon-chevronDown::before {
     content: "\E70D";
 }

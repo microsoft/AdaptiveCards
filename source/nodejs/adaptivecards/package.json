@@ -22,7 +22,7 @@
 	"scripts": {
 		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit --runInBand --detectOpenHandles",
 		"clean": "rimraf build lib dist",
-		"generate-css": "concurrently \"sass -I node_modules src/scss/adaptivecards-default.scss lib/adaptivecards.css\" \"sass -I node_modules src/scss/adaptivecards-carousel.scss lib/adaptivecards-carousel.css\"",
+		"generate-css": "concurrently \"sass -I node_modules src/scss/adaptivecards-default.scss lib/adaptivecards.css\"",
 		"build-source": "concurrently \"tsc\" \"npm:generate-css\"",
 		"prebuild": "npm run build-source",
 		"build": "webpack",
@@ -48,9 +48,6 @@
 		"typedoc": "^0.22.5",
 		"typedoc-plugin-markdown": "^3.11.2"
 	},
-	"peerDependencies": {
-		"swiper": "^8.2.6"
-	},
 	"jest": {
 		"verbose": true,
 		"preset": "ts-jest/presets/default-esm",
@@ -68,9 +65,6 @@
 			"/node_modules/",
 			".*\\.d\\.ts$"
 		],
-		"moduleNameMapper": {
-			"^swiper/css": "<rootDir>/__mocks__/cssMock.js"
-		},
 		"moduleFileExtensions": [
 			"js",
 			"ts"

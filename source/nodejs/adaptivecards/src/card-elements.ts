@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { CarouselEvent } from "./carousel";
 import {
     PaddingDefinition,
     GlobalSettings,
@@ -2206,9 +2205,9 @@ export abstract class CardElementContainer extends CardElement {
         return false;
     }
 
-    // Carousel should always be forbidden unless it is singleton
+    // This function is kept but return [] when removing Carousel from code
     protected forbiddenChildElements(): string[] {
-        return ["Carousel"];
+        return [];
     }
 
     abstract getItemCount(): number;
@@ -7960,14 +7959,6 @@ export abstract class ContainerWithActions extends Container {
     }
 
     getForbiddenActionNames(): string[] {
-        // If the container can host singletons, and the only child element is a carousel, we should restrict the actions.
-        if (
-            this.canHostSingletons() &&
-            this.getItemCount() === 1 &&
-            this.getItemAt(0).getJsonTypeName() === "Carousel"
-        ) {
-            return ["Action.ToggleVisibility", "Action.ShowCard"];
-        }
         return [];
     }
 
@@ -8267,7 +8258,6 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
-    static onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
     static onDisplayOverflowActionMenu?: (
         actions: readonly Action[],
@@ -8413,7 +8403,6 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
-    onCarouselEvent?: (carouselEvent: CarouselEvent) => void;
     onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
     onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 

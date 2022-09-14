@@ -27,7 +27,6 @@ import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
-import { BerlinContainer, ContainerSize } from "./containers";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -223,13 +222,6 @@ export class CardDesigner extends Designer.DesignContext {
                         const peer = paletteItem.createPeer(this, this.designerSurface);
 
                         if (this.designerSurface.rootPeer.tryAdd(peer)) {
-
-                            if (peer.cardElement.getJsonTypeName() === "Carousel") {
-                                this.designerSurface.reassignCardElementToCarousel(peer as DesignerPeers.CarouselPeer);
-
-                                this.designerSurface.containsCarousel = true;
-                            }
-
                             peer.isSelected = true;
                         };
                     }
@@ -419,7 +411,7 @@ export class CardDesigner extends Designer.DesignContext {
         this.updateCardFromJson(false);
         this.updateSampleData();
         
-        this._sampleHostDataEditorToolbox.isVisible = (this._hostContainer instanceof BerlinContainer) && Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleHostDataEditorToolbox;
+        this._sampleHostDataEditorToolbox.isVisible = false; //(this._hostContainer instanceof BerlinContainer) && Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleHostDataEditorToolbox;
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
 
@@ -436,17 +428,6 @@ export class CardDesigner extends Designer.DesignContext {
 
         if (this._containerSizeChoicePicker) {
             this._containerSizeChoicePicker.isHidden = !(!!this.hostContainer.supportsMultipleSizes);
-
-            // Update the host parameter data with the value of the choice picker
-            if ((this._hostContainer instanceof BerlinContainer) && this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
-                this.updateHostDataSizeProperty();
-
-                // If the container properties do not align with the choice picker, update the property and recreate the designer surface
-                if (this._containerSizeChoicePicker.value !== (this._hostContainer as BerlinContainer).containerSize) {
-                    (this._hostContainer as BerlinContainer).containerSize = this._containerSizeChoicePicker.value as ContainerSize;
-                    this.recreateDesignerSurface();
-                }
-            }
         }
 
         if (this._containerThemeChoicePicker) {
@@ -906,29 +887,6 @@ export class CardDesigner extends Designer.DesignContext {
             this._containerSizeChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.ContainerSizePicker);
             this._containerSizeChoicePicker.separator = false;
             this._containerSizeChoicePicker.label = "Container size:"
-
-            const sizes = BerlinContainer.supportedContainerSizes;
-
-            for (let i = 0; i < sizes.length; i++) {
-                this._containerSizeChoicePicker.choices.push(
-                    {
-                        name: sizes[i],
-                        value: sizes[i],
-                    }
-                );
-            }
-
-            this._containerSizeChoicePicker.onChanged = (sender) => {
-                if (this.hostContainer instanceof BerlinContainer) {
-                    // Update container size and rerender the designer surface
-                    this.hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
-                    this.recreateDesignerSurface();
-
-                    if (this._sampleHostData) {
-                        this.updateHostDataSizeProperty();
-                    }
-                }
-            };
 
             this.toolbar.addElement(this._containerSizeChoicePicker);
         }
@@ -1591,7 +1549,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._sampleHostDataEditorToolbox.content.style.padding = "8px";
             this._sampleHostDataEditorToolbox.content.innerText = Strings.loadingEditor;
 
-            this._sampleHostDataEditorToolbox.isVisible = Shared.GlobalSettings.showSampleHostDataEditorToolbox && (this._hostContainer instanceof BerlinContainer);
+            this._sampleHostDataEditorToolbox.isVisible = false; //Shared.GlobalSettings.showSampleHostDataEditorToolbox && (this._hostContainer instanceof BerlinContainer);
 
             this._jsonEditorsPanel.addToolbox(this._sampleHostDataEditorToolbox);
         }

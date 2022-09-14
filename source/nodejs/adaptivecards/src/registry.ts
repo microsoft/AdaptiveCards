@@ -6,7 +6,7 @@ import { SerializableObject, Version, Versions } from "./serialization";
 /**
  * Describes whether a certain element can be parsed in a "singleton" context.
  * Specifically, is the element allowed to exist as an object in a context where the
- * parent expects an Array of elements (e.g. `Carousel` and `AdaptiveCard.body`)
+ * parent expects an Array of elements (e.g. `AdaptiveCard.body`)
  *
  * @example - Singleton element in a container (note `items` contains an `object` rather than an `Array<object>`)
  * ```json

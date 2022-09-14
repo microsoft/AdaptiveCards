@@ -201,10 +201,3 @@ export enum LogLevel {
     Warning,
     Error
 }
-
-export enum CarouselInteractionEvent {
-    NavigationNext,
-    NavigationPrevious,
-    Pagination,
-    Autoplay
-}

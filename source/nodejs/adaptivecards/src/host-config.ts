@@ -683,27 +683,6 @@ export class FontTypeSet {
     }
 }
 
-export class CarouselConfig {
-    maxCarouselPages: number = 10;
-    minAutoplayDelay: number = 5000.0;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.maxCarouselPages =
-                obj["maxCarouselPages"] != null ? obj["maxCarouselPages"] : this.maxCarouselPages;
-            this.minAutoplayDelay =
-                obj["minAutoplayDelay"] != null ? obj["minAutoplayDelay"] : this.minAutoplayDelay;
-        }
-    }
-
-    toJSON() {
-        return {
-            maxCarouselPages: this.maxCarouselPages,
-            minAutoplayDelay: this.minAutoplayDelay
-        };
-    }
-}
-
 export class HostConfig {
     readonly hostCapabilities = new HostCapabilities();
 
@@ -744,7 +723,6 @@ export class HostConfig {
     readonly table: TableConfig = new TableConfig();
     readonly textStyles: TextStyleSet = new TextStyleSet();
     readonly textBlock: TextBlockConfig = new TextBlockConfig();
-    readonly carousel: CarouselConfig = new CarouselConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
@@ -811,7 +789,6 @@ export class HostConfig {
             this.factSet = new FactSetConfig(obj["factSet"]);
             this.textStyles = new TextStyleSet(obj["textStyles"]);
             this.textBlock = new TextBlockConfig(obj["textBlock"]);
-            this.carousel = new CarouselConfig(obj["carousel"]);
         }
     }
 
@@ -1191,9 +1168,5 @@ export const defaultHostConfig: HostConfig = new HostConfig({
             wrap: true
         },
         spacing: 10
-    },
-    carousel: {
-        maxCarouselPages: 10,
-        minAutoplayDuration: 5000
     }
 });

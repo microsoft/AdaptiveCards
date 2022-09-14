@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Assert from "assert";
-import { ACAction, ACCarousel, ACColumn, ACColumnSet, ACContainer, ACInputChoiceSet, ACInputDate, ACInputNumber, ACInputText, ACInputTime, ACInputToggle, ACImage, ACElement } from "./card-element-utils";
+import { ACAction, ACColumn, ACColumnSet, ACContainer, ACInputChoiceSet, ACInputDate, ACInputNumber, ACInputText, ACInputTime, ACInputToggle, ACImage, ACElement } from "./card-element-utils";
 import { TestUtils } from "./test-utils";
 import { WaitUtils } from "./wait-utils";
 
@@ -10,8 +10,6 @@ describe("Mock function", function() {
 
     // This is a constant value for the wait time between pressing an action and retrieving
     // the input value. Only use this if you see some test flakiness. Value is given in ms
-    const delayForCarouselTimer: number = 6000;
-    const timeOutValueForCarousel: number = 30000;
     const timeOutValueForSuddenJumpTest: number = 20000;
 
     // Timeout of 10 minutes for the dev server to start up in the CI jobs, the dev-server
@@ -230,128 +228,4 @@ describe("Mock function", function() {
         Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://msn.com");
     }));    
 
-    test("Carousel: Test actions are rendered and active", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.HostConfig");
-
-        await ACAction.clickOnActionWithTitle("See more");
-
-        Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://adaptivecards.io");
-    }));
-
-    test("Carousel: Test page limit is honoured", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.HostConfig");
-
-        await utils.assertElementWithIdDoesNotExist("page10");
-    }));
-
-    test("Carousel: Unsupported elements are not rendered", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.ForbiddenElements");
-
-        await utils.assertElementWithIdDoesNotExist("id1");
-        await utils.assertElementWithIdDoesNotExist("id2");
-        await utils.assertElementWithIdDoesNotExist("id3");
-        await utils.assertElementWithIdDoesNotExist("id4");
-        await utils.assertElementWithIdDoesNotExist("id5");
-        await utils.assertElementWithIdDoesNotExist("id6");
-        await utils.assertElementWithIdDoesNotExist("id7");
-    }));
-
-    test("Carousel: Verify left and right buttons work", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
-
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-
-        await ACCarousel.clickOnRightArrow();
-
-        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
-
-        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
-        Assert.strictEqual(secondPageIsVisible, true);
-
-        await ACCarousel.waitForAnimationsToEnd();
-        await ACCarousel.clickOnLeftArrow();
-
-        await WaitUtils.waitUntilElementIsCssVisible("firstCarouselPage");
-
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-    }), timeOutValueForSuddenJumpTest);
-
-    test("Carousel: Unsupported actions are not rendered", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.ForbiddenActions");
-
-        let showCardAction = await ACAction.getActionWithTitle("Action.ShowCard");
-        Assert.strictEqual(showCardAction.elementWasFound(), false);
-
-        let toggleVisibilityAction = await ACAction.getActionWithTitle("Action.ToggleVisibility");
-        Assert.strictEqual(toggleVisibilityAction.elementWasFound(), false);
-    }));
-
-    // Giving this test 7 seconds to run
-    test("Carousel: Test autoplay is disabled", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
-
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-
-        // Await for 5 seconds and verify no change happened
-        await WaitUtils.waitFor(5000);
-
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-    }), 7000);
-
-    // Giving this test 9 seconds to run
-    test("Carousel: Test autoplay is applied", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
-
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-
-        // Await for 5 seconds and verify the first page is now hidden
-        await WaitUtils.waitUntilElementIsNotVisible("firstCarouselPage");
-
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, false);
-
-        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
-        Assert.strictEqual(secondPageIsVisible, true);
-    }), timeOutValueForCarousel);
-
-    test("Carousel: Test click on navigation does not cause sudden jump", (async() => {
-        await utils.goToTestCase("v1.6/Carousel");
-
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, true);
-
-        // wait for 2 pages to turn
-        await WaitUtils.waitUntilElementIsCssVisible("last-carousel-page", delayForCarouselTimer * 2);
-
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, false);
-
-        let lastPageIsVisible = await ACCarousel.isPageVisible("last-carousel-page");
-        Assert.strictEqual(lastPageIsVisible, true);
-
-        // cause the page to go the 2nd page
-        await ACCarousel.waitForAnimationsToEnd();
-        await ACCarousel.clickOnLeftArrow();
-
-        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage");
-
-        // make sure firstCarouselPage is hidden
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
-        Assert.strictEqual(firstPageIsVisible, false);
-    }), timeOutValueForSuddenJumpTest);
-
-    test("Carousel: Test rtl", (async() => {
-        await utils.goToTestCase("v1.6/Carousel.rtl");
-
-        for (const page of [["firstCarouselPage", "rtl"], ["secondCarouselPage", "ltr"], ["thirdCarouselPage", "rtl"]]){
-            const pageDirection = await ACCarousel.getPageDirection(page[0])
-            Assert.strictEqual(pageDirection, page[1]);
-        }
-        
-    }), timeOutValueForCarousel);
 });

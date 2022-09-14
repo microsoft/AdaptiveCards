@@ -82,7 +82,6 @@ module.exports = (env, argv) => {
 						dest: 'dist/adaptivecards-designer.css',
 						src: [
 							'./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css',
-							'./node_modules/adaptivecards/dist/adaptivecards-carousel.css',
 							'./src/adaptivecards-designer.css'
 						]
 					}

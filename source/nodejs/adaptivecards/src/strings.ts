@@ -53,8 +53,6 @@ export class Strings {
             `Maximum number of actions exceeded (${maximumActions}).`,
         tooLittleTimeDelay: (minAutoplayDelay: number) =>
             `Autoplay Delay is too short (${minAutoplayDelay}).`,
-        tooManyCarouselPages: (maxCarouselPages: number) =>
-            `Maximum number of Carousel pages exceeded (${maxCarouselPages}).`,
         columnAlreadyBelongsToAnotherSet: () => "This column already belongs to another ColumnSet.",
         invalidCardType: () =>
             `Invalid or missing card type. Make sure the card's type property is set to "AdaptiveCard".`,

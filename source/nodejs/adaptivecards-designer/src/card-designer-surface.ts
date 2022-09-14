@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { AdaptiveCard, CardElement, Carousel} from "adaptivecards";
+import { AdaptiveCard, CardElement} from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint, Utils } from "./miscellaneous";
@@ -111,9 +111,7 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Table, DesignerPeers.TablePeer, DesignerPeerCategory.Containers, "acd-icon-table");
         this.registerPeer(Adaptive.TableRow, DesignerPeers.TableRowPeer, DesignerPeerCategory.Containers, "acd-icon-tableRow");
         this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
-        this.registerPeer(Adaptive.Carousel, DesignerPeers.CarouselPeer, DesignerPeerCategory.Containers, "acd-icon-carousel");
-        this.registerPeer(Adaptive.CarouselPage, DesignerPeers.CarouselPagePeer, DesignerPeerCategory.Containers, "acd-icon-carouselPage");
-
+       
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
         this.registerPeer(Adaptive.Image, DesignerPeers.ImagePeer, DesignerPeerCategory.Elements, "acd-icon-image");
@@ -206,8 +204,6 @@ export class CardDesignerSurface {
     private _shouldPersistSelectedElement = false;
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
-    private _containsCarousel: boolean = false;
-    private _currentCarouselPage: DesignerPeers.CarouselPagePeer;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -354,24 +350,7 @@ export class CardDesignerSurface {
                     message += ` verb: "${verb}"`;
                 }
 
-                let carouselPageId: string | undefined = undefined;
-
                 const root = action.getRootObject() as AdaptiveCard;
-
-                if (root) {
-                    for (let i = 0; i < root.getItemCount(); i++) {
-                        let element = root.getItemAt(i);
-
-                        if (element instanceof Carousel) {
-                            carouselPageId = element.currentPageId;
-                            break;
-                        }
-                    }
-                }
-
-                if (carouselPageId) {
-                    message += `\ncarousel page id: "${carouselPageId}"`;
-                }
 
                 const url = (<Adaptive.OpenUrlAction>action).url;
                 if (url) {
@@ -418,12 +397,6 @@ export class CardDesignerSurface {
                     this._persistentSelectedPeer = peer;
                     this._persistentSelectedCardElement = null;
                 }
-            }
-
-            if (peer instanceof DesignerPeers.CarouselPeer) {
-                this._containsCarousel = true;
-            } else if (peer instanceof DesignerPeers.CarouselPagePeer) {
-                peer.assignCurrentCarouselPage();
             }
 
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
@@ -709,12 +682,6 @@ export class CardDesignerSurface {
         this._card.hostConfig = this.context.hostContainer.getHostConfig();
         this._card.designMode = true;
 
-        Adaptive.AdaptiveCard.onCarouselEvent = (e: Adaptive.CarouselEvent) => {
-            if (!this._isPreviewMode) {
-                this.render();
-            }
-        }
-
         this.render();
     }
 
@@ -765,9 +732,6 @@ export class CardDesignerSurface {
     render() {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
-
-        this._containsCarousel = false;
-        this._currentCarouselPage = undefined;
 
         // If we want to have the same peer selected after rendering the card,
         // store the current selected peer's card element before the peers recreated
@@ -876,12 +840,6 @@ export class CardDesignerSurface {
             }
             finally {
                 this.endUpdate(true);
-
-                // If we've removed a Carousel page, we need render the designer surface again
-                if (this.selectedPeer instanceof DesignerPeers.CarouselPeer) {
-                    (this.selectedPeer.cardElement as Carousel).currentIndex = 0;
-                    this.render();
-                }
             }
         }
     }
@@ -891,10 +849,6 @@ export class CardDesignerSurface {
 
     startDrag(peer: DesignerPeers.DesignerPeer) {
         if (!this.draggedPeer) {
-            if (peer instanceof DesignerPeers.CarouselPeer) {
-                this.reassignCardElementToCarousel(peer);
-            }
-
             this._designerSurface.classList.add("dragging");
 
             this.setDraggedPeer(peer);
@@ -917,10 +871,6 @@ export class CardDesignerSurface {
 
             this._dragVisual?.parentNode.removeChild(this._dragVisual);
             this._dragVisual = undefined;
-
-            if (this.draggedPeer instanceof DesignerPeers.CarouselPeer) {
-                this._containsCarousel = true;
-            }
 
             this.setDraggedPeer(null);
 
@@ -1015,44 +965,20 @@ export class CardDesignerSurface {
         }
     }
 
-    reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
-        const carouselPage = carouselPeer.getChildAt(0);
-        if (carouselPage instanceof DesignerPeers.CardElementPeer) {
-            // Filter the root peer's children for all non-carousel peers that are not forbidden child elements
-            // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
-            // Reassigning all elements to the carousel page ensures carousel's singleton behavior
-            const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
-            this.searchAndRemoveForbiddenElements(this._rootPeer, forbiddenChildElements);
-            this._rootPeer.children.filter((child) => 
-                (!(child instanceof DesignerPeers.CarouselPeer)))
-                .forEach((e) => {carouselPage.tryAdd(e);});
-        }
-    }
-
     private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
         if (peerToSearch.children) {
             // Remove forbidden elements
             peerToSearch.children.filter((child) => 
-                (!(child instanceof DesignerPeers.CarouselPeer) && 
-                forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
+                (forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
                 .forEach((e) => {
                     e.remove(false, true);
                 });
             // If a peer is a container, we should see if it contains forbidden elements as well
             peerToSearch.children.filter((child) => 
-                (!(child instanceof DesignerPeers.CarouselPeer) && child instanceof DesignerPeers.CardElementPeer 
+                (child instanceof DesignerPeers.CardElementPeer 
                 && (child.cardElement instanceof Adaptive.Container || child.cardElement instanceof Adaptive.StylableCardElementContainer)))
                 .forEach((e) => {
                     this.searchAndRemoveForbiddenElements(e, forbiddenElements);
-                });
-
-            // If the carousel was not dropped on the root peer, we should reassign it
-            peerToSearch.children.filter((child) => 
-                (child instanceof DesignerPeers.CarouselPeer))
-                .forEach((e) => {
-                    if (e.parent !== this._rootPeer) {
-                        this._rootPeer.tryAdd(e);
-                    }
                 });
         }
         
@@ -1100,21 +1026,5 @@ export class CardDesignerSurface {
 
     set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
         this._shouldPersistSelectedElement = shouldPersistSelectedElement;
-    }
-
-    get containsCarousel(): boolean {
-        return this._containsCarousel;
-    }
-
-    set containsCarousel(containsCarousel: boolean) {
-        this._containsCarousel = containsCarousel;
-    }
-
-    get currentCarouselPage(): DesignerPeers.CarouselPagePeer {
-        return this._currentCarouselPage;
-    }
-
-    set currentCarouselPage(value: DesignerPeers.CarouselPagePeer) {
-        this._currentCarouselPage = value;
     }
 }
