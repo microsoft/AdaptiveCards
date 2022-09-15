@@ -140,6 +140,6 @@ export function getAttributeValueAsInt(element: HTMLElement, attributeName: stri
 }
 
 export function clearElement(element: HTMLElement) : void {
-    const trustedHtml = window?.trustedTypes?.emptyHTML ?? "";
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
     element.innerHTML = trustedHtml as string;
 }
