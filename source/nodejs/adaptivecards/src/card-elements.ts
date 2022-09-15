@@ -1108,7 +1108,7 @@ export class TextBlock extends BaseTextBlock {
     // Markdown processing is handled outside of Adaptive Cards. It's up to the host to ensure that markdown is safely
     // processed.
     private static readonly _ttMarkdownPolicy = window.trustedTypes?.createPolicy(
-        "markdownPassthroughPolicy",
+        "adaptivecards#markdownPassthroughPolicy",
         { createHTML: (value) => value }
     );
 
@@ -1117,7 +1117,7 @@ export class TextBlock extends BaseTextBlock {
     // _originalInnerHtml so that we can restore/recalculate truncation later if space availability has changed (see
     // TextBlock.restoreOriginalContent())
     private static readonly _ttRoundtripPolicy = window.trustedTypes?.createPolicy(
-        "restoreContentsPolicy",
+        "adaptivecards#restoreContentsPolicy",
         { createHTML: (value) => value }
     );
 
