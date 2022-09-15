@@ -40,7 +40,7 @@
 	},
 	"peerDependencies": {
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^2.11.0",
+		"adaptivecards": "^2.10.0",
 		"adaptivecards-templating": "^2.2.0",
 		"monaco-editor": "^0.29.1"
 	},
