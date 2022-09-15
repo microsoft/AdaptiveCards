@@ -99,3 +99,9 @@
     --swiper-pagination-color: #007aff;
     --swiper-navigation-size: 44px;
 }
+
+@media(forced-colors: active) {
+    .swiper-pagination-bullet {
+        background-color: ButtonBorder;
+    }
+}

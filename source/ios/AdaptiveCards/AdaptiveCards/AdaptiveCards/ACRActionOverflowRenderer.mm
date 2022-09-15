@@ -46,8 +46,6 @@
             [target setInputs:inputs superview:superview];
         }
 
-        button.accessibilityTraits |= UIAccessibilityTraitLink;
-
         [button setContentCompressionResistancePriority:UILayoutPriorityRequired
                                                 forAxis:UILayoutConstraintAxisVertical];
 

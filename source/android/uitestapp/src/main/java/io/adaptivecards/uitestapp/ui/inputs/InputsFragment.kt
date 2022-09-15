@@ -36,9 +36,9 @@ class InputsFragment : Fragment() {
         return root
     }
 
-    private inner class InputsAdapter<T>(context: Context, resource: Int, itemsList: List<T>?) : ArrayAdapter<Any?>(context, resource, itemsList) {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-            var convertView = convertView
+    private inner class InputsAdapter<T>(context: Context, resource: Int, itemsList: List<T>?) : ArrayAdapter<Any?>(context, resource, itemsList!!) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            var convertView: View? = convertView
             if (convertView == null) {
                 convertView = layoutInflater.inflate(R.layout.inputs_list_item, parent, false)
             }
@@ -47,7 +47,7 @@ class InputsFragment : Fragment() {
             inputIdTextView?.text = retrievedInput!!.id
             val inputValueTextView = convertView?.findViewById<TextView>(R.id.text_input_value)
             inputValueTextView?.text = retrievedInput.value
-            return convertView
+            return convertView!!
         }
     }
 }

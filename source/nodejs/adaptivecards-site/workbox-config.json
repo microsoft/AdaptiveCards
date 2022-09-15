@@ -8,7 +8,6 @@
 		"samples/*.html",
 		"schemas/**",
 		"**/*.css",
-		"designer/*",
 		"manifest.json"
 	],
 	"swDest": "public/service-worker.js",

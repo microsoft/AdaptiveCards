@@ -14,7 +14,7 @@ We use lerna to manage package linking and building.
 
 In the project directory, you can run:
 
-### `npx lerna run start --scope adaptivecards-react-testapp`
+### `npx lerna run start --scope @microsoft/adaptivecards-react-testapp`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -22,12 +22,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npx lerna run test --scope adaptivecards-react-testapp`
+### `npx lerna run test --scope @microsoft/adaptivecards-react-testapp`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npx lerna run build --scope adaptivecards-react-testapp`
+### `npx lerna run build --scope @microsoft/adaptivecards-react-testapp`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -37,7 +37,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npx lerna run eject --scope adaptivecards-react-testapp`
+### `npx lerna run eject --scope @microsoft/adaptivecards-react-testapp`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 

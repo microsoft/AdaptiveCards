@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { AdaptiveCard, Carousel} from "adaptivecards";
+import { AdaptiveCard, CardElement, Carousel} from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint, Utils } from "./miscellaneous";
@@ -111,6 +111,8 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Table, DesignerPeers.TablePeer, DesignerPeerCategory.Containers, "acd-icon-table");
         this.registerPeer(Adaptive.TableRow, DesignerPeers.TableRowPeer, DesignerPeerCategory.Containers, "acd-icon-tableRow");
         this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
+        this.registerPeer(Adaptive.Carousel, DesignerPeers.CarouselPeer, DesignerPeerCategory.Containers, "acd-icon-carousel");
+        this.registerPeer(Adaptive.CarouselPage, DesignerPeers.CarouselPagePeer, DesignerPeerCategory.Containers, "acd-icon-carouselPage");
 
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
@@ -175,8 +177,10 @@ export abstract class DesignContext {
     abstract get hostContainer(): HostContainer;
     abstract get targetVersion(): Adaptive.Version;
     abstract get dataStructure(): FieldDefinition;
+    abstract get hostDataStructure(): FieldDefinition;
     abstract get bindingPreviewMode(): BindingPreviewMode;
     abstract get sampleData(): any;
+    abstract get sampleHostData(): any;
 }
 
 export class CardDesignerSurface {
@@ -199,6 +203,11 @@ export class CardDesignerSurface {
     private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
     private _dragVisual?: HTMLElement;
+    private _shouldPersistSelectedElement = false;
+    private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
+    private _persistentSelectedCardElement: CardElement;
+    private _containsCarousel: boolean = false;
+    private _currentCarouselPage: DesignerPeers.CarouselPagePeer;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -256,7 +265,7 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this.renderCard()
+        this.renderCard();
         this.updateLayout();
 
         if (updatePropertySheet && this.onSelectedPeerChanged) {
@@ -295,10 +304,14 @@ export class CardDesignerSurface {
                     let evaluationContext: ACData.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
+                        evaluationContext = { $root: this.context.sampleData, 
+                            $host: this.context.sampleHostData 
+                        };
                     }
                     else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData(),
+                            $host: this.context.hostDataStructure.dataType.generateSampleData()
+                        };
                     }
 
                     outputPayload = template.expand(evaluationContext);
@@ -385,7 +398,10 @@ export class CardDesignerSurface {
                 renderedCard.style.overflow = "hidden";
             }
         }
-        this._cardHost.appendChild(renderedCard);
+
+        if (this._cardHost.innerHTML === "") {
+            this._cardHost.appendChild(renderedCard);
+        }
     }
 
     private addPeer(peer: DesignerPeers.DesignerPeer, insertAfterNeighbor: boolean = false) {
@@ -393,6 +409,22 @@ export class CardDesignerSurface {
             this._allPeers.push(peer);
 
             peer.render();
+
+            if (peer instanceof DesignerPeers.CardElementPeer) {
+                peer.renderedElement.style.display =  peer.isVisible() ? "initial" : "none";
+
+                // If we have a card element that we want to be selected after rendering, save the corresponding peer
+                if (this._persistentSelectedCardElement && this._persistentSelectedCardElement === peer.cardElement) {
+                    this._persistentSelectedPeer = peer;
+                    this._persistentSelectedCardElement = null;
+                }
+            }
+
+            if (peer instanceof DesignerPeers.CarouselPeer) {
+                this._containsCarousel = true;
+            } else if (peer instanceof DesignerPeers.CarouselPagePeer) {
+                peer.assignCurrentCarouselPage();
+            }
 
             peer.onSelectedChanged = (peer: DesignerPeers.DesignerPeer) => {
                 if (peer.isSelected) {
@@ -436,7 +468,7 @@ export class CardDesignerSurface {
         var result: DesignerPeers.DesignerPeer = null;
         var lookDeeper = currentPeer instanceof DesignerPeers.ActionPeer;
 
-        if (!lookDeeper) {
+        if (!lookDeeper && (currentPeer as DesignerPeers.CardElementPeer)?.isVisible()) {
             var boundingRect = currentPeer.getBoundingRect();
 
             lookDeeper = boundingRect.isInside(pointerPosition);
@@ -487,7 +519,6 @@ export class CardDesignerSurface {
         return null;
     }
 
-    // Question: does showCard always add to the end?
     private inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
         let peer = this.findCardElementPeer(action.card);
 
@@ -496,6 +527,7 @@ export class CardDesignerSurface {
                 let registration = CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
 
                 peer = new registration.peerType(peer, this, registration, action.card);
+                peer.insertAfterNeighbor = true;
 
                 let parentPeer = this.findActionPeer(action);
 
@@ -507,7 +539,7 @@ export class CardDesignerSurface {
                 }
             }
             else {
-                peer.addElementsToDesignerSurface(this._designerSurface);
+                peer.addElementsToDesignerSurface(this._designerSurface, this.getPeerDOMNeighbor(peer));
             }
         }
         else {
@@ -622,6 +654,9 @@ export class CardDesignerSurface {
                 this._dragVisual.style.width = renderedCardObjectRect.width + "px";
                 this._dragVisual.style.height = renderedCardObjectRect.height + "px";
 
+                // When dragging on a new element, we set the zIndex higher so that it is always visible
+                this._dragVisual.style.zIndex = "500";
+
                 this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
             }
         }
@@ -652,10 +687,14 @@ export class CardDesignerSurface {
                     let evaluationContext: ACData.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
+                        evaluationContext = { $root: this.context.sampleData, 
+                            $host: this.context.sampleHostData 
+                        };
                     }
                     else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData(),
+                            $host: this.context.hostDataStructure.dataType.generateSampleData()
+                        };
                     }
 
                     let evaluationResult = ACData.Template.tryEvaluateExpression(expression, evaluationContext, true);
@@ -669,6 +708,12 @@ export class CardDesignerSurface {
         this._card.version = this.context.targetVersion;
         this._card.hostConfig = this.context.hostContainer.getHostConfig();
         this._card.designMode = true;
+
+        Adaptive.AdaptiveCard.onCarouselEvent = (e: Adaptive.CarouselEvent) => {
+            if (!this._isPreviewMode) {
+                this.render();
+            }
+        }
 
         this.render();
     }
@@ -721,6 +766,16 @@ export class CardDesignerSurface {
         this._designerSurface.innerHTML = "";
         this._allPeers = [];
 
+        this._containsCarousel = false;
+        this._currentCarouselPage = undefined;
+
+        // If we want to have the same peer selected after rendering the card,
+        // store the current selected peer's card element before the peers recreated
+        if (this._shouldPersistSelectedElement && this._selectedPeer && this._selectedPeer instanceof DesignerPeers.CardElementPeer) {
+            this._persistentSelectedCardElement = this._selectedPeer.cardElement;
+            this._shouldPersistSelectedElement = false;
+        }
+
         this.setSelectedPeer(null);
 
         this.renderCard();
@@ -759,6 +814,13 @@ export class CardDesignerSurface {
         this._designerSurface.appendChild(this._peerCommandsHostElement);
 
         this.updateLayout();
+
+        // If we have a persistent selected peer, select the peer
+        // We should only reach this point is _shouldPersistSelectedElement = true prior to rendering the card
+        if (this._persistentSelectedPeer) {
+            this.setSelectedPeer(this._persistentSelectedPeer);
+            this._persistentSelectedPeer = null;
+        }
     }
 
     getCardPayloadAsObject(): object {
@@ -814,6 +876,12 @@ export class CardDesignerSurface {
             }
             finally {
                 this.endUpdate(true);
+
+                // If we've removed a Carousel page, we need render the designer surface again
+                if (this.selectedPeer instanceof DesignerPeers.CarouselPeer) {
+                    (this.selectedPeer.cardElement as Carousel).currentIndex = 0;
+                    this.render();
+                }
             }
         }
     }
@@ -823,6 +891,10 @@ export class CardDesignerSurface {
 
     startDrag(peer: DesignerPeers.DesignerPeer) {
         if (!this.draggedPeer) {
+            if (peer instanceof DesignerPeers.CarouselPeer) {
+                this.reassignCardElementToCarousel(peer);
+            }
+
             this._designerSurface.classList.add("dragging");
 
             this.setDraggedPeer(peer);
@@ -846,6 +918,10 @@ export class CardDesignerSurface {
             this._dragVisual?.parentNode.removeChild(this._dragVisual);
             this._dragVisual = undefined;
 
+            if (this.draggedPeer instanceof DesignerPeers.CarouselPeer) {
+                this._containsCarousel = true;
+            }
+
             this.setDraggedPeer(null);
 
             if (this.onEndDrag) {
@@ -860,7 +936,20 @@ export class CardDesignerSurface {
     getPeerDOMNeighbor(peer: DesignerPeers.DesignerPeer): HTMLElement {
         if (peer.parent) {
             let neighboringPeer = peer.parent;
-            if (peer instanceof DesignerPeers.CardElementPeer) {
+            if (neighboringPeer instanceof DesignerPeers.ActionSetPeer) {
+                // A new action is being added to an ActionSet, so we can add the ActionPeer as the last child element
+                const childCount = neighboringPeer.getChildCount();
+                if (childCount > 1) {
+                    // Subtract 2 because the child count already includes the action being currently added
+                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
+                }
+
+            } else if (neighboringPeer instanceof DesignerPeers.ActionPeer) {
+                // neighboringPeer should be the parent so we can get the last element in the actionSet
+                neighboringPeer = neighboringPeer.parent;
+                neighboringPeer = neighboringPeer.getChildAt(neighboringPeer.getChildCount() - 1);
+
+            } else if (peer instanceof DesignerPeers.CardElementPeer) {
 
                 // Get the index of the peer within its container
                 const peerIndex = peer.cardElement.index;
@@ -875,13 +964,6 @@ export class CardDesignerSurface {
                     }
                 }
                 
-            } else if (peer instanceof DesignerPeers.ActionPeer) {
-
-                // peer.parent should be an ActionSet, so we know that we can add the ActionPeer as the last child element
-                const childCount = neighboringPeer.getChildCount();
-                if (childCount > 1) {
-                    neighboringPeer = neighboringPeer.getChildAt(childCount - 2);
-                }
             }
 
             return neighboringPeer.renderedElement;
@@ -933,6 +1015,49 @@ export class CardDesignerSurface {
         }
     }
 
+    reassignCardElementToCarousel(carouselPeer: DesignerPeers.CarouselPeer) {
+        const carouselPage = carouselPeer.getChildAt(0);
+        if (carouselPage instanceof DesignerPeers.CardElementPeer) {
+            // Filter the root peer's children for all non-carousel peers that are not forbidden child elements
+            // Then, reassign (via tryAdd) each element from the root peer to the current carousel page
+            // Reassigning all elements to the carousel page ensures carousel's singleton behavior
+            const forbiddenChildElements = (carouselPage.cardElement as Adaptive.CarouselPage).getForbiddenChildElements();
+            this.searchAndRemoveForbiddenElements(this._rootPeer, forbiddenChildElements);
+            this._rootPeer.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer)))
+                .forEach((e) => {carouselPage.tryAdd(e);});
+        }
+    }
+
+    private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
+        if (peerToSearch.children) {
+            // Remove forbidden elements
+            peerToSearch.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer) && 
+                forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
+                .forEach((e) => {
+                    e.remove(false, true);
+                });
+            // If a peer is a container, we should see if it contains forbidden elements as well
+            peerToSearch.children.filter((child) => 
+                (!(child instanceof DesignerPeers.CarouselPeer) && child instanceof DesignerPeers.CardElementPeer 
+                && (child.cardElement instanceof Adaptive.Container || child.cardElement instanceof Adaptive.StylableCardElementContainer)))
+                .forEach((e) => {
+                    this.searchAndRemoveForbiddenElements(e, forbiddenElements);
+                });
+
+            // If the carousel was not dropped on the root peer, we should reassign it
+            peerToSearch.children.filter((child) => 
+                (child instanceof DesignerPeers.CarouselPeer))
+                .forEach((e) => {
+                    if (e.parent !== this._rootPeer) {
+                        this._rootPeer.tryAdd(e);
+                    }
+                });
+        }
+        
+    }
+
     get rootPeer(): DesignerPeers.DesignerPeer {
         return this._rootPeer;
     }
@@ -971,5 +1096,25 @@ export class CardDesignerSurface {
             this.renderCard();
             this.updateLayout(false);
         }
+    }
+
+    set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
+        this._shouldPersistSelectedElement = shouldPersistSelectedElement;
+    }
+
+    get containsCarousel(): boolean {
+        return this._containsCarousel;
+    }
+
+    set containsCarousel(containsCarousel: boolean) {
+        this._containsCarousel = containsCarousel;
+    }
+
+    get currentCarouselPage(): DesignerPeers.CarouselPagePeer {
+        return this._currentCarouselPage;
+    }
+
+    set currentCarouselPage(value: DesignerPeers.CarouselPagePeer) {
+        this._currentCarouselPage = value;
     }
 }
