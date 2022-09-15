@@ -965,25 +965,6 @@ export class CardDesignerSurface {
         }
     }
 
-    private searchAndRemoveForbiddenElements(peerToSearch: DesignerPeers.DesignerPeer, forbiddenElements: any) {
-        if (peerToSearch.children) {
-            // Remove forbidden elements
-            peerToSearch.children.filter((child) => 
-                (forbiddenElements.includes(child.getCardObject().getJsonTypeName())))
-                .forEach((e) => {
-                    e.remove(false, true);
-                });
-            // If a peer is a container, we should see if it contains forbidden elements as well
-            peerToSearch.children.filter((child) => 
-                (child instanceof DesignerPeers.CardElementPeer 
-                && (child.cardElement instanceof Adaptive.Container || child.cardElement instanceof Adaptive.StylableCardElementContainer)))
-                .forEach((e) => {
-                    this.searchAndRemoveForbiddenElements(e, forbiddenElements);
-                });
-        }
-        
-    }
-
     get rootPeer(): DesignerPeers.DesignerPeer {
         return this._rootPeer;
     }
