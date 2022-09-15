@@ -21,17 +21,17 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+					"url": "https://adaptivecards.io/content/steak.jpeg",
 					"altText": "Steak cut with fries"
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+					"url": "https://adaptivecards.io/content/chicken.jpeg",
 					"altText": "Fried chicken with lettuce"
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg",
+					"url": "https://adaptivecards.io/content/tofu.jpeg",
 					"altText": "Tofu topped with red sauce"
 				}
 			]

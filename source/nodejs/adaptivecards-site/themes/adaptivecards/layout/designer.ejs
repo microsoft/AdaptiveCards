@@ -101,9 +101,9 @@
 					window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 				}
 			);
-			hostDocsButton.separator = false;
+			hostDocsButton.separator = true;
 			hostDocsButton.toolTip = "Learn more about the Host Apps";
-			designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+			designer.toolbar.insertElementBefore(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.Undo);
 
 			let templateDocsButton = new ACDesigner.ToolbarButton(
 				"templateDocs",
@@ -305,6 +305,7 @@
 					"version": "1.0"
 				});
 			}
+			designer.sampleHostData = {};
 		}
 
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
@@ -314,6 +315,7 @@
 		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
 		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		ACDesigner.GlobalSettings.showSampleHostDataEditorToolbox = true;
 		ACDesigner.GlobalSettings.showVersionPicker = true;
 
 		<% if (page.previewFeaturesEnabled) { %>

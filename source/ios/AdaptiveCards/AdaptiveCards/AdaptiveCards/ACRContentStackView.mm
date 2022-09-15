@@ -531,9 +531,39 @@ using namespace AdaptiveCards;
     return currentBest;
 }
 
+- (NSString *)accessibilityLabel
+{
+    // if the current view is accessibilityElement, subviews become inaccessible after
+    // they are incorporated into the current view.
+    // gather accessibility labels from subviews to ensure the context is not lost
+    // when this happens
+    if (self.isAccessibilityElement) {
+        return [self gatherAccessibilityLabelsFromSubviews];
+    } else {
+        return super.accessibilityLabel;
+    }
+}
+
 - (NSString *)gatherAccessibilityLabelsFromSubviews
 {
-    return nil;
+    NSMutableArray<NSString *> *mergedA11yLabels = [[NSMutableArray alloc] init];
+    // include a11y labels of current view
+    if (super.accessibilityLabel && super.accessibilityLabel.length) {
+        [mergedA11yLabels addObject:super.accessibilityLabel];
+    }
+
+    for (UIView *subview in [self getArrangedSubviews]) {
+        if (!subview.isHidden) {
+            // if the subview is a collection type
+            if ([subview isKindOfClass:[ACRContentStackView class]]) {
+                [mergedA11yLabels addObject:[(ACRContentStackView *)subview gatherAccessibilityLabelsFromSubviews]];
+            } else if (subview.accessibilityLabel) {
+                [mergedA11yLabels addObject:subview.accessibilityLabel];
+            }
+        }
+    }
+
+    return [mergedA11yLabels componentsJoinedByString:@","];
 }
 
 - (void)configureForSelectAction:(ACOBaseActionElement *)action rootView:(ACRView *)rootView
@@ -544,9 +574,21 @@ using namespace AdaptiveCards;
             [self addTarget:target];
             self.selectActionTarget = target;
             setAccessibilityTrait(self, action);
-            self.accessibilityLabel = configureForAccessibilityLabel(action, [self gatherAccessibilityLabelsFromSubviews]);
+            if (action.title && action.title.length) {
+                self.accessibilityLabel = action.title;
+            }
             if (action.inlineTooltip) {
                 [target addGestureRecognizer:self toolTipText:action.inlineTooltip];
+            }
+
+            if (action.tooltip && action.tooltip.length) {
+                self.accessibilityHint = action.tooltip;
+            }
+            // if there are no childs with select action,
+            // the current view becomes the accessibility element
+            // so it and its subviews become one unit.
+            if (!rootView.context.childHasSelectAction) {
+                self.isAccessibilityElement = YES;
             }
         }
     }

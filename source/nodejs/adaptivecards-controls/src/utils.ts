@@ -138,3 +138,8 @@ export function getAttributeValueAsInt(element: HTMLElement, attributeName: stri
 
     return defaultValue;
 }
+
+export function clearElement(element: HTMLElement) : void {
+    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
+    element.innerHTML = trustedHtml as string;
+}
