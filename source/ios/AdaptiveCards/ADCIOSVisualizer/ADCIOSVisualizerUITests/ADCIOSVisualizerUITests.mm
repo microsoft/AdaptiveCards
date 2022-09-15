@@ -192,7 +192,7 @@
 
 - (void)testLongPressAndDragRaiseNoEventInContainers
 {
-    [self openCardForVersion:@"v1.5" forCardType:@"Test" withCardName:@"Container.ScrollableSelectableList.json"];
+    [self openCardForVersion:@"v1.5" forCardType:@"Tests" withCardName:@"Container.ScrollableSelectableList.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
 
