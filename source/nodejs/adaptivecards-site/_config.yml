@@ -122,3 +122,7 @@ css_minifier:
   silent: false
   exclude: 
     - '*.min.css'
+
+# hexo-renderer-marked
+marked:
+  headerIds: false
