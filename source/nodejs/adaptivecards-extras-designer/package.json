@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-extras-designer",
-	"version": "0.2.0-alpha.0",
+	"version": "0.3.0-alpha.0",
 	"description": "Designer support for Adaptive Card Extras",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -28,8 +28,8 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"@microsoft/adaptivecards-extras": "^0.2.0-alpha.0",
-		"adaptivecards": "^3.0.0-beta.2",
-		"adaptivecards-designer": "^2.4.0-alpha.0"
+		"@microsoft/adaptivecards-extras": "^0.3.0-alpha.0",
+		"adaptivecards": "^3.0.0-beta.6",
+		"adaptivecards-designer": "^2.5.0-alpha.0"
 	}
 }

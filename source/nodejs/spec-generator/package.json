@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/spec-generator",
-	"version": "0.7.0-alpha.0",
+	"version": "0.8.0-alpha.0",
 	"private": true,
 	"description": "Generates the element/property tables for our specs based on the schema file.",
 	"author": "AdaptiveCards",
@@ -22,8 +22,8 @@
 		"build-all-and-run": "npm run build-all && npm run run"
 	},
 	"devDependencies": {
-		"@microsoft/ac-typed-schema": "^0.7.0-alpha.0",
-		"@microsoft/marked-schema": "^0.2.0-alpha.0",
+		"@microsoft/ac-typed-schema": "^0.8.0-alpha.0",
+		"@microsoft/marked-schema": "^0.3.0-alpha.0",
 		"p-iteration": "^1.1.8"
 	}
 }
