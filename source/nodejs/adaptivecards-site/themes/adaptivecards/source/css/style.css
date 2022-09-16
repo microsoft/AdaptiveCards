@@ -658,11 +658,11 @@ button .fa-check {
 	text-decoration: underline;
 }
 
-/* .fa-chevron-right {
+.fa-chevron-right {
   font-size: 11px;
-  font-weight: lighter;
-  font-family: "Font Awesome 5 Free";
-} */
+  /* font-weight: lighter; */
+  font-family: "Font Awesome 6 Free";
+}
 
 .footer-holder {
   background-color: #f2f2f2 !important;

@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-ui-testapp",
-	"version": "1.1.0-alpha.0",
+	"version": "1.2.0-alpha.0",
 	"description": "Harness for UI testing for the Adaptive Cards rendering library",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -29,13 +29,18 @@
 		"release": "npm run clean && webpack --mode=production"
 	},
 	"dependencies": {
-		"adaptivecards-controls": "^0.10.0-alpha.0",
+		"adaptivecards-controls": "^0.11.0-alpha.0",
 		"remarkable": "^2.0.1"
 	},
 	"devDependencies": {
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^3.0.0-beta.2",
+		"adaptivecards": "^3.0.0-beta.6",
 		"adaptivecards-controls": "^0.9.0",
-		"adaptivecards-templating": "^2.3.0-alpha.0"
+		"adaptivecards-templating": "^2.4.0-alpha.0"
+	},
+	"nx": {
+		"implicitDependencies": [
+			"adaptivecards"
+		]
 	}
 }

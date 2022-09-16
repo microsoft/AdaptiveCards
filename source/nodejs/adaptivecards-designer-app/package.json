@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-designer-app",
-	"version": "0.6.0-alpha.0",
+	"version": "0.8.0-alpha.0",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -18,9 +18,9 @@
 		"monaco-editor-webpack-plugin": "^5.0.0"
 	},
 	"dependencies": {
-		"adaptivecards": "^3.0.0-beta.2",
-		"adaptivecards-designer": "^2.4.0-alpha.0",
-		"adaptivecards-templating": "^2.3.0-alpha.0",
+		"adaptivecards": "^3.0.0-beta.6",
+		"adaptivecards-designer": "^2.5.0-alpha.0",
+		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"monaco-editor": "^0.29.1"
 	}
 }
