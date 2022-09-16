@@ -34,7 +34,7 @@ steps:
 
 - bash: |
    npm ci 
-   workingDirectory: source/nodejs
+  workingDirectory: source/nodejs
   displayName: 'Bash - npm ci'
 
 - bash: |
