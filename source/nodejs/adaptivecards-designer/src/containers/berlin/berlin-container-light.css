@@ -7,7 +7,7 @@
 .berlin-outer-container {
     border: 1px solid rgba(0, 0, 0, 0.0578);
     background: #f6f6f6;
-    width: 300px;
+    width: 302px;
     border-radius: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.065);
     box-sizing: border-box;
@@ -16,7 +16,7 @@
 
 .berlin-header {
     height: 48px;
-    width: 298px;
+    width: 300px;
     position: absolute;
     z-index: 1;
     display: flex;
@@ -26,15 +26,15 @@
 }
 
 .berlin-large-container {
-    height: 462px;
+    height: 464px;
 }
 
 .berlin-medium-container {
-    height: 304px;
+    height: 306px;
 }
 
 .berlin-small-container {
-    height: 146px;
+    height: 148px;
 }
 
 
