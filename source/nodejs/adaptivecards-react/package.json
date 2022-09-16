@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-react",
-	"version": "1.2.0-alpha.0",
+	"version": "1.1.0-alpha.0",
 	"description": "React.js Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",

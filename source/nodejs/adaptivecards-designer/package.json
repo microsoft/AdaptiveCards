@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "2.5.0-alpha.0",
+	"version": "2.4.0-alpha.0",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -47,7 +47,7 @@
 	"devDependencies": {
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^3.0.0-beta.2",
-		"adaptivecards-templating": "^2.4.0-alpha.0",
+		"adaptivecards-templating": "^2.3.0-alpha.0",
 		"cpy-cli": "^3.1.1",
 		"dotenv-webpack": "^7.0.3",
 		"monaco-editor": "^0.29.1",
