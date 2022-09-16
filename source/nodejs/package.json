@@ -53,6 +53,9 @@
 		"webpack-concat-files-plugin": "^0.5.2",
 		"webpack-dev-server": "^4.10.0"
 	},
+	"overrides": {
+		"parse-url": "8.1.0"
+	},
 	"clang-format-launcher": {
 		"includeEndsWith": [
 			".h",
