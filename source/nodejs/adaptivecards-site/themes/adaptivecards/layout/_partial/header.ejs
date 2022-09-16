@@ -457,17 +457,9 @@
         <div class="action-bar">
             <ul class="action-list">
                 <li>
-                    <a href="javascript:invokeFeedback();" class="button" data-bi-name="feedback" tabindex="0" focusable="true">
+                    <a role="link" id="feedback-button" class="button" data-bi-name="feedback" tabindex="0" focusable="true">
                         <span class="docon docon-comment-lines" aria-hidden="true"></span> <span class="action-item-text"><%= site.data.banner.en.feedback %></span>
                     </a>
-                    <script>
-                        function invokeFeedback() {
-                            window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
-                                + encodeURIComponent("[Website] [Your feedback title here]")
-                                + "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
-                                + window.location.href));
-                        }
-                    </script>
                 </li>
                 <li>
 					<a href="https://github.com/Microsoft/AdaptiveCards/" class="button" data-bi-name="comments">
