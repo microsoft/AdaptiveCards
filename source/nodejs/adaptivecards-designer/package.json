@@ -35,7 +35,7 @@
 		"release-deps": "npx lerna run --scope adaptivecards-designer --include-dependencies release --stream"
 	},
 	"dependencies": {
-		"adaptivecards-controls": "^0.11.0-alpha.0",
+		"adaptivecards-controls": "^0.10.0-alpha.0",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {
