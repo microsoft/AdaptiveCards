@@ -1,0 +1,81 @@
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+
+pr: none
+trigger: none
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-20.04
+  demands:
+  - npm
+
+parameters:
+- name: target_packages
+  displayName: "Which packages to publish? Provide YAML sequence of package names."
+  type: object
+  default:
+  - adaptivecards
+  - adaptivecards-controls
+  - adaptivecards-designer
+  - adaptivecards-templating
+  - adaptivecards-react
+
+- name: dry_run
+  displayName: "Dry run without pushing to npmjs"
+  type: object
+  default: true
+
+steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 14.x
+  inputs:
+    versionSpec: 14.x
+
+- bash: |
+   npm ci 
+   workingDirectory: source/nodejs
+  displayName: 'Bash - npm ci'
+
+- bash: |
+   npx lerna run release
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npx lerna bootstrap --ci
+'
+- bash: |
+   npx lerna run release
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npx lerna run release'
+
+- bash: |
+   npm run audit-all -- --no-fix
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna-audit --no-fix'
+
+- ${{ each target_package in parameters.target_packages }}:
+  - ${{ if eq(parameters.dry_run, true) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package }}] npm publish --dry-run'
+      inputs:
+        command: custom
+        customCommand: publish --dry-run
+        workingDir: source/nodejs/${{ target_package }}
+
+  - ${{ if eq(parameters.dry_run, false) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package }}] npm publish'
+      inputs:
+        command: publish
+        workingDir: source/nodejs/${{ target_package }}
+        publishEndpoint: npmjs.com
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+
+    - bash: |
+       git config --global user.email "adaptivecardscore@microsoft.com"
+       git config --global user.name "adaptivecards"
+       git push --tags
+      workingDirectory: source/android/adaptivecards
+      displayName: 'Push git tag'
+
+
+
