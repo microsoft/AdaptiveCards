@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-designer-app",
-	"version": "0.7.0-alpha.0",
+	"version": "0.8.0-alpha.0",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
