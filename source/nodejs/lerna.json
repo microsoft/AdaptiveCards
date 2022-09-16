@@ -1,5 +1,6 @@
 {
 	"version": "independent",
+	"useNx": true,
 	"packages": [
 		"adaptivecards*/**",
 		"marked-schema/**",
@@ -9,13 +10,7 @@
 	],
 	"command": {
 		"publish": {
-			"ignoreChanges": [
-				"**/dist/**",
-				"**/lib/**",
-				"**/node_modules/**",
-				"**/__tests__/**",
-				"*.md"
-			]
+			"ignoreChanges": ["**/dist/**", "**/lib/**", "**/node_modules/**", "**/__tests__/**", "*.md"]
 		}
 	}
 }
