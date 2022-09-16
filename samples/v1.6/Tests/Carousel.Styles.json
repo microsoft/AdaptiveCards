@@ -63,9 +63,7 @@
 			"type": "Action.ToggleVisibility",
 			"title": "Action.ToggleVisibility",
 			"isEnabled": true,
-			"targetElements": [
-				"container"
-			]
+			"targetElements": ["container"]
 		}
 	]
 }
