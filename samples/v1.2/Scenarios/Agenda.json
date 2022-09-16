@@ -17,7 +17,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png",
+											"url": "https://adaptivecards.io/content/LocationGreen_A.png",
 											"altText": "Location A"
 										}
 									],
@@ -187,7 +187,7 @@
 						{
 							"type": "Image",
 							"horizontalAlignment": "Center",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png",
+							"url": "https://adaptivecards.io/content/CircleGreen_coffee.png",
 							"altText": "Location A: Coffee"
 						}
 					],
