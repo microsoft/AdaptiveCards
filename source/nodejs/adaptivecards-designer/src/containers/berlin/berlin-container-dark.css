@@ -35,21 +35,21 @@
 /* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
 
 .berlin-large-card {
-    height: 462px;
+    height: 398px;
 }
 
 .berlin-medium-card {
-    height: 304px;
+    height: 240px;
 }
 
 .berlin-small-card {
-    height: 146px;
+    height: 82px;
 }
 
 .ac-adaptiveCard {
     border: 0px;
-    padding: 48px 16px 16px 16px !important;
-    border-radius: 8px !important;
+    margin: 48px 16px 16px 16px !important;
+    padding: 0px !important;
 }
 
 .ac-input {
