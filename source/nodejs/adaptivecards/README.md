@@ -20,7 +20,6 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 
 | SDK Version | Can parse from schema versions | Can serialize to schema versions |
 | --- | --- | --- |
-| `2.11` | `1.0` ... `1.5` | `1.0` ... `1.5` |
 | `2.10` | `1.0` ... `1.5` | `1.0` ... `1.5` |
 | `2.9` | `1.0` ... `1.4` | `1.0` ... `1.4` |
 | `2.4` ... `2.8` | `1.0` ... `1.3` | `1.0` ... `1.3` |

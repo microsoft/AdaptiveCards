@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-site",
-	"version": "0.8.0",
+	"version": "0.8.0-alpha.0",
 	"private": true,
 	"scripts": {
 		"clean": "hexo clean",
@@ -17,12 +17,12 @@
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-free": "^5.11.2",
-		"@microsoft/ac-typed-schema": "^0.7.0",
-		"@microsoft/marked-schema": "^0.2.0",
+		"@microsoft/ac-typed-schema": "^0.7.0-alpha.0",
+		"@microsoft/marked-schema": "^0.2.0-alpha.0",
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^2.11.0",
-		"adaptivecards-designer": "^2.4.0",
-		"adaptivecards-templating": "^2.3.0",
+		"adaptivecards": "^3.0.0-beta.2",
+		"adaptivecards-designer": "^2.4.0-alpha.0",
+		"adaptivecards-templating": "^2.3.0-alpha.0",
 		"change-case": "^3.0.1",
 		"cheerio": "^1.0.0-rc.3",
 		"glob": "^7.1.6",
