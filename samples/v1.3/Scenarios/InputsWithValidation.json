@@ -45,6 +45,26 @@
 			"isMultiline": true,
 			"id": "MultiLineVal"
 		},
+        {
+            "type": "TextBlock",
+            "size": "medium",
+            "weight": "bolder",
+            "text": "Input.Text InlineAction",
+            "horizontalAlignment": "center",
+            "wrap": true,
+            "style": "heading"
+        },
+        {
+            "type": "Input.Text",
+            "label": "Text input with an inline action with no icon",
+            "id": "textInlineActionId",
+            "inlineAction": {
+                "type": "Action.OpenUrl",
+                "title": "Reply",
+                "tooltip": "Reply to this message",
+                "url": "https://adaptivecards.io"
+            }
+        },
 		{
 			"type": "Input.Number",
 			"label": "Quantity",
