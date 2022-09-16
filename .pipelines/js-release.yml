@@ -45,7 +45,7 @@ steps:
 - bash: |
    npx lerna bootstrap --ci
   workingDirectory: source/nodejs
-  displayName: 'Bash - npx lerna bootstrap --ci
+  displayName: 'Bash - npx lerna bootstrap --ci'
 '
 - bash: |
    npx lerna run release
