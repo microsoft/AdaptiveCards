@@ -187,7 +187,7 @@
       <Link>LinkedTestCards\Input.Toggle.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\samples\v1.5\Test\PrimarySecondaryShowCards.json">
+    <None Include="..\..\..\samples\v1.5\Tests\PrimarySecondaryShowCards.json">
       <Link>LinkedTestCards\PrimarySecondaryShowCards.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
