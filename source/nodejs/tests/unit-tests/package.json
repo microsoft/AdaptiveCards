@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/ac-unit-tests",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Builds the unit tests.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
