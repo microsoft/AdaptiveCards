@@ -37,5 +37,10 @@
 		"adaptivecards": "^3.0.0-beta.6",
 		"adaptivecards-controls": "^0.9.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0"
+	},
+	"nx": {
+		"implicitDependencies": [
+			"adaptivecards"
+		]
 	}
 }

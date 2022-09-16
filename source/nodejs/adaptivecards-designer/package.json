@@ -21,7 +21,7 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"copy-hostconfigs": "cpy ../../../samples/HostConfig/*.json ./src/hostConfigs",
+		"copy-hostconfigs": "cpy ../../../samples/HostConfig/*.json ./src/hostConfigs --flat",
 		"prebuild": "npm run copy-hostconfigs && tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
@@ -48,7 +48,7 @@
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^3.0.0-beta.6",
 		"adaptivecards-templating": "^2.4.0-alpha.0",
-		"cpy-cli": "^3.1.1",
+		"cpy-cli": "^4.1.0",
 		"dotenv-webpack": "^7.0.3",
 		"monaco-editor": "^0.29.1",
 		"webpack-concat-files-plugin": "^0.5.2"
