@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/ac-unit-tests",
-	"version": "0.1.0",
+	"version": "0.2.0-alpha.0",
 	"description": "Builds the unit tests.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -18,7 +18,7 @@
 	},
 	"devDependencies": {
 		"adaptivecards": "^2.10.0",
-		"adaptivecards-templating": "^2.3.0-alpha.0",
+		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"monaco-editor": "^0.29.1",
 		"vkbeautify": "^0.99.3"
 	}
