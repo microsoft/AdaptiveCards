@@ -77,5 +77,8 @@ steps:
       workingDirectory: source/android/adaptivecards
       displayName: 'Push git tag'
 
-
-
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: C:\npm\cache\_logs
+    artifactName: drop
+  condition: failed()
