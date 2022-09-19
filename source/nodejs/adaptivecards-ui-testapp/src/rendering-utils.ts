@@ -4,7 +4,7 @@ import { getTestCasesList } from "./file-retriever-utils";
 import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, PropertyBag, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
-const ttPolicy = (typeof window === 'undefined') ? undefined: window.trustedTypes?.createPolicy('adaptivecards-ui-testapp', {
+const ttPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy('adaptivecards-ui-testapp', {
     createHTML: value => value,
 });
 

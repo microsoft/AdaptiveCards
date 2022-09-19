@@ -190,7 +190,7 @@ export function truncateText(element: HTMLElement, maxHeight: number, lineHeight
  * TextBlock.truncateIfSupported}), but had a bug where it might actually pass through an element
  * for which innerHTML yielded actual HTML (since fixed).
  */
-const ttDeprecatedPolicy = (typeof window === 'undefined') ? null : window.trustedTypes?.createPolicy("adaptivecards#deprecatedExportedFunctionPolicy", {
+const ttDeprecatedPolicy = window.trustedTypes?.createPolicy("adaptivecards#deprecatedExportedFunctionPolicy", {
     createHTML: (value) => value
 });
 
