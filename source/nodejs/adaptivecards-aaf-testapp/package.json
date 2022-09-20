@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-aaf-testapp",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "AAF JavaScript Runtime test application",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -12,6 +12,6 @@
 		"release": "npm run build"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.11.0"
+		"adaptivecards": "^2.11.1"
 	}
 }
