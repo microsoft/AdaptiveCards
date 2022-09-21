@@ -32,6 +32,12 @@ steps:
   inputs:
     versionSpec: 14.x
 
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'source/nodejs'
+    customCommand: 'init'
+
 - bash: |
    npm install -g npm@8.11.0
   workingDirectory: source/nodejs
