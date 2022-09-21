@@ -65,6 +65,7 @@ steps:
         command: custom
         customCommand: publish --dry-run
         workingDir: source/nodejs/${{ target_package }}
+        verbose: true
 
   - ${{ if eq(parameters.dry_run, false) }}:
     - task: Npm@1
