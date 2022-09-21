@@ -65,7 +65,6 @@ steps:
         command: custom
         customCommand: publish --dry-run
         workingDir: source/nodejs/${{ target_package }}
-        verbose: true
 
   - ${{ if eq(parameters.dry_run, false) }}:
     - task: Npm@1
@@ -74,6 +73,7 @@ steps:
         command: publish
         workingDir: source/nodejs/${{ target_package }}
         publishEndpoint: npmjs.com
+        verbose: true
       condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
 
     - bash: |
