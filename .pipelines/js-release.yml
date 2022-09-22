@@ -58,7 +58,7 @@ steps:
   displayName: 'Bash - lerna-audit --no-fix'
 
 - bash: |
-   npm login
+   npm set registry https://registry.npmjs.org/
   workingDirectory: source/nodejs
   displayName: 'Bash npm login'
 
