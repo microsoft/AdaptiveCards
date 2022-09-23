@@ -77,7 +77,7 @@ steps:
       inputs:
         command: publish
         workingDir: source/nodejs/${{ target_package }}
-        publishEndpoint: npmjs.com
+        publishEndpoint: auth_npmjs.com
         verbose: true
       condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
 
@@ -87,6 +87,3 @@ steps:
        git push --tags
       workingDirectory: source/android/adaptivecards
       displayName: 'Push git tag'
-
-
-
