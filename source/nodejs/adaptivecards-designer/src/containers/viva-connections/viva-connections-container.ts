@@ -1,11 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer } from "../host-container";
+import { HostContainer, ColorTheme } from "../host-container";
 import * as hostConfigLight from "../../hostConfigs/viva-connections-light.json";
 import * as hostConfigDark from "../../hostConfigs/viva-connections-dark.json";
 
-abstract class VivaConnectionsContainer extends HostContainer {
+export class VivaConnectionsContainer extends HostContainer {
+    private _colorTheme: ColorTheme;
+
+    constructor(theme: ColorTheme) {
+        super(
+            "Viva Connections",
+            `containers/viva-connections-container-${theme.toLowerCase()}.css`
+        );
+        this._colorTheme = theme;
+    }
+
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("vivaConnectionsContainer");
 
@@ -16,23 +26,26 @@ abstract class VivaConnectionsContainer extends HostContainer {
         hostElement.appendChild(vcContainer);
     }
 
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig(
+            this._colorTheme === ColorTheme.Light ? hostConfigLight : hostConfigDark
+        );
+    }
+
+    public getBackgroundColor(): string {
+        return this._colorTheme === ColorTheme.Light ? "#F6F6F6" : "#1b1a19";
+    }
+
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_3;
     }
-}
 
-export class LightVivaConnectionsContainer extends VivaConnectionsContainer {
-	public getHostConfig(): Adaptive.HostConfig {
-			return new Adaptive.HostConfig(hostConfigLight);
-	}
-}
+    set colorTheme(value: ColorTheme) {
+        this._colorTheme = value;
+        this.styleSheet = `containers/viva-connections-container-${this._colorTheme.toLowerCase()}.css`;
+    }
 
-export class DarkVivaConnectionsContainer extends VivaConnectionsContainer {
-	public getBackgroundColor(): string {
-			return "#1b1a19";
-	}
-
-	public getHostConfig(): Adaptive.HostConfig {
-			return new Adaptive.HostConfig(hostConfigDark);
-	}
+    get supportsMultipleThemes(): boolean {
+        return true;
+    }
 }

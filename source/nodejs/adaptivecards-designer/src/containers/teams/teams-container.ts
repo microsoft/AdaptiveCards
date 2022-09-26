@@ -1,11 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer } from "../host-container";
+import { HostContainer, ColorTheme } from "../host-container";
 import * as hostConfigLight from "../../hostConfigs/microsoft-teams-light.json";
 import * as hostConfigDark from "../../hostConfigs/microsoft-teams-dark.json";
 
-abstract class BaseTeamsContainer extends HostContainer {
+export class TeamsContainer extends HostContainer {
+    private _colorTheme: ColorTheme;
+
+    constructor(theme: ColorTheme) {
+        super("Microsoft Teams", `containers/teams-container-${theme.toLowerCase()}.css`);
+        this._colorTheme = theme;
+    }
+
     public renderTo(hostElement: HTMLElement) {
         var outerFrame = document.createElement("div");
         outerFrame.className = "teams-frame";
@@ -42,6 +49,16 @@ abstract class BaseTeamsContainer extends HostContainer {
         hostElement.appendChild(outerFrame);
     }
 
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig(
+            this._colorTheme === ColorTheme.Light ? hostConfigLight : hostConfigDark
+        );
+    }
+
+    public getBackgroundColor(): string {
+        return this._colorTheme === ColorTheme.Light ? "#F6F6F6" : "#201E1F";
+    }
+
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_4;
     }
@@ -49,20 +66,13 @@ abstract class BaseTeamsContainer extends HostContainer {
     get enableDeviceEmulation(): boolean {
         return true;
     }
-}
 
-export class LightTeamsContainer extends BaseTeamsContainer {
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigLight);
-    }
-}
-
-export class DarkTeamsContainer extends BaseTeamsContainer {
-    public getBackgroundColor(): string {
-        return "#201E1F";
+    set colorTheme(value: ColorTheme) {
+        this._colorTheme = value;
+        this.styleSheet = `containers/teams-container-${this._colorTheme.toLowerCase()}.css`;
     }
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigDark);
+    get supportsMultipleThemes(): boolean {
+        return true;
     }
 }
