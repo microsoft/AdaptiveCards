@@ -57,11 +57,6 @@ steps:
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna-audit --no-fix'
 
-- bash: |
-   npm set registry https://registry.npmjs.org/
-  workingDirectory: source/nodejs
-  displayName: 'Bash npm login'
-
 - ${{ each target_package in parameters.target_packages }}:
   - ${{ if eq(parameters.dry_run, true) }}:
     - task: Npm@1
