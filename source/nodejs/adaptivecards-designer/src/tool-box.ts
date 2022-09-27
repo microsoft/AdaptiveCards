@@ -94,6 +94,7 @@ export class Toolbox {
 
         let headerTitleElement = document.createElement("span");
         headerTitleElement.className = "acd-toolbox-header-title";
+        headerTitleElement.id = this.title.replace(/ /g, "-");
         headerTitleElement.innerText = this.title;
 
         headerContentElement.appendChild(headerTitleElement);
@@ -130,6 +131,7 @@ export class Toolbox {
         this._expandCollapseButtonElement.tabIndex = 0;
         this._expandCollapseButtonElement.setAttribute("role", "button");
         this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
+        this._expandCollapseButtonElement.setAttribute("aria-labelledby", this.title.replace(/ /g, "-"));
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
