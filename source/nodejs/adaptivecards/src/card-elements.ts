@@ -47,7 +47,7 @@ import {
     PropertyDefinition,
     StringArrayProperty
 } from "./serialization";
-import { CardObjectRegistry, GlobalRegistry, ElementSingletonBehavior } from "./registry";
+import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 
@@ -784,10 +784,6 @@ export abstract class CardElement extends CardObject {
 
     get parent(): CardElement | undefined {
         return <CardElement>this._parent;
-    }
-
-    getElementSingletonBehavior(): ElementSingletonBehavior {
-        return ElementSingletonBehavior.NotAllowed;
     }
 }
 
@@ -2206,9 +2202,8 @@ export abstract class CardElementContainer extends CardElement {
         return false;
     }
 
-    // Carousel should always be forbidden unless it is singleton
     protected forbiddenChildElements(): string[] {
-        return ["Carousel"];
+        return [];
     }
 
     abstract getItemCount(): number;
@@ -6939,10 +6934,6 @@ export class Container extends ContainerBase {
         return result || super.getHasBackground(ignoreBackgroundImages);
     }
 
-    protected canHostSingletons() {
-        return false;
-    }
-
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -6951,29 +6942,7 @@ export class Container extends ContainerBase {
 
         let jsonItems = source[this.getItemsCollectionPropertyName()];
 
-        if (
-            !Array.isArray(jsonItems) &&
-            typeof jsonItems === "object" &&
-            this.canHostSingletons()
-        ) {
-            const typeName = Utils.parseString(jsonItems["type"]);
-            if (typeName) {
-                const registration = context.elementRegistry.findByName(typeName);
-                if (registration?.singletonBehavior !== ElementSingletonBehavior.NotAllowed) {
-                    const element = context.parseElement(
-                        this,
-                        jsonItems,
-                        [],
-                        !this.isDesignMode(),
-                        true
-                    );
-
-                    if (element) {
-                        this.insertItemAt(element, -1, true);
-                    }
-                }
-            }
-        } else if (Array.isArray(jsonItems)) {
+        if (Array.isArray(jsonItems)) {
             for (const item of jsonItems) {
                 const element = context.parseElement(
                     this,
@@ -6994,15 +6963,7 @@ export class Container extends ContainerBase {
 
         const collectionPropertyName = this.getItemsCollectionPropertyName();
 
-        if (
-            this._items.length === 1 &&
-            this._items[0].getElementSingletonBehavior() === ElementSingletonBehavior.Only
-        ) {
-            // If the element is only allowed in a singleton context, parse it to an object instead of an array
-            context.serializeValue(target, collectionPropertyName, this._items[0].toJSON(context));
-        } else {
-            context.serializeArray(target, collectionPropertyName, this._items);
-        }
+        context.serializeArray(target, collectionPropertyName, this._items);
     }
 
     protected get isSelectable(): boolean {
@@ -7960,14 +7921,6 @@ export abstract class ContainerWithActions extends Container {
     }
 
     getForbiddenActionNames(): string[] {
-        // If the container can host singletons, and the only child element is a carousel, we should restrict the actions.
-        if (
-            this.canHostSingletons() &&
-            this.getItemCount() === 1 &&
-            this.getItemAt(0).getJsonTypeName() === "Carousel"
-        ) {
-            return ["Action.ToggleVisibility", "Action.ShowCard"];
-        }
         return [];
     }
 
@@ -8333,10 +8286,6 @@ export class AdaptiveCard extends ContainerWithActions {
         return "body";
     }
 
-    protected canHostSingletons() {
-        return true;
-    }
-
     protected internalParse(source: any, context: SerializationContext) {
         this._fallbackCard = undefined;
 
@@ -8572,8 +8521,7 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypes: Set<string>,
         allowFallback: boolean,
         createInstanceCallback: (typeName: string | undefined) => T | undefined,
-        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void,
-        parsingSingletonObject: boolean = false
+        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void
     ): T | undefined {
         let result: T | undefined = undefined;
 
@@ -8588,9 +8536,7 @@ export class SerializationContext extends BaseSerializationContext {
 
             const typeName = Utils.parseString(source["type"]);
 
-            const ignoreForbiddenType = parsingSingletonObject && typeName === "Carousel";
-
-            if (typeName && this._forbiddenTypes.has(typeName) && !ignoreForbiddenType) {
+            if (typeName && this._forbiddenTypes.has(typeName)) {
                 logParseEvent(typeName, Enums.TypeErrorType.ForbiddenType);
             } else {
                 let tryToFallback = false;
@@ -8663,8 +8609,7 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void,
-        parsingSingletonObject: boolean = false
+        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void
     ): T | undefined {
         const forbiddenTypes = new Set<string>(forbiddenTypeNames);
         const result = this.internalParseCardObject(
@@ -8673,8 +8618,7 @@ export class SerializationContext extends BaseSerializationContext {
             forbiddenTypes,
             allowFallback,
             createInstanceCallback,
-            logParseEvent,
-            parsingSingletonObject
+            logParseEvent
         );
 
         if (result !== undefined) {
@@ -8688,8 +8632,7 @@ export class SerializationContext extends BaseSerializationContext {
         parent: CardElement | undefined,
         source: any,
         forbiddenTypes: string[],
-        allowFallback: boolean,
-        _parsingSingletonObject: boolean = false
+        allowFallback: boolean
     ): CardElement | undefined {
         return this.parseCardObject<CardElement>(
             parent,
@@ -8713,8 +8656,7 @@ export class SerializationContext extends BaseSerializationContext {
                         Strings.errors.elementTypeNotAllowed(typeName)
                     );
                 }
-            },
-            _parsingSingletonObject
+            }
         );
     }
 

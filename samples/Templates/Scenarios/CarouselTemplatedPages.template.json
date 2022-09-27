@@ -1,0 +1,24 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Carousel",
+			"id": "CarouselOne",
+			"pages": "${pagesForCarouselOne}"
+		},
+		{
+			"type": "TextBlock",
+			"id": "textblock1",
+			"text": "You can hide and show the second carousel by toggling the onlyDisplayCarouselOne flag",
+			"wrap": true
+		},
+		{
+			"type": "Carousel",
+			"$when": "${!onlyDisplayCarouselOne}",
+			"id": "CarouselTwo",
+			"pages": "${pagesForCarouselTwo}"
+		}
+	]
+}

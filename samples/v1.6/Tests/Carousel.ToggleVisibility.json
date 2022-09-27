@@ -1,0 +1,49 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "Carousel",
+					"rtl": false,
+					"pages": [
+						{
+							"type": "CarouselPage",
+							"rtl": false,
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/1.png",
+									"altText": "Cat"
+								}
+							]
+						},
+						{
+							"type": "CarouselPage",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Hello World"
+								}
+							],
+							"rtl": false
+						}
+					]
+				}
+			],
+			"style": "emphasis",
+			"id": "container"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Action.ToggleVisibility",
+			"isEnabled": true,
+			"targetElements": ["container"]
+		}
+	]
+}

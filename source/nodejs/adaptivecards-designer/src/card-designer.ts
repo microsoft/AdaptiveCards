@@ -223,13 +223,6 @@ export class CardDesigner extends Designer.DesignContext {
                         const peer = paletteItem.createPeer(this, this.designerSurface);
 
                         if (this.designerSurface.rootPeer.tryAdd(peer)) {
-
-                            if (peer.cardElement.getJsonTypeName() === "Carousel") {
-                                this.designerSurface.reassignCardElementToCarousel(peer as DesignerPeers.CarouselPeer);
-
-                                this.designerSurface.containsCarousel = true;
-                            }
-
                             peer.isSelected = true;
                         };
                     }
@@ -1345,7 +1338,6 @@ export class CardDesigner extends Designer.DesignContext {
             monaco = window["monaco"];
         }
 
-        // TODO: the uri here needs to be updated to allow for an object or array for the carousel
         let monacoConfiguration = {
             schemas: [
                 {
