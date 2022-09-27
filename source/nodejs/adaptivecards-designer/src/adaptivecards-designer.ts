@@ -9,13 +9,13 @@ export * from "./containers/index";
 export const defaultMicrosoftHosts: containers.HostContainer[] = [
     new containers.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
     new containers.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
-    new containers.TeamsContainer(containers.ColorTheme.Light),
-    new containers.VivaConnectionsContainer(containers.ColorTheme.Light),
-    new containers.CortanaContainer(containers.ColorTheme.Light),
+    new containers.TeamsContainer(),
+    new containers.VivaConnectionsContainer(),
+    new containers.CortanaContainer(),
     new containers.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"),
     new containers.CortanaClassicContainer("Cortana Skills (Classic)", "containers/cortana-classic-container.css"),
     new containers.FederatedSearchContainer("Federated Search","containers/federated-search-container.css"),
-    new containers.BerlinContainer(containers.ContainerSize.Small, containers.ColorTheme.Light),
+    new containers.BerlinContainer(containers.ContainerSize.Small),
 ];
 
 export const defaultMicrosoftDeviceEmulations: DeviceEmulation[] = [

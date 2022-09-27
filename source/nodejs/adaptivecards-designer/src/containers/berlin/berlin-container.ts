@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer, ColorTheme } from "../host-container";
+import { ThemeSupportedHostContainer } from "../theme-supported-host-container";
 import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
 import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
 
@@ -9,26 +9,34 @@ export enum ContainerSize {
     Small = "Small",
     Medium = "Medium",
     Large = "Large"
-};
+}
 
-export class BerlinContainer extends HostContainer {
+export class BerlinContainer extends ThemeSupportedHostContainer {
     private _containerSize: ContainerSize;
-    private _colorTheme: ColorTheme;
 
-    constructor(size: ContainerSize, theme: ColorTheme) {
-        super("Berlin (Test)",
-            `containers/berlin-container-${theme.toLowerCase()}.css`);
+    constructor(size: ContainerSize) {
+        super(
+            "Berlin (Test)",
+            "berlin-container",
+            hostConfigLight,
+            hostConfigDark,
+            "#D2D2D2",
+            "#616161"
+        );
         this._containerSize = size;
-        this._colorTheme = theme;
     }
 
     public initialize(): void {
         super.initialize();
-        Adaptive.GlobalSettings.removePaddingFromContainersWithBackgroundImage = true; 
+        Adaptive.GlobalSettings.removePaddingFromContainersWithBackgroundImage = true;
     }
 
     public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.remove("berlin-small-card", "berlin-medium-card", "berlin-large-card");
+        this.cardHost.classList.remove(
+            "berlin-small-card",
+            "berlin-medium-card",
+            "berlin-large-card"
+        );
         this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
         const outerFrame = document.createElement("div");
         outerFrame.classList.add("berlin-outer-container");
@@ -57,14 +65,6 @@ export class BerlinContainer extends HostContainer {
         hostElement.appendChild(outerFrame);
     }
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig((this._colorTheme === ColorTheme.Light) ? hostConfigLight : hostConfigDark);
-    }
-
-    public getBackgroundColor(): string {
-        return this._colorTheme === ColorTheme.Light ? "#D2D2D2" : "#616161";
-    }
-
     get targetVersion(): Adaptive.Version {
         return Adaptive.Versions.v1_6;
     }
@@ -77,19 +77,10 @@ export class BerlinContainer extends HostContainer {
         this._containerSize = value;
     }
 
-    set colorTheme(value: ColorTheme) {
-        this._colorTheme = value;
-        this.styleSheet = `containers/berlin-container-${this._colorTheme.toLowerCase()}.css`
-    }
-
     get supportsMultipleSizes(): boolean {
         return true;
     }
 
-    get supportsMultipleThemes(): boolean {
-        return true;
-    }
-	
     static get supportedContainerSizes(): string[] {
         return Object.values(ContainerSize);
     }
