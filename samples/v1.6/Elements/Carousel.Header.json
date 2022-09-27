@@ -1,0 +1,69 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Photo Album",
+					"size": "ExtraLarge",
+					"style": "heading",
+					"horizontalAlignment": "Center"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Landscapes",
+					"size": "Large",
+					"horizontalAlignment": "Center"
+				},
+				{
+					"type": "Carousel",
+					"spacing": "Large",
+					"pages": [
+						{
+							"type": "CarouselPage",
+							"id": "firstPage",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://picsum.photos/id/100/300/300",
+									"altText": "beach"
+								}
+							],
+							"rtl": false
+						},
+						{
+							"type": "CarouselPage",
+							"id": "secondPage",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://picsum.photos/id/110/300/300",
+									"altText": "sunset"
+								}
+							],
+							"rtl": false
+						},
+						{
+							"type": "CarouselPage",
+							"id": "thirdPage",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://picsum.photos/id/120/300/300",
+									"altText": "starlit night sky"
+								}
+							],
+							"rtl": false
+						}
+					],
+					"rtl": false
+				}
+			],
+			"style": "emphasis"
+		}
+	]
+}

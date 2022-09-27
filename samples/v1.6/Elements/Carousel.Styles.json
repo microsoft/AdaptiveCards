@@ -1,0 +1,103 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Carousel doesn't have style and bleed properties, but its parents can have them.",
+			"style": "heading",
+			"wrap": true
+		},
+		{
+			"type": "Container",
+			"style": "good",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This element has Container with style good and bleed false",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"style": "good",
+			"bleed": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This element has Container with style good and bleed true",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"style": "warning",
+			"type": "Container",
+			"items": [
+				{
+					"type": "Carousel",
+					"pages": [
+						{
+							"type": "CarouselPage",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This Container has a Carousel inside with style emphasis and bleed false",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "CarouselPage",
+							"style": "good",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Carousel and CarouselPage doesn't have style and bleed",
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"style": "attention",
+			"bleed": true,
+			"type": "Container",
+			"items": [
+				{
+					"type": "Carousel",
+					"pages": [
+						{
+							"type": "CarouselPage",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This Container has a carousel inside with style emphasis and bleed true",
+									"wrap": true
+								}
+							],
+							"rtl": false
+						},
+						{
+							"type": "CarouselPage",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Carousel and CarouselPage doesn't have style and bleed",
+									"wrap": true
+								}
+							],
+							"rtl": false
+						}
+					],
+					"rtl": false
+				}
+			]
+		}
+	]
+}
