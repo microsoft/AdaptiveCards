@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -138,6 +139,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     Grid.SetColumn(uiContainer, uiColumnSet.ColumnDefinitions.Count - 1);
                     uiColumnSet.Children.Add(uiContainer);
+
+                    if (!String.IsNullOrEmpty(column.Id))
+                    {
+                        context.RenderedElementsWithId[column.Id] = uiContainer;
+                    }
 
                     RendererUtil.SetVisibility(uiContainer, column.IsVisible, tag);
                 }
