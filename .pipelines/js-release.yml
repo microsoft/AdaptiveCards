@@ -33,11 +33,24 @@ steps:
     versionSpec: 14.x
 
 - bash: |
+   npm install -g npm@8.11.0
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npm install -g npm 8.11.0'
+
+- bash: |
    npm ci 
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npm ci'
+
+- bash: |
    npx lerna bootstrap --ci
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npx lerna bootstrap --ci'
+
+- bash: |
    npx lerna run release
   workingDirectory: source/nodejs
-  displayName: 'Bash - lerna bootstrap'
+  displayName: 'Bash - npx lerna run release'
 
 - bash: |
    npm run audit-all -- --no-fix
