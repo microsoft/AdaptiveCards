@@ -127,7 +127,7 @@
     if (rowView) {
         [self.bottomAnchor constraintEqualToAnchor:rowView.bottomAnchor].active = YES;
     }
-    
+
     self.accessibilityElements = self.subviews;
 }
 
