@@ -130,6 +130,7 @@ export class Toolbox {
         this._expandCollapseButtonElement.tabIndex = 0;
         this._expandCollapseButtonElement.setAttribute("role", "button");
         this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
+        this._expandCollapseButtonElement.ariaLabel = this.title;
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
