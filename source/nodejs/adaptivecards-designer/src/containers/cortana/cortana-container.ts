@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { ThemeSupportedHostContainer } from "../theme-supported-host-container";
+import { MultiThemeHostContainer } from "../multi-theme-host-container";
 import * as hostConfigLight from "../../hostConfigs/cortana-skills-light.json";
 import * as hostConfigDark from "../../hostConfigs/cortana-skills-dark.json";
 
-export class CortanaContainer extends ThemeSupportedHostContainer {
+export class CortanaContainer extends MultiThemeHostContainer {
     constructor() {
         super(
             "Cortana Skills",

@@ -6,8 +6,8 @@ export enum ColorTheme {
     Dark = "Dark"
 }
 
-export abstract class ThemeSupportedHostContainer extends HostContainer {
-    private _colorTheme: ColorTheme;
+export abstract class MultiThemeHostContainer extends HostContainer {
+    private _colorTheme: ColorTheme = ColorTheme.Light;
     private _cssFileName: string;
     private _hostConfigLight: any;
     private _hostConfigDark: any;
@@ -22,15 +22,18 @@ export abstract class ThemeSupportedHostContainer extends HostContainer {
         lightBackground: string,
         darkBackground: string
     ) {
-        super(name, `containers/${cssFileName}-light.css`);
+        super(name);
 
         this._cssFileName = cssFileName;
         this._hostConfigLight = hostConfigLight;
         this._hostConfigDark = hostConfigDark;
         this._lightBackground = lightBackground;
         this._darkBackground = darkBackground;
-        this._colorTheme = ColorTheme.Light;
     }
+    
+    public getCurrentStyleSheet(): string {
+		return `containers/${this._cssFileName}-${this._colorTheme.toLowerCase()}.css`;
+	}
 
     public getHostConfig(): Adaptive.HostConfig {
         return new Adaptive.HostConfig(
@@ -41,10 +44,9 @@ export abstract class ThemeSupportedHostContainer extends HostContainer {
     public getBackgroundColor(): string {
         return this._colorTheme === ColorTheme.Light ? this._lightBackground : this._darkBackground;
     }
-
+    
     set colorTheme(value: ColorTheme) {
         this._colorTheme = value;
-        this.styleSheet = `containers/${this._cssFileName}-${this._colorTheme.toLowerCase()}.css`;
     }
 
     get supportsMultipleThemes(): boolean {

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { ThemeSupportedHostContainer } from "../theme-supported-host-container";
+import { MultiThemeHostContainer } from "../multi-theme-host-container";
 import * as hostConfigLight from "../../hostConfigs/microsoft-teams-light.json";
 import * as hostConfigDark from "../../hostConfigs/microsoft-teams-dark.json";
 
-export class TeamsContainer extends ThemeSupportedHostContainer {
+export class TeamsContainer extends MultiThemeHostContainer {
     constructor() {
         super(
             "Microsoft Teams",

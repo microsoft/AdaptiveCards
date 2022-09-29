@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { ThemeSupportedHostContainer } from "../theme-supported-host-container";
+import { MultiThemeHostContainer } from "../multi-theme-host-container";
 import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
 import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
 
@@ -11,7 +11,7 @@ export enum ContainerSize {
     Large = "Large"
 }
 
-export class BerlinContainer extends ThemeSupportedHostContainer {
+export class BerlinContainer extends MultiThemeHostContainer {
     private _containerSize: ContainerSize;
 
     constructor(size: ContainerSize) {
