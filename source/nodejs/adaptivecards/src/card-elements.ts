@@ -5664,6 +5664,7 @@ class OverflowAction extends Action {
         this._actions = actions;
 
         this.title = Strings.defaults.overflowButtonText();
+        this.tooltip = Strings.defaults.overflowButtonTooltip();
     }
 
     getActions(): readonly Action[] {
@@ -5708,8 +5709,22 @@ class OverflowAction extends Action {
                 contextMenu.items.add(menuItem);
             }
 
+            contextMenu.onClose = () => {
+                if (this.renderedElement) {
+                    this.renderedElement.ariaExpanded = "false";
+                }
+            }
+
+            this.renderedElement.ariaExpanded = "true";
             contextMenu.popup(this.renderedElement);
         }
+    }
+    
+    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
+        super.setupElementForAccessibility(element, promoteTooltipToLabel);
+
+        element.ariaLabel = "More options";
+        element.ariaExpanded = "false";
     }
 }
 
