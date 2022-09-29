@@ -95,6 +95,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"adaptiveCell" forIndexPath:indexPath];
     if (cell) {
         ((ACRChatWindowCell *)cell).adaptiveCardView = adaptiveCardView;
+        [cell becomeFirstResponder];
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, cell);
     }
 
     return cell;
@@ -137,6 +139,7 @@
                                     config:hostconfigParseResult.config
                            widthConstraint:adaptiveCardsWidth
                                   delegate:self.adaptiveCardsDelegates];
+        renderResult.view.mediaDelegate = self.adaptiveCardsMediaDelegates;
     } else {
         renderResult = [ACRRenderer render:errorCard.card
                                     config:hostconfigParseResult.config

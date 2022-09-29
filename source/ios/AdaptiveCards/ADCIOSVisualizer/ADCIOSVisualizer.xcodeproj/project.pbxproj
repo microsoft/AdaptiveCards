@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
@@ -65,9 +65,11 @@
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
-		6B268FE320CEF19400D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
+		6B31EC7F28E51F3C00F56F05 /* ACEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B31EC7E28E51F3C00F56F05 /* ACEditorViewController.m */; };
+		6B31EC8228E51F8000F56F05 /* ACEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B31EC8128E51F8000F56F05 /* ACEditorViewController.xib */; };
 		6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B37723E26015FA30024E527 /* Action.Execute.Auth.json */; };
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
@@ -208,6 +210,9 @@
 		6B250FC7253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRCustomSubmitTargetBuilder.h; sourceTree = "<group>"; };
 		6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomSubmitTargetBuilder.mm; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B31EC7E28E51F3C00F56F05 /* ACEditorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACEditorViewController.m; sourceTree = "<group>"; };
+		6B31EC8028E51F6800F56F05 /* ACEditorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACEditorViewController.h; sourceTree = "<group>"; };
+		6B31EC8128E51F8000F56F05 /* ACEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACEditorViewController.xib; sourceTree = "<group>"; };
 		6B37723E26015FA30024E527 /* Action.Execute.Auth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.Auth.json; sourceTree = "<group>"; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6B6A389527067B1800BAD3D2 /* FluentUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FluentUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -472,6 +477,7 @@
 				F423C0781EE1FB6100905679 /* AppDelegate.h */,
 				F423C0791EE1FB6100905679 /* AppDelegate.m */,
 				F423C0841EE1FB6100905679 /* Assets.xcassets */,
+				6B31EC8128E51F8000F56F05 /* ACEditorViewController.xib */,
 				6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */,
 				6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */,
 				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
@@ -489,6 +495,8 @@
 				F423C07B1EE1FB6100905679 /* ViewController.h */,
 				F423C07C1EE1FB6100905679 /* ViewController.m */,
 				6BA9091A23985CB5009421CA /* Adaptive1.0.png */,
+				6B31EC7E28E51F3C00F56F05 /* ACEditorViewController.m */,
+				6B31EC8028E51F6800F56F05 /* ACEditorViewController.h */,
 			);
 			path = ADCIOSVisualizer;
 			sourceTree = "<group>";
@@ -641,26 +649,27 @@
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
 				6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */,
-				6B268FE520CEF89100D99C1B /* BuildFile in Resources */,
+				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B182BBC25DF5FB700629A39 /* Conflict.png in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
 				6B182BB425DF5FB700629A39 /* filebrowserHostConfig.json in Resources */,
-				6B268FE320CEF19400D99C1B /* BuildFile in Resources */,
+				6B268FE320CEF19400D99C1B /* (null) in Resources */,
 				6B182BBB25DF5FB700629A39 /* power_point.png in Resources */,
 				6B182BB325DF5FB700629A39 /* SmallVerticalLineGray.png in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
 				6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
 				6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */,
+				6B31EC8228E51F8000F56F05 /* ACEditorViewController.xib in Resources */,
 				6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */,
 				6B182BCF25E5AD3500629A39 /* image_3.png in Resources */,
 				6BFF9A18260155240028069F /* Action.Execute.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* BuildFile in Resources */,
+				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
@@ -700,7 +709,7 @@
 				6B182BD325E5D7D400629A39 /* bg_image.png in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* BuildFile in Resources */,
+				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
 				6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */,
 				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
@@ -823,6 +832,7 @@
 				6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */,
 				F423C0831EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld in Sources */,
 				F423C0771EE1FB6100905679 /* main.m in Sources */,
+				6B31EC7F28E51F3C00F56F05 /* ACEditorViewController.m in Sources */,
 				6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */,
 				F4F44B75203FE73D00A2F24C /* CustomInputNumberRenderer.mm in Sources */,
 			);
