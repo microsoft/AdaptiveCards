@@ -284,6 +284,8 @@ CGFloat kFileBrowserWidth = 0;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
+
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleVoiceOverEvent:) name:UIAccessibilityElementFocusedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -732,4 +734,14 @@ CGFloat kFileBrowserWidth = 0;
     return [arguments containsObject:@"ui-testing"];
 }
 
+- (void)handleVoiceOverEvent:(NSNotification *)notificaiton
+{
+    UIAccessibilityElement *a11yElement = (UIAccessibilityElement *)notificaiton.userInfo[UIAccessibilityFocusedElementKey];
+    CGRect rect = UIAccessibilityConvertFrameToScreenCoordinates(self.chatWindow.frame, self.chatWindow);
+    if (a11yElement.accessibilityFrame.origin.y >= rect.origin.y) {
+        CGPoint point = CGPointMake(self.chatWindow.contentOffset.x, a11yElement.accessibilityFrame.origin.y - rect.origin.y);
+
+        [self.chatWindow setContentOffset:point animated:NO];
+    }
+}
 @end
