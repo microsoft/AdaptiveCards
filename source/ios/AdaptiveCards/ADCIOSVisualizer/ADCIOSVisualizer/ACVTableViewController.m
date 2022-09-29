@@ -68,6 +68,7 @@
         }
     } else {
         cell.accessoryView = nil;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
     cell.textLabel.attributedText = attributedString;

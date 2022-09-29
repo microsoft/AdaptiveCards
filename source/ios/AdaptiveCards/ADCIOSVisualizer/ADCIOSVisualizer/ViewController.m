@@ -25,7 +25,6 @@ CGFloat kAdaptiveCardsWidth = 0;
 CGFloat kFileBrowserWidth = 0;
 
 @interface ViewController () {
-    BOOL _enableCustomRenderer;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
@@ -51,10 +50,9 @@ CGFloat kFileBrowserWidth = 0;
 - (IBAction)toggleCustomRenderer:(UISwitch *)sender
 {
     [self.view endEditing:YES];
-    _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
-    if (_enableCustomRenderer) {
+    if (_enableCustomRendererSwitch.isOn) {
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
@@ -114,7 +112,6 @@ CGFloat kFileBrowserWidth = 0;
     kAdaptiveCardsWidth = kFileBrowserWidth;
     [self registerForKeyboardNotifications];
 
-    _enableCustomRenderer = NO;
     self.curView = nil;
 
     ACRRegistration *registration = [ACRRegistration getInstance];
