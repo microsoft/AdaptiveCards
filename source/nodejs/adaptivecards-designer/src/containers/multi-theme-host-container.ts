@@ -30,10 +30,10 @@ export abstract class MultiThemeHostContainer extends HostContainer {
         this._lightBackground = lightBackground;
         this._darkBackground = darkBackground;
     }
-    
+
     public getCurrentStyleSheet(): string {
-		return `containers/${this._cssFileName}-${this._colorTheme.toLowerCase()}.css`;
-	}
+        return `containers/${this._cssFileName}-${this._colorTheme.toLowerCase()}.css`;
+    }
 
     public getHostConfig(): Adaptive.HostConfig {
         return new Adaptive.HostConfig(
@@ -44,7 +44,7 @@ export abstract class MultiThemeHostContainer extends HostContainer {
     public getBackgroundColor(): string {
         return this._colorTheme === ColorTheme.Light ? this._lightBackground : this._darkBackground;
     }
-    
+
     set colorTheme(value: ColorTheme) {
         this._colorTheme = value;
     }
