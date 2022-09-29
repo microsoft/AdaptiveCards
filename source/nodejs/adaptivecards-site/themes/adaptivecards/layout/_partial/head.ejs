@@ -42,13 +42,36 @@
 
 		<%- hashed_asset("css/w3.css") %>
 		<%- hashed_asset("css/extracted.css") %>
-        <%- hashed_asset("css/outlook.css") %>
+		<%- hashed_asset("css/outlook.css") %>
 		<%- hashed_asset("css/style.css") %>
 	<% } %>
 
 
 	<%- hashed_asset("node_modules/jquery/dist/jquery.min.js") %>
 
+	<script type="text/javascript">
+		const serviceEndpoint = "http://uhf.microsoft.com";
+		const partnerId = "MSDocsAdaptivecards";
+		const headerId = "MSDocsAdaptivecardsHeader";
+		const footerId = "MSDocsAdaptivecardsFooter";
+		const userAgent = "Microsoft";
+		const serviceUrl = serviceEndpoint + "/" + navigator.language + "/shell/xml/" + partnerId + "?headerId=" + headerId + "&footerId=" + footerId;
+		console.log("1")
+		fetch(serviceUrl, {headers: {'User-Agent': userAgent}})
+			.then(
+				response => {
+					if (response.ok)
+						return response.json();
+					else 
+						throw new Error("Request Failed");
+				},
+				networError => {
+					console.log(networError.message);
+				})
+			.then(jsonResponse => {
+				console.log(jsonResponse);
+		});
+	</script>
 
 	<% /* from UHF MSDocsHeader-AdaptiveCards */ %>
 
