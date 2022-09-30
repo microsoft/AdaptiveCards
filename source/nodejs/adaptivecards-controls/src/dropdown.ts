@@ -84,9 +84,9 @@ export class DropDownPopupControl extends PopupControl {
 
             if (i == selectedIndex) {
                 renderedItem.focus();
-                renderedItem.ariaSelected = "true";
+                renderedItem.setAttribute("aria-selected", "true");
             } else {
-                renderedItem.ariaSelected = "false";
+                renderedItem.setAttribute("aria-selected", "false");
             }
 
             this._renderedItems.push(renderedItem);
@@ -236,7 +236,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
 
         this.rootElement.setAttribute("role", "combobox");
         this.rootElement.setAttribute("aria-haspopup", "listbox");
-        this.rootElement.ariaExpanded = "false";
+        this.rootElement.setAttribute("aria-expanded", "false");
     }
 
     popup() {

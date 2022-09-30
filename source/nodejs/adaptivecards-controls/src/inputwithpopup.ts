@@ -284,13 +284,13 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         };
 
         this._popupControl.popup(this.rootElement);
-        this.rootElement.ariaExpanded = "true";
+        this.rootElement.setAttribute("aria-expanded", "true");
     }
 
     closePopup(wasCancelled: boolean) {
         if (this.popupControl) {
             this.popupControl.closePopup(wasCancelled);
-            this.rootElement.ariaExpanded = "false";
+            this.rootElement.setAttribute("aria-expanded", "false");
         }
     }
 
