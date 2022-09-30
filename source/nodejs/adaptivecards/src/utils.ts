@@ -190,7 +190,7 @@ export function truncateText(element: HTMLElement, maxHeight: number, lineHeight
  * TextBlock.truncateIfSupported}), but had a bug where it might actually pass through an element
  * for which innerHTML yielded actual HTML (since fixed).
  */
-const ttDeprecatedPolicy = window.trustedTypes?.createPolicy("adaptivecards#deprecatedExportedFunctionPolicy", {
+const ttDeprecatedPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy("adaptivecards#deprecatedExportedFunctionPolicy", {
     createHTML: (value) => value
 });
 
@@ -264,4 +264,11 @@ export function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
+}
+
+export function addCancelSelectActionEventHandler(element: HTMLElement) {
+    element.onclick = (e) => {
+        e.preventDefault();
+        e.cancelBubble = true;
+    };
 }

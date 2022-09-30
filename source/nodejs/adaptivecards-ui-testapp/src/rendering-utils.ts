@@ -4,7 +4,7 @@ import { getTestCasesList } from "./file-retriever-utils";
 import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, PropertyBag, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
-const ttPolicy = window.trustedTypes?.createPolicy('adaptivecards-ui-testapp', {
+const ttPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy('adaptivecards-ui-testapp', {
     createHTML: value => value,
 });
 
@@ -135,7 +135,7 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
 
 export function cardRenderedCallback(renderedCard: HTMLElement) {
     const renderedCardDiv = document.getElementById("renderedCardSpace");
-    const trustedHtml = window.trustedTypes?.emptyHTML ?? "";
+    const trustedHtml = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
     renderedCardDiv.innerHTML = trustedHtml as string;
     renderedCardDiv.appendChild(renderedCard);
     renderedCardDiv.style.visibility = "visible";
