@@ -252,6 +252,9 @@ const int posterTag = 0x504F5354;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
+    self->_containingview.isAccessibilityElement = NO;
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self->_mediaViewController.view);
+
     [player play];
 }
 
