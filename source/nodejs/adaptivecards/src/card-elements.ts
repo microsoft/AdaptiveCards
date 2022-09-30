@@ -5721,7 +5721,7 @@ class OverflowAction extends Action {
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
         super.setupElementForAccessibility(element, promoteTooltipToLabel);
 
-        element.ariaLabel = Strings.defaults.overflowButtonTooltip();
+        element.setAttribute("aria-label", Strings.defaults.overflowButtonTooltip());
         element.setAttribute("aria-expanded", "false");
     }
 }
