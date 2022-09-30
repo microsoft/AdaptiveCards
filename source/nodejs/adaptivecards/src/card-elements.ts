@@ -5710,12 +5710,10 @@ class OverflowAction extends Action {
             }
 
             contextMenu.onClose = () => {
-                if (this.renderedElement) {
-                    this.renderedElement.ariaExpanded = "false";
-                }
+                this.renderedElement?.setAttribute("aria-expanded", "false");
             }
 
-            this.renderedElement.ariaExpanded = "true";
+            this.renderedElement.setAttribute("aria-expanded", "true");
             contextMenu.popup(this.renderedElement);
         }
     }
@@ -5724,7 +5722,7 @@ class OverflowAction extends Action {
         super.setupElementForAccessibility(element, promoteTooltipToLabel);
 
         element.ariaLabel = Strings.defaults.overflowButtonTooltip();
-        element.ariaExpanded = "false";
+        element.setAttribute("aria-expanded", "false");
     }
 }
 
