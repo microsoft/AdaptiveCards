@@ -310,13 +310,13 @@ export class CardDesigner extends Designer.DesignContext {
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
 
-        if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
+        if (Utils.isAbsoluteUrl(this.hostContainer.getCurrentStyleSheet()))
         {
-            styleSheetLinkElement.href = this.hostContainer.styleSheet;
+            styleSheetLinkElement.href = this.hostContainer.getCurrentStyleSheet();
         }
         else
         {
-            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
+            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.getCurrentStyleSheet());
         }
 
         let cardArea = document.getElementById("cardArea");
