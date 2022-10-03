@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer } from "../host-container";
+import { SingleThemeHostContainer } from "../single-theme-host-container";
 import * as hostConfig from "../../hostConfigs/cortana-skills-classic.json";
 
-export class CortanaClassicContainer extends HostContainer {
+export class CortanaClassicContainer extends SingleThemeHostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("cortana-card");
 
