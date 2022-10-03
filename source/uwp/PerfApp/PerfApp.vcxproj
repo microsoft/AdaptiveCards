@@ -124,7 +124,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <PackageCertificateKeyFile>PerfApp_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>1A89786FCE0556E7BB8A456028E5167BFA31A6B6</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>E49C24F3A2DDD80E25CE9127B9AA288C2A2B3759</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">

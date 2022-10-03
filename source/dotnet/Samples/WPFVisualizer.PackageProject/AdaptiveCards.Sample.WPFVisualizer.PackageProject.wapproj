@@ -43,7 +43,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackageCertificateKeyFile>AdaptiveCards.Sample.WPFVisualizer.PackageProject_TemporaryKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\WPFVisualizer\AdaptiveCards.Sample.WPFVisualizer.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>CCA567FDFE488F409F807D8E7AA4EF3F215ECB4A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>1213BE02687F2D36BA29BFD78D27C2D6F1432842</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
