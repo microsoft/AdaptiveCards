@@ -16,7 +16,7 @@ export class WidgetContainer extends MultiThemeHostContainer {
 
     constructor(size: ContainerSize) {
         super(
-            "Widget Dashboard",
+            "Widgets Board",
             "widget-container",
             hostConfigLight,
             hostConfigDark,
