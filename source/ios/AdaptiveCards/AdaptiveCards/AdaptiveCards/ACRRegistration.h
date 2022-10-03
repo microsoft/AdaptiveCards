@@ -7,7 +7,7 @@
 //
 @class ACRBaseCardElementRenderer;
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElement.h"
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRTargetBuilder.h"

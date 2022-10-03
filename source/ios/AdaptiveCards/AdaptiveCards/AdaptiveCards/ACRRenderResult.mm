@@ -4,7 +4,7 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRRenderResult.h"
 #else
 #import <AdaptiveCards/ACRRenderResult.h>

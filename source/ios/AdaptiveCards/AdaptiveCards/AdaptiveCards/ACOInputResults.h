@@ -6,7 +6,7 @@
 //
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
 #else

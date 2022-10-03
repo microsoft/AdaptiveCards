@@ -2,7 +2,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRActionSetRenderer.h"
 #import "ACOActionOverflowPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"

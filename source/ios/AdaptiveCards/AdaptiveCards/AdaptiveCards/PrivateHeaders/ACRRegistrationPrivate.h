@@ -1,4 +1,4 @@
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRRegistration.h"
 #import "FeatureRegistration.h"
 #else

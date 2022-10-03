@@ -5,7 +5,7 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRView.h"
 #import "HostConfig.h"
 #import "ImageSet.h"

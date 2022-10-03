@@ -5,7 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOFillerSpaceManager.h"
 #import "ACRView.h"

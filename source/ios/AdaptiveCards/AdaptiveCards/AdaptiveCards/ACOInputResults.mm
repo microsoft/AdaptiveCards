@@ -6,7 +6,7 @@
 //
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOInputResults.h"
 #import "ACRViewPrivate.h"
 #else

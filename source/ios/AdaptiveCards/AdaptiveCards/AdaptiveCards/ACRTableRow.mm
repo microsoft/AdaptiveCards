@@ -5,7 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTableRow.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"

@@ -7,7 +7,7 @@
 //
 //
 //
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAuthCardButtonPrivate.h"
 #else
 #import <AdaptiveCards/ACOAuthCardButtonPrivate.h>

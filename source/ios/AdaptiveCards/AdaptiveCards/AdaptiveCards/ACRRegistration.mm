@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRRegistration.h"
 #import "ACOBaseActionElement.h"
 #import "ACOHostConfigPrivate.h"

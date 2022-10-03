@@ -4,7 +4,7 @@
 //  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACORenderContext.h"
 #import "ACOVisibilityManager.h"
 #import "ACRErrors.h"

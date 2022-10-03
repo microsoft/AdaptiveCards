@@ -6,7 +6,7 @@
 //
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOHostConfig.h"
 #import "ACRContentStackView.h"
 #import "ACRView.h"

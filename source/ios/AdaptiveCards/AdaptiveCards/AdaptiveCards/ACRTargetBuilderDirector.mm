@@ -29,7 +29,7 @@
 //  clients who wish to use the director's service should access the service through two functions
 //  in UtiliOS.h, buildTarget and buildTargetForButton
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTargetBuilderDirector.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"

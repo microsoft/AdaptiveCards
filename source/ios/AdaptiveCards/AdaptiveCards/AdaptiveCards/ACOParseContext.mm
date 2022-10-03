@@ -5,7 +5,7 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOParseContext.h"
 #import "ACOParseContextPrivate.h"
 #import "ACRRegistration.h"

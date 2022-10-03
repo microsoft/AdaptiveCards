@@ -5,7 +5,7 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#ifdef SWIFT_PACKAGE
+#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRBaseCardElementRenderer.h"
 #else
 #import <AdaptiveCards/ACRBaseCardElementRenderer.h>
