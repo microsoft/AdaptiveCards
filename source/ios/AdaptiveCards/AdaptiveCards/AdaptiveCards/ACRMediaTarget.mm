@@ -253,6 +253,7 @@ const int posterTag = 0x504F5354;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
     self->_containingview.isAccessibilityElement = NO;
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NSLocalizedString(@"media is loading", nil));
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self->_mediaViewController.view);
 
     [player play];
