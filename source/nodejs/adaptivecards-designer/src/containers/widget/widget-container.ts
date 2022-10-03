@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { HostContainer, ColorTheme } from "../host-container";
-import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
-import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
+import * as hostConfigLight from "../../hostConfigs/widget-light.json";
+import * as hostConfigDark from "../../hostConfigs/widget-dark.json";
 
 export enum ContainerSize {
     Small = "Small",
@@ -11,13 +11,13 @@ export enum ContainerSize {
     Large = "Large"
 };
 
-export class BerlinContainer extends HostContainer {
+export class WidgetContainer extends HostContainer {
     private _containerSize: ContainerSize;
     private _colorTheme: ColorTheme;
 
     constructor(size: ContainerSize, theme: ColorTheme) {
-        super("Berlin (Test)",
-            `containers/berlin-container-${theme.toLowerCase()}.css`);
+        super("Widget Dashboard",
+            `containers/widget-container-${theme.toLowerCase()}.css`);
         this._containerSize = size;
         this._colorTheme = theme;
     }
@@ -28,29 +28,29 @@ export class BerlinContainer extends HostContainer {
     }
 
     public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.remove("berlin-small-card", "berlin-medium-card", "berlin-large-card");
-        this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
+        this.cardHost.classList.remove("widget-small-card", "widget-medium-card", "widget-large-card");
+        this.cardHost.classList.add(`widget-${this._containerSize.toLowerCase()}-card`);
         const outerFrame = document.createElement("div");
-        outerFrame.classList.add("berlin-outer-container");
-        outerFrame.classList.add(`berlin-${this._containerSize.toLowerCase()}-container`);
+        outerFrame.classList.add("widget-outer-container");
+        outerFrame.classList.add(`widget-${this._containerSize.toLowerCase()}-container`);
 
         const header = document.createElement("div");
-        header.className = "berlin-header";
+        header.className = "widget-header";
         outerFrame.appendChild(header);
 
         const headerText = document.createElement("p");
-        headerText.className = "berlin-header-text";
-        headerText.textContent = "Berlin Header";
+        headerText.className = "widget-header-text";
+        headerText.textContent = "Widget Header";
         header.appendChild(headerText);
 
         const moreButton = document.createElement("div");
-        moreButton.className = "berlin-header-more-button";
+        moreButton.className = "widget-header-more-button";
         moreButton.setAttribute("role", "button");
         moreButton.tabIndex = 0;
         header.appendChild(moreButton);
 
         const innerFrame = document.createElement("div");
-        innerFrame.className = "berlin-inner-container";
+        innerFrame.className = "widget-inner-container";
         innerFrame.appendChild(this.cardHost);
 
         outerFrame.appendChild(innerFrame);
@@ -79,7 +79,7 @@ export class BerlinContainer extends HostContainer {
 
     set colorTheme(value: ColorTheme) {
         this._colorTheme = value;
-        this.styleSheet = `containers/berlin-container-${this._colorTheme.toLowerCase()}.css`
+        this.styleSheet = `containers/widget-container-${this._colorTheme.toLowerCase()}.css`
     }
 
     get supportsMultipleSizes(): boolean {
