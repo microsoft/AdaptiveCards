@@ -856,8 +856,6 @@ export class CardDesigner extends Designer.DesignContext {
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
                 this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
-
-                this.activeHostContainerChanged();
             };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
