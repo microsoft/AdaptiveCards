@@ -417,7 +417,7 @@ export class Template {
                         whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
                     }
                     
-                    if (!evaluationResult.value) {
+                    if (evaluationResult.value === undefined) {
                         // Value was not found, and we should warn the client that the Expression was invalid
                         this.templateExpansionWarnings.push(`WARN: Unable to parse the Adaptive Expression ${when}. The $when condition has been set to false by default.`);
                     }

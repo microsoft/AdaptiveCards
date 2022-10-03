@@ -292,6 +292,44 @@ describe("Test Templating Library", () => {
         
         expect(errorLog[0]).toStrictEqual(expectedWarning);
     });
+    
+    it("TemplateWhenIsFalse", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "New TextBlock",
+                    "wrap": true,
+                    "$when": "${equals(someproperty, true)}"
+                }
+            ]
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5",
+            "body": []
+        };
+
+        let template = new ACData.Template(templatePayload);
+
+        let context = {
+            $root: {
+                "someproperty": false
+            }
+        };
+
+        let card = template.expand(context);
+
+        expect(card).toStrictEqual(expectedOutput);
+
+        let errorLog = template.getLastTemplateExpansionWarnings();
+        expect(errorLog.length).toStrictEqual(0);
+    });
 });
 
 function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
