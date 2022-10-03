@@ -25,7 +25,7 @@
     <PlatformTarget>$(Platform)</PlatformTarget>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>79D0DFF32F927302D8786638D31EFF92D3380697</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>22119E9A21A813A7B887605C17C686BA86CD75B0</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugSymbols>true</DebugSymbols>
