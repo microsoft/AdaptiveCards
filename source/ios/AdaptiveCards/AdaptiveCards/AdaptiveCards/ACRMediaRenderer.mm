@@ -120,8 +120,8 @@
     if (hideDefaultPlayIcon) {
         [contentholdingview setNeedsLayout];
         [view addSubview:playIconImageView];
-        [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        [playIconImageView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor].active = YES;
+        [playIconImageView.centerYAnchor constraintEqualToAnchor:view.centerYAnchor].active = YES;
     }
 
     contentholdingview.hidePlayIcon = hideDefaultPlayIcon;
@@ -176,35 +176,14 @@
 
     contentholdingview.frame = imageView.frame;
 
-    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+    [imageView.centerXAnchor constraintEqualToAnchor:contentholdingview.centerXAnchor].active = YES;
+    [imageView.centerYAnchor constraintEqualToAnchor:contentholdingview.centerYAnchor].active = YES;
 
-    [NSLayoutConstraint constraintWithItem:imageView
-                                 attribute:NSLayoutAttributeWidth
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:contentholdingview
-                                 attribute:NSLayoutAttributeWidth
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
+    [imageView.widthAnchor constraintLessThanOrEqualToAnchor:contentholdingview.widthAnchor].active = YES;
+    [imageView.heightAnchor constraintLessThanOrEqualToAnchor:contentholdingview.heightAnchor].active = YES;
 
-    [NSLayoutConstraint constraintWithItem:contentholdingview
-                                 attribute:NSLayoutAttributeHeight
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:imageView
-                                 attribute:NSLayoutAttributeHeight
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
+    [imageView.heightAnchor constraintEqualToAnchor:imageView.widthAnchor multiplier:heightToWidthRatio].active = YES;
 
-    [NSLayoutConstraint constraintWithItem:imageView
-                                 attribute:NSLayoutAttributeHeight
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:imageView
-                                 attribute:NSLayoutAttributeWidth
-                                multiplier:heightToWidthRatio
-                                  constant:0]
-        .active = YES;
     [contentholdingview setNeedsLayout];
     [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
