@@ -98,6 +98,7 @@ export class ToolbarButton extends ToolbarElement {
         if (!this.displayCaption) {
             this.renderedElement.classList.add("acd-toolbar-button-iconOnly");
             this.renderedElement.innerText = "";
+            this.renderedElement.ariaLabel = this.caption;
         }
         else {
             this.renderedElement.innerText = this.caption;

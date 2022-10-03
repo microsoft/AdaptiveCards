@@ -403,27 +403,34 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
-                var element = RenderedElementsWithId[targetElement.ElementId];
+                FrameworkElement element = null;
 
-                if (element != null && element is FrameworkElement elementFrameworkElement)
+                if (RenderedElementsWithId.TryGetValue(targetElement.ElementId, out element))
                 {
-                    bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
-
-                    // if we read something with the format {"elementId": <id>", "isVisible": true} or
-                    // we just read the id and the element is not visible;
-                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or
-                    // we just read the id and the element is visible
-                    bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) ||
-                                         (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
-
-                    TagContent tagContent = GetTagContent(elementFrameworkElement);
-
-                    RendererUtil.SetVisibility(elementFrameworkElement, newVisibility, tagContent);
-
-                    if (tagContent != null)
+                    if (element != null && element is FrameworkElement elementFrameworkElement)
                     {
-                        elementContainers.Add(tagContent.ParentContainerElement);
+                        bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
+
+                        // if we read something with the format {"elementId": <id>", "isVisible": true} or
+                        // we just read the id and the element is not visible;
+                        // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or
+                        // we just read the id and the element is visible
+                        bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) ||
+                                             (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
+
+                        TagContent tagContent = GetTagContent(elementFrameworkElement);
+
+                        RendererUtil.SetVisibility(elementFrameworkElement, newVisibility, tagContent);
+
+                        if (tagContent != null)
+                        {
+                            elementContainers.Add(tagContent.ParentContainerElement);
+                        }
                     }
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, $"Toggling visibility failed to find target element Id = '{targetElement.ElementId}'"));
                 }
             }
 
