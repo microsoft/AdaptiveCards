@@ -45,7 +45,10 @@ let package = Package(
                 .process("Resources")
             ],
             publicHeadersPath: "include",
-            cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel"), CXXSetting.define("USE_AC_SWIFT_PACKAGE")],
+            cxxSettings: [
+                .headerSearchPath("../../../../shared/cpp/ObjectModel"), 
+                .define("USE_AC_SWIFT_PACKAGE"),
+            ],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
                 LinkerSetting.linkedFramework("AVKit"),
