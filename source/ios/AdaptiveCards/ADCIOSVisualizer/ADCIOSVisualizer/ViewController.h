@@ -10,17 +10,14 @@
 #import <AdaptiveCards/AdaptiveCards.h>
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer, UITextViewDelegate>
+@interface ViewController : UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
 @property (strong, nonatomic) UIStackView *buttonLayout;
 @property (strong, nonatomic) UIStackView *compositeFileBrowserView;
-@property (strong, nonatomic) UIButton *tryButton;
-@property (strong, nonatomic) UIButton *applyButton;
-@property (strong, nonatomic) UIButton *enableCustomRendererButton;
+@property (strong, nonatomic) UISwitch *enableCustomRendererSwitch;
 @property (strong, nonatomic) UIButton *deleteAllRowsButton;
-@property (strong, nonatomic) NSString *editableStr;
 @property (strong, nonatomic) NSString *hostconfig;
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
