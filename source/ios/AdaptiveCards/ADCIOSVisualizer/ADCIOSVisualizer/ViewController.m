@@ -25,10 +25,10 @@ CGFloat kAdaptiveCardsWidth = 0;
 CGFloat kFileBrowserWidth = 0;
 
 @interface ViewController () {
-    BOOL _enableCustomRenderer;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
+    __weak AVPlayerViewController *_mediaViewController;
 }
 
 @end
@@ -47,82 +47,12 @@ CGFloat kFileBrowserWidth = 0;
     }
 }
 
-- (IBAction)editText:(id)sender
+- (IBAction)toggleCustomRenderer:(UISwitch *)sender
 {
     [self.view endEditing:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    if (!self.editableStr) {
-        return;
-    }
-
-    UIStackView *filebrowserView = self.compositeFileBrowserView;
-    if (!self.editView) {
-        CGRect desiredDimension = filebrowserView.frame;
-        self.editView = [[UITextView alloc] initWithFrame:desiredDimension textContainer:nil];
-
-        [self.view addSubview:self.editView];
-        self.editView.directionalLockEnabled = NO;
-        self.editView.showsHorizontalScrollIndicator = YES;
-        self.editView.keyboardType = UIKeyboardTypeAlphabet;
-
-        CGRect frame = CGRectMake(0, 0, self.editView.frame.size.width, 30);
-        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
-        UIBarButtonItem *flexSpace =
-            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                          target:nil
-                                                          action:nil];
-        UIBarButtonItem *doneButton =
-            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                          target:self
-                                                          action:@selector(dismissKeyboard)];
-        [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
-        [toolBar sizeToFit];
-        self.editView.inputAccessoryView = toolBar;
-    }
-    self.editView.hidden = NO;
-    self.editView.delegate = self;
-
-    NSMutableAttributedString *content =
-        [[NSMutableAttributedString alloc] initWithString:self.editableStr];
-    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
-    para.lineBreakMode = NSLineBreakByCharWrapping;
-    para.alignment = NSTextAlignmentLeft;
-    [content addAttributes:@{NSParagraphStyleAttributeName : para} range:NSMakeRange(0, 1)];
-    self.editView.attributedText = content;
-    UIFontDescriptor *dec = self.editView.font.fontDescriptor;
-    self.editView.font = [UIFont fontWithDescriptor:dec size:15];
-    self.editView.layer.borderWidth = 0.8;
-    filebrowserView.hidden = YES;
-}
-
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    [textView resignFirstResponder];
-    return YES;
-}
-
-- (void)dismissKeyboard
-{
-    [self.editView resignFirstResponder];
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    [textView becomeFirstResponder];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    [textView resignFirstResponder];
-}
-
-- (IBAction)toggleCustomRenderer:(id)sender
-{
-    [self.view endEditing:YES];
-    _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
-    if (_enableCustomRenderer) {
+    if (_enableCustomRendererSwitch.isOn) {
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
@@ -138,7 +68,6 @@ CGFloat kFileBrowserWidth = 0;
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRQuickReply];
-        _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
     } else {
@@ -147,12 +76,7 @@ CGFloat kFileBrowserWidth = 0;
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRActionSet];
         [registration setActionSetRenderer:nil];
-        _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255
-                                                                      green:122.0 / 255
-                                                                       blue:1
-                                                                      alpha:1];
     }
-    [self update:self.editableStr];
 }
 
 - (IBAction)applyText:(id)sender
@@ -173,6 +97,10 @@ CGFloat kFileBrowserWidth = 0;
     if ([self appIsBeingTested]) {
         [self.retrievedInputsTextView setText:@" "];
     }
+
+    if (_mediaViewController && _mediaViewController.player) {
+        [_mediaViewController.player pause];
+    }
 }
 
 - (void)viewDidLoad
@@ -184,7 +112,6 @@ CGFloat kFileBrowserWidth = 0;
     kAdaptiveCardsWidth = kFileBrowserWidth;
     [self registerForKeyboardNotifications];
 
-    _enableCustomRenderer = NO;
     self.curView = nil;
 
     ACRRegistration *registration = [ACRRegistration getInstance];
@@ -242,7 +169,7 @@ CGFloat kFileBrowserWidth = 0;
     self.ACVTabVC.tableHeight.active = YES;
     ACVTabView.hidden = YES;
 
-    NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
+    NSArray<UIStackView *> *buttons = [self buildControlLayout:fileBrowserView.centerXAnchor];
     UIStackView *retrievedInputsLayout = [self buildRetrievedResultsLayout:fileBrowserView.centerXAnchor];
 
     UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
@@ -259,6 +186,7 @@ CGFloat kFileBrowserWidth = 0;
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
     _dataSource = [[ACRChatWindow alloc] init:kAdaptiveCardsWidth];
     _dataSource.adaptiveCardsDelegates = self;
+    _dataSource.adaptiveCardsMediaDelegates = self;
     self.chatWindow.dataSource = _dataSource;
 
     [self.view addSubview:self.chatWindow];
@@ -268,8 +196,8 @@ CGFloat kFileBrowserWidth = 0;
     // if the app is being tested we render an extra layout that contains the
     // retrieved input values json
     NSString *layoutOption = [self appIsBeingTested] ? @"-[retrievedInputsLayout]-" : @"-";
-    NSString *verticalFormat = [NSString stringWithFormat:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]%@[chatWindow]-40@100-|", layoutOption];
-    NSArray<NSString *> *formats = [NSArray arrayWithObjects:verticalFormat, @"H:|-[chatWindow]-|", nil];
+
+    NSArray<NSString *> *visualFormats = @[ [NSString stringWithFormat:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]%@[chatWindow]-40@100-|", layoutOption], @"H:|-[chatWindow]-|", @"H:|-[buttonLayout0]-|", @"H:|-[buttonLayout1]-|" ];
 
     NSDictionary *viewMap;
     if ([self appIsBeingTested]) {
@@ -280,7 +208,7 @@ CGFloat kFileBrowserWidth = 0;
             NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
     }
 
-    [ViewController applyConstraints:formats variables:viewMap];
+    [ViewController applyConstraints:visualFormats variables:viewMap];
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
@@ -407,6 +335,7 @@ CGFloat kFileBrowserWidth = 0;
 {
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
+    _mediaViewController = controller;
 }
 
 - (BOOL)shouldAllowMoreThanMaxActionsInOverflowMenu
@@ -519,35 +448,33 @@ CGFloat kFileBrowserWidth = 0;
     self.chatWindow.contentInset = contentInsets;
 }
 
-- (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor
+- (NSArray<UIStackView *> *)buildControlLayout:(NSLayoutAnchor *)centerXAnchor
 {
-    NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
-                                        [self configureButtons:centerXAnchor
-                                                  distribution:UIStackViewDistributionFill] ];
-
-    // try button
-    self.tryButton = [self buildButton:@"Edit" selector:@selector(editText:)];
-    [layout[0] addArrangedSubview:self.tryButton];
-
-    // apply button
-    self.applyButton = [self buildButton:@"Apply" selector:@selector(applyText:)];
-    [layout[0] addArrangedSubview:self.applyButton];
-
+    NSArray<UIStackView *> *layout = @[ [self configureStackView:centerXAnchor distribution:UIStackViewDistributionFillEqually],
+                                        [self configureStackView:centerXAnchor
+                                                    distribution:UIStackViewDistributionFill] ];
     // delete button
     self.deleteAllRowsButton = [self buildButton:@"Delete All Cards" selector:@selector(deleteAllRows:)];
-    [layout[1] addArrangedSubview:self.deleteAllRowsButton];
+    [layout[0] addArrangedSubview:self.deleteAllRowsButton];
 
-    // custon renderer button
-    self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
-    [layout[1] addArrangedSubview:self.enableCustomRendererButton];
+    UIView *padding1 = [[UIView alloc] init];
+    [layout[1] addArrangedSubview:padding1];
+    // custom control switch
+    UILabel *customControlLabel = [[UILabel alloc] init];
+    customControlLabel.text = @"Enable Custom Control";
+    self.enableCustomRendererSwitch = [[UISwitch alloc] init];
+    [self.enableCustomRendererSwitch addTarget:self action:@selector(toggleCustomRenderer:) forControlEvents:UIControlEventValueChanged];
+
+    [layout[1] addArrangedSubview:customControlLabel];
+    [layout[1] addArrangedSubview:self.enableCustomRendererSwitch];
 
     return layout;
 }
 
 - (UIStackView *)buildRetrievedResultsLayout:(NSLayoutAnchor *)centerXAnchor
 {
-    UIStackView *layout = [self configureButtons:centerXAnchor
-                                    distribution:UIStackViewDistributionFill];
+    UIStackView *layout = [self configureStackView:centerXAnchor
+                                      distribution:UIStackViewDistributionFill];
 
     if ([self appIsBeingTested]) {
         // Set a background red color to signalize the app is in test mode
@@ -600,7 +527,7 @@ CGFloat kFileBrowserWidth = 0;
     return label;
 }
 
-- (UIStackView *)configureButtons:(NSLayoutAnchor *)centerXAnchor distribution:(UIStackViewDistribution)distribution
+- (UIStackView *)configureStackView:(NSLayoutAnchor *)centerXAnchor distribution:(UIStackViewDistribution)distribution
 {
     UIStackView *buttonLayout = [[UIStackView alloc] init];
     buttonLayout.axis = UILayoutConstraintAxisHorizontal;
@@ -626,7 +553,6 @@ CGFloat kFileBrowserWidth = 0;
     // adding the two tasks, rendering the card & handling the notification, to a task queue ensures
     // the syncronization.
     dispatch_async(_global_queue, ^{
-        self.editableStr = jsonStr;
         // the data source will parse & render the card, and update its store for AdaptiveCards
         [self->_dataSource insertCard:jsonStr];
         // tell the table view UI to add N rows.

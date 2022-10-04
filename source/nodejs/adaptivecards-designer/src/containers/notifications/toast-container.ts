@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import { HostContainer } from "../host-container";
+import { SingleThemeHostContainer } from "../single-theme-host-container";
 import * as hostConfig from "../../hostConfigs/windows-notification.json";
 
-export class ToastContainer extends HostContainer {
+export class ToastContainer extends SingleThemeHostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("toast-card");
 
