@@ -1,6 +1,6 @@
 {
 	"name": "@microsoft/adaptivecards-react-testapp",
-	"version": "0.1.0",
+	"version": "0.2.0-alpha.0",
 	"description": "JavaScript Runtime test application for adaptivecards-react",
 	"private": true,
 	"author": "AdaptiveCards",
@@ -27,12 +27,14 @@
 		"@types/node": "^12.0.0",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
-		"adaptivecards-react": "^1.1.0-alpha.0",
+		"adaptivecards-react": "^1.2.0-alpha.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
-		"react-scripts": "5.0.0",
 		"typescript": "^4.1.2",
 		"web-vitals": "^1.0.1"
+	},
+	"devDependencies": {
+		"react-scripts": "^5.0.1"
 	},
 	"scripts": {
 		"start": "react-scripts start",

@@ -27,7 +27,7 @@ import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
-import { BerlinContainer, ContainerSize } from "./containers";
+import { WidgetContainer, ContainerSize } from "./containers";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -223,13 +223,6 @@ export class CardDesigner extends Designer.DesignContext {
                         const peer = paletteItem.createPeer(this, this.designerSurface);
 
                         if (this.designerSurface.rootPeer.tryAdd(peer)) {
-
-                            if (peer.cardElement.getJsonTypeName() === "Carousel") {
-                                this.designerSurface.reassignCardElementToCarousel(peer as DesignerPeers.CarouselPeer);
-
-                                this.designerSurface.containsCarousel = true;
-                            }
-
                             peer.isSelected = true;
                         };
                     }
@@ -317,13 +310,13 @@ export class CardDesigner extends Designer.DesignContext {
         styleSheetLinkElement.rel = "stylesheet";
         styleSheetLinkElement.type = "text/css";
 
-        if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
+        if (Utils.isAbsoluteUrl(this.hostContainer.getCurrentStyleSheet()))
         {
-            styleSheetLinkElement.href = this.hostContainer.styleSheet;
+            styleSheetLinkElement.href = this.hostContainer.getCurrentStyleSheet();
         }
         else
         {
-            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
+            styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.getCurrentStyleSheet());
         }
 
         let cardArea = document.getElementById("cardArea");
@@ -419,7 +412,7 @@ export class CardDesigner extends Designer.DesignContext {
         this.updateCardFromJson(false);
         this.updateSampleData();
         
-        this._sampleHostDataEditorToolbox.isVisible = (this._hostContainer instanceof BerlinContainer) && Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleHostDataEditorToolbox;
+        this._sampleHostDataEditorToolbox.isVisible = (this._hostContainer instanceof WidgetContainer) && Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleHostDataEditorToolbox;
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
 
@@ -438,12 +431,12 @@ export class CardDesigner extends Designer.DesignContext {
             this._containerSizeChoicePicker.isHidden = !(!!this.hostContainer.supportsMultipleSizes);
 
             // Update the host parameter data with the value of the choice picker
-            if ((this._hostContainer instanceof BerlinContainer) && this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
+            if ((this._hostContainer instanceof WidgetContainer) && this._containerSizeChoicePicker.isEnabled && this._sampleHostData) {
                 this.updateHostDataSizeProperty();
 
                 // If the container properties do not align with the choice picker, update the property and recreate the designer surface
-                if (this._containerSizeChoicePicker.value !== (this._hostContainer as BerlinContainer).containerSize) {
-                    (this._hostContainer as BerlinContainer).containerSize = this._containerSizeChoicePicker.value as ContainerSize;
+                if (this._containerSizeChoicePicker.value !== (this._hostContainer as WidgetContainer).containerSize) {
+                    (this._hostContainer as WidgetContainer).containerSize = this._containerSizeChoicePicker.value as ContainerSize;
                     this.recreateDesignerSurface();
                 }
             }
@@ -863,8 +856,6 @@ export class CardDesigner extends Designer.DesignContext {
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
                 this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
-
-                this.activeHostContainerChanged();
             };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
@@ -907,7 +898,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._containerSizeChoicePicker.separator = false;
             this._containerSizeChoicePicker.label = "Container size:"
 
-            const sizes = BerlinContainer.supportedContainerSizes;
+            const sizes = WidgetContainer.supportedContainerSizes;
 
             for (let i = 0; i < sizes.length; i++) {
                 this._containerSizeChoicePicker.choices.push(
@@ -919,7 +910,7 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._containerSizeChoicePicker.onChanged = (sender) => {
-                if (this.hostContainer instanceof BerlinContainer) {
+                if (this.hostContainer instanceof WidgetContainer) {
                     // Update container size and rerender the designer surface
                     this.hostContainer.containerSize = this._containerSizeChoicePicker.value as ContainerSize;
                     this.recreateDesignerSurface();
@@ -1345,7 +1336,6 @@ export class CardDesigner extends Designer.DesignContext {
             monaco = window["monaco"];
         }
 
-        // TODO: the uri here needs to be updated to allow for an object or array for the carousel
         let monacoConfiguration = {
             schemas: [
                 {
@@ -1591,7 +1581,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._sampleHostDataEditorToolbox.content.style.padding = "8px";
             this._sampleHostDataEditorToolbox.content.innerText = Strings.loadingEditor;
 
-            this._sampleHostDataEditorToolbox.isVisible = Shared.GlobalSettings.showSampleHostDataEditorToolbox && (this._hostContainer instanceof BerlinContainer);
+            this._sampleHostDataEditorToolbox.isVisible = Shared.GlobalSettings.showSampleHostDataEditorToolbox && (this._hostContainer instanceof WidgetContainer);
 
             this._jsonEditorsPanel.addToolbox(this._sampleHostDataEditorToolbox);
         }

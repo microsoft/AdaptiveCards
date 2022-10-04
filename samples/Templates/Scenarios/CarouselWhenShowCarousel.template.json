@@ -1,0 +1,36 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Carousel",
+			"$when": "${showCarousel}",
+			"rtl": false,
+			"pages": [
+				{
+					"type": "CarouselPage",
+					"rtl": false,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "This carousel should only appear if showCarousel = true",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"$when": "${!showCarousel}",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This container should only appear if showCarousel = false",
+					"wrap": true
+				}
+			]
+		}
+	]
+}

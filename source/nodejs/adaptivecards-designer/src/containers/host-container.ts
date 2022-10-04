@@ -14,11 +14,9 @@ export abstract class HostContainer {
     private _actionsRegistry = new CardObjectRegistry<Action>();
 
     readonly name: string;
-    private _styleSheet: string;
 
-    constructor(name: string, styleSheet: string) {
+    constructor(name: string) {
         this.name = name;
-        this._styleSheet = styleSheet;
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
@@ -28,6 +26,8 @@ export abstract class HostContainer {
     }
 
     abstract renderTo(hostElement: HTMLElement);
+    
+    abstract getCurrentStyleSheet(): string;
 
     public initialize() {
         GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
@@ -99,14 +99,6 @@ export abstract class HostContainer {
     get supportsMultipleThemes(): boolean {
         // By default, we do not support different color themes
         return false;
-    }
-
-    set styleSheet(value: string) {
-        this._styleSheet = value;
-    }
-
-    get styleSheet() {
-        return this._styleSheet;
     }
 
     set colorTheme(value: ColorTheme) {

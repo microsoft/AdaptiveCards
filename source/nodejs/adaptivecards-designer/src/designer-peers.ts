@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Adaptive  from "adaptivecards";
-import * as Controls  from "adaptivecards-controls";
+import * as Adaptive from "adaptivecards";
+import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface, DesignContext } from "./card-designer-surface";
@@ -64,7 +64,7 @@ export class PropertySheetCategory {
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
     static readonly Validation = "Validation";
-    static readonly Refresh = "Refresh"
+    static readonly Refresh = "Refresh";
 
     private _entries: PropertySheetEntry[] = [];
 
@@ -375,8 +375,7 @@ export class StringPropertyEditor extends BaseStringPropertyEditor {
                     }
                 }
             ];
-        }
-        else {
+        } else {
             return super.getAdditionalCommands(context);
         }
     }
@@ -432,8 +431,7 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         try {
             context.target[this.propertyName] = parseFloat(value);
-        }
-        catch {
+        } catch {
             context.target[this.propertyName] = this.defaultValue;
         }
     }
@@ -515,8 +513,7 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         if (value === NotSetValue) {
             context.target[this.propertyName] = undefined;
-        }
-        else {
+        } else {
             context.target[this.propertyName] = value;
         }
     }
@@ -528,8 +525,7 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
 
         if (this.isNullable) {
             input.choices.push(new Adaptive.Choice("(not set)", NotSetValue));
-        }
-        else {
+        } else {
             input.placeholder = "(not set)";
         }
 
@@ -563,13 +559,12 @@ export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         if (value == NotSetValue) {
             context.target[this.propertyName] = undefined;
-        }
-        else {
+        } else {
             context.target[this.propertyName] = value;
         }
     }
 
-    constructor(readonly targetVersion: Adaptive.TargetVersion,readonly propertyName: string, readonly label: string) {
+    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly propertyName: string, readonly label: string) {
         super(
             targetVersion,
             propertyName,
@@ -596,13 +591,12 @@ export class NullableBooleanPropertyEditor extends ChoicePropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         if (value === NotSetValue) {
             context.target[this.propertyName] = undefined;
-        }
-        else {
+        } else {
             context.target[this.propertyName] = value === "true";
         }
     }
 
-    constructor(readonly targetVersion: Adaptive.TargetVersion,readonly propertyName: string, readonly label: string) {
+    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly propertyName: string, readonly label: string) {
         super(
             targetVersion,
             propertyName,
@@ -620,12 +614,10 @@ export class ColumnWidthPropertyEditor extends ChoicePropertyEditor {
         if (context.target[this.propertyName] instanceof Adaptive.SizeAndUnit) {
             if (context.target[this.propertyName].unit == Adaptive.SizeUnit.Pixel) {
                 return "pixels";
-            }
-            else {
+            } else {
                 return "weighted";
             }
-        }
-        else {
+        } else {
             return context.target[this.propertyName].toString();
         }
     }
@@ -705,8 +697,7 @@ export class CarouselTimerPropertyEditor extends NumberPropertyEditor {
             } else {
                 context.target[this.propertyName] = parsedValue;
             }
-        }
-        catch {
+        } catch {
             context.target[this.propertyName] = this.defaultValue;
         }
     }
@@ -722,8 +713,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         if (value == "none") {
             context.target[this.propertyName] = undefined;
-        }
-        else {
+        } else {
             context.target[this.propertyName] = context.designContext.hostContainer.actionsRegistry.createInstance(value, context.designContext.targetVersion);
         }
     }
@@ -821,8 +811,7 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
 
         if (valueAsInt >= 0) {
             context.target[this.propertyName] = valueAsInt;
-        }
-        else {
+        } else {
             context.target[this.propertyName] = undefined;
         }
     }
@@ -836,8 +825,7 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
 
         if (this.isNullable) {
             input.choices.push(new Adaptive.Choice("(not set)", "-1"));
-        }
-        else {
+        } else {
             input.placeholder = "(not set)";
         }
 
@@ -898,7 +886,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
                     name: pair[this.namePropertyName],
                     value: pair[this.valuePropertyName]
                 }
-            )
+            );
         }
 
         if (nameValuePairs.length == 0) {
@@ -907,8 +895,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
             messageTextBlock.text = this.messageIfEmpty;
 
             result.addItem(messageTextBlock);
-        }
-        else {
+        } else {
             for (let i = 0; i < nameValuePairs.length; i++) {
                 let textInput = new Adaptive.TextInput();
                 textInput.placeholder = this.namePropertyLabel;
@@ -942,7 +929,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
                     nameValuePairs.splice(i, 1);
 
                     this.collectionChanged(context, nameValuePairs, true);
-                }
+                };
 
                 let actionSet = new Adaptive.ActionSet();
                 actionSet.addAction(removeAction);
@@ -967,7 +954,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
             nameValuePairs.push({ name: "", value: "" });
 
             this.collectionChanged(context, nameValuePairs, true);
-        }
+        };
 
         let actionSet = new Adaptive.ActionSet();
         actionSet.spacing = Adaptive.Spacing.Small;
@@ -993,13 +980,13 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 }
 
 type NameAndValue = {
-    name: string,
-    value?: string
-}
+    name: string;
+    value?: string;
+};
 
 type InnerPropertiesDictionary = {
-    [name: string]: NameAndValue
-}
+    [name: string]: NameAndValue;
+};
 
 class InnerStructPropertyEditor extends PropertySheetEntry {
     private collectionChanged(context: PropertySheetContext, innerPropertiesList: InnerPropertiesDictionary[], refreshPropertySheet: boolean) {
@@ -1034,8 +1021,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
             messageTextBlock.text = this.messageIfEmpty;
 
             result.addItem(messageTextBlock);
-        }
-        else {
+        } else {
             for (let i = 0; i < innerPropertiesList.length; i++) {
                 let columnSet = new Adaptive.ColumnSet();
                 columnSet.spacing = Adaptive.Spacing.Medium;
@@ -1050,7 +1036,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
                     textInput.onValueChanged = (sender) => {
                         innerPropertiesList[i][key].value = sender.value;
                         this.collectionChanged(context, innerPropertiesList, false);
-                    }
+                    };
                     textInput.spacing = Adaptive.Spacing.Small;
                     newColumn.addItem(textInput);
                 });
@@ -1063,7 +1049,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
                     innerPropertiesList.splice(i, 1);
 
                     this.collectionChanged(context, innerPropertiesList, true);
-                }
+                };
 
                 let actionSet = new Adaptive.ActionSet();
                 actionSet.addAction(removeAction);
@@ -1084,7 +1070,7 @@ class InnerStructPropertyEditor extends PropertySheetEntry {
         addAction.onExecute = (sender) => {
             innerPropertiesList.push({...this.innerPropertiesDefaults});
             this.collectionChanged(context, innerPropertiesList, true);
-        }
+        };
 
         let actionSet = new Adaptive.ActionSet();
         actionSet.spacing = Adaptive.Spacing.Small;
@@ -1118,6 +1104,7 @@ export abstract class DesignerPeer extends DraggableElement {
     private _inplaceEditorOverlay: HTMLElement;
     private _inplaceEditor: DesignerPeerInplaceEditor = null;
     private _insertAfterNeighbor = false;
+    private _parentCarouselPagePeer: CarouselPagePeer | undefined = undefined;
 
     private closeInplaceEditor(applyChanges: boolean) {
         if (this._inplaceEditor) {
@@ -1139,7 +1126,7 @@ export abstract class DesignerPeer extends DraggableElement {
         if (this._inplaceEditor) {
             this._inplaceEditor.onClose = (applyChanges: boolean) => {
                 this.closeInplaceEditor(applyChanges);
-            }
+            };
 
             this._inplaceEditorOverlay = document.createElement("div");
             this._inplaceEditorOverlay.tabIndex = 0;
@@ -1236,15 +1223,13 @@ export abstract class DesignerPeer extends DraggableElement {
     protected internalUpdateCssStyles() {
         if (this.isSelected) {
             this.renderedElement.classList.add("selected");
-        }
-        else {
+        } else {
             this.renderedElement.classList.remove("selected");
         }
 
         if (this.dragging) {
             this.renderedElement.classList.add("dragging");
-        }
-        else {
+        } else {
             this.renderedElement.classList.remove("dragging");
         }
     }
@@ -1355,8 +1340,7 @@ export abstract class DesignerPeer extends DraggableElement {
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
-        }
-        else {
+        } else {
             this._children.splice(index, 0, peer);
         }
 
@@ -1415,12 +1399,6 @@ export abstract class DesignerPeer extends DraggableElement {
             }
 
             this.removeElementsFromDesignerSurface();
-
-            if (this instanceof CarouselPeer) {
-                this.designerSurface.containsCarousel = false;
-                this.designerSurface.currentCarouselPage = undefined;
-            }
-
             this.peerRemoved(this);
         }
 
@@ -1487,7 +1465,7 @@ export abstract class DesignerPeer extends DraggableElement {
                 action.title = command.name;
                 action.onExecute = (sender: Adaptive.Action) => {
                     command.execute(command, action.renderedElement);
-                }
+                };
 
                 actionSet.addAction(action);
             }
@@ -1510,6 +1488,17 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
+    private updateParentCarouselPagePeer(value: CarouselPagePeer | undefined) {
+        // If the value has changed, we should update it and the current peer's children
+        if (value !== this._parentCarouselPagePeer) {
+            this._parentCarouselPagePeer = value;
+
+            for (const child of this._children) {
+                child.updateParentCarouselPagePeer(this._parentCarouselPagePeer);
+            }
+        }
+    }
+
     get isTreeItemExpandedByDefault(): boolean {
         return true;
     }
@@ -1520,6 +1509,8 @@ export abstract class DesignerPeer extends DraggableElement {
 
     set parent(value: DesignerPeer) {
         this._parent = value;
+
+        this.updateParentCarouselPagePeer(this._parent instanceof CarouselPagePeer ? this._parent : this._parent?._parentCarouselPagePeer);
 
         if (this.onParentChanged) {
             this.onParentChanged(this);
@@ -1551,8 +1542,12 @@ export abstract class DesignerPeer extends DraggableElement {
         this._insertAfterNeighbor = insertAfterNeighbor;
     }
 
-    get children(): Array<DesignerPeer>{
+    get children(): Array<DesignerPeer> {
         return this._children;
+    }
+
+    get parentCarouselPagePeer(): CarouselPagePeer | undefined {
+        return this._parentCarouselPagePeer;
     }
 }
 
@@ -1600,9 +1595,14 @@ export class ActionPeer extends DesignerPeer {
     protected internalGetTreeItemText(): string {
         if (this.action.title && this.action.title != "") {
             return this.action.title;
-        }
-        else {
+        } else {
             return super.internalGetTreeItemText();
+        }
+    }
+    
+    protected internalUpdateLayout() {
+        if (this.action.renderedElement) {
+            super.internalUpdateLayout();
         }
     }
 
@@ -1785,7 +1785,8 @@ export class CardElementPeer extends DesignerPeer {
         [
             { targetVersion: Adaptive.Versions.v1_1, name: "Automatic", value: "auto" },
             { targetVersion: Adaptive.Versions.v1_1, name: "Stretch", value: "stretch" }
-        ]);
+        ]
+    );
 
     protected insertElementAfter(newElement: Adaptive.CardElement) {
         if (this.cardElement.parent instanceof Adaptive.Container) {
@@ -1806,8 +1807,7 @@ export class CardElementPeer extends DesignerPeer {
 
         if (this.cardElement.isVisible) {
             this.renderedElement.classList.remove("invisible");
-        }
-        else {
+        } else {
             this.renderedElement.classList.add("invisible");
         }
     }
@@ -1906,8 +1906,7 @@ export class CardElementPeer extends DesignerPeer {
 
         if (this.cardElement.isVisible) {
             return text;
-        }
-        else {
+        } else {
             let result = "Hidden";
 
             if (text) {
@@ -1972,16 +1971,13 @@ export class CardElementPeer extends DesignerPeer {
 
                     if (this.cardElement.getItemCount() > 0 && insertAfter) {
                         this.cardElement.insertItemAfter(peer.cardElement, this.cardElement.getItemAt(this.cardElement.getItemCount() - 1));
-                    }
-                    else {
+                    } else {
                         this.cardElement.insertItemAfter(peer.cardElement, null);
                     }
-                }
-                else {
+                } else {
                     if (insertAfter) {
                         this.cardElement.insertItemAfter(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
-                    }
-                    else {
+                    } else {
                         this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
                     }
                 }
@@ -2028,10 +2024,9 @@ export class CardElementPeer extends DesignerPeer {
                 Math.min(separatorBoundingRect.top, cardElementBoundingRect.top) - designSurfaceOffset.y,
                 Math.max(separatorBoundingRect.right, cardElementBoundingRect.right) - designSurfaceOffset.x,
                 Math.max(separatorBoundingRect.bottom, cardElementBoundingRect.bottom) - designSurfaceOffset.y,
-                Math.min(separatorBoundingRect.left, cardElementBoundingRect.left) - designSurfaceOffset.x,
-            )
-        }
-        else {
+                Math.min(separatorBoundingRect.left, cardElementBoundingRect.left) - designSurfaceOffset.x
+            );
+        } else {
             returnRect = new Rect(
                 cardElementBoundingRect.top - designSurfaceOffset.y,
                 cardElementBoundingRect.right - designSurfaceOffset.x,
@@ -2041,14 +2036,11 @@ export class CardElementPeer extends DesignerPeer {
         }
 
         // If we are displaying a carousel, we need to make sure that all of the child peers are in the correct location
-        // First check if the carousel exists and we know the current carousel page
-        // Since the AdapativeCard, Carousel, and CarouselPage are not children elements, we should not adjust the location
-        if (this.designerSurface.containsCarousel && this.designerSurface.currentCarouselPage && !(this instanceof AdaptiveCardPeer) && !(this instanceof CarouselPeer) && !(this instanceof CarouselPagePeer)) {
-            // If the peer location is not within the carousel page, we need to adjust it by the pageOffset
-            if (!this.designerSurface.currentCarouselPage.peerInCorrectLocation({x: returnRect.x, y: returnRect.y})) {
-                returnRect.left = returnRect.left - this.designerSurface.currentCarouselPage.pageOffset;
-                returnRect.right = returnRect.right - this.designerSurface.currentCarouselPage.pageOffset;
-            }
+        // First check if the peer has a parent that is a CarouselPagePeer and it is the visible page
+        // Then see if the bounding rect needs to be adjusted
+        if (this.parentCarouselPagePeer?.isVisible() && !this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.x, y: returnRect.y })) {
+            returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
+            returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
         }
 
         return returnRect;
@@ -2151,13 +2143,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
-                if (this.designerSurface.containsCarousel) {
-                    if (typeRegistration.typeName !== "Action.ToggleVisibility" && typeRegistration.typeName !== "Action.ShowCard") {
-                        availableActions.push(typeRegistration);
-                    }
-                } else {
-                    availableActions.push(typeRegistration);
-                }
+                availableActions.push(typeRegistration);
             }
         }
 
@@ -2254,10 +2240,6 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                 PropertySheetCategory.SelectionAction);
         }
     }
-
-    canDrop(peer: DesignerPeer) {
-        return !this.designerSurface.containsCarousel;
-    }
 }
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
@@ -2288,8 +2270,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
                 default:
                     return this.cardElement.width.physicalSize + " pixels";
             }
-        }
-        else {
+        } else {
             switch (this.cardElement.width) {
                 case "stretch":
                     return "Stretch";
@@ -2317,8 +2298,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
                 propertySheet.add(
                     PropertySheetCategory.LayoutCategory,
                     ColumnPeer.pixelWidthProperty);
-            }
-            else {
+            } else {
                 propertySheet.add(
                     PropertySheetCategory.LayoutCategory,
                     ColumnPeer.weightProperty);
@@ -2473,7 +2453,6 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
                 this,
                 this.cardElement.selectAction,
                 PropertySheetCategory.SelectionAction);
-
         }
     }
 }
@@ -2601,7 +2580,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 
                                     this.changed(true);
                                 }
-                            }
+                            };
                             fieldPicker.popup(clickedElement);
                         }
                     })
@@ -2624,17 +2603,17 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 actionBoundingRect.bottom - designSurfaceOffset.y,
                 actionBoundingRect.left - designSurfaceOffset.x
             );
-            
-            if (this.designerSurface.containsCarousel && this.designerSurface.currentCarouselPage) {
-                if (!this.designerSurface.currentCarouselPage.peerInCorrectLocation({x: returnRect.right, y: returnRect.bottom})) {
-                    returnRect.left = returnRect.left - this.designerSurface.currentCarouselPage.pageOffset;
-                    returnRect.right = returnRect.right - this.designerSurface.currentCarouselPage.pageOffset;
-                }
+
+            // If we are displaying a carousel, we need to make sure that all of the child peers are in the correct location
+            // First check if the peer has a parent that is a CarouselPagePeer and it is the visible page
+            // Then see if the bounding rect needs to be adjusted
+            if (this.parentCarouselPagePeer?.isVisible() && !this.parentCarouselPagePeer.peerInCorrectLocation({ x: returnRect.right, y: returnRect.bottom })) {
+                returnRect.left = returnRect.left - this.parentCarouselPagePeer.pageOffset;
+                returnRect.right = returnRect.right - this.parentCarouselPagePeer.pageOffset;
             }
 
             return returnRect;
-        }
-        else {
+        } else {
             return super.getBoundingRect();
         }
     }
@@ -2695,11 +2674,9 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
     protected internalGetTreeItemText(): string {
         if (this.cardElement.selectedMediaType == "audio") {
             return "audio";
-        }
-        else if (this.cardElement.selectedMediaType == "video") {
+        } else if (this.cardElement.selectedMediaType == "video") {
             return "video";
-        }
-        else {
+        } else {
             return super.internalGetTreeItemText();
         }
     }
@@ -2812,7 +2789,6 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
     static readonly regexProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "regex", "Pattern");
 
-
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
@@ -2825,8 +2801,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
                 TextInputPeer.styleProperty);
-        }
-        else {
+        } else {
             propertySheet.add(
                 PropertySheetCategory.LayoutCategory,
                 CardElementPeer.heightProperty);
@@ -3024,12 +2999,12 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.onkeydown = (e) => {
             switch (e.key) {
                 case Controls.Constants.keys.escape:
-                   this.close(false);
+                    this.close(false);
 
-                   e.preventDefault();
-                   e.cancelBubble = true;
+                    e.preventDefault();
+                    e.cancelBubble = true;
 
-                   break;
+                    break;
                 case Controls.Constants.keys.enter:
                     this.close(true);
 
@@ -3095,7 +3070,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
                                     this.changed(true);
                                 }
-                            }
+                            };
                             fieldPicker.popup(clickedElement);
                         }
                     })
@@ -3206,7 +3181,7 @@ export class TableRowPeer extends TypedCardElementPeer<Adaptive.TableRow> {
     isDraggable(): boolean {
         return false;
     }
-    
+
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
@@ -3241,8 +3216,7 @@ class TableColumnsPropertyEditor extends PropertySheetEntry {
             messageTextBlock.text = "No column has been defined";
 
             result.addItem(messageTextBlock);
-        }
-        else {
+        } else {
             for (let i = 0; i < peer.cardElement.getColumnCount(); i++) {
                 let columnDefinition = peer.cardElement.getColumnAt(i);
 
@@ -3283,7 +3257,7 @@ class TableColumnsPropertyEditor extends PropertySheetEntry {
                     peer.cardElement.removeColumn(columnDefinition);
 
                     this.columnsChanged(context, true);
-                }
+                };
 
                 let actionSet = new Adaptive.ActionSet();
                 actionSet.addAction(removeAction);
@@ -3308,7 +3282,7 @@ class TableColumnsPropertyEditor extends PropertySheetEntry {
             peer.cardElement.addColumn(new Adaptive.TableColumnDefinition());
 
             this.columnsChanged(context, true);
-        }
+        };
 
         let actionSet = new Adaptive.ActionSet();
         actionSet.spacing = Adaptive.Spacing.Small;
@@ -3384,7 +3358,7 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
                 })
         );
     }
-    
+
     initializeCardElement() {
         super.initializeCardElement();
 
@@ -3396,7 +3370,7 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
         this.cardElement.addRow(new Adaptive.TableRow());
         this.cardElement.addRow(new Adaptive.TableRow());
     }
-    
+
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
@@ -3422,7 +3396,6 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 }
 
 export class CarouselPeer extends ContainerPeer {
-
     // Question: What do we want the default value to be here?
     static readonly timerProperty = new CarouselTimerPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
 
@@ -3443,7 +3416,7 @@ export class CarouselPeer extends ContainerPeer {
                     }
                 }
             )
-        )
+        );
     }
 
     initializeCardElement() {
@@ -3467,14 +3440,9 @@ export class CarouselPeer extends ContainerPeer {
     canDrop(peer: DesignerPeer) {
         return false;
     }
-
-    isDraggable(): boolean {
-        return false;
-    }
 }
 
 export class CarouselPagePeer extends ContainerPeer {
-
     private _pageOffset: number = 0;
 
     isDraggable(): boolean {
@@ -3505,9 +3473,9 @@ export class CarouselPagePeer extends ContainerPeer {
     }
 
     isVisible(): boolean {
-        const parentCarousel = (this.parent as CarouselPeer);
+        const parentCarousel = this.parent as CarouselPeer;
 
-        return this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex];
+        return this === parentCarousel?.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex];
     }
 
     bringCardElementIntoView(): boolean {
@@ -3524,15 +3492,7 @@ export class CarouselPagePeer extends ContainerPeer {
     }
 
     canDrop(peer: DesignerPeer) {
-        return !((this.cardElement as Adaptive.CarouselPage).getForbiddenChildElements().includes(peer.getCardObject().getJsonTypeName()));
-    }
-
-    assignCurrentCarouselPage() {
-        const parentCarousel = (this.parent as CarouselPeer);
-
-        if (this === parentCarousel.children[(parentCarousel.cardElement as Adaptive.Carousel).currentPageIndex]) {
-            this.designerSurface.currentCarouselPage = this;
-        }
+        return !(this.cardElement as Adaptive.CarouselPage).getForbiddenChildElements().includes(peer.getCardObject().getJsonTypeName());
     }
 
     get pageOffset(): number {

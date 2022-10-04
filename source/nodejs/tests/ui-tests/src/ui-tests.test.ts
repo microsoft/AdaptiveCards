@@ -259,22 +259,22 @@ describe("Mock function", function() {
     test("Carousel: Verify left and right buttons work", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, true);
 
         await ACCarousel.clickOnRightArrow();
 
-        await WaitUtils.waitUntilElementIsCssVisible("theSecondCarouselPage", delayForCarouselTimer);
+        await WaitUtils.waitUntilElementIsCssVisible("sportingEvent", delayForCarouselTimer);
 
-        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
+        let secondPageIsVisible = await ACCarousel.isPageVisible("sportingEvent");
         Assert.strictEqual(secondPageIsVisible, true);
 
         await ACCarousel.waitForAnimationsToEnd();
         await ACCarousel.clickOnLeftArrow();
 
-        await WaitUtils.waitUntilElementIsCssVisible("firstCarouselPage");
+        await WaitUtils.waitUntilElementIsCssVisible("weatherLarge");
 
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, true);
     }), timeOutValueForSuddenJumpTest);
 
@@ -292,13 +292,13 @@ describe("Mock function", function() {
     test("Carousel: Test autoplay is disabled", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify no change happened
         await WaitUtils.waitFor(5000);
 
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, true);
     }), 7000);
 
@@ -306,16 +306,16 @@ describe("Mock function", function() {
     test("Carousel: Test autoplay is applied", (async() => {
         await utils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
-        let firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        let firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, true);
 
         // Await for 5 seconds and verify the first page is now hidden
-        await WaitUtils.waitUntilElementIsNotVisible("firstCarouselPage");
+        await WaitUtils.waitUntilElementIsNotVisible("weatherLarge");
 
-        firstPageIsVisible = await ACCarousel.isPageVisible("firstCarouselPage");
+        firstPageIsVisible = await ACCarousel.isPageVisible("weatherLarge");
         Assert.strictEqual(firstPageIsVisible, false);
 
-        let secondPageIsVisible = await ACCarousel.isPageVisible("theSecondCarouselPage");
+        let secondPageIsVisible = await ACCarousel.isPageVisible("sportingEvent");
         Assert.strictEqual(secondPageIsVisible, true);
     }), timeOutValueForCarousel);
 
