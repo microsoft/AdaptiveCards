@@ -72,6 +72,8 @@
 
     [rootView.context popBaseCardElementContext:acoElem];
 
+    container.accessibilityElements = [container getArrangedSubviews];
+
     return container;
 }
 

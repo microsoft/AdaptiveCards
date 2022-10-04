@@ -146,12 +146,12 @@
         [view addGestureRecognizer:recognizer];
         view.userInteractionEnabled = YES;
 
-        contentholdingview.isAccessibilityElement = NO;
-        view.isAccessibilityElement = YES;
-        view.accessibilityTraits = UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton;
+        contentholdingview.isAccessibilityElement = YES;
+        view.isAccessibilityElement = NO;
+        contentholdingview.accessibilityTraits = UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton;
         NSString *stringForAccessibilityLabel = [NSString stringWithCString:mediaElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
         if (stringForAccessibilityLabel.length) {
-            view.accessibilityLabel = stringForAccessibilityLabel;
+            contentholdingview.accessibilityLabel = stringForAccessibilityLabel;
         }
     }
 

@@ -164,6 +164,7 @@
         }
     }
 }
+
 @end
 
 // configure the content cell

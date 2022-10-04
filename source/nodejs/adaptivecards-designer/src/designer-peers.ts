@@ -1599,6 +1599,12 @@ export class ActionPeer extends DesignerPeer {
             return super.internalGetTreeItemText();
         }
     }
+    
+    protected internalUpdateLayout() {
+        if (this.action.renderedElement) {
+            super.internalUpdateLayout();
+        }
+    }
 
     isDraggable(): boolean {
         return false;
