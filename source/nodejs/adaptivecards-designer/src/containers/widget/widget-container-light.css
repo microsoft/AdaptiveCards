@@ -4,7 +4,7 @@
     padding: 0px !important;
 }
 
-.berlin-outer-container {
+.widget-outer-container {
     border: 1px solid rgba(0, 0, 0, 0.0578);
     background: #f6f6f6;
     width: 302px;
@@ -14,7 +14,7 @@
     position: relative;
 }
 
-.berlin-header {
+.widget-header {
     height: 16px;
     width: 268px;
     position: absolute;
@@ -25,30 +25,30 @@
     border-radius: 8px 8px 0px 0px;
 }
 
-.berlin-large-container {
+.widget-large-container {
     height: 464px;
 }
 
-.berlin-medium-container {
+.widget-medium-container {
     height: 306px;
 }
 
-.berlin-small-container {
+.widget-small-container {
     height: 148px;
 }
 
 
-/* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
+/* widget-large/medium/small-container  4px(top+bottom padding+margin) widget-outer-container border*/
 
-.berlin-large-card {
+.widget-large-card {
     height: 398px;
 }
 
-.berlin-medium-card {
+.widget-medium-card {
     height: 240px;
 }
 
-.berlin-small-card {
+.widget-small-card {
     height: 82px;
 }
 
@@ -379,7 +379,7 @@ a.ac-anchor:hover {
     width:6px !important;
 }
 
-.berlin-header-text {
+.widget-header-text {
     margin: auto;
     margin-left: 0px;
     font-size: 12px;
@@ -387,7 +387,7 @@ a.ac-anchor:hover {
     color: rgba(0, 0, 0, 0.8956);
 }
 
-.berlin-header-more-button {
+.widget-header-more-button {
     height: 16px;
     width: 16px;
     background: inherit;
@@ -402,7 +402,7 @@ a.ac-anchor:hover {
     margin-left: 0px;
 }
 
-.berlin-header-more-button::before {
+.widget-header-more-button::before {
     font-family: 'FabricMDL2Icons';
     content: "\E712";
 }
