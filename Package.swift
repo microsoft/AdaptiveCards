@@ -61,7 +61,13 @@ let package = Package(
             name:"AdaptiveCardsTest",
             dependencies: ["ObjectModel", "AdaptiveCards"],
             path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests",
-            cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
+            resources: [
+                .copy("TestFiles")
+            ],
+            cxxSettings: [
+                .headerSearchPath("../../../../shared/cpp/ObjectModel"),
+                .define("USE_AC_SWIFT_PACKAGE")
+            ],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
                 LinkerSetting.linkedFramework("AVKit"),
