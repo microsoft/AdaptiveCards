@@ -1,1 +1,72 @@
-<div class="header-holder">	<%- config.uhf_header %></div>
+<div class="header-holder">	
+    <%- config.uhf_header %>
+    <% if(!is_current('/') && !page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
+    <div class="content-header uhf-container has-padding" data-bi-name="content-header" role="complementary">
+        <ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" 
+            aria-label="Breadcrumb">
+            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+                <a itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a>
+            </li>			
+            <% if(page.archive) { %>
+                <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb"><%= site.data.banner.en.blog %></li>
+            <% } else if(is_post()) { %>
+                <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+                    <a itemprop="item" href="<%- url_for('/blog') %>"><%= site.data.banner.en.blog %></a>
+                </li>
+                <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>			
+            <% } else { %>
+                <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
+            <% } %>
+        </ul>
+        <div class="content-header-controls exit-focus">
+            <button type="button" class="ap-collapse-behavior ap-expanded button-border" data-bi-name="ap-collapse">
+                <span class="docon docon-exit-mode"></span>
+                <%= site.data.banner.en.exit_focus %></button>
+        </div>
+        <div class="content-header-controls">
+            <button type="button" class="contents-button button-border" data-bi-name="contents-expand">
+                <span class="docon docon-menu"></span>
+                <%= site.data.banner.en.contents %> </button>
+        </div>
+        <div class="action-bar">
+            <ul class="action-list">
+                <li>
+                    <a role="link" id="feedback-button" class="button" data-bi-name="feedback" tabindex="0" focusable="true">
+                        <span class="docon docon-comment-lines" aria-hidden="true"></span> <span class="action-item-text"><%= site.data.banner.en.feedback %></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/Microsoft/AdaptiveCards/" class="button" data-bi-name="comments">
+                        
+                        <span class="fab fa-github" aria-hidden="true"></span> <span class="action-item-text">GitHub</span>
+                    </a>
+                </li>
+                <!--<li>
+                    <div class="sharing dropdown has-caret" auto-align="">
+                        <a href="#" class="dropdown-trigger" aria-haspopup="true" aria-controls="sharing-menu"
+                            aria-expanded="false" title="Share This Document" data-bi-name="share">
+                            <span class="docon docon-sharing" aria-hidden="true"></span><span class="action-item-text">Share</span>
+                        </a>
+                        <div class="dropdown-menu" id="sharing-menu" role="menu">
+                            <ul data-bi-name="share-links">
+                                <li><a class="share-twitter" data-bi-name="twitter" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Fadaptive-cards%2F%3FWT.mc_id%3Dtwitter&amp;text=Adaptive%20Cards%20Overview%20-%20Adaptive%20Cards%20%7C%20Microsoft%20Docs&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Fadaptive-cards%2F%3FWT.mc_id%3Dtwitter"><span
+                                            class="docon docon-brand-twitter" aria-hidden="true"></span>Twitter</a></li>
+                                <li><a class="share-linkedin" data-bi-name="linkedin" href="https://www.linkedin.com/cws/share?url=https%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Fadaptive-cards%2F%3FWT.mc_id%3Dlinkedin"><span
+                                            class="docon docon-brand-linkedin" aria-hidden="true"></span>LinkedIn</a></li>
+                                <li><a class="share-facebook" data-bi-name="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Fadaptive-cards%2F%3FWT.mc_id%3Dfacebook"><span
+                                            class="docon docon-brand-facebook" aria-hidden="true"></span>Facebook</a></li>
+                                <li><a class="share-email" data-bi-name="email" href="mailto:?subject=%5BShared%20Article%5D%20Adaptive%20Cards%20Overview%20-%20Adaptive%20Cards%20%7C%20Microsoft%20Docs&amp;body=Adaptive%20Cards%20Overview%20-%20Adaptive%20Cards%20%7C%20Microsoft%20Docs%0A%0Ahttps%3A%2F%2Fdocs.microsoft.com%2Fen-us%2Fadaptive-cards%2F%3FWT.mc_id%3Demail"><span
+                                            class="docon docon-mail-message-fill" aria-hidden="true"></span>Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>-->
+            </ul>
+            <button type="button" class="contents-button" aria-label="Contents" data-bi-name="contents-expand-">
+                <span class="docon docon-editor-list-bullet"></span><span><%= site.data.banner.en.contents %></span>
+            </button>
+        </div>
+    </div>
+    <div id="disclaimer-holder" class="disclaimer-holder"></div>
+    <% } %>
+</div>
