@@ -140,6 +140,10 @@ export class Carousel extends Container {
         }
     }
 
+    static readonly initialPage = new NumProperty(Versions.v1_6, "initialPage", 0);
+    @property(Carousel.initialPage)
+    initialPage : number;
+
     //#endregion
 
     get previousEventType(): Enums.CarouselInteractionEvent {
@@ -153,6 +157,7 @@ export class Carousel extends Container {
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
+    private _containerForAdorners: HTMLElement;
     private _currentIndex: number = 0;
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
@@ -171,6 +176,13 @@ export class Carousel extends Container {
             "Input.Toggle",
             ...super.forbiddenChildElements()
         ];
+    }
+
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        super.adjustRenderedElementSize(renderedElement);
+        if (this.height == "stretch" && this._containerForAdorners !== undefined) { 
+            this._containerForAdorners.style.height = "100%";
+        }
     }
 
     getJsonTypeName(): string {
@@ -274,6 +286,7 @@ export class Carousel extends Container {
 
         const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+        this._containerForAdorners = containerForAdorners;
 
         cardLevelContainer.appendChild(containerForAdorners);
 
@@ -376,6 +389,7 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
+        this._currentIndex = this.initialPage;
 
         this.initializeCarouselControl(
             carouselContainer,
