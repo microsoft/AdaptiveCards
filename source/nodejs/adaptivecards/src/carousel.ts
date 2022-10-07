@@ -140,9 +140,27 @@ export class Carousel extends Container {
         }
     }
 
-    static readonly initialPage = new NumProperty(Versions.v1_6, "initialPage", 0);
-    @property(Carousel.initialPage)
-    initialPage : number;
+    static readonly initialPageProperty = new NumProperty(Versions.v1_6, "initialPage", 0);
+    @property(Carousel.initialPageProperty)
+    get initialPage(): number {
+        let initialPageIndex = this.getValue(Carousel.initialPageProperty); 
+
+        if (initialPageIndex < 0) { 
+            console.warn(Strings.errors.invalidPropertyValue); 
+            initialPageIndex = 0 
+        }
+
+        return initialPageIndex;
+    }
+
+    set initialPage(value: number) { 
+        if (value && value < 0) { 
+            console.warn(Strings.errors.invalidPropertyValue); 
+            this.setValue(Carousel.initialPageProperty, 0); 
+        } else { 
+            this.setValue(Carousel.initialPageProperty, value);
+        }
+    }
 
     //#endregion
 
