@@ -155,12 +155,16 @@ export class Carousel extends Container {
         }
     }
     
-    isValidParsedPageIndex(index: number) : boolean {
-        return (this._pages?.length > 0 && 0 < index && index < this._pages.length);
+    private isValidParsedPageIndex(index: number) : boolean {
+        return this._pages ? this.isValidPageIndex(index, this._pages.length) : false;
     }
 
-    isValidRenderedPageIndex(index: number) : boolean {
-        return (this._renderedPages?.length > 0 && 0 < index && index < this._renderedPages.length);
+    private isValidRenderedPageIndex(index: number) : boolean {
+        return this._renderedPages ? this.isValidPageIndex(index, this._renderedPages.length) : false;
+    }
+
+    private isValidPageIndex(index: number, collectionSize: number) {
+        return (collectionSize > 0 && 0 <= index && index < collectionSize);
     }
 
     //#endregion
