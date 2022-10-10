@@ -424,6 +424,7 @@ export class Carousel extends Container {
         if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
             this._currentIndex = this.initialPageIndex;
         } else {
+            console.warn(Strings.errors.invalidInitialPageIndex(this.initialPageIndex));
             this._currentIndex = 0
         }
 
