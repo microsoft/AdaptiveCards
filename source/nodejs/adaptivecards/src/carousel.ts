@@ -142,24 +142,25 @@ export class Carousel extends Container {
 
     static readonly initialPageProperty = new NumProperty(Versions.v1_6, "initialPage", 0);
     @property(Carousel.initialPageProperty)
-    get initialPage(): number {
-        let initialPageIndex = this.getValue(Carousel.initialPageProperty); 
-
-        if (initialPageIndex < 0) { 
-            console.warn(Strings.errors.invalidPropertyValue); 
-            initialPageIndex = 0 
-        }
-
-        return initialPageIndex;
+    get initialPageIndex(): number {
+        return this.getValue(Carousel.initialPageProperty); 
     }
 
-    set initialPage(value: number) { 
-        if (value && value < 0) { 
-            console.warn(Strings.errors.invalidPropertyValue); 
-            this.setValue(Carousel.initialPageProperty, 0); 
-        } else { 
+    set initialPageIndex(value: number) { 
+        if (this.isValidParsedPageIndex(value)) { 
             this.setValue(Carousel.initialPageProperty, value);
+        } else { 
+            console.warn(Strings.errors.invalidInitialPageIndex(value));
+            this.setValue(Carousel.initialPageProperty, 0); 
         }
+    }
+    
+    isValidParsedPageIndex(index: number) : boolean {
+        return (this._pages?.length > 0 && 0 < index && index < this._pages.length);
+    }
+
+    isValidRenderedPageIndex(index: number) : boolean {
+        return (this._renderedPages?.length > 0 && 0 < index && index < this._renderedPages.length);
     }
 
     //#endregion
@@ -270,7 +271,6 @@ export class Carousel extends Container {
         super.internalParse(source, context);
 
         this._pages = [];
-        this._renderedPages = [];
 
         const jsonPages = source["pages"];
         if (Array.isArray(jsonPages)) {
@@ -280,6 +280,19 @@ export class Carousel extends Container {
                     this._pages.push(page);
                 }
             }
+        }
+
+        // everything is parsed do validate on initial page index
+        this.validateParsing(context);
+    }
+
+    private validateParsing(context: SerializationContext) {
+        if (!this.isValidParsedPageIndex(this.initialPageIndex)) {
+            context.logParseEvent(
+                this,
+                Enums.ValidationEvent.InvalidPropertyValue,
+                Strings.errors.invalidInitialPageIndex(this.initialPageIndex)
+            );
         }
     }
 
@@ -407,7 +420,12 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
-        this._currentIndex = this.initialPage;
+
+        if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
+            this._currentIndex = this.initialPageIndex;
+        } else {
+            this._currentIndex = 0
+        }
 
         this.initializeCarouselControl(
             carouselContainer,
