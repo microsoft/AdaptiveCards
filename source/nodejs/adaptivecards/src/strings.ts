@@ -56,7 +56,7 @@ export class Strings {
         tooManyCarouselPages: (maxCarouselPages: number) =>
             `Maximum number of Carousel pages exceeded (${maxCarouselPages}).`,
         invalidInitialPageIndex: (initialPageIndex: number) =>
-            `InitialPage for carousel is invalid(${initialPageIndex}).`,
+            `InitialPage for carousel is invalid (${initialPageIndex}).`,
         columnAlreadyBelongsToAnotherSet: () => "This column already belongs to another ColumnSet.",
         invalidCardType: () =>
             `Invalid or missing card type. Make sure the card's type property is set to "AdaptiveCard".`,
