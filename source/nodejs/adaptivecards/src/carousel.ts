@@ -425,11 +425,13 @@ export class Carousel extends Container {
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
 
-        if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
-            this._currentIndex = this.initialPageIndex;
-        } else {
-            console.warn(Strings.errors.invalidInitialPageIndex(this.initialPageIndex));
-            this._currentIndex = 0
+        if (!this.isDesignMode()) {
+            if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
+                this._currentIndex = this.initialPageIndex;
+            } else {
+                console.warn(Strings.errors.invalidInitialPageIndex(this.initialPageIndex));
+                this._currentIndex = 0
+            }
         }
 
         this.initializeCarouselControl(
