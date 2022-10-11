@@ -693,7 +693,10 @@ export const adaptiveCardSchema =
         "value": {
           "type": "string",
           "description": "The initial value for a field"
-        }
+        },
+		"inputStyle" : {
+			"$ref": "#/definitions/InputStyle"	
+		}
       },
       "required": [
         "id"
@@ -902,6 +905,14 @@ export const adaptiveCardSchema =
         "url",
         "email"
       ]
-    }
+    },
+	"InputStyle": {
+		"type": "string",
+		"description": "Style hint for Input Fields.",
+		"enum": [
+		  "default",
+		  "readWrite"
+		]
+	  }
   }
 };

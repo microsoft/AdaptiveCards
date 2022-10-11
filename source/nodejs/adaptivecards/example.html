@@ -15,36 +15,89 @@
 	</style>
 
 	<script type="text/javascript">
-		function renderCard() {
+		var cardRW = {
+					"type": "AdaptiveCard",
+					"version": "1.5",
+					"body": [
+						{
+							"type": "TextBlock",
+							"text": "**Inline Editable Cards!**"
+						},
+						{
+							"type": "Input.Text",
+							"id": "inputTextId",
+							"value" : "$20000",
+							"label" : "Est. Amount",
+							"inputStyle": "readWrite"
+						},
+						{
+							"type": "Input.Date",
+							"id": "inputDateId",
+							"label": "Est. Date",
+							"value": "2017-10-12",
+							"inputStyle": "readWrite"
+						}
+					],
+					"actions": [
+						{
+							"type": "Action.Submit",
+							"title": "Save",
+							"associatedInputs": "auto",
+							"disabledUnlessAssociatedInputsChange": true
+						},
+						{
+							"type": "Action.OpenUrl",
+							"title": "Learn More",
+							"url": "https://github.com/Microsoft/AdaptiveCards"
+						}
+					]
+				};
+		
+		var cardDF = {
+			"type": "AdaptiveCard",
+			"version": "1.5",
+			"body": [
+				{
+					"type": "TextBlock",
+					"text": "**Inline Editable Cards!**"
+				},
+				{
+					"type": "Input.Text",
+					"id": "inputTextId",
+					"value" : "$20000",
+					"label" : "Est. Amount"
+				},
+				{
+					"type": "Input.Date",
+					"id": "inputDateId",
+					"label": "Est. Date",
+					"value": "2017-10-12"
+				}
+			],
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "Save",
+					"associatedInputs": "auto",
+					"disabledUnlessAssociatedInputsChange": true
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "Learn More",
+					"url": "https://github.com/Microsoft/AdaptiveCards"
+				}
+			]
+		};
+	
+		function renderCard(card) {
 
 			// author a card
 			// in practice you'll probably get this from a service
 			// see http://adaptivecards.io/samples/ for inspiration
-			var card = {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [{
-						"type": "Image",
-						"url": "https://adaptivecards.io/content/adaptive-card-50.png"
-					},
-					{
-						"type": "TextBlock",
-						"text": "Hello **Adaptive Cards!**"
-					}
-				],
-				"actions": [{
-						"type": "Action.OpenUrl",
-						"title": "Learn more",
-						"url": "https://adaptivecards.io"
-					},
-					{
-						"type": "Action.OpenUrl",
-						"title": "GitHub",
-						"url": "https://github.com/Microsoft/AdaptiveCards"
-					}
-				]
-			};
-
+			if (card === undefined || card === null)
+			{
+				card = cardDF;
+			}
 			// Create an AdaptiveCard instance
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
@@ -59,7 +112,7 @@
 			// Set the adaptive card's event handlers. onExecuteAction is invoked
 			// whenever an action is clicked in the card
 			adaptiveCard.onExecuteAction = function (action) {
-				alert("Ow!");
+				alert("Records Saved");
 			}
 
 			// Parse the card payload
@@ -69,26 +122,29 @@
 			var renderedCard = adaptiveCard.render();
 
 			// And finally insert it in the page:
+			document.getElementById('exampleDiv').innerHTML = '';
 			document.getElementById('exampleDiv').appendChild(renderedCard);
+		}
+		function clickDefault() {
+			renderCard(cardDF);
+		}
+
+		function clickReadWrite() {
+			renderCard(cardRW);
 		}
 	</script>
 
+<script defer src="adaptivecards.js"></script>
+<link id="css" rel="stylesheet" type="text/css" href="adaptivecards.css">
 </head>
 
 <body onload="renderCard()">
 	<h1>Adaptive Cards Example</h1>
-
-	<p>This example requires a build of the Adaptive Cards library.</p>
-
-	<h3>To run:</h3>
-	<code>
-		<pre>$ npm install</pre>
-		<pre>$ npm run build</pre>
-		<pre>Refresh this page</pre>
-	</code>
-
-	<h3>A card will render below</h3>
-
+	<h3>Inline Editable Cards</h3>
+	<h4>Choose input field style</h4>
+	<button onclick="clickDefault()">Default</button>
+	<button onclick="clickReadWrite()">ReadWrite</button>
+	<br /> <br />
 	<div id="exampleDiv"></div>
 
 </body>

@@ -303,3 +303,55 @@ $font-family: 'Segoe UI', sans-serif;
     }
 }
 
+@mixin base-inputRW (
+    $font-size: 14px,
+    $padding: 4px 8px 4px 8px,
+    $color: black,
+	$border: 1px solid #DDDDDD,
+    $hover-border: null,
+    $background-color: null,
+    $hover-background-color: null,
+    $validation-failed-border: 1px solid red !important,
+    $validation-failed-outline: 1px solid red
+    ) {
+
+    .ac-inputRW {
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color;
+        border-width: 0px;
+		width: 75%;
+		margin-left: 10px;
+        &.ac-textInputRW {
+            resize: none;
+        }
+
+        &.ac-textInputRW.ac-multilineRW {
+            height: 72px;
+        }
+
+        &.ac-textInputRW, &.ac-numberInputRW, &.ac-dateInputRW, &.ac-timeInputRW, &.ac-multichoiceInputRW {
+            background-color: $background-color;
+
+            &:hover {
+                outline: auto;
+            }
+        }
+
+        &.ac-textInputRW,
+        &.ac-numberInputRW,
+        &.ac-dateInputRW,
+        &.ac-timeInputRW,
+        &.ac-multichoiceInputRW.ac-choiceSetInput-compactRW {
+            &.ac-input-validation-failedRW {
+                border: $validation-failed-border;
+            }
+        }
+
+        &.ac-toggleInputRW, &.ac-choiceSetInput-expandedRW, &.ac-choiceSetInput-multiSelectRW {
+            &.ac-input-validation-failedRW {
+                outline: $validation-failed-outline;
+            }
+        }
+    }
+}

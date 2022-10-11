@@ -3092,7 +3092,11 @@ export abstract class Input extends CardElement implements IInput {
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
-
+	static readonly inputStyleProperty = new StringProperty(
+        Versions.v1_5,
+        "inputStyle",
+		true
+    );
     @property(Input.labelProperty)
     label?: string;
 
@@ -3101,6 +3105,9 @@ export abstract class Input extends CardElement implements IInput {
 
     @property(Input.errorMessageProperty)
     errorMessage?: string;
+
+	@property(Input.inputStyleProperty)
+    inputStyle?: string;
 
     //#endregion
 
@@ -3161,7 +3168,11 @@ export abstract class Input extends CardElement implements IInput {
 
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
+		if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+			this._outerContainerElement.style.flexDirection = "row";
+		} else {
+        	this._outerContainerElement.style.flexDirection = "column";
+		}
 
         const renderedInputControlId = Utils.generateUniqueId();
 
@@ -3442,6 +3453,13 @@ export class TextInput extends Input {
             input.maxLength = this.maxLength;
         }
 
+		// if (this.inputStyle && this.inputStyle === "readWrite") {
+		// 	input.style.border = "none";
+		// 	input.style.width = "50%";
+		// 	input.style.marginLeft= "10px";
+			
+		// }
+
         input.oninput = () => {
             this.valueChanged();
         };
@@ -3474,7 +3492,11 @@ export class TextInput extends Input {
             }
         } else {
             result = document.createElement("input");
-            result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+			if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+				result.className = this.hostConfig.makeCssClassName("ac-inputRW", "ac-textInputRW");
+			} else {
+            	result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+			}
             result.type = Enums.InputTextStyle[this.style].toLowerCase();
         }
 
@@ -4356,7 +4378,7 @@ export class DateInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._dateInputElement = document.createElement("input");
-        this._dateInputElement.setAttribute("type", "date");
+        
 
         if (this.min) {
             this._dateInputElement.setAttribute("min", this.min);
@@ -4372,20 +4394,53 @@ export class DateInput extends Input {
         }
 
         this._dateInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
-
-        this._dateInputElement.className = this.hostConfig.makeCssClassName(
-            "ac-input",
-            "ac-dateInput"
-        );
+		if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+			this._dateInputElement.className = this.hostConfig.makeCssClassName(
+				"ac-inputRW",
+				"ac-dateInputRW"
+			);
+			if (this.defaultValue) {
+				const dateVal = this.defaultValue;
+				const dateArr = dateVal.split("-");
+				const textVal = dateArr[1]+"/"+dateArr[2]+"/"+dateArr[0];
+				this._dateInputElement.value = textVal;
+			}
+		} else {
+			this._dateInputElement.setAttribute("type", "date");
+			this._dateInputElement.className = this.hostConfig.makeCssClassName(
+				"ac-input",
+				"ac-dateInput"
+			);
+			if (this.defaultValue) {
+				this._dateInputElement.value = this.defaultValue;
+			}
+		}
         this._dateInputElement.style.width = "100%";
 
         this._dateInputElement.oninput = () => {
             this.valueChanged();
         };
 
-        if (this.defaultValue) {
-            this._dateInputElement.value = this.defaultValue;
-        }
+		this._dateInputElement.onmouseenter = () => {
+            if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+				this._dateInputElement.setAttribute("type", "date");
+				if (this.defaultValue) {
+					this._dateInputElement.value = this.defaultValue;
+				}
+			}
+        };
+
+		this._dateInputElement.onmouseleave = () => {
+			if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+				this._dateInputElement.setAttribute("type", "");
+				if (this.defaultValue) {
+					const dateVal = this.defaultValue;
+					const dateArr = dateVal.split("-");
+					const textVal = dateArr[1]+"/"+dateArr[2]+"/"+dateArr[0];
+					this._dateInputElement.value = textVal;
+				}
+			}
+        };
 
         return this._dateInputElement;
     }
@@ -4997,7 +5052,7 @@ export abstract class SubmitActionBase extends Action {
             context.serializeValue(target, prop.name, value);
         }
     );
-    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(Versions.v1_6, "disabledUnlessAssociatedInputsChange", false);
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(Versions.v1_5, "disabledUnlessAssociatedInputsChange", false);
 
     @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;

@@ -64,6 +64,7 @@ export class PropertySheetCategory {
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
     static readonly Validation = "Validation";
+	static readonly InputStyle = "Input Style";
     static readonly Refresh = "Refresh"
 
     private _entries: PropertySheetEntry[] = [];
@@ -2784,6 +2785,8 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         "errorMessage",
         "Error message");
 
+	static readonly inputStyleProperty = new StringPropertyEditor(Adaptive.Versions.v1_6, "inputStyle", "Input Style");
+
     protected internalGetTreeItemText(): string {
         return this.cardElement.id ? this.cardElement.id : super.internalGetTreeItemText();
     }
@@ -2796,6 +2799,10 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             PropertySheetCategory.Validation,
             InputPeer.isRequiredProperty,
             InputPeer.errorMessageProperty);
+
+		propertySheet.add(
+			PropertySheetCategory.InputStyle,
+			InputPeer.inputStyleProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,

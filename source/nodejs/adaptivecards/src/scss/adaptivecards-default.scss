@@ -46,7 +46,7 @@ $destructive-hl-bg-color: #BF0000;
     );
 
 @include base-input;
-
+@include base-inputRW;
 /* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
 
 .ac-inlineActionButton {

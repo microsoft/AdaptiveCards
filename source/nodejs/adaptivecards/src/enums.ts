@@ -152,6 +152,11 @@ export enum InputTextStyle {
     Password
 }
 
+export enum InputStyle {
+    Default,
+    ReadWrite
+}
+
 export enum ValidationPhase {
     Parse,
     ToJSON,
