@@ -3,7 +3,7 @@
 		<div id="headerArea" class="uhf" data-m='{"cN":"headerArea","cT":"Area_coreuiArea","id":"a1Body","sN":1,"aN":"Body"}'>
 			<div id="headerRegion" data-region-key="headerregion" data-m='{"cN":"headerRegion","cT":"Region_coreui-region","id":"r1a1","sN":1,"aN":"a1"}' >
 				<div id="headerUniversalHeader" data-m='{"cN":"headerUniversalHeader","cT":"Module_coreui-universalheader","id":"m1r1a1","sN":1,"aN":"r1a1"}' data-module-id="Category|headerRegion|coreui-region|headerUniversalHeader|coreui-universalheader">
-					<a id="uhfSkipToMain" class="m-skip-to-main" href="#main" data-href="" tabindex="0" style="z-index: 3000002" data-m='{"cN":"Skip to content_nonnav","id":"nn1m1r1a1","sN":1,"aN":"m1r1a1"}'>
+					<a id="uhfSkipToMain" class="m-skip-to-main" href="#main" data-href="" tabindex="0" data-m='{"cN":"Skip to content_nonnav","id":"nn1m1r1a1","sN":1,"aN":"m1r1a1"}'>
 						<%= site.data.banner.en.skip_to_main %>
 					</a>
 					<header class="c-uhfh context-uhf no-js c-sgl-stck c-category-header" itemscope="itemscope" data-header-footprint="/MSDocsAdaptivecards/MSDocsAdaptivecardsHeader, fromService: True" data-magict="true" itemtype="http://schema.org/Organization">
@@ -119,7 +119,8 @@
 												aria-current="<%= is_current(url_for('blog')) ? 'page' : 'false' %>">
 												<%= site.data.banner.en.blog %>
 											</a>
-										</li class="single-link js-nav-menu uhf-menu-item">
+										</li>
+										<li class="single-link js-nav-menu uhf-menu-item">
 											<a id="Designer"
 												class="c-uhf-nav-link"
 												href="<%- url_for('designer') %>"
