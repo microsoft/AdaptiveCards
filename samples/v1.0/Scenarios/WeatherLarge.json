@@ -81,12 +81,14 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t50",
+							"wrap": true,
 							"color": "dark",
 							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
+							"wrap": true,
 							"color": "dark",
 							"spacing": "none",
 							"horizontalAlignment": "center"
@@ -119,11 +121,13 @@
 							"type": "TextBlock",
 							"text": "**High**\t50",
 							"color": "dark",
+							"wrap": true,
 							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
+							"wrap": true,
 							"color": "dark",
 							"spacing": "none",
 							"horizontalAlignment": "center"
@@ -155,12 +159,14 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t59",
+							"wrap": true,
 							"color": "dark",
 							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
+							"wrap": true,
 							"color": "dark",
 							"spacing": "none",
 							"horizontalAlignment": "center"
@@ -192,12 +198,14 @@
 						{
 							"type": "TextBlock",
 							"text": "**High**\t50",
+							"wrap": true,
 							"color": "dark",
 							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t32",
+							"wrap": true,
 							"color": "dark",
 							"spacing": "none",
 							"horizontalAlignment": "center"

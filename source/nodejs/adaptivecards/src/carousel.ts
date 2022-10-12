@@ -140,6 +140,33 @@ export class Carousel extends Container {
         }
     }
 
+    static readonly initialPageProperty = new NumProperty(Versions.v1_6, "initialPage", 0);
+    @property(Carousel.initialPageProperty)
+    get initialPageIndex(): number {
+        return this.getValue(Carousel.initialPageProperty); 
+    }
+
+    set initialPageIndex(value: number) { 
+        if (this.isValidParsedPageIndex(value)) { 
+            this.setValue(Carousel.initialPageProperty, value);
+        } else { 
+            console.warn(Strings.errors.invalidInitialPageIndex(value));
+            this.setValue(Carousel.initialPageProperty, 0); 
+        }
+    }
+    
+    private isValidParsedPageIndex(index: number) : boolean {
+        return this._pages ? this.isValidPageIndex(index, this._pages.length) : false;
+    }
+
+    private isValidRenderedPageIndex(index: number) : boolean {
+        return this._renderedPages ? this.isValidPageIndex(index, this._renderedPages.length) : false;
+    }
+
+    private isValidPageIndex(index: number, collectionSize: number) {
+        return (collectionSize > 0 && 0 <= index && index < collectionSize);
+    }
+
     //#endregion
 
     get previousEventType(): Enums.CarouselInteractionEvent {
@@ -153,6 +180,7 @@ export class Carousel extends Container {
     private _pages: CarouselPage[] = [];
     private _renderedPages: CarouselPage[];
     private _carouselPageContainer: HTMLElement;
+    private _containerForAdorners: HTMLElement;
     private _currentIndex: number = 0;
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
 
@@ -171,6 +199,13 @@ export class Carousel extends Container {
             "Input.Toggle",
             ...super.forbiddenChildElements()
         ];
+    }
+
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        super.adjustRenderedElementSize(renderedElement);
+        if (this.height == "stretch" && this._containerForAdorners !== undefined) { 
+            this._containerForAdorners.style.height = "100%";
+        }
     }
 
     getJsonTypeName(): string {
@@ -240,7 +275,6 @@ export class Carousel extends Container {
         super.internalParse(source, context);
 
         this._pages = [];
-        this._renderedPages = [];
 
         const jsonPages = source["pages"];
         if (Array.isArray(jsonPages)) {
@@ -250,6 +284,19 @@ export class Carousel extends Container {
                     this._pages.push(page);
                 }
             }
+        }
+
+        // everything is parsed do validate on initial page index
+        this.validateParsing(context);
+    }
+
+    private validateParsing(context: SerializationContext) {
+        if (!this.isValidParsedPageIndex(this.initialPageIndex)) {
+            context.logParseEvent(
+                this,
+                Enums.ValidationEvent.InvalidPropertyValue,
+                Strings.errors.invalidInitialPageIndex(this.initialPageIndex)
+            );
         }
     }
 
@@ -274,6 +321,7 @@ export class Carousel extends Container {
 
         const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+        this._containerForAdorners = containerForAdorners;
 
         cardLevelContainer.appendChild(containerForAdorners);
 
@@ -376,6 +424,15 @@ export class Carousel extends Container {
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
+
+        if (!this.isDesignMode()) {
+            if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
+                this._currentIndex = this.initialPageIndex;
+            } else {
+                console.warn(Strings.errors.invalidInitialPageIndex(this.initialPageIndex));
+                this._currentIndex = 0
+            }
+        }
 
         this.initializeCarouselControl(
             carouselContainer,
