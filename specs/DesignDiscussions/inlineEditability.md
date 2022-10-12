@@ -33,8 +33,8 @@ This is the flow for user to interact with inline editable fields:-
 ![img](../assets/InlineEditability/IE1.PNG)
 
 2. When user hovers on the card, 
-	a. we will show outer outline on that card indicating that the card contains one or more inline editable input fields. (**PM/UX Ques 1**: Should we always show card outer outline whether or not it has any inline editable fields?)
-	b. we will show a lighter color outline to all the input fields which are inline editable.
+	* we will show outer outline on that card. (**PM/UX Ques 1**: Should we always show card outer outline whether or not it has any inline editable fields?)
+	* we will show a lighter color outline to all the input fields which are inline editable.
 	
 	This will guide user to the input fields which he can go an update right on the card.
 	
@@ -57,11 +57,11 @@ This is the flow for user to interact with inline editable fields:-
 
 ![img](../assets/InlineEditability/IE5.PNG)
 
-(**PM/UX Ques 2**: Here we are showing green success banner on top of card, but right now, teams shows banner on card footer and host can only show info banner (grey footer) and erorr banner (red footer), because the host does not know whether the button click is success or not
+(**PM/UX Ques 2**: Here we are showing green success banner on top of card, but right now, teams shows banner on card footer and host can only show info banner (grey footer) and erorr banner (red footer), because the host does not know whether the button click is success or not.
 
-![img](../assets/InlineEditability/IE16.PNG)
+![img](../assets/InlineEditability/IE16.png)
 
-Should we update mocks accordingly which grey banner on bottom?)
+So, should we update mocks accordingly which grey banner on bottom?)
 ## New Capabilites in the card:
 In order to achive inline editable experience as mentioned above, we will add these capabilities in the card for developers:
 
