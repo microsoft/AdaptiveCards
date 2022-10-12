@@ -123,7 +123,7 @@ which user can go and update the value,
 
 * Cancel Button: Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card with inline editable fields. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
 
-* Dirty state of the card: When user has some unsaved changes on the card but he moved away from the card but card is still in the viewport. In this case, we will preseve the changes made by the user and we will some indication to user that fields are unsaved or dirty. When card goes out of the viewport, then we wont preserve the unsaved values. (**PM/UX Ques 5** How to show dirty state of the input fields, for eg: outline or some icon on the field)
+* Dirty state of the card: When user has some unsaved changes on the card but he moved away from the card but card is still in the viewport. In this case, we will preseve the changes made by the user and we will some indication to user that fields are unsaved or dirty. When card goes out of the viewport, then we wont preserve the unsaved values. (**PM/UX Ques 5**: How to show dirty state of the input fields, for eg: outline or some icon on the field)
 
 * Mobile is `out of scope` for inline editable design since there is no focus state on mobile and alignment will be always `vertical` as of today.
 
