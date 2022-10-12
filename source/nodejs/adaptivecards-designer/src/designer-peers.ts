@@ -3398,6 +3398,7 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
 export class CarouselPeer extends ContainerPeer {
     // Question: What do we want the default value to be here?
     static readonly timerProperty = new CarouselTimerPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
+    static readonly initialPageProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "initialPageIndex", "Initial page", 0);
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3434,7 +3435,8 @@ export class CarouselPeer extends ContainerPeer {
 
         propertySheet.add(
             defaultCategory,
-            CarouselPeer.timerProperty);
+            CarouselPeer.timerProperty,
+            CarouselPeer.initialPageProperty);
     }
 
     canDrop(peer: DesignerPeer) {
