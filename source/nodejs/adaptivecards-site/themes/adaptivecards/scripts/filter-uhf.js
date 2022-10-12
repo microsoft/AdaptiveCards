@@ -19,12 +19,13 @@ hexo.extend.filter.register("before_generate", async function (data) {
         "?headerId=" +
         headerId +
         "&footerId=" +
-        footerId + "&Preview=1";
+        footerId +
+        "&Preview=1";
 
     const response = await fetch(serviceUrl);
-	const body = await response.text();
-	
-	const splitBody = body.split("<![CDATA[");
+    const body = await response.text();
+
+    const splitBody = body.split("<![CDATA[");
 
     hexo.config.uhf_css = splitBody[1].split("]]>")[0];
     hexo.config.uhf_javascript = splitBody[2].split("]]>")[0];
