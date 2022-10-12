@@ -313,6 +313,6 @@ Have naming for interface for fetching data or for inputs. (data adaptor, channe
 
 ###Links
 
-1. https://microsoft.sharepoint.com/:w:/t/skypespacesteamnew/EbRkss1WtHxNndt2pZXVc6sBTMpkCDVTA-5kwrtqIEJ6VA?e=gphSKw
-   TODO: Universal search doc
-   TODO: Github discussion link for dynamic typeahead
+1. Teams PM Spec - https://microsoft.sharepoint.com/:w:/t/skypespacesteamnew/EbRkss1WtHxNndt2pZXVc6sBTMpkCDVTA-5kwrtqIEJ6VA?e=gphSKw
+2. Teams Dev Spec - https://microsoft.sharepoint.com/:w:/t/ExtensibilityandFundamentals/EVDcREZ6hJdNi4o-dZoyG3gB160lXm7XWOnSMQVZg-sZkA?e=DjM9h7
+3. Github discussion link for dynamic typeahead - https://github.com/microsoft/AdaptiveCards/issues/3924
