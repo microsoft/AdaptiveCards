@@ -48,7 +48,7 @@
 		"md5": "^2.3.0",
 		"minimist": "^1.2.6",
 		"monaco-editor": "^0.34.0",
-		"node-fetch": "2.6.7",
+		"node-fetch": "^2.6.7",
 		"request": "^2.88.2",
 		"request-promise": "^4.2.6",
 		"workbox-cli": "^6.5.4",
