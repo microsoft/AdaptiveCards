@@ -1,0 +1,4 @@
+
+# Ensure Unity .meta files included
+!*.meta
+
