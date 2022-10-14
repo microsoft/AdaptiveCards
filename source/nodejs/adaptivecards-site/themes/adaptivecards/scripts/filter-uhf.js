@@ -19,8 +19,7 @@ hexo.extend.filter.register("before_generate", async function (data) {
         "?headerId=" +
         headerId +
         "&footerId=" +
-        footerId +
-        "&Preview=1";
+        footerId;
 
     const response = await fetch(serviceUrl);
     const body = await response.text();
