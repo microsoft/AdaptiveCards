@@ -221,7 +221,7 @@ public:
         return m_directionType == Right;
     }
 
-	bool IsLeftEmphasis() const override
+    bool IsLeftEmphasis() const override
     {
         return m_directionType == Left;
     }
