@@ -8,16 +8,10 @@
 #include "ACRContentStackView.h"
 #import "ACOBaseCardElementPrivate.h"
 #include "ACOHostConfigPrivate.h"
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRShowCardTarget.h"
 #import "ACRViewPrivate.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRShowCardTarget.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 using namespace AdaptiveCards;
 
