@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACORefresh.h"
 #import "Refresh.h"
-#else
-#import <AdaptiveCards/ACORefresh.h>
-#import <AdaptiveCards/Refresh.h>
-#endif
 
 using namespace AdaptiveCards;
 

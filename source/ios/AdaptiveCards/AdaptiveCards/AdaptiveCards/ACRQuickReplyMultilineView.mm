@@ -5,13 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRQuickReplyMultilineView.h"
 #import "ACOBundle.h"
-#else
-#import <AdaptiveCards/ACRQuickReplyMultilineView.h>
-#import <AdaptiveCards/ACOBundle.h>
-#endif
 
 @implementation ACRQuickReplyMultilineView
 

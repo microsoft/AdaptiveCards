@@ -7,11 +7,7 @@
 //
 //
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAuthCardButtonPrivate.h"
-#else
-#import <AdaptiveCards/ACOAuthCardButtonPrivate.h>
-#endif
 
 @implementation ACOAuthCardButton {
     std::shared_ptr<AuthCardButton> _adaptiveAuthCardButton;

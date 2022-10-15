@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRRegistration.h"
 #import "ACOBaseActionElement.h"
 #import "ACOHostConfigPrivate.h"
@@ -41,43 +40,6 @@
 #import "BaseCardElement.h"
 #import "FeatureRegistration.h"
 #import "HostConfig.h"
-#else
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACOParseContextPrivate.h>
-#import <AdaptiveCards/ACRActionExecuteRenderer.h>
-#import <AdaptiveCards/ACRActionOpenURLRenderer.h>
-#import <AdaptiveCards/ACRActionOverflowRenderer.h>
-#import <AdaptiveCards/ACRActionSetRenderer.h>
-#import <AdaptiveCards/ACRActionShowCardRenderer.h>
-#import <AdaptiveCards/ACRActionSubmitRenderer.h>
-#import <AdaptiveCards/ACRActionToggleVisibilityRenderer.h>
-#import <AdaptiveCards/ACRColumnRenderer.h>
-#import <AdaptiveCards/ACRColumnSetRenderer.h>
-#import <AdaptiveCards/ACRColumnSetView.h>
-#import <AdaptiveCards/ACRColumnView.h>
-#import <AdaptiveCards/ACRContainerRenderer.h>
-#import <AdaptiveCards/ACRCustomActionRenderer.h>
-#import <AdaptiveCards/ACRCustomRenderer.h>
-#import <AdaptiveCards/ACRFactSetRenderer.h>
-#import <AdaptiveCards/ACRImageRenderer.h>
-#import <AdaptiveCards/ACRImageSetRenderer.h>
-#import <AdaptiveCards/ACRInputChoiceSetRenderer.h>
-#import <AdaptiveCards/ACRInputDateRenderer.h>
-#import <AdaptiveCards/ACRInputNumberRenderer.h>
-#import <AdaptiveCards/ACRInputRenderer.h>
-#import <AdaptiveCards/ACRInputTimeRenderer.h>
-#import <AdaptiveCards/ACRInputToggleRenderer.h>
-#import <AdaptiveCards/ACRMediaRenderer.h>
-#import <AdaptiveCards/ACRRichTextBlockRenderer.h>
-#import <AdaptiveCards/ACRTableCellRenderer.h>
-#import <AdaptiveCards/ACRTableRenderer.h>
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
-#import <AdaptiveCards/BaseCardElement.h>
-#import <AdaptiveCards/FeatureRegistration.h>
-#import <AdaptiveCards/HostConfig.h>
-#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

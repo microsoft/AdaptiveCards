@@ -5,15 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOHostConfig.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACOHostConfig.h>
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRChoiceSetCompactStyleView : UITextField <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>

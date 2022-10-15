@@ -5,13 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAdaptiveCard.h"
 #import "ACOBaseActionElement.h"
-#else
-#import <AdaptiveCards/ACOAdaptiveCard.h>
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#endif
 #import <Foundation/Foundation.h>
 
 @class ACROverflowMenuItem;

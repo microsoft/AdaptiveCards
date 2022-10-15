@@ -4,13 +4,8 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElement.h"
 #import "BaseActionElement.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/BaseActionElement.h>
-#endif
 
 using namespace AdaptiveCards;
 

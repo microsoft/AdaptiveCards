@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRCustomRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -15,17 +14,6 @@
 #import "ACRRendererPrivate.h"
 #import "SharedAdaptiveCard.h"
 #import "UnknownElement.h"
-#else
-#import <AdaptiveCards/ACRCustomRenderer.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#import <AdaptiveCards/ACRErrors.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACRRendererPrivate.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/UnknownElement.h>
-#endif
 
 @implementation ACRCustomRenderer
 

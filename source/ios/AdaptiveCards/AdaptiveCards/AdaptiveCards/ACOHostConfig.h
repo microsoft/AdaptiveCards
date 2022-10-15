@@ -5,13 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOHostConfigParseResult.h"
 #import "ACOResourceResolvers.h"
-#else
-#import <AdaptiveCards/ACOHostConfigParseResult.h>
-#import <AdaptiveCards/ACOResourceResolvers.h>
-#endif
 #import <Foundation/Foundation.h>
 
 @interface ACOHostConfig : NSObject

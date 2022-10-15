@@ -7,13 +7,8 @@
 //
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOTokenExchangeResourcePrivate.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOTokenExchangeResourcePrivate.h>
-#endif
 
 @implementation ACOTokenExchangeResource {
     std::shared_ptr<TokenExchangeResource> _adaptiveTokenExchangeResource;

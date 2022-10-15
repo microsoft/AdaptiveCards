@@ -5,13 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRUIImageView.h"
 #import "ACRContentHoldingUIView.h"
-#else
-#import <AdaptiveCards/ACRUIImageView.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#endif
 
 @implementation ACRUIImageView
 

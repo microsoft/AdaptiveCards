@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTableRenderer.h"
 #import "ACRTableView.h"
-#else
-#import <AdaptiveCards/ACRTableRenderer.h>
-#import <AdaptiveCards/ACRTableView.h>
-#endif
 
 @implementation ACRTableRenderer
 

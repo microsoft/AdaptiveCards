@@ -5,15 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElement.h"
 #import "ACOHostConfig.h"
 #import "ACREnums.h"
-#else
-#import <AdaptiveCards/ACOBaseCardElement.h>
-#import <AdaptiveCards/ACOHostConfig.h>
-#import <AdaptiveCards/ACREnums.h>
-#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

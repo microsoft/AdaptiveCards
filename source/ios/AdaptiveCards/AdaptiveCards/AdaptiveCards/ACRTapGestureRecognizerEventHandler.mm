@@ -5,11 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTapGestureRecognizerEventHandler.h"
-#else
-#import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
-#endif
 
 @implementation ACRTapGestureRecognizerEventHandler
 

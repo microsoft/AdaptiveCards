@@ -4,7 +4,6 @@
 //
 //  Copyright Â© 2017 Microsoft. All rights reserved.
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRFactSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOFillerSpaceManager.h"
@@ -18,21 +17,6 @@
 #import "Fact.h"
 #import "FactSet.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRFactSetRenderer.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOFillerSpaceManager.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRColumnSetView.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACRSeparator.h>
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
-#import <AdaptiveCards/ACRUILabel.h>
-#import <AdaptiveCards/Fact.h>
-#import <AdaptiveCards/FactSet.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 @implementation ACRFactSetRenderer
 

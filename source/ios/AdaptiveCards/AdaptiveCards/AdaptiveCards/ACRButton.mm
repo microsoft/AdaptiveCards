@@ -5,21 +5,12 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRButton.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
-#else
-#import <AdaptiveCards/ACRButton.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOBundle.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRUIImageView.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#endif
 
 @implementation ACRButton
 

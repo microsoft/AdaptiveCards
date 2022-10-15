@@ -5,13 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRQuickReplyView.h"
 #import "ACOBundle.h"
-#else
-#import <AdaptiveCards/ACRQuickReplyView.h>
-#import <AdaptiveCards/ACOBundle.h>
-#endif
 
 
 @implementation ACRQuickReplyView

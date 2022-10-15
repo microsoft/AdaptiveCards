@@ -5,11 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACREnums.h"
-#else
-#import <AdaptiveCards/ACREnums.h>
-#endif
 #import <Foundation/Foundation.h>
 
 @interface ACOWarning : NSObject

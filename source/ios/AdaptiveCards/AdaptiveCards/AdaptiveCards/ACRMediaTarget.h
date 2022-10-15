@@ -5,15 +5,9 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOMediaEvent.h"
 #import "ACRTapGestureRecognizerEventHandler.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACOMediaEvent.h>
-#import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
 

@@ -6,15 +6,9 @@
 //
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOHostConfig.h"
 #import "ACRContentStackView.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACOHostConfig.h>
-#import <AdaptiveCards/ACRContentStackView.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 #import <UIKit/UIKit.h>
 
 @protocol ACRIBaseCardElementRenderer

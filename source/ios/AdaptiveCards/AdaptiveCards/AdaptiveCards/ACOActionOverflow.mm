@@ -5,17 +5,10 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOActionOverflow.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "BaseActionElement.h"
-#else
-#import <AdaptiveCards/ACOActionOverflow.h>
-#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/BaseActionElement.h>
-#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

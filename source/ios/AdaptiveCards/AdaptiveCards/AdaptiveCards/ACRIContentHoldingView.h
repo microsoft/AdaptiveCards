@@ -5,15 +5,9 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElement.h"
 #import "ACOBaseCardElement.h"
 #import "ACOHostConfig.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/ACOBaseCardElement.h>
-#import <AdaptiveCards/ACOHostConfig.h>
-#endif
 #import <UIKit/UIKit.h>
 
 @class ACRView;

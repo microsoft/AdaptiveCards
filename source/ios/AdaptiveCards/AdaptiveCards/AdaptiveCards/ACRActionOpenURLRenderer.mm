@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRActionOpenURLRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -15,17 +14,6 @@
 #import "ACRIContentHoldingView.h"
 #import "OpenUrlAction.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRActionOpenURLRenderer.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRAggregateTarget.h>
-#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
-#import <AdaptiveCards/ACRButton.h>
-#import <AdaptiveCards/ACRIContentHoldingView.h>
-#import <AdaptiveCards/OpenUrlAction.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 @implementation ACRActionOpenURLRenderer
 

@@ -5,21 +5,12 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRToggleInputDataSource.h"
 #import "ACRColumnSetView.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRInputLabelView.h"
 #import "ACRUILabel.h"
 #import "HostConfig.h"
-#else
-#import <AdaptiveCards/ACRToggleInputDataSource.h>
-#import <AdaptiveCards/ACRColumnSetView.h>
-#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
-#import <AdaptiveCards/ACRInputLabelView.h>
-#import <AdaptiveCards/ACRUILabel.h>
-#import <AdaptiveCards/HostConfig.h>
-#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

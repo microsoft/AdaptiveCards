@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElement.h"
 #import "ACRTapGestureRecognizerEventHandler.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/ACRTapGestureRecognizerEventHandler.h>
-#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRBaseTarget : NSObject <ACRSelectActionDelegate>

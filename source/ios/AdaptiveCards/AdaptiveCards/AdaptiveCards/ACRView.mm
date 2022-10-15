@@ -5,7 +5,6 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -41,43 +40,6 @@
 #import "TextInput.h"
 #import "TextRun.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRButton.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
-#import <AdaptiveCards/ACRImageRenderer.h>
-#import <AdaptiveCards/ACRRegistrationPrivate.h>
-#import <AdaptiveCards/ACRRendererPrivate.h>
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
-#import <AdaptiveCards/ACRUIImageView.h>
-#import <AdaptiveCards/ACRUILabel.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#import <AdaptiveCards/ActionSet.h>
-#import <AdaptiveCards/AdaptiveBase64Util.h>
-#import <AdaptiveCards/BackgroundImage.h>
-#import <AdaptiveCards/Column.h>
-#import <AdaptiveCards/ColumnSet.h>
-#import <AdaptiveCards/Container.h>
-#import <AdaptiveCards/Enums.h>
-#import <AdaptiveCards/Fact.h>
-#import <AdaptiveCards/FactSet.h>
-#import <AdaptiveCards/ImageSet.h>
-#import <AdaptiveCards/MarkDownParser.h>
-#import <AdaptiveCards/Media.h>
-#import <AdaptiveCards/RichTextBlock.h>
-#import <AdaptiveCards/RichTextElementProperties.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/Table.h>
-#import <AdaptiveCards/TableCell.h>
-#import <AdaptiveCards/TableRow.h>
-#import <AdaptiveCards/TextBlock.h>
-#import <AdaptiveCards/TextInput.h>
-#import <AdaptiveCards/TextRun.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;

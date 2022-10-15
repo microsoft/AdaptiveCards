@@ -4,7 +4,6 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseActionElement.h"
@@ -13,16 +12,6 @@
 #import "SubmitAction.h"
 #import "UnknownAction.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/ACRRegistrationPrivate.h>
-#import <AdaptiveCards/BaseActionElement.h>
-#import <AdaptiveCards/ExecuteAction.h>
-#import <AdaptiveCards/OpenUrlAction.h>
-#import <AdaptiveCards/SubmitAction.h>
-#import <AdaptiveCards/UnknownAction.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

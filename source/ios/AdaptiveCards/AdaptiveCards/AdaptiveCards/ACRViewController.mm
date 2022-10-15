@@ -5,17 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRViewController.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACRViewController.h>
-#import <AdaptiveCards/ACOAdaptiveCardPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 
 using namespace AdaptiveCards;
 

@@ -5,17 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
 #import "ACOInputResults.h"
 #import "ACRBaseTarget.h"
-#else
-#import <AdaptiveCards/ACRIContentHoldingView.h>
-#import <AdaptiveCards/ACRView.h>
-#import <AdaptiveCards/ACOInputResults.h>
-#import <AdaptiveCards/ACRBaseTarget.h>
-#endif
 #import <UIKit/UIKit.h>
 
 // keys used in retrieving values from properties that are dispatced by

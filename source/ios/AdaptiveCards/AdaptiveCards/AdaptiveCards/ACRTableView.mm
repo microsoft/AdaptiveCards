@@ -5,7 +5,6 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTableView.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -14,16 +13,6 @@
 #import "TableCell.h"
 #import "TableColumnDefinition.h"
 #import "TableRow.h"
-#else
-#import <AdaptiveCards/ACRTableView.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRTableRow.h>
-#import <AdaptiveCards/Table.h>
-#import <AdaptiveCards/TableCell.h>
-#import <AdaptiveCards/TableColumnDefinition.h>
-#import <AdaptiveCards/TableRow.h>
-#endif
 
 @implementation ACRTableView {
     NSMutableArray<ACRColumnDefinition *> *_columnDefinitions;

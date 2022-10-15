@@ -5,7 +5,6 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOBundle.h"
@@ -17,19 +16,6 @@
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRChoiceSetCompactStyleView.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOBundle.h>
-#import <AdaptiveCards/ACRActionDelegate.h>
-#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
-#import <AdaptiveCards/ACRInputLabelView.h>
-#import <AdaptiveCards/ACRView.h>
-#import <AdaptiveCards/ChoiceInput.h>
-#import <AdaptiveCards/ChoiceSetInput.h>
-#import <AdaptiveCards/HostConfig.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 using namespace AdaptiveCards;
 

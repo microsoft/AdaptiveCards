@@ -5,7 +5,6 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRAggregateTarget.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOInputResults.h"
@@ -15,17 +14,6 @@
 #import "ACRViewPrivate.h"
 #import "ExecuteAction.h"
 #import "SubmitAction.h"
-#else
-#import <AdaptiveCards/ACRAggregateTarget.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOInputResults.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
-#import <AdaptiveCards/ACRViewController.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#import <AdaptiveCards/ExecuteAction.h>
-#import <AdaptiveCards/SubmitAction.h>
-#endif
 #import <UIKit/UIKit.h>
 
 NSString *const ACRAggregateTargetActionType = @"actiontype";

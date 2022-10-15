@@ -6,11 +6,7 @@
 //
 
 #include "ACRContentStackView.h"
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElementPrivate.h"
-#else
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#endif
 #include "ACOHostConfigPrivate.h"
 #ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseCardElementPrivate.h"

@@ -5,11 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRIBaseInputHandler.h"
-#else
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
-#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRInputTableView : UITableView

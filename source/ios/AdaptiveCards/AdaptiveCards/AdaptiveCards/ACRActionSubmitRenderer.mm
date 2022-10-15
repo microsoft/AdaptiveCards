@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRActionSubmitRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -14,16 +13,6 @@
 #import "ACRButton.h"
 #import "SubmitAction.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRActionSubmitRenderer.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRAggregateTarget.h>
-#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
-#import <AdaptiveCards/ACRButton.h>
-#import <AdaptiveCards/SubmitAction.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 @implementation ACRActionSubmitRenderer
 

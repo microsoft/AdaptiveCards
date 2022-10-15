@@ -4,11 +4,7 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACORemoteResourceInformationPrivate.h"
-#else
-#import <AdaptiveCards/ACORemoteResourceInformationPrivate.h>
-#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

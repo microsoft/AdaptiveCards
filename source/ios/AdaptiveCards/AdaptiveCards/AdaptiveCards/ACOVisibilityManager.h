@@ -5,11 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOFillerSpaceManager.h"
-#else
-#import <AdaptiveCards/ACOFillerSpaceManager.h>
-#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

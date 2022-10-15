@@ -4,13 +4,8 @@
 //
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOParseContext.h"
 #import "ParseContext.h"
-#else
-#import <AdaptiveCards/ACOParseContext.h>
-#import <AdaptiveCards/ParseContext.h>
-#endif
 
 using namespace AdaptiveCards;
 

@@ -29,7 +29,6 @@
 //  clients who wish to use the director's service should access the service through two functions
 //  in UtiliOS.h, buildTarget and buildTargetForButton
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTargetBuilderDirector.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
@@ -39,17 +38,6 @@
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRTargetBuilderDirector.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACRAggregateTarget.h>
-#import <AdaptiveCards/ACRErrors.h>
-#import <AdaptiveCards/ACROverflowTarget.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACRShowCardTarget.h>
-#import <AdaptiveCards/ACRToggleVisibilityTarget.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 @implementation ACRTargetBuilder
 

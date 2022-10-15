@@ -6,13 +6,8 @@
 //
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOInputResults.h"
 #import "ACRViewPrivate.h"
-#else
-#import <AdaptiveCards/ACOInputResults.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#endif
 
 @implementation ACOInputResults {
     __weak ACRView *_view;

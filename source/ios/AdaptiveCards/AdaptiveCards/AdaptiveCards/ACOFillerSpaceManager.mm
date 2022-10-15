@@ -6,13 +6,8 @@
 //
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOFillerSpaceManager.h"
 #import "ACOBaseCardElementPrivate.h"
-#else
-#import <AdaptiveCards/ACOFillerSpaceManager.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#endif
 
 const CGFloat kFillerViewLayoutConstraintPriority = UILayoutPriorityDefaultLow - 10;
 

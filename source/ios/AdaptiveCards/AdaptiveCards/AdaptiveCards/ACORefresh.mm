@@ -6,13 +6,8 @@
 //
 //
 //
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElementPrivate.h"
 #import "ACORefreshPrivate.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACORefreshPrivate.h>
-#endif
 
 @implementation ACORefresh {
     std::shared_ptr<Refresh> _refreshElement;

@@ -4,7 +4,6 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "UtiliOS.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
@@ -25,28 +24,6 @@
 #import "MarkDownParser.h"
 #import "RichTextElementProperties.h"
 #import "TextRun.h"
-#else
-#import <AdaptiveCards/UtiliOS.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
-#import <AdaptiveCards/ACRBaseTarget.h>
-#import <AdaptiveCards/ACRColumnSetView.h>
-#import <AdaptiveCards/ACRContentStackView.h>
-#import <AdaptiveCards/ACRIBaseActionElementRenderer.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACRTableRow.h>
-#import <AdaptiveCards/ACRTargetBuilderDirector.h>
-#import <AdaptiveCards/ACRUIImageView.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#import <AdaptiveCards/BackgroundImage.h>
-#import <AdaptiveCards/BaseActionElement.h>
-#import <AdaptiveCards/Enums.h>
-#import <AdaptiveCards/MarkDownParser.h>
-#import <AdaptiveCards/RichTextElementProperties.h>
-#import <AdaptiveCards/TextRun.h>
-#endif
 
 using namespace AdaptiveCards;
 

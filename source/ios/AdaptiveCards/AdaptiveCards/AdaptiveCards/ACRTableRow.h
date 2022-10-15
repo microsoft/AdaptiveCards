@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRContentStackView.h"
 #import "ACREnums.h"
-#else
-#import <AdaptiveCards/ACRContentStackView.h>
-#import <AdaptiveCards/ACREnums.h>
-#endif
 
 #import <UIKit/UIKit.h>
 

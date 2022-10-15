@@ -5,7 +5,6 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRCustomActionRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -14,16 +13,6 @@
 #import "SharedAdaptiveCard.h"
 #import "UnknownAction.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRCustomActionRenderer.h>
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/UnknownAction.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 // this is an entry point to custom parsing and rendering
 // it will call a registered custom parser to deserialize, then the deserialized object is rendered by calling

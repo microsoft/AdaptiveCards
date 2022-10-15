@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRColumnSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
@@ -19,21 +18,6 @@
 #import "Enums.h"
 #import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
-#else
-#import <AdaptiveCards/ACRColumnSetRenderer.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#import <AdaptiveCards/ACRColumnRenderer.h>
-#import <AdaptiveCards/ACRColumnSetView.h>
-#import <AdaptiveCards/ACRRegistration.h>
-#import <AdaptiveCards/ACRSeparator.h>
-#import <AdaptiveCards/ACRViewPrivate.h>
-#import <AdaptiveCards/Column.h>
-#import <AdaptiveCards/ColumnSet.h>
-#import <AdaptiveCards/Enums.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/UtiliOS.h>
-#endif
 
 @implementation ACRColumnSetRenderer
 

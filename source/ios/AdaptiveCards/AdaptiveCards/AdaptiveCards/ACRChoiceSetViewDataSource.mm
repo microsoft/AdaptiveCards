@@ -5,17 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBundle.h"
 #import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import "ACRChoiceSetViewDataSource.h"
-#else
-#import <AdaptiveCards/ACOBundle.h>
-#import <AdaptiveCards/ACRInputLabelView.h>
-#import <AdaptiveCards/UtiliOS.h>
-#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
-#endif
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

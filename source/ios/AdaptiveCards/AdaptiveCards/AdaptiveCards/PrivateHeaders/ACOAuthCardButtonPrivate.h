@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAuthCardButton.h"
 #import "AuthCardButton.h"
-#else
-#import <AdaptiveCards/ACOAuthCardButton.h>
-#import <AdaptiveCards/AuthCardButton.h>
-#endif
 
 using namespace AdaptiveCards;
 

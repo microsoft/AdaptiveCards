@@ -5,13 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBundle.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACOBundle.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 
 @implementation ACOBundle {
     NSBundle *_bundle;

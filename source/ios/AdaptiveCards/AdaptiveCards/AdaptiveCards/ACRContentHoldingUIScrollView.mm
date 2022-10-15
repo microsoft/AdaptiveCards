@@ -5,11 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRContentHoldingUIScrollView.h"
-#else
-#import <AdaptiveCards/ACRContentHoldingUIScrollView.h>
-#endif
 
 @implementation ACRContentHoldingUIScrollView
 

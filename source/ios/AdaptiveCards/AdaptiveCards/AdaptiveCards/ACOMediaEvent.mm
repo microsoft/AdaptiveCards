@@ -6,11 +6,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOMediaEventPrivate.h"
-#else
-#import <AdaptiveCards/ACOMediaEventPrivate.h>
-#endif
 
 @implementation ACOMediaSource
 

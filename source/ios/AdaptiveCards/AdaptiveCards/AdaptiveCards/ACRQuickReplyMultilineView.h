@@ -5,13 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRButton.h"
 #import "ACRTextView.h"
-#else
-#import <AdaptiveCards/ACRButton.h>
-#import <AdaptiveCards/ACRTextView.h>
-#endif
 #import <UIKit/UIKit.h>
 @protocol ACRIQuickReply
 - (ACRButton *)getButton;

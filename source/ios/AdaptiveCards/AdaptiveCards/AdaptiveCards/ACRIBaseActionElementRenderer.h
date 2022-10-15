@@ -5,15 +5,9 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOBaseActionElement.h"
 #import "ACOHostConfig.h"
 #import "ACRView.h"
-#else
-#import <AdaptiveCards/ACOBaseActionElement.h>
-#import <AdaptiveCards/ACOHostConfig.h>
-#import <AdaptiveCards/ACRView.h>
-#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -5,13 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAdaptiveCard.h"
 #import "ACOMediaEvent.h"
-#else
-#import <AdaptiveCards/ACOAdaptiveCard.h>
-#import <AdaptiveCards/ACOMediaEvent.h>
-#endif
 #import <AVKit/AVKit.h>
 #import <UIKit/UIKit.h>
 

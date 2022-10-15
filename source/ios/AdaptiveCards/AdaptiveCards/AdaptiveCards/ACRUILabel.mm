@@ -5,15 +5,9 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRUILabel.h"
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
-#else
-#import <AdaptiveCards/ACRUILabel.h>
-#import <AdaptiveCards/ACRAggregateTarget.h>
-#import <AdaptiveCards/ACRContentHoldingUIView.h>
-#endif
 
 @implementation ACRUILabel
 

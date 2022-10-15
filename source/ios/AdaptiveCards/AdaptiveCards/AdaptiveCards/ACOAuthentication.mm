@@ -5,15 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOAuthCardButtonPrivate.h"
 #import "ACOAuthenticationPrivate.h"
 #import "ACOTokenExchangeResourcePrivate.h"
-#else
-#import <AdaptiveCards/ACOAuthCardButtonPrivate.h>
-#import <AdaptiveCards/ACOAuthenticationPrivate.h>
-#import <AdaptiveCards/ACOTokenExchangeResourcePrivate.h>
-#endif
 
 @implementation ACOAuthentication {
     std::shared_ptr<Authentication> _adaptiveAuthentication;

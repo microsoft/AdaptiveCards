@@ -5,15 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACRTableCellView.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
-#else
-#import <AdaptiveCards/ACRTableCellView.h>
-#import <AdaptiveCards/ACOBaseCardElementPrivate.h>
-#import <AdaptiveCards/ACOHostConfigPrivate.h>
-#endif
 
 @implementation ACRTableCellView {
     ACRTableCellDefinition *_definition;

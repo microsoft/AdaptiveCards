@@ -6,17 +6,10 @@
 //
 //
 
-#ifdef USE_AC_SWIFT_PACKAGE
 #import "ACOVisibilityManager.h"
 #import "ACRColumnView.h"
 #import "ACREnums.h"
 #import "ACRSeparator.h"
-#else
-#import <AdaptiveCards/ACOVisibilityManager.h>
-#import <AdaptiveCards/ACRColumnView.h>
-#import <AdaptiveCards/ACREnums.h>
-#import <AdaptiveCards/ACRSeparator.h>
-#endif
 
 @implementation ACOVisibilityManager {
     /// tracks objects that are used in filling the space
