@@ -46,8 +46,7 @@ let package = Package(
             ],
             publicHeadersPath: "include",
             cxxSettings: [
-                .headerSearchPath("../../../../shared/cpp/ObjectModel"), 
-                .define("USE_AC_SWIFT_PACKAGE"),
+                .headerSearchPath("../../../../shared/cpp/ObjectModel") 
             ],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
@@ -65,8 +64,7 @@ let package = Package(
                 .copy("TestFiles")
             ],
             cxxSettings: [
-                .headerSearchPath("../../../../shared/cpp/ObjectModel"),
-                .define("USE_AC_SWIFT_PACKAGE")
+                .headerSearchPath("../../../../shared/cpp/ObjectModel")
             ],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
