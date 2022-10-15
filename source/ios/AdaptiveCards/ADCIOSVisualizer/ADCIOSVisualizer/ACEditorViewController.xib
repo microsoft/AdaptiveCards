@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="2YS-9x-Li7" customClass="ACEditorViewController">
+            <view key="view" contentMode="scaleToFill" id="JFD-xv-wyn">
+                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TbI-iu-gcQ">
+                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
+                        <items>
+                            <navigationItem id="7wJ-Q4-Vtf">
+                                <barButtonItem key="leftBarButtonItem" title="Cancel" id="185-HI-qN3"/>
+                                <barButtonItem key="rightBarButtonItem" title="Apply" id="UX6-xn-A96"/>
+                            </navigationItem>
+                        </items>
+                    </navigationBar>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="znA-pa-b69">
+                        <rect key="frame" x="5" y="111" width="380" height="729"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                    </textView>
+                </subviews>
+                <viewLayoutGuide key="safeArea" id="bP2-ZX-x7o"/>
+                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                <constraints>
+                    <constraint firstItem="znA-pa-b69" firstAttribute="leading" secondItem="bP2-ZX-x7o" secondAttribute="leading" constant="5" id="2WV-IQ-S5i"/>
+                    <constraint firstItem="znA-pa-b69" firstAttribute="centerX" secondItem="TbI-iu-gcQ" secondAttribute="centerX" id="2Wg-VV-yOi"/>
+                    <constraint firstItem="TbI-iu-gcQ" firstAttribute="top" secondItem="bP2-ZX-x7o" secondAttribute="top" id="WNN-E3-ecJ"/>
+                    <constraint firstItem="znA-pa-b69" firstAttribute="bottom" secondItem="bP2-ZX-x7o" secondAttribute="bottom" constant="30" id="drf-v6-4OL"/>
+                    <constraint firstItem="TbI-iu-gcQ" firstAttribute="trailing" secondItem="bP2-ZX-x7o" secondAttribute="trailing" id="hyp-EN-pnV"/>
+                    <constraint firstItem="znA-pa-b69" firstAttribute="top" secondItem="TbI-iu-gcQ" secondAttribute="bottom" constant="20" id="kTh-xa-1YI"/>
+                    <constraint firstItem="TbI-iu-gcQ" firstAttribute="leading" secondItem="JFD-xv-wyn" secondAttribute="leading" id="x1P-et-wx8"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="applyButton" destination="UX6-xn-A96" id="nvC-Mt-gf4"/>
+                <outlet property="cancelButton" destination="185-HI-qN3" id="AKM-pQ-HRm"/>
+                <outlet property="editorView" destination="znA-pa-b69" id="lsl-dk-EDO"/>
+                <outlet property="navigationBar" destination="TbI-iu-gcQ" id="EHi-98-IBW"/>
+            </connections>
+            <point key="canvasLocation" x="-529.23076923076917" y="-307.10900473933646"/>
+        </viewController>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

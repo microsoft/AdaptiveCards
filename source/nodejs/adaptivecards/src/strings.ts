@@ -55,6 +55,8 @@ export class Strings {
             `Autoplay Delay is too short (${minAutoplayDelay}).`,
         tooManyCarouselPages: (maxCarouselPages: number) =>
             `Maximum number of Carousel pages exceeded (${maxCarouselPages}).`,
+        invalidInitialPageIndex: (initialPageIndex: number) =>
+            `InitialPage for carousel is invalid (${initialPageIndex}).`,
         columnAlreadyBelongsToAnotherSet: () => "This column already belongs to another ColumnSet.",
         invalidCardType: () =>
             `Invalid or missing card type. Make sure the card's type property is set to "AdaptiveCard".`,
@@ -93,6 +95,7 @@ export class Strings {
     static readonly defaults = {
         inlineActionTitle: () => "Inline Action",
         overflowButtonText: () => "...",
+        overflowButtonTooltip: () => "More options",
         mediaPlayerAriaLabel: () => "Media content",
         mediaPlayerPlayMedia: () => "Play media",
         youTubeVideoPlayer: () => "YouTube video player",

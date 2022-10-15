@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { MultiThemeHostContainer } from "../multi-theme-host-container";
-import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
-import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
+import * as hostConfigLight from "../../hostConfigs/widget-light.json";
+import * as hostConfigDark from "../../hostConfigs/widget-dark.json";
 
 export enum ContainerSize {
     Small = "Small",
@@ -11,13 +11,13 @@ export enum ContainerSize {
     Large = "Large"
 }
 
-export class BerlinContainer extends MultiThemeHostContainer {
+export class WidgetContainer extends MultiThemeHostContainer {
     private _containerSize: ContainerSize;
 
     constructor(size: ContainerSize) {
         super(
-            "Berlin (Test)",
-            "berlin-container",
+            "Widgets Board",
+            "widget-container",
             hostConfigLight,
             hostConfigDark,
             "#D2D2D2",
@@ -33,32 +33,32 @@ export class BerlinContainer extends MultiThemeHostContainer {
 
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.remove(
-            "berlin-small-card",
-            "berlin-medium-card",
-            "berlin-large-card"
+            "widget-small-card",
+            "widget-medium-card",
+            "widget-large-card"
         );
-        this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
+        this.cardHost.classList.add(`widget-${this._containerSize.toLowerCase()}-card`);
         const outerFrame = document.createElement("div");
-        outerFrame.classList.add("berlin-outer-container");
-        outerFrame.classList.add(`berlin-${this._containerSize.toLowerCase()}-container`);
+        outerFrame.classList.add("widget-outer-container");
+        outerFrame.classList.add(`widget-${this._containerSize.toLowerCase()}-container`);
 
         const header = document.createElement("div");
-        header.className = "berlin-header";
+        header.className = "widget-header";
         outerFrame.appendChild(header);
 
         const headerText = document.createElement("p");
-        headerText.className = "berlin-header-text";
-        headerText.textContent = "Berlin Header";
+        headerText.className = "widget-header-text";
+        headerText.textContent = "Widget Header";
         header.appendChild(headerText);
 
         const moreButton = document.createElement("div");
-        moreButton.className = "berlin-header-more-button";
+        moreButton.className = "widget-header-more-button";
         moreButton.setAttribute("role", "button");
         moreButton.tabIndex = 0;
         header.appendChild(moreButton);
 
         const innerFrame = document.createElement("div");
-        innerFrame.className = "berlin-inner-container";
+        innerFrame.className = "widget-inner-container";
         innerFrame.appendChild(this.cardHost);
 
         outerFrame.appendChild(innerFrame);
