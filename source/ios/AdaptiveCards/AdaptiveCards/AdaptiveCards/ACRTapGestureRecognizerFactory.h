@@ -4,10 +4,10 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACRTapGestureRecognizerEventHandler.h"
-#import "ACRView.h"
 #import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
+#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRView.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

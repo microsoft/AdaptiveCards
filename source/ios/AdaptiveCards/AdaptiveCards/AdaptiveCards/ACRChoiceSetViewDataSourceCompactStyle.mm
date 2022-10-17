@@ -5,11 +5,11 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACRChoiceSetViewDataSourceCompactStyle.h"
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"
-#import "ACRView.h"
 #import "ACRChoiceSetViewDataSource.h"
-#import "ACRChoiceSetViewDataSourceCompactStyle.h"
+#import "ACRView.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
