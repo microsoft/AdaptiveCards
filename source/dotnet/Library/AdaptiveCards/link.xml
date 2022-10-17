@@ -1,4 +1,0 @@
-<linker>
-  <!--Prevent IL2CPP from stripping away code from depenedencies that are only accessed via Reflection.-->
-  <assembly fullname="AdaptiveCards" preserve="all"/>
-</linker>
