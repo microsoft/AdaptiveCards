@@ -18,12 +18,12 @@ This document covers changes to add Dynamic Type Ahead search support to Input.C
 
 ## Architecture Overview
 
-_Scenario 1: Search for a device model_
+_Scenario 1: Search for a device model_ <br/>
 `FixIt` is an app for raising requests for mobile repairs. `FixIt` sends an adaptive card to the user which the user has to fill in order to provide details of the device which needs repair. Here the device model field can be a dynamic type ahead (Input.ChoiceSet) which fetches the model names from the backend as the user types.
 
 ![img](assets/InputLabels/TypeAheadSearch_intro_bot.png)
 
-_Scenario 2: People Picker_
+_Scenario 2: People Picker_ <br/>
 Using the approvals app users can assign a request to people. This scenario can use an adaptive card with an Input.ChoiceSet which allows picking people dynamically. As the user types in the input box, dynamic choices of people are show to the user. From this dynamic choices of people, user can pick an option.
 ![img](assets/InputLabels/TypeAheadSearch_intro_people.png)
 
