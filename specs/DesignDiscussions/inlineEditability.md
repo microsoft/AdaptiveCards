@@ -105,6 +105,7 @@ In vertical view, the width is always 100% of the container of input element.
 2. If `value` is `empty` in the input field. We will show label and placeholder text in lighter color like this in the [default] state,
 
 ![img](../assets/InlineEditability/IE12.PNG)
+
 which user can go and update the value,
 
 ![img](../assets/InlineEditability/IE13.PNG)
