@@ -1,6 +1,6 @@
 ---
 title: 📣 Community Call - May, 2022
-subtitle: Handling multi-user responses for Adaptive Cards in Teams – posting a card with Power Automate in a Teams meeting chat.
+subtitle: Handling multi-user responses for Adaptive Cards in Teams
 date: 2022-05-12
 featured_image: https://pnp.github.io/blog/adaptive-cards-community-call/adaptive-cards-community-call-may-2022/images/recording-adaptive-cards-may-call_hufbf3f7faf2b2edabb62d15f9085c8218_282942_700x0_resize_q100_h2_box_3.webp
 github_username: JeanRoca

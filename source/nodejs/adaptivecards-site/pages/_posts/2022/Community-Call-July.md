@@ -1,6 +1,6 @@
 ---
 title: 📣 Community Call - July, 2022
-subtitle: Action.ToggleVisibility Deprecation (a non-breaking change for a control that needs to support accessibility requirements for all users).
+subtitle: Action.ToggleVisibility Deprecation (non-breaking change)
 date: 2022-07-14
 featured_image: https://pnp.github.io/blog/adaptive-cards-community-call/adaptive-cards-community-call-july-2022/images/recording-adaptive-cards-july-call_hufb42edcfeb6bfc1cc800f7fd057797ff_271174_700x0_resize_q100_h2_box_3.webp
 github_username: JeanRoca

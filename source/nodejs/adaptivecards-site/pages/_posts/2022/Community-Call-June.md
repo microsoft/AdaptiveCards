@@ -1,6 +1,6 @@
 ---
 title: 📣 Community Call - June, 2022
-subtitle: New Teams Toolkit v4.0 features enable developers and non-developers to create Teams apps with minimal work.
+subtitle: New Teams Toolkit v4.0 Adaptive Cards features
 date: 2022-06-09
 featured_image: https://pnp.github.io/blog/adaptive-cards-community-call/adaptive-cards-community-call-june-2022/images/recording-adaptive-cards-june-call_hu262cf22b54ffadc2b9a48f80d7c7bfec_263625_700x0_resize_q100_h2_box_3.webp
 github_username: JeanRoca

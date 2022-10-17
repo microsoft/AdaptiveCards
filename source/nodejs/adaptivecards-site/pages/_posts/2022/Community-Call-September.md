@@ -1,6 +1,6 @@
 ---
 title: 📣 Community Call - September, 2022
-subtitle: Overview of the React Native Adaptive Cards Renderer by BigThinkCode
+subtitle: Updates on Accessibility features in Adaptive Cards
 date: 2022-09-08
 featured_image: https://user-images.githubusercontent.com/33772802/196286823-4b03da2d-75f7-44ae-b6ac-60c43321a0d2.jpg
 github_username: JeanRoca
