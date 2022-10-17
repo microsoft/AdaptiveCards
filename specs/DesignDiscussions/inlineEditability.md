@@ -15,12 +15,12 @@ UI of showing data and taking user input will become simplistic.
 
 As shown in the below picture, An adaptive card displays data for Customer name, Est. Revenue and Est. Clode Date. If user wants to update those information, he will have to click on 'Edit' button which will open some form and there he can update values for 'Est. Revenue' etc. and Click on Save to send data back to the bot service.
 
-![img](../assets/InlineEditability/IE_1.png)
+![img](../assets/InlineEditability/IE_1.PNG)
 
 
 As of now, Adaptive cards support `Input` fields to collect user input. This is how current user experience of `Input` fields looks like. 
 
- ![img](../assets/InlineEditability/IE18.png)
+ ![img](../assets/InlineEditability/IE18.PNG)
 
 #### Proposed experience:
 
@@ -64,7 +64,7 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 * **Existing view:**
 
- ![img](../assets/InlineEditability/IE18.png)
+ ![img](../assets/InlineEditability/IE18.PNG)
 
 * **Inline Editable View:**
 
@@ -92,8 +92,6 @@ In vertical view, the width is always 100% of the container of input element.
 ![img](../assets/InlineEditability/IE8.PNG)
 
 
-![img](../assets/InlineEditability/IE10.PNG)
-
 2. Host can configure these style properties of `label` and `value` field: `font`, `font color` and `font weight`. 
 	Default (for both label and value): `14px; Seogue Regular`.
 	Colour may be changed from the set of accessible colours in Accessible Messages Design System_WIP
@@ -102,7 +100,7 @@ In vertical view, the width is always 100% of the container of input element.
 
 ##### Use Case Clarifications:
 
-1. If `label` is `empty` in the input field then value takes 100% width.
+1. If `label` is `empty` in the input field then value takes 100% width of the container of the input element.
 
 2. If `value` is `empty` in the input field. We will show label and placeholder text in lighter color like this in the [default] state,
 
@@ -116,6 +114,8 @@ which user can go and update the value,
 ![img](../assets/InlineEditability/IE14.PNG)
 
 4. Order of `label` and `value` will always be label first and value second. In RTL, it should follow right to left convention as expected.
+
+![img](../assets/InlineEditability/IE10.PNG)
 
 5. If user has some unsaved changes on the card but he moved away from the card but card is still in the viewport. In this case, we will preseve the changes made by the user and we will some indication to user that fields are unsaved or dirty. When card goes out of the viewport, then we wont preserve the unsaved values.
 
