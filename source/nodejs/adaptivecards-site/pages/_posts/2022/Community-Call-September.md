@@ -2,7 +2,7 @@
 title: 📣 Community Call - September, 2022
 subtitle: Overview of the React Native Adaptive Cards Renderer by BigThinkCode
 date: 2022-09-08
-featured_image: https://pnp.github.io/blog/adaptive-cards-community-call/adaptive-cards-community-call-september-2022/images/recording-adaptive-cards-september-call_hu4d229b8ad386f29030f84c5c9690168b_92915_700x0_resize_q100_h2_box_3.webp
+featured_image: https://user-images.githubusercontent.com/33772802/196286823-4b03da2d-75f7-44ae-b6ac-60c43321a0d2.jpg
 github_username: JeanRoca
 twitter: jpthepm
 ---

@@ -2,7 +2,7 @@
 title: 📣 Community Call - October, 2022
 subtitle: Building Windows 11 Widgets with Adaptive Cards
 date: 2022-10-14
-featured_image: https://pnp.github.io/blog/adaptive-cards-community-call/adaptive-cards-community-call-october-2022/images/recording-adaptive-cards-October-call_hu6b5b0d9a4552bcbd599bbf2263bc265c_87439_700x0_resize_q100_h2_box_3.webp
+featured_image: https://user-images.githubusercontent.com/33772802/196287201-9cbe1293-13f6-4910-a3e0-955742a5f12e.png
 github_username: JeanRoca
 twitter: jpthepm
 ---
