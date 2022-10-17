@@ -24,7 +24,7 @@ class ToolboxInfo {
         }
     }
 
-    onToggled: (sender: ToolboxInfo) => void;
+    onToggled: (sender: ToolboxInfo, saveState?: boolean) => void;
     onResizeEnded: (sender: ToolboxInfo) => void;
     onResized: (sender: ToolboxInfo) => void;
 
@@ -41,7 +41,7 @@ class ToolboxInfo {
     }
 
     constructor(readonly toolbox: Toolbox) {
-        toolbox.onToggled = (sender: Toolbox) => {
+        toolbox.onToggled = (sender: Toolbox, saveState: boolean = true) => {
             if (sender.isExpanded) {
                 this.showSplitter();
 
@@ -54,7 +54,7 @@ class ToolboxInfo {
             }
 
             if (this.onToggled) {
-                this.onToggled(this);
+                this.onToggled(this, saveState);
             }
         }
     }
@@ -138,12 +138,14 @@ export class SidePanel {
         this.saveState();
     }
 
-    private toolboxExpandedOrCollapsed(toolbox: Toolbox) {
+    private toolboxExpandedOrCollapsed(toolbox: Toolbox, saveState: boolean = true) {
         if (this.onToolboxExpandedOrCollapsed) {
             this.onToolboxExpandedOrCollapsed(this, toolbox);
         }
 
-        this.saveState();
+		if (saveState) {
+			this.saveState();
+		}
     }
 
     private getDimensionSettingName(): string {
@@ -165,9 +167,9 @@ export class SidePanel {
 
     addToolbox(toolbox: Toolbox) {
         let toolboxInfo = new ToolboxInfo(toolbox);
-        toolboxInfo.onToggled = (sender: ToolboxInfo) => {
+        toolboxInfo.onToggled = (sender: ToolboxInfo, saveState: boolean = true) => {
             this.updateLayout();
-            this.toolboxExpandedOrCollapsed(toolboxInfo.toolbox);
+            this.toolboxExpandedOrCollapsed(toolboxInfo.toolbox, saveState);
         }
         toolboxInfo.onResizeEnded = (sender: ToolboxInfo) => {
             this.computeToolboxSize(sender.toolbox);

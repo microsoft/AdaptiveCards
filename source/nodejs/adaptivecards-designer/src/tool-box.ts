@@ -25,6 +25,7 @@ export class Toolbox {
     private _orientation: ToolboxOrientation;
     private _isRestoring: boolean = false;
     private _collapsedTabContainer: HTMLElement;
+    private _isVisible = true;
 
     private getDimensionSettingName(): string {
         return "Toolbox" + this.id + (this._orientation == ToolboxOrientation.Vertical ? "Height" : "Width");
@@ -40,13 +41,31 @@ export class Toolbox {
         }
     }
 
-    private toggled() {
+    private toggled(saveState: boolean = true) {
         if (this.onToggled) {
-            this.onToggled(this);
+            this.onToggled(this, saveState);
         }
     }
 
-    onToggled: (sender: Toolbox) => void;
+    private updateVisibility() {
+        if (this._collapsedTabContainer) {
+            if (!this._isVisible) {
+                this.hideToolbox();
+            } else {
+                this._collapsedTabContainer.appendChild(this._headerRootElement);
+                this.restoreState();
+            }
+        }
+    }
+
+    private hideToolbox() {
+        if (this.isExpanded) {
+            this.collapse(false);
+        }
+        this._collapsedTabContainer.removeChild(this._headerRootElement);
+    }
+
+    onToggled: (sender: Toolbox, saveState?: boolean) => void;
 
     readonly id: string;
     readonly title: string;
@@ -111,6 +130,7 @@ export class Toolbox {
         this._expandCollapseButtonElement.tabIndex = 0;
         this._expandCollapseButtonElement.setAttribute("role", "button");
         this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
+        this._expandCollapseButtonElement.ariaLabel = this.title;
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
@@ -153,10 +173,14 @@ export class Toolbox {
         this._renderedElement.appendChild(this._headerRootElement);
         this._renderedElement.appendChild(this._contentHost);
 
+        if (!this._isVisible) {
+            this.hideToolbox();
+        }
+
         this.updateContent();
     }
 
-    collapse() {
+    collapse(saveState: boolean = true) {
         if (this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-collapsed");
             this._headerIconElement.classList.remove("acd-icon-header-expanded");
@@ -172,7 +196,7 @@ export class Toolbox {
 
             this._isExpanded = false;
 
-            this.toggled();
+            this.toggled(saveState);
         }
     }
 
@@ -220,7 +244,7 @@ export class Toolbox {
     }
 
     restoreState() {
-        if (this.renderedElement && !this._isRestoring) {
+        if (this.renderedElement && !this._isRestoring && this.isVisible) {
             this._isRestoring = true;
 
             try {
@@ -237,7 +261,7 @@ export class Toolbox {
 
                 let isExpandedSetting = SettingsManager.tryLoadBooleanSetting("Toolbox" + this.id + "IsExpanded", true);
 
-                if (isExpandedSetting.succeeded) {
+                if (isExpandedSetting.succeeded && this.isVisible) {
                     if (isExpandedSetting.value) {
                         this.expand();
                     }
@@ -289,5 +313,17 @@ export class Toolbox {
             this.renderedElement.classList.add("acd-toolbox-no-stretch");
             this.renderedElement.classList.remove("acd-toolbox-stretch");
         }
+    }
+
+    set isVisible(value: boolean) {
+        if (this._isVisible != value) {
+            this._isVisible = value;
+
+            this.updateVisibility();
+        }
+    }
+
+    get isVisible() {
+        return this._isVisible;
     }
 }

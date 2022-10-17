@@ -7,6 +7,7 @@
   - [#ctor(jsonTemplate)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardTemplate.#ctor(System.Object)')
   - [Expand(context,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
   - [Expand(rootData,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-System-Object,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(System.Object,System.Func{System.String,System.Object})')
+  - [GetLastTemplateExpansionWarnings()](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-GetLastTemplateExpansionWarnings 'AdaptiveCards.Templating.AdaptiveCardTemplate.GetLastTemplateExpansionWarnings')
 - [AdaptiveCardsTemplateParserBaseVisitor\`1](#T-AdaptiveCardsTemplateParserBaseVisitor`1 'AdaptiveCardsTemplateParserBaseVisitor`1')
   - [VisitArray(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
   - [VisitJson(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitJson(AdaptiveCardsTemplateParser.JsonContext)')
@@ -65,6 +66,7 @@
   - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
   - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
   - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
+  - [getTemplateVisitorWarnings()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-getTemplateVisitorWarnings 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.getTemplateVisitorWarnings')
 - [AdaptiveTemplateException](#T-AdaptiveCards-Templating-AdaptiveTemplateException 'AdaptiveCards.Templating.AdaptiveTemplateException')
   - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor')
   - [#ctor(message)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String)')
@@ -238,6 +240,21 @@ Default behavior is leaving templated string unchanged
 ##### See Also
 
 - [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardTemplate-GetLastTemplateExpansionWarnings'></a>
+### GetLastTemplateExpansionWarnings() `method`
+
+##### Summary
+
+Getter method for the array of warning strings from the last template expansion
+
+##### Returns
+
+ArrayList
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCardsTemplateParserBaseVisitor`1'></a>
 ## AdaptiveCardsTemplateParserBaseVisitor\`1 `type`
@@ -1130,6 +1147,21 @@ Visitor method for `valueTemplateString` grammar rule `AdaptiveCardsTemplatePars
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') |  |
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-getTemplateVisitorWarnings'></a>
+### getTemplateVisitorWarnings() `method`
+
+##### Summary
+
+Getter for templateVisitorWarnings
+
+##### Returns
+
+ArrayList
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-Templating-AdaptiveTemplateException'></a>
 ## AdaptiveTemplateException `type`

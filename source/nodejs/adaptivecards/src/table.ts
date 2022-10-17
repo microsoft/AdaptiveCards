@@ -169,6 +169,10 @@ export abstract class StylableContainer<
         return false;
     }
 
+    protected internalIndexOf(item: T): number {
+        return this._items.indexOf(item);
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -454,6 +458,10 @@ export class TableRow extends StylableContainer<TableCell> {
         return false;
     }
 
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof TableCell ? this.internalIndexOf(cardElement) : -1;
+    }
+
     ensureHasEnoughCells(cellCount: number) {
         while (this.getItemCount() < cellCount) {
             this.addCell(new TableCell());
@@ -658,6 +666,10 @@ export class Table extends StylableContainer<TableRow> {
         this.internalAddItem(row);
 
         row.ensureHasEnoughCells(this.getColumnCount());
+    }
+
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof TableRow ? this.internalIndexOf(cardElement) : -1;
     }
 
     getJsonTypeName(): string {

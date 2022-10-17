@@ -172,11 +172,12 @@ const CGFloat padding = 2.0f;
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!_accessibilityString) {
-        _accessibilityString = tableView.accessibilityLabel;
+        _accessibilityString = tableView.accessibilityLabel ? tableView.accessibilityLabel : @"";
         tableView.accessibilityLabel = nil;
     }
-    cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
+    cell.accessibilityTraits = cell.accessibilityTraits;
+    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@, %@", _accessibilityString, title, _isMultiChoicesAllowed ? @"check box" : @"radio button"];
+    cell.accessibilityHint = NSLocalizedString(@"double tap to select", nil);
 
     NSString *elementId = [NSString stringWithCString:_choiceSetDataSource->GetId().c_str()
                                              encoding:NSUTF8StringEncoding];

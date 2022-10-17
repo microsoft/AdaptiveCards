@@ -15,6 +15,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         property<hstring> Poster;
         property<hstring> AltText;
         property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource>> Sources;
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCaptionSource>> CaptionSources;
 
         auto ElementType() { return winrt::AdaptiveCards::ObjectModel::Uwp::ElementType::Media; }
 

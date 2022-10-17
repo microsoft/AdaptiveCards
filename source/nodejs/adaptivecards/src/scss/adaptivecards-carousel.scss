@@ -20,8 +20,6 @@
     &.ac-carousel-page {
         text-align: center;
         font-size: 18px;
-        background: #fff;
-
         /* Center slide text vertically */
         display: -webkit-box;
         display: -ms-flexbox;
@@ -98,4 +96,10 @@
     --swiper-pagination-bullet-inactive-opacity: 1;
     --swiper-pagination-color: #007aff;
     --swiper-navigation-size: 44px;
+}
+
+@media(forced-colors: active) {
+    .swiper-pagination-bullet {
+        background-color: ButtonBorder;
+    }
 }

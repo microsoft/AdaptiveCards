@@ -46,7 +46,7 @@ class TestCasesFragment : Fragment() {
 
             // mItems = mutableListOf<String>(*(requireActivity().assets.list("")))
 
-            mItems = mutableListOf<String>(*assetsList);
+            mItems = mutableListOf<String>(*assetsList!!);
 
             // there are some extra directories retrieved, so we'll remove them
             (mItems as MutableList<String>?)?.remove("images")
@@ -57,8 +57,8 @@ class TestCasesFragment : Fragment() {
         }
     }
 
-    private inner class TestCasesAdapter<T>(context: Context, resource: Int, itemsList: List<T>?) : ArrayAdapter<Any?>(context, resource, itemsList) {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
+    private inner class TestCasesAdapter<T>(context: Context, resource: Int, itemsList: List<T>?) : ArrayAdapter<Any?>(context, resource, itemsList!!) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var convertView = convertView
             if (convertView == null) {
                 convertView = layoutInflater.inflate(R.layout.test_case_list_item, parent, false)
@@ -70,7 +70,7 @@ class TestCasesFragment : Fragment() {
             val testCaseButtonText: String = testCaseButtonContent.substring(0, testCaseButtonContent.lastIndexOf('.'))
             testCaseButton?.text = testCaseButtonText
             testCaseButton?.setOnClickListener(TestCaseButtonClickListener(testCaseButtonContent))
-            return convertView
+            return convertView!!
         }
 
         private inner class TestCaseButtonClickListener(var mContent: String) : View.OnClickListener {

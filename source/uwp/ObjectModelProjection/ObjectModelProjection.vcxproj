@@ -41,6 +41,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Authentication.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CaptionSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ContentSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.cpp" />
@@ -119,6 +121,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CaptionSource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />

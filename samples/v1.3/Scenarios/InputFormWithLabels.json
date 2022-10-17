@@ -51,9 +51,9 @@
 						{
 							"type": "Input.Text",
 							"id": "myTel",
-							"label": "Phone Number (xxx-xxx-xxxx)",
-							"regex": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
-							"errorMessage": "Invalid phone number. Use the specified format: 3 numbers, hyphen, 3 numbers, hyphen and 4 numbers",
+							"label": "Phone Number (xxx xxx xxxx)",
+							"regex": "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$",
+							"errorMessage": "Invalid phone number. Please enter a 10 digit phone number",
 							"style": "tel"
 						}
 					]

@@ -49,7 +49,10 @@
         [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     lab.backgroundColor = [UIColor clearColor];
     lab.style = [viewGroup style];
-    lab.editable = NO;
+    // Apple Bug: without setting editable to YES, VO link navigation in iOS 12 and above
+    // doesn't work.
+    lab.editable = YES;
+    lab.delegate = lab;
     lab.textContainer.lineFragmentPadding = 0;
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
@@ -124,7 +127,7 @@
                                     &target)) {
                         NSRange selectActionRange = NSMakeRange(0, textRunContent.length);
 
-                        [textRunContent addAttribute:@"SelectAction"
+                        [textRunContent addAttribute:NSLinkAttributeName
                                                value:target
                                                range:selectActionRange];
 
@@ -138,7 +141,7 @@
                             hasGestureRecognizerAdded = YES;
                         }
 
-                        if (acoAction.inlineTooltip) {
+                        if (acoAction.inlineTooltip && [acoAction.inlineTooltip length]) {
                             [((ACRBaseTarget *)target) setTooltip:lab toolTipText:acoAction.inlineTooltip];
                             if (!hasLongPressGestureRecognizerAdded) {
                                 UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:lab action:@selector(handleInlineAction:)];

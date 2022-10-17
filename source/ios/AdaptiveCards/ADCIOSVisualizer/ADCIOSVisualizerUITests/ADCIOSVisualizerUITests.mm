@@ -192,13 +192,13 @@
 
 - (void)testLongPressAndDragRaiseNoEventInContainers
 {
-    [self openCardForVersion:@"v1.5" forCardType:@"Test" withCardName:@"Container.ScrollableSelectableList.json"];
+    [self openCardForVersion:@"v1.5" forCardType:@"Tests" withCardName:@"Container.ScrollableSelectableList.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
 
-    XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:3];
+    XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:3];
 
-    XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1];
+    XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1];
 
     // For some unknown reason this test succeeds on a mackbook but not in
     // a mac mini (xcode and emulator versions match), so we have to add a

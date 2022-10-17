@@ -1,0 +1,69 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "Carousel",
+							"pages": [
+								{
+									"type": "CarouselPage",
+									"items": [
+										{
+											"type": "Image",
+											"url": "https://adaptivecards.io/content/cats/1.png",
+											"altText": "Cat"
+										}
+									]
+								},
+								{
+									"type": "CarouselPage",
+									"items": [
+										{
+											"type": "Image",
+											"url": "https://adaptivecards.io/content/cats/2.png",
+											"altText": "Cat"
+										}
+									]
+								}
+							]
+						}
+					],
+					"style": "accent"
+				}
+			],
+			"style": "emphasis",
+			"id": "container"
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/cats/1.png"
+						}
+					],
+					"style": "accent"
+				}
+			],
+			"style": "emphasis"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Action.ToggleVisibility",
+			"isEnabled": true,
+			"targetElements": ["container"]
+		}
+	]
+}

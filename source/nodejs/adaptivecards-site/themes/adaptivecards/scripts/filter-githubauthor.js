@@ -42,6 +42,5 @@ hexo.extend.filter.register('before_post_render', function (data) {
 		});
 	} else {
 		console.log(`WARN: No GitHub username in page: ${data.source}`);
-		
 	}
 });

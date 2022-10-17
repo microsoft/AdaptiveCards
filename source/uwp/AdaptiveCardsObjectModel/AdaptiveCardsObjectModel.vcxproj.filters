@@ -76,6 +76,8 @@
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveTableParser.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
+    <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
+    <ClCompile Include="lib\AdaptiveContentSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -153,6 +155,8 @@
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
     <ClInclude Include="lib\AdaptiveTableParser.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
+    <ClInclude Include="lib\AdaptiveCaptionSource.h" />
+    <ClInclude Include="lib\AdaptiveContentSource.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />

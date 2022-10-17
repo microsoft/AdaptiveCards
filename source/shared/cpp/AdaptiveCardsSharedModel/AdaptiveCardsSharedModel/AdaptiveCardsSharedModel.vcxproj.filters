@@ -147,6 +147,12 @@
     <ClCompile Include="..\..\ObjectModel\MediaSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\CaptionSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ContentSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -356,6 +362,12 @@
     <ClInclude Include="..\..\ObjectModel\MediaSource.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\CaptionSource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ContentSource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -405,6 +417,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\MediaSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\CaptionSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ContentSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">

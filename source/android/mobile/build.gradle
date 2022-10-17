@@ -1,14 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+apply from: '../constants.gradle'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion project.ext.compileSdkVersion
     defaultConfig {
         applicationId "io.adaptivecards.adaptivecardssample"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode 2
         versionName "1.0.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -39,13 +43,15 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.multidex:multidex:' + androidxMultidexVersion
+    implementation 'androidx.appcompat:appcompat:' + androidxAppCompatVersion
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.pixplicity.sharp:library:1.1.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.webrtc:google-webrtc:1.0.27306'
+    implementation 'androidx.core:core-ktx:1.6.0'
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }

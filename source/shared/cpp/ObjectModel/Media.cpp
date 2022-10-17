@@ -61,6 +61,11 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
     return m_sources;
 }
 
+std::vector<std::shared_ptr<CaptionSource>>& Media::GetCaptionSources()
+{
+    return m_captionSources;
+}
+
 void Media::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(
@@ -118,6 +123,11 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context,
     }
 
     media->m_sources = std::move(sources);
+
+    auto captionSources = ParseUtil::GetElementCollectionOfSingleType<CaptionSource>(
+        context, json, AdaptiveCardSchemaKey::CaptionSources, CaptionSourceParser::Deserialize, false);
+
+    media->m_captionSources = std::move(captionSources);
 
     return media;
 }

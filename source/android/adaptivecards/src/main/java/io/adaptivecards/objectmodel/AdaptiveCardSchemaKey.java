@@ -38,6 +38,7 @@ public enum AdaptiveCardSchemaKey {
   Bottom,
   ButtonSpacing,
   Buttons,
+  CaptionSources,
   Card,
   CellSpacing,
   Cells,

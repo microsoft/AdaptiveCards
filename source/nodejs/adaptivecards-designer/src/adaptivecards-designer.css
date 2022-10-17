@@ -44,7 +44,7 @@
 }
 
 .acd-designersurface {
-	outline: none;
+    outline: none;
 }
 
 .acd-hidden {
@@ -196,12 +196,18 @@
 }
 
 .acd-dialog-frame {
-    background-color: ActiveBorder;
+    background-color: white;
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.4);
     justify-content: space-between;
     padding: 20px;
+}
+
+@media (forced-colors: active) {
+    .acd-dialog-frame {
+        background-color: ActiveBorder;
+    }
 }
 
 .acd-dialog-title-host {
@@ -426,6 +432,14 @@
 
 .acd-icon-richTextBlock::before {
     content: "\EDC2";
+}
+
+.acd-icon-carousel::before {
+    content: "\F26F";
+}
+
+.acd-icon-carouselPage::before {
+    content: "\EF6B";
 }
 
 .acd-icon-chevronDown::before {
@@ -906,8 +920,24 @@
     margin: 0px 8px 0px 8px;
 }
 
-.acd-toolbar-picker-disabled[aria-disabled="true"], .acd-toolbar-picker-disabled + .acd-toolbar-separator {
+.acd-toolbar-picker-hidden[aria-disabled="true"], .acd-toolbar-picker-hidden + .acd-toolbar-separator {
     display: none;
+}
+
+.acd-toolbar-picker-disabled[aria-disabled="true"], .acd-toolbar-picker-disabled + .acd-toolbar-separator, .acd-toolbar-picker-disabled div {
+    color: InactiveCaptionText;
+    cursor: default;
+}
+
+.ms-ctrl.ms-ctrl-dropdown.disabled, .ms-ctrl.ms-ctrl-dropdown.disabled span, .ms-ctrl.ms-ctrl-dropdown.disabled i {
+    color: InactiveCaptionText;
+    cursor: default;
+}
+
+.ms-ctrl.ms-ctrl-dropdown.disabled:hover, .ms-ctrl.ms-ctrl-dropdown.disabled:focus {
+    color: InactiveCaptionText;
+    cursor: default;
+    border-color: #EEEEEE;
 }
 
 @media all and (min-width: 651px) {
@@ -1250,29 +1280,29 @@ a.default-ac-anchor:visited:active {
 }
 
 .error-info {
-	display: flex;
-	justify-content: center;
-	color: red;
+    display: flex;
+    justify-content: center;
+    color: red;
 }
 
 .sample-info-text {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 
 .acd-spinner-host {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	opacity:.4;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity:.4;
 }
 
 .acd-image-spinner {
-	position: absolute;
-	width: 28px;
-	height: 28px;
-	top:50%;
-	left:50%;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    top:50%;
+    left:50%;
 }
 
 .acd-conversion-text {

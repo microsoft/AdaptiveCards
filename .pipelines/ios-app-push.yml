@@ -1,0 +1,41 @@
+parameters:
+  - name: appVersion
+    displayName: Update version of app
+    type: string
+    default: 2.4.0-beta
+    values:
+      - 2.4.0-beta
+
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+trigger: none
+
+schedules:
+  - cron: "0 3 * * 1"
+    displayName: Publish iOS App
+    branches:
+      include:
+        - main
+pool:
+  vmImage: 'macos-latest'
+
+steps:
+  - bash: | 
+     echo "Adaptive Version ${{ parameters.appVersion }}.$BUILD_NUMBER"
+     xcrun agvtool new-version -all ${{ parameters.appVersion }}.$BUILD_NUMBER
+    workingDirectory: source/ios/AdaptiveCards/ADCIOSVisualizer
+    displayName: 'Bash - update sample app version'
+    env:
+      BUILD_NUMBER: $(Build.BuildNumber)
+  - template: templates/ios-install-cert-template.yml
+  - task: AppCenterDistribute@3
+    inputs:
+      serverEndpoint: 'Microsoft App Center'
+      appSlug: 'Adaptive-Cards/Adaptive-Cards-iOS-Visualizer'
+      appFile: '**/*.ipa'
+      symbolsDsymFiles: '**/*.dSYM'
+      symbolsIncludeParentDirectory: true
+      releaseNotesOption: 'input'
+      releaseNotesInput: 'Nightly Build from main'
+      destinationType: 'groups'

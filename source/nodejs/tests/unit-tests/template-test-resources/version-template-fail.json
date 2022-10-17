@@ -1,0 +1,25 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+		{
+			"type": "TextBlock",
+			"text": "This should be the only TextBlock visible"
+		},
+        {
+            "$when": "${$_acTemplateVersion.major < 0}",
+            "type": "TextBlock",
+            "text": "This should not succeed for major version"
+        },
+        {
+            "$when": "${$_acTemplateVersion.minor < 0}",
+            "type": "TextBlock",
+            "text": "This should not succeed for minor version"
+        },
+        {
+            "$when": "${$_acTemplateVersion.patch < 0}",
+            "type": "TextBlock",
+            "text": "This should not succeed for patch version"
+        }
+    ]
+}

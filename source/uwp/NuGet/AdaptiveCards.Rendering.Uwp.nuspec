@@ -5,13 +5,16 @@
         <version>1.0.0</version>
         <authors>Microsoft</authors>
         <summary>Adaptive Cards library for UWP</summary>
-        <description>Used to render Adaptive Cards into UWP XAML or to work with the object model for C++ projects</description>
+        <description>Used to render Adaptive Cards into UWP XAML</description>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>adaptivecards;adaptive-cards</tags>
         <projectUrl>https://adaptivecards.io</projectUrl>
         <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
         <license type="file">EULA-Windows.txt</license>
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+        <dependencies>
+            <dependency id="AdaptiveCards.ObjectModel.Uwp" version="1.0.0" />
+        </dependencies>
     </metadata>
     <files>
         <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" target="lib\uap10.0"/>

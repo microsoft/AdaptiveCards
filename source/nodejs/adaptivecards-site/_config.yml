@@ -99,26 +99,6 @@ feed:
   order_by: -date
   icon: themes/adaptivecards/source/content/icons/favicon-32x32.png
 
-image_minifier:
-  enable: false
-  interlaced: false
-  multipass: false
-  optimizationLevel: 2
-  pngquant: false
-  progressive: false
-  silent: false
-
-js_minifier:
-  enable: false
-
-html_minifier:
-  enable: false
-  ignore_error: false
-  silent: false
-  exclude:
-
-css_minifier:
-  enable: false
-  silent: false
-  exclude: 
-    - '*.min.css'
+  # hexo-renderer-marked
+marked:
+  headerIds: false

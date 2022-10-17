@@ -63,7 +63,7 @@
     // that link or custom attribute, SelectAction was defined
     if (!(fraction == 0.0 || fraction == 1.0) && characterIndex < self.textStorage.length) {
         if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL] ||
-            [self.textStorage attribute:@"SelectAction"
+            [self.textStorage attribute:NSLinkAttributeName
                                 atIndex:characterIndex
                          effectiveRange:NULL]) {
             return self;
@@ -99,10 +99,17 @@
 
     NSUInteger indexAtChar = [[view layoutManager] characterIndexForPoint:pt inTextContainer:view.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
     if (indexAtChar < view.textStorage.length) {
-        return [view.attributedText attribute:@"SelectAction" atIndex:indexAtChar effectiveRange:nil];
+        return [view.attributedText attribute:NSLinkAttributeName atIndex:indexAtChar effectiveRange:nil];
     }
 
     return nil;
+}
+
+// Due to Apple's VO bug, UITextView's isEditable field has to be set YES, to prevent
+// editing, implemented the delegate below.
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    return NO;
 }
 
 @end

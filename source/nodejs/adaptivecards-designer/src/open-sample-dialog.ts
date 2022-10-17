@@ -5,10 +5,12 @@ import * as ACData from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import { CatalogueEntry, SampleCatalogue } from "./catalogue";
 import { Dialog } from "./dialog";
+import { Constants } from "adaptivecards-controls";
 
 export interface CardData {
     cardPayload?: string
-    sampleData?: string
+    sampleData?: string,
+    sampleHostData?: string,
     thumbnail?: HTMLElement | (() => HTMLElement)
 }
 
@@ -17,12 +19,15 @@ type CardDataProvider = (callback?: CardDataCallback) => CardData | void;
 
 interface OpenSampleItemProps {
     label: string,
-    onClick?: (ev: MouseEvent) => any
+    onClick?: (ev: MouseEvent) => any,
+    onKeyEnterEvent?: (ev: KeyboardEvent) => any,
     cardData?: CardData | CardDataProvider,
 }
 
 class OpenSampleItem {
-    onComplete: CardDataCallback
+    onComplete: CardDataCallback;
+    onNavigateToNextList?: () => void;
+    onNavigateToPreviousList?: () => void;
 
     constructor(readonly props: OpenSampleItemProps) { }
 
@@ -45,17 +50,36 @@ class OpenSampleItem {
         element.setAttribute("role", "listitem");
         element.onclick = this.props.onClick ?? (
             (e) => {
-                if (this.onComplete) {
-                    if (this.props.cardData instanceof Function) {
-                        const cardData = this.props.cardData(this.onComplete);
-                        if (cardData) {
-                            this.onComplete(cardData);
-                        }
-                    } else if (this.props.cardData) {
-                        this.onComplete(this.props.cardData);
-                    }
-                }
+                this.onCardSelected();
             })
+
+        element.onkeyup = (e: KeyboardEvent) => {
+            switch (e.key) {
+                case Constants.keys.enter:
+                    // If onKeyEnterEvent has been specified, we will follow that logic for selecting an OpenSampleItem
+                    if (this.props.onKeyEnterEvent) {
+                        this.props.onKeyEnterEvent(e);
+                    } else {
+                        // If onKeyEnterEvent is not specified, we assume OpenSampleItem should be selected and loaded as usual
+                        this.onCardSelected();
+                    }
+                    break;
+                case Constants.keys.down:
+                    this.navigateToNextElement(element);
+                    break;
+                case Constants.keys.up:
+                    this.navigateToPreviousElement(element);
+                    break;
+                case Constants.keys.right:
+                    this.navigateToNextElement(element);
+                    break;
+                case Constants.keys.left:
+                    this.navigateToPreviousElement(element);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         const thumbnailHost = document.createElement("div");
         thumbnailHost.className = "acd-open-sample-item-thumbnail";
@@ -103,6 +127,39 @@ class OpenSampleItem {
 
         return element;
     }
+
+    navigateToNextElement(element: HTMLElement) {
+        if (element.nextSibling) {
+            (element.nextSibling as HTMLElement).focus();
+        } else {
+            if (this.onNavigateToNextList) {
+                this.onNavigateToNextList();
+            }
+        }
+    }
+
+    navigateToPreviousElement(element: HTMLElement) {
+        if (element.previousSibling) {
+            (element.previousSibling as HTMLElement).focus();
+        } else {
+            if (this.onNavigateToPreviousList) {
+                this.onNavigateToPreviousList();
+            }
+        }
+    }
+
+    onCardSelected() {
+        if (this.onComplete) {
+            if (this.props.cardData instanceof Function) {
+                const cardData = this.props.cardData(this.onComplete);
+                if (cardData) {
+                    this.onComplete(cardData);
+                }
+            } else if (this.props.cardData) {
+                this.onComplete(this.props.cardData);
+            }
+        }
+    }
 }
 
 
@@ -112,6 +169,7 @@ export interface OpenSampleDialogProps {
 }
 
 export class OpenSampleDialog extends Dialog {
+    private _listElements: HTMLElement[] = [];
     private _output: CardData;
     private static _builtinItems: OpenSampleItemProps[] = [
         {
@@ -149,6 +207,7 @@ export class OpenSampleDialog extends Dialog {
         const listElement = document.createElement("div");
         listElement.className = "acd-open-sample-item-container";
         listElement.setAttribute("role", "list");
+        this._listElements.push(listElement);
 
         for (const item of items) {
             if (!item) continue;
@@ -156,6 +215,22 @@ export class OpenSampleDialog extends Dialog {
             itemElement.onComplete = (output: CardData) => {
                 this._output = output;
                 this.close();
+            }
+            itemElement.onNavigateToNextList = () => {
+                // Find the index of the current list
+                const currentIndex = this._listElements.indexOf(listElement);
+                // If the next index has a valid list, we want to navigate to the first element
+                if ((currentIndex !== -1) && (currentIndex + 1 < this._listElements.length) && this._listElements.at(currentIndex + 1)?.firstChild) {
+                    (this._listElements.at(currentIndex + 1).firstChild as HTMLElement).focus();
+                }
+            }
+            itemElement.onNavigateToPreviousList = () => {
+                // Find the index of the current list
+                const currentIndex = this._listElements.indexOf(listElement);
+                // If the previous index has a valid list, we want to navigate to the last element
+                if ((currentIndex !== -1) && (currentIndex - 1 >= 0) && this._listElements.at(currentIndex - 1)?.lastChild) {
+                    (this._listElements.at(currentIndex - 1).lastChild as HTMLElement).focus();
+                }
             }
 
             listElement.appendChild(itemElement.render());
@@ -207,6 +282,7 @@ export class OpenSampleDialog extends Dialog {
                                                 return callback({
                                                     cardPayload: entry.cardPayload,
                                                     sampleData: entry.sampleData,
+                                                    sampleHostData: "{}",
                                                     thumbnail: card.renderedElement,
                                                 });
                                             }

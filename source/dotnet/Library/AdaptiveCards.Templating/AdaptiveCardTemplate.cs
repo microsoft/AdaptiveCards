@@ -4,6 +4,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 
 namespace AdaptiveCards.Templating
 {
@@ -21,6 +22,7 @@ namespace AdaptiveCards.Templating
     {
         private IParseTree parseTree;
         private string jsonTemplateString;
+        private ArrayList templateExpansionWarnings;
 
         /// <summary>
         /// <para>Creates an instance of AdaptiveCardTemplate</para>
@@ -109,7 +111,11 @@ namespace AdaptiveCards.Templating
             }
 
             AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
-            return eval.Visit(parseTree).ToString();
+            AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
+
+            templateExpansionWarnings = eval.getTemplateVisitorWarnings();
+
+            return result.ToString();
         }
 
         /// <summary>
@@ -135,8 +141,20 @@ namespace AdaptiveCards.Templating
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
             var context = new EvaluationContext(rootData);
-
             return Expand(context, nullSubstitutionOption);
+        }
+
+        /// <summary>
+        /// Getter method for the array of warning strings from the last template expansion
+        /// </summary>
+        /// <returns>ArrayList</returns>
+        public ArrayList GetLastTemplateExpansionWarnings()
+        {
+            if (templateExpansionWarnings != null)
+            {
+                return templateExpansionWarnings;
+            }
+            return new ArrayList();
         }
     }
 }

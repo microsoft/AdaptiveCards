@@ -1,20 +1,16 @@
 {
 	"version": "independent",
+	"useNx": true,
 	"packages": [
 		"adaptivecards*/**",
 		"marked-schema/**",
 		"spec-generator/**",
-		"ac-typed-schema/**"
+		"ac-typed-schema/**",
+		"tests/unit-tests/**"
 	],
 	"command": {
 		"publish": {
-			"ignoreChanges": [
-				"**/dist/**",
-				"**/lib/**",
-				"**/node_modules/**",
-				"**/__tests__/**",
-				"*.md"
-			]
+			"ignoreChanges": ["**/dist/**", "**/lib/**", "**/node_modules/**", "**/__tests__/**", "*.md"]
 		}
 	}
 }

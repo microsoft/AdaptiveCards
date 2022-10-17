@@ -8,11 +8,6 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    AdaptiveMediaEventInvoker::AdaptiveMediaEventInvoker(winrt::RenderedAdaptiveCard const& renderResult) :
-        m_weakRenderResult(renderResult)
-    {
-    }
-
     void AdaptiveMediaEventInvoker::SendMediaClickedEvent(winrt::AdaptiveMedia const& mediaElement)
     {
         if (auto renderResult = peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))

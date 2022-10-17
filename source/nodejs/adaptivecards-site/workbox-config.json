@@ -1,0 +1,15 @@
+{
+	"globDirectory": "public",
+	"globPatterns": [
+		"content/icons/*",
+		"content/icons_blue/*",
+		"content/icons_transparent/*",
+		"content/icons_white",
+		"samples/*.html",
+		"schemas/**",
+		"**/*.css",
+		"manifest.json"
+	],
+	"swDest": "public/service-worker.js",
+	"swSrc": "service-worker.js"
+}

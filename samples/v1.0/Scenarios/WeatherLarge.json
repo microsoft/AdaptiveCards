@@ -29,26 +29,30 @@
 							"text": "Tue, Nov 5, 2019",
 							"weight": "bolder",
 							"size": "large",
-							"wrap": true
+							"wrap": true,
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "32 / 50",
 							"size": "medium",
 							"spacing": "none",
-							"wrap": true
+							"wrap": true,
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "31% chance of rain",
 							"spacing": "none",
-							"wrap": true
+							"wrap": true,
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Winds 4.4 mph SSE",
 							"spacing": "none",
-							"wrap": true
+							"wrap": true,
+							"color": "dark"
 						}
 					]
 				}
@@ -65,7 +69,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": true,
-							"text": "Wednesday"
+							"text": "Wednesday",
+							"color": "dark"
 						},
 						{
 							"type": "Image",
@@ -74,18 +79,19 @@
 							"altText": "Drizzly weather"
 						},
 						{
-							"type": "FactSet",
-							"horizontalAlignment": "right",
-							"facts": [
-								{
-									"title": "High",
-									"value": "50"
-								},
-								{
-									"title": "Low",
-									"value": "32"
-								}
-							]
+							"type": "TextBlock",
+							"text": "**High**\t50",
+							"wrap": true,
+							"color": "dark",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Low**\t32",
+							"wrap": true,
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -102,7 +108,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": true,
-							"text": "Thursday"
+							"text": "Thursday",
+							"color": "dark"
 						},
 						{
 							"type": "Image",
@@ -111,17 +118,19 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "FactSet",
-							"facts": [
-								{
-									"title": "High",
-									"value": "50"
-								},
-								{
-									"title": "Low",
-									"value": "32"
-								}
-							]
+							"type": "TextBlock",
+							"text": "**High**\t50",
+							"color": "dark",
+							"wrap": true,
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Low**\t32",
+							"wrap": true,
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -138,7 +147,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": true,
-							"text": "Friday"
+							"text": "Friday",
+							"color": "dark"
 						},
 						{
 							"type": "Image",
@@ -147,17 +157,19 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "FactSet",
-							"facts": [
-								{
-									"title": "High",
-									"value": "59"
-								},
-								{
-									"title": "Low",
-									"value": "32"
-								}
-							]
+							"type": "TextBlock",
+							"text": "**High**\t59",
+							"wrap": true,
+							"color": "dark",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Low**\t32",
+							"wrap": true,
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {
@@ -174,7 +186,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": true,
-							"text": "Saturday"
+							"text": "Saturday",
+							"color": "dark"
 						},
 						{
 							"type": "Image",
@@ -183,17 +196,19 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "FactSet",
-							"facts": [
-								{
-									"title": "High",
-									"value": "50"
-								},
-								{
-									"title": "Low",
-									"value": "32"
-								}
-							]
+							"type": "TextBlock",
+							"text": "**High**\t50",
+							"wrap": true,
+							"color": "dark",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Low**\t32",
+							"wrap": true,
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {

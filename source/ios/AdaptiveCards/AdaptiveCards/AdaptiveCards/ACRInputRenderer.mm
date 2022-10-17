@@ -139,6 +139,8 @@
             configRtl(multilineview.contentView, rootView.context);
             configRtl(txtview, rootView.context);
             configRtl(button, rootView.context);
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:inputBlck inputView:inputview accessibilityItem:txtview viewGroup:viewGroup dataSource:nil];
+            inputview = inputLabelView;
         } else {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -147,10 +149,8 @@
             txtview.scrollEnabled = NO;
             txtview.keyboardType = UIKeyboardTypeDefault;
             [txtview.layer setCornerRadius:5.0f];
-            inputview = txtview;
+            inputview = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:inputBlck inputView:txtview accessibilityItem:txtview viewGroup:viewGroup dataSource:nil];
         }
-        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview accessibilityItem:inputview viewGroup:viewGroup dataSource:nil];
-        inputview = inputLabelView;
     } else {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyView nib for customizable UI
@@ -158,15 +158,13 @@
             button = quickReplyView.button;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
             [quickReplyView addTextField:txtInput];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
-            inputview = inputLabelView;
+            inputview = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
             configRtl(quickReplyView.stack, rootView.context);
             configRtl(txtInput, rootView.context);
             configRtl(button, rootView.context);
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
-            inputview = inputLabelView;
+            inputview = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
         }
         txtInput.delegate = textInputHandler;
     }

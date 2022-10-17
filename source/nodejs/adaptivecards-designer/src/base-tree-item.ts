@@ -115,6 +115,10 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._treeItemElement.style.alignItems = "center";
         this._treeItemElement.style.paddingLeft = this.getIndentationLevelIncrement() * (1 + this.level) + "px";
 
+        if (this._isSelected) {
+            this._treeItemElement.classList.add("selected");
+        }
+
         if (hasChildren) {
             this._treeItemElement.setAttribute("role", "treeitem");
         }

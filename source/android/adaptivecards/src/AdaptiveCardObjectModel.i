@@ -152,6 +152,8 @@ STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContent
 #include "../../../shared/cpp/ObjectModel/TableRow.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
+#include "../../../shared/cpp/ObjectModel/CaptionSource.h"
+#include "../../../shared/cpp/ObjectModel/ContentSource.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
@@ -231,6 +233,8 @@ STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContent
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
 %shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+%shared_ptr(AdaptiveCards::ContentSource)
+%shared_ptr(AdaptiveCards::CaptionSource)
 %shared_ptr(AdaptiveCards::MediaSource)
 %shared_ptr(AdaptiveCards::Media)
 %shared_ptr(AdaptiveCards::MediaParser)
@@ -467,6 +471,7 @@ namespace Json {
 %template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >;
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >;
 %template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >;
+%template(CaptionSourceVector) std::vector<std::shared_ptr<AdaptiveCards::CaptionSource> >;
 %template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
@@ -941,6 +946,8 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
 %include "../../../shared/cpp/ObjectModel/TableRow.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
+%include "../../../shared/cpp/ObjectModel/ContentSource.h"
+%include "../../../shared/cpp/ObjectModel/CaptionSource.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"

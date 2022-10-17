@@ -45,7 +45,26 @@
 	.acd-icon-scopeTemplate::before {
 		content: "\F2B0";
 	}
+
+	@media all and (display-mode: standalone) {
+		.header-holder {
+			display: none;
+		}
+	}
 </style>
+
+<script type="text/javascript">
+	// Register the service worker for PWA
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker.register('<%- config.root %>service-worker.js', {scope: '<%- config.root %>designer/'}).then(registration => {
+				console.log('SW registered: ', registration);
+			}).catch(registrationError => {
+				console.log('SW registration failed: ', registrationError);
+			});
+		});
+	}
+</script>
 
 
 <script type="text/javascript">
@@ -82,9 +101,9 @@
 					window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 				}
 			);
-			hostDocsButton.separator = false;
+			hostDocsButton.separator = true;
 			hostDocsButton.toolTip = "Learn more about the Host Apps";
-			designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+			designer.toolbar.insertElementBefore(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.Undo);
 
 			let templateDocsButton = new ACDesigner.ToolbarButton(
 				"templateDocs",
@@ -286,6 +305,7 @@
 					"version": "1.0"
 				});
 			}
+			designer.sampleHostData = {};
 		}
 
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
@@ -295,6 +315,7 @@
 		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
 		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		ACDesigner.GlobalSettings.showSampleHostDataEditorToolbox = true;
 		ACDesigner.GlobalSettings.showVersionPicker = true;
 
 		<% if (page.previewFeaturesEnabled) { %>

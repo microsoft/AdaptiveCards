@@ -1,0 +1,10 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+		{
+			"type": "TextBlock",
+			"text": "This should be the only TextBlock visible"
+		}
+    ]
+}

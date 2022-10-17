@@ -37,7 +37,7 @@ namespace AdaptiveCards.Templating
         /// <summary>
         /// Indicates that this instance captures the result of $when
         /// </summary>
-        public bool IsWhen { get; }
+        public bool IsWhen { get; set; }
         /// <summary>
         /// Predicate of $when expression
         /// </summary>

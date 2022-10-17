@@ -1,0 +1,17 @@
+{
+    "lang": "en-us",
+    "name": "Adaptive Cards Designer",
+    "short_name": "ACDesigner",
+    "description": "A PWA for the Adaptive Cards Designer",
+    "start_url": "designer/",
+    "background_color": "#3A96DD",
+    "theme_color": "#3A96DD",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "content/icons_blue/blue-512.png",
+            "sizes": "512x512"
+        }
+    ]
+}

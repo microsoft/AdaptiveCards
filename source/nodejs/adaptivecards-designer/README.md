@@ -206,6 +206,9 @@ ACDesigner.GlobalSettings.showDataStructureToolbox: boolean = false;
 // Show or hide the "Sample Data" toolbox.
 ACDesigner.GlobalSettings.showSampleDataEditorToolbox: boolean = true;
 
+// Show or hide the "Sample Host Data" toolbox.
+ACDesigner.GlobalSettings.showSampleHostDataEditorToolbox: boolean = true;
+
 // Show or hide the target version picker.
 ACDesigner.GlobalSettings.showVersionPicker: boolean = true;
 
@@ -221,6 +224,8 @@ ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title"
 ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
 ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
+
+ACDesigner.Strings.toolboxes.sampleHostDataEditor.title = "Custom sample host data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
 /* To configure custom Pic2Card endpoint */

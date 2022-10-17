@@ -321,6 +321,10 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                         elementWillBeVisible = false;
                     }
 
+                    String newVisibilityText = elementWillBeVisible ? " Expanded" : " Collapsed";
+
+                    v.announceForAccessibility(elementId + newVisibilityText);
+
                     BaseCardElementRenderer.setVisibility(elementWillBeVisible, foundView, viewGroupsToUpdate);
 
                 }
@@ -340,6 +344,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             if (m_isInlineShowCardAction)
             {
                 handleInlineShowCardAction(view);
+                view.requestFocus();
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {

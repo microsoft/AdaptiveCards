@@ -115,7 +115,13 @@ export function stringToCssColor(color: string | undefined): string | undefined 
     return color;
 }
 
-export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: number) {
+function truncateWorker(
+    element: HTMLElement,
+    maxHeight: number,
+    fullText: string,
+    truncateAt: (text: string, idx: number) => void,
+    lineHeight?: number
+) {
     const fits = () => {
         // Allow a one pixel overflow to account for rounding differences
         // between browsers
@@ -126,11 +132,6 @@ export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: n
         return;
     }
 
-    const fullText = element.innerHTML;
-    const truncateAt = (idx: any) => {
-        element.innerHTML = fullText.substring(0, idx) + "...";
-    };
-
     const breakableIndices = findBreakableIndices(fullText);
     let lo = 0;
     let hi = breakableIndices.length;
@@ -139,7 +140,7 @@ export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: n
     // Do a binary search for the longest string that fits
     while (lo < hi) {
         const mid = Math.floor((lo + hi) / 2);
-        truncateAt(breakableIndices[mid]);
+        truncateAt(fullText, breakableIndices[mid]);
 
         if (fits()) {
             bestBreakIdx = breakableIndices[mid];
@@ -149,7 +150,7 @@ export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: n
         }
     }
 
-    truncateAt(bestBreakIdx);
+    truncateAt(fullText, bestBreakIdx);
 
     // If we have extra room, try to expand the string letter by letter
     // (covers the case where we have to break in the middle of a long word)
@@ -157,7 +158,7 @@ export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: n
         let idx = findNextCharacter(fullText, bestBreakIdx);
 
         while (idx < fullText.length) {
-            truncateAt(idx);
+            truncateAt(fullText, idx);
 
             if (fits()) {
                 bestBreakIdx = idx;
@@ -167,8 +168,46 @@ export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: n
             }
         }
 
-        truncateAt(bestBreakIdx);
+        truncateAt(fullText, bestBreakIdx);
     }
+}
+
+export function truncateText(element: HTMLElement, maxHeight: number, lineHeight?: number) {
+    truncateWorker(
+        element,
+        maxHeight,
+        element.innerText,
+        (text: string, idx: number) => {
+            element.innerText = text.substring(0, idx) + "...";
+        },
+        lineHeight
+    );
+}
+
+/**
+ * {@link truncate} has been deprecated and is no longer in use internally. This policy passes
+ * content through as it always has, which is _supposed_ to be dealing with text only (see {@link
+ * TextBlock.truncateIfSupported}), but had a bug where it might actually pass through an element
+ * for which innerHTML yielded actual HTML (since fixed).
+ */
+const ttDeprecatedPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy("adaptivecards#deprecatedExportedFunctionPolicy", {
+    createHTML: (value) => value
+});
+
+/** @deprecated Use {@link truncateText} instead. */
+export function truncate(element: HTMLElement, maxHeight: number, lineHeight?: number) {
+    truncateWorker(
+        element,
+        maxHeight,
+        element.innerHTML,
+        (text: string, idx: number) => {
+            const truncatedString = text.substring(0, idx) + "...";
+            const truncatedHTML =
+                ttDeprecatedPolicy?.createHTML(truncatedString) ?? truncatedString;
+            element.innerHTML = truncatedHTML as string;
+        },
+        lineHeight
+    );
 }
 
 function findBreakableIndices(html: string): number[] {
@@ -225,4 +264,11 @@ export function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
+}
+
+export function addCancelSelectActionEventHandler(element: HTMLElement) {
+    element.onclick = (e) => {
+        e.preventDefault();
+        e.cancelBubble = true;
+    };
 }

@@ -68,7 +68,8 @@ namespace AdaptiveCardVisualizer.Helpers
                         // We don't report this error to user, it's a coding error
                         if (Debugger.IsAttached)
                         {
-                            Debugger.Break();
+                            // Commenting this out right now because its annoying, remember to un-comment before merging
+                            //Debugger.Break();
                         }
                     }
 

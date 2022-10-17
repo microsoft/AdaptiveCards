@@ -1,0 +1,22 @@
+{
+    "createdUtc": "2017-02-14T06:08:39Z",
+    "viewUrl": "https://adaptivecards.io",
+    "properties": [
+        {
+            "key": "Board",
+            "value": "Adaptive Cards"
+        },
+        {
+            "key": "List",
+            "value": "Backlog"
+        },
+        {
+            "key": "Assigned to",
+            "value": "Matt Hidinger"
+        },
+        {
+            "key": "Due date",
+            "value": "Not set"
+        }
+    ]
+}

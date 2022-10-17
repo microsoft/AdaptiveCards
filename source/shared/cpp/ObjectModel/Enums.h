@@ -37,6 +37,7 @@ enum class AdaptiveCardSchemaKey
     Bottom,
     ButtonSpacing,
     Buttons,
+    CaptionSources,
     Card,
     CellSpacing,
     Cells,

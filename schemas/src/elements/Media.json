@@ -19,6 +19,12 @@
 		"altText": {
 			"type": "string",
 			"description": "Alternate text describing the audio or video."
+		},
+		"captionSources": {
+			"type": "CaptionSource[]",
+			"description": "Array of captions sources for the media element to provide.",
+			"required": false,
+			"version": "1.6"
 		}
 	}
 }

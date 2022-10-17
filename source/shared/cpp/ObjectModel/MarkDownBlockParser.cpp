@@ -436,7 +436,7 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        ++m_linkDestinationStart;
+        ++m_leftParenthesisCounts;
         char streamChar{};
         lookahead.get(streamChar);
         m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -459,32 +459,45 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 
     // identify where the destination value ends by marking the position
     // e.g: ([ab()c])()()() end = 7
-    m_parsingCurrentPos = lookahead.tellg();
-    int i = static_cast<int>(m_parsingCurrentPos);
-    while (lookahead.peek() != EOF && m_linkDestinationStart > 0)
+    const std::streamoff initialPosition = lookahead.tellg();
+    auto currentPosition = initialPosition;
+    m_positionOfLinkDestinationEndToken = 0;
+
+    // checks if lparen and rparen are balanced
+    // if there are balanced parenthesis, it will get marked
+    // else won't get marked
+    while (lookahead.peek() != EOF && m_leftParenthesisCounts > 0)
     {
-        char c;
-        lookahead.get(c);
+        char token{};
 
-        if (c == '(')
+        lookahead.get(token);
+
+        if (token == '(')
         {
-            ++m_linkDestinationStart;
+            m_leftParenthesisCounts++;
         }
-        else if (c == ')')
+        else if (token == ')')
         {
-            --m_linkDestinationStart;
+            m_leftParenthesisCounts--;
         }
-        if (m_linkDestinationStart == 0)
+
+        if (m_leftParenthesisCounts == 0)
         {
-            m_linkDestinationEnd = i;
+            // when parenthesis are balanced, mark the position
+            m_positionOfLinkDestinationEndToken = currentPosition;
         }
-        ++i;
+
+        currentPosition++;
     }
-    lookahead.clear();
-    lookahead.seekg(m_parsingCurrentPos, std::ios::beg);
 
-    // control key is detected, syntax check failed
-    if (MarkDownBlockParser::IsCntrl(lookahead.peek()))
+    lookahead.clear();
+
+    // reset stream
+    lookahead.seekg(initialPosition, std::ios::beg);
+
+    // Link destination end token is not detected if the position of linkDestinationEndToken is not moved
+    // or control key is detected
+    if (!m_positionOfLinkDestinationEndToken || MarkDownBlockParser::IsCntrl(lookahead.peek()))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -495,6 +508,9 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
+    // TODO this check is not needed; remove it in next iteration
+    // validation is done in MatchAtLinkDestinationStart
+    // move parenthesis check to here
     if (lookahead.peek() > 0 &&
         (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
@@ -502,12 +518,17 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         return false;
     }
 
-    m_parsingCurrentPos = lookahead.tellg();
-    while (m_parsingCurrentPos <= m_linkDestinationEnd && lookahead.peek() != EOF)
+    // starting from lparen position + 1, scan tokens until rparen - 1 position
+    std::streamoff currentPos = lookahead.tellg();
+    while (currentPos < m_positionOfLinkDestinationEndToken && lookahead.peek() != EOF)
     {
+        // TODO this needs to be cleaned-up for performance and
+        // for correctly handling nested link parsing in next iteration
+        // inner most nested link should be detected
+        // the code here removes l-bracket, so that nested link parsing
+        // doesn't happen.
         if (lookahead.peek() == '[')
         {
-            // we found an opening in the destination. Catch it.
             char c{};
             lookahead.get(c);
             m_parsedResult.AddNewTokenToParsedResult(c);
@@ -516,10 +537,14 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
         {
             ParseBlock(lookahead);
         }
-        m_parsingCurrentPos = int(lookahead.tellg());
+        currentPos = lookahead.tellg();
     }
 
-    m_parsedResult.PopBack();
+    // end of link match, remove rparen
+    if (lookahead.peek() == ')')
+    {
+        lookahead.get();
+    }
 
     return true;
 }

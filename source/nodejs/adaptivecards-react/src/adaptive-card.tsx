@@ -124,7 +124,8 @@ export const AdaptiveCard = ({
         try {
             card.parse(payload);
             const result = card.render() as HTMLElement;
-            targetRef.current.innerHTML = '';
+            const trustedHtml = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
+            targetRef.current.innerHTML = trustedHtml as string;
             targetRef.current.appendChild(result);
         } catch (cardRenderError) {
             if (onError) {
