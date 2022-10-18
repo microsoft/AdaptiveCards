@@ -172,7 +172,7 @@ Input.ChoiceSet
 }
 ```
 
-![img](assets/InputLabels/typeaheadshared.PNG)
+![img](assets/InputLabels/typeaheadshared.png)
 
 Choices.data class in shared object model parses and serializes the choices.data property. Also, we will validate type as data.query which is defined in choices.data. We will have to identify what to do when there is an error in parsing. for eg: if any of the required properties are missing, we can either skip the deserialization/serialization for choices.data or return json parsing error to the host and host can show error view to the user. (This is the case where adaptive card rendering failed).
 
