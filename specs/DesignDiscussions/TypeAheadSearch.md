@@ -153,7 +153,7 @@ TODO: Add details for common changes for mobile platforms
 <details>
 <summary>Details</summary>
 
-[Schema](#schema)
+[Schema](#schema) </br>
 **Example card**
 Input.ChoiceSet
 
@@ -173,9 +173,10 @@ Input.ChoiceSet
 ```
 
 ![img](assets/InputLabels/typeaheadshared.PNG)
+
 Choices.data class in shared object model parses and serializes the choices.data property. Also, we will validate type as data.query which is defined in choices.data. We will have to identify what to do when there is an error in parsing. for eg: if any of the required properties are missing, we can either skip the deserialization/serialization for choices.data or return json parsing error to the host and host can show error view to the user. (This is the case where adaptive card rendering failed).
 
-1. We can simply drop choices.data and will fallback to the existing experience of input.choiceset. We will make changes to the parsing logic for choices.data and the changes will allow cards to render even if the required properties are missed. Pros: This will not break rendering experience for the user.
+1. We can simply drop choices.data and will fallback to the existing experience of Input.ChoiceSet. We will make changes to the parsing logic for choices.data and the changes will allow cards to render even if the required properties are missed. Pros: This will not break rendering experience for the user.
 2. Adaptive card rendering fails if required properties are not defined correctly. This behavior is due to the fact that the card has required properties are missing. Pros: Invalid json error returned to the host so developers can identify that there is some parsing related issue with the json.
 
 Existing experience - If we fail to specify correct title and value props with choices prop then, adaptive card rendering fails.
