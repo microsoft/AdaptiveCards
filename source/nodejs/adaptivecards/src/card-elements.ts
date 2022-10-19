@@ -2040,7 +2040,7 @@ export class Image extends CardElement {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
-                    this.renderedElement;
+                    clearElement(this.renderedElement);
 
                     if (card && card.designMode) {
                         const errorElement = document.createElement("div");
