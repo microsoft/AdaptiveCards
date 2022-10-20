@@ -39,7 +39,7 @@
 		"react": "^17.0.2"
 	},
 	"dependencies": {
-		"adaptivecards": "^3.0.0-beta.8",
+		"adaptivecards": "^3.0.0-beta.9",
 		"markdown-it": "^12.2.0"
 	}
 }
