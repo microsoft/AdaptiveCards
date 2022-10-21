@@ -18,7 +18,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".RenderCardUiTestAppActivity"
-            android:label="@string/title_activity_render_card_ui_test_app">
+            android:label="@string/title_activity_render_card_ui_test_app"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

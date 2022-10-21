@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:' + androidxEspressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'androidx.multidex:multidex:' + androidxMultidexVersion
@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.webrtc:google-webrtc:1.0.27306'
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:' + androidxKotlinCoreVersion
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }
