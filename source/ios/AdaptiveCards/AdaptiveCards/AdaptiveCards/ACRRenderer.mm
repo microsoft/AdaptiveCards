@@ -205,7 +205,8 @@ using namespace AdaptiveCards;
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
-
+     
+    view.accessibilityElements = [(ACRContentStackView *)view getArrangedSubviews];
     return view;
 }
 @end
