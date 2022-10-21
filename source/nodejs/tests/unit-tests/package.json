@@ -13,11 +13,11 @@
 		"clean": "rimraf lib dist",
 		"build": "tsc",
 		"lint": "eslint src/*.ts",
-		"test": "jest ./lib/*",
+		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest ./lib/* --config=jest.config.js",
 		"build-and-test": "npm run build && npm run test"
 	},
 	"devDependencies": {
-		"adaptivecards": "^2.10.0",
+		"adaptivecards": "^3.0.0-beta.6",
 		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"monaco-editor": "^0.29.1",
 		"vkbeautify": "^0.99.3"

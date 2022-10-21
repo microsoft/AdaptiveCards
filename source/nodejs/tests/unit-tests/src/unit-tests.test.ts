@@ -353,7 +353,7 @@ describe("Test Serialization", () => {
 		card.parse(loadFile("serialization-test-resources/enable-full-json-round-trip-input.json"));
 
 		const output = card.toJSON();
-		const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-true-output"));
+		const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-true-output.json"));
 
 		expect(output).toStrictEqual(expectedOutput);
 	});
@@ -365,7 +365,7 @@ describe("Test Serialization", () => {
 		card.parse(loadFile("serialization-test-resources/enable-full-json-round-trip-input.json"));
 
 		const output = card.toJSON();
-		const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-false-output"));
+		const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-false-output.json"));
 
 		expect(output).toStrictEqual(expectedOutput);
 	});

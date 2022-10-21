@@ -39,12 +39,8 @@
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
 	"devDependencies": {
-		"@types/jest": "^27.0.2",
 		"concurrently": "^5.2.0",
-		"cross-env": "^7.0.3",
-		"jest": "^27.3.1",
 		"rimraf": "^3.0.2",
-		"ts-jest": "^27.0.7",
 		"typedoc": "^0.22.5",
 		"typedoc-plugin-markdown": "^3.11.2"
 	},
