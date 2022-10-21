@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
+#import "ACRBaseCardElementRenderer.h"
 
 @interface ACRColumnSetRenderer : ACRBaseCardElementRenderer
 
