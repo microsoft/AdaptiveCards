@@ -155,9 +155,9 @@ public:
         return m_numberOfUnusedDelimiters;
     };
     bool GenerateTags(MarkDownEmphasisHtmlGenerator& token);
-    void ReverseDirectionType()
+    void ChangeDirectionToLeft()
     {
-        m_directionType = !m_directionType;
+        m_directionType = Left;
     };
 
 protected:
@@ -215,10 +215,17 @@ public:
         MarkDownEmphasisHtmlGenerator(token, sizeOfEmphasisDelimiterRun, type){};
 
     void GenerateTags(std::shared_ptr<MarkDownEmphasisHtmlGenerator>& token);
+
     bool IsRightEmphasis() const override
     {
-        return true;
+        return m_directionType == Right;
     }
+
+    bool IsLeftEmphasis() const override
+    {
+        return m_directionType == Left;
+    }
+
     std::string GenerateHtmlString() override;
     void PushItalicTag() override;
     void PushBoldTag() override;

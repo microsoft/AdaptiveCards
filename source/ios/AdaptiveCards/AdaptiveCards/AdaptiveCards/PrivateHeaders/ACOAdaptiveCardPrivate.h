@@ -5,8 +5,8 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACOAdaptiveCard.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import "ACOAdaptiveCard.h"
+#import "SharedAdaptiveCard.h"
 using namespace AdaptiveCards;
 
 @interface ACOAdaptiveCard ()

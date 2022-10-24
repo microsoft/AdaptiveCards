@@ -4,10 +4,10 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <AdaptiveCards/ACRContentStackView.h>
-#import <AdaptiveCards/ACRIContentHoldingView.h>
-#import <AdaptiveCards/HostConfig.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import "ACRContentStackView.h"
+#import "ACRIContentHoldingView.h"
+#import "HostConfig.h"
+#import "SharedAdaptiveCard.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

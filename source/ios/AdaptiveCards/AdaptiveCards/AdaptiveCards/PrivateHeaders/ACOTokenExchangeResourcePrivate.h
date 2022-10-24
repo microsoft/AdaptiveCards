@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACOTokenExchangeResource.h>
-#import <AdaptiveCards/TokenExchangeResource.h>
+#import "ACOTokenExchangeResource.h"
+#import "TokenExchangeResource.h"
 
 using namespace AdaptiveCards;
 

@@ -5,8 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "AdaptiveCards",
+    defaultLocalization: "en",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -34,27 +35,19 @@ let package = Package(
             path: "source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards",
             exclude: [
                 "CMakeLists.txt",
-                "CMakeFiles/CMakeOutput.log",
+                "Info.plist",
                 "testcards/ImageAutoInColumnSet.json",
                 "testcards/CustomerCard1.json",
-                "cscope.out",
-                "cscope.files",
-                "Info.plist",
                 "testcards/TextBlock.Issue.json",
-                "CMakeFiles/cmake.check_cache",
-                "cscope.po.out",
-                "testcards/TextBlockStrechInColumnSet.json",
-                "cscope.in.out",
-                "CMakeCache.txt",
-                "CMakeFiles/CMakeError.log",
-                "CMakeFiles/3.11.1",
-                "*.orig"
+                "testcards/TextBlockStrechInColumnSet.json"
             ],
             resources: [
                 .process("Resources")
             ],
             publicHeadersPath: "include",
-            cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
+            cxxSettings: [
+                .headerSearchPath("../../../../shared/cpp/ObjectModel") 
+            ],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
                 LinkerSetting.linkedFramework("AVKit"),
@@ -65,8 +58,21 @@ let package = Package(
             ),
         .testTarget(
             name:"AdaptiveCardsTest",
-            dependencies: ["AdaptiveCards"],
-            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests"
+            dependencies: ["ObjectModel", "AdaptiveCards"],
+            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests",
+            resources: [
+                .copy("TestFiles")
+            ],
+            cxxSettings: [
+                .headerSearchPath("../../../../shared/cpp/ObjectModel")
+            ],
+            linkerSettings:[
+                LinkerSetting.linkedFramework("AVFoundation"),
+                LinkerSetting.linkedFramework("AVKit"),
+                LinkerSetting.linkedFramework("UIKit"),
+                LinkerSetting.linkedFramework("CoreGraphics"),
+                LinkerSetting.linkedFramework("QuartzCore")
+            ]
         )
     ],
     cxxLanguageStandard: CXXLanguageStandard.cxx17
