@@ -49,5 +49,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue("default")]
         public string Style { get; set; } = "default";
+
+        /// <summary>
+        ///    When set false, action is disabled 
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(true)]
+        public bool IsEnabled{ get; set; } = true;
     }
 }
