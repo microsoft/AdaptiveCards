@@ -18,6 +18,7 @@
 - [AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction')
   - [IconUrl](#P-AdaptiveCards-AdaptiveAction-IconUrl 'AdaptiveCards.AdaptiveAction.IconUrl')
   - [IsEnabled](#P-AdaptiveCards-AdaptiveAction-IsEnabled 'AdaptiveCards.AdaptiveAction.IsEnabled')
+  - [Mode](#P-AdaptiveCards-AdaptiveAction-Mode 'AdaptiveCards.AdaptiveAction.Mode')
   - [Speak](#P-AdaptiveCards-AdaptiveAction-Speak 'AdaptiveCards.AdaptiveAction.Speak')
   - [Style](#P-AdaptiveCards-AdaptiveAction-Style 'AdaptiveCards.AdaptiveAction.Style')
   - [Title](#P-AdaptiveCards-AdaptiveAction-Title 'AdaptiveCards.AdaptiveAction.Title')
@@ -25,6 +26,9 @@
   - [AddSupportedAction\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-AddSupportedAction``1 'AdaptiveCards.Rendering.AdaptiveActionHandlers.AddSupportedAction``1')
   - [IsSupported(type)](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-IsSupported-System-Type- 'AdaptiveCards.Rendering.AdaptiveActionHandlers.IsSupported(System.Type)')
   - [RemoveSupportedAction\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-RemoveSupportedAction``1 'AdaptiveCards.Rendering.AdaptiveActionHandlers.RemoveSupportedAction``1')
+- [AdaptiveActionMode](#T-AdaptiveCards-AdaptiveActionMode 'AdaptiveCards.AdaptiveActionMode')
+  - [Primary](#F-AdaptiveCards-AdaptiveActionMode-Primary 'AdaptiveCards.AdaptiveActionMode.Primary')
+  - [Secondary](#F-AdaptiveCards-AdaptiveActionMode-Secondary 'AdaptiveCards.AdaptiveActionMode.Secondary')
 - [AdaptiveActionSet](#T-AdaptiveCards-AdaptiveActionSet 'AdaptiveCards.AdaptiveActionSet')
   - [TypeName](#F-AdaptiveCards-AdaptiveActionSet-TypeName 'AdaptiveCards.AdaptiveActionSet.TypeName')
   - [Actions](#P-AdaptiveCards-AdaptiveActionSet-Actions 'AdaptiveCards.AdaptiveActionSet.Actions')
@@ -567,6 +571,7 @@
   - [#ctor(code,message)](#M-AdaptiveCards-AdaptiveWarning-#ctor-System-Int32,System-String- 'AdaptiveCards.AdaptiveWarning.#ctor(System.Int32,System.String)')
   - [Code](#P-AdaptiveCards-AdaptiveWarning-Code 'AdaptiveCards.AdaptiveWarning.Code')
   - [Message](#P-AdaptiveCards-AdaptiveWarning-Message 'AdaptiveCards.AdaptiveWarning.Message')
+  - [ToString()](#M-AdaptiveCards-AdaptiveWarning-ToString 'AdaptiveCards.AdaptiveWarning.ToString')
 - [BlockRules](#T-Microsoft-MarkedNet-BlockRules 'Microsoft.MarkedNet.BlockRules')
 - [BreaksInlineRules](#T-Microsoft-MarkedNet-BreaksInlineRules 'Microsoft.MarkedNet.BreaksInlineRules')
 - [ColorUtil](#T-AdaptiveCards-ColorUtil 'AdaptiveCards.ColorUtil')
@@ -843,6 +848,13 @@ IconUrl that can be specified for actions
 
 When set false, action is disabled
 
+<a name='P-AdaptiveCards-AdaptiveAction-Mode'></a>
+### Mode `property`
+
+##### Summary
+
+Determines whether the action should be displayed as a button or in the overflow menu.
+
 <a name='P-AdaptiveCards-AdaptiveAction-Speak'></a>
 ### Speak `property`
 
@@ -925,6 +937,31 @@ This method has no parameters.
 | Name | Description |
 | ---- | ----------- |
 | TAction | The type of the action to remove. |
+
+<a name='T-AdaptiveCards-AdaptiveActionMode'></a>
+## AdaptiveActionMode `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Determines whether the action should be displayed as a button or in the overflow menu.
+
+<a name='F-AdaptiveCards-AdaptiveActionMode-Primary'></a>
+### Primary `constants`
+
+##### Summary
+
+Action is displayed as a button.
+
+<a name='F-AdaptiveCards-AdaptiveActionMode-Secondary'></a>
+### Secondary `constants`
+
+##### Summary
+
+Action is placed in an overflow menu (typically a popup menu under a ... button).
 
 <a name='T-AdaptiveCards-AdaptiveActionSet'></a>
 ## AdaptiveActionSet `type`
@@ -5779,6 +5816,21 @@ The [WarningStatusCode](#T-AdaptiveCards-AdaptiveWarning-WarningStatusCode 'Adap
 ##### Summary
 
 The warning message.
+
+<a name='M-AdaptiveCards-AdaptiveWarning-ToString'></a>
+### ToString() `method`
+
+##### Summary
+
+Convinience method that provides same string as Message
+
+##### Returns
+
+
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-Microsoft-MarkedNet-BlockRules'></a>
 ## BlockRules `type`

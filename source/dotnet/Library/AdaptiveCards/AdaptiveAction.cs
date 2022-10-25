@@ -59,5 +59,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(true)]
         public bool IsEnabled{ get; set; } = true;
+
+        /// <summary>
+        /// Determines whether the action should be displayed as a button or in the overflow menu.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveActionMode), "primary")]
+        public AdaptiveActionMode Mode { get; set; }
     }
 }
