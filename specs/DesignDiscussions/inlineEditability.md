@@ -183,7 +183,7 @@ Since this property is inherited to all Input fields, it will be supported by al
       }	
 ```
 
-2. Inherited properties of all Input fields will have one more property called `label` whose type will be `boolean`
+2. Inherited properties of all Input fields will have one more property called `inputAndLabelHorizontalAlignment` whose type will be `boolean`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
