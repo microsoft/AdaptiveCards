@@ -47,7 +47,7 @@ This is the flow for user to interact with inline editable fields:-
 
 ![img](../assets/InlineEditability/IE3.PNG)
 
-5. When user has updated the value, Action.Submit or Action.Execute button such as "Save" which has  `disabledUnlessAssociatedInputsChange` property (https://github.com/microsoft/AdaptiveCards/issues/7103) will get enabled automatically. It will guide user to hit the button to commit the changes made on the card.
+5. When user has updated the input field, Action.Submit or Action.Execute button such as "Save" which has  `disabledUnlessAssociatedInputsChange` property (https://github.com/microsoft/AdaptiveCards/issues/7103) will get enabled automatically. It will guide user to hit the button to commit the changes made on the card.
 
 ![img](../assets/InlineEditability/IE4.PNG)
 
@@ -70,7 +70,7 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
-2. Introduce an optional new styling property in AC input fields schema which will allow developers to define if label and value would be vertically or horizontally aligned. Default would be existing vertical. This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
+2. Introduce an optional new styling property in AC input fields schema which will allow developers to define if label of the input and the input field would be vertically or horizontally aligned. Default would be existing vertical. This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
 	*Note*: When card width is small due to browser resize etc, horizontal view can shift to vertical view of input fields.
 
 * **Vertical view:**
@@ -149,7 +149,7 @@ Style hint for input fields.
 * **Type**: `InputStyle`
 * **Required**: No
 * **Allowed values**:
-  * `"readWrite"` : Should show input fiels as inline editable field, which is showing them in readable view unless user takes any action.
+  * `"readWrite"` : Should show input fields as inline editable field, which is showing them in readable view unless user takes any action.
 
 Since this property is inherited to all Input fields, it will be supported by all:
 
@@ -183,11 +183,11 @@ Since this property is inherited to all Input fields, it will be supported by al
       }	
 ```
 
-2. Inherited properties of all Input fields will have one more property called `horizontalAlignment` whose type will be `boolean`
+2. Inherited properties of all Input fields will have one more property called `label` whose type will be `boolean`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **horizontalAlignment** | `boolean` | No | Determines whether the label and value property in input fields are horizontally aligned or not. When not specified, it defaults to existing vertical alignement | 1.7 |
+| **inputAndLabelHorizontalAlignment** | `boolean` | No | Determines whether the label of the input and input field are horizontally aligned or not. When not specified, it defaults to existing vertical alignement | 1.7 |
 
 #### Sample Payload:
 
@@ -197,26 +197,26 @@ Since this property is inherited to all Input fields, it will be supported by al
           "label": "Name",
 	  "value": "Sneh",
 	  "inputStyle" : "readWrite",
-	  "horizontalAlignment" : true
+	  "inputAndLabelHorizontalAlignment" : true
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
 	  "inputStyle" : "readWrite",
-          "horizontalAlignment" : false
+          "inputAndLabelHorizontalAlignment" : false
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "horizontalAlignment" : true
+          "inputAndLabelHorizontalAlignment" : true
       },
       {
           "type": "Input.Text",
           "label": "Flight origin",
           "value": "Seattle",
-          "horizontalAlignment" : false
+          "inputAndLabelHorizontalAlignment" : false
       },
       {
           "type": "Input.Text",
