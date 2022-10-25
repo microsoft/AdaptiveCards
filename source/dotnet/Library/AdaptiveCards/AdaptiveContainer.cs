@@ -72,5 +72,10 @@ namespace AdaptiveCards
         {
             return Items.GetEnumerator();
         }
+		
+        public override void Add(AdaptiveElement element)
+        {
+            Items.Add(element);
+        }
     }
 }

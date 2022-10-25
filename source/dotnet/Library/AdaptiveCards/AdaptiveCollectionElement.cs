@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,6 +42,8 @@ namespace AdaptiveCards
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
 #endif
         public abstract IEnumerator<AdaptiveElement> GetEnumerator();
+
+        public abstract void Add(AdaptiveElement value);
 
         IEnumerator IEnumerable.GetEnumerator()
         {

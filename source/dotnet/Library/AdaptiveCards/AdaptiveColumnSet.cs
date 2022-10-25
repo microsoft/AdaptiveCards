@@ -37,5 +37,13 @@ namespace AdaptiveCards
         {
             return Columns.GetEnumerator();
         }
+
+        public override void Add(AdaptiveElement element)
+        {
+            if (element is AdaptiveColumn)
+            {
+                Columns.Add(element as AdaptiveColumn);
+            }
+        }
     }
 }
