@@ -313,6 +313,9 @@ $(function () {
 				"wrap": true
 			},
 			"spacing": 8
+		},
+		"textBlock": {
+			"headingLevel": 2
 		}
 	}
 
