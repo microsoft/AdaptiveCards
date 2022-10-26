@@ -10,12 +10,14 @@
 		{
 			"type": "Input.Text",
 			"id": "firstName",
-			"placeholder": "What is your first name?"
+			"placeholder": "What is your first name?",
+			"label": "What is your first name?"
 		},
 		{
 			"type": "Input.Text",
 			"id": "lastName",
-			"placeholder": "What is your last name?"
+			"placeholder": "What is your last name?",
+			"label": "What is your last name?"
 		}
 	],
 	"actions": [
