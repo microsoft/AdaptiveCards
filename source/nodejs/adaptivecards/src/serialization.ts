@@ -163,6 +163,26 @@ export abstract class BaseSerializationContext {
     constructor(targetVersion: Version = Versions.latest) {
         this.targetVersion = targetVersion;
     }
+    
+    private isTemplateString(value: any) {
+        if (typeof value === "string") {
+            return value.startsWith("${");
+        } else {
+            return false;
+        }
+    }
+
+    private tryDeleteValue(target: { [key: string]: any }, propertyName: string) {
+        if (!GlobalSettings.enableFullJsonRoundTrip) {
+            delete target[propertyName];
+        }
+    }
+
+    private tryDeleteDefaultValue(target: { [key: string]: any }, propertyName: string) {
+        if (!GlobalSettings.enableFullJsonRoundTrip || !this.isTemplateString(target[propertyName])) {
+            delete target[propertyName];
+        }
+    }
 
     serializeValue(
         target: { [key: string]: any },
@@ -173,14 +193,15 @@ export abstract class BaseSerializationContext {
     ) {
         if (
             propertyValue === null ||
-            propertyValue === undefined ||
-            propertyValue === defaultValue
+            propertyValue === undefined
         ) {
             if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault) {
                 delete target[propertyName];
             }
         } else if (propertyValue === defaultValue) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault || !this.isTemplateString(target[propertyName])) {
+                delete target[propertyName];
+            }
         } else {
             target[propertyName] = propertyValue;
         }
@@ -194,12 +215,11 @@ export abstract class BaseSerializationContext {
     ) {
         if (
             propertyValue === null ||
-            propertyValue === undefined ||
-            propertyValue === defaultValue
+            propertyValue === undefined
         ) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
-                delete target[propertyName];
-            }
+            this.tryDeleteValue(target, propertyName);
+        } else if (propertyValue === defaultValue) {
+            this.tryDeleteDefaultValue(target, propertyName);
         } else {
             target[propertyName] = propertyValue;
         }
@@ -213,12 +233,11 @@ export abstract class BaseSerializationContext {
     ) {
         if (
             propertyValue === null ||
-            propertyValue === undefined ||
-            propertyValue === defaultValue
+            propertyValue === undefined
         ) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
-                delete target[propertyName];
-            }
+            this.tryDeleteValue(target, propertyName);
+        } else if (propertyValue === defaultValue) {
+            this.tryDeleteDefaultValue(target, propertyName);
         } else {
             target[propertyName] = propertyValue;
         }
@@ -233,12 +252,11 @@ export abstract class BaseSerializationContext {
         if (
             propertyValue === null ||
             propertyValue === undefined ||
-            propertyValue === defaultValue ||
             isNaN(propertyValue)
         ) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
-                delete target[propertyName];
-            }
+            this.tryDeleteValue(target, propertyName);
+        } else if (propertyValue === defaultValue) {
+            this.tryDeleteDefaultValue(target, propertyName);
         } else {
             target[propertyName] = propertyValue;
         }
@@ -253,12 +271,11 @@ export abstract class BaseSerializationContext {
     ) {
         if (
             propertyValue === null ||
-            propertyValue === undefined ||
-            propertyValue === defaultValue
+            propertyValue === undefined
         ) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
-                delete target[propertyName];
-            }
+            this.tryDeleteValue(target, propertyName);
+        } else if (propertyValue === defaultValue) {
+            this.tryDeleteDefaultValue(target, propertyName);
         } else {
             target[propertyName] = enumType[propertyValue];
         }
