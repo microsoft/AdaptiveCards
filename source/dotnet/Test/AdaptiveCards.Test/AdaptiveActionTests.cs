@@ -193,11 +193,18 @@ namespace AdaptiveCards.Test
             return null;
         } 
 		
-        string SetUpExpectedPayloadValue(AdaptiveCard card, string id, SerializableDictionary<string, object> testProperty = null)
+        /// <summary>
+        /// Injects a key value pair to an AdaptiveCard using AdditionalProperites of AdaptiveTypedElement. If no kv is provided, injection is skipped
+        /// </summary>
+        /// <param name="card"></param>
+        /// <param name="id"></param>
+        /// <param name="testProperty"></param>
+        /// <returns></returns>
+        string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, SerializableDictionary<string, object> testProperty = null)
         {
             AdaptiveTypedElement element = GetAdaptiveElementWithId(card, id);
 			
-            if (element != null)
+            if (element != null && testProperty != null)
             {
                 if (element is AdaptiveCollectionElement)
                 {
@@ -252,13 +259,13 @@ namespace AdaptiveCards.Test
 
             var expectedCard = BuildASimpleTestCard();
 
-            var expectedPayloadValue = SetUpExpectedPayloadValue(expectedCard, submitAction.Id);
+            var expectedPayloadValue = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id);
 
             Assert.AreEqual(expectedPayloadValue, card.ToJson());
 
             SerializableDictionary<string, object> expectedProperty = new SerializableDictionary<string, object>() { ["isEnabled"] = false };
 
-            expectedPayloadValue = SetUpExpectedPayloadValue(expectedCard, submitAction.Id, expectedProperty);
+            expectedPayloadValue = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id, expectedProperty);
 
             submitAction.IsEnabled = false;
 
@@ -304,13 +311,13 @@ namespace AdaptiveCards.Test
 
             Assert.IsTrue(container.SelectAction.IsEnabled);
 
-            var expectedPayloadValue = SetUpExpectedPayloadValue(expectedCard, "Container");
+            var expectedPayloadValue = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, "Container");
 
             Assert.AreEqual(expectedPayloadValue, cardInTest.ToJson());
 
             SerializableDictionary<string, object> expectedProperty = new SerializableDictionary<string, object>() { ["isEnabled"] = false };
 
-            expectedPayloadValue = SetUpExpectedPayloadValue(expectedCard, "Container", expectedProperty);
+            expectedPayloadValue = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, "Container", expectedProperty);
 
             container.SelectAction.IsEnabled = false;
 
@@ -319,6 +326,60 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expectedPayloadValue, cardInTest.ToJson());
 
             RoundTripTest(expectedPayloadValue, cardInJson);
+        }
+
+        [TestMethod]
+        public void TestActions_SerializationOfMode()
+        {
+            var card = BuildASimpleTestCard();
+
+            var element = GetAdaptiveElementWithId(card, "submitAction");
+
+            AdaptiveAction submitAction = element as AdaptiveAction;
+
+            Assert.AreEqual(submitAction.Mode, AdaptiveActionMode.Primary);
+
+            var expectedCard = BuildASimpleTestCard();
+
+            var expectedJSON = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id);
+
+            submitAction.Mode = AdaptiveActionMode.Primary;
+
+            Assert.AreEqual(expectedJSON, card.ToJson());
+
+            var expectedProperty = new SerializableDictionary<string, object>() { ["mode"] = "secondary"};
+
+            expectedJSON = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id, expectedProperty);
+
+            submitAction.Mode = AdaptiveActionMode.Secondary;
+
+            var cardJson = card.ToJson();
+
+            Assert.AreEqual(expectedJSON, cardJson);
+
+            RoundTripTest(expectedJSON, cardJson);
+        }
+
+        [TestMethod]
+        public void TestActions_SerializationOfModeWithInvalidValue()
+        {
+            var card = BuildASimpleTestCard();
+
+            var expectedCard = BuildASimpleTestCard();
+
+            var badValue = new SerializableDictionary<string, object>() { ["mode"] = "randomBadValue"};
+
+            var element = GetAdaptiveElementWithId(card, "submitAction");
+
+            var cardJSON = SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(card, element.Id, badValue);
+
+            var parseResult = AdaptiveCard.FromJson(cardJSON);
+
+            Assert.IsTrue(parseResult.Warnings.Count > 0);
+
+            element = GetAdaptiveElementWithId(parseResult.Card, "submitAction");
+
+            Assert.AreEqual((element as AdaptiveAction)?.Mode, AdaptiveActionMode.Primary);
         }
     }
 }
