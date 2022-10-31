@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACRChoiceSetViewDataSource.h"
 #import "ACOBundle.h"
 #import "ACRInputLabelView.h"
 #import "UtiliOS.h"
-#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;

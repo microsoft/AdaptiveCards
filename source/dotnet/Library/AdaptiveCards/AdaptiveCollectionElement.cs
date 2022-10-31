@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -9,7 +13,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Base class for all elements that contain other elements.
     /// </summary>
-    public abstract class AdaptiveCollectionElement : AdaptiveElement
+    public abstract class AdaptiveCollectionElement : AdaptiveElement, IEnumerable<AdaptiveElement>
     {
         /// <summary>
         /// The style used to display this element. See <see cref="AdaptiveContainerStyle" />.
@@ -37,6 +41,14 @@ namespace AdaptiveCards
         /// </summary>
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
 #endif
+        public abstract IEnumerator<AdaptiveElement> GetEnumerator();
+
+        public abstract void Add(AdaptiveElement value);
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <summary>
         /// The content alignment for the element inside the container.

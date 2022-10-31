@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACRContentStackView.h>
-#import <AdaptiveCards/ACREnums.h>
+#import "ACRContentStackView.h"
+#import "ACREnums.h"
 
 #import <UIKit/UIKit.h>
 

@@ -13,6 +13,7 @@
 extern NSString *identifier;
 
 @property NSObject<ACRActionDelegate> *adaptiveCardsDelegates;
+@property NSObject<ACRMediaDelegate> *adaptiveCardsMediaDelegates;
 
 - (instancetype)init:(CGFloat)width;
 - (void)insertCard:(NSString *)card;

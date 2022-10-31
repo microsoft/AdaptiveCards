@@ -5,8 +5,8 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACOEnums.h>
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import "ACOEnums.h"
+#import "ACRIBaseInputHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRInputLabelView : UIView <ACRIBaseInputHandler>

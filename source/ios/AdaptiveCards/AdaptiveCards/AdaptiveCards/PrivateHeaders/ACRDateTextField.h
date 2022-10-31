@@ -5,10 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
-#import <AdaptiveCards/ACRTextField.h>
-#import <AdaptiveCards/BaseInputElement.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import "ACRIBaseInputHandler.h"
+#import "ACRTextField.h"
+#import "BaseInputElement.h"
+#import "SharedAdaptiveCard.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRDateTextField : ACRTextField <ACRIBaseInputHandler>
