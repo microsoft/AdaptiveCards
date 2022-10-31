@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace AdaptiveCards.Test
 {

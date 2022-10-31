@@ -17,6 +17,7 @@
   - [Vertical](#F-AdaptiveCards-Rendering-ActionsOrientation-Vertical 'AdaptiveCards.Rendering.ActionsOrientation.Vertical')
 - [AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction')
   - [IconUrl](#P-AdaptiveCards-AdaptiveAction-IconUrl 'AdaptiveCards.AdaptiveAction.IconUrl')
+  - [IsEnabled](#P-AdaptiveCards-AdaptiveAction-IsEnabled 'AdaptiveCards.AdaptiveAction.IsEnabled')
   - [Speak](#P-AdaptiveCards-AdaptiveAction-Speak 'AdaptiveCards.AdaptiveAction.Speak')
   - [Style](#P-AdaptiveCards-AdaptiveAction-Style 'AdaptiveCards.AdaptiveAction.Style')
   - [Title](#P-AdaptiveCards-AdaptiveAction-Title 'AdaptiveCards.AdaptiveAction.Title')
@@ -834,6 +835,13 @@ Base of Action types
 ##### Summary
 
 IconUrl that can be specified for actions
+
+<a name='P-AdaptiveCards-AdaptiveAction-IsEnabled'></a>
+### IsEnabled `property`
+
+##### Summary
+
+When set false, action is disabled
 
 <a name='P-AdaptiveCards-AdaptiveAction-Speak'></a>
 ### Speak `property`
