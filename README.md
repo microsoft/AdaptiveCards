@@ -89,7 +89,7 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 |Platform|Install|Repo|Maintainer|
 |---|---|---|---|
 | ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [GitHub](https://github.com/BigThinkcode/AdaptiveCards) | [BigThinkCode](https://github.com/BigThinkcode) |
-| Pic2Card | | [GitHub](https://github.com/BigThinkcode/AdaptiveCards/blob/main/source/pic2card/README.md) | [BigThinkCode](https://github.com/BigThinkcode) |
+| Pic2Card | | [GitHub](https://github.com/BigThinkcode/AdaptiveCards/blob/fork-main/source/pic2card/README.md) | [BigThinkCode](https://github.com/BigThinkcode) |
 | Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [GitHub](https://github.com/DeeJayTC/adaptivecards-vue)| [Tim Cadenbach](https://github.com/DeeJayTC)
 
 ## Contribute
