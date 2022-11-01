@@ -82,6 +82,13 @@ namespace AdaptiveCards.Test
 
             card.Body.Add(textBlock);
 
+            AdaptiveTextInput textInput = new AdaptiveTextInput
+            {
+                Id = "textInput"
+            };
+
+            card.Body.Add(textInput);
+
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 Id = "submitAction",
