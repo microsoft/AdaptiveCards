@@ -1302,6 +1302,19 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void TestParsingTextBlockWithStyle()
+        {
+            var testCard = Utilities.BuildASimpleTestCard();
+            var invalidCardJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(testCard, "textBlock", new SerializableDictionary<string, object>{ ["style"] = "randomText" });
+            var parseResult = AdaptiveCard.FromJson(invalidCardJSON);
+            Assert.IsTrue(parseResult.Warnings.Count > 0);
+            var invalidCard = parseResult.Card;
+            var textBlock = Utilities.GetAdaptiveElementWithId(invalidCard, "textBlock") as AdaptiveTextBlock;
+            Assert.IsNotNull(textBlock);
+            Assert.AreEqual(textBlock.Style, AdaptiveTextBlockStyle.Paragraph); 
+        }
+
+        [TestMethod]
         public void TestParsingRichTextBlockWithInvalidInlineType()
         {
             // card with invalid inline type
