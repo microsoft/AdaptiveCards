@@ -22,8 +22,6 @@ namespace AdaptiveCards
 #endif
         public string Title { get; set; }
 
-        // TODO: Title should be required is NOT a selectAction? Or can we use it as a tooltip?
-
         /// <summary>
         ///     Speak phrase for this action
         /// </summary>
@@ -69,5 +67,14 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveActionMode), "primary")]
         public AdaptiveActionMode Mode { get; set; }
+
+        /// <summary>
+        /// Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public string Tooltip{ get; set; }
     }
 }

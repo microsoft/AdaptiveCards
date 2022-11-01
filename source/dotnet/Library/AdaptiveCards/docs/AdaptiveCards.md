@@ -22,6 +22,7 @@
   - [Speak](#P-AdaptiveCards-AdaptiveAction-Speak 'AdaptiveCards.AdaptiveAction.Speak')
   - [Style](#P-AdaptiveCards-AdaptiveAction-Style 'AdaptiveCards.AdaptiveAction.Style')
   - [Title](#P-AdaptiveCards-AdaptiveAction-Title 'AdaptiveCards.AdaptiveAction.Title')
+  - [Tooltip](#P-AdaptiveCards-AdaptiveAction-Tooltip 'AdaptiveCards.AdaptiveAction.Tooltip')
 - [AdaptiveActionHandlers](#T-AdaptiveCards-Rendering-AdaptiveActionHandlers 'AdaptiveCards.Rendering.AdaptiveActionHandlers')
   - [AddSupportedAction\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-AddSupportedAction``1 'AdaptiveCards.Rendering.AdaptiveActionHandlers.AddSupportedAction``1')
   - [IsSupported(type)](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-IsSupported-System-Type- 'AdaptiveCards.Rendering.AdaptiveActionHandlers.IsSupported(System.Type)')
@@ -875,6 +876,13 @@ Style that can be specified for actions
 ##### Summary
 
 Title of the action
+
+<a name='P-AdaptiveCards-AdaptiveAction-Tooltip'></a>
+### Tooltip `property`
+
+##### Summary
+
+Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software.
 
 <a name='T-AdaptiveCards-Rendering-AdaptiveActionHandlers'></a>
 ## AdaptiveActionHandlers `type`
