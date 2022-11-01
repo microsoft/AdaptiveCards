@@ -104,6 +104,7 @@
 						"id": "ChickenAllergy",
 						"style": "expanded",
 						"isMultiSelect": true,
+						"wrap": true,
 						"choices": [
 							{
 								"title": "I'm allergic to peanuts",

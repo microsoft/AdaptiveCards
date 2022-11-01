@@ -2040,7 +2040,7 @@ export class Image extends CardElement {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
-                    this.renderedElement;
+                    clearElement(this.renderedElement);
 
                     if (card && card.designMode) {
                         const errorElement = document.createElement("div");
@@ -5664,6 +5664,7 @@ class OverflowAction extends Action {
         this._actions = actions;
 
         this.title = Strings.defaults.overflowButtonText();
+        this.tooltip = Strings.defaults.overflowButtonTooltip();
     }
 
     getActions(): readonly Action[] {
@@ -5708,8 +5709,20 @@ class OverflowAction extends Action {
                 contextMenu.items.add(menuItem);
             }
 
+            contextMenu.onClose = () => {
+                this.renderedElement?.setAttribute("aria-expanded", "false");
+            }
+
+            this.renderedElement.setAttribute("aria-expanded", "true");
             contextMenu.popup(this.renderedElement);
         }
+    }
+    
+    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
+        super.setupElementForAccessibility(element, promoteTooltipToLabel);
+
+        element.setAttribute("aria-label", Strings.defaults.overflowButtonTooltip());
+        element.setAttribute("aria-expanded", "false");
     }
 }
 

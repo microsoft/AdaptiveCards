@@ -7,7 +7,7 @@
 
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
-#import <AdaptiveCards/ACRRenderResult.h>
+#import "ACRRenderResult.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

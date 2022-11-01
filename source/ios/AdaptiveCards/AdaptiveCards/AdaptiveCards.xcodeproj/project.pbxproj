@@ -295,7 +295,7 @@
 		F42979461F322C9000E89914 /* ACRNumericTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42979441F322C9000E89914 /* ACRNumericTextField.mm */; };
 		F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F42979451F322C9000E89914 /* ACRNumericTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = F429794C1F32684900E89914 /* ACRDateTextField.mm */; };
-		F42C2F4A20351954008787B0 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		F42C2F4A20351954008787B0 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516B1FEC383E008F9642 /* MarkDownParsedResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F42E516C1FEC383E008F9642 /* MarkDownBlockParser.cpp */; };
 		F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E516D1FEC383F008F9642 /* MarkDownHtmlGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -409,7 +409,7 @@
 		F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */; };
 		F4F44B8020478C6F00A2F24C /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7E20478C6F00A2F24C /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7F20478C6F00A2F24C /* Util.cpp */; };
-		F4F44B8D204A11D000A2F24C /* BuildFile in Headers */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Public, ); }; };
+		F4F44B8D204A11D000A2F24C /* (null) in Headers */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8E204A145200A2F24C /* ACOBaseCardElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B882048F82F00A2F24C /* ACOBaseCardElement.mm */; };
 		F4F44B8F204A148200A2F24C /* ACOBaseCardElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B8A2048F83F00A2F24C /* ACOBaseCardElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B90204A14EF00A2F24C /* ACRColumnRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F42741221EFB274C00399FBB /* ACRColumnRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1703,7 +1703,7 @@
 				F4F44B91204A152100A2F24C /* ACRColumnSetRenderer.h in Headers */,
 				F43110431F357487001AAE30 /* ACRInputTableView.h in Headers */,
 				F4F44B94204A157B00A2F24C /* ACRImageRenderer.h in Headers */,
-				F4F44B8D204A11D000A2F24C /* BuildFile in Headers */,
+				F4F44B8D204A11D000A2F24C /* (null) in Headers */,
 				F4F44B8F204A148200A2F24C /* ACOBaseCardElement.h in Headers */,
 				F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */,
 				F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */,
@@ -2192,7 +2192,7 @@
 				F4C1F5DE1F218F920018CB78 /* ACRInputNumberRenderer.mm in Sources */,
 				F448731A1EE2261F00FCAFAE /* OpenUrlAction.cpp in Sources */,
 				F4CAE7831F75AB9000545555 /* ACOAdaptiveCard.mm in Sources */,
-				F42C2F4A20351954008787B0 /* BuildFile in Sources */,
+				F42C2F4A20351954008787B0 /* (null) in Sources */,
 				F4CA74A02016B3B9002041DF /* ACRTapGestureRecognizerEventHandler.mm in Sources */,
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
 				6BDE5C4626FEA7DC003A1DDB /* ACRShowCardTarget.mm in Sources */,

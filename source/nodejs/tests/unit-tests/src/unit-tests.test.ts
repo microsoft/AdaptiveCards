@@ -56,7 +56,7 @@ describe("Test Templating Library", () => {
             "name": "Adaptive Cards"
         };		
 
-        runTest(templatePayload, helloOutput, root);
+        runTemplateTest(templatePayload, helloOutput, root);
     })
 
     it("BasicTemplateOnlyHost", () => {
@@ -75,7 +75,7 @@ describe("Test Templating Library", () => {
             "WindowsTheme": "Light"
         }
         
-        runTest(templatePayload, helloThemeOutput, undefined, host);
+        runTemplateTest(templatePayload, helloThemeOutput, undefined, host);
     });
 
     it("BasicTemplateBoth", () => {
@@ -97,7 +97,7 @@ describe("Test Templating Library", () => {
             "WindowsTheme": "Light"
         }
 
-        runTest(templatePayload, helloThemeOutput, root, host);
+        runTemplateTest(templatePayload, helloThemeOutput, root, host);
     });
 
     it("HostAsString", () => {
@@ -114,7 +114,7 @@ describe("Test Templating Library", () => {
                 
         const host = "Adaptive Cards";
 
-        runTest(templatePayload, helloOutput, undefined, host);
+        runTemplateTest(templatePayload, helloOutput, undefined, host);
     });
 
     it("HostAsArray", () => {
@@ -131,35 +131,35 @@ describe("Test Templating Library", () => {
 
         const host = [ "Adaptive Cards", {"WindowsTheme": "Light"}]
 
-        runTest(templatePayload, helloThemeOutput, undefined, host);
+        runTemplateTest(templatePayload, helloThemeOutput, undefined, host);
 
     });
 
     it("ComplexTemplate", () => {
-        runTest(loadFile("template-test-resources/complex-template.json"),
+        runTemplateTest(loadFile("template-test-resources/complex-template.json"),
             loadFile("template-test-resources/complex-template.output.json"),
             loadFile("template-test-resources/complex-template.data.json"));
     });
 
     it("ComplexTemplateWithHost", () => {
-        runTest(loadFile("template-test-resources/complex-template-host.json"),
+        runTemplateTest(loadFile("template-test-resources/complex-template-host.json"),
             loadFile("template-test-resources/complex-template-host.output.json"),
             loadFile("template-test-resources/complex-template-host.data.json"),
             loadFile("template-test-resources/complex-template-host.host.json"));
     });
 
     it("TemplatingVersionSuccess", () => {
-        runTest(loadFile("template-test-resources/version-template-success.json"),
+        runTemplateTest(loadFile("template-test-resources/version-template-success.json"),
             loadFile("template-test-resources/version-template-success.output.json"));           
     });
 
     it("TemplatingVersionFail", () => {
-        runTest(loadFile("template-test-resources/version-template-fail.json"),
+        runTemplateTest(loadFile("template-test-resources/version-template-fail.json"),
             loadFile("template-test-resources/version-template-fail-invalid.output.json"));
     });
 
     it("TemplateVersionInvalid", () => {
-        runTest(loadFile("template-test-resources/version-template-invalid.json"),
+        runTemplateTest(loadFile("template-test-resources/version-template-invalid.json"),
             loadFile("template-test-resources/version-template-fail-invalid.output.json"));
     });
 
@@ -186,7 +186,7 @@ describe("Test Templating Library", () => {
             "version": "1.5"
         };
 
-        runTest(templatePayload, expectedOutput, undefined, undefined);
+        runTemplateTest(templatePayload, expectedOutput, undefined, undefined);
     });
 
     it("TemplateWhenIsInvalidExpression", () => {
@@ -212,7 +212,7 @@ describe("Test Templating Library", () => {
             "version": "1.5"
         };
 
-        runTest(templatePayload, expectedOutput, undefined, undefined);
+        runTemplateTest(templatePayload, expectedOutput, undefined, undefined);
     });
 
     it("TemplateWhenIsNotExpressionWithLog", () => {
@@ -292,9 +292,47 @@ describe("Test Templating Library", () => {
         
         expect(errorLog[0]).toStrictEqual(expectedWarning);
     });
+    
+    it("TemplateWhenIsFalse", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "New TextBlock",
+                    "wrap": true,
+                    "$when": "${equals(someproperty, true)}"
+                }
+            ]
+        };
+
+        const expectedOutput = {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5",
+            "body": []
+        };
+
+        let template = new ACData.Template(templatePayload);
+
+        let context = {
+            $root: {
+                "someproperty": false
+            }
+        };
+
+        let card = template.expand(context);
+
+        expect(card).toStrictEqual(expectedOutput);
+
+        let errorLog = template.getLastTemplateExpansionWarnings();
+        expect(errorLog.length).toStrictEqual(0);
+    });
 });
 
-function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
+function runTemplateTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
     let template = new ACData.Template(templatePayload);
 
     let context = {
@@ -306,6 +344,33 @@ function runTest(templatePayload: any, expectedOutput: any, data?: any, host?: a
 
     expect(card).toStrictEqual(expectedOutput);
 }
+
+// TODO: need to complete issue #7983 before consuming adaptivecards 3.x.x
+// describe("Test Serialization", () => {
+//     it("SerializeJsonRoundTripTrue", () => {
+//         AdaptiveCards.GlobalSettings.enableFullJsonRoundTrip = true;
+
+//         const card = new AdaptiveCards.AdaptiveCard();
+//         card.parse(loadFile("serialization-test-resources/enable-full-json-round-trip-input.json"));
+
+//         const output = card.toJSON();
+//         const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-true-output.json"));
+
+//         expect(output).toStrictEqual(expectedOutput);
+//     });
+
+//     it("SerializeJsonRoundTripFalse", () => {
+//         AdaptiveCards.GlobalSettings.enableFullJsonRoundTrip = false;
+
+//         const card = new AdaptiveCards.AdaptiveCard();
+//         card.parse(loadFile("serialization-test-resources/enable-full-json-round-trip-input.json"));
+
+//         const output = card.toJSON();
+//         const expectedOutput = (loadFile("serialization-test-resources/enable-full-json-round-trip-false-output.json"));
+
+//         expect(output).toStrictEqual(expectedOutput);
+//     });
+// });
 
 function loadFile(filePath: string) {
     const dataObject = readFileSync(filePath, "utf8");

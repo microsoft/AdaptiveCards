@@ -98,6 +98,7 @@ export class ToolbarButton extends ToolbarElement {
         if (!this.displayCaption) {
             this.renderedElement.classList.add("acd-toolbar-button-iconOnly");
             this.renderedElement.innerText = "";
+            this.renderedElement.ariaLabel = this.caption;
         }
         else {
             this.renderedElement.innerText = this.caption;
@@ -270,12 +271,10 @@ export class ToolbarChoicePicker extends ToolbarElement {
         if (!this.isEnabled) {
             this.renderedElement.classList.add("acd-toolbar-picker-disabled");
             this.renderedElement.setAttribute("aria-disabled", "true");
-            this.renderedElement.tabIndex = -1;
             this._dropDown.isEnabled = false;
         } else {
             this.renderedElement.classList.remove("acd-toolbar-picker-disabled");
             this.renderedElement.removeAttribute("aria-disabled");
-            this.renderedElement.tabIndex = 0;
             this._dropDown.isEnabled = true;
         }
 

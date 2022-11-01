@@ -8,8 +8,8 @@
 @class ACRBaseCardElementRenderer;
 
 #import "ACOBaseCardElement.h"
-#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
-#import <AdaptiveCards/ACRTargetBuilder.h>
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRTargetBuilder.h"
 
 @interface ACRRegistration : NSObject
 

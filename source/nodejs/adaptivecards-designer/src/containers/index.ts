@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 export * from "./host-container";
 export * from "./default/default-container";
-export * from "./berlin/berlin-container";
+export * from "./widget/widget-container";
 export * from "./bf-image/bf-image-container";
 export * from "./cortana-classic/cortana-classic-container";
 export * from "./cortana/cortana-container"
