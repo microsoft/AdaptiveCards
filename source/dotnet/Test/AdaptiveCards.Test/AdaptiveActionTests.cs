@@ -323,7 +323,6 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestActions_TooltipsRoundTrip()
         {
             const string tooltipText = "this button submits the input";
 
