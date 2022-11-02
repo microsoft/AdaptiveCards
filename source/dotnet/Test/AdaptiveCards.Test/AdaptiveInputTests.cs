@@ -35,14 +35,32 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestPassWordInputStyle()
         {
-            var card = Utilities.BuildASimpleTestCard();
-            var passwordStyleMockUpString  = new SerializableDictionary<string, object>() { ["style"] = "Password"};
-            var expectedJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(card, "textInput", passwordStyleMockUpString);
+            var expectedJSON = Utilities.BuildExpectedCardJSON("textInput", new SerializableDictionary<string, object>() { ["style"] = "Password" });
             var testCard = AdaptiveCard.FromJson(expectedJSON);
             Assert.IsTrue(testCard.Warnings.Count == 0);
             AdaptiveTextInput textInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "textInput") as AdaptiveTextInput;
             Assert.IsNotNull(textInput);
             Assert.AreEqual(AdaptiveTextInputStyle.Password, textInput.Style);
+        }
+
+        [TestMethod]
+        public void TestChoiceSetFilteredStyle()
+        {
+            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
+            var testCard = AdaptiveCard.FromJson(expectedJSON);
+            Assert.IsTrue(testCard.Warnings.Count == 0);
+            AdaptiveChoiceSetInput choiceSetInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "choiceSetInput") as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSetInput);
+            Assert.AreEqual(AdaptiveChoiceInputStyle.Filtered, choiceSetInput.Style);
+        }
+
+        [TestMethod]
+        public void TestChoiceSetFilteredStyleRoundTripTest()
+        {
+            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
+            Console.WriteLine(expectedJSON);
+            var testCard = AdaptiveCard.FromJson(expectedJSON);
+            Assert.AreEqual(expectedJSON, testCard?.Card.ToJson());
         }
     }
 }
