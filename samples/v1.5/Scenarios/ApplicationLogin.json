@@ -13,26 +13,20 @@
             "style": "heading"
         },
         {
-            "type": "TextBlock",
-            "text": "Username",
-            "wrap": true
-        },
-        {
             "type": "Input.Text",
             "style": "text",
             "id": "UserVal",
-            "isRequired": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Password",
-            "wrap": true
+            "label": "Username",
+            "isRequired": true,
+            "errorMessage": "Username is required"
         },
         {
             "type": "Input.Text",
             "id": "PassVal",
             "style": "password",
-            "isRequired": true
+            "label": "Password",
+            "isRequired": true,
+            "errorMessage": "Password is required"
         }
     ],
     "actions": [
