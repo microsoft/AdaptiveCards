@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 const v10TestCases: string[] = [
-    'Scenarios/ActivityUpdate', 
     'Elements/Container.SelectAction',
     'Elements/Column.SelectAction',
     'Elements/ColumnSet.SelectAction',
@@ -10,6 +9,7 @@ const v10TestCases: string[] = [
 const v11TestCases: string[] = [];
 const v12TestCases: string[] = [];
 const v13TestCases: string[] = [
+	'Scenarios/ActivityUpdate', 
     'Elements/Input.Text.ErrorMessage', 
     'Elements/Input.Number.ErrorMessage',
     'Elements/Input.ChoiceSet.ErrorMessage',
