@@ -19,7 +19,7 @@
 								}
 							],
 							"bleed": true,
-                            "style": "emphasis"
+							"style": "emphasis"
 						},
 						{
 							"type": "Container",

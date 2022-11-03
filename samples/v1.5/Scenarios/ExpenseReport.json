@@ -226,11 +226,7 @@
 					],
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent1",
-							"chevronUp1",
-							"chevronDown1"
-						]
+						"targetElements": ["cardContent1", "chevronUp1", "chevronDown1"]
 					},
 					"width": "auto"
 				}
@@ -361,11 +357,7 @@
 					],
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent2",
-							"chevronUp2",
-							"chevronDown2"
-						]
+						"targetElements": ["cardContent2", "chevronUp2", "chevronDown2"]
 					},
 					"width": "auto"
 				}
@@ -490,11 +482,7 @@
 					],
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent3",
-							"chevronUp3",
-							"chevronDown3"
-						]
+						"targetElements": ["cardContent3", "chevronUp3", "chevronDown3"]
 					},
 					"width": "auto"
 				}
@@ -692,11 +680,7 @@
 					"type": "Column",
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent4",
-							"showHistory",
-							"hideHistory"
-						]
+						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
 					},
 					"verticalContentAlignment": "center",
 					"items": [

@@ -396,11 +396,7 @@
 					"type": "Column",
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent4",
-							"showHistory",
-							"hideHistory"
-						]
+						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
 					},
 					"verticalContentAlignment": "Center",
 					"items": [

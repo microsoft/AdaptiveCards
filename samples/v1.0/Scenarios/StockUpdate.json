@@ -7,24 +7,24 @@
 		{
 			"type": "Container",
 			"items": [
-                {
-                    "type": "TextBlock",
-                    "text": "Microsoft Corporation",
-                    "size": "Medium",
-                    "wrap": true
-                },
-                {
-                    "type": "TextBlock",
-                    "text": "Nasdaq Global Select: MSFT",
-                    "isSubtle": true,
-                    "spacing": "None",
-                    "wrap": true
-                },
-                {
-                    "type": "TextBlock",
-                    "text": "Fri, May 3, 2019 1:00 PM",
+				{
+					"type": "TextBlock",
+					"text": "Microsoft Corporation",
+					"size": "Medium",
 					"wrap": true
-                }
+				},
+				{
+					"type": "TextBlock",
+					"text": "Nasdaq Global Select: MSFT",
+					"isSubtle": true,
+					"spacing": "None",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Fri, May 3, 2019 1:00 PM",
+					"wrap": true
+				}
 			]
 		},
 		{
