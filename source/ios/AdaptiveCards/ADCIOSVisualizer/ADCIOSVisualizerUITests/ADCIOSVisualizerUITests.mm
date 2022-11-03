@@ -135,7 +135,7 @@
 
 - (void)testSmokeTestActivityUpdateDate
 {
-    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdate.json"];
 
     [self tapOnButtonWithText:@"Set due date"];
 
@@ -156,7 +156,7 @@
 
 - (void)testSmokeTestActivityUpdateComment
 {
-    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdate.json"];
 
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"Comment"] tap];

@@ -145,7 +145,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
+    <Content Include="..\..\..\..\samples\v1.3\Scenarios\ActivityUpdate.json">
       <Link>Samples\ActivityUpdate.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
