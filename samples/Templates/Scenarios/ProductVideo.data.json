@@ -13,9 +13,11 @@
   "ThumbnailUrl": "https://adaptivecards.io/content/poster-video.png",
   "Title": "Divers - Future of Productivity",
   "ID": "6b518eae-b0d9-4951-b6da-1e5f58a43daa",
-  "Url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4",
+  "VideoUrl": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4",
   "VideoDurationInSeconds": 388,
   "VideoProcessingStatus": 2,
   "ViewCount": -1,
-  "YammerObjectUrl": "https://a830edad9050849nda1.sharepoint.com/portals/hub/_layouts/15/videoplayer.aspx?v=https%3A%2F%2Fa830edad9050849nda1%2Esharepoint%2Ecom%2Fportals%2FRed%2DChannel%2FpVid%2FDivers%20%2D%20Future%20of%20Productivity%2Emp4"
+  "YammerObjectUrl": "https://a830edad9050849nda1.sharepoint.com/portals/hub/_layouts/15/videoplayer.aspx?v=https%3A%2F%2Fa830edad9050849nda1%2Esharepoint%2Ecom%2Fportals%2FRed%2DChannel%2FpVid%2FDivers%20%2D%20Future%20of%20Productivity%2Emp4",
+  "CaptionsUrlVtt": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/5ac07e8adb8d7dcd7480973321e57d279d1f7d2c/assets/ProductVideoSubtitles.vtt",
+  "CaptionsUrlSrt": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/da2eb4ad4de60d14b37decc062d3952da9dbb790/assets/ProductVideoSubtitles.srt"
 }

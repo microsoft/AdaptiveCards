@@ -1,7 +1,7 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "1.3",
     "body": [
         {
             "type": "TextBlock",
@@ -45,15 +45,12 @@
                 "type": "AdaptiveCard",
                 "body": [
                     {
-                        "type": "TextBlock",
-                        "text": "${hasMenu.hasMenuSection[0].description}",
-                        "size": "Medium",
-                        "wrap": true
-                    },
-                    {
                         "type": "Input.ChoiceSet",
                         "id": "SteakTemp",
                         "style": "expanded",
+                        "label": "${hasMenu.hasMenuSection[0].description}",
+                        "isRequired": true,
+                        "errorMessage": "Please select one of the above options",
                         "choices": [
                             {
                                 "title": "Rare",
@@ -73,7 +70,7 @@
                         "type": "Input.Text",
                         "id": "SteakOther",
                         "isMultiline": true,
-                        "placeholder": "Any other preparation requests?"
+                        "label": "Any other preparation requests?"
                     }
                 ],
                 "actions": [
@@ -95,28 +92,18 @@
                 "type": "AdaptiveCard",
                 "body": [
                     {
-                        "type": "TextBlock",
-                        "text": "${hasMenu.hasMenuSection[0].hasMenuSection[0].description}",
-                        "size": "Medium",
-                        "wrap": true
-                    },
-                    {
-                        "type": "Input.ChoiceSet",
+                        "type": "Input.Toggle",
                         "id": "ChickenAllergy",
-                        "style": "expanded",
-                        "isMultiSelect": true,
-                        "choices": [
-                            {
-                                "title": "I'm allergic to peanuts",
-                                "value": "peanut"
-                            }
-                        ]
+                        "valueOn": "noPeanuts",
+                        "valueOff": "peanuts",
+                        "title": "I'm allergic to peanuts",
+                        "label": "${hasMenu.hasMenuSection[0].hasMenuSection[0].description}"
                     },
                     {
                         "type": "Input.Text",
                         "id": "ChickenOther",
                         "isMultiline": true,
-                        "placeholder": "Any other preparation requests?"
+                        "label": "Any other preparation requests?"
                     }
                 ],
                 "actions": [
@@ -138,24 +125,18 @@
                 "type": "AdaptiveCard",
                 "body": [
                     {
-                        "type": "TextBlock",
-                        "text": "${hasMenu.hasMenuSection[0].hasMenuSection[1].description}",
-                        "size": "Medium",
-                        "wrap": true
-                    },
-                    {
                         "type": "Input.Toggle",
                         "id": "Vegetarian",
                         "title": "Please prepare it vegan",
+                        "label": "${hasMenu.hasMenuSection[0].hasMenuSection[1].description}",
                         "valueOn": "vegan",
-                        "valueOff": "notVegan",
-                        "wrap": false
+                        "valueOff": "notVegan"
                     },
                     {
                         "type": "Input.Text",
                         "id": "VegOther",
                         "isMultiline": true,
-                        "placeholder": "Any other preparation requests?"
+                        "label": "Any other preparation requests?"
                     }
                 ],
                 "actions": [

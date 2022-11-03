@@ -1,8 +1,8 @@
 {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "type": "AdaptiveCard",
-        "version": "1.1",
-        "fallbackText": "This card requires Media to be viewed. Ask your platform to update to Adaptive Cards v1.1 for this and more!",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.6",
+    "fallbackText": "This card requires Media to be viewed. Ask your platform to update to Adaptive Cards v1.1 for this and more!",
     "body": [
         {
             "type": "Media",
@@ -10,7 +10,19 @@
             "sources": [
                 {
                     "mimeType": "video/mp4",
-                    "url": "${Url}"
+                    "url": "${VideoUrl}"
+                }
+            ],
+            "captionSources": [
+                {
+                    "mimeType": "vtt",
+                    "label": "English (vtt)",
+                    "url": "${CaptionsUrlVtt}"
+                },
+                {
+                    "mimeType": "srt",
+                    "label": "English (srt)",
+                    "url": "${CaptionsUrlSrt}"
                 }
             ]
         }
