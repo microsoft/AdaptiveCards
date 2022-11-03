@@ -25,6 +25,8 @@ export class WidgetContainer extends MultiThemeHostContainer {
         );
         this._containerSize = size;
     }
+    
+    static readonly widgetPadding: number = 16;
 
     public initialize(): void {
         super.initialize();

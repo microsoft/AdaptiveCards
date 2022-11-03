@@ -35,21 +35,32 @@
 /* widget-large/medium/small-container  4px(top+bottom padding+margin) widget-outer-container border*/
 
 .widget-large-card {
-    height: 398px;
+    height: 462px
 }
 
 .widget-medium-card {
-    height: 240px;
+    height: 304px;
 }
 
 .widget-small-card {
-    height: 82px;
+    height: 146px;
 }
 
 .ac-adaptiveCard {
     border: 0px;
-    margin: 48px 16px 16px 16px !important;
-    padding: 0px !important;
+    padding: 48px 16px 16px 16px !important;
+    margin: 0px !important;
+    border-radius: 8px;
+}
+
+.ac-card-elements-wrapper {
+    height: 100%;
+    margin: 0px -16px 0px -16px !important;
+    padding: 0px 16px 0px 16px !important;
+}
+
+.no-overflow {
+    overflow: hidden;
 }
 
 .ac-input {
