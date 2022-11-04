@@ -36,12 +36,17 @@ describe("Mock function", function() {
         let dueDateInput = await ACInputDate.getInputWithId("dueDate");
         await dueDateInput.setDate(1993, 2, 4);
 
+        await ACAction.clickOnActionWithTitle("OK");
+        
+        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
+
+        await ACAction.clickOnActionWithTitle("Comment");
+
         let commentInput = await ACInputText.getInputWithId("comment");
         await commentInput.setData("A comment");
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
         Assert.strictEqual(await utils.getInputFor("comment"), "A comment");
     }));
 
