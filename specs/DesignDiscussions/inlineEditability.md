@@ -1,6 +1,6 @@
-## Inline Editability for Adaptive Cards
+# Inline Editability for Adaptive Cards
 
-### Overview
+## Overview
 
 Adaptive cards are used by apps to share information as well as to collect input from users to complete user scenarios.
 As of now, if we are showing some information in a card and we also want to collect user’s input, we will have bunch of Input fields hidden behind a ShowCard button or we will launch some form using button click on the card to collect user's input.
@@ -11,7 +11,7 @@ We want to provide better experience to the user where he can read the fields an
 UI of showing data and taking user input will become simplistic. 
 
  
-### Current experience:
+## Current experience:
 
 As shown in the below picture, An adaptive card displays data for Customer name, Est. Revenue and Est. Clode Date. If user wants to update those information, he will have to click on 'Edit' button which will open some form and there he can update values for 'Est. Revenue' etc. and Click on Save to send data back to the bot service.
 
@@ -22,7 +22,7 @@ As of now, Adaptive cards support `Input` fields to collect user input. This is 
 
  ![img](../assets/InlineEditability/IE18.PNG)
 
-### Proposed experience:
+## Proposed experience:
 
 We will allow bot developer to enhance the user experience of all `Input` fields in Adaptive card (such as `Input.Text`, `Input.Number`, `Input.Date`, `Input.Time`, `Input.Toggle` and `Input.Choiceset`) in way that, these input fields can appear just as readable fields when user is not taking any action and when user clicks or focusses or clicks on them, it allows user to update those fields and then user can use action buttons like Action.Submit/Action.Execute to send data back to the bot.
 
@@ -56,10 +56,10 @@ This is the flow for user to interact with inline editable fields:-
 
 ![img](../assets/InlineEditability/IE5.PNG)
 
-### New Capabilites in the card:
+## New Capabilites in the card
 In order to achieve inline editable experience as mentioned above, we will add these capabilities in the card for developers and host:
 
-### Schema Changes in Adaptive Card:
+## New Schema Changes in Adaptive Card
 1. Introduce an optional styling property in AC input fields schema for developer to choose between existing input fields styling vs inline editable styling.
 
 * **Existing view:**
@@ -81,7 +81,7 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
-### Host configurable properties in card:
+## Host configurable properties in card:
 1. Host can configure styling property to define width percentage of label and value properties for input elements. 
 In horizontal view, by default, label:value width is to be 3:7 of the container of input element. however, host can configure it for themselves.
 
@@ -98,7 +98,7 @@ In vertical view, the width is always 100% of the container of input element.
 
 ![img](../assets/InlineEditability/IE17.PNG)
 
-### Use Case Clarifications:
+## Use Case Clarifications:
 
 1. If `label` is `empty` in the input field then value takes 100% width of the container of the input element.
 
@@ -120,12 +120,12 @@ which user can go and update the value,
 
 5. If user has some unsaved changes on the card but he moved away from the card but card is still in the viewport. In this case, we will preseve the changes made by the user and we will some indication to user that fields are unsaved or dirty. When card goes out of the viewport, then we wont preserve the unsaved values.
 
-### Developer Recommendation:
+## Developer Recommendation:
 
 1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card with inline editable fields. Save button will send the modified user input values to the bot and bot will respond with a card with updated input values.
 
 2. **Cancel Button:** Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card with inline editable fields. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
-### Out of Scope:
+## Out of Scope:
 
 1. Inline Action in Input.text: We will not support inline Editable styles for input text containing inline action. It will be shown as default input style only. Reason being, such sceanrios are reply with a comment or adding a message where user collaboration is not needed.
 
@@ -133,7 +133,7 @@ which user can go and update the value,
 
 2. Mobile is `out of scope` for inline editable design since there is no focus state on mobile and alignment will be always `vertical` as of today.
 
-### Schema Changes:
+## Proposed Schema Changes:
 
  1. Inherited properties of all Input fields will have one more property called `inputStyle` whose type will be `InputStyle`
 
@@ -142,7 +142,7 @@ which user can go and update the value,
 | **inputStyle** | `InputStyle?` | No | style hint for Input fields | 1.7 |
 
 
-#### inputStyle
+### inputStyle
 
 Style hint for input fields.
 
@@ -160,7 +160,7 @@ Since this property is inherited to all Input fields, it will be supported by al
 * `Input.Toggle`
 * `Input.Choiceset`
 
-#### Sample Payload:
+### Sample Payload:
 
 ```json
      {
@@ -189,7 +189,7 @@ Since this property is inherited to all Input fields, it will be supported by al
 | -------- | ---- | -------- | ----------- | ------- |
 | **labelAlignment** | `InputLabelAlignment?` | No | Determines the alignement of the label with respect to the input field. Default is vertical when not specified | 1.7 |
 
-#### InputLabelAlignment
+### InputLabelAlignment
 
 Alignment for label in input fields.
 
@@ -199,7 +199,7 @@ Alignment for label in input fields.
   * `"vertical"` : should place label vertically on top of the input field.
   * `"horizontal"` : should place label horizontally on left (or right in RTL setting) of the input field.
   
-#### Sample Payload:
+### Sample Payload:
 
 ```json
      {
