@@ -59,7 +59,7 @@ This is the flow for user to interact with inline editable fields:-
 ### New Capabilites in the card:
 In order to achieve inline editable experience as mentioned above, we will add these capabilities in the card for developers and host:
 
-#### Schema Changes in Adaptive Card:
+### Schema Changes in Adaptive Card:
 1. Introduce an optional styling property in AC input fields schema for developer to choose between existing input fields styling vs inline editable styling.
 
 * **Existing view:**
@@ -98,7 +98,7 @@ In vertical view, the width is always 100% of the container of input element.
 
 ![img](../assets/InlineEditability/IE17.PNG)
 
-#### Use Case Clarifications:
+### Use Case Clarifications:
 
 1. If `label` is `empty` in the input field then value takes 100% width of the container of the input element.
 
@@ -120,12 +120,12 @@ which user can go and update the value,
 
 5. If user has some unsaved changes on the card but he moved away from the card but card is still in the viewport. In this case, we will preseve the changes made by the user and we will some indication to user that fields are unsaved or dirty. When card goes out of the viewport, then we wont preserve the unsaved values.
 
-#### Developer Recommendation:
+### Developer Recommendation:
 
 1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card with inline editable fields. Save button will send the modified user input values to the bot and bot will respond with a card with updated input values.
 
 2. **Cancel Button:** Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card with inline editable fields. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
-#### Out of Scope:
+### Out of Scope:
 
 1. Inline Action in Input.text: We will not support inline Editable styles for input text containing inline action. It will be shown as default input style only. Reason being, such sceanrios are reply with a comment or adding a message where user collaboration is not needed.
 
