@@ -81,7 +81,7 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
-#### Host configurable properties in card:
+### Host configurable properties in card:
 1. Host can configure styling property to define width percentage of label and value properties for input elements. 
 In horizontal view, by default, label:value width is to be 3:7 of the container of input element. however, host can configure it for themselves.
 
