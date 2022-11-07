@@ -139,7 +139,7 @@ which user can go and update the value,
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **inputStyle** | `InputStyle` | No | style hint for Input fields | 1.7 |
+| **inputStyle** | `InputStyle?` | No | style hint for Input fields | 1.7 |
 
 
 #### inputStyle
@@ -183,12 +183,22 @@ Since this property is inherited to all Input fields, it will be supported by al
       }	
 ```
 
-2. Inherited properties of all Input fields will have one more property called `inputAndLabelHorizontalAlignment` whose type will be `boolean`
+2. Inherited properties of all Input fields will have one more property called `labelAlignment` whose type will be `InputLabelAlignment`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **inputAndLabelHorizontalAlignment** | `boolean` | No | Determines whether the label of the input and input field are horizontally aligned or not. When not specified, it defaults to existing vertical alignement | 1.7 |
+| **labelAlignment** | `InputLabelAlignment?` | No | Determines the alignement of the label with respect to the input field. Default is vertical when not specified | 1.7 |
 
+#### InputLabelAlignment
+
+Alignment for label in input fields.
+
+* **Type**: `InputLabelAlignment`
+* **Required**: No
+* **Allowed values**:
+  * `"vertical"` : should place label vertically on top of the input field.
+  * `"horizontal"` : should place label horizontally on left (or right in RTL setting) of the input field.
+  
 #### Sample Payload:
 
 ```json
@@ -197,26 +207,26 @@ Since this property is inherited to all Input fields, it will be supported by al
           "label": "Name",
 	  "value": "Sneh",
 	  "inputStyle" : "readWrite",
-	  "inputAndLabelHorizontalAlignment" : true
+	  "labelAlignment" : "vertical"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
 	  "inputStyle" : "readWrite",
-          "inputAndLabelHorizontalAlignment" : false
+          "labelAlignment" : "horizontal"
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "inputAndLabelHorizontalAlignment" : true
+          "labelAlignment" : "horizontal"
       },
       {
           "type": "Input.Text",
           "label": "Flight origin",
           "value": "Seattle",
-          "inputAndLabelHorizontalAlignment" : false
+          "labelAlignment" : "vertical"
       },
       {
           "type": "Input.Text",
