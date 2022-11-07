@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.fragment.app.FragmentManager;
@@ -308,6 +309,14 @@ public class ContainerRenderer extends BaseCardElementRenderer
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
 
             applyTitleAndTooltip(selectAction, view);
+
+            if (view instanceof ViewGroup) {
+                ViewGroup group = (ViewGroup) view;
+
+                if (group.getChildCount() == 1 && group.getChildAt(0) instanceof TextView) {
+                    group.getChildAt(0).setFocusable(false);
+                }
+            }
         }
     }
 
