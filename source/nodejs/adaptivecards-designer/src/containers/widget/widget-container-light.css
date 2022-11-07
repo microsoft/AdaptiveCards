@@ -48,6 +48,20 @@
     height: 148px;
 }
 
+.widget-large-container-no-border {
+    height: 462px !important;
+    border: 0px !important;
+}
+
+.widget-medium-container-no-border {
+    height: 304px !important;
+    border: 0px !important;
+}
+
+.widget-small-container-no-border {
+    height: 146px !important;
+    border: 0px !important;
+}
 
 /* widget-large/medium/small-container  4px(top+bottom padding+margin) widget-outer-container border*/
 

@@ -10,6 +10,7 @@ import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer, WidgetContainer } from "./containers";
 import { FieldDefinition } from "./data";
+import { Strings } from "./strings";
 
 export enum BindingPreviewMode {
     NoPreview,
@@ -206,6 +207,7 @@ export class CardDesignerSurface {
     private _shouldPersistSelectedElement = false;
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
+    private _hostContainer: HostContainer;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -393,72 +395,18 @@ export class CardDesignerSurface {
         
         if (this.fixedHeightCard) {
             // truncate the content if the host container is fixed height
-            if (this.isPreviewMode)
-            {
-                if (document.getElementsByClassName("widget-outer-container").length > 0) {
-                    this.widgetContainerPreviewStyling();
-                } else {
-                    renderedCard.style.overflow = "hidden";
+            if (this._hostContainer instanceof WidgetContainer) {
+                if (this.isPreviewMode) {
+                    if (this._hostContainer.requiresOverflowStyling()) {
+                        this.appendErrorMessage(Strings.widgetOverflowWarning);
+                    }
                 }
+                this._hostContainer.adjustStyleForWidgetBackground();
+            } else if (this.isPreviewMode) {
+                renderedCard.style.overflow = "hidden";
             }
-
-            renderedCard.style.height = "100%";
+            renderedCard.style.height = "100%"; 
         }
-    }
-
-    private widgetContainerPreviewStyling() {
-        const renderedCard = document.getElementsByClassName("ac-adaptiveCard")[0] as HTMLElement;
-
-        const cardHeight = renderedCard.getBoundingClientRect().height;
-        const widgetHeight = this._cardHost.getBoundingClientRect().height;
-        
-        if (cardHeight > widgetHeight) {
-            // TODO: move this to strings
-            this.appendErrorMessage(`[Designer] We have adjusted your card to hide overflow elements. Please ensure all card elements are contained within the proper card height per Widgets Board design guidelines. Only Carousel pagination dots can be present in the bottom ${WidgetContainer.widgetPadding}px margin of a widget.`);
-
-            renderedCard.style.height = "100%";
-
-            const cardElementsWrapper = this.addCardElementsWrapper(renderedCard);
-            cardElementsWrapper.classList.add("no-overflow");
-
-            const carouselElements = renderedCard.getElementsByClassName("ac-carousel-container");
-
-            for (let i = 0; i < carouselElements.length; i++) {
-                const currentCarousel = carouselElements[i] as HTMLElement;
-
-                const carouselRect = currentCarousel.getBoundingClientRect();
-                const wrapperRect = cardElementsWrapper.getBoundingClientRect();
-
-                // pagination will be in the bottom 16px of a carousel
-                const paginationTop = carouselRect.bottom - 16;
-                const paginationBottom = carouselRect.bottom;
-
-                const paginationOverlapsBoundary = ((paginationBottom >= wrapperRect.bottom) && (paginationBottom < (wrapperRect.bottom + WidgetContainer.widgetPadding)) ||
-                                                    (paginationTop >= wrapperRect.bottom) && (paginationTop < (wrapperRect.bottom + WidgetContainer.widgetPadding)));
-
-                if (paginationOverlapsBoundary) {
-                    // Hide overflow on the cardElement instead of the wrapper since pagination dots are in the margin
-                    renderedCard.classList.add("no-overflow");
-                    cardElementsWrapper.classList.remove("no-overflow");
-
-                    // Add the padding to the carousel if the pagination dots are in the margin
-                    currentCarousel.style.marginBottom = WidgetContainer.widgetPadding + "px";
-                    break;
-                }
-            }
-        }
-    }
-
-    private addCardElementsWrapper(parentElement: Element): HTMLElement {
-        const cardElementsWrapper = document.createElement("div");
-        cardElementsWrapper.classList.add("ac-card-elements-wrapper");
-
-        Array.from(parentElement.children).forEach((child) => {
-            cardElementsWrapper.appendChild(child);
-        })
-
-        parentElement.appendChild(cardElementsWrapper);
-        return cardElementsWrapper;
     }
 
     private appendErrorMessage(message: string) {
@@ -1108,5 +1056,9 @@ export class CardDesignerSurface {
 
     set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
         this._shouldPersistSelectedElement = shouldPersistSelectedElement;
+    }
+    
+    set hostContainer(container: HostContainer) {
+        this._hostContainer = container;
     }
 }
