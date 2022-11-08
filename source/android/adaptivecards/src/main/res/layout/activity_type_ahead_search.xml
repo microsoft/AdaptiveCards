@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.adaptivecards.TypeAheadSearchViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:title="title" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/type_ahead_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <!--            <com.microsoft.stardust.IconView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:layout_marginVertical="@dimen/padding_18"-->
+            <!--                android:layout_marginEnd="@dimen/padding_12"-->
+            <!--                android:contentDescription="@string/search_description"-->
+            <!--                android:importantForAccessibility="no"-->
+            <!--                app:stardust_iconColor="?attr/search_bar_icon_color"-->
+            <!--                app:stardust_iconSize="mini"-->
+            <!--                app:stardust_iconSymbol="search" />-->
+
+            <EditText
+                android:id="@+id/type_ahead_search_query"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:cursorVisible="true"
+                android:hint="Start typing to search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textColor="#212121"
+                android:textColorHint="#6E6E6E"
+                android:textSize="16sp"
+                tools:ignore="Autofill" />
+
+            <!--            <com.microsoft.stardust.IconView-->
+            <!--                android:id="@+id/clear_type_ahead_icon"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:clickable="true"-->
+            <!--                android:contentDescription="@string/cancel"-->
+            <!--                android:focusable="true"-->
+            <!--                android:visibility="@{viewModel.queryText.length()==0 ? View.INVISIBLE : View.VISIBLE}"-->
+            <!--                app:stardust_iconBackgroundColor="?attr/search_bar_icon_color"-->
+            <!--                app:stardust_iconBackgroundPadding="@dimen/padding_4"-->
+            <!--                app:stardust_iconBorderType="circular"-->
+            <!--                app:stardust_iconColor="@color/semanticcolor_primarySurface"-->
+            <!--                app:stardust_iconSize="mini"-->
+            <!--                app:stardust_iconSymbol="dismiss"-->
+            <!--                app:stardust_viewSize="micro"-->
+            <!--                tools:ignore="StardustExcludedAttributeValueUsage" />-->
+
+        </LinearLayout>
+
+        <!--        <com.microsoft.stardust.DividerView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginBottom="@dimen/padding_6"-->
+        <!--            app:stardust_color="?attr/semanticcolor_divider"-->
+        <!--            app:stardust_dividerSize="size0" />-->
+
+        <!--        <com.microsoft.teams.statelayout.StateLayout-->
+        <!--            android:id="@id/state_layout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            app:allowRefresh="false"-->
+        <!--            app:showSyncIndicator="false"-->
+        <!--            app:state="@{viewModel.state}">-->
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="Loading Options"
+                    android:scaleType="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Loading Options"
+                    android:textColor="#6E6E6E"
+                    android:textSize="17sp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/error_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="Search options"
+                android:gravity="center"
+                tools:background="@drawable/adaptive_card_no_search_result_error" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_results_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
+                android:scrollbars="vertical"
+                android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
+                app:adapter="@{viewModel.adaptor}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </FrameLayout>
+    </LinearLayout>
+</layout>

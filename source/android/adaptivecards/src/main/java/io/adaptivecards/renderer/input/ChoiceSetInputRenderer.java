@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import io.adaptivecards.R;
+import io.adaptivecards.TypeAheadSearchActivity;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
@@ -54,6 +58,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -418,6 +423,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
+        Context currContext = context;
+        Activity activity = null;
+
+        while (currContext instanceof ContextWrapper) {
+            if (currContext instanceof Activity) {
+                activity =  (Activity) currContext;
+                break;
+            }
+            currContext = ((ContextWrapper) currContext).getBaseContext();
+        }
+
+        WeakReference<Activity> mActivityRef = new WeakReference<>(activity instanceof Activity ? (Activity) currContext : null);
+
         boolean usingCustomInputs = isUsingCustomInputs(context);
         final AutoCompleteTextView autoCompleteTextView = new ValidatedAutoCompleteTextView(context, usingCustomInputs);
         autoCompleteTextView.setThreshold(0);
@@ -572,16 +590,25 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         autoCompleteTextView.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event){
-                autoCompleteTextView.showDropDown();
-                return false;
+                //autoCompleteTextView.showDropDown();
+                Activity hostActivity = mActivityRef.get();
+                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                if (hostActivity != null)
+                    hostActivity.startActivity(intent);
+                return true;
             }
         });
 
         autoCompleteTextView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                autoCompleteTextView.showDropDown();
-                return false;
+//                autoCompleteTextView.showDropDown();
+//                return false;
+                Activity hostActivity = mActivityRef.get();
+                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                if (hostActivity != null)
+                    hostActivity.startActivity(intent);
+                return true;
             }
         });
 
