@@ -133,6 +133,8 @@ Since we still support defining static values as choices, we can just provide th
 
 ### User Experience
 
+We will enable the host to provide it's own UI components and the functionality will be on the SDK side. Host will not need to handle any events which happen on the 
+
 #### _Loading experience_
 
 While the host resolves the request for dynamic choices requested by the sdk we continue to show the static choices and show an indication to the user that dynamic options are being fetched.
