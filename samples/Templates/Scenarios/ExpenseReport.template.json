@@ -16,7 +16,8 @@
 									"size": "large",
 									"weight": "bolder",
 									"text": "**EXPENSE APPROVAL**",
-									"style": "heading"
+									"style": "heading",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -80,7 +81,8 @@
 					"spacing": "small",
 					"size": "small",
 					"weight": "bolder",
-					"text": "[${code}](https://adaptivecards.io)"
+					"text": "[${code}](https://adaptivecards.io)",
+					"wrap": true
 				},
 				{
 					"type": "FactSet",
@@ -128,7 +130,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "bolder",
-									"text": "DATE"
+									"text": "DATE",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -140,7 +143,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "bolder",
-									"text": "CATEGORY"
+									"text": "CATEGORY",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -151,7 +155,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "bolder",
-									"text": "AMOUNT"
+									"text": "AMOUNT",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -221,14 +226,14 @@
 									"id": "chevronDown${$index}",
 									"url": "https://adaptivecards.io/content/down.png",
 									"width": "20px",
-									"altText": "Details collapsed"
+									"altText": "${description} $${total} collapsed"
 								},
 								{
 									"type": "Image",
 									"id": "chevronUp${$index}",
 									"url": "https://adaptivecards.io/content/up.png",
 									"width": "20px",
-									"altText": "Details expanded",
+									"altText": "${description} $${total} expanded",
 									"isVisible": false
 								}
 							],
@@ -331,15 +336,18 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}"
+							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t"
+							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 0.00 \t",
+							"wrap": true
 						}
 					],
 					"width": "auto"
@@ -375,7 +383,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "bolder",
-									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}"
+									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}",
+									"wrap": true
 								}
 							],
 							"width": "auto"

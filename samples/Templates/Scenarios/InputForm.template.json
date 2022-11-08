@@ -15,7 +15,8 @@
 							"text": "${title}",
 							"weight": "bolder",
 							"size": "medium",
-							"style": "heading"
+							"style": "heading",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",

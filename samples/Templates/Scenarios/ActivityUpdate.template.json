@@ -6,7 +6,8 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "${title}",
-			"style": "heading"
+			"style": "heading",
+			"wrap": true
 		},
 		{
 			"type": "ColumnSet",
