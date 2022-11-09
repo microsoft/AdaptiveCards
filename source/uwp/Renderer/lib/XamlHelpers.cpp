@@ -745,10 +745,6 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (label)
         {
             winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
-        }
-
-        if (!adaptiveInput.Label().empty())
-        {
             winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
         }
 
