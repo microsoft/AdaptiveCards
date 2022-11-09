@@ -82,6 +82,13 @@ namespace AdaptiveCards.Test
 
             card.Body.Add(textBlock);
 
+            AdaptiveTextInput textInput = new AdaptiveTextInput
+            {
+                Id = "textInput"
+            };
+
+            card.Body.Add(textInput);
+
             AdaptiveContainer container = new AdaptiveContainer();
             AdaptiveTextBlock innerTextBlock = new AdaptiveTextBlock();
             innerTextBlock.Text = "Inner TextBlock";
