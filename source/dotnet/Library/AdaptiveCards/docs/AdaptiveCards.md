@@ -477,6 +477,7 @@
   - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveTextInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveTextInput.GetNonInteractiveValue')
 - [AdaptiveTextInputStyle](#T-AdaptiveCards-AdaptiveTextInputStyle 'AdaptiveCards.AdaptiveTextInputStyle')
   - [Email](#F-AdaptiveCards-AdaptiveTextInputStyle-Email 'AdaptiveCards.AdaptiveTextInputStyle.Email')
+  - [Password](#F-AdaptiveCards-AdaptiveTextInputStyle-Password 'AdaptiveCards.AdaptiveTextInputStyle.Password')
   - [Tel](#F-AdaptiveCards-AdaptiveTextInputStyle-Tel 'AdaptiveCards.AdaptiveTextInputStyle.Tel')
   - [Text](#F-AdaptiveCards-AdaptiveTextInputStyle-Text 'AdaptiveCards.AdaptiveTextInputStyle.Text')
   - [Url](#F-AdaptiveCards-AdaptiveTextInputStyle-Url 'AdaptiveCards.AdaptiveTextInputStyle.Url')
@@ -5031,6 +5032,13 @@ Style of text input.
 ##### Summary
 
 Input is an email address. The client may use this information to provide optimized keyboard input for the user.
+
+<a name='F-AdaptiveCards-AdaptiveTextInputStyle-Password'></a>
+### Password `constants`
+
+##### Summary
+
+Display input text with password masking
 
 <a name='F-AdaptiveCards-AdaptiveTextInputStyle-Tel'></a>
 ### Tel `constants`
