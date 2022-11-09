@@ -84,8 +84,8 @@ namespace AdaptiveCards.Test
 
             AdaptiveContainer container = new AdaptiveContainer();
             AdaptiveTextBlock innerTextBlock = new AdaptiveTextBlock();
-            textBlock.Text = "Inner TextBlock";
-            textBlock.Id = "innerTextBlock";
+            innerTextBlock.Text = "Inner TextBlock";
+            innerTextBlock.Id = "innerTextBlock";
             container.Items.Add(innerTextBlock);
             container.Id = "container";
 

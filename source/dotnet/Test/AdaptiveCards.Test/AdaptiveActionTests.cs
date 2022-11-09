@@ -323,7 +323,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestActions_ToolipsRoundTrip()
+        public void TestActions_TooltipsRoundTrip()
         {
             const string tooltipText = "this button submits the input";
 
@@ -343,7 +343,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestActions_ToolipsSelectAction()
+        public void TestActions_TooltipsSelectAction()
         {
             var cardInTest = Utilities.BuildASimpleTestCard();
 
@@ -369,7 +369,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestActions_ToolipsSelectActionDeserialization()
+        public void TestActions_TooltipsSelectActionDeserialization()
         {
             var expectedCard = Utilities.BuildASimpleTestCard();
 
