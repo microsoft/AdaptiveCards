@@ -212,7 +212,7 @@
 								{
 									"type": "TextBlock",
 									"text": "AMS",
-									"size": "extralarge",
+									"size": "extraLarge",
 									"color": "accent",
 									"spacing": "none",
 									"wrap": true
@@ -246,7 +246,7 @@
 									"type": "TextBlock",
 									"text": "SFO",
 									"horizontalAlignment": "right",
-									"size": "extralarge",
+									"size": "extraLarge",
 									"color": "accent",
 									"spacing": "none",
 									"wrap": true

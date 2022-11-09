@@ -180,7 +180,7 @@
 					"type": "Column",
 					"backgroundImage": {
 						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
-						"fillMode": "RepeatVertically",
+						"fillMode": "repeatVertically",
 						"horizontalAlignment": "center"
 					},
 					"items": [
@@ -300,7 +300,7 @@
 					"type": "Column",
 					"backgroundImage": {
 						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
-						"fillMode": "RepeatVertically",
+						"fillMode": "repeatVertically",
 						"horizontalAlignment": "center"
 					},
 					"items": [
@@ -377,7 +377,7 @@
 					"type": "Column",
 					"backgroundImage": {
 						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
-						"fillMode": "RepeatVertically",
+						"fillMode": "repeatVertically",
 						"horizontalAlignment": "center"
 					},
 					"items": [

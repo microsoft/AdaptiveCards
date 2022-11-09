@@ -212,7 +212,7 @@
 								{
 									"type": "TextBlock",
 									"text": "${reservationFor.departureAirport.iataCode}",
-									"size": "extralarge",
+									"size": "extraLarge",
 									"color": "accent",
 									"spacing": "none",
 									"wrap": true
@@ -246,7 +246,7 @@
 									"type": "TextBlock",
 									"text": "${reservationFor.arrivalAirport.iataCode}",
 									"horizontalAlignment": "right",
-									"size": "extralarge",
+									"size": "extraLarge",
 									"color": "accent",
 									"spacing": "none",
 									"wrap": true

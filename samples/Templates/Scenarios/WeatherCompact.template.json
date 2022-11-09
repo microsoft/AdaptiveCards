@@ -39,7 +39,7 @@
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber((main.temp - 273) * 9 / 5 + 32, 0)}",
-							"size": "extralarge",
+							"size": "extraLarge",
 							"spacing": "none",
 							"wrap": true
 						}
