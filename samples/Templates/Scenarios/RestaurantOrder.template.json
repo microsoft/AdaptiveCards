@@ -6,9 +6,9 @@
 		{
 			"type": "TextBlock",
 			"text": "${FormInfo.title}",
-			"size": "Large",
+			"size": "large",
 			"wrap": true,
-			"weight": "Bolder"
+			"weight": "bolder"
 		},
 		{
 			"type": "Input.ChoiceSet",

@@ -50,7 +50,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "ExtraLarge",
+									"size": "extraLarge",
 									"text": "Trip to UAE",
 									"wrap": true,
 									"style": "heading"
@@ -337,7 +337,7 @@
 				{
 					"type": "Column",
 					"spacing": "small",
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",

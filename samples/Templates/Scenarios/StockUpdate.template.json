@@ -9,14 +9,14 @@
 				{
 					"type": "TextBlock",
 					"text": "${companyName}",
-					"size": "Medium",
+					"size": "medium",
 					"wrap": true
 				},
 				{
 					"type": "TextBlock",
 					"text": "${primaryExchange}: ${symbol}",
 					"isSubtle": true,
-					"spacing": "None",
+					"spacing": "none",
 					"wrap": true
 				},
 				{
@@ -28,7 +28,7 @@
 		},
 		{
 			"type": "Container",
-			"spacing": "None",
+			"spacing": "none",
 			"items": [
 				{
 					"type": "ColumnSet",
@@ -40,14 +40,14 @@
 								{
 									"type": "TextBlock",
 									"text": "${formatNumber(latestPrice, 2)} ",
-									"size": "ExtraLarge",
+									"size": "extraLarge",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "${if(change >= 0, '▲', '▼')} ${formatNumber(change,2)} USD (${formatNumber(changePercent * 100, 2)}%)",
 									"color": "${if(change >= 0, 'good', 'attention')}",
-									"spacing": "None",
+									"spacing": "none",
 									"wrap": true
 								}
 							]

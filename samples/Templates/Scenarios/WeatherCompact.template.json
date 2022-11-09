@@ -7,14 +7,14 @@
 		{
 			"type": "TextBlock",
 			"text": "${name}, WA",
-			"size": "Large",
+			"size": "large",
 			"isSubtle": true,
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "{{DATE(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
-			"spacing": "None",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
@@ -27,7 +27,7 @@
 						{
 							"type": "Image",
 							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-							"size": "Small",
+							"size": "small",
 							"altText": "Mostly cloudy weather"
 						}
 					]
@@ -39,8 +39,8 @@
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber((main.temp - 273) * 9 / 5 + 32, 0)}",
-							"size": "ExtraLarge",
-							"spacing": "None",
+							"size": "extralarge",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -52,8 +52,8 @@
 						{
 							"type": "TextBlock",
 							"text": "°F",
-							"weight": "Bolder",
-							"spacing": "Small",
+							"weight": "bolder",
+							"spacing": "small",
 							"wrap": true
 						}
 					]
@@ -65,14 +65,14 @@
 						{
 							"type": "TextBlock",
 							"text": "Hi ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)}",
-							"horizontalAlignment": "Left",
+							"horizontalAlignment": "left",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "Lo ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)}",
-							"horizontalAlignment": "Left",
-							"spacing": "None",
+							"horizontalAlignment": "left",
+							"spacing": "none",
 							"wrap": true
 						}
 					]

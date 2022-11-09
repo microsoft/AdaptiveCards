@@ -10,14 +10,14 @@
 				{
 					"type": "TextBlock",
 					"text": "Microsoft Corporation",
-					"size": "Medium",
+					"size": "medium",
 					"wrap": true
 				},
 				{
 					"type": "TextBlock",
 					"text": "Nasdaq Global Select: MSFT",
 					"isSubtle": true,
-					"spacing": "None",
+					"spacing": "none",
 					"wrap": true
 				},
 				{

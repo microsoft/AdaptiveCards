@@ -6,14 +6,14 @@
 		{
 			"type": "TextBlock",
 			"text": "Here are some cool photos",
-			"size": "Large",
+			"size": "large",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Sorry some of them are repeats",
-			"size": "Medium",
-			"weight": "Lighter",
+			"size": "medium",
+			"weight": "lighter",
 			"wrap": true
 		},
 		{

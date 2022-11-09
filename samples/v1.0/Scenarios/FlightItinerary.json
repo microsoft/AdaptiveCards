@@ -7,7 +7,7 @@
 		{
 			"type": "TextBlock",
 			"text": "Passengers",
-			"weight": "Bolder",
+			"weight": "bolder",
 			"isSubtle": false,
 			"wrap": true
 		},
@@ -20,27 +20,27 @@
 		{
 			"type": "TextBlock",
 			"text": "Jeremy Goldberg",
-			"spacing": "None",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Evan Litvak",
-			"spacing": "None",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "2 Stops",
-			"weight": "Bolder",
-			"spacing": "Medium",
+			"weight": "bolder",
+			"spacing": "medium",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Tue, May 30, 2017 12:25 PM",
-			"weight": "Bolder",
-			"spacing": "None",
+			"weight": "bolder",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
@@ -65,7 +65,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Amsterdam",
 							"isSubtle": true,
 							"wrap": true
@@ -76,7 +76,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "None",
+			"spacing": "none",
 			"columns": [
 				{
 					"type": "Column",
@@ -84,10 +84,10 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"text": "SFO",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -99,8 +99,8 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"size": "Small",
-							"spacing": "None",
+							"size": "small",
+							"spacing": "none",
 							"altText": "Flight to"
 						}
 					]
@@ -111,11 +111,11 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
 							"text": "AMS",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -125,15 +125,15 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"weight": "Bolder",
-			"spacing": "Medium",
+			"weight": "bolder",
+			"spacing": "medium",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Fri, Jun 2, 2017 1:55 PM",
-			"weight": "Bolder",
-			"spacing": "None",
+			"weight": "bolder",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
@@ -158,7 +158,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "San Francisco",
 							"isSubtle": true,
 							"wrap": true
@@ -169,7 +169,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "None",
+			"spacing": "none",
 			"columns": [
 				{
 					"type": "Column",
@@ -177,10 +177,10 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"text": "AMS",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -192,8 +192,8 @@
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"size": "Small",
-							"spacing": "None",
+							"size": "small",
+							"spacing": "none",
 							"altText": "Flight to"
 						}
 					]
@@ -204,11 +204,11 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
 							"text": "SFO",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -217,7 +217,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Medium",
+			"spacing": "medium",
 			"columns": [
 				{
 					"type": "Column",
@@ -226,7 +226,7 @@
 						{
 							"type": "TextBlock",
 							"text": "Total",
-							"size": "Medium",
+							"size": "medium",
 							"isSubtle": true,
 							"wrap": true
 						}
@@ -238,10 +238,10 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "$4,032.54",
-							"size": "Medium",
-							"weight": "Bolder",
+							"size": "medium",
+							"weight": "bolder",
 							"wrap": true
 						}
 					]
