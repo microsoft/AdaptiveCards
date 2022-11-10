@@ -1,7 +1,7 @@
 .widget-outer-container {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: #2c2c2c;
-    width: 300px;
+    width: 302px;
     border-radius: 8px;
     box-sizing: border-box;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
@@ -9,33 +9,47 @@
 }
 
 .widget-header {
-    height: 48px;
-    width: 298px;
+    height: 16px;
+    width: 268px;
     position: absolute;
     z-index: 1;
     display: flex;
     justify-content: space-around;
-    padding: 16px;
+    margin: 16px;
     border-radius: 8px 8px 0px 0px;
 }
 
 .widget-large-container {
-    height: 462px;
+    height: 464px;
 }
 
 .widget-medium-container {
-    height: 304px;
+    height: 306px;
 }
 
 .widget-small-container {
-    height: 146px;
+    height: 148px;
 }
 
+.widget-large-container-no-border {
+    height: 462px !important;
+    border: 0px !important;
+}
+
+.widget-medium-container-no-border {
+    height: 304px !important;
+    border: 0px !important;
+}
+
+.widget-small-container-no-border {
+    height: 146px !important;
+    border: 0px !important;
+}
 
 /* widget-large/medium/small-container  4px(top+bottom padding+margin) widget-outer-container border*/
 
 .widget-large-card {
-    height: 462px;
+    height: 462px
 }
 
 .widget-medium-card {
@@ -49,7 +63,18 @@
 .ac-adaptiveCard {
     border: 0px;
     padding: 48px 16px 16px 16px !important;
-    border-radius: 8px !important;
+    margin: 0px !important;
+    border-radius: 8px;
+}
+
+.ac-card-elements-wrapper {
+    height: 100%;
+    margin: 0px -16px 0px -16px !important;
+    padding: 0px 16px 0px 16px !important;
+}
+
+.no-overflow {
+    overflow: hidden;
 }
 
 .ac-input {
