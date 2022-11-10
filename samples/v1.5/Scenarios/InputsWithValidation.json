@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"body": [
 		{
 			"type": "TextBlock",
@@ -45,26 +45,26 @@
 			"isMultiline": true,
 			"id": "MultiLineVal"
 		},
-        {
-            "type": "TextBlock",
-            "size": "medium",
-            "weight": "bolder",
-            "text": "Input.Text InlineAction",
-            "horizontalAlignment": "center",
-            "wrap": true,
-            "style": "heading"
-        },
-        {
-            "type": "Input.Text",
-            "label": "Text input with an inline action with no icon",
-            "id": "textInlineActionId",
-            "inlineAction": {
-                "type": "Action.OpenUrl",
-                "title": "Reply",
-                "tooltip": "Reply to this message",
-                "url": "https://adaptivecards.io"
-            }
-        },
+		{
+			"type": "TextBlock",
+			"size": "medium",
+			"weight": "bolder",
+			"text": "Input.Text InlineAction",
+			"horizontalAlignment": "center",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "Input.Text",
+			"label": "Text input with an inline action with no icon",
+			"id": "textInlineActionId",
+			"inlineAction": {
+				"type": "Action.OpenUrl",
+				"title": "Reply",
+				"tooltip": "Reply to this message",
+				"url": "https://adaptivecards.io"
+			}
+		},
 		{
 			"type": "Input.Number",
 			"label": "Quantity",
@@ -202,7 +202,7 @@
 				"body": [
 					{
 						"type": "Input.Text",
-						"label": "enter comment",
+						"label": "Enter comment",
 						"style": "text",
 						"id": "CommentVal"
 					}

@@ -13,12 +13,12 @@ namespace AdaptiveCards.Test
         internal static AdaptiveTypedElement GetAdaptiveElementWithId(AdaptiveCard card, string Id)
         {
             Stack<AdaptiveTypedElement> stack = new Stack<AdaptiveTypedElement>();
-            
-			foreach (var element in card.Body)
+
+            foreach (var element in card.Body)
             {
                 stack.Push(element);
             }
-			
+
             foreach (var action in card.Actions)
             {
                 stack.Push(action);
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Test
                 {
                     return element;
                 }
-				
+
                 if (element is AdaptiveCollectionElement)
                 {
                     foreach (var childElement in element as AdaptiveCollectionElement)
@@ -40,10 +40,10 @@ namespace AdaptiveCards.Test
                     }
                 }
             }
-			
+
             return null;
-        } 
-		
+        }
+
         /// <summary>
         /// Injects a key value pair to an AdaptiveCard using AdditionalProperites of AdaptiveTypedElement. If no kv is provided, injection is skipped
         /// </summary>
@@ -54,7 +54,7 @@ namespace AdaptiveCards.Test
         internal static string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, SerializableDictionary<string, object> testProperty = null)
         {
             AdaptiveTypedElement element = GetAdaptiveElementWithId(card, id);
-			
+
             if (element != null && testProperty != null)
             {
                 if (element is AdaptiveCollectionElement)
@@ -82,6 +82,31 @@ namespace AdaptiveCards.Test
 
             card.Body.Add(textBlock);
 
+            AdaptiveTextInput textInput = new AdaptiveTextInput
+            {
+                Id = "textInput"
+            };
+
+            card.Body.Add(textInput);
+
+            AdaptiveContainer container = new AdaptiveContainer();
+            AdaptiveTextBlock innerTextBlock = new AdaptiveTextBlock();
+            innerTextBlock.Text = "Inner TextBlock";
+            innerTextBlock.Id = "innerTextBlock";
+            container.Items.Add(innerTextBlock);
+            container.Id = "container";
+
+            AdaptiveSubmitAction selectAction = new AdaptiveSubmitAction
+            {
+                Id = "selectAction",
+                Title = "Action.Submit",
+                DataJson = "{\"x\": 20}",
+            };
+
+            container.SelectAction = selectAction;
+
+            card.Body.Add(container);
+
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 Id = "submitAction",
@@ -92,6 +117,11 @@ namespace AdaptiveCards.Test
             card.Actions.Add(submitAction);
 
             return card;
+        }
+		
+        internal static string BuildExpectedCardJSON(String id, SerializableDictionary<string, object> testProperty = null)
+        {
+            return Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(BuildASimpleTestCard(), id, testProperty);
         }
     }
 }

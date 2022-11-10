@@ -1,0 +1,61 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Media supports **audio** and **video** content!",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Video",
+			"horizontalAlignment": "center",
+			"spacing": "medium",
+			"separator": true,
+			"size": "large"
+		},
+		{
+			"type": "Media",
+			"poster": "https://adaptivecards.io/content/poster-video.png",
+			"altText": "Adaptive Cards overview video",
+			"sources": [
+				{
+					"mimeType": "video/mp4",
+					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+				}
+			],
+			"captionSources": [
+				{
+					"mimeType": "vtt",
+					"label": "English (vtt)",
+					"url": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/5ac07e8adb8d7dcd7480973321e57d279d1f7d2c/assets/ProductVideoSubtitles.vtt"
+				},
+				{
+					"mimeType": "srt",
+					"label": "English (srt)",
+					"url": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/da2eb4ad4de60d14b37decc062d3952da9dbb790/assets/ProductVideoSubtitles.srt"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Audio",
+			"horizontalAlignment": "center",
+			"separator": true,
+			"size": "large"
+		},
+		{
+			"type": "Media",
+			"poster": "https://adaptivecards.io/content/poster-audio.jpg",
+			"altText": "Adaptive Cards overview audio",
+			"sources": [
+				{
+					"mimeType": "audio/mpeg",
+					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3"
+				}
+			]
+		}
+	]
+}

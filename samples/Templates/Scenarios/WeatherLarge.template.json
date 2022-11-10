@@ -1,108 +1,108 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "speak": "<s>Weather forecast for ${formatEpoch(data[0].sunrise_ts, 'dddd')} is high of ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)} and low of ${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} degrees with a ${formatNumber(data[0].precip * 100, 0)}% chance of rain</s><s>Winds will be ${formatNumber(data[0].wind_gust_spd, 0)} mph from the ${data[0].wind_cdir}</s>",
-    "backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
-    "body": [
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": 35,
-                    "items": [
-                        {
-                            "type": "Image",
-                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-                            "size": "Stretch",
-                            "altText": "Mostly cloudy weather"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "width": 65,
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "{{DATE(${formatEpoch(data[0].sunrise_ts, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
-                            "weight": "Bolder",
-                            "size": "Large",
-                            "wrap": true,
-                            "color": "Dark"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "text": "${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} / ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)}",
-                            "size": "Medium",
-                            "spacing": "None",
-                            "wrap": true,
-                            "color": "Dark"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "text": "${formatNumber(data[0].precip * 100, 0)}% chance of rain",
-                            "spacing": "None",
-                            "wrap": true,
-                            "color": "Dark"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "text": "Winds ${data[0].wind_gust_spd} mph ${data[0].wind_cdir}",
-                            "spacing": "None",
-                            "wrap": true,
-                            "color": "Dark"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "$data": "${data}",
-                    "$when": "${$index != 0}",
-                    "type": "Column",
-                    "width": 20,
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "horizontalAlignment": "Center",
-                            "text": "${formatEpoch(sunrise_ts, 'dddd')}",
-                            "wrap": true,
-                            "color": "Dark"
-                        },
-                        {
-                            "type": "Image",
-                            "size": "auto",
-                            "url": "${weather.icon}",
-                            "altText": "${weather.description}"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "text": "**High**\t${formatNumber(app_max_temp / 5 * 9  + 32, 0)}",
-                            "wrap": true,
-                            "color": "Dark",
-                            "horizontalAlignment": "Center"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "text": "**Low**\t${formatNumber(app_min_temp / 5 * 9  + 32, 0)}",
-                            "wrap": true,
-                            "color": "Dark",
-                            "spacing": "None",
-                            "horizontalAlignment": "Center"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "View ${formatEpoch(sunrise_ts, 'dddd')}",
-                        "url": "https://www.microsoft.com"
-                    }
-                }
-            ]
-        }
-    ]
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"speak": "<s>Weather forecast for ${formatEpoch(data[0].sunrise_ts, 'dddd')} is high of ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)} and low of ${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} degrees with a ${formatNumber(data[0].precip * 100, 0)}% chance of rain</s><s>Winds will be ${formatNumber(data[0].wind_gust_spd, 0)} mph from the ${data[0].wind_cdir}</s>",
+	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 35,
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"size": "stretch",
+							"altText": "Mostly cloudy weather"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 65,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{{DATE(${formatEpoch(data[0].sunrise_ts, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
+							"weight": "bolder",
+							"size": "large",
+							"wrap": true,
+							"color": "dark"
+						},
+						{
+							"type": "TextBlock",
+							"text": "${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} / ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)}",
+							"size": "medium",
+							"spacing": "none",
+							"wrap": true,
+							"color": "dark"
+						},
+						{
+							"type": "TextBlock",
+							"text": "${formatNumber(data[0].precip * 100, 0)}% chance of rain",
+							"spacing": "none",
+							"wrap": true,
+							"color": "dark"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Winds ${data[0].wind_gust_spd} mph ${data[0].wind_cdir}",
+							"spacing": "none",
+							"wrap": true,
+							"color": "dark"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"$data": "${data}",
+					"$when": "${$index != 0}",
+					"type": "Column",
+					"width": 20,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "${formatEpoch(sunrise_ts, 'dddd')}",
+							"wrap": true,
+							"color": "dark"
+						},
+						{
+							"type": "Image",
+							"size": "auto",
+							"url": "${weather.icon}",
+							"altText": "${weather.description}"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**High**\t${formatNumber(app_max_temp / 5 * 9  + 32, 0)}",
+							"wrap": true,
+							"color": "dark",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Low**\t${formatNumber(app_min_temp / 5 * 9  + 32, 0)}",
+							"wrap": true,
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
+						}
+					],
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"title": "View ${formatEpoch(sunrise_ts, 'dddd')}",
+						"url": "https://www.microsoft.com"
+					}
+				}
+			]
+		}
+	]
 }
