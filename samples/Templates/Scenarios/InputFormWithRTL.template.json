@@ -6,7 +6,8 @@
 		{
 			"type": "TextBlock",
 			"text": "Please select your language:",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		}
 	],
 	"actions": [

@@ -8,7 +8,8 @@
 			"text": "${FormInfo.title}",
 			"size": "large",
 			"wrap": true,
-			"weight": "bolder"
+			"weight": "bolder",
+			"style": "heading"
 		},
 		{
 			"type": "Input.ChoiceSet",
