@@ -1,16 +1,16 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.3",
 	"speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at ${formatDateTime(start.dateTime, 'HH:mm')}pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
 	"body": [
 		{
 			"type": "TextBlock",
 			"text": "${summary}",
-			"size": "Large",
-			"weight": "Bolder",
-			"wrap": true,
-			"style": "heading"
+			"size": "large",
+			"weight": "bolder",
+			"style": "heading",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
@@ -22,17 +22,13 @@
 			"type": "TextBlock",
 			"text": "${formatDateTime(start.dateTime, 'HH:mm')} - ${formatDateTime(end.dateTime, 'hh:mm')}",
 			"isSubtle": true,
-			"spacing": "None",
-			"wrap": true
-		},
-		{
-			"type": "TextBlock",
-			"text": "Snooze for",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
 			"id": "snooze",
+			"label": "Snooze for",
 			"value": "${reminders.overrides[0].minutes}",
 			"choices": [
 				{
