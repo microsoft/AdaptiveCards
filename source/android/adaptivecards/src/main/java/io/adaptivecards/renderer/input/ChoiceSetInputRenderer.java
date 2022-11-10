@@ -7,12 +7,21 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Resources;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultCaller;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -31,6 +40,7 @@ import android.widget.TextView;
 
 import io.adaptivecards.R;
 import io.adaptivecards.TypeAheadSearchActivity;
+import io.adaptivecards.TypeAheadSearchLaunchParams;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
@@ -411,11 +421,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         long size = choiceInputVector.size();
         int valueIndex = -1;
         String value = choiceSetInput.GetValue();
-
+        List<String> staticChoices = new ArrayList();
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             titleList.addElement(choiceInput.GetTitle());
+            staticChoices.add(choiceInput.GetTitle());
 
             if (choiceInput.GetValue().equals(value))
             {
@@ -591,10 +602,55 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             @Override
             public boolean onTouch(View v, MotionEvent event){
                 //autoCompleteTextView.showDropDown();
-                Activity hostActivity = mActivityRef.get();
-                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
-                if (hostActivity != null)
-                    hostActivity.startActivity(intent);
+                // Activity activity1 = (Activity) v.getContext();
+
+                ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
+                if (registry != null) {
+                    // name can come from host config
+                    ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
+                        new ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                // There are no request codes
+                                if (result.getData() != null && result.getData().getExtras() != null) {
+                                    String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
+                                    if (selectedChoice != null) {
+                                        autoCompleteTextView.setText(selectedChoice);
+                                        CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+                                        Log.d("SelectedChoice", selectedChoice);
+                                    }
+                                }
+
+                                //launcher.unregister();
+                            }
+                        });
+//                ActivityResultLauncher<Intent> mStartForResult = ActivityResultCaller.registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    (ActivityResultCallback<ActivityResult>) result -> {
+//                        if (result.getResultCode() == Activity.RESULT_OK) {
+//                            Intent intent = result.getData();
+//                            // Handle the Intent
+//                        }
+//                    });
+
+                    Activity hostActivity = mActivityRef.get();
+
+                    //hostActivity.onActivityRes
+
+                    Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                    TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(staticChoices);
+                    intent.putExtra("launchParams", launchParams);
+//                if (hostActivity != null) {
+//                    mStartForResult.launch(intent);
+//                    // request code shall come from host config and shall have a default value
+//                    // hostActivity.startActivityForResult(intent, 10);
+//                }
+
+                    launcher.launch(intent);
+                }
+                else {
+                    //Log error in console
+                }
                 return true;
             }
         });

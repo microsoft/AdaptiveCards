@@ -5,6 +5,7 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.graphics.Color;
 
+import androidx.activity.result.ActivityResultRegistry;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
@@ -46,7 +47,7 @@ public class AdaptiveCardRenderer
     }
     public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler, @Nullable IOverflowActionRenderer overflowActionRenderer)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, null, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -55,7 +56,18 @@ public class AdaptiveCardRenderer
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
+            ActivityResultRegistry activityResultRegistry,
             HostConfig hostConfig)
+    {
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, activityResultRegistry, hostConfig);
+    }
+
+    public RenderedAdaptiveCard render(
+        Context context,
+        FragmentManager fragmentManager,
+        AdaptiveCard adaptiveCard,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig)
     {
         return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, hostConfig);
     }
@@ -66,10 +78,12 @@ public class AdaptiveCardRenderer
         AdaptiveCard adaptiveCard,
         ICardActionHandler cardActionHandler,
         @Nullable IOverflowActionRenderer overflowActionRenderer,
+        ActivityResultRegistry activityResultRegistry,
         HostConfig hostConfig)
     {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
         CardRendererRegistration.getInstance().registerOverflowActionRenderer(overflowActionRenderer);
+        CardRendererRegistration.getInstance().registerActivityResultRegistry(activityResultRegistry);
         View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
         result.setView(cardView);
         return result;

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultRegistry;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -244,6 +245,11 @@ public class CardRendererRegistration
         m_overflowActionRenderer = overflowActionRenderer;
     }
 
+    public void registerActivityResultRegistry(ActivityResultRegistry activityResultRegistry)
+    {
+        m_activityResultRegistry = activityResultRegistry;
+    }
+
     public void registerOverflowActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
     {
         m_overflowActionLayoutRenderer = actionLayoutRenderer;
@@ -252,6 +258,11 @@ public class CardRendererRegistration
     public IActionLayoutRenderer getOverflowActionLayoutRenderer()
     {
         return m_overflowActionLayoutRenderer;
+    }
+
+    public ActivityResultRegistry getActivityResultRegistry()
+    {
+        return m_activityResultRegistry;
     }
 
 
@@ -624,4 +635,5 @@ public class CardRendererRegistration
     private FeatureRegistration m_featureRegistration = null;
     private IOverflowActionRenderer m_overflowActionRenderer =null;
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
+    private ActivityResultRegistry m_activityResultRegistry = null;
 }

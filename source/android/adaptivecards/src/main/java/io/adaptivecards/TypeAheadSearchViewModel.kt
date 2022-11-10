@@ -1,6 +1,7 @@
 package io.adaptivecards
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,18 @@ class TypeAheadSearchViewModel : ViewModel() {
         _isLoading.value = false
     }
 
+    fun fetchDynamicOptions(queryText: String?): List<String> {
+        if (queryText.isNullOrEmpty()) {
+            //clear search box text and dynamic choices
+            return ArrayList()
+        }
+
+        // call the host
+        // get dynamic choices and return to the UI
+
+        return ArrayList()
+    }
+
     class FilteredAdapter (private var mChoices: List<String> = ArrayList()) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
 
         @SuppressLint("NotifyDataSetChanged")
@@ -93,6 +106,17 @@ class TypeAheadSearchViewModel : ViewModel() {
             // Set item views based on your views and data model
             val textView = viewHolder.textView
             textView.text = choice
+            textView.setOnClickListener {
+                if (it.context is Activity) {
+                    it.postDelayed({
+                        val activity: Activity = it.context as Activity
+                        val intent = activity.intent
+                        intent.putExtra("typeAheadSearchSelectedKey", choice)
+                        activity.setResult(Activity.RESULT_OK, intent)
+                        activity.finish()
+                    }, 100)
+                }
+            }
         }
 
         // Returns the total count of items in the list

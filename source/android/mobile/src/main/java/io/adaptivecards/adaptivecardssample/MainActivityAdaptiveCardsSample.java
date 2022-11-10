@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Build;
 import androidx.fragment.app.FragmentManager;
@@ -333,6 +334,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         registerFeatureRegistration();
         registerCustomElementRenderers();
         registerCustomTypeface();
+        CardRendererRegistration.getInstance().registerActivityResultRegistry(getActivityResultRegistry());
     }
 
     private void renderAdaptiveCard(boolean showErrorToast)
@@ -366,8 +368,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             layout.removeAllViews();
 
             registerCustomFeatures();
-
-            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, getActivityResultRegistry(), hostConfig);
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
