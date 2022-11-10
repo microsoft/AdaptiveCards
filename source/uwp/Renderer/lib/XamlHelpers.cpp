@@ -745,6 +745,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         if (label)
         {
             winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
+            winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
         }
 
         return inputStackPanel;

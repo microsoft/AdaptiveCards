@@ -33,7 +33,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TesPassWordInputStyle()
+        public void TestPassWordInputStyle()
         {
             var card = Utilities.BuildASimpleTestCard();
             var passwordStyleMockUpString  = new SerializableDictionary<string, object>() { ["style"] = "Password"};

@@ -305,5 +305,95 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual((element as AdaptiveAction)?.Mode, AdaptiveActionMode.Primary);
         }
+
+        [TestMethod]
+        public void TestActions_Tooltips()
+        {
+            const string tooltipText = "this button submits the input";
+
+            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+
+            var expectedCardJSON = Utilities.BuildExpectedCardJSON("submitAction", tooltipValue);
+
+            var parseResult = AdaptiveCard.FromJson(expectedCardJSON);
+
+            var testElement = Utilities.GetAdaptiveElementWithId(parseResult.Card, "submitAction");
+
+            Assert.AreEqual((testElement as AdaptiveAction)?.Tooltip, tooltipText);
+        }
+
+        [TestMethod]
+        public void TestActions_TooltipsRoundTrip()
+        {
+            const string tooltipText = "this button submits the input";
+
+            var cardInTest = Utilities.BuildASimpleTestCard();
+
+            var testElement = Utilities.GetAdaptiveElementWithId(cardInTest, "submitAction") as AdaptiveAction;
+
+            Assert.IsNotNull(testElement);
+
+            testElement.Tooltip = tooltipText;
+
+            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+
+            var expectedCardJSON = Utilities.BuildExpectedCardJSON("submitAction", tooltipValue);
+
+            RoundTripTest(expectedCardJSON, cardInTest.ToJson());
+        }
+
+        [TestMethod]
+        public void TestActions_TooltipsSelectAction()
+        {
+            var cardInTest = Utilities.BuildASimpleTestCard();
+
+            var expectedCard = Utilities.BuildASimpleTestCard();
+
+            const string tooltipText = "this button submits the input";
+
+            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+
+            var container = Utilities.GetAdaptiveElementWithId(expectedCard, "container") as AdaptiveContainer;
+
+            Assert.IsNotNull(container);
+
+            container.SelectAction.AdditionalProperties = tooltipValue;
+
+            var testElement = Utilities.GetAdaptiveElementWithId(cardInTest, "container") as AdaptiveContainer;
+
+            Assert.IsNotNull(testElement);
+
+            testElement.SelectAction.Tooltip = tooltipText;
+
+            RoundTripTest(expectedCard.ToJson(), cardInTest.ToJson());
+        }
+
+        [TestMethod]
+        public void TestActions_TooltipsSelectActionDeserialization()
+        {
+            var expectedCard = Utilities.BuildASimpleTestCard();
+
+            const string tooltipText = "this button submits the input";
+
+            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+
+            var container = Utilities.GetAdaptiveElementWithId(expectedCard, "container") as AdaptiveContainer;
+
+            Assert.IsNotNull(container);
+
+            container.SelectAction.AdditionalProperties = tooltipValue;
+
+            var expectedCardJSON = expectedCard.ToJson();
+
+            var parseResult = AdaptiveCard.FromJson(expectedCardJSON);
+
+            Assert.AreEqual(0, parseResult.Warnings.Count);
+
+            var deserializedContainer = Utilities.GetAdaptiveElementWithId(parseResult.Card, "container") as AdaptiveContainer;
+
+            Assert.IsNotNull(deserializedContainer);
+
+            Assert.AreEqual(tooltipText, deserializedContainer.SelectAction.Tooltip);
+        }
     }
 }
