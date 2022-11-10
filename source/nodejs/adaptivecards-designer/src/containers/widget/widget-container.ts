@@ -126,7 +126,7 @@ export class WidgetContainer extends MultiThemeHostContainer {
         return cardElementsWrapper;
     }
     
-    public adjustStyleForWidgetBackground() {
+    public adjustStyleForBackground() {
         this._outerFrame.classList.remove(
             "widget-small-container-no-border",
             "widget-medium-container-no-border",

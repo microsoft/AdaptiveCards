@@ -416,8 +416,6 @@ export class CardDesigner extends Designer.DesignContext {
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
 
-        this._designerSurface.hostContainer = this.hostContainer;
-
         this.updateFullLayout();
     }
 

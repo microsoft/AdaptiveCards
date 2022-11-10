@@ -8,7 +8,7 @@ import { IPoint, Utils } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
-import { HostContainer, WidgetContainer } from "./containers";
+import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
 import { Strings } from "./strings";
 
@@ -207,7 +207,6 @@ export class CardDesignerSurface {
     private _shouldPersistSelectedElement = false;
     private _persistentSelectedPeer: DesignerPeers.DesignerPeer;
     private _persistentSelectedCardElement: CardElement;
-    private _hostContainer: HostContainer;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -395,16 +394,14 @@ export class CardDesignerSurface {
         
         if (this.fixedHeightCard) {
             // truncate the content if the host container is fixed height
-            if (this._hostContainer instanceof WidgetContainer) {
-                if (this.isPreviewMode) {
-                    if (this._hostContainer.requiresOverflowStyling()) {
-                        this.appendErrorMessage(Strings.widgetOverflowWarning);
-                    }
+            if (this.isPreviewMode) {
+                if (this.context.hostContainer?.requiresOverflowStyling()) {
+                    this.appendErrorMessage(Strings.widgetOverflowWarning);
+                } else {
+                    renderedCard.style.overflow = "hidden";
                 }
-                this._hostContainer.adjustStyleForWidgetBackground();
-            } else if (this.isPreviewMode) {
-                renderedCard.style.overflow = "hidden";
             }
+            this.context.hostContainer?.adjustStyleForBackground();
             renderedCard.style.height = "100%"; 
         }
     }
@@ -1056,9 +1053,5 @@ export class CardDesignerSurface {
 
     set shouldPersistSelectedElement(shouldPersistSelectedElement: boolean) {
         this._shouldPersistSelectedElement = shouldPersistSelectedElement;
-    }
-    
-    set hostContainer(container: HostContainer) {
-        this._hostContainer = container;
     }
 }
