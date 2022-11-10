@@ -29,7 +29,7 @@
 									"type": "TextBlock",
 									"size": "extraLarge",
 									"weight": "lighter",
-									"color": "Accent",
+									"color": "accent",
 									"text": "Flight to ${reservationFor.arrivalAirport.iataCode}",
 									"wrap": true
 								},

@@ -23,7 +23,7 @@
 						},
 						{
 							"type": "Container",
-							"spacing": "None",
+							"spacing": "none",
 							"style": "emphasis",
 							"items": [
 								{

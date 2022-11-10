@@ -15,7 +15,7 @@
 						{
 							"type": "Image",
 							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-							"size": "Stretch",
+							"size": "stretch",
 							"altText": "Mostly cloudy weather"
 						}
 					]
@@ -27,32 +27,32 @@
 						{
 							"type": "TextBlock",
 							"text": "{{DATE(${formatEpoch(data[0].sunrise_ts, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
-							"weight": "Bolder",
-							"size": "Large",
+							"weight": "bolder",
+							"size": "large",
 							"wrap": true,
-							"color": "Dark"
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} / ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)}",
-							"size": "Medium",
-							"spacing": "None",
+							"size": "medium",
+							"spacing": "none",
 							"wrap": true,
-							"color": "Dark"
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber(data[0].precip * 100, 0)}% chance of rain",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true,
-							"color": "Dark"
+							"color": "dark"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Winds ${data[0].wind_gust_spd} mph ${data[0].wind_cdir}",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true,
-							"color": "Dark"
+							"color": "dark"
 						}
 					]
 				}
@@ -69,10 +69,10 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
+							"horizontalAlignment": "center",
 							"text": "${formatEpoch(sunrise_ts, 'dddd')}",
 							"wrap": true,
-							"color": "Dark"
+							"color": "dark"
 						},
 						{
 							"type": "Image",
@@ -84,16 +84,16 @@
 							"type": "TextBlock",
 							"text": "**High**\t${formatNumber(app_max_temp / 5 * 9  + 32, 0)}",
 							"wrap": true,
-							"color": "Dark",
-							"horizontalAlignment": "Center"
+							"color": "dark",
+							"horizontalAlignment": "center"
 						},
 						{
 							"type": "TextBlock",
 							"text": "**Low**\t${formatNumber(app_min_temp / 5 * 9  + 32, 0)}",
 							"wrap": true,
-							"color": "Dark",
-							"spacing": "None",
-							"horizontalAlignment": "Center"
+							"color": "dark",
+							"spacing": "none",
+							"horizontalAlignment": "center"
 						}
 					],
 					"selectAction": {

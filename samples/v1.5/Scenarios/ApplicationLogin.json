@@ -5,10 +5,10 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"size": "Medium",
-			"weight": "Bolder",
+			"size": "medium",
+			"weight": "bolder",
 			"text": "Application Login",
-			"horizontalAlignment": "Center",
+			"horizontalAlignment": "center",
 			"wrap": true,
 			"style": "heading"
 		},

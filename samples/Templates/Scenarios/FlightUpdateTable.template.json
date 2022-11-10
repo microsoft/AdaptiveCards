@@ -25,7 +25,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"size": "Small",
+									"size": "small",
 									"url": "https://adaptivecards.io/content/airplane.png",
 									"altText": "Airplane"
 								}
@@ -40,17 +40,17 @@
 								{
 									"type": "TextBlock",
 									"text": "Flight Status",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"isSubtle": true,
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "DELAYED",
-									"horizontalAlignment": "Right",
-									"spacing": "None",
-									"size": "Large",
-									"color": "Attention",
+									"horizontalAlignment": "right",
+									"spacing": "none",
+									"size": "large",
+									"color": "attention",
 									"wrap": true
 								}
 							]
@@ -67,26 +67,26 @@
 									"type": "TextBlock",
 									"text": "Passengers",
 									"isSubtle": true,
-									"weight": "Bolder",
+									"weight": "bolder",
 									"wrap": true,
-									"spacing": "None"
+									"spacing": "none"
 								},
 								{
 									"type": "TextBlock",
 									"text": "${underName.name}",
-									"spacing": "Small",
+									"spacing": "small",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "Jeremy Goldberg",
-									"spacing": "Small",
+									"spacing": "small",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "Evan Litvak",
-									"spacing": "Small",
+									"spacing": "small",
 									"wrap": true
 								}
 							]
@@ -100,30 +100,30 @@
 								{
 									"type": "TextBlock",
 									"text": "Seat",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"isSubtle": true,
-									"weight": "Bolder",
+									"weight": "bolder",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "14A",
-									"horizontalAlignment": "Right",
-									"spacing": "Small",
+									"horizontalAlignment": "right",
+									"spacing": "small",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "14B",
-									"horizontalAlignment": "Right",
-									"spacing": "Small",
+									"horizontalAlignment": "right",
+									"spacing": "small",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "14C",
-									"horizontalAlignment": "Right",
-									"spacing": "Small",
+									"horizontalAlignment": "right",
+									"spacing": "small",
 									"wrap": true
 								}
 							]
@@ -140,13 +140,13 @@
 									"type": "TextBlock",
 									"text": "Flight",
 									"isSubtle": true,
-									"weight": "Bolder",
+									"weight": "bolder",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "${reservationFor.flightNumber}",
-									"spacing": "Small",
+									"spacing": "small",
 									"wrap": true
 								}
 							]
@@ -158,17 +158,17 @@
 									"type": "TextBlock",
 									"text": "Departs",
 									"isSubtle": true,
-									"horizontalAlignment": "Center",
-									"weight": "Bolder",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "{{TIME(${string(reservationFor.departureTime)})}}",
-									"color": "Attention",
-									"weight": "Bolder",
-									"horizontalAlignment": "Center",
-									"spacing": "Small",
+									"color": "attention",
+									"weight": "bolder",
+									"horizontalAlignment": "center",
+									"spacing": "small",
 									"wrap": true
 								}
 							]
@@ -180,17 +180,17 @@
 									"type": "TextBlock",
 									"text": "Arrives",
 									"isSubtle": true,
-									"horizontalAlignment": "Right",
-									"weight": "Bolder",
+									"horizontalAlignment": "right",
+									"weight": "bolder",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "{{TIME(${string(reservationFor.arrivalTime)})}}",
-									"color": "Attention",
-									"horizontalAlignment": "Right",
-									"weight": "Bolder",
-									"spacing": "Small",
+									"color": "attention",
+									"horizontalAlignment": "right",
+									"weight": "bolder",
+									"spacing": "small",
 									"wrap": true
 								}
 							]
@@ -212,9 +212,9 @@
 								{
 									"type": "TextBlock",
 									"text": "${reservationFor.departureAirport.iataCode}",
-									"size": "ExtraLarge",
-									"color": "Accent",
-									"spacing": "None",
+									"size": "extraLarge",
+									"color": "accent",
+									"spacing": "none",
 									"wrap": true
 								}
 							]
@@ -226,11 +226,11 @@
 									"type": "Image",
 									"url": "https://adaptivecards.io/content/airplane.png",
 									"altText": "Airplane",
-									"horizontalAlignment": "Center",
-									"size": "Small"
+									"horizontalAlignment": "center",
+									"size": "small"
 								}
 							],
-							"verticalContentAlignment": "Center"
+							"verticalContentAlignment": "center"
 						},
 						{
 							"type": "TableCell",
@@ -239,22 +239,22 @@
 									"type": "TextBlock",
 									"text": "${reservationFor.arrivalAirport.name}",
 									"isSubtle": true,
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "${reservationFor.arrivalAirport.iataCode}",
-									"horizontalAlignment": "Right",
-									"size": "ExtraLarge",
-									"color": "Accent",
-									"spacing": "None",
+									"horizontalAlignment": "right",
+									"size": "extraLarge",
+									"color": "accent",
+									"spacing": "none",
 									"wrap": true
 								}
 							]
 						}
 					],
-					"spacing": "None"
+					"spacing": "none"
 				}
 			],
 			"showGridLines": false

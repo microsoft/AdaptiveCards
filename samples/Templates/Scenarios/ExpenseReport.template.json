@@ -50,7 +50,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "ExtraLarge",
+									"size": "extraLarge",
 									"text": "${purpose}",
 									"wrap": true,
 									"style": "heading"
@@ -407,7 +407,7 @@
 						"type": "Action.ToggleVisibility",
 						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
 					},
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",

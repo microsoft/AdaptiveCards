@@ -15,7 +15,7 @@
 							"type": "Image",
 							"url": "${gameImageUrl}",
 							"altText": "${gameName}",
-							"size": "Stretch"
+							"size": "stretch"
 						}
 					]
 				},
@@ -26,11 +26,11 @@
 						{
 							"type": "TextBlock",
 							"text": "${action.title}",
-							"color": "Light",
-							"weight": "Bolder",
+							"color": "light",
+							"weight": "bolder",
 							"wrap": true,
 							"size": "default",
-							"horizontalAlignment": "Center"
+							"horizontalAlignment": "center"
 						}
 					]
 				}

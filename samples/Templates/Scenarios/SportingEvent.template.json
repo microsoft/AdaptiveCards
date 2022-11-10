@@ -17,14 +17,14 @@
 								{
 									"type": "Image",
 									"url": "https://adaptivecards.io/content/cats/3.png",
-									"size": "Medium",
+									"size": "medium",
 									"altText": "Shades cat team emblem"
 								},
 								{
 									"type": "TextBlock",
 									"text": "SHADES",
-									"horizontalAlignment": "Center",
-									"weight": "Bolder",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
 									"wrap": true
 								}
 							]
@@ -33,26 +33,26 @@
 							"type": "Column",
 							"width": "stretch",
 							"separator": true,
-							"spacing": "Medium",
+							"spacing": "medium",
 							"items": [
 								{
 									"type": "TextBlock",
 									"text": "{{DATE(${string(start_date)}, SHORT)}}",
-									"horizontalAlignment": "Center",
+									"horizontalAlignment": "center",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "Final",
-									"spacing": "None",
-									"horizontalAlignment": "Center",
+									"spacing": "none",
+									"horizontalAlignment": "center",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "${home_points} - ${away_points}",
-									"size": "ExtraLarge",
-									"horizontalAlignment": "Center",
+									"size": "extraLarge",
+									"horizontalAlignment": "center",
 									"wrap": true
 								}
 							]
@@ -61,20 +61,20 @@
 							"type": "Column",
 							"width": "auto",
 							"separator": true,
-							"spacing": "Medium",
+							"spacing": "medium",
 							"items": [
 								{
 									"type": "Image",
 									"url": "https://adaptivecards.io/content/cats/2.png",
-									"size": "Medium",
-									"horizontalAlignment": "Center",
+									"size": "medium",
+									"horizontalAlignment": "center",
 									"altText": "Skins cat team emblem"
 								},
 								{
 									"type": "TextBlock",
 									"text": "SKINS",
-									"horizontalAlignment": "Center",
-									"weight": "Bolder",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
 									"wrap": true
 								}
 							]
