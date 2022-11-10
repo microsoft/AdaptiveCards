@@ -16,7 +16,7 @@ namespace AdaptiveCards.Test
     {
         public static string SamplesPath => Path.Combine(System.AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "samples");
 
-        private void TestPayloadsInDirectory(string path, string[] excludedCards)
+        private void TestPayloadsInDirectory(string path, HashSet<string> excludedCards)
         {
             var exceptions = new List<Exception>();
             var files = Directory.GetFiles(path, "*.json").ToList();
@@ -26,14 +26,7 @@ namespace AdaptiveCards.Test
                 bool excluded = false;
                 if (excludedCards != null)
                 {
-                    foreach (var card in excludedCards)
-                    {
-                        if (file.Contains(card))
-                        {
-                            excluded = true;
-                            break;
-                        }
-                    }
+                    excluded = excludedCards.Contains(file);
                 }
 
                 try
@@ -117,7 +110,7 @@ namespace AdaptiveCards.Test
         {
 
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "tests"),
-                new string[]
+                new HashSet<string>()
                 {   
                     // These cards are expected to fail
                     "TypeIsRequired",
@@ -126,7 +119,7 @@ namespace AdaptiveCards.Test
 
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "tests"), null);
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.2", "tests"),
-                new string[]
+                new HashSet<string>()
                 {
                     // These cards are expected to fail
                     "Action.DuplicateIds",
