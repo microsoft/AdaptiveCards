@@ -46,7 +46,7 @@ namespace AdaptiveCards
         /// Explicit Column width.
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty("pixelWidth", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -61,7 +61,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(1)]
+        [DefaultValue(0)]
         public uint Width { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace AdaptiveCards.Test
 {
     public static class Utilities
     {
+        public static string SamplesPath => Path.Combine(System.AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "samples");
+
         internal static AdaptiveTypedElement GetAdaptiveElementWithId(AdaptiveCard card, string Id)
         {
             Stack<AdaptiveTypedElement> stack = new Stack<AdaptiveTypedElement>();
@@ -122,6 +125,18 @@ namespace AdaptiveCards.Test
         internal static string BuildExpectedCardJSON(String id, SerializableDictionary<string, object> testProperty = null)
         {
             return Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(BuildASimpleTestCard(), id, testProperty);
+        }
+
+        internal static string GetSampleJSON(string version, string type, string fileName)
+        {
+            try
+            {
+                return File.ReadAllText(Path.Combine(Utilities.SamplesPath, version, type, fileName), Encoding.UTF8);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

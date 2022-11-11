@@ -142,5 +142,15 @@ namespace AdaptiveCards.Test
             AdaptiveTableCell tableCell = new AdaptiveTableCell();
             Assert.AreEqual(null, tableCell.Rtl);
         }
+
+        [TestMethod]
+        public void TestRoundTripTest()
+        {
+            var expectedJson = Utilities.GetSampleJSON("v1.5", "elements", "Table.json");
+            Assert.IsNotNull(expectedJson);
+            var parseResult = AdaptiveCard.FromJson(expectedJson);
+            Assert.AreEqual(0, parseResult.Warnings.Count);
+            Assert.AreEqual(expectedJson, parseResult.Card.ToJson());
+        }
     }
 }
