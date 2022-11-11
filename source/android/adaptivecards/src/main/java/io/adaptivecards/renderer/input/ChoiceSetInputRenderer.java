@@ -413,6 +413,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         RenderedAdaptiveCard renderedCard,
         Context context,
         ChoiceSetInput choiceSetInput,
+        ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
         RenderArgs renderArgs)
     {
@@ -646,6 +647,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 //                    // hostActivity.startActivityForResult(intent, 10);
 //                }
 
+                    CardRendererRegistration.getInstance().registerCardActionHandler(cardActionHandler);
                     launcher.launch(intent);
                 }
                 else {
@@ -734,7 +736,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Filtered)
             {
-                inputView = renderFilteredComboBox(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
+                inputView = renderFilteredComboBox(renderedCard, context, choiceSetInput, cardActionHandler, hostConfig, renderArgs);
             }
             else
             {

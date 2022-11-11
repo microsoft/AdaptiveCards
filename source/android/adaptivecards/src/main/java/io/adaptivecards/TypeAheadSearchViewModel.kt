@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import io.adaptivecards.renderer.registration.CardRendererRegistration
 
 class TypeAheadSearchViewModel : ViewModel() {
 
@@ -67,10 +68,12 @@ class TypeAheadSearchViewModel : ViewModel() {
             return ArrayList()
         }
 
+        return CardRendererRegistration.getInstance().cardActionHandler.getDynamicChoices2(queryText)
+
         // call the host
         // get dynamic choices and return to the UI
 
-        return ArrayList()
+        //return ArrayList()
     }
 
     class FilteredAdapter (private var mChoices: List<String> = ArrayList()) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {

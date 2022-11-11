@@ -250,6 +250,16 @@ public class CardRendererRegistration
         m_activityResultRegistry = activityResultRegistry;
     }
 
+    public void registerCardActionHandler(ICardActionHandler cardActionHandler)
+    {
+        m_cardActionHandler = cardActionHandler;
+    }
+
+    public ICardActionHandler getCardActionHandler()
+    {
+        return m_cardActionHandler;
+    }
+
     public void registerOverflowActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
     {
         m_overflowActionLayoutRenderer = actionLayoutRenderer;
@@ -636,4 +646,5 @@ public class CardRendererRegistration
     private IOverflowActionRenderer m_overflowActionRenderer =null;
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
     private ActivityResultRegistry m_activityResultRegistry = null;
+    private ICardActionHandler m_cardActionHandler = null;
 }

@@ -5,6 +5,9 @@ package io.adaptivecards.adaptivecardssample;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentActivity;
 import android.content.Context;
@@ -24,6 +27,7 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.adaptivecards.IChoicesResolver;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
@@ -47,6 +51,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -123,6 +129,21 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         renderImporterCard(true);
     }
+
+//    @NonNull
+//    @Override
+//    public List<String> getDynamicChoices(@Nullable BaseActionElement actionElement,
+//                                          @NonNull String queryText,
+//                                          @Nullable RenderedAdaptiveCard renderedAdaptiveCard) {
+//        List<String> dynamicChoices = new ArrayList();
+//        dynamicChoices.add("a");
+//        dynamicChoices.add("aa");
+//        dynamicChoices.add("aaa");
+//        dynamicChoices.add("aaaa");
+//        dynamicChoices.add("aaaaa");
+//        dynamicChoices.add("aaaaaa");
+//        return dynamicChoices;
+//    }
 
     public class SwitchListener implements CompoundButton.OnCheckedChangeListener
     {
@@ -368,7 +389,14 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             layout.removeAllViews();
 
             registerCustomFeatures();
-            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, getActivityResultRegistry(), hostConfig);
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(
+                this,
+                getSupportFragmentManager(),
+                parseResult.GetAdaptiveCard(),
+                this,
+                this,
+                getActivityResultRegistry(),
+                hostConfig);
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
@@ -696,6 +724,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             showToast("Unknown Action!", Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public List<String> getDynamicChoices2(String queryText) {
+        List<String> dynamicChoices = new ArrayList();
+        dynamicChoices.add("a");
+        dynamicChoices.add("aa");
+        dynamicChoices.add("aaa");
+        dynamicChoices.add("aaaa");
+        dynamicChoices.add("aaaaa");
+        dynamicChoices.add("aaaaaa");
+        return dynamicChoices;
     }
 
     @Override

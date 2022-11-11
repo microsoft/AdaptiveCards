@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.IChoicesResolver;
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -56,10 +57,11 @@ public class AdaptiveCardRenderer
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             ActivityResultRegistry activityResultRegistry,
             HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, activityResultRegistry, hostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, choicesResolver, null, activityResultRegistry, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
@@ -69,7 +71,7 @@ public class AdaptiveCardRenderer
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, hostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, null, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
@@ -77,6 +79,7 @@ public class AdaptiveCardRenderer
         FragmentManager fragmentManager,
         AdaptiveCard adaptiveCard,
         ICardActionHandler cardActionHandler,
+        @Nullable IChoicesResolver choicesResolver,
         @Nullable IOverflowActionRenderer overflowActionRenderer,
         ActivityResultRegistry activityResultRegistry,
         HostConfig hostConfig)
@@ -116,6 +119,7 @@ public class AdaptiveCardRenderer
                                FragmentManager fragmentManager,
                                AdaptiveCard adaptiveCard,
                                ICardActionHandler cardActionHandler,
+                               //IChoicesResolver choicesResolver,
                                HostConfig hostConfig,
                                boolean isInlineShowCard,
                                long containerCardId)
