@@ -14,8 +14,6 @@ namespace AdaptiveCards.Test
     [TestClass]
     public class AllPayloadTests
     {
-        public static string SamplesPath => Path.Combine(System.AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "samples");
-
         private void TestPayloadsInDirectory(string path, HashSet<string> excludedCards)
         {
             var exceptions = new List<Exception>();
@@ -26,7 +24,7 @@ namespace AdaptiveCards.Test
                 bool excluded = false;
                 if (excludedCards != null)
                 {
-                    excluded = excludedCards.Contains(file);
+                    excluded = excludedCards.Contains(file.Split('\\').Last());
                 }
 
                 try
@@ -93,40 +91,42 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAllScenarios()
         {
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "scenarios"), null);
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "scenarios"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.0", "scenarios"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "scenarios"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "scenarios"), null);
         }
 
         [TestMethod]
         public void TestAllElements()
         {
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"), null);
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "elements"), null);
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.2", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.0", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.2", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "elements"), null); 
         }
 
         [TestMethod]
         public void TestAllTestCards()
         {
 
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "tests"),
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.0", "tests"),
                 new HashSet<string>()
                 {   
                     // These cards are expected to fail
-                    "TypeIsRequired",
-                    "AdaptiveCard.MissingVersion",
+                    "TypeIsRequired.json",
+                    "AdaptiveCard.MissingVersion.json",
                 });
 
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "tests"), null);
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.2", "tests"),
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.2", "tests"),
                 new HashSet<string>()
                 {
                     // These cards are expected to fail
-                    "Action.DuplicateIds",
-                    "Action.NestedDuplicateIds",
+                    "Action.DuplicateIds.json",
+                    "Action.NestedDuplicateIds.json",
                 });
 
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.3", "tests"), null); 
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.3", "tests"), null); 
         }
     }
 }

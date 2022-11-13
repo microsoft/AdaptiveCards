@@ -28,12 +28,18 @@ namespace AdaptiveCards
         /// <summary>
         /// Collection of TableRows 
         /// </summary>
-
-        [JsonRequired]
 #if !NETSTANDARD1_3
         [XmlElement(Type = typeof(AdaptiveTableRow), ElementName = AdaptiveTableRow.TypeName)]
 #endif
         public List<AdaptiveTableRow> Rows{ get; set; } = new List<AdaptiveTableRow>();
+
+        /// <summary>
+        /// Collection of TableColumnDefinitions
+        /// </summary>
+#if !NETSTANDARD1_3
+        [XmlElement(Type = typeof(AdaptiveTableColumnDefinition), ElementName = AdaptiveTableColumnDefinition.TypeName)]
+#endif
+        public List<AdaptiveTableColumnDefinition> Columns{ get; set; } = new List<AdaptiveTableColumnDefinition>();
 
         /// <summary>
         /// Return a enumerator for TableRows
@@ -43,16 +49,6 @@ namespace AdaptiveCards
         {
             return Rows.GetEnumerator();
         }
-
-        /// <summary>
-        /// Collection of TableColumnDefinitions
-        /// </summary>
-
-        [JsonRequired]
-#if !NETSTANDARD1_3
-        [XmlElement(Type = typeof(AdaptiveTableColumnDefinition), ElementName = AdaptiveTableColumnDefinition.TypeName)]
-#endif
-        public List<AdaptiveTableColumnDefinition> Columns{ get; set; } = new List<AdaptiveTableColumnDefinition>();
 
         /// <summary>
         /// Defines the style of the grid. This property currently only controls the grid’s color 
@@ -88,8 +84,8 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(false)]
-        public bool ShowGridLine{ get; set; }
+        [DefaultValue(true)]
+        public bool ShowGridLines { get; set; } = true;
 
         /// <summary>
         /// Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
@@ -99,6 +95,6 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
-        public bool FirstRowAsHeader{ get; set; }
+        public bool FirstRowAsHeaders{ get; set; }
     }
 }

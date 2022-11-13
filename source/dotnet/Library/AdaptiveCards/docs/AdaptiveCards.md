@@ -141,6 +141,10 @@
   - [StyleXml](#P-AdaptiveCards-AdaptiveCollectionElement-StyleXml 'AdaptiveCards.AdaptiveCollectionElement.StyleXml')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionElement.VerticalContentAlignment')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
+- [AdaptiveCollectionWithContentAlignment](#T-AdaptiveCards-AdaptiveCollectionWithContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment')
+  - [HorizontalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.HorizontalContentAlignment')
+  - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.VerticalContentAlignment')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionWithContentAlignment-GetEnumerator 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.GetEnumerator')
 - [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn')
   - [TypeName](#F-AdaptiveCards-AdaptiveColumn-TypeName 'AdaptiveCards.AdaptiveColumn.TypeName')
   - [Rtl](#P-AdaptiveCards-AdaptiveColumn-Rtl 'AdaptiveCards.AdaptiveColumn.Rtl')
@@ -274,8 +278,8 @@
   - [Stretch](#F-AdaptiveCards-AdaptiveHorizontalAlignment-Stretch 'AdaptiveCards.AdaptiveHorizontalAlignment.Stretch')
 - [AdaptiveHorizontalContentAlignment](#T-AdaptiveCards-AdaptiveHorizontalContentAlignment 'AdaptiveCards.AdaptiveHorizontalContentAlignment')
   - [Center](#F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Center 'AdaptiveCards.AdaptiveHorizontalContentAlignment.Center')
-  - [Leading](#F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Leading 'AdaptiveCards.AdaptiveHorizontalContentAlignment.Leading')
-  - [Trailing](#F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Trailing 'AdaptiveCards.AdaptiveHorizontalContentAlignment.Trailing')
+  - [Left](#F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Left 'AdaptiveCards.AdaptiveHorizontalContentAlignment.Left')
+  - [Right](#F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Right 'AdaptiveCards.AdaptiveHorizontalContentAlignment.Right')
 - [AdaptiveHostConfig](#T-AdaptiveCards-Rendering-AdaptiveHostConfig 'AdaptiveCards.Rendering.AdaptiveHostConfig')
   - [Actions](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-Actions 'AdaptiveCards.Rendering.AdaptiveHostConfig.Actions')
   - [AdaptiveCard](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-AdaptiveCard 'AdaptiveCards.Rendering.AdaptiveHostConfig.AdaptiveCard')
@@ -430,23 +434,30 @@
   - [Data](#P-AdaptiveCards-AdaptiveSubmitAction-Data 'AdaptiveCards.AdaptiveSubmitAction.Data')
   - [DataJson](#P-AdaptiveCards-AdaptiveSubmitAction-DataJson 'AdaptiveCards.AdaptiveSubmitAction.DataJson')
   - [Type](#P-AdaptiveCards-AdaptiveSubmitAction-Type 'AdaptiveCards.AdaptiveSubmitAction.Type')
+- [AdaptiveTable](#T-AdaptiveCards-AdaptiveTable 'AdaptiveCards.AdaptiveTable')
+  - [TypeName](#F-AdaptiveCards-AdaptiveTable-TypeName 'AdaptiveCards.AdaptiveTable.TypeName')
+  - [Columns](#P-AdaptiveCards-AdaptiveTable-Columns 'AdaptiveCards.AdaptiveTable.Columns')
+  - [FirstRowAsHeaders](#P-AdaptiveCards-AdaptiveTable-FirstRowAsHeaders 'AdaptiveCards.AdaptiveTable.FirstRowAsHeaders')
+  - [GridStyle](#P-AdaptiveCards-AdaptiveTable-GridStyle 'AdaptiveCards.AdaptiveTable.GridStyle')
+  - [GridStyleXml](#P-AdaptiveCards-AdaptiveTable-GridStyleXml 'AdaptiveCards.AdaptiveTable.GridStyleXml')
+  - [Rows](#P-AdaptiveCards-AdaptiveTable-Rows 'AdaptiveCards.AdaptiveTable.Rows')
+  - [ShowGridLines](#P-AdaptiveCards-AdaptiveTable-ShowGridLines 'AdaptiveCards.AdaptiveTable.ShowGridLines')
+  - [Type](#P-AdaptiveCards-AdaptiveTable-Type 'AdaptiveCards.AdaptiveTable.Type')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTable-GetEnumerator 'AdaptiveCards.AdaptiveTable.GetEnumerator')
+  - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveTable-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveTable.ShouldSerializeStyleXml')
 - [AdaptiveTableCell](#T-AdaptiveCards-AdaptiveTableCell 'AdaptiveCards.AdaptiveTableCell')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableCell-TypeName 'AdaptiveCards.AdaptiveTableCell.TypeName')
 - [AdaptiveTableColumnDefinition](#T-AdaptiveCards-AdaptiveTableColumnDefinition 'AdaptiveCards.AdaptiveTableColumnDefinition')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableColumnDefinition-TypeName 'AdaptiveCards.AdaptiveTableColumnDefinition.TypeName')
   - [HorizontalContentAlignment](#P-AdaptiveCards-AdaptiveTableColumnDefinition-HorizontalContentAlignment 'AdaptiveCards.AdaptiveTableColumnDefinition.HorizontalContentAlignment')
-  - [PixelWidth](#P-AdaptiveCards-AdaptiveTableColumnDefinition-PixelWidth 'AdaptiveCards.AdaptiveTableColumnDefinition.PixelWidth')
-  - [RelativeWidth](#P-AdaptiveCards-AdaptiveTableColumnDefinition-RelativeWidth 'AdaptiveCards.AdaptiveTableColumnDefinition.RelativeWidth')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveTableColumnDefinition-VerticalContentAlignment 'AdaptiveCards.AdaptiveTableColumnDefinition.VerticalContentAlignment')
 - [AdaptiveTableRow](#T-AdaptiveCards-AdaptiveTableRow 'AdaptiveCards.AdaptiveTableRow')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableRow-TypeName 'AdaptiveCards.AdaptiveTableRow.TypeName')
   - [Cells](#P-AdaptiveCards-AdaptiveTableRow-Cells 'AdaptiveCards.AdaptiveTableRow.Cells')
-  - [HorizontalContentAlignment](#P-AdaptiveCards-AdaptiveTableRow-HorizontalContentAlignment 'AdaptiveCards.AdaptiveTableRow.HorizontalContentAlignment')
   - [Rtl](#P-AdaptiveCards-AdaptiveTableRow-Rtl 'AdaptiveCards.AdaptiveTableRow.Rtl')
   - [Style](#P-AdaptiveCards-AdaptiveTableRow-Style 'AdaptiveCards.AdaptiveTableRow.Style')
   - [StyleXml](#P-AdaptiveCards-AdaptiveTableRow-StyleXml 'AdaptiveCards.AdaptiveTableRow.StyleXml')
   - [Type](#P-AdaptiveCards-AdaptiveTableRow-Type 'AdaptiveCards.AdaptiveTableRow.Type')
-  - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveTableRow-VerticalContentAlignment 'AdaptiveCards.AdaptiveTableRow.VerticalContentAlignment')
   - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTableRow-GetEnumerator 'AdaptiveCards.AdaptiveTableRow.GetEnumerator')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveTableRow-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveTableRow.ShouldSerializeStyleXml')
 - [AdaptiveTargetElement](#T-AdaptiveCards-AdaptiveTargetElement 'AdaptiveCards.AdaptiveTargetElement')
@@ -2026,6 +2037,46 @@ Determines whether to serialize the style for XML.
 
 This method has no parameters.
 
+<a name='T-AdaptiveCards-AdaptiveCollectionWithContentAlignment'></a>
+## AdaptiveCollectionWithContentAlignment `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+AdaptiveCard element with content alignment properties
+
+<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalContentAlignment'></a>
+### HorizontalContentAlignment `property`
+
+##### Summary
+
+The content alignment for the TableCells inside the TableRow.
+
+<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalContentAlignment'></a>
+### VerticalContentAlignment `property`
+
+##### Summary
+
+The content alignment for the TableCells inside the TableRow.
+
+<a name='M-AdaptiveCards-AdaptiveCollectionWithContentAlignment-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+Returns enumerator
+
+##### Returns
+
+
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-AdaptiveColumn'></a>
 ## AdaptiveColumn `type`
 
@@ -3270,15 +3321,15 @@ Controls the horizontal alignment of child elements within a container.
 
 Center within the container.
 
-<a name='F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Leading'></a>
-### Leading `constants`
+<a name='F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Left'></a>
+### Left `constants`
 
 ##### Summary
 
 Align to the leading edge of the container.
 
-<a name='F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Trailing'></a>
-### Trailing `constants`
+<a name='F-AdaptiveCards-AdaptiveHorizontalContentAlignment-Right'></a>
+### Right `constants`
 
 ##### Summary
 
@@ -4666,6 +4717,99 @@ Get or set the data as a JSON string.
 
 *Inherit from parent.*
 
+<a name='T-AdaptiveCards-AdaptiveTable'></a>
+## AdaptiveTable `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Represents a table
+
+<a name='F-AdaptiveCards-AdaptiveTable-TypeName'></a>
+### TypeName `constants`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveTable-Columns'></a>
+### Columns `property`
+
+##### Summary
+
+Collection of TableColumnDefinitions
+
+<a name='P-AdaptiveCards-AdaptiveTable-FirstRowAsHeaders'></a>
+### FirstRowAsHeaders `property`
+
+##### Summary
+
+Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
+
+<a name='P-AdaptiveCards-AdaptiveTable-GridStyle'></a>
+### GridStyle `property`
+
+##### Summary
+
+Defines the style of the grid. This property currently only controls the grid’s color
+
+<a name='P-AdaptiveCards-AdaptiveTable-GridStyleXml'></a>
+### GridStyleXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
+
+<a name='P-AdaptiveCards-AdaptiveTable-Rows'></a>
+### Rows `property`
+
+##### Summary
+
+Collection of TableRows
+
+<a name='P-AdaptiveCards-AdaptiveTable-ShowGridLines'></a>
+### ShowGridLines `property`
+
+##### Summary
+
+Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
+
+<a name='P-AdaptiveCards-AdaptiveTable-Type'></a>
+### Type `property`
+
+##### Summary
+
+type name
+
+<a name='M-AdaptiveCards-AdaptiveTable-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+Return a enumerator for TableRows
+
+##### Returns
+
+
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveTable-ShouldSerializeStyleXml'></a>
+### ShouldSerializeStyleXml() `method`
+
+##### Summary
+
+Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-AdaptiveTableCell'></a>
 ## AdaptiveTableCell `type`
 
@@ -4709,20 +4853,6 @@ The JSON property name that this class implements.
 
 The content alignment for the TableCells inside the TableRow.
 
-<a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-PixelWidth'></a>
-### PixelWidth `property`
-
-##### Summary
-
-Explicit Column width.
-
-<a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-RelativeWidth'></a>
-### RelativeWidth `property`
-
-##### Summary
-
-Relative Column width.
-
 <a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-VerticalContentAlignment'></a>
 ### VerticalContentAlignment `property`
 
@@ -4755,13 +4885,6 @@ Represents TableRow element.
 
 Collection of TableCells that this TableRow contains.
 
-<a name='P-AdaptiveCards-AdaptiveTableRow-HorizontalContentAlignment'></a>
-### HorizontalContentAlignment `property`
-
-##### Summary
-
-The content alignment for the TableCells inside the TableRow.
-
 <a name='P-AdaptiveCards-AdaptiveTableRow-Rtl'></a>
 ### Rtl `property`
 
@@ -4789,13 +4912,6 @@ Controls XML serialization of style.
 ##### Summary
 
 *Inherit from parent.*
-
-<a name='P-AdaptiveCards-AdaptiveTableRow-VerticalContentAlignment'></a>
-### VerticalContentAlignment `property`
-
-##### Summary
-
-The content alignment for the TableCells inside the TableRow.
 
 <a name='M-AdaptiveCards-AdaptiveTableRow-GetEnumerator'></a>
 ### GetEnumerator() `method`

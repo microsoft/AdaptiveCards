@@ -13,7 +13,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Align to the leading edge of the container.
         /// </summary>
-        Leading,
+        Left,
 
         /// <summary>
         /// Center within the container.
@@ -23,6 +23,6 @@ namespace AdaptiveCards
         /// <summary>
         /// Align to the trailing edge of the container.
         /// </summary>
-       Trailing 
+        Right 
     }
 }
