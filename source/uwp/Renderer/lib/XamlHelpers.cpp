@@ -420,11 +420,23 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::BitmapSource const& imageSource,
+                          winrt::ImageSource const& imageSource,
                           bool setVisible)
     {
-        int32_t pixelHeight = imageSource.PixelHeight();
-        int32_t pixelWidth = imageSource.PixelWidth();
+        double pixelHeight;
+        double pixelWidth;
+
+        if (const auto bitmap = imageSource.try_as<winrt::BitmapSource>())
+        {
+            pixelHeight = bitmap.PixelHeight();
+            pixelWidth = bitmap.PixelWidth();
+        }
+        else
+        {
+            auto svg = imageSource.try_as<winrt::SvgImageSource>();
+            pixelHeight = svg.RasterizePixelHeight();
+            pixelWidth = svg.RasterizePixelWidth();
+        }
 
         double maxHeight = imageControl.MaxHeight();
         double maxWidth = imageControl.MaxWidth();

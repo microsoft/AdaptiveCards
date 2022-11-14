@@ -84,6 +84,16 @@ namespace AdaptiveCards::Rendering::Uwp
                                  winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
         template<typename T>
+        void SetImageOnUIElementSvg(winrt::Uri const& imageUrl,
+                                 T const& uiElement,
+                                 winrt::AdaptiveCardResourceResolvers const& resolvers,
+                                 bool isAutoSize,
+                                 winrt::IInspectable const& parentElement,
+                                 winrt::IInspectable const& imageContainer,
+                                 bool isVisible,
+                                 winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+
+        template<typename T>
         void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
 
         void FireAllImagesLoaded();

@@ -880,6 +880,9 @@
           ],
           "version": "1.1"
         },
+		"imageType": {
+			"$ref": "#/definitions/ImageType"
+		},
         "fallback": {
           "anyOf": [
             {
@@ -2168,6 +2171,14 @@
         }
       ]
     },
+	"ImageType": {
+		"type": "string",
+		"description": "temp",
+		"enum": [
+			"normal",
+			"svg"
+		]
+	},
     "Spacing": {
       "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
       "anyOf": [

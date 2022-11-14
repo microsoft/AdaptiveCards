@@ -48,6 +48,9 @@ public:
     unsigned int GetPixelHeight() const;
     void SetPixelHeight(unsigned int value);
 
+	std::optional<ImageType> GetImageType() const;
+    void SetImageType(const std::optional<ImageType> value);
+
     void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
 private:
@@ -62,6 +65,7 @@ private:
     std::string m_altText;
     std::optional<HorizontalAlignment> m_hAlignment;
     std::shared_ptr<BaseActionElement> m_selectAction;
+    std::optional<ImageType> m_imageType;
 };
 
 class ImageParser : public BaseCardElementParser
