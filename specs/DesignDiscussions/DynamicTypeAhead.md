@@ -118,7 +118,6 @@ Since we still support defining static values as choices, we can just provide th
 3.  The host will resolve the request at its end or by making a call to a backend / bot.
 4.  The host will return a dynamic choices list as response to the SDK.
 5.  The SDK on receiving the dynamic choices will update the choices list (drop down list) of the given type ahead control on the UI thread.
-6.  Store the ongoing request made from sdk to host to fetch dynamic options. Before initiating a new request, cancel the current pending request. Alternately, The latest query can be stored in the type ahead control view. When the host sends the response for a request to fetch dynamic choices, it sends the queryText along with dynamic choices []. This queryText is compared against the latest query which is stored in the choice set input view. In case the queryText is a mis-match we do not update the choices[] in the drop down.
 
 ### Debounce Logic
 
