@@ -168,6 +168,10 @@ Input.ChoiceSet
 
 ChoiceSetInput parser parses the `Input.ChoiceSet` property in the schema. ChoicesetInput will then call ChoicesData parser to deserialize the choices.data property in the payload. ChoicesData class in shared object model serializes and deserializes the `choices.data` property. This validates that `type` should be `Data.Query` and `dataset` should be non empty string which is defined in the payload. Choices.data property is a functional and optional property. If any of the required properties are missing, we can either skip the deserialization for choices.data and skip the element or return json parsing warnings/error to the host and host can handle the error.
 
+<p align="center">
+    <img src="assets/TypeAhead/Sharedmodeltypeahead3.png" height="400" "width" = "300">
+</p>
+ 
 **Parsing**
 
 If the choices.data payload contains the invalid values, the parsed card will have warnings according to the decision made here [Source of truth: Inconsistencies.md](https://github.com/microsoft/AdaptiveCards/blob/main/specs/DesignDiscussions/Inconsistencies.md#gap-in-the-design) for closing parsing gap.
