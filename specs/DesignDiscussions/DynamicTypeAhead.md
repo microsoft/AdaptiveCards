@@ -19,7 +19,7 @@ This document covers changes to add Dynamic Type Ahead search support to Input.C
 ## Architecture Overview
 
 _Scenario 1: Search for a device model_ <br/>
-`FixIt` is an app for raising requests for mobile repairs. `FixIt` sends an adaptive card to the user which the user fills in order to provide details of the device which needs repair. Here the device model field can be a dynamic type ahead (Input.ChoiceSet) which fetches the model names from the backend as the user types.
+`FixIt` is an app for raising requests for mobile repairs. `FixIt` sends an adaptive card to the user which the user has to fill in order to provide details of the device which needs repair. Here the device model field can be a dynamic type ahead (Input.ChoiceSet) which fetches the model names from the backend as the user types.
 
 ![img](assets/TypeAhead/TypeAheadSearch_intro_bot.png)
 
@@ -29,19 +29,19 @@ Using the approvals app users can assign a request to people. This scenario can 
 
 ## Requirements
 
-P0: Support the choices.data schema out of the box with AC SDK.
+P0: Support the choices.data schema with SDK out of the box.
 
-P0: The input can dynamically fetch the list of choices from the host/backend as the user types.
+P0: The input can dynamically fetch the list of choices from the host as the user types.
 
-P0: User experience (loading, failure etc) when the dynamic choices are fetched from the host.
+P0: User experience when the dynamic choices are fetched from the host.
+
+P0: Hosts can specify 1 or more pre-determined datasets that get the first-chance to fulfill the request. (E.g., Microsoft Teams could query the Active Directory list of users by hooking into the graph.microsoft.com/users dataset). If the host hasn't registered a matching dataset, the request will be sent to the backend.
 
 P0: A static list of choices can be provided, and any dynamic ones will get appended to the end.
 
-P0: Hosts can specify 1 or more pre-determined datasets that get the first-chance to fulfill the request. (E.g., Microsoft Teams could query the Active Directory list of users by hooking into the graph.microsoft.com/users dataset). 
+P1: The input will support "isMultiSelect": true. Multiselect won’t be supported as a part of v1.0 release. (Multi select will be a fast follow up).
 
-P1: The input will support "isMultiSelect": true. Multiselect won’t be supported as a part of initial release. (Multi select will be a fast follow up).
-
-P2: Add support pagination of dynamic choices. Pagination won’t be supported as a part of initial release. We will display only top 15 choices as in Teams today.
+P1: Add support pagination of dynamic choices. Pagination won’t be supported as a part of v1.0 release. We will display only top 15 as in Teams today.
 
 ## Schema
 
@@ -59,7 +59,7 @@ Data.Query Definition
 | dataset| String | Yes | The type of data that should be fetched dynamically
 | value | String | No | Populated for the invoke request to the bot with the input the user provided to the ChoiceSet
 | count | number | No | Populated for the invoke request to the bot to specify how many elements should be returned (can be ignored by the bot, if they want to send a diff amount)  
-| skip | number | No | Populated for the invoke request to the bot to indicate that we want to paginate and skip ahead in the list
+ | skip | number | No | Populated for the invoke request to the bot to indicate that we want to paginate and skip ahead in the list
 
 Recommendation: Introduce count and skip only when we add support for pagination. Pagination won’t be supported as a part of initial release. We will display only top 15 as in MS Teams today.
 
@@ -67,11 +67,13 @@ Recommendation: Introduce count and skip only when we add support for pagination
 
 1.  Add choice.data schema to Input.ChoiceSet.
 2.  Support dynamic type ahead search control rendering in ChoiceSetInputRenderer.
-3.  Fetch the dynamic choices from the host on search query change (as the user types) in the type ahead search control.
+3.  Fetch the dynamic choices from the host on search query change in the type ahead search box.
 4.  Loading experience - Show an indication to the user while the dynamic choices are being fetched from the host through a bot/backend.
-5.  Error experience - Indication to the user in case an error occurred while fetching dynamic choices.
-6.  No result experience - Indication to the user in case the dynamic choices are empty.
-7.  Debouncing logic - Implement a default debouncing logic in the SDK. Allowing host to override this debouncing delay time using host config.
+5.  Debouncing logic - Implement a default debouncing logic in the SDK. Allowing host to override this debouncing delay time using host config.
+6.  Error experience - Indication to the user in case an error occurred while fetching dynamic choices.
+7.  No result experience - Indication to the user in case the dynamic choices are empty.
+8.  Support multi select in dynamic type ahead. This will not be supported in initial release so out of scope for now.
+9.  Support pagination of dynamic choices using skip and count. This will not be supported in initial release so out of scope for now.
 
 ### Current Input.ChoiceSet rendering
 
@@ -91,9 +93,9 @@ Option 1: Precedence of choices.data > style
 In case the developer adds a valid choices.data in the adaptive card payload, we will directly render a dynamic type ahead control. It will not be mandatory for the developer to provide style as ChoiceInputStyle.Filtered.
 
 Option 2: Precedence of style > choices.data
-Another option is to give Precedence to style over choices.data. In this case even when developer adds a valid choices.data to the Adaptive card payload and forgets adding ChoiceSetStyle as Filtered, we will render a compact choice set input with static choices by default.
+Other option is to give Precedence to style over choices.data. In this case even when developer adds a valid choices.data to the Adaptive card payload and forgets adding ChoiceSetStyle as Filtered, we will render a compact choice set input with static choices by default.
 
-Recommendation: Option 1 - Since style is a cosmetic property where as choices.data is functional property (in case dynamic type ahead), we can consider style as ChoiceInputStyle.Filtered by default when choices.data has a valid value. Hence, recommendation is to go with Option 1 and give precedence to choices.data over style.
+Recommendation: Option 1 - Since style is a cosmetic property where as choices.data is functional property (in case dynamic type ahead), we can consider style as ChoiceInputStyle.Filtered by default when choices.data has a valid value. Hence, it is suggested to go with Option 1 and give precedence to choices.data over style.
 
 ![img](assets/TypeAhead/Input.ChoiceSet_rendering_2.png)
 
@@ -113,12 +115,11 @@ Since we still support defining static values as choices, we can just provide th
 
 ![img](assets/TypeAhead/TypeAheadSearch.png)
 
-1.  On any text change in the type ahead control text box SDK will fetch the dynamic choices from the host.
-2.  SDK will make an asynchronous call on a background thread to the host in order to fetch the dynamic choices.
-3.  The host will resolve the request at its end or by making a call to a backend / bot.
-4.  The host will return a dynamic choices list as response to the SDK.
-5.  The SDK on receiving the dynamic choices will update the choices list (drop down list) of the given type ahead control on the UI thread.
-6.  Store the ongoing request made from sdk to host to fetch dynamic options. Before initiating a new request, cancel the current pending request. Alternately, The latest query can be stored in the type ahead control view. When the host sends the response for a request to fetch dynamic choices, it sends the queryText along with dynamic choices []. This queryText is compared against the latest query which is stored in the choice set input view. In case the queryText is a mis-match we do not update the choices[] in the drop down.
+1.  On any text change in the type ahead control text box we will fetch the dynamic choices from the host.
+2.  We will make an asynchronous call on a background thread to the host in order to fetch the dynamic choices.
+3.  The host will resolve the request at its end or by making a call to a backend / bot and return a dynamic choices list as response.
+4.  The SDK on receiving the dynamic choices will update the choices list (drop down list) of the given type ahead control on the UI thread.
+5.  Store the ongoing request made from sdk to host to fetch dynamic options. Before initiating a new request, cancel the current pending request. Alternately, The latest query can be stored in the type ahead control view. When the host sends the response for a request to fetch dynamic choices, it sends the queryText along with dynamic choices []. This queryText is compared against the latest query which is stored in the choice set input view. In case the queryText is a mis-match we do not update the choices[] in the drop down.
 
 ### Debounce Logic
 
@@ -171,13 +172,14 @@ If the choices.data payload contains the invalid values, the parsed card will ha
 
 Parsing
 
-- We will make changes to the parsing logic for choices.data and the changes will allow cards to render even if required properties are missing.
-- We will raise parse warnings to host app for bad or incorrect values for given choices.data properties and continue parsing. It depends upon the host to render the card or not.
-- We do assign default values to optional properties in the adaptive card. Same applies to choices.data property also. (For eg. skip and count are optional in choices.data) We will be setting default values in this scenario.
+- We will make changes to the parsing logic for input.choiceset and the changes will allow parsing of new choices.data property. It is an optional property so will continue parsing and rendering the card even if choice.data property is invalid or missing.
+- The parser will raise parse warnings to host app for bad or incorrect values for given choices.data properties and continue parsing.
+- The parser will raise parse errors if required properties like type and dataset are missing. Host app can choose whether to attempt rendering or not, despite parse warning
+- We do assign default values to optional properties in the adaptive card and will also assign default values to optional properties in the choice.data (For eg. skip and count are optional in choices.data). We will set default values of skip (0) and count (15).
 
 Rendering
 
-- If dataset or type property in choices.data is not given, is null, is empty, or has invalid value we will raise parsing error as we can not render dynamic typeahead.
+- If dataset or type property in choices.data is not given, is null, is empty, or has invalid value we will raise parsing error and skip rendering of dynamic typeahead search control.
 - We will not break the adaptive card rendering incase of invalid choices.data property. We will fallback to the existing choiceset experience. This will not break rendering experience for the user and support backward compatibility for input.choiceset.
 - We will simply drop choices.data and parse other properties (as this is an optional property). Adaptive card will render card fine across clients.
   Source of truth:[Inconsistencies.md](https://github.com/microsoft/AdaptiveCards/blob/main/specs/DesignDiscussions/Inconsistencies.md#gap-in-the-design)
