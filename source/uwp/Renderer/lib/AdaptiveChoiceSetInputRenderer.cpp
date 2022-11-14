@@ -169,6 +169,53 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     // Otherwise, leave all options unset
                     radioButton.IsChecked(IsChoiceSelected(values, input));
                 }
+
+                radioButton.PreviewKeyDown(
+                    [this, radioButton, stackPanel](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                    {
+                        if (args.Key() == winrt::VirtualKey::Down)
+                        {
+                            std::uint32_t index;
+                            auto children = stackPanel.Children();
+                            auto buttonFound = children.IndexOf(radioButton, index);
+
+                            if (buttonFound)
+                            {
+                                winrt::RadioButton nextButton;
+                                if (index < children.Size() - 1)
+                                {
+                                    nextButton = children.GetAt(index + 1).as<winrt::RadioButton>();
+                                }
+                                else
+                                {
+                                    nextButton = children.GetAt(0).as<winrt::RadioButton>();
+
+                                }
+                                nextButton.IsChecked(true);
+                            }
+                        }
+                        else if (args.Key() == winrt::VirtualKey::Up)
+                        {
+                            std::uint32_t index;
+                            auto children = stackPanel.Children();
+                            auto buttonFound = children.IndexOf(radioButton, index);
+
+                            if (buttonFound)
+                            {
+                                winrt::RadioButton nextButton;
+                                if (index == 0)
+                                {
+                                    nextButton = children.GetAt(children.Size() - 1).as<winrt::RadioButton>();
+                                }
+                                else
+                                {
+                                    nextButton = children.GetAt(index - 1).as<winrt::RadioButton>();
+                                }
+                                nextButton.IsChecked(true);
+                            }
+                        }
+                    });
+
                 choiceItem = radioButton;
             }
             winrt::hstring title = input.Title();
