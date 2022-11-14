@@ -175,7 +175,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\samples\v1.3\Scenarios\ActivityUpdate.json">
+    <None Include="..\..\..\samples\v1.5\Scenarios\ActivityUpdate.json">
       <Link>LinkedTestCards\ActivityUpdate.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
