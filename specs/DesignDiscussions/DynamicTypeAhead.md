@@ -148,7 +148,7 @@ Shared changes for android/iOS/UWP SDK
  <summary>Click Here To Open Details</summary>
 
 [Schema](#schema) </br>
-**Example card**
+**Card Payload**
 Input.ChoiceSet
 
 ```json
@@ -166,7 +166,7 @@ Input.ChoiceSet
 }
 ```
 
-ChoiceSetInput parser parses the `Input.ChoiceSet` property in the schema. ChoicesetInput will then call ChoicesData parser to deserialize the choices.data property in the payload. ChoicesData class in shared object model serializes and deserializes the `choices.data` property. This validates that `type` should be `Data.Query` and `dataset` should be non empty string which is defined in the payload. Choices.data property is a functional and optional property. If any of the required properties are missing, we can either skip the deserialization for choices.data and skip the element or return json parsing warnings/error to the host and host can handle the error.
+The above payload is a normal Input.ChoiceSet with a property `choices.data` that describes how to query the bot to dynamically retreive values for the choice-set. Data.Query includes the metadata necessary to fetch remote data. ChoiceSetInput parser parses the `Input.ChoiceSet` property in the schema. ChoicesetInput will then call ChoicesData parser to deserialize the choices.data property in the payload. ChoicesData class in shared object model serializes and deserializes the `choices.data` property. The parser validates that `type` should be `Data.Query` and `dataset` should be non empty string which is defined in the payload. Choices.data property is a functional and optional property.
 
 <p align="center">
     <img src="assets/TypeAhead/Sharedmodeltypeahead3.png" height="400" "width" = "300">
