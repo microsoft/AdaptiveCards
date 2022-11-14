@@ -88,12 +88,14 @@ The below represents the current rendering of Input.ChoiceSet:
 ### Proposed Input.ChoiceSet rendering
 
 Option 1: Precedence of choices.data > style
-In case the developer adds a valid choices.data in the adaptive card payload, we will directly render a dynamic type ahead control. It will not be mandatory for the developer to provide style as ChoiceInputStyle.Filtered.
+In case the developer adds a `valid` choices.data in the adaptive card payload, we will directly render a dynamic type ahead control. It will not be mandatory for the developer to provide style as ChoiceInputStyle.Filtered.
 
 Option 2: Precedence of style > choices.data
-Another option is to give Precedence to style over choices.data. In this case even when developer adds a valid choices.data to the Adaptive card payload and forgets adding ChoiceSetStyle as Filtered, we will render a compact choice set input with static choices by default.
+Another option is to give Precedence to style over choices.data. In this case even when developer adds a valid choices.data to the Adaptive card payload and forgets adding ChoiceSetStyle as Filtered, we will render a compact choice set input with static choices by default. In case we give precedence to style, we might end up with an empty ChoiceSet control where we have valid choices.data and style as expanded or compact.
 
-Recommendation: Option 1 - Since style is a cosmetic property where as choices.data is functional property (in case dynamic type ahead), we can consider style as ChoiceInputStyle.Filtered by default when choices.data has a valid value. Hence, recommendation is to go with Option 1 and give precedence to choices.data over style.
+Recommendation: Option 1 - Since style is a cosmetic property where as choices.data is functional property (in case dynamic type ahead), we can consider style as ChoiceInputStyle.Filtered by default when choices.data has a valid value. 
+Today with multi select is true the SDK considers the style as Expanded by default. On the same lines when choices.data is valid we will consider style as filtered by default.
+Hence, recommendation is to go with Option 1 and give precedence to choices.data over style.
 
 ![img](assets/TypeAhead/Input.ChoiceSet_rendering_2.png)
 
