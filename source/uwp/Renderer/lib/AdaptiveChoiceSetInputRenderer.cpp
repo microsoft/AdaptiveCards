@@ -171,47 +171,22 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 }
 
                 radioButton.PreviewKeyDown(
-                    [this, radioButton, stackPanel](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                    [this, stackPanel](winrt::IInspectable const& sender, winrt::KeyRoutedEventArgs const& args) -> void
                     {
-                        if (args.Key() == winrt::VirtualKey::Down)
+                        std::uint32_t currentIndex;
+                        auto children = stackPanel.Children();
+                        auto size = children.Size();
+                        if (const auto isButtonFound = children.IndexOf(sender.as<winrt::RadioButton>(), currentIndex))
                         {
-                            std::uint32_t index;
-                            auto children = stackPanel.Children();
-                            auto buttonFound = children.IndexOf(radioButton, index);
-
-                            if (buttonFound)
+                            if (args.Key() == winrt::VirtualKey::Down)
                             {
-                                winrt::RadioButton nextButton;
-                                if (index < children.Size() - 1)
-                                {
-                                    nextButton = children.GetAt(index + 1).as<winrt::RadioButton>();
-                                }
-                                else
-                                {
-                                    nextButton = children.GetAt(0).as<winrt::RadioButton>();
-
-                                }
-                                nextButton.IsChecked(true);
+                                currentIndex = (currentIndex + 1) % size;
+                                children.GetAt(currentIndex).as<winrt::RadioButton>().IsChecked(true);
                             }
-                        }
-                        else if (args.Key() == winrt::VirtualKey::Up)
-                        {
-                            std::uint32_t index;
-                            auto children = stackPanel.Children();
-                            auto buttonFound = children.IndexOf(radioButton, index);
-
-                            if (buttonFound)
+                            else if (args.Key() == winrt::VirtualKey::Up)
                             {
-                                winrt::RadioButton nextButton;
-                                if (index == 0)
-                                {
-                                    nextButton = children.GetAt(children.Size() - 1).as<winrt::RadioButton>();
-                                }
-                                else
-                                {
-                                    nextButton = children.GetAt(index - 1).as<winrt::RadioButton>();
-                                }
-                                nextButton.IsChecked(true);
+                                currentIndex = (currentIndex + size - 1) % size;
+                                children.GetAt(currentIndex).as<winrt::RadioButton>().IsChecked(true);
                             }
                         }
                     });
