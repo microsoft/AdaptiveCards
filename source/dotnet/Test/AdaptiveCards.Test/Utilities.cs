@@ -3,16 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaptiveCards.Test
 {
     public static class Utilities
     {
         public static string SamplesPath => Path.Combine(System.AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "samples");
-
         internal static AdaptiveTypedElement GetAdaptiveElementWithId(AdaptiveCard card, string Id)
         {
             Stack<AdaptiveTypedElement> stack = new Stack<AdaptiveTypedElement>();
@@ -121,13 +118,25 @@ namespace AdaptiveCards.Test
 
             return card;
         }
-		
+
         internal static string BuildExpectedCardJSON(String id, SerializableDictionary<string, object> testProperty = null)
         {
             return Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(BuildASimpleTestCard(), id, testProperty);
         }
 
-        internal static string GetSampleJSON(string version, string type, string fileName)
+        internal static string RemoveWhiteSpacesFromJSON(String json)
+        {
+            string[] tokens = json.Split();
+            var buffer = new StringBuilder();
+            for (var i = 0; i < tokens.Length; i++)
+            {
+                var token = tokens.GetValue(i) as string;
+                buffer.Append(token.Trim());
+            }
+            return buffer.ToString();
+        }
+
+        internal static string GetJSONCardFromFile(String fileName, string version, string type)
         {
             try
             {
@@ -135,7 +144,7 @@ namespace AdaptiveCards.Test
             }
             catch
             {
-                return null;
+                return ""; 
             }
         }
     }

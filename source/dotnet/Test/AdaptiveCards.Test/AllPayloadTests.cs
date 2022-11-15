@@ -22,10 +22,9 @@ namespace AdaptiveCards.Test
             foreach (var file in files)
             {
                 bool excluded = false;
-                var fileName = file.Split('\\').Last();
                 if (excludedCards != null)
                 {
-                    excluded = excludedCards.Contains(fileName);
+                    excluded = excludedCards.Contains(file.Split('\\').Last());
                 }
 
                 try
@@ -103,7 +102,7 @@ namespace AdaptiveCards.Test
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.0", "elements"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "elements"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.2", "elements"), null);
-            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "elements"), null); 
         }
 
         [TestMethod]
@@ -128,7 +127,6 @@ namespace AdaptiveCards.Test
                 });
 
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.3", "tests"), null); 
-            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "tests"), null);
         }
     }
 }
