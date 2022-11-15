@@ -171,22 +171,22 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 }
 
                 radioButton.PreviewKeyDown(
-                    [this, stackPanel](winrt::IInspectable const& sender, winrt::KeyRoutedEventArgs const& args) -> void
+                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
                     {
-                        std::uint32_t currentIndex;
+                        std::uint32_t currentButtonIndex;
                         auto children = stackPanel.Children();
                         auto size = children.Size();
-                        if (const auto isButtonFound = children.IndexOf(sender.as<winrt::RadioButton>(), currentIndex))
+                        if (const auto isButtonFound = children.IndexOf(radioButton, currentButtonIndex))
                         {
                             if (args.Key() == winrt::VirtualKey::Down)
                             {
-                                currentIndex = (currentIndex + 1) % size;
-                                children.GetAt(currentIndex).as<winrt::RadioButton>().IsChecked(true);
+                                auto newButtonIndex = (currentButtonIndex + 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
                             }
                             else if (args.Key() == winrt::VirtualKey::Up)
                             {
-                                currentIndex = (currentIndex + size - 1) % size;
-                                children.GetAt(currentIndex).as<winrt::RadioButton>().IsChecked(true);
+                                auto newButtonIndex = (currentButtonIndex + size - 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
                             }
                         }
                     });
