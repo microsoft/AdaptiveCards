@@ -443,6 +443,7 @@
   - [Rows](#P-AdaptiveCards-AdaptiveTable-Rows 'AdaptiveCards.AdaptiveTable.Rows')
   - [ShowGridLines](#P-AdaptiveCards-AdaptiveTable-ShowGridLines 'AdaptiveCards.AdaptiveTable.ShowGridLines')
   - [Type](#P-AdaptiveCards-AdaptiveTable-Type 'AdaptiveCards.AdaptiveTable.Type')
+  - [Add(element)](#M-AdaptiveCards-AdaptiveTable-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveTable.Add(AdaptiveCards.AdaptiveElement)')
   - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTable-GetEnumerator 'AdaptiveCards.AdaptiveTable.GetEnumerator')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveTable-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveTable.ShouldSerializeStyleXml')
 - [AdaptiveTableCell](#T-AdaptiveCards-AdaptiveTableCell 'AdaptiveCards.AdaptiveTableCell')
@@ -4783,6 +4784,19 @@ Specifies whether the first row of the table should be treated as a header row, 
 ##### Summary
 
 type name
+
+<a name='M-AdaptiveCards-AdaptiveTable-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add(element) `method`
+
+##### Summary
+
+Add an AdpativeTableRow
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| element | [AdaptiveCards.AdaptiveElement](#T-AdaptiveCards-AdaptiveElement 'AdaptiveCards.AdaptiveElement') |  |
 
 <a name='M-AdaptiveCards-AdaptiveTable-GetEnumerator'></a>
 ### GetEnumerator() `method`

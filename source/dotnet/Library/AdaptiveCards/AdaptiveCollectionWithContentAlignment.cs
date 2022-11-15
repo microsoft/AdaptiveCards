@@ -45,5 +45,10 @@ namespace AdaptiveCards
         {
             throw new System.NotImplementedException();
         }
+
+        public void Add(AdaptiveElement element)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

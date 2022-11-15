@@ -51,6 +51,17 @@ namespace AdaptiveCards
         }
 
         /// <summary>
+        /// Add an AdpativeTableRow
+        /// </summary>
+        /// <param name="element"></param>
+        public void Add(AdaptiveElement element)
+        {
+            if (element is AdaptiveTableRow)
+            {
+                Rows.Add(element as AdaptiveTableRow);
+            }
+        }
+        /// <summary>
         /// Defines the style of the grid. This property currently only controls the grid’s color 
         /// </summary>
         [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
