@@ -42,25 +42,5 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(textInput);
             Assert.AreEqual(AdaptiveTextInputStyle.Password, textInput.Style);
         }
-
-        [TestMethod]
-        public void TestChoiceSetFilteredStyle()
-        {
-            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
-            var testCard = AdaptiveCard.FromJson(expectedJSON);
-            Assert.IsTrue(testCard.Warnings.Count == 0);
-            AdaptiveChoiceSetInput choiceSetInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "choiceSetInput") as AdaptiveChoiceSetInput;
-            Assert.IsNotNull(choiceSetInput);
-            Assert.AreEqual(AdaptiveChoiceInputStyle.Filtered, choiceSetInput.Style);
-        }
-
-        [TestMethod]
-        public void TestChoiceSetFilteredStyleRoundTripTest()
-        {
-            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
-            Console.WriteLine(expectedJSON);
-            var testCard = AdaptiveCard.FromJson(expectedJSON);
-            Assert.AreEqual(expectedJSON, testCard?.Card.ToJson());
-        }
     }
 }

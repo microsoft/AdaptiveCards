@@ -24,6 +24,6 @@ namespace AdaptiveCards
         /// <summary>
         /// Allows users to filter choices in a choice set.
         /// </summary>
-        Filtered,
+        Filtered
     }
 }
