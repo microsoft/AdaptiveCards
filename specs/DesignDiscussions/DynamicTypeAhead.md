@@ -57,11 +57,46 @@ Data.Query Definition
 | :---------- | :------- | :---------- | :------- |
 | type | Data.Query | Yes | Specifies that this is a Data.Query object.
 | dataset| String | Yes | The type of data that should be fetched dynamically
-| value | String | No | Populated for the invoke request to the bot with the input the user provided to the ChoiceSet
+
+Adaptive card Payload:
+
+```json
+{
+    "type": "Input.ChoiceSet",
+    "id": "selectedUser",
+    "choices": [
+        { "title": "Static 1", "value": "Static 1" }
+    ],
+    "choices.data": {
+        "type": "Data.Query",
+        "dataset": "graph.microsoft.com/users"
+    }
+}
+```
+
+**Request object format to be sent to the host:**
+
+As the user types, the renderer will create a JSON object that includes all the properties from the Data.Query, along with what the user has typed, plus any additional options such as the current skip/count and max results to be returned. 
+
+Invoke Request Payload: 
+
+```json
+{
+        "type": "Data.Query",
+        "dataset": "graph.microsoft.com/users",
+        "value": "",
+        "count": 25,
+        "skip": 0
+}
+```
+
+| Property | Type | Required | Description
+| :---------- | :------- | :---------- | :------- |
+| value | String | Yes | Populated for the invoke request to the bot with the input the user provided to the ChoiceSet (The text in the input field of the choiceset)
 | count | number | No | Populated for the invoke request to the bot to specify how many elements should be returned (can be ignored by the bot, if they want to send a diff amount)  
 | skip | number | No | Populated for the invoke request to the bot to indicate that we want to paginate and skip ahead in the list
 
-Recommendation: Introduce count and skip only when we add support for pagination. Pagination won’t be supported as a part of initial release. We will display only top 15 as in MS Teams today.
+Pagination won’t be supported as a part of initial release. We will display only top 15 as in MS Teams today.
 
 ## High Level Changes
 
