@@ -259,11 +259,13 @@
   - [HeightType](#P-AdaptiveCards-AdaptiveHeight-HeightType 'AdaptiveCards.AdaptiveHeight.HeightType')
   - [Stretch](#P-AdaptiveCards-AdaptiveHeight-Stretch 'AdaptiveCards.AdaptiveHeight.Stretch')
   - [Unit](#P-AdaptiveCards-AdaptiveHeight-Unit 'AdaptiveCards.AdaptiveHeight.Unit')
+  - [UnitXml](#P-AdaptiveCards-AdaptiveHeight-UnitXml 'AdaptiveCards.AdaptiveHeight.UnitXml')
   - [Equals()](#M-AdaptiveCards-AdaptiveHeight-Equals-System-Object- 'AdaptiveCards.AdaptiveHeight.Equals(System.Object)')
   - [Equals()](#M-AdaptiveCards-AdaptiveHeight-Equals-AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.Equals(AdaptiveCards.AdaptiveHeight)')
   - [GetHashCode()](#M-AdaptiveCards-AdaptiveHeight-GetHashCode 'AdaptiveCards.AdaptiveHeight.GetHashCode')
   - [IsPixel()](#M-AdaptiveCards-AdaptiveHeight-IsPixel 'AdaptiveCards.AdaptiveHeight.IsPixel')
   - [ShouldSerializeAdaptiveHeight()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight 'AdaptiveCards.AdaptiveHeight.ShouldSerializeAdaptiveHeight')
+  - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveHeight.ShouldSerializeUnitXml')
   - [op_Equality()](#M-AdaptiveCards-AdaptiveHeight-op_Equality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Equality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
   - [op_Inequality()](#M-AdaptiveCards-AdaptiveHeight-op_Inequality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Inequality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
 - [AdaptiveHeightType](#T-AdaptiveCards-AdaptiveHeightType 'AdaptiveCards.AdaptiveHeightType')
@@ -344,6 +346,7 @@
 - [AdaptiveInline](#T-AdaptiveCards-AdaptiveInline 'AdaptiveCards.AdaptiveInline')
   - [AdditionalProperties](#P-AdaptiveCards-AdaptiveInline-AdditionalProperties 'AdaptiveCards.AdaptiveInline.AdditionalProperties')
   - [Type](#P-AdaptiveCards-AdaptiveInline-Type 'AdaptiveCards.AdaptiveInline.Type')
+  - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveInline-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveInline.ShouldSerializeAdditionalProperties')
 - [AdaptiveInput](#T-AdaptiveCards-AdaptiveInput 'AdaptiveCards.AdaptiveInput')
   - [ErrorMessage](#P-AdaptiveCards-AdaptiveInput-ErrorMessage 'AdaptiveCards.AdaptiveInput.ErrorMessage')
   - [IsRequired](#P-AdaptiveCards-AdaptiveInput-IsRequired 'AdaptiveCards.AdaptiveInput.IsRequired')
@@ -465,6 +468,8 @@
   - [#ctor(elementId,isVisible)](#M-AdaptiveCards-AdaptiveTargetElement-#ctor-System-String,System-Boolean- 'AdaptiveCards.AdaptiveTargetElement.#ctor(System.String,System.Boolean)')
   - [ElementId](#P-AdaptiveCards-AdaptiveTargetElement-ElementId 'AdaptiveCards.AdaptiveTargetElement.ElementId')
   - [IsVisible](#P-AdaptiveCards-AdaptiveTargetElement-IsVisible 'AdaptiveCards.AdaptiveTargetElement.IsVisible')
+  - [IsVisibleXml](#P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.IsVisibleXml')
+  - [ShouldSerializeIsVisibleXml()](#M-AdaptiveCards-AdaptiveTargetElement-ShouldSerializeIsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.ShouldSerializeIsVisibleXml')
   - [op_Implicit(elementId)](#M-AdaptiveCards-AdaptiveTargetElement-op_Implicit-System-String-~AdaptiveCards-AdaptiveTargetElement 'AdaptiveCards.AdaptiveTargetElement.op_Implicit(System.String)~AdaptiveCards.AdaptiveTargetElement')
 - [AdaptiveTextBlock](#T-AdaptiveCards-AdaptiveTextBlock 'AdaptiveCards.AdaptiveTextBlock')
   - [#ctor()](#M-AdaptiveCards-AdaptiveTextBlock-#ctor 'AdaptiveCards.AdaptiveTextBlock.#ctor')
@@ -575,6 +580,7 @@
   - [InternalID](#P-AdaptiveCards-AdaptiveTypedElement-InternalID 'AdaptiveCards.AdaptiveTypedElement.InternalID')
   - [Type](#P-AdaptiveCards-AdaptiveTypedElement-Type 'AdaptiveCards.AdaptiveTypedElement.Type')
   - [MeetsRequirements(featureRegistration)](#M-AdaptiveCards-AdaptiveTypedElement-MeetsRequirements-AdaptiveCards-AdaptiveFeatureRegistration- 'AdaptiveCards.AdaptiveTypedElement.MeetsRequirements(AdaptiveCards.AdaptiveFeatureRegistration)')
+  - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveTypedElement-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.ShouldSerializeAdditionalProperties')
 - [AdaptiveTypedElementConverter](#T-AdaptiveCards-AdaptiveTypedElementConverter 'AdaptiveCards.AdaptiveTypedElementConverter')
   - [TypedElementTypes](#F-AdaptiveCards-AdaptiveTypedElementConverter-TypedElementTypes 'AdaptiveCards.AdaptiveTypedElementConverter.TypedElementTypes')
   - [CanRead](#P-AdaptiveCards-AdaptiveTypedElementConverter-CanRead 'AdaptiveCards.AdaptiveTypedElementConverter.CanRead')
@@ -2015,6 +2021,13 @@ Action for this container. This allows for setting a default action at the conta
 
 The style used to display this element. See [AdaptiveContainerStyle](#T-AdaptiveCards-AdaptiveContainerStyle 'AdaptiveCards.AdaptiveContainerStyle').
 
+<a name='P-AdaptiveCards-AdaptiveCollectionElement-StyleXml'></a>
+### StyleXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
+
 <a name='P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment'></a>
 ### VerticalContentAlignment `property`
 
@@ -3133,6 +3146,13 @@ Returns a new AdaptiveHeight instance initialized for the [Stretch](#F-AdaptiveC
 
 The specific height to use (only valid for the [Pixel](#F-AdaptiveCards-AdaptiveHeightType-Pixel 'AdaptiveCards.AdaptiveHeightType.Pixel') type).
 
+<a name='P-AdaptiveCards-AdaptiveHeight-UnitXml'></a>
+### UnitXml `property`
+
+##### Summary
+
+Helper to aid in XML serialization of the [Unit](#P-AdaptiveCards-AdaptiveHeight-Unit 'AdaptiveCards.AdaptiveHeight.Unit') property.
+
 <a name='M-AdaptiveCards-AdaptiveHeight-Equals-System-Object-'></a>
 ### Equals() `method`
 
@@ -3183,6 +3203,17 @@ This method has no parameters.
 ##### Summary
 
 Determines whether this [AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight') instance should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml'></a>
+### ShouldSerializeUnitXml() `method`
+
+##### Summary
+
+Determines whether to serialize the [UnitXml](#P-AdaptiveCards-AdaptiveHeight-UnitXml 'AdaptiveCards.AdaptiveHeight.UnitXml') property.
 
 ##### Parameters
 
@@ -3870,6 +3901,17 @@ Represents a single inline text entry.
 ##### Summary
 
 The type name of the inline.
+
+<a name='M-AdaptiveCards-AdaptiveInline-ShouldSerializeAdditionalProperties'></a>
+### ShouldSerializeAdditionalProperties() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveInput'></a>
 ## AdaptiveInput `type`
@@ -4978,6 +5020,24 @@ Target element Id.
 
 Target element visibility.
 
+<a name='P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml'></a>
+### IsVisibleXml `property`
+
+##### Summary
+
+Helper to do custom serialization of [IsVisible](#P-AdaptiveCards-AdaptiveTargetElement-IsVisible 'AdaptiveCards.AdaptiveTargetElement.IsVisible') property for XML.
+
+<a name='M-AdaptiveCards-AdaptiveTargetElement-ShouldSerializeIsVisibleXml'></a>
+### ShouldSerializeIsVisibleXml() `method`
+
+##### Summary
+
+Determines whether the [IsVisibleXml](#P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.IsVisibleXml') property should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-AdaptiveCards-AdaptiveTargetElement-op_Implicit-System-String-~AdaptiveCards-AdaptiveTargetElement'></a>
 ### op_Implicit(elementId) `method`
 
@@ -5850,6 +5910,17 @@ true iff this element's requirements are met.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | featureRegistration | [AdaptiveCards.AdaptiveFeatureRegistration](#T-AdaptiveCards-AdaptiveFeatureRegistration 'AdaptiveCards.AdaptiveFeatureRegistration') | The host's [AdaptiveFeatureRegistration](#T-AdaptiveCards-AdaptiveFeatureRegistration 'AdaptiveCards.AdaptiveFeatureRegistration'). |
+
+<a name='M-AdaptiveCards-AdaptiveTypedElement-ShouldSerializeAdditionalProperties'></a>
+### ShouldSerializeAdditionalProperties() `method`
+
+##### Summary
+
+Determines whether the [AdditionalProperties](#P-AdaptiveCards-AdaptiveTypedElement-AdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.AdditionalProperties') property should be serialized.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveTypedElementConverter'></a>
 ## AdaptiveTypedElementConverter `type`
