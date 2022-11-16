@@ -1,6 +1,17 @@
 name: UPM-CI $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
 
+# Pipeline should be manually queued
+trigger: none
 pr: none
+
+parameters:
+- name: useVersionOverride
+  displayName: Override Version?
+  type: boolean
+  default: false
+- name: versionOverride
+  displayName: Package Version?
+  type: string
 
 variables:
   packageDirectory: "./artifacts/upm"
@@ -16,3 +27,6 @@ steps:
       registryPath: $(registryPath)
       packageDirectory: $(packageDirectory)
       publishToFeed: true
+      useVersionOverride: $(useVersionOverride)
+      versionOverride: $(versionOverride)
+

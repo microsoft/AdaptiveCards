@@ -7,9 +7,10 @@ parameters:
   projectRoot: $(Build.SourcesDirectory)
   outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
   buildNumber: $(Build.BuildNumber)
-  registryPath: ""
   publishToArtifacts: true
   publishToFeed: false
+  useVersionOverride: false
+  versionOverride: ""
 
 steps:
 - task: PowerShell@2
@@ -18,7 +19,13 @@ steps:
     pwsh: true
     targetType: 'inline'
     script: |
-      $version = ${{ parameters.projectRoot }}/scripts/upm/getversion-dotnet.ps1 -ProjectRoot '${{ parameters.projectRoot }}'
+      if (useVersionOverride) {
+        $version = ${{ parameters.versionOverride }}
+      } 
+      else {
+        $version = ${{ parameters.projectRoot }}/scripts/upm/getversion-dotnet.ps1 -ProjectRoot '${{ parameters.projectRoot }}'
+      }
+      
       $${{ parameters.projectRoot }}/scripts/upm/pack-upm.ps1 -ProjectRoot '${{ parameters.projectRoot }}' -OutputDirectory '${{ parameters.outputDirectory }}' -Version '$version' -Verbose
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
