@@ -1,105 +1,105 @@
-{ 
-    "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.5",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Malt & Vine Order Form",
-            "size": "Large",
-            "wrap": true,
-            "weight": "Bolder"
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "EntreeSelectVal",
-            "label": "Which entree would you like?",
-            "style": "filtered",
-            "isRequired": true,
-            "errorMessage": "This is a required input",
-            "placeholder": "Please choose",
-            "choices": [
-                {
-                    "title": "Steak",
-                    "value": "1"
-                },
-                {
-                    "title": "Chicken",
-                    "value": "2"
-                },
-                {
-                    "title": "Tofu",
-                    "value": "3"
-                }
-            ]
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "SideVal",
-            "label": "Which side would you like?",
-            "style": "filtered",
-            "isRequired": true,
-            "errorMessage": "This is a required input",
-            "placeholder": "Please choose",
-            "choices": [
-                {
-                    "title": "Baked Potato",
-                    "value": "1"
-                },
-                {
-                    "title": "Rice",
-                    "value": "2"
-                },
-                {
-                    "title": "Vegetables",
-                    "value": "3"
-                },
-                {
-                    "title": "Noodles",
-                    "value": "4"
-                },
-                {
-                    "title": "No Side",
-                    "value": "5"
-                }
-            ]
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "DrinkVal",
-            "label": "Which drink would you like?",
-            "style": "filtered",
-            "isRequired": true,
-            "errorMessage": "This is a required input",
-            "placeholder": "Please choose",
-            "choices": [
-                {
-                    "title": "Water",
-                    "value": "1"
-                },
-                {
-                    "title": "Soft Drink",
-                    "value": "2"
-                },
-                {
-                    "title": "Coffee",
-                    "value": "3"
-                },
-                {
-                    "title": "Natural Juice",
-                    "value": "4"
-                },
-                {
-                    "title": "No Drink",
-                    "value": "5"
-                }
-            ]
-        }
-    ],
-    "actions": [
-        {
-            "type": "Action.Submit",
-            "title": "Place Order"
-        }
-    ]
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Malt & Vine Order Form",
+			"size": "large",
+			"wrap": true,
+			"weight": "bolder"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "EntreeSelectVal",
+			"label": "Which entree would you like?",
+			"style": "filtered",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"placeholder": "Please choose",
+			"choices": [
+				{
+					"title": "Steak",
+					"value": "1"
+				},
+				{
+					"title": "Chicken",
+					"value": "2"
+				},
+				{
+					"title": "Tofu",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "SideVal",
+			"label": "Which side would you like?",
+			"style": "filtered",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"placeholder": "Please choose",
+			"choices": [
+				{
+					"title": "Baked Potato",
+					"value": "1"
+				},
+				{
+					"title": "Rice",
+					"value": "2"
+				},
+				{
+					"title": "Vegetables",
+					"value": "3"
+				},
+				{
+					"title": "Noodles",
+					"value": "4"
+				},
+				{
+					"title": "No Side",
+					"value": "5"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "DrinkVal",
+			"label": "Which drink would you like?",
+			"style": "filtered",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"placeholder": "Please choose",
+			"choices": [
+				{
+					"title": "Water",
+					"value": "1"
+				},
+				{
+					"title": "Soft Drink",
+					"value": "2"
+				},
+				{
+					"title": "Coffee",
+					"value": "3"
+				},
+				{
+					"title": "Natural Juice",
+					"value": "4"
+				},
+				{
+					"title": "No Drink",
+					"value": "5"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Place Order"
+		}
+	]
 }

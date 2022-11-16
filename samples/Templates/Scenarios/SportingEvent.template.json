@@ -1,87 +1,87 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
-    "body": [
-        {
-            "type": "Container",
-            "items": [
-                {
-                    "type": "ColumnSet",
-                    "columns": [
-                        {
-                            "type": "Column",
-                            "width": "auto",
-                            "items": [
-                                {
-                                    "type": "Image",
-                                    "url": "https://adaptivecards.io/content/cats/3.png",
-                                    "size": "Medium",
-                                    "altText": "Shades cat team emblem"
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "text": "SHADES",
-                                    "horizontalAlignment": "Center",
-                                    "weight": "Bolder",
-                                    "wrap": true
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Column",
-                            "width": "stretch",
-                            "separator": true,
-                            "spacing": "Medium",
-                            "items": [
-                                {
-                                    "type": "TextBlock",
-                                    "text": "{{DATE(${string(start_date)}, SHORT)}}",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "text": "Final",
-                                    "spacing": "None",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "text": "${home_points} - ${away_points}",
-                                    "size": "ExtraLarge",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Column",
-                            "width": "auto",
-                            "separator": true,
-                            "spacing": "Medium",
-                            "items": [
-                                {
-                                    "type": "Image",
-                                    "url": "https://adaptivecards.io/content/cats/2.png",
-                                    "size": "Medium",
-                                    "horizontalAlignment": "Center",
-                                    "altText": "Skins cat team emblem"
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "text": "SKINS",
-                                    "horizontalAlignment": "Center",
-                                    "weight": "Bolder",
-                                    "wrap": true
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/3.png",
+									"size": "medium",
+									"altText": "Shades cat team emblem"
+								},
+								{
+									"type": "TextBlock",
+									"text": "SHADES",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "stretch",
+							"separator": true,
+							"spacing": "medium",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "{{DATE(${string(start_date)}, SHORT)}}",
+									"horizontalAlignment": "center",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "Final",
+									"spacing": "none",
+									"horizontalAlignment": "center",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "${home_points} - ${away_points}",
+									"size": "extraLarge",
+									"horizontalAlignment": "center",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "auto",
+							"separator": true,
+							"spacing": "medium",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/2.png",
+									"size": "medium",
+									"horizontalAlignment": "center",
+									"altText": "Skins cat team emblem"
+								},
+								{
+									"type": "TextBlock",
+									"text": "SKINS",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
 }
