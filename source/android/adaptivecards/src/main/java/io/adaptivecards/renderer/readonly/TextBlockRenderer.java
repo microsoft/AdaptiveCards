@@ -225,32 +225,26 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
         textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
-        if (textHandleResult.getHasLinks())
-        {
+        if (textHandleResult.getHasLinks()) {
             textView.setMovementMethod(LinkMovementMethod.getInstance());
-            if (textHandleResult.isALink())
-            {
+            if (textHandleResult.isALink()) {
                 textView.setOnKeyListener(new SingleLinkOnKeyListener(new SpannableString(textHandleResult.getHtmlString())));
+
+                AccessibilityManager am = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
+                am.addAccessibilityStateChangeListener(new AccessibilityManager.AccessibilityStateChangeListener() {
+                    @Override
+                    public void onAccessibilityStateChanged(boolean b) {
+                        boolean isEnabled = am.isEnabled();
+                        if (b && isEnabled) {
+                            textView.setFocusable(true);
+                        } else {
+                            textView.setFocusable(false);
+                        }
+                    }
+                });
+                textView.setFocusable(am.isEnabled());
             }
         }
-
-        AccessibilityManager am = (AccessibilityManager)context.getSystemService(ACCESSIBILITY_SERVICE);
-        am.addAccessibilityStateChangeListener(new AccessibilityManager.AccessibilityStateChangeListener() {
-            @Override
-            public void onAccessibilityStateChanged(boolean b)
-            {
-                boolean isEnabled = am.isEnabled();
-                if (b && isEnabled)
-                {
-                    textView.setFocusable(true);
-                }
-                else
-                {
-                    textView.setFocusable(false);
-                }
-            }
-        });
-        textView.setFocusable(am.isEnabled());
     }
 
     @Override
