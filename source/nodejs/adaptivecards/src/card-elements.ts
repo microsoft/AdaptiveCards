@@ -3092,11 +3092,27 @@ export abstract class Input extends CardElement implements IInput {
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
-	static readonly inputStyleProperty = new StringProperty(
-        Versions.v1_5,
+	static readonly inputStyleProperty = new EnumProperty(
+        Versions.v1_5, // TODO upgrade version
         "inputStyle",
-		true
+        Enums.InputStyle,
+        Enums.InputStyle.Default,
+        [
+            { value: Enums.InputStyle.Default },
+            { value: Enums.InputStyle.ReadWrite }
+        ]
     );
+	static readonly labelAlignmentProperty = new EnumProperty(
+        Versions.v1_5, // TODO upgrade version
+        "labelAlignment",
+        Enums.InputLabelAlignment,
+        Enums.InputLabelAlignment.Vertical,
+        [
+            { value: Enums.InputLabelAlignment.Horizontal },
+            { value: Enums.InputLabelAlignment.Vertical }
+        ]
+    );
+
     @property(Input.labelProperty)
     label?: string;
 
@@ -3107,7 +3123,10 @@ export abstract class Input extends CardElement implements IInput {
     errorMessage?: string;
 
 	@property(Input.inputStyleProperty)
-    inputStyle?: string;
+    inputStyle: Enums.InputStyle = Enums.InputStyle.Default;
+
+	@property(Input.labelAlignmentProperty)
+    labelAlignment: Enums.InputLabelAlignment = Enums.InputLabelAlignment.Vertical;
 
     //#endregion
 
@@ -3168,12 +3187,8 @@ export abstract class Input extends CardElement implements IInput {
 
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
-		if (this.inputStyle !== null && this.inputStyle === "readWrite") {
-			this._outerContainerElement.style.flexDirection = "row";
-		} else {
-        	this._outerContainerElement.style.flexDirection = "column";
-		}
-
+		this._outerContainerElement.style.flexDirection = "column";
+		
         const renderedInputControlId = Utils.generateUniqueId();
 
         if (this.label) {
@@ -3235,10 +3250,18 @@ export abstract class Input extends CardElement implements IInput {
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
             this._outerContainerElement.appendChild(this._inputControlContainerElement);
 
+			if (this._renderedLabelElement && this.labelAlignment === Enums.InputLabelAlignment.Horizontal) {
+				this._outerContainerElement.style.flexDirection = "row";
+				this._renderedLabelElement.style.width = "30%";
+				this._inputControlContainerElement.style.width = "70%";
+			}
+
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
         }
+
+		
 
         this.resetDirtyState();
 
@@ -3453,13 +3476,6 @@ export class TextInput extends Input {
             input.maxLength = this.maxLength;
         }
 
-		// if (this.inputStyle && this.inputStyle === "readWrite") {
-		// 	input.style.border = "none";
-		// 	input.style.width = "50%";
-		// 	input.style.marginLeft= "10px";
-			
-		// }
-
         input.oninput = () => {
             this.valueChanged();
         };
@@ -3492,7 +3508,7 @@ export class TextInput extends Input {
             }
         } else {
             result = document.createElement("input");
-			if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+			if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
 				result.className = this.hostConfig.makeCssClassName("ac-inputRW", "ac-textInputRW");
 			} else {
             	result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
@@ -4394,7 +4410,7 @@ export class DateInput extends Input {
         }
 
         this._dateInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
-		if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+		if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
 			this._dateInputElement.className = this.hostConfig.makeCssClassName(
 				"ac-inputRW",
 				"ac-dateInputRW"
@@ -4422,7 +4438,7 @@ export class DateInput extends Input {
         };
 
 		this._dateInputElement.onmouseenter = () => {
-            if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+            if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
 				this._dateInputElement.setAttribute("type", "date");
 				if (this.defaultValue) {
 					this._dateInputElement.value = this.defaultValue;
@@ -4431,7 +4447,7 @@ export class DateInput extends Input {
         };
 
 		this._dateInputElement.onmouseleave = () => {
-			if (this.inputStyle !== null && this.inputStyle === "readWrite") {
+			if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
 				this._dateInputElement.setAttribute("type", "");
 				if (this.defaultValue) {
 					const dateVal = this.defaultValue;
@@ -8475,6 +8491,23 @@ export class AdaptiveCard extends ContainerWithActions {
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
+				renderedCard.onmouseenter = () => {
+					const inputElementsWithReadWriteStyleClass = renderedCard?.getElementsByClassName('ac-inputRW');
+					for (const inputElement of Array.from(inputElementsWithReadWriteStyleClass || [])) {
+						if (inputElement) {
+							(inputElement as HTMLElement).style.border = "1px solid #DDDDDD";
+						}
+					}
+				};
+
+				renderedCard.onmouseleave = () => {
+					const inputElementsWithReadWriteStyleClass = renderedCard?.getElementsByClassName('ac-inputRW');
+					for (const inputElement of Array.from(inputElementsWithReadWriteStyleClass || [])) {
+						if (inputElement) {
+							(inputElement as HTMLElement).style.border = "";
+						}
+					}
+				};
             }
         }
 

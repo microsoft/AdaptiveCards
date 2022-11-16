@@ -157,6 +157,11 @@ export enum InputStyle {
     ReadWrite
 }
 
+export enum InputLabelAlignment {
+    Horizontal,
+    Vertical
+}
+
 export enum ValidationPhase {
     Parse,
     ToJSON,
