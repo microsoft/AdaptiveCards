@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
+#include "ChoicesData.h"
 #include "ParseUtil.h"
 #include "Util.h"
 
@@ -23,6 +24,21 @@ const std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices() co
 std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
 {
     return m_choices;
+}
+
+std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData()
+{
+    return m_choicesData;
+}
+
+const std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData() const
+{
+    return m_choicesData;
+}
+
+void ChoiceSetInput::SetChoicesData(std::shared_ptr<ChoicesData> choicesData)
+{
+    m_choicesData = choicesData;
 }
 
 Json::Value ChoiceSetInput::SerializeToJsonValue() const
@@ -54,6 +70,11 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
         {
             root[propertyName].append(choice->SerializeToJsonValue());
         }
+    }
+
+     if (m_choicesData != nullptr && m_choicesData->ShouldSerialize())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesData)] = m_choicesData->SerializeToJsonValue();
     }
 
     return root;
@@ -121,6 +142,8 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
     choiceSet->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
     choiceSet->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
+    choiceSet->SetChoicesData(ParseUtil::DeserializeValue<ChoicesData>(
+        context, json, AdaptiveCardSchemaKey::ChoicesData, ChoicesData::Deserialize, false));
 
     // Parse Choices
     auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(
@@ -145,6 +168,7 @@ void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(
         {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesData),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),

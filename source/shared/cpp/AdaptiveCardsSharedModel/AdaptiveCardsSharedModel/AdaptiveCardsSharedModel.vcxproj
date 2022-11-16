@@ -251,6 +251,7 @@
     <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseInputElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\ChoiceInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ChoicesData.cpp" />
     <ClCompile Include="..\..\ObjectModel\ChoiceSetInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\Column.cpp" />
     <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
@@ -320,6 +321,7 @@
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\ObjectModel\ChoiceInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\ObjectModel\ChoiceSetInput.h" />
     <ClInclude Include="..\..\ObjectModel\Column.h" />
     <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
