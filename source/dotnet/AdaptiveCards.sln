@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C443BF0A-C616-4E98-8994-C5BAE76AE556}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{C7727147-4AD9-4005-A8D0-EEEED82347D3}"
-	ProjectSection(SolutionItems) = preProject
-		AdaptiveHorizontalContentAlignment.cs = AdaptiveHorizontalContentAlignment.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards", "Library\AdaptiveCards\AdaptiveCards.csproj", "{FC4A3527-05A2-4297-98D3-CB1CB512FFDA}"
 EndProject
