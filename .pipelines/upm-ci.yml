@@ -1,0 +1,18 @@
+name: UPM-CI $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+
+variables:
+  packageDirectory: "./artifacts/upm"
+
+steps:
+  - checkout: self
+
+  - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+    displayName: 'Component Detection'
+
+  - template: templates/upm.yml
+    parameters:
+      registryPath: $(registryPath)
+      packageDirectory: $(packageDirectory)
+      publishToFeed: true

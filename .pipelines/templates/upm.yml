@@ -1,0 +1,36 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# [Template] Pack and optionally publish UPM packages.
+
+parameters:
+  projectRoot: $(Build.SourcesDirectory)
+  outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
+  buildNumber: $(Build.BuildNumber)
+  registryPath: ""
+  publishToArtifacts: true
+  publishToFeed: false
+
+steps:
+- task: PowerShell@2
+  displayName: 'Pack UPM package'
+  inputs:
+    pwsh: true
+    targetType: 'inline'
+    script: |
+      $version = ${{ parameters.projectRoot }}/scripts/upm/getversion-dotnet.ps1 -ProjectRoot '${{ parameters.projectRoot }}'
+      $${{ parameters.projectRoot }}/scripts/upm/pack-upm.ps1 -ProjectRoot '${{ parameters.projectRoot }}' -OutputDirectory '${{ parameters.outputDirectory }}' -Version '$version' -Verbose
+
+- ${{ if eq(parameters.publishToArtifacts, true) }}:
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish UPM artifacts'
+    inputs:
+      pathToPublish: ${{ parameters.outputDirectory }}
+      artifactName: "adaptivecards-upm"
+
+- ${{ if eq(parameters.publishToFeed, true) }}:
+  - template: tasks/publish-upm.yml
+    parameters:
+      packageDirectory: ${{ parameters.outputDirectory }}
+      registryPath: $(UpmRegistry)
+      authenticationEndpoint: $(ServiceConnectionName)
