@@ -26,21 +26,6 @@ std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
     return m_choices;
 }
 
-std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData()
-{
-    return m_choicesData;
-}
-
-const std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData() const
-{
-    return m_choicesData;
-}
-
-void ChoiceSetInput::SetChoicesData(std::shared_ptr<ChoicesData> choicesData)
-{
-    m_choicesData = choicesData;
-}
-
 Json::Value ChoiceSetInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
@@ -78,6 +63,16 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
     }
 
     return root;
+}
+
+const std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData() const
+{
+    return m_choicesData;
+}
+
+void ChoiceSetInput::SetChoicesData(const std::shared_ptr<ChoicesData> choicesData)
+{
+    m_choicesData = choicesData;
 }
 
 bool ChoiceSetInput::GetIsMultiSelect() const
@@ -150,7 +145,8 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
         context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
     choiceSet->m_choices = std::move(choices);
 
-    if (choiceSet->GetIsMultiSelect() && choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered)
+    if (choiceSet->GetIsMultiSelect() &&
+        (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered || choiceSet->m_choicesData->ShouldSerialize()))
     {
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
             WarningStatusCode::InvalidValue, "Input.ChoiceSet does not support filtering with multiselect"));

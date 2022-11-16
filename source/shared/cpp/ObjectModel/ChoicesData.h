@@ -22,12 +22,10 @@ public:
     std::string Serialize() const;
     Json::Value SerializeToJsonValue() const;
 
-    std::string GetType();
-    const std::string GetType() const;
+    std::string GetType() const;
     void SetType(const std::string& type);
 
-    std::string GetDataset();
-    const std::string GetDataset() const;
+    std::string GetDataset() const;
     void SetDataset(const std::string& dataset);
 
     static std::shared_ptr<ChoicesData> Deserialize(ParseContext& context, const Json::Value& root);

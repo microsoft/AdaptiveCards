@@ -33,9 +33,8 @@ public:
     std::vector<std::shared_ptr<ChoiceInput>>& GetChoices();
     const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
-    std::shared_ptr<ChoicesData>& GetChoicesData();
     const std::shared_ptr<ChoicesData>& GetChoicesData() const;
-    void SetChoicesData(std::shared_ptr<ChoicesData>);
+    void SetChoicesData(const std::shared_ptr<ChoicesData>);
 
     std::string GetValue() const;
     void SetValue(const std::string& value);

@@ -42,11 +42,17 @@ bool ChoicesData::ShouldSerialize() const
 std::shared_ptr<ChoicesData> ChoicesData::Deserialize(ParseContext& context, const Json::Value& json)
 {
     auto choicesData = std::make_shared<ChoicesData>();
+    if (json.isNull())
+    {
+        return choicesData;
+    }
 
     auto type = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Type, false);
     auto dataset = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Dataset, false);
+    bool isValidChoicesData = true;
     if (type.empty())
     {
+        isValidChoicesData = false;
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
             WarningStatusCode::RequiredPropertyMissing,
             "non-empty string has to be given for type in choices.data, none given"));
@@ -54,17 +60,20 @@ std::shared_ptr<ChoicesData> ChoicesData::Deserialize(ParseContext& context, con
 
     if (type.compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) != 0)
     {
+        isValidChoicesData = false;
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-            WarningStatusCode::InvalidValue, "Invalid type for \"Choices.data\""));
+            WarningStatusCode::InvalidValue, "Invalid type for Choices.data, only Data.Query is supported"));
     }
 
     if (dataset.empty())
     {
+        isValidChoicesData = false;
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
             WarningStatusCode::RequiredPropertyMissing,
             "non-empty string has to be given for dataset in choices.data, none given"));
     }
-    if (type.compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 && !dataset.empty())
+
+    if (isValidChoicesData)
     {
         choicesData->SetType(type);
         choicesData->SetDataset(dataset);
@@ -78,12 +87,7 @@ std::shared_ptr<ChoicesData> ChoicesData::DeserializeFromString(ParseContext& co
     return ChoicesData::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-const std::string ChoicesData::GetType() const
-{
-    return m_type;
-}
-
-std::string ChoicesData::GetType()
+std::string ChoicesData::GetType() const
 {
     return m_type;
 }
@@ -93,12 +97,7 @@ void ChoicesData::SetType(const std::string& type)
     m_type = type;
 }
 
-const std::string ChoicesData::GetDataset() const
-{
-    return m_dataset;
-}
-
-std::string ChoicesData::GetDataset()
+std::string ChoicesData::GetDataset() const
 {
     return m_dataset;
 }
