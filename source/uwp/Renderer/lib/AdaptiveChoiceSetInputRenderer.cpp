@@ -169,6 +169,28 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     // Otherwise, leave all options unset
                     radioButton.IsChecked(IsChoiceSelected(values, input));
                 }
+
+                radioButton.PreviewKeyDown(
+                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                    {
+                        std::uint32_t currentButtonIndex;
+                        auto children = stackPanel.Children();
+                        auto size = children.Size();
+                        if (const auto isButtonFound = children.IndexOf(radioButton, currentButtonIndex))
+                        {
+                            if (args.Key() == winrt::VirtualKey::Down)
+                            {
+                                auto newButtonIndex = (currentButtonIndex + 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                            }
+                            else if (args.Key() == winrt::VirtualKey::Up)
+                            {
+                                auto newButtonIndex = (currentButtonIndex + size - 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                            }
+                        }
+                    });
+
                 choiceItem = radioButton;
             }
             winrt::hstring title = input.Title();
