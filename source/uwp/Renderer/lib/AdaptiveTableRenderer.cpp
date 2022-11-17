@@ -73,19 +73,25 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             double cellSpacingDouble = static_cast<double>(tableConfig.CellSpacing());
 
-            // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
-            // or leftmost cells to avoid creating margin outside the table.
-            winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
-            if (columnNumber == 0)
+            if (cellSpacingDouble != 0)
             {
-                marginThickness.Left = 0;
-            }
-            if (rowNumber == 0)
-            {
-                marginThickness.Top = 0;
-            }
+                // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
+                // or leftmost cells to avoid creating margin outside the table.
+                winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+                if (columnNumber == 0)
+                {
+                    marginThickness.Left = 0;
+                }
+                if (rowNumber == 0)
+                {
+                    marginThickness.Top = 0;
+                }
 
-            cellFrameworkElement.Margin(marginThickness);
+                if (marginThickness.Left != 0 || marginThickness.Top != 0)
+                {
+                    cellFrameworkElement.Margin(marginThickness);
+                }
+            }
         }
 
         // If the cell didn't have a vertical content alignment when we started, set it back to null
