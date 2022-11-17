@@ -24,8 +24,6 @@ steps:
 
   - template: templates/upm.yml
     parameters:
-      registryPath: $(registryPath)
-      packageDirectory: $(packageDirectory)
       publishToFeed: true
       useVersionOverride: $(useVersionOverride)
       versionOverride: $(versionOverride)
