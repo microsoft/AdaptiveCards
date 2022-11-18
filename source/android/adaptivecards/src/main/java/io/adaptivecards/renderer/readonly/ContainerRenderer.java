@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -310,11 +311,20 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
             applyTitleAndTooltip(selectAction, view);
 
-            if (view instanceof ViewGroup) {
+            if (view instanceof ViewGroup)
+            {
                 ViewGroup group = (ViewGroup) view;
+                View text = group.getChildAt(0);
 
-                if (group.getChildCount() == 1 && group.getChildAt(0) instanceof TextView) {
-                    group.getChildAt(0).setFocusable(false);
+                if (group.getChildCount() == 1 && text instanceof TextView)
+                {
+                    text.setFocusable(false);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    {
+                        text.setScreenReaderFocusable(false);
+                    }
+                    text.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 }
             }
         }
