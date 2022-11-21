@@ -106,7 +106,7 @@ try {
     npm pack "$TempDirectory"
 
     Write-Verbose "Cleaning temp files"
-    Remove-Item -Path "$TempDirectory" -Recurse -Force
+    #Remove-Item -Path "$TempDirectory" -Recurse -Force
 }
 finally {
     Pop-Location
