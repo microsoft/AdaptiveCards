@@ -17,79 +17,67 @@
 				"choices": [
 				  {
 					"title": "ActivityUpdate",
-					"value": "v1.3/Scenarios/ActivityUpdateWithLabels.json"
+					"value": "v1.5/Scenarios/ActivityUpdate.json"
 				  },
 				  {
 					"title": "CalendarReminder",
-					"value": "v1.3/Scenarios/CalendarReminderWithLabels.json"
+					"value": "v1.5/Scenarios/CalendarReminder.json"
 				  },
 				  {
 					"title": "FlightItinerary",
-					"value": "v1.0/Scenarios/FlightItinerary.json"
+					"value": "v1.5/Scenarios/FlightItinerary.json"
 				  },
 				  {
 					"title": "FlightUpdate",
-					"value": "v1.0/Scenarios/FlightUpdate.json"
+					"value": "v1.5/Scenarios/FlightUpdate.json"
 				  },
 				  {
 					"title": "FoodOrder",
-					"value": "v1.3/Scenarios/FoodOrderWithValidation.json"
+					"value": "v1.5/Scenarios/FoodOrder.json"
 				  },
 				  {
 					"title": "ImageGallery",
-					"value": "v1.0/Scenarios/ImageGallery.json"
+					"value": "v1.5/Scenarios/ImageGallery.json"
 				  },
 				  {
 					"title": "InputForm",
-					"value": "v1.3/Scenarios/InputFormWithLabels.json"
+					"value": "v1.5/Scenarios/InputForm.json"
 				  },
 				  {
 					"title": "Inputs",
-					"value": "v1.3/Scenarios/InputsWithValidation.json"
+					"value": "v1.5/Scenarios/InputsWithValidation.json"
 				  },
 				  {
 					"title": "Restaurant",
-					"value": "v1.0/Scenarios/Restaurant.json"
-				  },
-				  {
-					"title": "Solitaire",
-					"value": "v1.0/Scenarios/Solitaire.json"
+					"value": "v1.5/Scenarios/Restaurant.json"
 				  },
 				  {
 					"title": "SportingEvent",
-					"value": "v1.0/Scenarios/SportingEvent.json"
+					"value": "v1.5/Scenarios/SportingEvent.json"
 				  },
 				  {
 					"title": "StockUpdate",
-					"value": "v1.0/Scenarios/StockUpdate.json"
+					"value": "v1.5/Scenarios/StockUpdate.json"
 				  },
 				  {
 					"title": "WeatherCompact",
-					"value": "v1.0/Scenarios/WeatherCompact.json"
+					"value": "v1.5/Scenarios/WeatherCompact.json"
 				  },
 				  {
 					"title": "WeatherLarge",
-					"value": "v1.0/Scenarios/WeatherLarge.json"
-				  },
-				  {
-					"title": "ProductVideo",
-					"value": "v1.1/Scenarios/ProductVideo.json"
+					"value": "v1.5/Scenarios/WeatherLarge.json"
 				  },
 				  {
 					"title": "Agenda",
-					"value": "v1.2/Scenarios/Agenda.json"
+					"value": "v1.5/Scenarios/Agenda.json"
 				  },
 				  {
 					"title": "ExpenseReport",
-					"value": "v1.3/Scenarios/ExpenseReportWithLabels.json"
+					"value": "v1.5/Scenarios/ExpenseReport.json"
 				  },
 				  {
 					"title": "FlightDetails",
-					"value": "v1.2/Scenarios/FlightDetails.json"
-				  },
-				  {
-					"title": "SimpleFallback",
-					"value": "v1.2/Scenarios/SimpleFallback.json"
+					"value": "v1.5/Scenarios/FlightDetails.json"
 				  }
 				],
 				"placeholder": "(choose sample)",

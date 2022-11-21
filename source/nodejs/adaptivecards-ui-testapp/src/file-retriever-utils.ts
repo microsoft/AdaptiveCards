@@ -9,7 +9,6 @@ const v10TestCases: string[] = [
 const v11TestCases: string[] = [];
 const v12TestCases: string[] = [];
 const v13TestCases: string[] = [
-    'Scenarios/ActivityUpdate', 
     'Elements/Input.Text.ErrorMessage', 
     'Elements/Input.Number.ErrorMessage',
     'Elements/Input.ChoiceSet.ErrorMessage',
@@ -17,7 +16,9 @@ const v13TestCases: string[] = [
     'Elements/Input.Toggle.ErrorMessage'
 ];
 const v14TestCases: string[] = [];
-const v15TestCases: string[] = [];
+const v15TestCases: string[] = [
+    'Scenarios/ActivityUpdate'
+];
 const v16TestCases: string[] = [
     'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
     'Elements/Carousel.ScenarioCards.Timer', 'Tests/Carousel.HostConfig',

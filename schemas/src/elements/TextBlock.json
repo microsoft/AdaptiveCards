@@ -46,7 +46,8 @@
 		"style": {
 			"type": "TextBlockStyle?",
 			"description": "The style of this TextBlock for accessibility purposes.",
-			"default": "default"
+			"default": "default",
+			"version": "1.5"
 		}
 	}
 }

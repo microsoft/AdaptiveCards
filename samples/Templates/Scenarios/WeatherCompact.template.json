@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"speak": "<s>The forecast for Seattle ${formatEpoch(dt, 'MMMM d')} is mostly clear with a High of ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)} degrees and Low of ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)} degrees</s>",
 	"body": [
 		{
@@ -9,7 +9,8 @@
 			"text": "${name}, WA",
 			"size": "large",
 			"isSubtle": true,
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
