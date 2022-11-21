@@ -97,6 +97,7 @@ namespace AdaptiveCards.Test
             }
         }
 
+        // TODO: Uncomment this test method once Table has been completed #8071
         // [TestMethod]
         // public void TestAllScenarios()
         // {
