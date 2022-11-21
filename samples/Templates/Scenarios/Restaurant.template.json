@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"body": [
 		{
 			"speak": "Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.",
@@ -13,16 +13,18 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${address.addressLocality}, ${address.addressRegion}",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
 							"text": "${name}",
 							"weight": "bolder",
 							"size": "extraLarge",
 							"spacing": "none",
-							"wrap": true
+							"wrap": true,
+							"style": "heading"
+						},
+						{
+							"type": "TextBlock",
+							"text": "${address.addressLocality}, ${address.addressRegion}",
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",

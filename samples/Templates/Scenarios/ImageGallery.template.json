@@ -1,13 +1,14 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"body": [
 		{
 			"type": "TextBlock",
 			"text": "Here are some cool photos",
 			"size": "large",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
