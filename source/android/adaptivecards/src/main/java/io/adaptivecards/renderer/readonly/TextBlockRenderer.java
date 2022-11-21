@@ -30,7 +30,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.FragmentManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
