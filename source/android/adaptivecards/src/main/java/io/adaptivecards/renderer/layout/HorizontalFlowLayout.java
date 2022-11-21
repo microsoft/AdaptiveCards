@@ -65,15 +65,28 @@ public class HorizontalFlowLayout extends RelativeLayout {
         // need to call super.onMeasure(...) otherwise we'll get some funny behaviour
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int width = MeasureSpec.getSize(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
+        final int requiredWidth = measureRequiredWidth(
+            getPaddingLeft(),
+            getPaddingRight());
+
+        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED) {
+            // set width as required since there's no height restrictions
+            width = requiredWidth;
+        } else if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST
+                && requiredWidth < width) {
+            // set width as required since it's less than the maximum allowed
+            width = requiredWidth;
+        }
+
         final int requiredHeight = measureRequiredHeight(
-                width,
-                getPaddingTop(),
-                getPaddingBottom(),
-                getPaddingLeft(),
-                getPaddingRight());
+            width,
+            getPaddingTop(),
+            getPaddingBottom(),
+            getPaddingLeft(),
+            getPaddingRight());
 
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED) {
             // set height as required since there's no height restrictions
@@ -231,5 +244,45 @@ public class HorizontalFlowLayout extends RelativeLayout {
         ypos += line_height + paddingBottom;
 
         return ypos;
+    }
+
+    /**
+     * Measures the width required by this view
+     * by summing the width and padding of all of it's children.
+     * <p>
+     * (Package-private visibility for uint tests access.)
+     *
+     * @param paddingLeft left padding for this view.
+     * @param paddingRight right padding for this view.
+     * @return the height required by this view.
+     */
+    int measureRequiredWidth(final int paddingLeft,
+                             final int paddingRight) {
+        int requiredWidth = paddingLeft + paddingRight;
+        int childWidth, childMarginLeft, childMarginRight;
+        View child;
+        MarginLayoutParams childMarginLayoutParams;
+        // Go through the children to get the total width of the view
+        for (int i = 0; i < getChildCount(); i++) {
+            child = getChildAt(i);
+
+            if (child.getVisibility() != GONE) {
+                childWidth = child.getMeasuredWidth();
+
+                if (child.getLayoutParams() != null
+                    && child.getLayoutParams() instanceof MarginLayoutParams) {
+                    childMarginLayoutParams = (MarginLayoutParams) child.getLayoutParams();
+
+                    childMarginLeft = childMarginLayoutParams.leftMargin;
+                    childMarginRight = childMarginLayoutParams.rightMargin;
+                } else {
+                    childMarginLeft = 0;
+                    childMarginRight = 0;
+                }
+
+                requiredWidth += childMarginLeft + childWidth + childMarginRight;
+            }
+        }
+        return requiredWidth;
     }
 }
