@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "0.5",
+	"version": "1.5",
 	"backgroundImage": "${backgroundImageUrl}",
 	"body": [
 		{
@@ -30,7 +30,8 @@
 							"weight": "bolder",
 							"wrap": true,
 							"size": "default",
-							"horizontalAlignment": "center"
+							"horizontalAlignment": "center",
+							"style": "heading"
 						}
 					]
 				}

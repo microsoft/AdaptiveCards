@@ -4,6 +4,12 @@
 	"version": "1.5",
 	"body": [
 		{
+			"type": "TextBlock",
+			"text": "Your Flight Update",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
 			"type": "Table",
 			"columns": [
 				{
