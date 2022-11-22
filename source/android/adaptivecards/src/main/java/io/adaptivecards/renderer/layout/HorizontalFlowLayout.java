@@ -72,13 +72,12 @@ public class HorizontalFlowLayout extends RelativeLayout {
         final int requiredWidth = measureRequiredWidth(
             getPaddingLeft(),
             getPaddingRight());
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 
-        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED) {
-            // set width as required since there's no height restrictions
-            width = requiredWidth;
-        } else if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST
-                && requiredWidth < width) {
-            // set width as required since it's less than the maximum allowed
+        if ((widthMode == MeasureSpec.UNSPECIFIED)
+                || (widthMode == MeasureSpec.AT_MOST
+                && requiredWidth < width)) {
+            // set width as required since there's no height restrictions or if it's less than the maximum allowed
             width = requiredWidth;
         }
 
@@ -88,13 +87,12 @@ public class HorizontalFlowLayout extends RelativeLayout {
             getPaddingBottom(),
             getPaddingLeft(),
             getPaddingRight());
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED) {
-            // set height as required since there's no height restrictions
-            height = requiredHeight;
-        } else if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST
-                && requiredHeight < height) {
-            // set height as required since it's less than the maximum allowed
+        if ((heightMode == MeasureSpec.UNSPECIFIED)
+                || (heightMode == MeasureSpec.AT_MOST
+                && requiredHeight < height)) {
+            // set height as required since there's no height restriction or if it's less than the maximum allowed
             height = requiredHeight;
         }
 
