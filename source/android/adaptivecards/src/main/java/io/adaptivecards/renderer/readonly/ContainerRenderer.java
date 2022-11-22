@@ -314,17 +314,19 @@ public class ContainerRenderer extends BaseCardElementRenderer
             if (view instanceof ViewGroup)
             {
                 ViewGroup group = (ViewGroup) view;
-                View text = group.getChildAt(0);
-
-                if (group.getChildCount() == 1 && text instanceof TextView)
+                if (group.getChildCount() == 1)
                 {
-                    text.setFocusable(false);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    View childView = group.getChildAt(0);
+                    if (childView.isFocusable())
                     {
-                        text.setScreenReaderFocusable(false);
+                        childView.setFocusable(false);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                        {
+                            childView.setScreenReaderFocusable(false);
+                        }
+                        childView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                     }
-                    text.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 }
             }
         }
