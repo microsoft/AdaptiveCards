@@ -320,6 +320,8 @@ public class ContainerRenderer extends BaseCardElementRenderer
                     {
                         childView.setFocusable(false);
 
+                        // setScreenReaderFocusable is only available in API level 28 (P) and above
+                        // Need to check the SDK version of the current device
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                         {
                             childView.setScreenReaderFocusable(false);
