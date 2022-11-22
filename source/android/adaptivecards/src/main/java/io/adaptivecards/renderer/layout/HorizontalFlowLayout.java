@@ -65,22 +65,34 @@ public class HorizontalFlowLayout extends RelativeLayout {
         // need to call super.onMeasure(...) otherwise we'll get some funny behaviour
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int width = MeasureSpec.getSize(widthMeasureSpec);
+        // Width and height are initially set to be the requested size by the parent
+        int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        final int requiredHeight = measureRequiredHeight(
-                width,
-                getPaddingTop(),
-                getPaddingBottom(),
-                getPaddingLeft(),
-                getPaddingRight());
+        final int requiredWidth = measureRequiredWidth(
+            getPaddingLeft(),
+            getPaddingRight());
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 
-        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED) {
-            // set height as required since there's no height restrictions
-            height = requiredHeight;
-        } else if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST
-                && requiredHeight < height) {
-            // set height as required since it's less than the maximum allowed
+        if ((widthMode == MeasureSpec.UNSPECIFIED)
+                || (widthMode == MeasureSpec.AT_MOST
+                && requiredWidth < width)) {
+            // set width as required since there's no height restrictions or if it's less than the maximum allowed
+            width = requiredWidth;
+        }
+
+        final int requiredHeight = measureRequiredHeight(
+            width,
+            getPaddingTop(),
+            getPaddingBottom(),
+            getPaddingLeft(),
+            getPaddingRight());
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        if ((heightMode == MeasureSpec.UNSPECIFIED)
+                || (heightMode == MeasureSpec.AT_MOST
+                && requiredHeight < height)) {
+            // set height as required since there's no height restriction or if it's less than the maximum allowed
             height = requiredHeight;
         }
 
@@ -231,5 +243,45 @@ public class HorizontalFlowLayout extends RelativeLayout {
         ypos += line_height + paddingBottom;
 
         return ypos;
+    }
+
+    /**
+     * Measures the width required by this view
+     * by summing the width and padding of all of it's children.
+     * <p>
+     * (Package-private visibility for uint tests access.)
+     *
+     * @param paddingLeft left padding for this view.
+     * @param paddingRight right padding for this view.
+     * @return the height required by this view.
+     */
+    int measureRequiredWidth(final int paddingLeft,
+                             final int paddingRight) {
+        int requiredWidth = paddingLeft + paddingRight;
+        int childWidth, childMarginLeft, childMarginRight;
+        View child;
+        MarginLayoutParams childMarginLayoutParams;
+        // Go through the children to get the total width of the view
+        for (int i = 0; i < getChildCount(); i++) {
+            child = getChildAt(i);
+
+            if (child.getVisibility() != GONE) {
+                childWidth = child.getMeasuredWidth();
+
+                if (child.getLayoutParams() != null
+                    && child.getLayoutParams() instanceof MarginLayoutParams) {
+                    childMarginLayoutParams = (MarginLayoutParams) child.getLayoutParams();
+
+                    childMarginLeft = childMarginLayoutParams.leftMargin;
+                    childMarginRight = childMarginLayoutParams.rightMargin;
+                } else {
+                    childMarginLeft = 0;
+                    childMarginRight = 0;
+                }
+
+                requiredWidth += childMarginLeft + childWidth + childMarginRight;
+            }
+        }
+        return requiredWidth;
     }
 }
