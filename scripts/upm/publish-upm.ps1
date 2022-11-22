@@ -39,6 +39,7 @@ try {
 
     # Get the list of package (.tgz) files.
     Get-ChildItem -Path $PackageDirectory -Filter "com.microsoft.adaptivecards.net*.tgz" | ForEach-Object {
+        npm config list
         Write-Output "======================="
         Write-Output "Publishing: $($_.Name) "
         Write-Output "======================="
