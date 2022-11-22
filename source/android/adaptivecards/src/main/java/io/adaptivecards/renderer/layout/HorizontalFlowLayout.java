@@ -65,6 +65,7 @@ public class HorizontalFlowLayout extends RelativeLayout {
         // need to call super.onMeasure(...) otherwise we'll get some funny behaviour
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        // Width and height are initially set to be the requested size by the parent
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
