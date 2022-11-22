@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -12,14 +12,16 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Redmond, WA",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
 							"text": "Malt & Vine",
 							"weight": "bolder",
 							"size": "extraLarge",
+							"spacing": "none",
+							"wrap": true,
+							"style": "heading"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Redmond, WA",
 							"spacing": "none",
 							"wrap": true
 						},
