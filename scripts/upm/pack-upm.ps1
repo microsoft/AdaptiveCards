@@ -13,8 +13,8 @@
     What version of the artifacts should we build?
 .PARAMETER BuildNumber
     The fourth digit (revision) for the full version.
-.PARAMETER SkipPack
-    If true, a package folder will be prepared but no tarball generate. Callers will be responsible
+.PARAMETER KeepStagingFolder
+    If true, the staging folder created for generating the package is not deleted. Callers will be responsible
     for cleaning up package folder.
 #>
 param(
@@ -29,7 +29,7 @@ param(
     [ValidatePattern("\d+")]
     [string]$BuildNumber
 
-    [switch]$SkipPack
+    [switch]$KeepStagingFolder
 )
 
 if ( $Verbose ) { $VerbosePreference = 'Continue' }
@@ -105,13 +105,13 @@ try {
         Set-Location $tmp
     }
 
-    if (-not($SkipPack.IsPreset)) {
-        Write-Output "======================="
-        Write-Output "Creating com.microsoft.adaptivecards.net"
-        Write-Output "======================="
-        npm pack "$TempDirectory"
+    Write-Output "======================="
+    Write-Output "Creating com.microsoft.adaptivecards.net"
+    Write-Output "======================="
+    npm pack "$TempDirectory"
 
-        Write-Verbose "Cleaning temp files"
+    if (-not ($SkipPack.IsPreset)) {
+        Write-Verbose "Cleaning staging folder"
         Remove-Item -Path "$TempDirectory" -Recurse -Force
     }
 }
