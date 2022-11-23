@@ -27,7 +27,7 @@ param(
     [string]$Version,
 
     [ValidatePattern("\d+")]
-    [string]$BuildNumber
+    [string]$BuildNumber,
 
     [switch]$KeepStagingFolder
 )
