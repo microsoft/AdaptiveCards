@@ -73,7 +73,7 @@ try {
 
     $folderFullPath = "$packagePath/*"
 
-    $excludelist = "$packagePath\docs", "$packagePath\AdaptiveCards.csproj"
+    $excludelist = (Join-Path -Path $packagePath -ChildPath "docs"), (Join-Path -Path $packagePath -ChildPath "AdaptiveCards.csproj")
 
     # Copy the desired package files to a temp directory
     (Get-ChildItem -Path "$folderFullPath") | Where { $excludeList -notcontains $_ } | ForEach-Object {
