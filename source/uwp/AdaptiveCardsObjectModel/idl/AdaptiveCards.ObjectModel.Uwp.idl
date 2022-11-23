@@ -112,12 +112,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Large
     };
 
-    enum ImageType
-    {
-        Normal = 0,
-        Svg
-    };
-
     enum SeparatorThickness
     {
         Default = 0,
@@ -464,7 +458,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
         String AltText;
         IAdaptiveActionElement SelectAction;
-        Windows.Foundation.IReference<ImageType> ImageType;
     };
 
     runtimeclass AdaptiveImageSet : IAdaptiveCardElement

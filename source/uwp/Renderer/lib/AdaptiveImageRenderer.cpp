@@ -55,8 +55,6 @@ namespace AdaptiveCards::Rendering::Uwp
         auto hostConfig = renderContext.HostConfig();
         auto url = adaptiveImage.Url();
 
-        auto imageType = adaptiveImage.ImageType();
-
         auto imageUrl = GetUrlFromString(hostConfig, url);
 
         if (imageUrl == nullptr)
@@ -65,7 +63,7 @@ namespace AdaptiveCards::Rendering::Uwp
             return nullptr;
         }
 
-        auto adaptiveImageType = GetValueFromRef(imageType, winrt::ImageType::Normal);
+        auto isImageSvg = IsSvgImage(HStringToUTF8(url));
 
         uint32_t pixelWidth = adaptiveImage.PixelWidth();
         uint32_t pixelHeight = adaptiveImage.PixelHeight();
@@ -163,14 +161,14 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             auto parentElement = renderArgs.ParentElement();
-            switch (adaptiveImageType)
+
+            if (isImageSvg)
             {
-            case winrt::ImageType::Svg:
                 SetImageOnUIElementSvg(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
-                break;
-            case winrt::ImageType::Normal:
+            }
+            else
+            {
                 SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
-                break;
             }
         }
 
@@ -622,5 +620,11 @@ namespace AdaptiveCards::Rendering::Uwp
                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSource, isVisible);
             }
         }
+    }
+
+    boolean XamlBuilder::IsSvgImage(std::string url)
+    {
+        auto found = url.find(".svg");
+        return !(found == std::string::npos);
     }
 }

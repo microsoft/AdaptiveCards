@@ -21,7 +21,6 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         property<hstring> AltText;
         property_opt<Uwp::HAlignment> HorizontalAlignment;
         property<Uwp::IAdaptiveActionElement> SelectAction;
-        property_opt<Uwp::ImageType> ImageType;
 
         // IAdaptiveCardElement
         auto ElementType() { return ElementType::Image; }

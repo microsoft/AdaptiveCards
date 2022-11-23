@@ -96,6 +96,8 @@ namespace AdaptiveCards::Rendering::Uwp
         template<typename T>
         void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
 
+        boolean IsSvgImage(std::string url);
+
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };

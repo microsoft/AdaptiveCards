@@ -94,7 +94,6 @@ enum class AdaptiveCardSchemaKey
     ImageSet,
     ImageSize,
     ImageSizes,
-	ImageType,
     Images,
     InlineAction,
     InlineTopMargin,
@@ -133,7 +132,6 @@ enum class AdaptiveCardSchemaKey
     Mode,
     Monospace,
     NumberInput,
-    Normal,
     OptionalInputs,
     Padding,
     Placeholder,
@@ -170,7 +168,6 @@ enum class AdaptiveCardSchemaKey
     Subtle,
     Suffix,
     SupportsInteractivity,
-    Svg,
     Table,
     TableCell,
     TableRow,
@@ -330,13 +327,6 @@ enum class ImageSize
     Large,
 };
 DECLARE_ADAPTIVECARD_ENUM(ImageSize);
-
-enum class ImageType
-{
-	Normal = 0,
-	Svg
-};
-DECLARE_ADAPTIVECARD_ENUM(ImageType);
 
 enum class TextInputStyle
 {

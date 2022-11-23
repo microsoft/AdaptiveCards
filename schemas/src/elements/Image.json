@@ -52,10 +52,6 @@
 				"50px"
 			],
 			"version": "1.1"
-		},
-		"imageType": {
-			"type": "ImageType",
-			"description": "temp"
 		}
 	}
 }

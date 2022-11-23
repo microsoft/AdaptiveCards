@@ -92,7 +92,6 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
             {AdaptiveCardSchemaKey::ImageSize, "imageSize"},
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
-			{AdaptiveCardSchemaKey::ImageType, "imageType"},
             {AdaptiveCardSchemaKey::Images, "images"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
@@ -130,7 +129,6 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
             {AdaptiveCardSchemaKey::Mode, "mode"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
-            {AdaptiveCardSchemaKey::Normal, "normal"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
@@ -168,7 +166,6 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Subtle, "subtle"},
             {AdaptiveCardSchemaKey::Suffix, "suffix"},
             {AdaptiveCardSchemaKey::SupportsInteractivity, "supportsInteractivity"},
-            {AdaptiveCardSchemaKey::Svg, "svg"},
             {AdaptiveCardSchemaKey::Table, "table"},
             {AdaptiveCardSchemaKey::TableCell, "tableCell"},
             {AdaptiveCardSchemaKey::TableRow, "tableRow"},
@@ -283,10 +280,6 @@ namespace AdaptiveCards
             {ImageSize::Medium, "Medium"},
             {ImageSize::Small, "Small"},
             {ImageSize::Stretch, "Stretch"}});
-
-	DEFINE_ADAPTIVECARD_ENUM(ImageType, {
-			{ImageType::Normal, "normal"},
-			{ImageType::Svg, "svg"}});
 
     DEFINE_ADAPTIVECARD_ENUM(HorizontalAlignment, {
             {HorizontalAlignment::Center, "center"},
