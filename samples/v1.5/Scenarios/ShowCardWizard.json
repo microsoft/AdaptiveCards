@@ -1,11 +1,12 @@
 {
 	"type": "AdaptiveCard",
-	"version": "1.3",
+	"version": "1.5",
 	"body": [
 		{
 			"type": "TextBlock",
 			"text": "Please provide the following information:",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
