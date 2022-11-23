@@ -1,5 +1,5 @@
 {
-    "name": "AdaptiveCards.NET",
+    "name": "Microsoft.AdaptiveCards.NET",
     "rootNamespace": "AdaptiveCards",
     "references": [
     ],
