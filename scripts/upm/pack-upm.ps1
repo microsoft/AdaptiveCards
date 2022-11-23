@@ -13,6 +13,9 @@
     What version of the artifacts should we build?
 .PARAMETER BuildNumber
     The fourth digit (revision) for the full version.
+.PARAMETER SkipPack
+    If true, a package folder will be prepared but no tarball generate. Callers will be responsible
+    for cleaning up package folder.
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -25,6 +28,8 @@ param(
 
     [ValidatePattern("\d+")]
     [string]$BuildNumber
+
+    [switch]$SkipPack
 )
 
 if ( $Verbose ) { $VerbosePreference = 'Continue' }
@@ -100,13 +105,15 @@ try {
         Set-Location $tmp
     }
 
-    Write-Output "======================="
-    Write-Output "Creating com.microsoft.adaptivecards.net"
-    Write-Output "======================="
-    npm pack "$TempDirectory"
+    if (-not($SkipPack.IsPreset)) {
+        Write-Output "======================="
+        Write-Output "Creating com.microsoft.adaptivecards.net"
+        Write-Output "======================="
+        npm pack "$TempDirectory"
 
-    #Write-Verbose "Cleaning temp files"
-    #Remove-Item -Path "$TempDirectory" -Recurse -Force
+        Write-Verbose "Cleaning temp files"
+        Remove-Item -Path "$TempDirectory" -Recurse -Force
+    }
 }
 finally {
     Pop-Location
