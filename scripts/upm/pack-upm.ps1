@@ -110,7 +110,7 @@ try {
     Write-Output "======================="
     npm pack "$TempDirectory"
 
-    if (-not ($SkipPack.IsPreset)) {
+    if (-not ($KeepStagingFolder.IsPreset)) {
         Write-Verbose "Cleaning staging folder"
         Remove-Item -Path "$TempDirectory" -Recurse -Force
     }
