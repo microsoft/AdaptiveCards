@@ -450,11 +450,10 @@ namespace AdaptiveCards::Rendering::Uwp
         bool isVisible,
         winrt::Stretch /*stretch*/)
     {
+		// TODO: need to support data uri
         winrt::SvgImageSource svgImage{};
 
-		//TODO: we either need to grab these values from the svg or require svgs have auto height/width?
-        svgImage.RasterizePixelHeight(96);
-        svgImage.RasterizePixelWidth(96);
+		// Note: size of the SVG needs to be auto for sizing properties to work correctly
 
         svgImage.UriSource(imageUrl);
 
@@ -629,9 +628,20 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
+    // TODO: need to adjust this method to account for dataUri & can simplify
     boolean XamlBuilder::IsSvgImage(std::string url)
     {
+		// Question: is it sufficient to check for svg here instead?
         auto found = url.find(".svg");
-        return !(found == std::string::npos);
+        auto found2 = url.find("data:image/svg+xml");
+
+        if ((found == std::string::npos) && (found2 == std::string::npos))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
