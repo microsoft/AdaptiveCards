@@ -34,6 +34,7 @@ try {
 
     if ($Authenticate.IsPresent) {
         npm install -g vsts-npm-auth --registry https://registry.npmjs.com --always-auth false
+        Write-Output "Installed vsts-npm-auth"
         vsts-npm-auth -config $npmrcPath
     }
 
