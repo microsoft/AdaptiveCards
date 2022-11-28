@@ -161,12 +161,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        auto resourceDictionary = winrt::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
+        auto resourceDictionary = winrt::xaml_markup::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
         auto actionSentimentResourceDictionary =
-            winrt::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
+            winrt::xaml_markup::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
 

@@ -56,7 +56,7 @@ namespace winrt
     namespace xaml_automation = ::winrt::Windows::UI::Xaml::Automation;
     namespace xaml_documents = ::winrt::Windows::UI::Xaml::Documents;
     namespace xaml_input = ::winrt::Windows::UI::Xaml::Input;
-    using namespace ::winrt::Windows::UI::Xaml::Markup;
+    namespace xaml_markup = ::winrt::Windows::UI::Xaml::Markup;
     using namespace xaml::Media::Imaging;
     using namespace xaml::Shapes;
 
