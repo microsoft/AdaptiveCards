@@ -29,10 +29,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto OriginatingCard() { return m_originatingCard; }
         auto OriginatingHostConfig() { return m_originatingHostConfig; }
         auto FrameworkElement() { return m_frameworkElement; }
-        auto UserInputs() { return static_cast<winrt::AdaptiveInputs>(*m_inputs); }
+        auto UserInputs() { return static_cast<winrt::render_xaml::AdaptiveInputs>(*m_inputs); }
 
-        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveActionEventArgs> Action;
-        auto_event<winrt::RenderedAdaptiveCard, winrt::AdaptiveMediaEventArgs> MediaClicked;
+        auto_event<winrt::render_xaml::RenderedAdaptiveCard, winrt::render_xaml::AdaptiveActionEventArgs> Action;
+        auto_event<winrt::render_xaml::RenderedAdaptiveCard, winrt::render_xaml::AdaptiveMediaEventArgs> MediaClicked;
         property<winrt::IVector<winrt::AdaptiveError>> Errors;
         property<winrt::IVector<winrt::AdaptiveWarning>> Warnings;
 
@@ -42,25 +42,25 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::xaml::UIElement const& showCardUIElement,
-                               winrt::AdaptiveRenderArgs const& renderArgs);
+                               winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::xaml::UIElement const& showCardUIElement,
-                               winrt::AdaptiveRenderArgs const& renderArgs);
+                               winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::xaml::UIElement const& actionUIElement);
 
         void AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::xaml::UIElement const& actionUIElement);
 
-        void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
-        void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
-        void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs);
-        winrt::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
+        void AddInputValue(winrt::render_xaml::IAdaptiveInputValue const& inputValue, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
+        void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
+        winrt::render_xaml::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
         void SetFrameworkElement(winrt::xaml::FrameworkElement const& value);
         void SetOriginatingCard(winrt::AdaptiveCard const& value);
-        void SetOriginatingHostConfig(winrt::AdaptiveHostConfig const& value);
+        void SetOriginatingHostConfig(winrt::render_xaml::AdaptiveHostConfig const& value);
         void SendActionEvent(winrt::IAdaptiveActionElement const& eventArgs);
         void SendMediaClickedEvent(winrt::AdaptiveMedia const& eventArgs);
 
@@ -70,10 +70,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         void AddInlineShowCardHelper(uint32_t internalId,
                                      winrt::IAdaptiveShowCardAction const& showCardAction,
                                      winrt::xaml::UIElement const& showCardUIElement,
-                                     winrt::AdaptiveRenderArgs const& renderArgs);
+                                     winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         winrt::AdaptiveCard m_originatingCard;
-        winrt::AdaptiveHostConfig m_originatingHostConfig;
+        winrt::render_xaml::AdaptiveHostConfig m_originatingHostConfig;
         winrt::com_ptr<winrt::implementation::AdaptiveInputs> m_inputs;
         winrt::xaml::FrameworkElement m_frameworkElement;
 

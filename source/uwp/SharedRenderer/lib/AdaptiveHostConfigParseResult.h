@@ -8,9 +8,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct AdaptiveHostConfigParseResult : AdaptiveHostConfigParseResultT<AdaptiveHostConfigParseResult>
     {
-        AdaptiveHostConfigParseResult(winrt::AdaptiveHostConfig const& hostConfig = nullptr);
+        AdaptiveHostConfigParseResult(winrt::render_xaml::AdaptiveHostConfig const& hostConfig = nullptr);
 
-        property<winrt::AdaptiveHostConfig> HostConfig;
+        property<winrt::render_xaml::AdaptiveHostConfig> HostConfig;
         property<winrt::IVector<winrt::AdaptiveError>> Errors;
     };
 }

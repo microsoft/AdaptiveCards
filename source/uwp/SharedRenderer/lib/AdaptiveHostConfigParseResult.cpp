@@ -7,7 +7,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult(winrt::AdaptiveHostConfig const& value) :
+    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult(winrt::render_xaml::AdaptiveHostConfig const& value) :
         Errors{winrt::single_threaded_vector<winrt::AdaptiveError>()}, HostConfig{value}
     {
     }

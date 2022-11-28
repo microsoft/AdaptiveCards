@@ -4,11 +4,11 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
-    void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
+    void SetStyleFromResourceDictionary(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
                                         winrt::xaml::FrameworkElement const& frameworkElement);
 
-    winrt::xaml::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
+    winrt::xaml::UIElement CreateSeparator(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                            uint32_t spacing,
                                            uint32_t separatorThickness,
                                            winrt::Windows::UI::Color const& separatorColor,
@@ -48,7 +48,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         if (heightType == winrt::HeightType::Stretch)
         {
-            if (const auto wholeItemsPanel = panel.try_as<winrt::WholeItemsPanel>())
+            if (const auto wholeItemsPanel = panel.try_as<winrt::render_xaml::WholeItemsPanel>())
             {
                 if (const auto wholeItemsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(wholeItemsPanel))
                 {
@@ -81,15 +81,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
                                                   winrt::xaml_controls::Border const& containerBorder,
-                                                  winrt::AdaptiveRenderContext const& renderContext,
-                                                  winrt::AdaptiveRenderArgs renderArgs);
+                                                  winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                  winrt::render_xaml::AdaptiveRenderArgs renderArgs);
 
-    bool SupportsInteractivity(winrt::AdaptiveHostConfig const& hostConfig);
+    bool SupportsInteractivity(winrt::render_xaml::AdaptiveHostConfig const& hostConfig);
 
     template<typename T>
     void SetVerticalContentAlignmentToChildren(T const& container, winrt::VerticalContentAlignment verticalContentAlignment)
     {
-        if (const auto containerAsPanel = container.try_as<winrt::WholeItemsPanel>())
+        if (const auto containerAsPanel = container.try_as<winrt::render_xaml::WholeItemsPanel>())
         {
             if (const auto containerAsPanelImpl = peek_innards<winrt::implementation::WholeItemsPanel>(containerAsPanel))
             {
@@ -99,30 +99,29 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     }
 
     winrt::xaml::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                            winrt::AdaptiveRenderContext const& renderContext);
+                                      winrt::render_xaml::AdaptiveRenderContext const& renderContext);
 
     winrt::xaml::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext);
+                                             winrt::render_xaml::AdaptiveRenderContext const& renderContext);
 
-    winrt::xaml_controls::Border CreateValidationBorder(winrt::xaml::UIElement const& childElement,
-                                                        winrt::AdaptiveRenderContext const& renderContext);
+    winrt::xaml_controls::Border CreateValidationBorder(winrt::xaml::UIElement const& childElement, winrt::render_xaml::AdaptiveRenderContext const& renderContext);
 
     winrt::xaml::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                                      winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                                       winrt::xaml::UIElement const& inputLayout);
 
     std::tuple<winrt::xaml::UIElement, winrt::xaml_controls::Border>
     HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
                                    winrt::xaml::UIElement const& inputUIElement,
                                    bool hasTypeSpecificValidation,
-                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                                               winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                    bool ifValidationBorderIsNeeded = true);
 
     void AddHandledTappedEvent(winrt::xaml::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(winrt::xaml_controls::Panel const& rootPanel,
                                winrt::AdaptiveBackgroundImage const& backgroundImage,
-                               winrt::AdaptiveRenderContext const& renderContext);
+                               winrt::render_xaml::AdaptiveRenderContext const& renderContext);
 
     void AddRenderedControl(winrt::xaml::UIElement const& newControl,
                             winrt::IAdaptiveCardElement const& element,
@@ -132,17 +131,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                             std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback);
 
     std::tuple<winrt::xaml::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
-                                                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                                                   winrt::AdaptiveRenderArgs const& renderArgs);
+                                                                             winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                             winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
     bool NeedsSeparator(winrt::IAdaptiveCardElement const& cardElement);
 
-    inline void WarnFallbackString(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
+    inline void WarnFallbackString(winrt::render_xaml::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
     {
         renderContext.AddWarning(winrt::WarningStatusCode::PerformingFallback, warning);
     }
 
-    inline void WarnForFallbackContentElement(winrt::AdaptiveRenderContext const& renderContext,
+    inline void WarnForFallbackContentElement(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                               winrt::hstring const& parentElementType,
                                               winrt::hstring const& fallbackElementType)
     {
@@ -151,12 +150,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         WarnFallbackString(renderContext, warning);
     }
 
-    inline void WarnForFallbackDrop(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
+    inline void WarnForFallbackDrop(winrt::render_xaml::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
     {
         WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
     }
 
-    inline void LogErrRenderFailed(winrt::AdaptiveRenderContext const& renderContext,
+    inline void LogErrRenderFailed(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                    winrt::hstring const& elementType = L"",
                                    winrt::hstring const& exceptionMessage = L"")
     {
@@ -174,12 +173,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         renderContext.AddError(winrt::ErrorStatusCode::RenderFailed, errorMessage);
     }
 
-    inline void ErrForRenderFailed(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& exceptionMessage = L"")
+    inline void ErrForRenderFailed(winrt::render_xaml::AdaptiveRenderContext const& renderContext, winrt::hstring const& exceptionMessage = L"")
     {
         LogErrRenderFailed(renderContext, L"", exceptionMessage);
     }
 
-    inline void ErrForRenderFailedForElement(winrt::AdaptiveRenderContext const& renderContext,
+    inline void ErrForRenderFailedForElement(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                              winrt::hstring const& elementType,
                                              winrt::hstring const& exceptionMessage = L"")
     {
@@ -188,8 +187,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     winrt::xaml::UIElement AddSeparatorIfNeeded(int& currentElement,
                                                 winrt::IAdaptiveCardElement const& element,
-                                                winrt::AdaptiveHostConfig const& hostConfig,
-                                                winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
+                                          winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                                 winrt::xaml_controls::Panel const& parentPanel);
 
     void SetAutoImageSize(winrt::xaml::FrameworkElement const& imageControl,
@@ -197,9 +196,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                           winrt::xaml_media::ImageSource const& imageSource,
                           bool setVisible);
 
-    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::xaml::IFrameworkElement const& element);
+    void ApplyMarginToXamlElement(winrt::render_xaml::IAdaptiveHostConfig const& hostConfig, winrt::xaml::IFrameworkElement const& element);
 
-    SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
+    SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::render_xaml::AdaptiveHostConfig const& hostConfig);
 
     winrt::xaml_controls::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
 }

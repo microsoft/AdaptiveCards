@@ -10,16 +10,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     struct AdaptiveElementRendererRegistration : AdaptiveElementRendererRegistrationT<AdaptiveElementRendererRegistration>
     {
         using RegistrationMap =
-            std::unordered_map<hstring, winrt::IAdaptiveElementRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+            std::unordered_map<hstring, winrt::render_xaml::IAdaptiveElementRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
         AdaptiveElementRendererRegistration() = default;
 
-        void Set(hstring const& type, winrt::IAdaptiveElementRenderer const& renderer)
+        void Set(hstring const& type, winrt::render_xaml::IAdaptiveElementRenderer const& renderer)
         {
             m_registration[type] = renderer;
         }
 
-        winrt::IAdaptiveElementRenderer Get(hstring const& type)
+        winrt::render_xaml::IAdaptiveElementRenderer Get(hstring const& type)
         {
             auto it = m_registration.find(type);
             if (it != m_registration.end())

@@ -9,13 +9,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct AdaptiveActionInvoker : AdaptiveActionInvokerT<AdaptiveActionInvoker>
     {
-        AdaptiveActionInvoker(winrt::RenderedAdaptiveCard const& renderResult = nullptr) :
+        AdaptiveActionInvoker(winrt::render_xaml::RenderedAdaptiveCard const& renderResult = nullptr) :
             m_weakRenderResult(renderResult)
         {
         }
 
         void SendActionEvent(winrt::IAdaptiveActionElement const& actionElement);
-        winrt::weak_ref<winrt::RenderedAdaptiveCard> m_weakRenderResult;
+        winrt::weak_ref<winrt::render_xaml::RenderedAdaptiveCard> m_weakRenderResult;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

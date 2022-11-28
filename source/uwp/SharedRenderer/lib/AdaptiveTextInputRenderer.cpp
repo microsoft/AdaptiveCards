@@ -64,8 +64,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     }
 
     winrt::xaml::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                                    winrt::AdaptiveRenderArgs const& renderArgs)
+                                                              winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                              winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::xaml_controls::TextBox textBox{};
 
@@ -105,7 +105,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         auto [textInputControl, validationBorder] = HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
-        auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
+        auto inputValue = winrt::make_self<winrt::render_xaml::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
@@ -113,8 +113,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     }
 
     winrt::xaml::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                        winrt::AdaptiveRenderContext const& renderContext,
-                                                                        winrt::AdaptiveRenderArgs const& renderArgs)
+                                                                  winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                  winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::xaml_controls::PasswordBox passwordBox{};
 
@@ -125,14 +125,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, passwordBox, renderContext, renderArgs);
 
-        auto inputValue = winrt::make_self<winrt::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
+        auto inputValue = winrt::make_self<winrt::render_xaml::PasswordInputValue>(adaptiveTextInput, passwordBox, validationBorder);
         renderContext.AddInputValue(*inputValue, renderArgs);
         return textInputControl;
     }
 
     winrt::xaml::UIElement AdaptiveTextInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

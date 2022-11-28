@@ -12,7 +12,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return StringToJsonObject(GetInputItemsAsJsonString());
     }
 
-    void AdaptiveInputs::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::AddInputValue(winrt::render_xaml::IAdaptiveInputValue const& inputValue, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         auto parentCard = renderArgs.ParentCard();
         auto cardId = parentCard.InternalId();
@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, winrt::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         uint32_t actionId = GetInternalIdFromAction(action);
         uint32_t cardId = renderArgs.ParentCard().InternalId();
@@ -55,7 +55,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         m_parentCard[cardId] = parentCardId;
     }
 
-    winrt::IAdaptiveInputValue AdaptiveInputs::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
+    winrt::render_xaml::IAdaptiveInputValue AdaptiveInputs::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         hstring elementId = inputElement.as<winrt::IAdaptiveCardElement>().Id();
         return m_inputValues[HStringToUTF8(elementId)];
@@ -124,9 +124,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return allInputsValid;
     }
 
-    std::vector<winrt::IAdaptiveInputValue> AdaptiveInputs::GetInputsToValidate(winrt::IAdaptiveActionElement const& action)
+    std::vector<winrt::render_xaml::IAdaptiveInputValue> AdaptiveInputs::GetInputsToValidate(winrt::IAdaptiveActionElement const& action)
     {
-        std::vector<winrt::IAdaptiveInputValue> inputsToValidate;
+        std::vector<winrt::render_xaml::IAdaptiveInputValue> inputsToValidate;
 
         uint32_t actionId = GetInternalIdFromAction(action);
         std::size_t card = m_containerCardForAction[actionId];

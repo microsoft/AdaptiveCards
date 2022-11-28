@@ -15,11 +15,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
     }
 
-    AdaptiveRenderContext::AdaptiveRenderContext(winrt::AdaptiveHostConfig const& hostConfig,
-                                                 winrt::AdaptiveFeatureRegistration const& featureRegistration,
-                                                 winrt::AdaptiveElementRendererRegistration const& elementRendererRegistration,
-                                                 winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
-                                                 winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
+    AdaptiveRenderContext::AdaptiveRenderContext(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
+                                                 winrt::render_xaml::AdaptiveFeatureRegistration const& featureRegistration,
+                                                 winrt::render_xaml::AdaptiveElementRendererRegistration const& elementRendererRegistration,
+                                                 winrt::render_xaml::AdaptiveActionRendererRegistration const& actionRendererRegistration,
+                                                 winrt::render_xaml::AdaptiveCardResourceResolvers const& resourceResolvers,
                                                  winrt::xaml::ResourceDictionary const& overrideStyles,
                                                  winrt::xaml::ResourceDictionary const& defaultActionSentimentStyles,
                                                  winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult) :
@@ -36,10 +36,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::AdaptiveInputs AdaptiveRenderContext::UserInputs()
-    {
-        return GetRenderResult()->UserInputs();
-    }
+    winrt::render_xaml::AdaptiveInputs AdaptiveRenderContext::UserInputs() { return GetRenderResult()->UserInputs(); }
 
     void AdaptiveRenderContext::AddError(winrt::ErrorStatusCode statusCode, hstring const& message)
     {
@@ -54,7 +51,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::xaml::UIElement const& showCardUIElement,
-                                                  winrt::AdaptiveRenderArgs const& renderArgs)
+                                                  winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(actionSet, showCardAction, showCardUIElement, renderArgs);
     }
@@ -62,7 +59,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::xaml::UIElement const& showCardUIElement,
-                                                  winrt::AdaptiveRenderArgs const& renderArgs)
+                                                  winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
@@ -77,7 +74,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         GetRenderResult()->AddOverflowButton(actionCard, actionUIElement);
     }
 
-    void AdaptiveRenderContext::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveRenderContext::AddInputValue(winrt::render_xaml::IAdaptiveInputValue const& inputValue, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -86,7 +83,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     }
 
     void AdaptiveRenderContext::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -94,7 +91,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    void AdaptiveRenderContext::LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& args)
+    void AdaptiveRenderContext::LinkCardToParent(winrt::AdaptiveCard const& card, winrt::render_xaml::AdaptiveRenderArgs const& args)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -102,7 +99,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
+    winrt::render_xaml::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         if (auto renderResult = GetRenderResult())
         {

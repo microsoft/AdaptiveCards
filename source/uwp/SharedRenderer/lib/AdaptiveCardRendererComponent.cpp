@@ -52,7 +52,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         UpdateActionSentimentResourceDictionary();
     }
 
-    winrt::AdaptiveFeatureRegistration AdaptiveCardRenderer::FeatureRegistration()
+    winrt::render_xaml::AdaptiveFeatureRegistration AdaptiveCardRenderer::FeatureRegistration()
     {
         if (!m_featureRegistration)
         {
@@ -78,7 +78,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         GetHostConfig()->OverflowMaxActions = overflowMaxActions;
     }
 
-    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
+    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
     {
         auto renderedCard = winrt::make_self<implementation::RenderedAdaptiveCard>();
         renderedCard->SetOriginatingCard(adaptiveCard);
@@ -119,7 +119,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return *renderedCard;
     }
 
-    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson)
+    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson)
     {
         auto adaptiveCardParseResult = winrt::AdaptiveCard::FromJsonString(adaptiveJson);
         if (auto parsedCard = adaptiveCardParseResult.AdaptiveCard())
@@ -140,7 +140,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson)
+    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson)
     {
         return RenderAdaptiveCardFromJsonString(JsonObjectToHString(adaptiveJson));
     }

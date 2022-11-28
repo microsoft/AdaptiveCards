@@ -19,7 +19,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         static winrt::xaml::FrameworkElement
         BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                       XamlBuilder* xamlBuilder,
                                       winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
 
@@ -30,13 +30,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         static void BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
                                        winrt::xaml_controls::Panel ParentPanel,
-                                       winrt::AdaptiveRenderContext context,
-                                       winrt::AdaptiveRenderArgs renderArgs,
+            winrt::render_xaml::AdaptiveRenderContext context,
+            winrt::render_xaml::AdaptiveRenderArgs renderArgs,
                                        std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback);
 
         winrt::xaml::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                          winrt::AdaptiveRenderContext const& renderContext,
-                                          winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+        winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
@@ -52,8 +52,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         static std::pair<winrt::xaml_controls::Panel, winrt::xaml::UIElement>
         CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                              winrt::AdaptiveRenderContext const& renderContext,
-                              winrt::AdaptiveRenderArgs const& renderArgs,
+                              winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                              winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                               XamlBuilder* xamlBuilder);
 
         template<typename T>
@@ -71,7 +71,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,
-                                 winrt::AdaptiveCardResourceResolvers const& resolvers,
+                                 winrt::render_xaml::AdaptiveCardResourceResolvers const& resolvers,
                                  bool isAutoSize,
                                  winrt::IInspectable const& parentElement,
                                  winrt::IInspectable const& imageContainer,

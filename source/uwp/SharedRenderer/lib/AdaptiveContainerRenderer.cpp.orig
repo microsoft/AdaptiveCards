@@ -11,8 +11,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
-                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -65,8 +65,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto parentElement = renderArgs.ParentElement();
 
             auto childItems = adaptiveContainer.Items();
+<<<<<<< HEAD
             ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildPanelChildren(
                 childItems, containerPanel.as<winrt::xaml_controls::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
+=======
+            render_xaml::XamlBuilder::BuildPanelChildren(childItems,
+                                                         containerPanel.as<winrt::xaml_controls::Panel>(),
+                                                         renderContext,
+                                                         newRenderArgs,
+                                                         [](winrt::xaml::UIElement) {});
+>>>>>>> c76a570a3 (remove using xaml namespace)
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)

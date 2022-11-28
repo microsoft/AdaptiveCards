@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveInputsConfig(::AdaptiveCards::InputsConfig const& inputsConfig = {});
 
-        property<winrt::AdaptiveErrorMessageConfig> ErrorMessage;
-        property<winrt::AdaptiveLabelConfig> Label;
+        property<winrt::render_xaml::AdaptiveErrorMessageConfig> ErrorMessage;
+        property<winrt::render_xaml::AdaptiveLabelConfig> Label;
     };
 }
 

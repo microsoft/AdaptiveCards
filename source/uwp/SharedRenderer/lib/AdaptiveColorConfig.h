@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         property<winrt::Windows::UI::Color> Default;
         property<winrt::Windows::UI::Color> Subtle;
-        property<winrt::AdaptiveHighlightColorConfig> HighlightColors;
+        property<winrt::render_xaml::AdaptiveHighlightColorConfig> HighlightColors;
     };
 }
 

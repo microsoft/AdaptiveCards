@@ -26,9 +26,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     winrt::xaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                                             XamlBuilder* xamlBuilder,
-                                                                             winrt::ContainerStyle defaultContainerStyle)
+                                                                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                       XamlBuilder* xamlBuilder,
+                                                                       winrt::ContainerStyle defaultContainerStyle)
     {
         try
         {
@@ -165,11 +165,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    std::pair<winrt::xaml_controls::Panel, winrt::xaml::UIElement>
-    XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                                       winrt::AdaptiveRenderContext const& renderContext,
-                                       winrt::AdaptiveRenderArgs const& renderArgs,
-                                       XamlBuilder* xamlBuilder)
+    std::pair<winrt::xaml_controls::Panel, winrt::xaml::UIElement> XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
+                                                                                 winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
+                                                                                 XamlBuilder* xamlBuilder)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to front these are:
@@ -209,7 +208,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto bodyElementHostImpl = winrt::make_self<winrt::implementation::WholeItemsPanel>();
             bodyElementHostImpl->SetMainPanel(true);
             bodyElementHostImpl->SetAdaptiveHeight(true);
-            winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
+            winrt::render_xaml::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
 
             XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
 
@@ -263,13 +262,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
     void XamlBuilder::BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
                                          winrt::xaml_controls::Panel parentPanel,
-                                         winrt::AdaptiveRenderContext renderContext,
-                                         winrt::AdaptiveRenderArgs renderArgs,
+                                         winrt::render_xaml::AdaptiveRenderContext renderContext,
+                                         winrt::render_xaml::AdaptiveRenderArgs renderArgs,
                                          std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback)
     {
         int iElement = 0;
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
-        winrt::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
+        winrt::render_xaml::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
         for (auto element : children)
         {
             // Get fallback state

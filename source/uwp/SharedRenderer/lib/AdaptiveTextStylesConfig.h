@@ -10,8 +10,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveTextStylesConfig(::AdaptiveCards::TextStylesConfig const& textConfig = {});
 
-        property<winrt::AdaptiveTextStyleConfig> Heading;
-        property<winrt::AdaptiveTextStyleConfig> ColumnHeader;
+        property<winrt::render_xaml::AdaptiveTextStyleConfig> Heading;
+        property<winrt::render_xaml::AdaptiveTextStyleConfig> ColumnHeader;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

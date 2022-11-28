@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     // This constructor is kept so all elements keep working as expected
     AdaptiveRenderArgs::AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                                            winrt::IInspectable const& parentElement,
-                                           winrt::AdaptiveRenderArgs const& renderArgs) :
+                                           winrt::render_xaml::AdaptiveRenderArgs const& renderArgs) :
         ContainerStyle{containerStyle},
         ParentElement{parentElement}
     {
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     AdaptiveRenderArgs::AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                                            winrt::IInspectable const& parentElement,
                                            winrt::AdaptiveCard const& parentCard,
-                                           winrt::AdaptiveRenderArgs const& renderArgs) :
+                                           winrt::render_xaml::AdaptiveRenderArgs const& renderArgs) :
         ContainerStyle{containerStyle},
         ParentElement{parentElement}, ParentCard{parentCard}
     {

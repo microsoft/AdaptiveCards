@@ -12,13 +12,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         AdaptiveTableRenderer() = default;
 
         winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs);
+                                                   winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                   winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::xaml::FrameworkElement RenderCell(winrt::AdaptiveTableCell const& cell,
-                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                                              winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                              winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                  winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
                                                  boolean showGridLines,
                                                  winrt::ContainerStyle gridStyle,
@@ -27,8 +27,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         void RenderRow(winrt::AdaptiveTableRow const& row,
                        winrt::IVector<winrt::AdaptiveTableColumnDefinition> const& columns,
-                       winrt::AdaptiveRenderContext const& renderContext,
-                       winrt::AdaptiveRenderArgs const& renderArgs,
+                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                        winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
                        boolean firstRowAsHeaders,
                        boolean showGridLines,

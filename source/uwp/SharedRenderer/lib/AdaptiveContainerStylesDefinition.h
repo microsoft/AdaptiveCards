@@ -10,12 +10,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveContainerStylesDefinition(::AdaptiveCards::ContainerStylesDefinition const& stylesDefinition = {});
 
-        property<winrt::AdaptiveContainerStyleDefinition> Default;
-        property<winrt::AdaptiveContainerStyleDefinition> Emphasis;
-        property<winrt::AdaptiveContainerStyleDefinition> Good;
-        property<winrt::AdaptiveContainerStyleDefinition> Attention;
-        property<winrt::AdaptiveContainerStyleDefinition> Warning;
-        property<winrt::AdaptiveContainerStyleDefinition> Accent;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Default;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Emphasis;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Good;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Attention;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Warning;
+        property<winrt::render_xaml::AdaptiveContainerStyleDefinition> Accent;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

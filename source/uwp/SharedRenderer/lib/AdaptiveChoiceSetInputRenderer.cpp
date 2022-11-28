@@ -11,8 +11,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                                  winrt::AdaptiveRenderContext const& renderContext,
-                                                                  winrt::AdaptiveRenderArgs const& renderArgs)
+                                                            winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                            winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -80,8 +80,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                      winrt::AdaptiveRenderArgs const& renderArgs,
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                                winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                                                       winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::xaml_controls::ComboBox comboBox{};
@@ -124,14 +124,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
-        auto input = winrt::make_self<winrt::CompactChoiceSetInputValue>(adaptiveChoiceSetInput, comboBox, validationBorder);
+        auto input = winrt::make_self<winrt::render_xaml::CompactChoiceSetInputValue>(adaptiveChoiceSetInput, comboBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 
         return inputLayout;
     }
 
-    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                       winrt::AdaptiveRenderArgs const& renderArgs,
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                                                        winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
                                                                                        bool isMultiSelect)
     {
@@ -204,13 +204,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
-        auto input = winrt::make_self<winrt::ExpandedChoiceSetInputValue>(adaptiveChoiceSetInput, stackPanel, nullptr);
+        auto input = winrt::make_self<winrt::render_xaml::ExpandedChoiceSetInputValue>(adaptiveChoiceSetInput, stackPanel, nullptr);
         renderContext.AddInputValue(*input, renderArgs);
         return inputLayout;
     }
 
-    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                       winrt::AdaptiveRenderArgs const& renderArgs,
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                                                        winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::xaml_controls::AutoSuggestBox autoSuggestBox{};
@@ -275,7 +275,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto [inputLayout, validationBorder] =
             XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
-        auto input = winrt::make_self<winrt::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
+        auto input = winrt::make_self<winrt::render_xaml::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);
 
         return inputLayout;

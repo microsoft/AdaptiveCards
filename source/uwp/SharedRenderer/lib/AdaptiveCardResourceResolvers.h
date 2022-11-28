@@ -10,10 +10,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveCardResourceResolvers() = default;
 
-        void Set(hstring const& scheme, winrt::IAdaptiveCardResourceResolver const& resolver);
-        winrt::IAdaptiveCardResourceResolver Get(hstring const& scheme);
+        void Set(hstring const& scheme, winrt::render_xaml::IAdaptiveCardResourceResolver const& resolver);
+        winrt::render_xaml::IAdaptiveCardResourceResolver Get(hstring const& scheme);
 
-        std::map<hstring, winrt::IAdaptiveCardResourceResolver> m_resourceResolvers;
+        std::map<hstring, winrt::render_xaml::IAdaptiveCardResourceResolver> m_resourceResolvers;
     };
 }
 

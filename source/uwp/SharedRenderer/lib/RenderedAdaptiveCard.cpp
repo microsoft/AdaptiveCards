@@ -75,7 +75,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             {
                 auto toggleElementAsUIElement = toggleObject.as<winrt::xaml::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::xaml::FrameworkElement>();
-                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<winrt::ElementTagContent>();
+                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<winrt::render_xaml::ElementTagContent>();
 
                 winrt::xaml::Visibility visibilityToSet = winrt::xaml::Visibility::Visible;
                 if (toggle == winrt::IsVisible::IsVisibleTrue)
@@ -164,7 +164,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 associatedInputs = actionElement.as<winrt::AdaptiveExecuteAction>().AssociatedInputs();
             }
 
-            winrt::AdaptiveInputs gatheredInputs;
+            winrt::render_xaml::AdaptiveInputs gatheredInputs;
             bool inputsAreValid;
             if (associatedInputs == winrt::AssociatedInputs::None)
             {
@@ -213,7 +213,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingHostConfig(winrt::AdaptiveHostConfig const& value)
+    void RenderedAdaptiveCard::SetOriginatingHostConfig(winrt::render_xaml::AdaptiveHostConfig const& value)
     {
         m_originatingHostConfig = value;
     }
@@ -221,7 +221,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void RenderedAdaptiveCard::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                                  winrt::IAdaptiveShowCardAction const& showCardAction,
                                                  winrt::xaml::UIElement const& showCardUIElement,
-                                                 winrt::AdaptiveRenderArgs const& renderArgs)
+                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
@@ -229,7 +229,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void RenderedAdaptiveCard::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                                  winrt::IAdaptiveShowCardAction const& showCardAction,
                                                  winrt::xaml::UIElement const& showCardUIElement,
-                                                 winrt::AdaptiveRenderArgs const& renderArgs)
+                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         AddInlineShowCardHelper(adaptiveCard.InternalId(), showCardAction, showCardUIElement, renderArgs);
     }
@@ -237,7 +237,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void RenderedAdaptiveCard::AddInlineShowCardHelper(uint32_t actionSetId,
                                                        winrt::IAdaptiveShowCardAction const& showCardAction,
                                                        winrt::xaml::UIElement const& showCardUIElement,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         auto showCardInfo = std::make_shared<ShowCardInfo>();
         showCardInfo->actionSetId = actionSetId;
@@ -259,18 +259,19 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         m_overflowButtons.emplace(std::make_pair(actionCard.InternalId(), actionUIElement));
     }
 
-    void RenderedAdaptiveCard::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
+    void RenderedAdaptiveCard::AddInputValue(render_xaml::IAdaptiveInputValue const& inputValue,
+                                             winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         m_inputs->AddInputValue(inputValue, renderArgs);
     }
 
     void RenderedAdaptiveCard::LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction,
-                                                winrt::AdaptiveRenderArgs const& renderArgs)
+                                                winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
     }
 
-    void RenderedAdaptiveCard::LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs)
+    void RenderedAdaptiveCard::LinkCardToParent(winrt::AdaptiveCard const& card, winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         // We get the card internal id from the showcard action
         uint32_t cardId = card.InternalId();
@@ -288,7 +289,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
-    winrt::IAdaptiveInputValue RenderedAdaptiveCard::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
+    winrt::render_xaml::IAdaptiveInputValue RenderedAdaptiveCard::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         return m_inputs->GetInputValue(inputElement);
     }

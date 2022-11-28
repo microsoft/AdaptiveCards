@@ -27,19 +27,19 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJsonString(hstring const& hostConfigJson)
+    winrt::render_xaml::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJsonString(hstring const& hostConfigJson)
     {
         std::string adaptiveJsonString = HStringToUTF8(hostConfigJson);
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
     }
 
-    winrt::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::JsonObject const& hostConfigJson)
+    winrt::render_xaml::AdaptiveHostConfigParseResult AdaptiveHostConfig::FromJson(winrt::JsonObject const& hostConfigJson)
     {
         std::string adaptiveJsonString = JsonObjectToString(hostConfigJson);
         return AdaptiveHostConfig::_FromJsonString(adaptiveJsonString);
     }
 
-    winrt::AdaptiveHostConfigParseResult AdaptiveHostConfig::_FromJsonString(std::string const& adaptiveJson)
+    winrt::render_xaml::AdaptiveHostConfigParseResult AdaptiveHostConfig::_FromJsonString(std::string const& adaptiveJson)
     {
         auto sharedHostConfig = ::AdaptiveCards::HostConfig::DeserializeFromString(adaptiveJson);
         auto parseResult = winrt::make<implementation::AdaptiveHostConfig>(sharedHostConfig);

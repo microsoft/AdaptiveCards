@@ -7,12 +7,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct AdaptiveActionEventArgs : AdaptiveActionEventArgsT<AdaptiveActionEventArgs>
     {
-        AdaptiveActionEventArgs(winrt::IAdaptiveActionElement const& action, winrt::AdaptiveInputs const& inputs) :
+        AdaptiveActionEventArgs(winrt::IAdaptiveActionElement const& action, winrt::render_xaml::AdaptiveInputs const& inputs) :
             Action{action}, Inputs{inputs}
         {
         }
 
         property<winrt::IAdaptiveActionElement> Action;
-        property<winrt::AdaptiveInputs> Inputs;
+        property<winrt::render_xaml::AdaptiveInputs> Inputs;
     };
 }

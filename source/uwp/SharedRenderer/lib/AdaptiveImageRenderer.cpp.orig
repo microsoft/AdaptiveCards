@@ -18,9 +18,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
     }
 
-    winrt::xaml::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
-                                                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
+    winrt::UIElement AdaptiveImageRenderer::Render(
+        winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveRenderContext const& renderContext, winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -44,9 +43,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    winrt::xaml::UIElement XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                   winrt::render_xaml::AdaptiveRenderContext const& renderContext,
-                                                   winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
+    winrt::UIElement XamlBuilder::BuildImage(
+        winrt::IAdaptiveCardElement const& adaptiveCardElement,
+        winrt::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto adaptiveImage = adaptiveCardElement.as<winrt::AdaptiveImage>();
 
@@ -86,7 +86,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         auto backgroundColor = adaptiveImage.BackgroundColor();
         auto isVisible = adaptiveCardElement.IsVisible();
 
-        winrt::xaml::FrameworkElement frameworkElement{nullptr};
+        winrt::FrameworkElement frameworkElement{nullptr};
 
         // Issue #8125
         if (imageStyle == winrt::ImageStyle::Person)
@@ -249,17 +249,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         switch (adaptiveHorizontalAlignment)
         {
         case winrt::HAlignment::Left:
-            frameworkElement.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Left);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Left);
             break;
         case winrt::HAlignment::Right:
-            frameworkElement.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Right);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Right);
             break;
         case winrt::HAlignment::Center:
-            frameworkElement.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Center);
+            frameworkElement.HorizontalAlignment(winrt::HorizontalAlignment::Center);
             break;
         }
 
-        frameworkElement.VerticalAlignment(winrt::xaml::VerticalAlignment::Top);
+        frameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
 
         auto selectAction = adaptiveImage.SelectAction();
@@ -276,7 +276,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     void XamlBuilder::SetImageOnUIElement(
         winrt::Uri const& imageUrl,
         T const& uiElement,
-        winrt::render_xaml::AdaptiveCardResourceResolvers const& resolvers,
+        winrt::AdaptiveCardResourceResolvers const& resolvers,
         bool isAutoSize,
         winrt::IInspectable const& parentElement,
         winrt::IInspectable const& imageContainer,
@@ -493,7 +493,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    winrt::xaml_media::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
+    winrt::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
     {
         if (isImageSvg)
         {
@@ -560,9 +560,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     };
 
     template <>
+<<<<<<< HEAD
+    void XamlBuilder::SetImageSource<winrt::xaml_shapes::Ellipse>(
+        winrt::xaml_shapes::Ellipse const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch)
+=======
     void XamlBuilder::SetImageSource<winrt::xaml_shapes::Ellipse>(winrt::xaml_shapes::Ellipse const& destination,
                                                                   winrt::xaml_media::ImageSource const& imageSource,
                                                                   winrt::xaml_media::Stretch stretch)
+>>>>>>> f80229424 (change using xaml media)
     {
         winrt::xaml_media::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
@@ -594,14 +599,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                ellipse.Visibility(winrt::xaml::Visibility::Collapsed);
+                ellipse.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
                 auto weakParent = winrt::make_weak(parentElement);
 
                 brushAsImageBrush.ImageOpened(
-                    [ellipse, weakParent, isVisible](winrt::IInspectable const& sender, winrt::xaml::RoutedEventArgs /*args*/) -> void
+                    [ellipse, weakParent, isVisible](winrt::IInspectable const& sender, winrt::RoutedEventArgs /*args*/) -> void
                     {
                         if (isVisible)
                         {
@@ -612,7 +617,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                             auto lambdaParentElement = weakParent.get();
                             if (ellipse && lambdaParentElement)
                             {
-                                winrt::xaml::FrameworkElement k{nullptr};
+                                winrt::FrameworkElement k{nullptr};
                                 winrt::xaml_media_imaging::BitmapSource as{nullptr};
 
                                 XamlHelpers::SetAutoImageSize(ellipse, lambdaParentElement, lambdaImageSource, isVisible);
@@ -644,7 +649,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
-                xamlImage.Visibility(winrt::xaml::Visibility::Collapsed);
+                xamlImage.Visibility(winrt::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // Take weak references to the image and parent to avoid circular references between this lambda and
@@ -655,7 +660,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
                 xamlImage.ImageOpened(
                     [weakImage, weakParent, imageSource, isVisible](
-                        winrt::IInspectable const& /*sender*/, winrt::xaml::RoutedEventArgs const&
+                        winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const&
                         /*args*/) -> void
                     {
                         if (const auto lambdaImageAsFrameworkElement = weakImage.get())

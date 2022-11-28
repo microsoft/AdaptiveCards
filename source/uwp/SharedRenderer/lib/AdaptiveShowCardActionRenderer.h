@@ -10,12 +10,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
     public:
         winrt::xaml::UIElement Render(winrt::IAdaptiveActionElement const& action,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs);
+                                                   winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                   winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         static winrt::xaml::UIElement BuildShowCard(winrt::AdaptiveCard const& showCard,
-                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                    winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                 winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                 winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                     bool isBottomActionBar);
     };
 }

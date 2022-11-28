@@ -13,8 +13,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
     private:
         winrt::xaml::ResourceDictionary m_overrideDictionary;
-        winrt::AdaptiveHostConfig m_hostConfig;
-        winrt::AdaptiveFeatureRegistration m_featureRegistration;
+        winrt::render_xaml::AdaptiveHostConfig m_hostConfig;
+        winrt::render_xaml::AdaptiveFeatureRegistration m_featureRegistration;
         winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         uint32_t m_desiredWidth = 0;
@@ -37,20 +37,20 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         winrt::xaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
-        void HostConfig(winrt::AdaptiveHostConfig const& hostConfig)
+        void HostConfig(winrt::render_xaml::AdaptiveHostConfig const& hostConfig)
         {
             m_hostConfig = hostConfig;
             UpdateActionSentimentResourceDictionary();
         }
 
-        winrt::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
+        winrt::render_xaml::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
 
-        void FeatureRegistration(winrt::AdaptiveFeatureRegistration const& featureRegistration)
+        void FeatureRegistration(winrt::render_xaml::AdaptiveFeatureRegistration const& featureRegistration)
         {
             m_featureRegistration = featureRegistration;
         }
 
-        winrt::AdaptiveFeatureRegistration FeatureRegistration();
+        winrt::render_xaml::AdaptiveFeatureRegistration FeatureRegistration();
 
         void SetFixedDimensions(uint32_t desiredWidth, uint32_t desiredHeight);
         void ResetFixedDimensions() { m_explicitDimensions = false; };
@@ -70,12 +70,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             return GetHostConfig()->OverflowButtonAccessibilityText = text;
         }
 
-        winrt::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
-        winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
-        winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
+        winrt::render_xaml::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
+        winrt::render_xaml::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
+        winrt::render_xaml::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
 
-        winrt::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
-        winrt::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
+        winrt::render_xaml::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
+        winrt::render_xaml::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
 
         winrt::xaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
@@ -96,7 +96,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         winrt::xaml::ResourceDictionary m_defaultResourceDictionary;
         winrt::xaml::ResourceDictionary m_mergedResourceDictionary;
         winrt::xaml::ResourceDictionary m_actionSentimentResourceDictionary;
-        winrt::AdaptiveCardResourceResolvers m_resourceResolvers;
+        winrt::render_xaml::AdaptiveCardResourceResolvers m_resourceResolvers;
         winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };

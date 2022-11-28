@@ -12,12 +12,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                            winrt::IInspectable const& parentElement,
-                           winrt::AdaptiveRenderArgs const& renderArgs);
+                           winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,
                            winrt::IInspectable const& parentElement,
                            winrt::AdaptiveCard const& parentCard,
-                           winrt::AdaptiveRenderArgs const& renderArgs);
+                           winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
         property<winrt::ContainerStyle> ContainerStyle;
         property<winrt::IInspectable> ParentElement;

@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                               winrt::AdaptiveRenderArgs const& renderArgs)
+                                                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -58,7 +58,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 XamlHelpers::HandleInputLayoutAndValidation(adaptiveNumberInput, textBox, (max || min), renderContext);
 
             // Create the InputValue and add it to the context?
-            auto input = winrt::make_self<winrt::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
+            auto input = winrt::make_self<winrt::render_xaml::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
             renderContext.AddInputValue(*input, renderArgs);
 

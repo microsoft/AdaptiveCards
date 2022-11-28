@@ -6,12 +6,12 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    void AdaptiveCardResourceResolvers::Set(hstring const& scheme, winrt::IAdaptiveCardResourceResolver const& resolver)
+    void AdaptiveCardResourceResolvers::Set(hstring const& scheme, winrt::render_xaml::IAdaptiveCardResourceResolver const& resolver)
     {
         m_resourceResolvers[scheme] = resolver;
     }
 
-    winrt::IAdaptiveCardResourceResolver AdaptiveCardResourceResolvers::Get(hstring const& scheme)
+    winrt::render_xaml::IAdaptiveCardResourceResolver AdaptiveCardResourceResolvers::Get(hstring const& scheme)
     {
         auto found = m_resourceResolvers.find(scheme);
         if (found != m_resourceResolvers.end())

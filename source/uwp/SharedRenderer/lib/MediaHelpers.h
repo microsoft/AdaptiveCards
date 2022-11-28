@@ -4,22 +4,22 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 {
-    winrt::xaml_controls::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
-                                                      winrt::AdaptiveRenderArgs const& renderArgs,
+    winrt::xaml_controls::Image GetMediaPosterAsImage(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                       winrt::AdaptiveMedia const& adaptiveMedia);
 
     winrt::xaml::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
-                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                               winrt::AdaptiveRenderArgs const& renderArgs);
+                                                                            winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                            winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
-    std::tuple<winrt::Uri, winrt::hstring> GetMediaSource(winrt::AdaptiveHostConfig const& hostConfig,
+    std::tuple<winrt::Uri, winrt::hstring> GetMediaSource(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                                           winrt::AdaptiveMedia const& adaptiveMedia);
 
-    void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
+    void HandleMediaClick(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
                           winrt::xaml_controls::MediaElement const& mediaElement,
                           winrt::xaml::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
-                          winrt::AdaptiveMediaEventInvoker const& mediaInvoker);
+                          winrt::render_xaml::AdaptiveMediaEventInvoker const& mediaInvoker);
 }

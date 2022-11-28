@@ -150,8 +150,8 @@ winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
     return color;
 }
 
-winrt::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::ContainerStyle const& style,
-                                                                    winrt::AdaptiveHostConfig const& hostConfig)
+winrt::render_xaml::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::ContainerStyle const& style,
+                                                                    winrt::render_xaml::AdaptiveHostConfig const& hostConfig)
 {
     auto containerStyles = hostConfig.ContainerStyles();
 
@@ -172,7 +172,7 @@ winrt::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(winrt::Conta
         return containerStyles.Default();
     }
 }
-winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                                     winrt::ForegroundColor adaptiveColor,
                                                     winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
@@ -182,7 +182,7 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig co
 
     auto colorsConfig = styleDefinition.ForegroundColors();
 
-    winrt::AdaptiveColorConfig colorConfig{};
+    winrt::render_xaml::AdaptiveColorConfig colorConfig{};
     switch (adaptiveColor)
     {
     case winrt::ForegroundColor::Accent:
@@ -221,8 +221,8 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig co
 }
 
 winrt::xaml_documents::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs)
+                                      winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                      winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
 {
     winrt::xaml_documents::TextHighlighter textHighlighter{};
 
@@ -242,7 +242,7 @@ winrt::xaml_documents::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElemen
     return textHighlighter;
 }
 
-uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing)
+uint32_t GetSpacingSizeFromSpacing(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing)
 {
     auto spacingConfig = hostConfig.Spacing();
 
@@ -266,19 +266,19 @@ uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, 
     }
 }
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::AdaptiveHostConfig const& hostConfig)
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::render_xaml::AdaptiveHostConfig const& hostConfig)
 {
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BackgroundColor();
 }
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::AdaptiveHostConfig const& hostConfig)
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::render_xaml::AdaptiveHostConfig const& hostConfig)
 {
     auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
     return styleDefinition.BorderColor();
 }
 
-winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
+winrt::hstring GetFontFamilyFromFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
     // Get FontFamily from desired style
     auto typeDefinition = GetFontType(hostConfig, fontType);
@@ -304,10 +304,10 @@ winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostCo
     return fontFamily;
 }
 
-uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType, winrt::TextSize const& desiredSize)
+uint32_t GetFontSizeFromFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType, winrt::TextSize const& desiredSize)
 {
-    winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-    winrt::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
+    winrt::render_xaml::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+    winrt::render_xaml::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
     uint32_t result = GetFontSize(sizesConfig, desiredSize);
 
     if (result == std::numeric_limits<unsigned int>::max())
@@ -351,12 +351,12 @@ uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig, wi
     return result;
 }
 
-winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                                             winrt::FontType const& fontType,
                                                             winrt::TextWeight const& desiredWeight)
 {
-    winrt::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
-    winrt::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+    winrt::render_xaml::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+    winrt::render_xaml::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
     uint16_t result = GetFontWeight(weightConfig, desiredWeight);
 
     if (result == MAXUINT16)
@@ -394,7 +394,7 @@ winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostC
     return {result};
 }
 
-winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
+winrt::render_xaml::AdaptiveFontTypeDefinition GetFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType)
 {
     auto fontTypes = hostConfig.FontTypes();
     switch (fontType)
@@ -409,7 +409,7 @@ winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& h
     }
 }
 
-uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize)
+uint32_t GetFontSize(winrt::render_xaml::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize)
 {
     switch (desiredSize)
     {
@@ -432,7 +432,7 @@ uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::T
     }
 }
 
-uint16_t GetFontWeight(winrt::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight)
+uint16_t GetFontWeight(winrt::render_xaml::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight)
 {
     switch (desiredWeight)
     {
@@ -476,7 +476,7 @@ winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson)
     return inputJson.Stringify();
 }
 
-bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration)
+bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::render_xaml::AdaptiveFeatureRegistration const& featureRegistration)
 {
     winrt::IVector<winrt::AdaptiveRequirement> requirements = cardElement.Requirements();
     bool meetsRequirementsLocal = true;
@@ -517,7 +517,7 @@ bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImag
     return false;
 }
 
-winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
+winrt::Uri GetUrlFromString(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
 {
     winrt::Uri uri{nullptr};
 

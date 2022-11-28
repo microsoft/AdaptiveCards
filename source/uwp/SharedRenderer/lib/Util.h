@@ -110,44 +110,46 @@ inline bool Boolify(const boolean value) noexcept
 
 winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
-winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                                     winrt::ForegroundColor adaptiveColor,
                                                     winrt::ContainerStyle containerStyle,
                                                     bool isSubtle,
                                                     bool highlight);
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::AdaptiveHostConfig const& hostConfig);
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style,
+   winrt::render_xaml::AdaptiveHostConfig const& hostConfig);
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::AdaptiveHostConfig const& hostConfig);
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style,
+                                                  winrt::render_xaml::AdaptiveHostConfig const& hostConfig);
 
 winrt::xaml_documents::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
-                                                      winrt::AdaptiveRenderContext const& renderContext,
-                                                      winrt::AdaptiveRenderArgs const& renderArgs);
+               winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+               winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
-winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
+winrt::hstring GetFontFamilyFromFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
-uint32_t GetFontSizeFromFontType(winrt::AdaptiveHostConfig const& hostConfig,
+uint32_t GetFontSizeFromFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                  winrt::FontType const& fontType,
                                  winrt::TextSize const& desiredSize);
 
-winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::AdaptiveHostConfig const& hostConfig,
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
                                                             winrt::FontType const& fontType,
                                                             winrt::TextWeight const& desiredWeight);
 
-winrt::AdaptiveFontTypeDefinition GetFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
+winrt::render_xaml::AdaptiveFontTypeDefinition GetFontType(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
-uint32_t GetFontSize(winrt::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize);
+uint32_t GetFontSize(winrt::render_xaml::AdaptiveFontSizesConfig const& sizesConfig, winrt::TextSize const& desiredSize);
 
-uint16_t GetFontWeight(winrt::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight);
+uint16_t GetFontWeight(winrt::render_xaml::AdaptiveFontWeightsConfig const& weightsConfig, winrt::TextWeight const& desiredWeight);
 
-uint32_t GetSpacingSizeFromSpacing(winrt::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing);
+uint32_t GetSpacingSizeFromSpacing(winrt::render_xaml::AdaptiveHostConfig const& hostConfig, winrt::Spacing const& spacing);
 
 winrt::JsonObject StringToJsonObject(const std::string& inputString);
 winrt::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
 winrt::hstring JsonObjectToHString(winrt::JsonObject const& inputJson);
 std::string JsonObjectToString(winrt::JsonObject const& inputJson);
 
-bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveFeatureRegistration const& featureRegistration);
+bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::render_xaml::AdaptiveFeatureRegistration const& featureRegistration);
 
 bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImage);
 
@@ -188,7 +190,8 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString);
+winrt::Uri GetUrlFromString(winrt::render_xaml::AdaptiveHostConfig const& hostConfig,
+                                                 winrt::hstring const& urlString);
 
 winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor);
 

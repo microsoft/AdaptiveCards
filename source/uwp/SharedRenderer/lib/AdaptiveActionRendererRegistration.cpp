@@ -6,12 +6,12 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    void AdaptiveActionRendererRegistration::Set(winrt::hstring const& type, winrt::IAdaptiveActionRenderer const& renderer)
+    void AdaptiveActionRendererRegistration::Set(winrt::hstring const& type, winrt::render_xaml::IAdaptiveActionRenderer const& renderer)
     {
         m_registration[type] = renderer;
     }
 
-    winrt::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(winrt::hstring const& type)
+    winrt::render_xaml::IAdaptiveActionRenderer AdaptiveActionRendererRegistration::Get(winrt::hstring const& type)
     {
         if (const auto found = m_registration.find(type); found != m_registration.end())
         {

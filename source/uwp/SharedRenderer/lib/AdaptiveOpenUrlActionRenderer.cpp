@@ -9,8 +9,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveOpenUrlActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
-                                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                                 winrt::AdaptiveRenderArgs const& renderArgs)
+                                                           winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                           winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

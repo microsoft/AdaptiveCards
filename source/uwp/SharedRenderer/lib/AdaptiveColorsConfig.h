@@ -10,13 +10,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveColorsConfig(::AdaptiveCards::ColorsConfig colorsConfig = {});
 
-        property<winrt::AdaptiveColorConfig> Default;
-        property<winrt::AdaptiveColorConfig> Accent;
-        property<winrt::AdaptiveColorConfig> Dark;
-        property<winrt::AdaptiveColorConfig> Light;
-        property<winrt::AdaptiveColorConfig> Good;
-        property<winrt::AdaptiveColorConfig> Warning;
-        property<winrt::AdaptiveColorConfig> Attention;
+        property<winrt::render_xaml::AdaptiveColorConfig> Default;
+        property<winrt::render_xaml::AdaptiveColorConfig> Accent;
+        property<winrt::render_xaml::AdaptiveColorConfig> Dark;
+        property<winrt::render_xaml::AdaptiveColorConfig> Light;
+        property<winrt::render_xaml::AdaptiveColorConfig> Good;
+        property<winrt::render_xaml::AdaptiveColorConfig> Warning;
+        property<winrt::render_xaml::AdaptiveColorConfig> Attention;
     };
 }
 

@@ -9,8 +9,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveTimeInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -49,7 +49,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto [inputLayout, validationBorder] =
                 XamlHelpers::HandleInputLayoutAndValidation(adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext);
 
-            auto input = winrt::make_self<winrt::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);
+            auto input = winrt::make_self<winrt::render_xaml::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);
             renderContext.AddInputValue(*input, renderArgs);
 
             return inputLayout;

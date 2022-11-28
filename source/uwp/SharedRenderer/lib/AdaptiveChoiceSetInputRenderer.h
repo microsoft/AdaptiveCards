@@ -12,25 +12,25 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         AdaptiveChoiceSetInputRenderer() = default;
 
         winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      winrt::AdaptiveRenderArgs const& renderArgs);
+                                                   winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                   winrt::render_xaml::AdaptiveRenderArgs const& renderArgs);
 
     private:
         static std::vector<std::string> GetChoiceSetValueVector(winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
 
         static bool IsChoiceSelected(std::vector<std::string> selectedValues, winrt::AdaptiveChoiceInput const& choice);
 
-        winrt::xaml::UIElement BuildExpandedChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::AdaptiveRenderArgs const& renderArgs,
+        winrt::xaml::UIElement BuildExpandedChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                        winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                            winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
                                                            bool isMultiSelect);
 
-        winrt::xaml::UIElement BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                          winrt::AdaptiveRenderArgs const& renderArgs,
+        winrt::xaml::UIElement BuildCompactChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                           winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
 
-        winrt::xaml::UIElement BuildFilteredChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::AdaptiveRenderArgs const& renderArgs,
+        winrt::xaml::UIElement BuildFilteredChoiceSetInput(winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                                        winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
                                                            winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
     };
 }

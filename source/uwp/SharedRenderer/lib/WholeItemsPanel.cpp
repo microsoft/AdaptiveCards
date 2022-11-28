@@ -325,13 +325,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
-                if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
+                if (const auto tagAsElementTagContent = tag.try_as<winrt::render_xaml::ElementTagContent>())
                 {
                     tagAsElementTagContent.IsStretchable(true);
                 }
                 else
                 {
-                    winrt::ElementTagContent tagContent{};
+                    winrt::render_xaml::ElementTagContent tagContent{};
                     tagContent.IsStretchable(true);
                     elementAsFrameworkElement.Tag(tagContent);
                 }
@@ -346,7 +346,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
             {
-                if (const auto tagAsElementTagContent = tag.try_as<winrt::ElementTagContent>())
+                if (const auto tagAsElementTagContent = tag.try_as<winrt::render_xaml::ElementTagContent>())
                 {
                     return tagAsElementTagContent.IsStretchable();
                 }
@@ -360,7 +360,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         for (auto child : panel.Children())
         {
             // Subgroups (columns) are implemented with WholeItemsPanel
-            if (auto childAsWholeItemPanel = child.as<winrt::WholeItemsPanel>())
+            if (auto childAsWholeItemPanel = child.as<winrt::render_xaml::WholeItemsPanel>())
             {
                 if (childAsWholeItemPanel.IsTruncated())
                 {

@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         AdaptiveLabelConfig(::AdaptiveCards::LabelConfig const& labelConfig = {});
 
         property<winrt::Spacing> InputSpacing;
-        property<winrt::AdaptiveInputLabelConfig> RequiredInputs;
-        property<winrt::AdaptiveInputLabelConfig> OptionalInputs;
+        property<winrt::render_xaml::AdaptiveInputLabelConfig> RequiredInputs;
+        property<winrt::render_xaml::AdaptiveInputLabelConfig> OptionalInputs;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

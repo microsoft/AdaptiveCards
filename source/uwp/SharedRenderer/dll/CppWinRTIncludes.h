@@ -65,7 +65,7 @@ namespace winrt
 
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
     namespace AdaptiveCards::Rendering::Xaml_Rendering{}
-    using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering;
+    namespace render_xaml = ::winrt::AdaptiveCards::Rendering::Xaml_Rendering;
 
     namespace AdaptiveCards::Rendering::Xaml_Rendering::implementation{}
     namespace implementation

@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         property<winrt::Windows::UI::Color> BackgroundColor;
         property<winrt::Windows::UI::Color> BorderColor;
-        property<winrt::AdaptiveColorsConfig> ForegroundColors;
-        property<winrt::AdaptiveColorsConfig> HighlightColors;
+        property<winrt::render_xaml::AdaptiveColorsConfig> ForegroundColors;
+        property<winrt::render_xaml::AdaptiveColorsConfig> HighlightColors;
     };
 }
 

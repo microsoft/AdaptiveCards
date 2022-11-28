@@ -10,13 +10,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveActionsConfig(::AdaptiveCards::ActionsConfig const& actionsConfig = {});
 
-        property<winrt::AdaptiveShowCardActionConfig> ShowCard;
-        property<winrt::ActionsOrientation> ActionsOrientation;
-        property<winrt::ActionAlignment> ActionAlignment;
+        property<winrt::render_xaml::AdaptiveShowCardActionConfig> ShowCard;
+        property<winrt::render_xaml::ActionsOrientation> ActionsOrientation;
+        property<winrt::render_xaml::ActionAlignment> ActionAlignment;
         property<uint32_t> ButtonSpacing;
         property<uint32_t> MaxActions;
         property<winrt::Spacing> Spacing;
-        property<winrt::IconPlacement> IconPlacement;
+        property<winrt::render_xaml::IconPlacement> IconPlacement;
         property<uint32_t> IconSize;
     };
 }

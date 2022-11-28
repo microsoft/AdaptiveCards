@@ -12,8 +12,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                          winrt::AdaptiveRenderContext const& renderContext,
-                                                          winrt::AdaptiveRenderArgs const& renderArgs)
+                                                    winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                    winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

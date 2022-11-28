@@ -10,8 +10,8 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::xaml::UIElement AdaptiveTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::render_xaml::AdaptiveRenderContext const& renderContext,
+                                                       winrt::render_xaml::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -74,8 +74,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::xaml_automation::Peers::AutomationHeadingLevel
-    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
+    winrt::xaml_automation::Peers::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::render_xaml::AdaptiveRenderContext const& renderContext)
     {
         auto textBlockConfig = renderContext.HostConfig().TextBlock();
 

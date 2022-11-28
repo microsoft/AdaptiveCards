@@ -10,8 +10,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveFontTypesDefinition(::AdaptiveCards::FontTypesDefinition const& fontTypesDefinition = {});
 
-        property<winrt::AdaptiveFontTypeDefinition> Default;
-        property<winrt::AdaptiveFontTypeDefinition> Monospace;
+        property<winrt::render_xaml::AdaptiveFontTypeDefinition> Default;
+        property<winrt::render_xaml::AdaptiveFontTypeDefinition> Monospace;
     };
 }
 
