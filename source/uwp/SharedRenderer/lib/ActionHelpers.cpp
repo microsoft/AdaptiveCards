@@ -46,8 +46,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                          winrt::hstring const& name,
                                          winrt::hstring const& description)
     {
-        winrt::AutomationProperties::SetName(dependencyObject, name);
-        winrt::AutomationProperties::SetFullDescription(dependencyObject, description);
+        winrt::xaml_automation::AutomationProperties::SetName(dependencyObject, name);
+        winrt::xaml_automation::AutomationProperties::SetFullDescription(dependencyObject, description);
     }
 
     void ArrangeButtonContent(winrt::hstring const& actionTitle,

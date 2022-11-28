@@ -71,7 +71,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                     if (!actionTitle.empty())
                     {
-                        winrt::AutomationProperties::SetName(hyperlink, actionTitle);
+                        winrt::xaml_automation::AutomationProperties::SetName(hyperlink, actionTitle);
                     }
 
                     hyperlink.Click([selectAction, actionInvoker](winrt::IInspectable const& /* sender */,

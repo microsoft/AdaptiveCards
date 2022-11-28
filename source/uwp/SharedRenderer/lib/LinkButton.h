@@ -8,14 +8,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     // accessibility purposes.
     struct LinkButton : public winrt::xaml_controls::ButtonT<LinkButton>
     {
-        winrt::AutomationPeer OnCreateAutomationPeer();
+        winrt::xaml_automation::Peers::AutomationPeer OnCreateAutomationPeer();
     };
 
-    struct LinkButtonAutomationPeer : public winrt::ButtonAutomationPeerT<LinkButtonAutomationPeer>
+    struct LinkButtonAutomationPeer : public winrt::xaml_automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
     {
         LinkButtonAutomationPeer(LinkButton& linkButton);
 
-        winrt::AutomationControlType GetAutomationControlType() const;
-        winrt::AutomationControlType GetAutomationControlTypeCore() const;
+        winrt::xaml_automation::Peers::AutomationControlType GetAutomationControlType() const;
+        winrt::xaml_automation::Peers::AutomationControlType GetAutomationControlTypeCore() const;
     };
 }

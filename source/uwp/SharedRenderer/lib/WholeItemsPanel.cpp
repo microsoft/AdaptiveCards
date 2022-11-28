@@ -397,7 +397,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         if (const auto dependencyObject = element.try_as<winrt::DependencyObject>())
         {
-            return winrt::AutomationProperties::GetName(dependencyObject);
+            return winrt::xaml_automation::AutomationProperties::GetName(dependencyObject);
         }
         return L"";
     }

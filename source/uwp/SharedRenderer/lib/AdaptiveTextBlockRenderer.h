@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                    winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        winrt::AutomationHeadingLevel GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext);
+        winrt::xaml_automation::Peers::AutomationHeadingLevel GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

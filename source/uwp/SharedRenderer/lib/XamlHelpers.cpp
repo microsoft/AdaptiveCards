@@ -772,8 +772,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         if (label)
         {
-            winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
-            winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
+            winrt::xaml_automation::AutomationProperties::SetLabeledBy(actualUIElement, label);
+            winrt::xaml_automation::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
         }
 
         return inputStackPanel;
@@ -850,7 +850,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
-        winrt::AutomationProperties::SetIsRequiredForForm(actualInputUIElement, isRequired);
+        winrt::xaml_automation::AutomationProperties::SetIsRequiredForForm(actualInputUIElement, isRequired);
 
         // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
         if (const auto adaptiveToggleInput = adaptiveInput.try_as<winrt::AdaptiveToggleInput>())
@@ -861,7 +861,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                 {
                     if (const auto contentAsDependencyObject = content.try_as<winrt::DependencyObject>())
                     {
-                        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(actualInputUIElement);
+                        auto uiElementDescribers = winrt::xaml_automation::AutomationProperties::GetDescribedBy(actualInputUIElement);
                         uiElementDescribers.Append(contentAsDependencyObject);
                     }
                 }

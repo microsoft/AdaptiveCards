@@ -35,7 +35,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
     void InputValue::SetAccessibilityProperties(bool isInputValid)
     {
-        auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(m_uiInputElement);
+        auto uiElementDescribers = winrt::xaml_automation::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
         auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
@@ -52,7 +52,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
             uiElementDescribers.RemoveAt(index);
         }
 
-        winrt::AutomationProperties::SetIsDataValidForForm(m_uiInputElement, isInputValid);
+        winrt::xaml_automation::AutomationProperties::SetIsDataValidForForm(m_uiInputElement, isInputValid);
     }
 
     bool InputValue::IsValueValid()

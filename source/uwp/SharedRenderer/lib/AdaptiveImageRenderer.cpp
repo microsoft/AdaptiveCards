@@ -265,7 +265,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::hstring altText = adaptiveImage.AltText();
 
-        winrt::AutomationProperties::SetName(frameworkElement, altText);
+        winrt::xaml_automation::AutomationProperties::SetName(frameworkElement, altText);
 
         return ActionHelpers::HandleSelectAction(
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
