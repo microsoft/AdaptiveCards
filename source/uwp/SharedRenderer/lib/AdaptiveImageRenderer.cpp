@@ -91,15 +91,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         // Issue #8125
         if (imageStyle == winrt::ImageStyle::Person)
         {
-            winrt::Ellipse ellipse{};
-            winrt::Ellipse backgroundEllipse{};
+            winrt::xaml_shapes::Ellipse ellipse{};
+            winrt::xaml_shapes::Ellipse backgroundEllipse{};
 
             winrt::Stretch imageStretch = (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
 
             auto parentElement = renderArgs.ParentElement();
 
-            auto ellipseAsShape = ellipse.as<winrt::Shape>();
-            auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
+            auto ellipseAsShape = ellipse.as<winrt::xaml_shapes::Shape>();
+            auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::xaml_shapes::Shape>();
 
             SetImageOnUIElement(
                 imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, isImageSvg, imageStretch);
@@ -557,7 +557,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     };
 
     template <>
-    void XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch)
+    void XamlBuilder::SetImageSource<winrt::xaml_shapes::Ellipse>(
+        winrt::xaml_shapes::Ellipse const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch)
     {
         winrt::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
@@ -567,17 +568,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     };
 
     template <>
-    void XamlBuilder::SetAutoSize<winrt::Ellipse>(
-        winrt::Ellipse const& ellipse,
-        winrt::IInspectable const& parentElement,
-        winrt::IInspectable const& imageContainer,
-        bool isVisible,
-        bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize<winrt::xaml_shapes::Ellipse>(winrt::xaml_shapes::Ellipse const& ellipse,
+                                                               winrt::IInspectable const& parentElement,
+                                                               winrt::IInspectable const& imageContainer,
+                                                               bool isVisible,
+                                                               bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement && m_enableXamlImageHandling)
         {
-            auto ellipseAsShape = imageContainer.as<winrt::Shape>();
+            auto ellipseAsShape = imageContainer.as<winrt::xaml_shapes::Shape>();
 
             auto ellipseBrush = ellipseAsShape.Fill();
 

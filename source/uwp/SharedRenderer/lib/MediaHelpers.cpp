@@ -53,7 +53,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // Create a rectangle
-        winrt::Rectangle rectangle{};
+        winrt::xaml_shapes::Rectangle rectangle{};
 
         // Set the size
         rectangle.Height(c_playIconSize);

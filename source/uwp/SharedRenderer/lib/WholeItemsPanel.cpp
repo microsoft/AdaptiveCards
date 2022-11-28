@@ -131,7 +131,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                             m_isTruncated = true;
                         }
                     }
-                    if (auto childAsShape = child.try_as<winrt::Shape>())
+                    if (auto childAsShape = child.try_as<winrt::xaml_shapes::Shape>())
                     {
                         if (!HasExplicitSize(childAsShape))
                         {
@@ -374,7 +374,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     // As shapes (used for circular cropping) don't resize as a stretched image, we need do to more
     // things manually. Here, we'll resize the shape to fit the smallest dimension
     // (ideally, we should inherit from Ellipse but it is not possible)
-    void WholeItemsPanel::LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight)
+    void WholeItemsPanel::LayoutCroppedImage(winrt::xaml_shapes::Shape const& shape, double availableWidth, double availableHeight)
     {
         winrt::Thickness margins = shape.Margin();
         const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
@@ -421,7 +421,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 AppendText(altText, buffer);
             }
         }
-        else if (const auto shape = element.try_as<winrt::Shape>())
+        else if (const auto shape = element.try_as<winrt::xaml_shapes::Shape>())
         {
             auto altText = GetAltAsString(element);
             if (!altText.empty())

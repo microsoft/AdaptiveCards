@@ -163,7 +163,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             // instanciate all elements not created yet
             for (int x = 0; x < (numberSpriteToInstanciate - count); x++)
             {
-                winrt::Rectangle rectangle;
+                winrt::xaml_shapes::Rectangle rectangle;
 
                 children.Append(rectangle.as<winrt::UIElement>());
 

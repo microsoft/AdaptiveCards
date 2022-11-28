@@ -63,7 +63,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         bool IsAnySubgroupTruncated(winrt::xaml_controls::Panel const& panel);
 
-        static void LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight);
+        static void LayoutCroppedImage(winrt::xaml_shapes::Shape const& shape, double availableWidth, double availableHeight);
 
         static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 

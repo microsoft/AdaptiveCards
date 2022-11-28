@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         winrt::AdaptiveBackgroundImage m_adaptiveBackgroundImage;
         winrt::Size m_imageSize{};
         winrt::Size m_containerSize{};
-        std::vector<winrt::Rectangle> m_xamlChildren;
+        std::vector<winrt::xaml_shapes::Rectangle> m_xamlChildren;
 
         // Revokers
         winrt::xaml_media_imaging::BitmapImage::ImageOpened_revoker m_imageOpenedRevoker;

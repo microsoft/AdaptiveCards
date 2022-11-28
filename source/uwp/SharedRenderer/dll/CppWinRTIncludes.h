@@ -58,7 +58,7 @@ namespace winrt
     namespace xaml_input = ::winrt::Windows::UI::Xaml::Input;
     namespace xaml_markup = ::winrt::Windows::UI::Xaml::Markup;
     namespace xaml_media_imaging = ::winrt::Windows::UI::Xaml::Media::Imaging;
-    using namespace xaml::Shapes;
+    namespace xaml_shapes = ::winrt::Windows::UI::Xaml::Shapes;
 
     using namespace ::winrt::AdaptiveCards::ObjectModel::Xaml_OM;
 

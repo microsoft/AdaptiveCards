@@ -294,7 +294,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, c_BackgroundImageOverlayBrushKey)
                         .try_as<winrt::Brush>())
             {
-                winrt::Rectangle overlayRectangle;
+                winrt::xaml_shapes::Rectangle overlayRectangle;
                 overlayRectangle.Fill(backgroundOverlayBrush);
 
                 XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
@@ -428,7 +428,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         {
             return;
         }
-        uiElement.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        uiElement.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args)
+                         { args.Handled(true); });
     }
 
     // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0
@@ -469,7 +470,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        if (const auto localElementAsEllipse = imageControl.try_as<winrt::Ellipse>())
+        if (const auto localElementAsEllipse = imageControl.try_as<winrt::xaml_shapes::Ellipse>())
         {
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
@@ -861,7 +862,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                 {
                     if (const auto contentAsDependencyObject = content.try_as<winrt::DependencyObject>())
                     {
-                        auto uiElementDescribers = winrt::xaml_automation::AutomationProperties::GetDescribedBy(actualInputUIElement);
+                        auto uiElementDescribers =
+                            winrt::xaml_automation::AutomationProperties::GetDescribedBy(actualInputUIElement);
                         uiElementDescribers.Append(contentAsDependencyObject);
                     }
                 }
