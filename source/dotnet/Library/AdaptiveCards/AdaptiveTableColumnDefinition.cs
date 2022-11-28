@@ -59,8 +59,8 @@ namespace AdaptiveCards
         [JsonIgnore]
         public long Width
         {
-                get { return TableColumnWidth.RelativeWidth; }
-                set { TableColumnWidth.RelativeWidth = value;}
+            get { return TableColumnWidth.RelativeWidth; }
+            set { TableColumnWidth.RelativeWidth = value;}
         }
     }
     public class TableColumnWidth

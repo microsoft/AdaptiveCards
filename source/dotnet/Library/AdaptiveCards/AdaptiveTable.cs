@@ -89,7 +89,7 @@ namespace AdaptiveCards
 #endif
 
         /// <summary>
-        /// Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
+        /// Specifies whether grid lines should be displayed.	 
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3

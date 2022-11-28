@@ -29,7 +29,7 @@ describe("Mock function", function() {
     });
 
     test("Test ActivityUpdate submit", (async() => {
-        await utils.goToTestCase("v1.3/ActivityUpdate");
+        await utils.goToTestCase("v1.5/ActivityUpdate");
 
         await ACAction.clickOnActionWithTitle("Set due date");
 

@@ -77,16 +77,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.2\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.3\Scenarios\*.json">
+    <Content Include="..\..\..\samples\v1.5\Scenarios\*.json">
       <Link>Samples\%(Filename).json</Link>
     </Content>
     <Content Include="..\..\..\schemas\**\adaptive-card.json">

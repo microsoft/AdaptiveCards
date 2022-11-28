@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
 	"body": [
 		{
@@ -11,7 +11,8 @@
 					"type": "TextBlock",
 					"text": "Microsoft Corporation",
 					"size": "medium",
-					"wrap": true
+					"wrap": true,
+					"style": "heading"
 				},
 				{
 					"type": "TextBlock",

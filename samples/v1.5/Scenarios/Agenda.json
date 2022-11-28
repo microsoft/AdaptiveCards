@@ -2,6 +2,12 @@
 	"type": "AdaptiveCard",
 	"body": [
 		{
+			"type": "TextBlock",
+			"text": "Today's Agenda",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
 			"type": "ColumnSet",
 			"horizontalAlignment": "center",
 			"columns": [
@@ -440,5 +446,5 @@
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.2"
+	"version": "1.5"
 }
