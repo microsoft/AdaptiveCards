@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto adaptiveDateInput = cardElement.as<winrt::AdaptiveDateInput>();
 
-            winrt::CalendarDatePicker datePicker{};
+            winrt::xaml_controls::CalendarDatePicker datePicker{};
             datePicker.PlaceholderText(adaptiveDateInput.Placeholder());
 
             // Make the picker stretch full width

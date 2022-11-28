@@ -28,7 +28,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
         static void BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
-                                       winrt::Panel ParentPanel,
+                                       winrt::xaml_controls::Panel ParentPanel,
                                        winrt::AdaptiveRenderContext context,
                                        winrt::AdaptiveRenderArgs renderArgs,
                                        std::function<void(winrt::UIElement const& child)> childCreatedCallback);
@@ -49,10 +49,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
 
-        static std::pair<winrt::Panel, winrt::UIElement> CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                                               winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                               XamlBuilder* xamlBuilder);
+        static std::pair<winrt::xaml_controls::Panel, winrt::UIElement>
+        CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
+                              winrt::AdaptiveRenderContext const& renderContext,
+                              winrt::AdaptiveRenderArgs const& renderArgs,
+                              XamlBuilder* xamlBuilder);
 
         template<typename T>
         void SetAutoSize(T const& destination,

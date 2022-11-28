@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             auto adaptiveColumnSet = cardElement.as<winrt::AdaptiveColumnSet>();
 
-            winrt::Border columnSetBorder{};
+            winrt::xaml_controls::Border columnSetBorder{};
 
             auto gridContainer = winrt::make<winrt::implementation::WholeItemsPanel>();
 
@@ -31,7 +31,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto newRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
-            winrt::Grid xamlGrid{};
+            winrt::xaml_controls::Grid xamlGrid{};
 
             auto columns = adaptiveColumnSet.Columns();
 
@@ -89,7 +89,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                             auto separatorParams = XamlHelpers::GetSeparatorParameters(column, hostConfig);
 
                             // Create a new ColumnDefinition for the separator
-                            winrt::ColumnDefinition separatorColumnDefinition{};
+                            winrt::xaml_controls::ColumnDefinition separatorColumnDefinition{};
                             separatorColumnDefinition.Width({1.0, winrt::GridUnitType::Auto});
                             columnDefinitions.Append(separatorColumnDefinition);
 
@@ -101,14 +101,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                             if (const auto separatorAsFrameworkElement = separator.try_as<winrt::FrameworkElement>())
                             {
-                                winrt::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
+                                winrt::xaml_controls::Grid::SetColumn(separatorAsFrameworkElement, currentColumn++);
                             }
                             XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
                         }
                     }
 
                     // Determine if the column is auto, stretch, or percentage width, and set the column width
-                    winrt::ColumnDefinition columnDefinition{};
+                    winrt::xaml_controls::ColumnDefinition columnDefinition{};
 
                     auto isVisible = column.IsVisible();
 
@@ -119,7 +119,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     // Mark the column container with the current column
                     if (const auto columnAsFrameworkElement = xamlColumn.try_as<winrt::FrameworkElement>())
                     {
-                        winrt::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
+                        winrt::xaml_controls::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
                     }
 
                     XamlHelpers::AddRenderedControl(xamlColumn, column, xamlGrid, separator, columnDefinition, [](winrt::UIElement const&) {});

@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 return nullptr;
             }
 
-            winrt::TimePicker timePicker{};
+            winrt::xaml_controls::TimePicker timePicker{};
 
             // Make the picker stretch full width
             timePicker.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);

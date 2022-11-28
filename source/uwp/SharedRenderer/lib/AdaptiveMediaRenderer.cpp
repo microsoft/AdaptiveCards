@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
-            winrt::StackPanel mediaStackPanel{};
+            winrt::xaml_controls::StackPanel mediaStackPanel{};
 
             XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
 
@@ -56,12 +56,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             winrt::hstring mimeType{};
             winrt::Uri mediaSourceUrl{nullptr};
-            winrt::MediaElement mediaElement{nullptr};
+            winrt::xaml_controls::MediaElement mediaElement{nullptr};
 
             if (allowInlinePlayback)
             {
                 // Create a media element and set it's source
-                mediaElement = winrt::MediaElement{};
+                mediaElement = winrt::xaml_controls::MediaElement{};
 
                 std::tie(mediaSourceUrl, mimeType) = GetMediaSource(hostConfig, adaptiveMedia);
 
@@ -91,7 +91,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
             }
 
-            auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::ButtonBase>();
+            auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::xaml_controls::Primitives::ButtonBase>();
 
             touchTargetAsButtonBase.Click(
                 [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker](

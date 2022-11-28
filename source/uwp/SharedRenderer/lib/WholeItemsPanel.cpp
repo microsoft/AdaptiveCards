@@ -54,7 +54,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     //    1) 2.3 If the child is a image or a shape (circular cropped image):
                     //            - stretched images might be resized
 
-                    if (auto childAsPanel = child.try_as<winrt::Panel>())
+                    if (auto childAsPanel = child.try_as<winrt::xaml_controls::Panel>())
                     {
                         m_isTruncated = true;
 
@@ -69,7 +69,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                             m_isTruncated = IsAnySubgroupTruncated(childAsPanel);
                         }
                     }
-                    if (auto childAsTextBlock = child.try_as<winrt::TextBlock>())
+                    if (auto childAsTextBlock = child.try_as<winrt::xaml_controls::TextBlock>())
                     {
                         winrt::TextWrapping currentWrap = winrt::TextWrapping::Wrap;
                         if (childAsTextBlock.TextWrapping() == winrt::TextWrapping::NoWrap)
@@ -118,7 +118,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                             m_isTruncated = !keepItem;
                         }
                     }
-                    if (auto childAsImage = child.try_as<winrt::Image>())
+                    if (auto childAsImage = child.try_as<winrt::xaml_controls::Image>())
                     {
                         if (!HasExplicitSize(childAsImage))
                         {
@@ -301,7 +301,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return {buffer.c_str()};
     }
 
-    void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
+    void WholeItemsPanel::SetAdaptiveHeight(bool value)
+    {
+        m_adaptiveHeight = value;
+    }
 
     void WholeItemsPanel::SetBleedMargin(uint32_t bleedMargin)
     {
@@ -310,7 +313,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         s_bleedMargin = bleedMargin;
     }
 
-    void WholeItemsPanel::SetMainPanel(bool value) { m_isMainPanel = value; }
+    void WholeItemsPanel::SetMainPanel(bool value)
+    {
+        m_isMainPanel = value;
+    }
 
     // Not sure if I did everything right here..
     void WholeItemsPanel::AddElementToStretchablesList(winrt::UIElement const& element)
@@ -349,7 +355,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return false;
     }
 
-    bool WholeItemsPanel::IsAnySubgroupTruncated(winrt::Panel const& panel)
+    bool WholeItemsPanel::IsAnySubgroupTruncated(winrt::xaml_controls::Panel const& panel)
     {
         for (auto child : panel.Children())
         {
@@ -399,7 +405,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     // Creates the Alt Text
     void WholeItemsPanel::AppendAltTextToUIElement(winrt::UIElement const& element, std::wstring& buffer)
     {
-        if (const auto textBlock = element.try_as<winrt::TextBlock>())
+        if (const auto textBlock = element.try_as<winrt::xaml_controls::TextBlock>())
         {
             AppendText(textBlock.Text(), buffer);
         }
@@ -407,7 +413,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             wholeItemsPanel->AppendAltText(buffer);
         }
-        else if (const auto image = element.try_as<winrt::Image>())
+        else if (const auto image = element.try_as<winrt::xaml_controls::Image>())
         {
             auto altText = GetAltAsString(element);
             if (!altText.empty())
@@ -423,14 +429,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 AppendText(altText, buffer);
             }
         }
-        else if (const auto panel = element.try_as<winrt::Panel>())
+        else if (const auto panel = element.try_as<winrt::xaml_controls::Panel>())
         {
             for (auto child : panel.Children())
             {
                 AppendAltTextToUIElement(child, buffer);
             }
         }
-        else if (const auto border = element.try_as<winrt::Border>())
+        else if (const auto border = element.try_as<winrt::xaml_controls::Border>())
         {
             if (const auto child = border.Child())
             {

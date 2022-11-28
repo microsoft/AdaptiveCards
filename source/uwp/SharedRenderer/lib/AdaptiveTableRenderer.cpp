@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         if (showGridLines)
         {
             // If we're showing grid lines put the cell in a border
-            winrt::Border cellBorder{};
+            winrt::xaml_controls::Border cellBorder{};
 
             auto borderColor = GetBorderColorFromStyle(gridStyle, hostConfig);
             cellBorder.BorderBrush(winrt::SolidColorBrush{borderColor});
@@ -111,10 +111,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                           boolean showGridLines,
                                           winrt::ContainerStyle gridStyle,
                                           uint32_t rowNumber,
-                                          winrt::Grid const& xamlGrid)
+                                          winrt::xaml_controls::Grid const& xamlGrid)
     {
         // Create the row definition and add it to the grid
-        winrt::RowDefinition xamlRowDefinition{};
+        winrt::xaml_controls::RowDefinition xamlRowDefinition{};
 
         xamlGrid.RowDefinitions().Append(xamlRowDefinition);
 
@@ -170,8 +170,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 RenderCell(cell, renderContext, renderArgs, rowVerticalContentAlignment, showGridLines, gridStyle, rowNumber, columnNumber);
 
             // Set the row and column numbers on the cell
-            winrt::Grid::SetColumn(cellFrameworkElement, columnNumber);
-            winrt::Grid::SetRow(cellFrameworkElement, rowNumber);
+            winrt::xaml_controls::Grid::SetColumn(cellFrameworkElement, columnNumber);
+            winrt::xaml_controls::Grid::SetRow(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
             XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
@@ -192,7 +192,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto adaptiveTable = cardElement.as<winrt::AdaptiveTable>();
 
             // Create a grid to represent the table
-            winrt::Grid xamlGrid{};
+            winrt::xaml_controls::Grid xamlGrid{};
 
             // Get the vertical content alignment from the table
             auto tableHorizontalAlignment = adaptiveTable.HorizontalCellContentAlignment();
@@ -214,7 +214,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             for (auto column : columns)
             {
-                winrt::ColumnDefinition xamlColumnDefinition{};
+                winrt::xaml_controls::ColumnDefinition xamlColumnDefinition{};
                 XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
                 xamlColumnDefinitions.Append(xamlColumnDefinition);
             }

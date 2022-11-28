@@ -24,10 +24,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                                       winrt::AdaptiveRenderContext const& renderContext,
                                                                       winrt::AdaptiveRenderArgs const& renderArgs);
 
-        std::tuple<winrt::UIElement, winrt::Border> HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                              winrt::UIElement const& textBox,
-                                                                              winrt::AdaptiveRenderContext const& renderContext,
-                                                                              winrt::AdaptiveRenderArgs const& renderArgs);
+        std::tuple<winrt::UIElement, winrt::xaml_controls::Border>
+        HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
+                                  winrt::UIElement const& textBox,
+                                  winrt::AdaptiveRenderContext const& renderContext,
+                                  winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

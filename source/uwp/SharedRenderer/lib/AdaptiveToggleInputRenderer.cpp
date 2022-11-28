@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto adaptiveToggleInput = cardElement.as<winrt::AdaptiveToggleInput>();
 
-            winrt::CheckBox checkBox{};
+            winrt::xaml_controls::CheckBox checkBox{};
 
             XamlHelpers::SetContent(checkBox, adaptiveToggleInput.Title(), adaptiveToggleInput.Wrap());
 

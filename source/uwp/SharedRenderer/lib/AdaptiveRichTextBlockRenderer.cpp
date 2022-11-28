@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         try
         {
             // Create the top level rich text block and set it's properties
-            winrt::RichTextBlock xamlRichTextBlock{};
+            winrt::xaml_controls::RichTextBlock xamlRichTextBlock{};
 
             auto adaptiveRichTextBlock = cardElement.as<winrt::AdaptiveRichTextBlock>();
 

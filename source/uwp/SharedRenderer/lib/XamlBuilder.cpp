@@ -165,10 +165,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    std::pair<winrt::Panel, winrt::UIElement> XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                                                                                 winrt::AdaptiveRenderContext const& renderContext,
-                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                 XamlBuilder* xamlBuilder)
+    std::pair<winrt::xaml_controls::Panel, winrt::UIElement>
+    XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       XamlBuilder* xamlBuilder)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to front these are:
@@ -178,10 +179,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         // StackPanel - The container for all the card's body elements
         try
         {
-            winrt::Panel bodyElementContainer{nullptr};
+            winrt::xaml_controls::Panel bodyElementContainer{nullptr};
             winrt::UIElement rootElementResult{nullptr};
 
-            winrt::Grid rootElement{};
+            winrt::xaml_controls::Grid rootElement{};
 
             auto hostConfig = renderContext.HostConfig();
             auto adaptiveHostConfig = hostConfig.AdaptiveCard();
@@ -260,7 +261,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     void XamlBuilder::BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
-                                         winrt::Panel parentPanel,
+                                         winrt::xaml_controls::Panel parentPanel,
                                          winrt::AdaptiveRenderContext renderContext,
                                          winrt::AdaptiveRenderArgs renderArgs,
                                          std::function<void(winrt::UIElement const& child)> childCreatedCallback)

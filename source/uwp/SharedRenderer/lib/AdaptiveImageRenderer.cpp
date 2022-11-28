@@ -124,7 +124,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 backgroundEllipse.Fill(winrt::SolidColorBrush{color});
 
                 // Create a grid to contain the background color ellipse and the image ellipse
-                winrt::Grid imageGrid{};
+                winrt::xaml_controls::Grid imageGrid{};
                 XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
                 XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
@@ -137,12 +137,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
         else
         {
-            winrt::Image xamlImage{};
+            winrt::xaml_controls::Image xamlImage{};
 
             if (!backgroundColor.empty())
             {
                 // Create a surrounding border with solid color background to contain the image
-                winrt::Border border{};
+                winrt::xaml_controls::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
                 border.Background(winrt::SolidColorBrush{color});
 
@@ -626,7 +626,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     {
         if (parentElement && m_enableXamlImageHandling)
         {
-            auto xamlImage = destination.as<winrt::Image>();
+            auto xamlImage = destination.as<winrt::xaml_controls::Image>();
             auto imageSource = xamlImage.Source();
 
             // If the image hasn't loaded yet

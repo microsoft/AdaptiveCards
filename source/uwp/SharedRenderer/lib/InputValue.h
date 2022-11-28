@@ -10,15 +10,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     public:
         InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                    winrt::UIElement const& uiInputElement,
-                   winrt::Border const& validationBorder);
+                   winrt::xaml_controls::Border const& validationBorder);
         InputValue();
 
         winrt::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
         winrt::UIElement ErrorMessage() { return m_validationError; };
-        void ErrorMessage(winrt::UIElement const& errorMessage)
-        {
-            m_validationError = errorMessage;
-        };
+        void ErrorMessage(winrt::UIElement const& errorMessage) { m_validationError = errorMessage; };
         bool Validate();
         void SetFocus();
         void SetAccessibilityProperties(bool isInputValid);
@@ -31,7 +28,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::IAdaptiveInputElement m_adaptiveInputElement;
         winrt::UIElement m_uiInputElement;
-        winrt::Border m_validationBorder;
+        winrt::xaml_controls::Border m_validationBorder;
         winrt::UIElement m_validationError;
     };
 
@@ -41,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     public:
         TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
                       winrt::UIElement const& uiTextInputElement,
-                      winrt::Border const& validationBorder);
+                      winrt::xaml_controls::Border const& validationBorder);
 
     protected:
         virtual bool IsValueValid() override;
@@ -53,26 +50,26 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         TextInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                       winrt::TextBox const& uiTextBoxElement,
-                       winrt::Border const& validationBorder);
+                       winrt::xaml_controls::TextBox const& uiTextBoxElement,
+                       winrt::xaml_controls::Border const& validationBorder);
 
     private:
         winrt::hstring CurrentValue() override { return m_textBoxElement.Text(); };
-        winrt::TextBox m_textBoxElement;
+        winrt::xaml_controls::TextBox m_textBoxElement;
     };
 
     struct PasswordInputValue : public TextInputBase
     {
     public:
         PasswordInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                           winrt::PasswordBox const& uiPasswordElement,
-                           winrt::Border const& validationBorder);
+                           winrt::xaml_controls::PasswordBox const& uiPasswordElement,
+                           winrt::xaml_controls::Border const& validationBorder);
 
     private:
         winrt::hstring CurrentValue() override { return m_passwordElement.Password(); };
 
     protected:
-        winrt::IPasswordBox m_passwordElement;
+        winrt::xaml_controls::IPasswordBox m_passwordElement;
     };
 
     // Input value for Input.Number
@@ -80,14 +77,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         NumberInputValue(winrt::AdaptiveNumberInput const& adaptiveNumberInput,
-                         winrt::TextBox const& uiInputTextBoxElement,
-                         winrt::Border const& validationBorder);
+                         winrt::xaml_controls::TextBox const& uiInputTextBoxElement,
+                         winrt::xaml_controls::Border const& validationBorder);
 
         winrt::hstring CurrentValue() override { return m_textBoxElement.Text(); };
 
     private:
         bool IsValueValid();
-        winrt::TextBox m_textBoxElement;
+        winrt::xaml_controls::TextBox m_textBoxElement;
         winrt::AdaptiveNumberInput m_adaptiveNumberInput;
     };
 
@@ -96,21 +93,23 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         DateInputValue(winrt::AdaptiveDateInput const& adaptiveDateInput,
-                       winrt::CalendarDatePicker const& uiDatePickerElement,
-                       winrt::Border const& validationBorder);
+                       winrt::xaml_controls::CalendarDatePicker const& uiDatePickerElement,
+                       winrt::xaml_controls::Border const& validationBorder);
 
         winrt::hstring CurrentValue() override;
 
     private:
         winrt::AdaptiveDateInput m_adaptiveDateInput;
-        winrt::CalendarDatePicker m_datePickerElement;
+        winrt::xaml_controls::CalendarDatePicker m_datePickerElement;
     };
 
     // Input value for Input.Time
     struct TimeInputValue : public InputValue
     {
     public:
-        TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput, winrt::TimePicker uiTimePickerElement, winrt::Border validationBorder);
+        TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput,
+                       winrt::xaml_controls::TimePicker uiTimePickerElement,
+                       winrt::xaml_controls::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
@@ -118,14 +117,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         bool IsValueValid();
 
         winrt::AdaptiveTimeInput m_adaptiveTimeInput;
-        winrt::TimePicker m_timePickerElement;
+        winrt::xaml_controls::TimePicker m_timePickerElement;
     };
 
     // Input value for Input.Toggle
     struct ToggleInputValue : public InputValue
     {
     public:
-        ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput, winrt::CheckBox uiCheckBoxElement, winrt::Border validationBorder);
+        ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput,
+                         winrt::xaml_controls::CheckBox uiCheckBoxElement,
+                         winrt::xaml_controls::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
@@ -133,7 +134,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         bool IsValueValid();
 
         winrt::AdaptiveToggleInput m_adaptiveToggleInput;
-        winrt::CheckBox m_checkBoxElement;
+        winrt::xaml_controls::CheckBox m_checkBoxElement;
     };
 
     // Input value for Input.ChoiceSet with compact style
@@ -141,13 +142,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         CompactChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                   winrt::Selector choiceSetSelector,
-                                   winrt::Border validationBorder);
+                                   winrt::xaml_controls::Primitives::Selector choiceSetSelector,
+                                   winrt::xaml_controls::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
     private:
-        winrt::Selector m_selectorElement;
+        winrt::xaml_controls::Primitives::Selector m_selectorElement;
         winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 
@@ -156,15 +157,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         ExpandedChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                    winrt::Panel uiChoiceSetElement,
-                                    winrt::Border validationBorder);
+                                    winrt::xaml_controls::Panel uiChoiceSetElement,
+                                    winrt::xaml_controls::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
     private:
         void SetFocus();
 
-        winrt::Panel m_panelElement;
+        winrt::xaml_controls::Panel m_panelElement;
         winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 
@@ -173,8 +174,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         FilteredChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                    winrt::AutoSuggestBox uiChoiceSetElement,
-                                    winrt::Border validationBorder);
+                                    winrt::xaml_controls::AutoSuggestBox uiChoiceSetElement,
+                                    winrt::xaml_controls::Border validationBorder);
 
         winrt::hstring CurrentValue() override;
 
@@ -183,7 +184,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::AdaptiveChoiceInput GetSelectedChoice();
 
-        winrt::AutoSuggestBox m_autoSuggestBox;
+        winrt::xaml_controls::AutoSuggestBox m_autoSuggestBox;
         winrt::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;
     };
 }

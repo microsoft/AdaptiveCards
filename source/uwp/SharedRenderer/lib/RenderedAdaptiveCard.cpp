@@ -64,7 +64,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void HandleToggleVisibilityClick(winrt::FrameworkElement const& cardFrameworkElement, winrt::IAdaptiveActionElement const& action)
     {
         auto toggleAction = action.as<winrt::AdaptiveToggleVisibilityAction>();
-        std::vector<winrt::Panel> parentPanels;
+        std::vector<winrt::xaml_controls::Panel> parentPanels;
         for (auto&& currentTarget : toggleAction.TargetElements())
         {
             auto toggleId = currentTarget.ElementId();

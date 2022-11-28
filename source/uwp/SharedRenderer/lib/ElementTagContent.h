@@ -12,9 +12,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         ElementTagContent() = default;
         ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
-                          winrt::Panel const& parentPanel,
+                          winrt::xaml_controls::Panel const& parentPanel,
                           winrt::UIElement const& separator,
-                          winrt::ColumnDefinition const& columnDefinition,
+                          winrt::xaml_controls::ColumnDefinition const& columnDefinition,
                           boolean expectedVisibility,
                           boolean isStretchable);
 
@@ -22,8 +22,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         property<bool> IsStretchable;
 
         winrt::UIElement Separator() { return m_separator; }
-        winrt::Panel ParentPanel() { return m_parentPanel; }
-        winrt::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
+        winrt::xaml_controls::Panel ParentPanel() { return m_parentPanel; }
+        winrt::xaml_controls::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
         winrt::IAdaptiveCardElement CardElement() { return m_cardElement; }
 
         // ITypePeek method
@@ -31,8 +31,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     private:
         winrt::UIElement m_separator{nullptr};
-        winrt::Panel m_parentPanel{nullptr};
-        winrt::ColumnDefinition m_columnDefinition;
+        winrt::xaml_controls::Panel m_parentPanel{nullptr};
+        winrt::xaml_controls::ColumnDefinition m_columnDefinition;
         winrt::IAdaptiveCardElement m_cardElement;
     };
 }

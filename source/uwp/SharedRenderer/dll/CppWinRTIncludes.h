@@ -52,8 +52,7 @@ namespace winrt
 
     namespace xaml = ::winrt::Windows::UI::Xaml;
     using namespace xaml;
-    using namespace xaml::Controls;
-    using namespace xaml::Controls::Primitives;
+    namespace xaml_controls = ::winrt::Windows::UI::Xaml::Controls;
     using namespace xaml::Automation;
     using namespace xaml::Automation::Peers;
     using namespace xaml::Documents;

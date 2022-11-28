@@ -26,14 +26,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return resourceDictionary.HasKey(resourceKey) ? resourceDictionary.Lookup(resourceKey) : nullptr;
     }
 
-    void SetSeparatorVisibility(winrt::Panel const& parentPanel);
+    void SetSeparatorVisibility(winrt::xaml_controls::Panel const& parentPanel);
 
-    void HandleColumnWidth(winrt::AdaptiveColumn const& column, bool isVisible, winrt::ColumnDefinition const& columnDefinition);
+    void HandleColumnWidth(winrt::AdaptiveColumn const& column, bool isVisible, winrt::xaml_controls::ColumnDefinition const& columnDefinition);
 
-    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column, winrt::ColumnDefinition const& columnDefinition);
+    void HandleTableColumnWidth(winrt::AdaptiveTableColumnDefinition const& column,
+                                winrt::xaml_controls::ColumnDefinition const& columnDefinition);
 
     template<typename T>
-    void AppendXamlElementToPanel(T const& xamlElement, winrt::Panel const& panel, winrt::HeightType heightType = winrt::HeightType::Auto)
+    void AppendXamlElementToPanel(T const& xamlElement,
+                                  winrt::xaml_controls::Panel const& panel,
+                                  winrt::HeightType heightType = winrt::HeightType::Auto)
     {
         if (!xamlElement)
         {
@@ -57,11 +60,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     template<typename T> bool GetToggleValue(T const& item)
     {
-        auto toggleButton = item.as<winrt::ToggleButton>();
+        auto toggleButton = item.as<winrt::xaml_controls::Primitives::ToggleButton>();
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
-    winrt::TextBlock CreateTextBlockWithContent(winrt::hstring const& contentString, bool wrap);
+    winrt::xaml_controls::TextBlock CreateTextBlockWithContent(winrt::hstring const& contentString, bool wrap);
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
@@ -70,14 +73,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        if (const auto contentControl = item.try_as<winrt::ContentControl>())
+        if (const auto contentControl = item.try_as<winrt::xaml_controls::ContentControl>())
         {
             contentControl.Content(CreateTextBlockWithContent(contentString, wrap));
         }
     }
 
     winrt::ContainerStyle HandleStylingAndPadding(winrt::IAdaptiveContainerBase const& adaptiveContainer,
-                                                  winrt::Border const& containerBorder,
+                                                  winrt::xaml_controls::Border const& containerBorder,
                                                   winrt::AdaptiveRenderContext const& renderContext,
                                                   winrt::AdaptiveRenderArgs renderArgs);
 
@@ -101,29 +104,31 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                                              winrt::AdaptiveRenderContext const& renderContext);
 
-    winrt::Border CreateValidationBorder(winrt::UIElement const& childElement, winrt::AdaptiveRenderContext const& renderContext);
+    winrt::xaml_controls::Border CreateValidationBorder(winrt::UIElement const& childElement,
+                                                        winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
                                                 winrt::AdaptiveRenderContext const& renderContext,
                                                 winrt::UIElement const& inputLayout);
 
-    std::tuple<winrt::UIElement, winrt::Border> HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                                                               winrt::UIElement const& inputUIElement,
-                                                                               bool hasTypeSpecificValidation,
-                                                                               winrt::AdaptiveRenderContext const& renderContext,
-                                                                               bool ifValidationBorderIsNeeded = true);
+    std::tuple<winrt::UIElement, winrt::xaml_controls::Border>
+    HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                   winrt::UIElement const& inputUIElement,
+                                   bool hasTypeSpecificValidation,
+                                   winrt::AdaptiveRenderContext const& renderContext,
+                                   bool ifValidationBorderIsNeeded = true);
 
     void AddHandledTappedEvent(winrt::UIElement const& uiElement);
 
-    void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
+    void ApplyBackgroundToRoot(winrt::xaml_controls::Panel const& rootPanel,
                                winrt::AdaptiveBackgroundImage const& backgroundImage,
                                winrt::AdaptiveRenderContext const& renderContext);
 
     void AddRenderedControl(winrt::UIElement const& newControl,
                             winrt::IAdaptiveCardElement const& element,
-                            winrt::Panel const& parentPanel,
+                            winrt::xaml_controls::Panel const& parentPanel,
                             winrt::UIElement const& separator,
-                            winrt::ColumnDefinition const& columnDefinition,
+                            winrt::xaml_controls::ColumnDefinition const& columnDefinition,
                             std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
     std::tuple<winrt::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
@@ -185,7 +190,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                           winrt::IAdaptiveCardElement const& element,
                                           winrt::AdaptiveHostConfig const& hostConfig,
                                           winrt::AdaptiveRenderContext const& renderContext,
-                                          winrt::Panel const& parentPanel);
+                                          winrt::xaml_controls::Panel const& parentPanel);
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
@@ -196,5 +201,5 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
 
-    winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
+    winrt::xaml_controls::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
 }

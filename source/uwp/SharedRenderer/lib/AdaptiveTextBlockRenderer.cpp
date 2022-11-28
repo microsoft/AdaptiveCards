@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 return nullptr;
             }
 
-            winrt::TextBlock xamlTextBlock{};
+            winrt::xaml_controls::TextBlock xamlTextBlock{};
 
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", xamlTextBlock);
             StyleXamlTextBlockProperties(adaptiveTextBlock, renderContext, renderArgs, xamlTextBlock);

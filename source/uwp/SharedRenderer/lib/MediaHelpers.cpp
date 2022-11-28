@@ -12,9 +12,9 @@ const std::unordered_set<winrt::hstring> supportedCaptionTypes = {L"vtt", L"srt"
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 {
-    winrt::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
-                                       winrt::AdaptiveRenderArgs const& renderArgs,
-                                       winrt::AdaptiveMedia const& adaptiveMedia)
+    winrt::xaml_controls::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
+                                                      winrt::AdaptiveRenderArgs const& renderArgs,
+                                                      winrt::AdaptiveMedia const& adaptiveMedia)
     {
         auto posterString = adaptiveMedia.Poster();
 
@@ -42,13 +42,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
         if (const auto posterUiElement = imageRenderer.Render(adaptiveImage, renderContext, renderArgs))
         {
-            return posterUiElement.as<winrt::Image>();
+            return posterUiElement.as<winrt::xaml_controls::Image>();
         }
         // Not logging a warning because if we get nullptr from imageRendere - it will log warning for us.
         return nullptr;
     }
 
-    void AddDefaultPlayIcon(winrt::Panel const& posterPanel,
+    void AddDefaultPlayIcon(winrt::xaml_controls::Panel const& posterPanel,
                             winrt::AdaptiveHostConfig const& hostConfig,
                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -76,20 +76,20 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
         rectangle.Stroke(darkBrush);
 
         // Create a play symbol icon
-        winrt::SymbolIcon playIcon{winrt::Symbol::Play};
+        winrt::xaml_controls::SymbolIcon playIcon{winrt::xaml_controls::Symbol::Play};
 
         playIcon.Foreground(darkBrush);
 
         XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
-        winrt::RelativePanel::SetAlignVerticalCenterWithPanel(rectangle, true);
-        winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(rectangle, true);
+        winrt::xaml_controls::RelativePanel::SetAlignVerticalCenterWithPanel(rectangle, true);
+        winrt::xaml_controls::RelativePanel::SetAlignHorizontalCenterWithPanel(rectangle, true);
 
         XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
-        winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIcon, true);
-        winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIcon, true);
+        winrt::xaml_controls::RelativePanel::SetAlignHorizontalCenterWithPanel(playIcon, true);
+        winrt::xaml_controls::RelativePanel::SetAlignVerticalCenterWithPanel(playIcon, true);
     }
 
-    void AddCustomPlayIcon(winrt::Panel const& posterPanel,
+    void AddCustomPlayIcon(winrt::xaml_controls::Panel const& posterPanel,
                            winrt::hstring const& playIconString,
                            winrt::AdaptiveRenderContext const& renderContext,
                            winrt::AdaptiveRenderArgs const& renderArgs)
@@ -108,12 +108,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
             // Add it to the panel and center it
             XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
-            winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
-            winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIconUIElement, true);
+            winrt::xaml_controls::RelativePanel::SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
+            winrt::xaml_controls::RelativePanel::SetAlignVerticalCenterWithPanel(playIconUIElement, true);
         }
     }
 
-    void AddPlayIcon(winrt::Panel const& posterPanel,
+    void AddPlayIcon(winrt::xaml_controls::Panel const& posterPanel,
                      winrt::AdaptiveRenderContext const& renderContext,
                      winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -133,11 +133,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
         }
     }
 
-    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::Image const& posterImage,
+    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
                                                          winrt::AdaptiveRenderContext const& renderContext,
                                                          winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        winrt::RelativePanel posterRelativePanel{};
+        winrt::xaml_controls::RelativePanel posterRelativePanel{};
 
         if (posterImage)
         {
@@ -180,7 +180,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
         return {mediaSourceUrl, mimeType};
     }
 
-    void SetMediaSourceHelper(winrt::MediaElement const& mediaElement,
+    void SetMediaSourceHelper(winrt::xaml_controls::MediaElement const& mediaElement,
                               winrt::AdaptiveMedia const& adaptiveMedia,
                               winrt::AdaptiveRenderContext const& renderContext,
                               winrt::MediaSource const& mediaSrc)
@@ -237,7 +237,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
                                               winrt::AsyncStatus status,
-                                              winrt::MediaElement const& mediaElement,
+                                              winrt::xaml_controls::MediaElement const& mediaElement,
                                               winrt::hstring const& mimeType,
                                               winrt::AdaptiveMedia const& adaptiveMedia,
                                               winrt::AdaptiveRenderContext const& renderContext)
@@ -255,7 +255,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
-                          winrt::MediaElement const& mediaElement,
+                          winrt::xaml_controls::MediaElement const& mediaElement,
                           winrt::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
@@ -294,7 +294,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
             mediaElement.MediaOpened(
                 [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
-                    if (const auto mediaElement = sender.try_as<winrt::MediaElement>())
+                    if (const auto mediaElement = sender.try_as<winrt::xaml_controls::MediaElement>())
                     {
                         mediaElement.Play();
                     }

@@ -9,9 +9,9 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     ElementTagContent::ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
-                                         winrt::Panel const& parentPanel,
+                                         winrt::xaml_controls::Panel const& parentPanel,
                                          winrt::UIElement const& separator,
-                                         winrt::ColumnDefinition const& columnDefinition,
+                                         winrt::xaml_controls::ColumnDefinition const& columnDefinition,
                                          boolean expectedVisibility,
                                          boolean isStretchable)
     {

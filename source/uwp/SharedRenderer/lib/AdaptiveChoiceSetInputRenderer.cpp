@@ -84,7 +84,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
                                                                                 winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
-        winrt::ComboBox comboBox{};
+        winrt::xaml_controls::ComboBox comboBox{};
 
         comboBox.PlaceholderText(adaptiveChoiceSetInput.Placeholder());
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
@@ -136,8 +136,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         auto choices = adaptiveChoiceSetInput.Choices();
 
-        winrt::StackPanel stackPanel{};
-        stackPanel.Orientation(winrt::Orientation::Vertical);
+        winrt::xaml_controls::StackPanel stackPanel{};
+        stackPanel.Orientation(winrt::xaml_controls::Orientation::Vertical);
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
@@ -148,14 +148,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             winrt::UIElement choiceItem{nullptr};
             if (isMultiSelect)
             {
-                winrt::CheckBox checkBox{};
+                winrt::xaml_controls::CheckBox checkBox{};
                 XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", checkBox);
                 checkBox.IsChecked(IsChoiceSelected(values, input));
                 choiceItem = checkBox;
             }
             else
             {
-                winrt::RadioButton radioButton{};
+                winrt::xaml_controls::RadioButton radioButton{};
 
                 XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", radioButton);
                 if (values.size() == 1)
@@ -176,12 +176,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                             if (args.Key() == winrt::VirtualKey::Down)
                             {
                                 auto newButtonIndex = (currentButtonIndex + 1) % size;
-                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                                children.GetAt(newButtonIndex).as<winrt::xaml_controls::RadioButton>().IsChecked(true);
                             }
                             else if (args.Key() == winrt::VirtualKey::Up)
                             {
                                 auto newButtonIndex = (currentButtonIndex + size - 1) % size;
-                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                                children.GetAt(newButtonIndex).as<winrt::xaml_controls::RadioButton>().IsChecked(true);
                             }
                         }
                     });
@@ -211,7 +211,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                                                  winrt::AdaptiveRenderArgs const& renderArgs,
                                                                                  winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
-        winrt::AutoSuggestBox autoSuggestBox{};
+        winrt::xaml_controls::AutoSuggestBox autoSuggestBox{};
 
         auto choices = adaptiveChoiceSetInput.Choices();
 
@@ -237,7 +237,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         autoSuggestBox.GotFocus(
             [](IInspectable const& sender, winrt::RoutedEventArgs const& /* args */) -> void
             {
-                if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
+                if (const auto autoSuggestBox = sender.try_as<winrt::xaml_controls::AutoSuggestBox>())
                 {
                     autoSuggestBox.IsSuggestionListOpen(true);
                 }
@@ -245,9 +245,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         // When the text changes, update the ItemSource with matching items
         autoSuggestBox.TextChanged(
-            [choices](IInspectable const& sender, winrt::AutoSuggestBoxTextChangedEventArgs const&) -> void
+            [choices](IInspectable const& sender, winrt::xaml_controls::AutoSuggestBoxTextChangedEventArgs const&) -> void
             {
-                if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
+                if (const auto autoSuggestBox = sender.try_as<winrt::xaml_controls::AutoSuggestBox>())
                 {
                     auto currentTextHstring = autoSuggestBox.Text();
                     std::string currentText = HStringToUTF8(currentTextHstring);

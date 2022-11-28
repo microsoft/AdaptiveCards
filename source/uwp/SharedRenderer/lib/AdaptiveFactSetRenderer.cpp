@@ -17,10 +17,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             auto adaptiveFactSet = cardElement.as<winrt::AdaptiveFactSet>();
 
-            winrt::Grid xamlGrid{};
+            winrt::xaml_controls::Grid xamlGrid{};
 
-            winrt::ColumnDefinition titleColumn{};
-            winrt::ColumnDefinition valueColumn{};
+            winrt::xaml_controls::ColumnDefinition titleColumn{};
+            winrt::xaml_controls::ColumnDefinition valueColumn{};
 
             winrt::GridLength factSetGridTitleLength{0, winrt::GridUnitType::Auto};
             winrt::GridLength factSetGridValueLength{1, winrt::GridUnitType::Star};
@@ -47,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             for (auto fact : facts)
             {
-                winrt::RowDefinition factRow{};
+                winrt::xaml_controls::RowDefinition factRow{};
                 factRow.Height(factSetGridHeight);
 
                 auto rowDefinitions = xamlGrid.RowDefinitions();
@@ -61,7 +61,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                 // Create the title xaml textblock and style it from Host options
                 auto titleTextConfig = factSetConfig.Title();
-                winrt::TextBlock titleTextBlock{};
+                winrt::xaml_controls::TextBlock titleTextBlock{};
 
                 winrt::hstring factTitle = fact.Title();
 
@@ -69,7 +69,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                 // Create the value xaml textblock and style it from Host options
                 auto valueTextConfig = factSetConfig.Value();
-                winrt::TextBlock valueTextBlock{};
+                winrt::xaml_controls::TextBlock valueTextBlock{};
 
                 winrt::hstring factValue = fact.Value();
 
@@ -86,11 +86,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                     XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Fact.Value", valueTextBlock);
 
-                    winrt::Grid::SetColumn(titleTextBlock, 0);
-                    winrt::Grid::SetRow(titleTextBlock, currentFact);
+                    winrt::xaml_controls::Grid::SetColumn(titleTextBlock, 0);
+                    winrt::xaml_controls::Grid::SetRow(titleTextBlock, currentFact);
 
-                    winrt::Grid::SetColumn(valueTextBlock, 1);
-                    winrt::Grid::SetRow(valueTextBlock, currentFact);
+                    winrt::xaml_controls::Grid::SetColumn(valueTextBlock, 1);
+                    winrt::xaml_controls::Grid::SetRow(valueTextBlock, currentFact);
 
                     // Finally add the column container to the grid, and increment the column count
 

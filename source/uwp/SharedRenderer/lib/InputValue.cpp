@@ -8,7 +8,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 {
     InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                            winrt::UIElement const& uiInputElement,
-                           winrt::Border const& validationBorder) :
+                           winrt::xaml_controls::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
         m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)
 
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
     void InputValue::SetFocus()
     {
-        if (const auto inputAsControl = m_uiInputElement.try_as<winrt::Control>())
+        if (const auto inputAsControl = m_uiInputElement.try_as<winrt::xaml_controls::Control>())
         {
             inputAsControl.Focus(winrt::FocusState::Programmatic);
         }
@@ -103,7 +103,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
     TextInputBase::TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                  winrt::UIElement const& uiTextInputElement,
-                                 winrt::Border const& validationBorder) :
+                                 winrt::xaml_controls::Border const& validationBorder) :
         InputValue(adaptiveTextInput, uiTextInputElement, validationBorder),
         m_adaptiveTextInput(adaptiveTextInput)
     {
@@ -137,24 +137,24 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     TextInputValue::TextInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                   winrt::TextBox const& uiTextBoxElement,
-                                   winrt::Border const& validationBorder) :
+                                   winrt::xaml_controls::TextBox const& uiTextBoxElement,
+                                   winrt::xaml_controls::Border const& validationBorder) :
         TextInputBase(adaptiveTextInput, uiTextBoxElement, validationBorder),
         m_textBoxElement(uiTextBoxElement)
     {
     }
 
     PasswordInputValue::PasswordInputValue(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                           winrt::PasswordBox const& uiPasswordElement,
-                                           winrt::Border const& validationBorder) :
+                                           winrt::xaml_controls::PasswordBox const& uiPasswordElement,
+                                           winrt::xaml_controls::Border const& validationBorder) :
         TextInputBase(adaptiveTextInput, uiPasswordElement, validationBorder),
         m_passwordElement(uiPasswordElement)
     {
     }
 
     NumberInputValue::NumberInputValue(winrt::AdaptiveNumberInput const& adaptiveNumberInput,
-                                       winrt::TextBox const& uiInputTextBoxElement,
-                                       winrt::Border const& validationBorder) :
+                                       winrt::xaml_controls::TextBox const& uiInputTextBoxElement,
+                                       winrt::xaml_controls::Border const& validationBorder) :
         InputValue(adaptiveNumberInput, uiInputTextBoxElement, validationBorder),
         m_adaptiveNumberInput(adaptiveNumberInput), m_textBoxElement(uiInputTextBoxElement)
     {
@@ -204,8 +204,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     DateInputValue::DateInputValue(winrt::AdaptiveDateInput const& adaptiveDateInput,
-                                   winrt::CalendarDatePicker const& uiDatePickerElement,
-                                   winrt::Border const& validationBorder) :
+                                   winrt::xaml_controls::CalendarDatePicker const& uiDatePickerElement,
+                                   winrt::xaml_controls::Border const& validationBorder) :
         InputValue(adaptiveDateInput, uiDatePickerElement, validationBorder),
         m_adaptiveDateInput(adaptiveDateInput), m_datePickerElement(uiDatePickerElement)
     {
@@ -228,8 +228,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     TimeInputValue::TimeInputValue(winrt::AdaptiveTimeInput adaptiveTimeInput,
-                                   winrt::TimePicker uiTimePickerElement,
-                                   winrt::Border validationBorder) :
+                                   winrt::xaml_controls::TimePicker uiTimePickerElement,
+                                   winrt::xaml_controls::Border validationBorder) :
         InputValue(adaptiveTimeInput, uiTimePickerElement, validationBorder),
         m_adaptiveTimeInput(adaptiveTimeInput), m_timePickerElement(uiTimePickerElement)
     {
@@ -299,8 +299,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     ToggleInputValue::ToggleInputValue(winrt::AdaptiveToggleInput adaptiveToggleInput,
-                                       winrt::CheckBox uiCheckBoxElement,
-                                       winrt::Border validationBorder) :
+                                       winrt::xaml_controls::CheckBox uiCheckBoxElement,
+                                       winrt::xaml_controls::Border validationBorder) :
         InputValue(adaptiveToggleInput, uiCheckBoxElement, validationBorder),
         m_adaptiveToggleInput(adaptiveToggleInput), m_checkBoxElement(uiCheckBoxElement)
     {
@@ -348,8 +348,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     CompactChoiceSetInputValue::CompactChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                           winrt::Selector choiceSetSelector,
-                                                           winrt::Border validationBorder) :
+                                                           winrt::xaml_controls::Primitives::Selector choiceSetSelector,
+                                                           winrt::xaml_controls::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, choiceSetSelector, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_selectorElement(choiceSetSelector)
     {
@@ -362,8 +362,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     ExpandedChoiceSetInputValue::ExpandedChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                             winrt::Panel choiceSetPanelElement,
-                                                             winrt::Border validationBorder) :
+                                                             winrt::xaml_controls::Panel choiceSetPanelElement,
+                                                             winrt::xaml_controls::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, choiceSetPanelElement, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_panelElement(choiceSetPanelElement)
     {
@@ -419,15 +419,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         auto panelChildren = m_panelElement.Children();
         auto firstChoice = panelChildren.GetAt(0);
 
-        if (const auto choiceAsControl = firstChoice.try_as<winrt::Control>())
+        if (const auto choiceAsControl = firstChoice.try_as<winrt::xaml_controls::Control>())
         {
             choiceAsControl.Focus(winrt::FocusState::Programmatic);
         }
     }
 
     FilteredChoiceSetInputValue::FilteredChoiceSetInputValue(winrt::AdaptiveChoiceSetInput adaptiveChoiceSetInput,
-                                                             winrt::AutoSuggestBox autoSuggestBox,
-                                                             winrt::Border validationBorder) :
+                                                             winrt::xaml_controls::AutoSuggestBox autoSuggestBox,
+                                                             winrt::xaml_controls::Border validationBorder) :
         InputValue(adaptiveChoiceSetInput, autoSuggestBox, validationBorder),
         m_adaptiveChoiceSetInput(adaptiveChoiceSetInput), m_autoSuggestBox(autoSuggestBox)
     {

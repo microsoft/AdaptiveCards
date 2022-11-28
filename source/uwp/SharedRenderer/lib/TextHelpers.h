@@ -59,7 +59,7 @@ void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textEl
                                        winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
                                        winrt::AdaptiveTextStyleConfig const& textStyleConfig,
-                                       winrt::TextBlock const& textBlock);
+                                       winrt::xaml_controls::TextBlock const& textBlock);
 
 void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
@@ -67,21 +67,21 @@ void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& rende
                                        winrt::IAdaptiveTextElement const& textElement,
                                        winrt::hstring const& language,
                                        winrt::hstring const& text,
-                                       winrt::TextBlock const& textBlock);
+                                       winrt::xaml_controls::TextBlock const& textBlock);
 
 void SetXamlInlinesWithFactSetTextConfig(winrt::AdaptiveRenderContext const& renderContext,
                                          winrt::AdaptiveRenderArgs const& renderArgs,
                                          winrt::AdaptiveFactSetTextConfig const& factSetTextConfig,
                                          winrt::hstring const& language,
                                          winrt::hstring const& text,
-                                         winrt::TextBlock const& textBlock);
+                                         winrt::xaml_controls::TextBlock const& textBlock);
 
-void SetWrapProperties(winrt::TextBlock const& xamlTextBlock, bool wrap);
+void SetWrapProperties(winrt::xaml_controls::TextBlock const& xamlTextBlock, bool wrap);
 
 void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBlock,
                                   winrt::AdaptiveRenderContext const& renderContext,
                                   winrt::AdaptiveRenderArgs const& renderArgs,
-                                  winrt::TextBlock const& xamlTextBlock);
+                                  winrt::xaml_controls::TextBlock const& xamlTextBlock);
 
 template<typename TAdaptiveType, typename TXamlTextBlockType>
 void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
@@ -117,7 +117,7 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
         break;
     }
 }
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock);
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::xaml_controls::TextBlock const& textBlock);
 
 void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textBlock);
 

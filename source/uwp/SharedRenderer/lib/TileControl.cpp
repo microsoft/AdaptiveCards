@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     TileControl::TileControl()
     {
-        m_containerElement = winrt::Canvas{};
+        m_containerElement = winrt::xaml_controls::Canvas{};
         m_brushXaml = winrt::ImageBrush{};
         this->Content(m_containerElement);
     }
@@ -20,7 +20,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto uiElement = m_resolvedImage;
 
         // Do we need to throw/log if we fail here?
-        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
+        if (const auto image = m_resolvedImage.try_as<winrt::xaml_controls::Image>())
         {
             if (const auto imageSource = image.Source())
             {
@@ -36,7 +36,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         m_resolvedImage = uielement;
 
-        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
+        if (const auto image = m_resolvedImage.try_as<winrt::xaml_controls::Image>())
         {
             if (const auto imageSource = image.Source())
             {
@@ -153,7 +153,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         winrt::IVector<winrt::UIElement> children{};
         // Not sure what is the need to convert to xaml::controls::Panel?
-        if (const auto containerElementAsPanel = m_containerElement.try_as<winrt::Panel>())
+        if (const auto containerElementAsPanel = m_containerElement.try_as<winrt::xaml_controls::Panel>())
         {
             children = containerElementAsPanel.Children();
         }
@@ -200,8 +200,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 }
 
                 // Set Left and Top for rectangle
-                winrt::Canvas::SetLeft(rectangle, originPositionX);
-                winrt::Canvas::SetTop(rectangle, originPositionY);
+                winrt::xaml_controls::Canvas::SetLeft(rectangle, originPositionX);
+                winrt::xaml_controls::Canvas::SetTop(rectangle, originPositionY);
 
                 double imageWidth{0.0}, imageHeight{0.0};
                 if (fillMode == winrt::BackgroundImageFillMode::Cover)

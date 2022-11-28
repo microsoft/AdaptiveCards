@@ -5,9 +5,9 @@
 namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 {
     winrt::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
-                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                    winrt::AdaptiveRenderArgs const& renderArgs,
-                                                    bool isOverflowActionButton);
+                                 winrt::AdaptiveRenderContext const& renderContext,
+                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                 bool isOverflowActionButton);
 
     winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig);
 
@@ -26,7 +26,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                               winrt::ContainerStyle containerStyle,
                               winrt::AdaptiveHostConfig const& hostConfig,
                               bool allActionsHaveIcons,
-                              winrt::Button const& button);
+                              winrt::xaml_controls::Button const& button);
 
     void HandleActionStyling(winrt::IAdaptiveActionElement const& adaptiveActionElement,
                              winrt::FrameworkElement const& buttonFrameworkElement,
@@ -42,41 +42,41 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                       winrt::IAdaptiveActionElement const& inlineAction);
 
     winrt::UIElement HandleInlineAction(winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::AdaptiveRenderArgs const& renderArgs,
-                                                           winrt::UIElement const& textInputUIElement,
-                                                           winrt::UIElement const& textBoxParentContainer,
-                                                           bool isMultilineTextBox,
-                                                           winrt::IAdaptiveActionElement const& inlineAction);
+                                        winrt::AdaptiveRenderArgs const& renderArgs,
+                                        winrt::UIElement const& textInputUIElement,
+                                        winrt::UIElement const& textBoxParentContainer,
+                                        bool isMultilineTextBox,
+                                        winrt::IAdaptiveActionElement const& inlineAction);
 
-    void WireButtonClickToAction(winrt::Button const& button,
+    void WireButtonClickToAction(winrt::xaml_controls::Button const& button,
                                  winrt::IAdaptiveActionElement const& action,
                                  winrt::AdaptiveRenderContext const& renderContext);
 
     winrt::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                          winrt::UIElement const& elementToWrap,
-                                                          winrt::IAdaptiveActionElement const& action,
-                                                          winrt::AdaptiveRenderContext const& renderContext,
-                                                          bool fullWidth,
-                                                          const std::wstring& style,
-                                                          winrt::hstring const& altText,
-                                                          bool allowTitleAsTooltip);
+                                       winrt::UIElement const& elementToWrap,
+                                       winrt::IAdaptiveActionElement const& action,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       bool fullWidth,
+                                       const std::wstring& style,
+                                       winrt::hstring const& altText,
+                                       bool allowTitleAsTooltip);
 
     winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                           winrt::IAdaptiveActionElement const& selectAction,
-                                                           winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::UIElement const& uiElement,
-                                                           bool supportsInteractivity,
-                                                           bool fullWidthTouchTarget);
+                                        winrt::IAdaptiveActionElement const& selectAction,
+                                        winrt::AdaptiveRenderContext const& renderContext,
+                                        winrt::UIElement const& uiElement,
+                                        bool supportsInteractivity,
+                                        bool fullWidthTouchTarget);
 
     winrt::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
-                                                             winrt::AdaptiveActionSet const& adaptiveActionSet,
-                                                             winrt::IVector<winrt::IAdaptiveActionElement> const& children,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs);
+                                          winrt::AdaptiveActionSet const& adaptiveActionSet,
+                                          winrt::IVector<winrt::IAdaptiveActionElement> const& children,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::AdaptiveRenderArgs const& renderArgs);
 
     void BuildActions(winrt::AdaptiveCard const& adaptiveCard,
                       winrt::IVector<winrt::IAdaptiveActionElement> const& children,
-                      winrt::Panel const& bodyPanel,
+                      winrt::xaml_controls::Panel const& bodyPanel,
                       bool insertSeparator,
                       winrt::AdaptiveRenderContext const& renderContext,
                       winrt::AdaptiveRenderArgs const& renderArgs);
@@ -84,15 +84,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     void BuildInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                              winrt::AdaptiveActionSet const& adaptiveActionSet,
                              winrt::IAdaptiveActionElement const& action,
-                             winrt::Panel const& showCardsPanel,
+                             winrt::xaml_controls::Panel const& showCardsPanel,
                              winrt::AdaptiveRenderContext const& renderContext,
                              winrt::AdaptiveRenderArgs const& renderArgs);
 
     winrt::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
-                                                             winrt::AdaptiveActionSet const& adaptiveActionSet,
-                                                             winrt::IVector<winrt::IAdaptiveActionElement> const& children,
-                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                             winrt::AdaptiveRenderArgs const& renderArgs);
+                                          winrt::AdaptiveActionSet const& adaptiveActionSet,
+                                          winrt::IVector<winrt::IAdaptiveActionElement> const& children,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::AdaptiveRenderArgs const& renderArgs);
 
-    winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action);
+    winrt::xaml_controls::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action);
 }

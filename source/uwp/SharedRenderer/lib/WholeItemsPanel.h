@@ -61,7 +61,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
-        bool IsAnySubgroupTruncated(winrt::Panel const& panel);
+        bool IsAnySubgroupTruncated(winrt::xaml_controls::Panel const& panel);
 
         static void LayoutCroppedImage(winrt::Shape const& shape, double availableWidth, double availableHeight);
 

@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             auto adaptiveColumn = cardElement.as<winrt::AdaptiveColumn>();
 
-            winrt::Border columnBorder{};
+            winrt::xaml_controls::Border columnBorder{};
 
             auto columnPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
 
@@ -88,7 +88,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             if (IsBackgroundImageValid(backgroundImage))
             {
-                winrt::Grid rootElement{};
+                winrt::xaml_controls::Grid rootElement{};
                 XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 auto columnHeightType = cardElement.Height();

@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    std::tuple<winrt::UIElement, winrt::Border>
+    std::tuple<winrt::UIElement, winrt::xaml_controls::Border>
     AdaptiveTextInputRenderer::HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                                          winrt::UIElement const& inputUIElement,
                                                          winrt::AdaptiveRenderContext const& renderContext,
@@ -25,7 +25,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         winrt::hstring regex = adaptiveTextInput.Regex();
         bool isRequired = adaptiveTextInput.IsRequired();
 
-        winrt::Border validationBorder{nullptr};
+        winrt::xaml_controls::Border validationBorder{nullptr};
 
         if (!regex.empty() || isRequired)
         {
@@ -67,7 +67,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                               winrt::AdaptiveRenderContext const& renderContext,
                                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        winrt::TextBox textBox{};
+        winrt::xaml_controls::TextBox textBox{};
 
         if (adaptiveTextInput.IsMultiline())
         {
@@ -116,7 +116,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                                   winrt::AdaptiveRenderContext const& renderContext,
                                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
-        winrt::PasswordBox passwordBox{};
+        winrt::xaml_controls::PasswordBox passwordBox{};
 
         passwordBox.Password(adaptiveTextInput.Value());
         passwordBox.MaxLength(adaptiveTextInput.MaxLength());

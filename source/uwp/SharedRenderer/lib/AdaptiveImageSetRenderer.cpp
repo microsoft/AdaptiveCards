@@ -17,8 +17,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             auto adaptiveImageSet = cardElement.as<winrt::AdaptiveImageSet>();
 
-            winrt::VariableSizedWrapGrid xamlGrid{};
-            xamlGrid.Orientation(winrt::Orientation::Horizontal);
+            winrt::xaml_controls::VariableSizedWrapGrid xamlGrid{};
+            xamlGrid.Orientation(winrt::xaml_controls::Orientation::Horizontal);
 
             auto images = adaptiveImageSet.Images();
             auto hostConfig = renderContext.HostConfig();

@@ -54,7 +54,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 containerPanel.MinHeight(containerMinHeight);
             }
 
-            winrt::Border containerBorder{};
+            winrt::xaml_controls::Border containerBorder{};
 
             auto containerStyle =
                 XamlHelpers::HandleStylingAndPadding(adaptiveContainerBase, containerBorder, renderContext, renderArgs);
@@ -65,7 +65,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto childItems = adaptiveContainer.Items();
             ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildPanelChildren(
-                childItems, containerPanel.as<winrt::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
+                childItems, containerPanel.as<winrt::xaml_controls::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
@@ -84,7 +84,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             if (IsBackgroundImageValid(backgroundImage))
             {
-                winrt::Grid rootElement{};
+                winrt::xaml_controls::Grid rootElement{};
                 XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 // Add rootElement to containerBorder

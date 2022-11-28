@@ -14,7 +14,7 @@ using namespace std::string_literals;
 void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBlock,
                                   winrt::AdaptiveRenderContext const& renderContext,
                                   winrt::AdaptiveRenderArgs const& renderArgs,
-                                  winrt::TextBlock const& xamlTextBlock)
+                                  winrt::xaml_controls::TextBlock const& xamlTextBlock)
 {
     SetWrapProperties(xamlTextBlock, adaptiveTextBlock.Wrap());
 
@@ -44,7 +44,7 @@ winrt::TextDecorations GetTextDecorations(TextRunStyleParameters const& stylePro
     return textDecorations;
 }
 
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextBlock const& textBlock)
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::xaml_controls::TextBlock const& textBlock)
 {
     textBlock.TextDecorations(GetTextDecorations(styleProperties));
 }
@@ -58,7 +58,7 @@ void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textEl
                                        winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
                                        winrt::AdaptiveTextStyleConfig const& textStyleConfig,
-                                       winrt::TextBlock const& textBlock)
+                                       winrt::xaml_controls::TextBlock const& textBlock)
 {
     SetXamlInlinesWithTextStyleConfig(
         renderContext, renderArgs, textStyleConfig, textElement, textElement.Language(), textElement.Text(), textBlock);
@@ -70,7 +70,7 @@ void SetXamlInlinesWithTextStyleConfig(winrt::AdaptiveRenderContext const& rende
                                        winrt::IAdaptiveTextElement const& textElement,
                                        winrt::hstring const& language,
                                        winrt::hstring const& text,
-                                       winrt::TextBlock const& textBlock)
+                                       winrt::xaml_controls::TextBlock const& textBlock)
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
     winrt::AdaptiveTextRun textRun{};
@@ -128,7 +128,7 @@ void SetXamlInlinesWithFactSetTextConfig(winrt::AdaptiveRenderContext const& ren
                                          winrt::AdaptiveFactSetTextConfig const& factSetTextConfig,
                                          winrt::hstring const& language,
                                          winrt::hstring const& text,
-                                         winrt::TextBlock const& textBlock)
+                                         winrt::xaml_controls::TextBlock const& textBlock)
 {
     auto factSetTextConfigAsTextStyleConfig = factSetTextConfig.as<winrt::AdaptiveTextStyleConfig>();
 
@@ -139,7 +139,7 @@ void SetXamlInlinesWithFactSetTextConfig(winrt::AdaptiveRenderContext const& ren
     textBlock.MaxWidth(factSetTextConfig.MaxWidth());
 }
 
-void SetWrapProperties(winrt::TextBlock const& xamlTextBlock, bool wrap)
+void SetWrapProperties(winrt::xaml_controls::TextBlock const& xamlTextBlock, bool wrap)
 {
     // Set whether the text wraps
     xamlTextBlock.TextWrapping(wrap ? winrt::TextWrapping::Wrap : winrt::TextWrapping::NoWrap);
