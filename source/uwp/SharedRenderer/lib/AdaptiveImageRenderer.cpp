@@ -303,7 +303,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 {
                     if (!isImageSvg)
                     {
-                        image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+                        image.as<winrt::xaml_media_imaging::BitmapImage>().CreateOptions(
+                            winrt::xaml_media_imaging::BitmapCreateOptions::None);
                     }
                     this->m_imageLoadTracker->TrackImage(image);
                 }
@@ -332,15 +333,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
                                 if (isImageSvg)
                                 {
-                                    auto setSourceOperation = image.as<winrt::SvgImageSource>().SetSourceAsync(randomAccessStream);
+                                    auto setSourceOperation =
+                                        image.as<winrt::xaml_media_imaging::SvgImageSource>().SetSourceAsync(randomAccessStream);
 
                                     setSourceOperation.Completed(
                                         [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                            winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
+                                            winrt::IAsyncOperation<winrt::xaml_media_imaging::SvgImageSourceLoadStatus> const& operation,
+                                            winrt::AsyncStatus status)
                                         {
                                             auto loadStatus = operation.GetResults();
                                             if (status == winrt::AsyncStatus::Completed && isAutoSize &&
-                                                loadStatus == winrt::SvgImageSourceLoadStatus::Success)
+                                                loadStatus == winrt::xaml_media_imaging::SvgImageSourceLoadStatus::Success)
                                             {
                                                 if (auto strongThis = weakThis.get())
                                                 {
@@ -351,7 +354,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                 }
                                 else
                                 {
-                                    auto setSourceAction = image.as<winrt::BitmapImage>().SetSourceAsync(randomAccessStream);
+                                    auto setSourceAction =
+                                        image.as<winrt::xaml_media_imaging::BitmapImage>().SetSourceAsync(randomAccessStream);
 
                                     setSourceAction.Completed(
                                         [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
@@ -395,7 +399,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (!isImageSvg)
             {
-                image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+                image.as<winrt::xaml_media_imaging::BitmapImage>().CreateOptions(winrt::xaml_media_imaging::BitmapCreateOptions::IgnoreImageCache);
             }
             m_imageLoadTracker->TrackImage(image);
 
@@ -414,15 +418,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
                             if (isImageSvg)
                             {
-                                auto setSourceOperation = image.as<winrt::SvgImageSource>().SetSourceAsync(stream);
+                                auto setSourceOperation =
+                                    image.as<winrt::xaml_media_imaging::SvgImageSource>().SetSourceAsync(stream);
 
                                 setSourceOperation.Completed(
                                     [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                        winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
+                                        winrt::IAsyncOperation<winrt::xaml_media_imaging::SvgImageSourceLoadStatus> const& operation,
+                                        winrt::AsyncStatus status)
                                     {
                                         auto loadStatus = operation.GetResults();
                                         if (status == winrt::AsyncStatus::Completed && isAutoSize &&
-                                            loadStatus == winrt::SvgImageSourceLoadStatus::Success)
+                                            loadStatus == winrt::xaml_media_imaging::SvgImageSourceLoadStatus::Success)
                                         {
                                             if (auto strongThis = weakThis.get())
                                             {
@@ -433,7 +439,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                             }
                             else
                             {
-                                auto setSourceAction = image.as<winrt::BitmapImage>().SetSourceAsync(stream);
+                                auto setSourceAction = image.as<winrt::xaml_media_imaging::BitmapImage>().SetSourceAsync(stream);
 
                                 setSourceAction.Completed(
                                     [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
@@ -465,11 +471,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (isImageSvg)
             {
-                image.as<winrt::SvgImageSource>().UriSource(imageUrl);
+                image.as<winrt::xaml_media_imaging::SvgImageSource>().UriSource(imageUrl);
             }
             else
             {
-                image.as<winrt::BitmapImage>().UriSource(imageUrl);
+                image.as<winrt::xaml_media_imaging::BitmapImage>().UriSource(imageUrl);
             }
 
             SetImageSource(uiElement, image, stretch);
@@ -490,12 +496,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     {
         if (isImageSvg)
         {
-            winrt::SvgImageSource svgImageSource{};
+            winrt::xaml_media_imaging::SvgImageSource svgImageSource{};
             return svgImageSource;
         }
         else
         {
-            winrt::BitmapImage bitmapImage{};
+            winrt::xaml_media_imaging::BitmapImage bitmapImage{};
             return bitmapImage;
         }
     }
@@ -516,7 +522,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         if (!isImageSvg)
         {
-            image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+            image.as<winrt::xaml_media_imaging::BitmapImage>().CreateOptions(winrt::xaml_media_imaging::BitmapCreateOptions::None);
         }
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
@@ -578,6 +584,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto brushAsImageBrush = ellipseBrush.as<winrt::ImageBrush>();
 
             auto imageSource = brushAsImageBrush.ImageSource();
+            auto imageSourceAsBitmap = imageSource.as<winrt::xaml_media_imaging::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
@@ -602,7 +609,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                             if (ellipse && lambdaParentElement)
                             {
                                 winrt::FrameworkElement k{nullptr};
-                                winrt::BitmapSource as{nullptr};
+                                winrt::xaml_media_imaging::BitmapSource as{nullptr};
 
                                 XamlHelpers::SetAutoImageSize(ellipse, lambdaParentElement, lambdaImageSource, isVisible);
                             }

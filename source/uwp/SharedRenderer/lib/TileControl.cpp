@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             if (const auto imageSource = image.Source())
             {
-                if (const auto bitmapSource = imageSource.try_as<winrt::BitmapSource>())
+                if (const auto bitmapSource = imageSource.try_as<winrt::xaml_media_imaging::BitmapSource>())
                 {
                     m_imageSize = {(float)bitmapSource.PixelWidth(), (float)bitmapSource.PixelHeight()};
                     RefreshContainerTile();
@@ -40,7 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         {
             if (const auto imageSource = image.Source())
             {
-                if (const auto bitmapImage = imageSource.try_as<winrt::BitmapImage>())
+                if (const auto bitmapImage = imageSource.try_as<winrt::xaml_media_imaging::BitmapImage>())
                 {
                     m_imageOpenedRevoker.revoke();
                     m_imageOpenedRevoker = bitmapImage.ImageOpened(winrt::auto_revoke, {this, &TileControl::ImageOpened});

@@ -10,14 +10,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     // If we do this, we could just store one map of the image details
     struct TrackedBitmapImageDetails : winrt::implements<TrackedBitmapImageDetails, winrt::IInspectable>
     {
-        winrt::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
-        winrt::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
+        winrt::xaml_media_imaging::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
+        winrt::xaml_media_imaging::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
     };
 
     struct TrackedSvgImageDetails : winrt::implements<TrackedSvgImageDetails, winrt::IInspectable>
     {
-        winrt::SvgImageSource::Opened_revoker openedRevoker{};
-        winrt::SvgImageSource::OpenFailed_revoker openFailedRevoker{};
+        winrt::xaml_media_imaging::SvgImageSource::Opened_revoker openedRevoker{};
+        winrt::xaml_media_imaging::SvgImageSource::OpenFailed_revoker openFailedRevoker{};
     };
 
     struct ImageLoadTracker : winrt::implements<ImageLoadTracker, winrt::IInspectable>
@@ -25,8 +25,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     public:
         ~ImageLoadTracker();
         void TrackImage(winrt::ImageSource const& image);
-        void TrackBitmapImage(winrt::BitmapImage const& bitmapImage);
-        void TrackSvgImage(winrt::SvgImageSource const& svgImage);
+        void TrackBitmapImage(winrt::xaml_media_imaging::BitmapImage const& bitmapImage);
+        void TrackSvgImage(winrt::xaml_media_imaging::SvgImageSource const& svgImage);
 
         void MarkFailedLoadImage(winrt::ImageSource const& image);
 
@@ -50,8 +50,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         void TrackedImage_BitmapImageFailed(winrt::IInspectable const& sender,
                                       winrt::ExceptionRoutedEventArgs const& eventArgs);
 
-        void TrackedImage_SvgImageLoaded(winrt::IInspectable const& sender, winrt::SvgImageSourceOpenedEventArgs const& eventArgs);
-        void TrackedImage_SvgImageFailed(winrt::IInspectable const& sender, winrt::SvgImageSourceFailedEventArgs const& eventArgs);
+        void TrackedImage_SvgImageLoaded(winrt::IInspectable const& sender, winrt::xaml_media_imaging::SvgImageSourceOpenedEventArgs const& eventArgs);
+        void TrackedImage_SvgImageFailed(winrt::IInspectable const& sender, winrt::xaml_media_imaging::SvgImageSourceFailedEventArgs const& eventArgs);
 
         void ImageLoadResultReceived(winrt::IInspectable const& sender);
 

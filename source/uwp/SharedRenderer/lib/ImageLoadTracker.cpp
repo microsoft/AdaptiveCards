@@ -19,17 +19,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
     void ImageLoadTracker::TrackImage(winrt::ImageSource const& image)
     {
-        if (auto bitmapImage = image.try_as<winrt::BitmapImage>())
+        if (auto bitmapImage = image.try_as<winrt::xaml_media_imaging::BitmapImage>())
         {
             TrackBitmapImage(bitmapImage);
         }
         else
         {
-            TrackSvgImage(image.as<winrt::SvgImageSource>());
+            TrackSvgImage(image.as<winrt::xaml_media_imaging::SvgImageSource>());
         }
     }
 
-    void ImageLoadTracker::TrackBitmapImage(winrt::BitmapImage const& bitmapImage)
+    void ImageLoadTracker::TrackBitmapImage(winrt::xaml_media_imaging::BitmapImage const& bitmapImage)
     {
         auto trackedImageDetails = winrt::make_self<TrackedBitmapImageDetails>();
 
@@ -50,7 +50,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    void ImageLoadTracker::TrackSvgImage(winrt::SvgImageSource const& svgImage)
+    void ImageLoadTracker::TrackSvgImage(winrt::xaml_media_imaging::SvgImageSource const& svgImage)
     {
         auto trackedSvgImageDetails = winrt::make_self<TrackedSvgImageDetails>();
 
@@ -128,12 +128,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_SvgImageLoaded(winrt::IInspectable const& sender, winrt::SvgImageSourceOpenedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_SvgImageLoaded(
+        winrt::IInspectable const& sender, winrt::xaml_media_imaging::SvgImageSourceOpenedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_SvgImageFailed(winrt::IInspectable const& sender, winrt::SvgImageSourceFailedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_SvgImageFailed(
+        winrt::IInspectable const& sender, winrt::xaml_media_imaging::SvgImageSourceFailedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
@@ -145,7 +147,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         m_trackedImageCount--;
 
         // Check if the sender is a bitmap
-        if (const auto bitmap = sender.try_as<winrt::BitmapImage>())
+        if (const auto bitmap = sender.try_as<winrt::xaml_media_imaging::BitmapImage>())
         {
             if (m_bitmapEventRevokers.find(bitmap) != m_bitmapEventRevokers.end())
             {
@@ -155,9 +157,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         else
         {
             // Otherwise, we have an svg
-            if (m_svgEventRevokers.find(sender.as<winrt::SvgImageSource>()) != m_svgEventRevokers.end())
+            if (m_svgEventRevokers.find(sender.as<winrt::xaml_media_imaging::SvgImageSource>()) != m_svgEventRevokers.end())
             {
-                UnsubscribeFromEvents(m_svgEventRevokers[sender.as<winrt::SvgImageSource>()]);
+                UnsubscribeFromEvents(m_svgEventRevokers[sender.as<winrt::xaml_media_imaging::SvgImageSource>()]);
             }
         }
 

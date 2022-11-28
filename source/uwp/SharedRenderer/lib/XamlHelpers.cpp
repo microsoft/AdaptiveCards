@@ -254,7 +254,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                 return RenderImageFromDataUri(imageUrl);
             }
 
-            winrt::BitmapImage bitmapImage{};
+            winrt::xaml_media_imaging::BitmapImage bitmapImage{};
             bitmapImage.UriSource(imageUrl);
 
             winrt::xaml_controls::Image backgroundImage;
@@ -440,14 +440,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         double pixelHeight;
         double pixelWidth;
 
-        if (const auto bitmap = imageSource.try_as<winrt::BitmapSource>())
+        if (const auto bitmap = imageSource.try_as<winrt::xaml_media_imaging::BitmapSource>())
         {
             pixelHeight = bitmap.PixelHeight();
             pixelWidth = bitmap.PixelWidth();
         }
         else
         {
-            auto svg = imageSource.try_as<winrt::SvgImageSource>();
+            auto svg = imageSource.try_as<winrt::xaml_media_imaging::SvgImageSource>();
             pixelHeight = svg.RasterizePixelHeight();
             pixelWidth = svg.RasterizePixelWidth();
         }
@@ -890,8 +890,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     winrt::xaml_controls::Image XamlHelpers::RenderImageFromDataUri(winrt::Uri const& imageUrl)
     {
         winrt::xaml_controls::Image image{};
-        winrt::BitmapImage bitmapImage{};
-        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+        winrt::xaml_media_imaging::BitmapImage bitmapImage{};
+        bitmapImage.CreateOptions(winrt::xaml_media_imaging::BitmapCreateOptions::IgnoreImageCache);
 
         // Decode base 64 string
         std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(imageUrl.Path()));

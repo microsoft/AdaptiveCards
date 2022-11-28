@@ -47,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         std::vector<winrt::Rectangle> m_xamlChildren;
 
         // Revokers
-        winrt::BitmapImage::ImageOpened_revoker m_imageOpenedRevoker;
+        winrt::xaml_media_imaging::BitmapImage::ImageOpened_revoker m_imageOpenedRevoker;
     };
 }
 
