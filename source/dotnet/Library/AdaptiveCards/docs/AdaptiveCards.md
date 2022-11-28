@@ -123,6 +123,7 @@
 - [AdaptiveChoiceInputStyle](#T-AdaptiveCards-AdaptiveChoiceInputStyle 'AdaptiveCards.AdaptiveChoiceInputStyle')
   - [Compact](#F-AdaptiveCards-AdaptiveChoiceInputStyle-Compact 'AdaptiveCards.AdaptiveChoiceInputStyle.Compact')
   - [Expanded](#F-AdaptiveCards-AdaptiveChoiceInputStyle-Expanded 'AdaptiveCards.AdaptiveChoiceInputStyle.Expanded')
+  - [Filtered](#F-AdaptiveCards-AdaptiveChoiceInputStyle-Filtered 'AdaptiveCards.AdaptiveChoiceInputStyle.Filtered')
 - [AdaptiveChoiceSetInput](#T-AdaptiveCards-AdaptiveChoiceSetInput 'AdaptiveCards.AdaptiveChoiceSetInput')
   - [TypeName](#F-AdaptiveCards-AdaptiveChoiceSetInput-TypeName 'AdaptiveCards.AdaptiveChoiceSetInput.TypeName')
   - [Choices](#P-AdaptiveCards-AdaptiveChoiceSetInput-Choices 'AdaptiveCards.AdaptiveChoiceSetInput.Choices')
@@ -1895,6 +1896,13 @@ Compact display similar to a ComboBox.
 ##### Summary
 
 Expanded display i.e. Checkbox or Radio buttons.
+
+<a name='F-AdaptiveCards-AdaptiveChoiceInputStyle-Filtered'></a>
+### Filtered `constants`
+
+##### Summary
+
+Allows users to filter choices in a choice set.
 
 <a name='T-AdaptiveCards-AdaptiveChoiceSetInput'></a>
 ## AdaptiveChoiceSetInput `type`
