@@ -325,7 +325,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
     }
 
-    void HandleKeydownForInlineAction(winrt::KeyRoutedEventArgs const& args,
+    void HandleKeydownForInlineAction(winrt::xaml_input::KeyRoutedEventArgs const& args,
                                       winrt::AdaptiveActionInvoker const& actionInvoker,
                                       winrt::IAdaptiveActionElement const& inlineAction)
     {
@@ -463,7 +463,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             auto actionInvoker = renderContext.ActionInvoker();
 
             textInputUIElement.KeyDown(
-                [actionInvoker, inlineAction](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                [actionInvoker, inlineAction](winrt::IInspectable const& /*sender*/, winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
                 { ActionHelpers::HandleKeydownForInlineAction(args, actionInvoker, inlineAction); });
         }
 

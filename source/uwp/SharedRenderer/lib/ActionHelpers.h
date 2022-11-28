@@ -37,7 +37,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                winrt::IAdaptiveActionElement const& action,
                                const std::wstring& warning);
 
-    void HandleKeydownForInlineAction(winrt::KeyRoutedEventArgs const& args,
+    void HandleKeydownForInlineAction(winrt::xaml_input::KeyRoutedEventArgs const& args,
                                       winrt::AdaptiveActionInvoker const& actionInvoker,
                                       winrt::IAdaptiveActionElement const& inlineAction);
 

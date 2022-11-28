@@ -81,24 +81,24 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         winrt::TextInputStyle textInputStyle = adaptiveTextInput.TextInputStyle();
 
-        winrt::InputScopeName inputScopeName{};
+        winrt::xaml_input::InputScopeName inputScopeName{};
 
         switch (textInputStyle)
         {
         case winrt::TextInputStyle::Email:
-            inputScopeName.NameValue(winrt::InputScopeNameValue::EmailSmtpAddress);
+            inputScopeName.NameValue(winrt::xaml_input::InputScopeNameValue::EmailSmtpAddress);
             break;
 
         case winrt::TextInputStyle::Tel:
-            inputScopeName.NameValue(winrt::InputScopeNameValue::TelephoneNumber);
+            inputScopeName.NameValue(winrt::xaml_input::InputScopeNameValue::TelephoneNumber);
             break;
 
         case winrt::TextInputStyle::Url:
-            inputScopeName.NameValue(winrt::InputScopeNameValue::Url);
+            inputScopeName.NameValue(winrt::xaml_input::InputScopeNameValue::Url);
             break;
         }
 
-        winrt::InputScope inputScope{};
+        winrt::xaml_input::InputScope inputScope{};
         inputScope.Names().Append(inputScopeName);
 
         textBox.InputScope(inputScope);

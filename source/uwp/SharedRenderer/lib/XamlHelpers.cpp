@@ -428,7 +428,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         {
             return;
         }
-        uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        uiElement.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
     // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0

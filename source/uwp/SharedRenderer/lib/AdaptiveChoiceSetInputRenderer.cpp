@@ -115,7 +115,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         comboBox.SelectedIndex(selectedIndex);
 
-        comboBox.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        comboBox.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args) { args.Handled(true); });
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
 
@@ -166,7 +166,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 }
 
                 radioButton.PreviewKeyDown(
-                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
                     {
                         std::uint32_t currentButtonIndex;
                         auto children = stackPanel.Children();

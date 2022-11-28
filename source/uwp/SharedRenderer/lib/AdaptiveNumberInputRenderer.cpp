@@ -26,10 +26,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto adaptiveNumberInput = cardElement.as<winrt::AdaptiveNumberInput>();
 
             winrt::xaml_controls::TextBox textBox{};
-            winrt::InputScopeName inputScopeName{winrt::InputScopeNameValue::Number};
+            winrt::xaml_input::InputScopeName inputScopeName{winrt::xaml_input::InputScopeNameValue::Number};
 
-            winrt::InputScope inputScope{};
-            inputScope.Names().Append(winrt::InputScopeName{winrt::InputScopeNameValue::Number});
+            winrt::xaml_input::InputScope inputScope{};
+            inputScope.Names().Append(winrt::xaml_input::InputScopeName{winrt::xaml_input::InputScopeNameValue::Number});
 
             textBox.InputScope(inputScope);
 

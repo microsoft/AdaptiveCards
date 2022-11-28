@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             XamlHelpers::SetContent(checkBox, adaptiveToggleInput.Title(), adaptiveToggleInput.Wrap());
 
             checkBox.IsChecked(adaptiveToggleInput.ValueOn() == adaptiveToggleInput.Value());
-            checkBox.Tapped([](winrt::IInspectable const& /* sender */, winrt::TappedRoutedEventArgs const& args)
+            checkBox.Tapped([](winrt::IInspectable const& /* sender */, winrt::xaml_input::TappedRoutedEventArgs const& args)
                             { return args.Handled(true); });
 
             checkBox.VerticalAlignment(winrt::VerticalAlignment::Top);
