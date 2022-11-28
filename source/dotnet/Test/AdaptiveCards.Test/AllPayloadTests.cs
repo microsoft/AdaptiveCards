@@ -91,7 +91,6 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAllScenarios()
         {
-            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "scenarios"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "scenarios"), null);
         }
 
