@@ -522,7 +522,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     void FormatLabelRunWithHostConfig(winrt::AdaptiveHostConfig const& hostConfig,
                                       winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
                                       bool isHint,
-                                      winrt::Run const& labelRun)
+                                      winrt::xaml_documents::Run const& labelRun)
     {
         // If we're formatting a hint then use attention color
         winrt::ForegroundColor textColor = isHint ? winrt::ForegroundColor::Attention : inputLabelConfig.Color();
@@ -540,10 +540,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     void AddRequiredHintInline(winrt::AdaptiveHostConfig const& hostConfig,
                                winrt::AdaptiveInputLabelConfig const& inputLabelConfig,
-                               winrt::IVector<winrt::Inline> const& inlines)
+                               winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
     {
         // Create an inline for the suffix
-        winrt::Run hintRun{};
+        winrt::xaml_documents::Run hintRun{};
 
         winrt::hstring suffix = inputLabelConfig.Suffix();
         // If no suffix was defined, use * as default
@@ -576,7 +576,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             // Add a paragraph for the inlines
             auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-            winrt::Paragraph xamlParagraph{};
+            winrt::xaml_documents::Paragraph xamlParagraph{};
 
             xamlBlocks.Append(xamlParagraph);
 
@@ -584,7 +584,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             auto xamlInlines = xamlParagraph.Inlines();
 
             // First inline is the label from the card
-            winrt::Run labelRun{};
+            winrt::xaml_documents::Run labelRun{};
             labelRun.Text(inputLabel);
 
             xamlInlines.Append(labelRun);

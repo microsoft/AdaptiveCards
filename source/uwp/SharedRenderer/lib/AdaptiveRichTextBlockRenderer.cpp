@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             // Add a paragraph for the inlines
             auto xamlBlocks = xamlRichTextBlock.Blocks();
 
-            winrt::Paragraph xamlParagraph{};
+            winrt::xaml_documents::Paragraph xamlParagraph{};
             xamlBlocks.Append(xamlParagraph);
 
             // Add the Inlines
@@ -62,7 +62,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 if (selectAction && selectActionIsEnabled)
                 {
                     // If there's a select action, create a hyperlink that triggers the action
-                    winrt::Hyperlink hyperlink{};
+                    winrt::xaml_documents::Hyperlink hyperlink{};
 
                     auto actionInvoker = renderContext.ActionInvoker();
 
@@ -75,7 +75,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     }
 
                     hyperlink.Click([selectAction, actionInvoker](winrt::IInspectable const& /* sender */,
-                                                                  winrt::HyperlinkClickEventArgs const& /* args*/) -> void
+                                                                  winrt::xaml_documents::HyperlinkClickEventArgs const& /* args*/) -> void
                                     { actionInvoker.SendActionEvent(selectAction); });
 
                     // Add the run text to the hyperlink's inlines

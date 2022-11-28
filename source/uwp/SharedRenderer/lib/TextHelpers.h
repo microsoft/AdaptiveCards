@@ -33,27 +33,27 @@ uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
                         bool isInHyperlink,
-                        winrt::IVector<winrt::Inline> inlines);
+                        winrt::IVector<winrt::xaml_documents::Inline> inlines);
 
 uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderContext const& renderContext,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
                         TextRunStyleParameters const& styleParameters,
-                        winrt::IVector<winrt::Inline> const& inlines);
+                        winrt::IVector<winrt::xaml_documents::Inline> const& inlines);
 
 uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                              winrt::AdaptiveRenderContext const& renderContext,
                              winrt::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
                              TextRunStyleParameters const& styleParameters,
-                             winrt::IVector<winrt::Inline> const& inlines);
+                             winrt::IVector<winrt::xaml_documents::Inline> const& inlines);
 
 uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderContext const& renderContext,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         bool isInHyperlink,
-                        winrt::IVector<winrt::Inline> const& inlines);
+                        winrt::IVector<winrt::xaml_documents::Inline> const& inlines);
 
 void SetXamlInlinesWithTextStyleConfig(winrt::IAdaptiveTextElement const& textElement,
                                        winrt::AdaptiveRenderContext const& renderContext,
@@ -119,7 +119,7 @@ void SetHorizontalAlignment(TAdaptiveType const& adaptiveTextBlock,
 }
 void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::xaml_controls::TextBlock const& textBlock);
 
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textBlock);
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::xaml_documents::TextElement const& textBlock);
 
 template<typename TXamlTextBlockType>
 void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,

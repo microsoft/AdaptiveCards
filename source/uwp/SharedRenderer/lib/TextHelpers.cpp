@@ -49,7 +49,7 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
     textBlock.TextDecorations(GetTextDecorations(styleProperties));
 }
 
-void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::TextElement const& textElement)
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties, winrt::xaml_documents::TextElement const& textElement)
 {
     textElement.TextDecorations(GetTextDecorations(styleProperties));
 }
@@ -150,7 +150,7 @@ uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderContext const& renderContext,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         bool isInHyperlink,
-                        winrt::IVector<winrt::Inline> const& inlines)
+                        winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
 {
     // auto langugae = adaptiveTextElement.Language();
     auto text = adaptiveTextElement.Text();
@@ -191,7 +191,7 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::IXmlNode const& node,
                         bool isListOrdered,
                         bool isInHyperlink,
-                        winrt::IVector<winrt::Inline> const& inlines)
+                        winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
 {
     auto attributeMap = node.Attributes();
     auto startNode = attributeMap.GetNamedItem(L"start");
@@ -245,7 +245,7 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
         winrt::hstring listElementHString{listElementString};
         totalCharacterLength = listElementHString.size();
 
-        winrt::Run run{};
+        winrt::xaml_documents::Run run{};
         run.Text(listElementHString);
 
         // Make sure the bullet or list number is styled correctly
@@ -277,7 +277,7 @@ uint32_t AddLinkInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                        bool isStrikethrough,
                        bool isItalic,
                        bool isUnderline,
-                       winrt::IVector<winrt::Inline> inlines)
+                       winrt::IVector<winrt::xaml_documents::Inline> inlines)
 {
     auto attributeMap = node.Attributes();
     auto hrefNode = attributeMap.GetNamedItem(L"href");
@@ -291,7 +291,7 @@ uint32_t AddLinkInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
     winrt::Uri uri{href};
 
-    winrt::Hyperlink hyperlink{};
+    winrt::xaml_documents::Hyperlink hyperlink{};
     hyperlink.NavigateUri(uri);
 
     auto hyperlinkInlines = hyperlink.Inlines();
@@ -312,9 +312,9 @@ uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElem
                              winrt::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
                              const TextRunStyleParameters& styleParameters,
-                             winrt::IVector<winrt::Inline> const& inlines)
+                             winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
 {
-    winrt::Run run{};
+    winrt::xaml_documents::Run run{};
 
     winrt::hstring language = adaptiveTextElement.Language();
 
@@ -337,7 +337,7 @@ uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
                         TextRunStyleParameters const& styleParameters,
-                        winrt::IVector<winrt::Inline> const& inlines)
+                        winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
 {
     auto childNode = node.FirstChild();
 
@@ -411,7 +411,7 @@ uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::AdaptiveRenderArgs const& renderArgs,
                         winrt::IXmlNode const& node,
                         bool isInHyperlink,
-                        winrt::IVector<winrt::Inline> inlines)
+                        winrt::IVector<winrt::xaml_documents::Inline> inlines)
 {
     auto childNode = node.FirstChild();
 
@@ -453,7 +453,7 @@ uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
             // End of paragraph. check to see if there's more content. if there is, insert a line break
             if (const auto nextSibling = childNode.NextSibling())
             {
-                inlines.Append(winrt::LineBreak{});
+                inlines.Append(winrt::xaml_documents::LineBreak{});
             }
         }
         else

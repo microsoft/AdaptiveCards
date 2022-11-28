@@ -220,11 +220,11 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig co
     }
 }
 
-winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+winrt::xaml_documents::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                                       winrt::AdaptiveRenderContext const& renderContext,
                                       winrt::AdaptiveRenderArgs const& renderArgs)
 {
-    winrt::TextHighlighter textHighlighter{};
+    winrt::xaml_documents::TextHighlighter textHighlighter{};
 
     auto hostConfig = renderContext.HostConfig();
 
