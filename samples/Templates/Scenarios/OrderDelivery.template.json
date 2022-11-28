@@ -12,14 +12,16 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${address.addressLocality}, ${address.addressRegion}",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
 							"text": "${name}",
 							"weight": "bolder",
 							"size": "extraLarge",
+							"spacing": "none",
+							"wrap": true,
+							"style": "heading"
+						},
+						{
+							"type": "TextBlock",
+							"text": "${address.addressLocality}, ${address.addressRegion}",
 							"spacing": "none",
 							"wrap": true
 						},
