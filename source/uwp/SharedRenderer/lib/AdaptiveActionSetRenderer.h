@@ -11,9 +11,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveActionSetRenderer() = default;
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                winrt::AdaptiveRenderContext const& renderContext,
-                                winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

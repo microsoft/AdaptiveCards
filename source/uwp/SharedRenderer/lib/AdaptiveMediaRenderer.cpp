@@ -13,9 +13,9 @@ using namespace ::AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveMediaRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                         winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -86,7 +86,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 }
 
                 // Make the media element collapsed until the user clicks
-                mediaElement.Visibility(winrt::Visibility::Collapsed);
+                mediaElement.Visibility(winrt::xaml::Visibility::Collapsed);
 
                 XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
             }
@@ -95,7 +95,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             touchTargetAsButtonBase.Click(
                 [touchTargetAsButtonBase, renderContext, adaptiveMedia, mediaElement, mediaSourceUrl, mimeType, mediaInvoker](
-                    winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const& /*args*/) -> void
+                    winrt::IInspectable const& /*sender*/, winrt::xaml::RoutedEventArgs const& /*args*/) -> void
                 {
                     // Turn off the button to prevent extra clicks
                     touchTargetAsButtonBase.IsEnabled(false);

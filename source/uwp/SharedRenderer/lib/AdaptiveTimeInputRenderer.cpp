@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveTimeInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveTimeInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -25,8 +25,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             winrt::xaml_controls::TimePicker timePicker{};
 
             // Make the picker stretch full width
-            timePicker.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
-            timePicker.VerticalAlignment(winrt::VerticalAlignment::Top);
+            timePicker.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Stretch);
+            timePicker.VerticalAlignment(winrt::xaml::VerticalAlignment::Top);
 
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePicker);
 

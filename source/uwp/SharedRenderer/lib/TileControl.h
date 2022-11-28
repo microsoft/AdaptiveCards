@@ -18,11 +18,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
         winrt::AdaptiveBackgroundImage BackgroundImage() { return m_adaptiveBackgroundImage; }
 
-        winrt::UIElement ResolvedImage() { return m_resolvedImage; }
+        winrt::xaml::UIElement ResolvedImage() { return m_resolvedImage; }
         void ImageSize(winrt::Size const& imageSize) { m_imageSize = imageSize; }
         winrt::Size ImageSize() { return m_imageSize; }
 
-        void LoadImageBrush(winrt::UIElement const& image);
+        void LoadImageBrush(winrt::xaml::UIElement const& image);
 
         void OnApplyTemplate();
         winrt::Size MeasureOverride(winrt::Size const& availableSize);
@@ -33,11 +33,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     private:
         void RefreshContainerTile();
-        void ImageOpened(const IInspectable& sender, const winrt::RoutedEventArgs& args);
+        void ImageOpened(const IInspectable& sender, const winrt::xaml::RoutedEventArgs& args);
 
         // Fields
-        /* winrt::FrameworkElement m_rootElement;*/
-        winrt::UIElement m_resolvedImage{nullptr};
+        /* winrt::xaml::FrameworkElement m_rootElement;*/
+        winrt::xaml::UIElement m_resolvedImage{nullptr};
         winrt::xaml_controls::Canvas m_containerElement;
         winrt::xaml_media::ImageBrush m_brushXaml;
 

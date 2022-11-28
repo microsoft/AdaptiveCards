@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveExecuteActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
-                                                           winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveExecuteActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                                 winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

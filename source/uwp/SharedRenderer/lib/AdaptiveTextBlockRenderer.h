@@ -11,9 +11,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     public:
         AdaptiveTextBlockRenderer() = default;
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::xaml_automation::Peers::AutomationHeadingLevel GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext);

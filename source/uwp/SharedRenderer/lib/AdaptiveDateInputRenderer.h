@@ -10,9 +10,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveDateInputRenderer() = default;
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& element,
-                                                   winrt::AdaptiveRenderContext const& context,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& element,
+                                      winrt::AdaptiveRenderContext const& context,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation

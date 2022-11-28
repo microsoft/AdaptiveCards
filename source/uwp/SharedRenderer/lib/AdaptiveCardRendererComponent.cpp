@@ -167,7 +167,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         m_defaultResourceDictionary = resourceDictionary;
 
         auto actionSentimentResourceDictionary =
-            winrt::xaml_markup::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::ResourceDictionary>();
+            winrt::xaml_markup::XamlReader::Load(c_defaultActionSentimentResourceDictionary).as<winrt::xaml::ResourceDictionary>();
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
 

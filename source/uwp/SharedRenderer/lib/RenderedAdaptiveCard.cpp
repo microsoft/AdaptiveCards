@@ -36,17 +36,17 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
             // Determine if the card is currently being shown
-            winrt::Visibility currentVisibility = showCardInfoToHandle->cardUIElement.Visibility();
+            winrt::xaml::Visibility currentVisibility = showCardInfoToHandle->cardUIElement.Visibility();
 
-            if (currentVisibility == winrt::Visibility::Visible)
+            if (currentVisibility == winrt::xaml::Visibility::Visible)
             {
                 // If it was shown, hide it
-                showCardInfoToHandle->cardUIElement.Visibility(winrt::Visibility::Collapsed);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::xaml::Visibility::Collapsed);
             }
             else
             {
                 // If it was hidden, show it, and hide all other cards in this action set
-                showCardInfoToHandle->cardUIElement.Visibility(winrt::Visibility::Visible);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::xaml::Visibility::Visible);
 
                 for (auto& showCardEntry : m_showCards)
                 {
@@ -54,14 +54,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     auto currentShowCardInfo = showCardEntry.second;
                     if ((showCardInfoToHandle->actionSetId == currentShowCardInfo->actionSetId) && (showCardToToggle != showCardId))
                     {
-                        currentShowCardInfo->cardUIElement.Visibility(winrt::Visibility::Collapsed);
+                        currentShowCardInfo->cardUIElement.Visibility(winrt::xaml::Visibility::Collapsed);
                     }
                 }
             }
         }
     }
 
-    void HandleToggleVisibilityClick(winrt::FrameworkElement const& cardFrameworkElement, winrt::IAdaptiveActionElement const& action)
+    void HandleToggleVisibilityClick(winrt::xaml::FrameworkElement const& cardFrameworkElement,
+                                     winrt::IAdaptiveActionElement const& action)
     {
         auto toggleAction = action.as<winrt::AdaptiveToggleVisibilityAction>();
         std::vector<winrt::xaml_controls::Panel> parentPanels;
@@ -72,27 +73,27 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             if (auto toggleObject = cardFrameworkElement.FindName(toggleId))
             {
-                auto toggleElementAsUIElement = toggleObject.as<winrt::UIElement>();
-                auto toggleElementAsFrameworkElement = toggleObject.as<winrt::FrameworkElement>();
+                auto toggleElementAsUIElement = toggleObject.as<winrt::xaml::UIElement>();
+                auto toggleElementAsFrameworkElement = toggleObject.as<winrt::xaml::FrameworkElement>();
                 auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<winrt::ElementTagContent>();
 
-                winrt::Visibility visibilityToSet = winrt::Visibility::Visible;
+                winrt::xaml::Visibility visibilityToSet = winrt::xaml::Visibility::Visible;
                 if (toggle == winrt::IsVisible::IsVisibleTrue)
                 {
-                    visibilityToSet = winrt::Visibility::Visible;
+                    visibilityToSet = winrt::xaml::Visibility::Visible;
                 }
                 else if (toggle == winrt::IsVisible::IsVisibleFalse)
                 {
-                    visibilityToSet = winrt::Visibility::Collapsed;
+                    visibilityToSet = winrt::xaml::Visibility::Collapsed;
                 }
                 else if (toggle == winrt::IsVisible::IsVisibleToggle)
                 {
                     bool currentVisibility = elementTagContent.ExpectedVisibility();
-                    visibilityToSet = currentVisibility ? winrt::Visibility::Collapsed : winrt::Visibility::Visible;
+                    visibilityToSet = currentVisibility ? winrt::xaml::Visibility::Collapsed : winrt::xaml::Visibility::Visible;
                 }
 
                 toggleElementAsUIElement.Visibility(visibilityToSet);
-                elementTagContent.ExpectedVisibility(visibilityToSet == winrt::Visibility::Visible);
+                elementTagContent.ExpectedVisibility(visibilityToSet == winrt::xaml::Visibility::Visible);
 
                 auto parentPanel = elementTagContent.ParentPanel();
                 parentPanels.emplace_back(parentPanel);
@@ -102,7 +103,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 if (auto cardElementAsColumn = cardElement.try_as<winrt::AdaptiveColumn>())
                 {
                     auto columnDefinition = elementTagContent.ColumnDefinition();
-                    XamlHelpers::HandleColumnWidth(cardElementAsColumn, (visibilityToSet == winrt::Visibility::Visible), columnDefinition);
+                    XamlHelpers::HandleColumnWidth(cardElementAsColumn, (visibilityToSet == winrt::xaml::Visibility::Visible), columnDefinition);
                 }
             }
         }
@@ -202,7 +203,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         MediaClicked(*this, winrt::make<implementation::AdaptiveMediaEventArgs>(mediaElement));
     }
 
-    void RenderedAdaptiveCard::SetFrameworkElement(winrt::FrameworkElement const& value)
+    void RenderedAdaptiveCard::SetFrameworkElement(winrt::xaml::FrameworkElement const& value)
     {
         m_frameworkElement = value;
     }
@@ -219,7 +220,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void RenderedAdaptiveCard::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                                  winrt::IAdaptiveShowCardAction const& showCardAction,
-                                                 winrt::UIElement const& showCardUIElement,
+                                                 winrt::xaml::UIElement const& showCardUIElement,
                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, showCardUIElement, renderArgs);
@@ -227,7 +228,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void RenderedAdaptiveCard::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                                  winrt::IAdaptiveShowCardAction const& showCardAction,
-                                                 winrt::UIElement const& showCardUIElement,
+                                                 winrt::xaml::UIElement const& showCardUIElement,
                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         AddInlineShowCardHelper(adaptiveCard.InternalId(), showCardAction, showCardUIElement, renderArgs);
@@ -235,7 +236,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void RenderedAdaptiveCard::AddInlineShowCardHelper(uint32_t actionSetId,
                                                        winrt::IAdaptiveShowCardAction const& showCardAction,
-                                                       winrt::UIElement const& showCardUIElement,
+                                                       winrt::xaml::UIElement const& showCardUIElement,
                                                        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto showCardInfo = std::make_shared<ShowCardInfo>();
@@ -248,12 +249,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         LinkCardToParent(showCardAction.Card(), renderArgs);
     }
 
-    void RenderedAdaptiveCard::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement)
+    void RenderedAdaptiveCard::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::xaml::UIElement const& actionUIElement)
     {
         m_overflowButtons.emplace(std::make_pair(actionSet.InternalId(), actionUIElement));
     }
 
-    void RenderedAdaptiveCard::AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement)
+    void RenderedAdaptiveCard::AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::xaml::UIElement const& actionUIElement)
     {
         m_overflowButtons.emplace(std::make_pair(actionCard.InternalId(), actionUIElement));
     }

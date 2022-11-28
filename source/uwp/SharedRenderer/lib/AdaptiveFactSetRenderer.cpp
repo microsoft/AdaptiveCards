@@ -9,9 +9,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveFactSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                     winrt::AdaptiveRenderContext const& renderContext,
-                                                     winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveFactSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                           winrt::AdaptiveRenderContext const& renderContext,
+                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -22,8 +22,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             winrt::xaml_controls::ColumnDefinition titleColumn{};
             winrt::xaml_controls::ColumnDefinition valueColumn{};
 
-            winrt::GridLength factSetGridTitleLength{0, winrt::GridUnitType::Auto};
-            winrt::GridLength factSetGridValueLength{1, winrt::GridUnitType::Star};
+            winrt::xaml::GridLength factSetGridTitleLength{0, winrt::xaml::GridUnitType::Auto};
+            winrt::xaml::GridLength factSetGridValueLength{1, winrt::xaml::GridUnitType::Star};
 
             titleColumn.Width(factSetGridTitleLength);
             valueColumn.Width(factSetGridValueLength);
@@ -32,13 +32,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             columnDefinitions.Append(titleColumn);
             columnDefinitions.Append(valueColumn);
 
-            winrt::GridLength factSetGridHeight{0, winrt::GridUnitType::Auto};
+            winrt::xaml::GridLength factSetGridHeight{0, winrt::xaml::GridUnitType::Auto};
 
             auto heightType = cardElement.Height();
 
             if (heightType == winrt::HeightType::Stretch)
             {
-                factSetGridHeight = {1, winrt::GridUnitType::Star};
+                factSetGridHeight = {1, winrt::xaml::GridUnitType::Star};
             }
 
             auto facts = adaptiveFactSet.Facts();

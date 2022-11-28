@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveDateInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -28,8 +28,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             datePicker.PlaceholderText(adaptiveDateInput.Placeholder());
 
             // Make the picker stretch full width
-            datePicker.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
-            datePicker.VerticalAlignment(winrt::VerticalAlignment::Top);
+            datePicker.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Stretch);
+            datePicker.VerticalAlignment(winrt::xaml::VerticalAlignment::Top);
 
             // Value
             std::string value = HStringToUTF8(adaptiveDateInput.Value());

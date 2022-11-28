@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         ElementTagContent() = default;
         ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
                           winrt::xaml_controls::Panel const& parentPanel,
-                          winrt::UIElement const& separator,
+                          winrt::xaml::UIElement const& separator,
                           winrt::xaml_controls::ColumnDefinition const& columnDefinition,
                           boolean expectedVisibility,
                           boolean isStretchable);
@@ -21,7 +21,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         property<bool> ExpectedVisibility;
         property<bool> IsStretchable;
 
-        winrt::UIElement Separator() { return m_separator; }
+        winrt::xaml::UIElement Separator() { return m_separator; }
         winrt::xaml_controls::Panel ParentPanel() { return m_parentPanel; }
         winrt::xaml_controls::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
         winrt::IAdaptiveCardElement CardElement() { return m_cardElement; }
@@ -30,7 +30,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        winrt::UIElement m_separator{nullptr};
+        winrt::xaml::UIElement m_separator{nullptr};
         winrt::xaml_controls::Panel m_parentPanel{nullptr};
         winrt::xaml_controls::ColumnDefinition m_columnDefinition;
         winrt::IAdaptiveCardElement m_cardElement;

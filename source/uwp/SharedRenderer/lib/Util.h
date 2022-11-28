@@ -154,7 +154,7 @@ bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImag
 struct ShowCardInfo
 {
     uint32_t actionSetId;
-    winrt::UIElement cardUIElement{nullptr};
+    winrt::xaml::UIElement cardUIElement{nullptr};
 };
 
 struct SeparatorParemeters

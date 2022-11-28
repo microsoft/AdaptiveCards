@@ -12,7 +12,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
     {
     private:
-        winrt::ResourceDictionary m_overrideDictionary;
+        winrt::xaml::ResourceDictionary m_overrideDictionary;
         winrt::AdaptiveHostConfig m_hostConfig;
         winrt::AdaptiveFeatureRegistration m_featureRegistration;
         winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> m_xamlBuilder;
@@ -29,13 +29,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         AdaptiveCardRenderer();
 
         // IAdaptiveCardRenderer
-        void OverrideStyles(winrt::ResourceDictionary const& overrideDictionary)
+        void OverrideStyles(winrt::xaml::ResourceDictionary const& overrideDictionary)
         {
             m_overrideDictionary = overrideDictionary;
             SetMergedDictionary();
         }
 
-        winrt::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
+        winrt::xaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
         void HostConfig(winrt::AdaptiveHostConfig const& hostConfig)
         {
@@ -77,10 +77,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         winrt::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
         winrt::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
 
-        winrt::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
+        winrt::xaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
         winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
-        winrt::ResourceDictionary GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
+        winrt::xaml::ResourceDictionary GetActionSentimentResourceDictionary()
+        {
+            return m_actionSentimentResourceDictionary;
+        }
 
         auto ResourceResolvers() { return m_resourceResolvers; }
 
@@ -90,9 +93,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName, winrt::IInspectable const& value);
         void SetMergedDictionary();
 
-        winrt::ResourceDictionary m_defaultResourceDictionary;
-        winrt::ResourceDictionary m_mergedResourceDictionary;
-        winrt::ResourceDictionary m_actionSentimentResourceDictionary;
+        winrt::xaml::ResourceDictionary m_defaultResourceDictionary;
+        winrt::xaml::ResourceDictionary m_mergedResourceDictionary;
+        winrt::xaml::ResourceDictionary m_actionSentimentResourceDictionary;
         winrt::AdaptiveCardResourceResolvers m_resourceResolvers;
         winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;

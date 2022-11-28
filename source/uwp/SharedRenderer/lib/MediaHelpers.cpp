@@ -102,7 +102,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
         auto playIconUIElement = imageRenderer.Render(playIconAdaptiveImage, renderContext, renderArgs);
 
-        if (const auto playIconAsFrameworkElement = playIconUIElement.try_as<winrt::FrameworkElement>())
+        if (const auto playIconAsFrameworkElement = playIconUIElement.try_as<winrt::xaml::FrameworkElement>())
         {
             playIconAsFrameworkElement.Height(c_playIconSize);
 
@@ -133,9 +133,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
         }
     }
 
-    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
-                                                         winrt::AdaptiveRenderContext const& renderContext,
-                                                         winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
         winrt::xaml_controls::RelativePanel posterRelativePanel{};
 
@@ -256,15 +256,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
                           winrt::xaml_controls::MediaElement const& mediaElement,
-                          winrt::UIElement const& posterContainer,
+                          winrt::xaml::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
                           winrt::AdaptiveMediaEventInvoker const& mediaInvoker)
     {
         if (mediaElement)
         {
-            posterContainer.Visibility(winrt::Visibility::Collapsed);
-            mediaElement.Visibility(winrt::Visibility::Visible);
+            posterContainer.Visibility(winrt::xaml::Visibility::Collapsed);
+            mediaElement.Visibility(winrt::xaml::Visibility::Visible);
 
             winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
             if (const auto resourceResolvers = renderContext.ResourceResolvers())
@@ -292,7 +292,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
             }
 
             mediaElement.MediaOpened(
-                [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
+                [](winrt::IInspectable const& sender, winrt::xaml::RoutedEventArgs const& /*args*/) -> void
                 {
                     if (const auto mediaElement = sender.try_as<winrt::xaml_controls::MediaElement>())
                     {

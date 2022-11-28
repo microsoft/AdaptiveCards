@@ -8,14 +8,14 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
-                                                              winrt::AdaptiveRenderContext const& renderContext,
-                                                              winrt::AdaptiveRenderArgs const& renderArgs,
-                                                              winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
-                                                              boolean showGridLines,
-                                                              winrt::ContainerStyle gridStyle,
-                                                              uint32_t rowNumber,
-                                                              uint32_t columnNumber)
+    winrt::xaml::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
+                                                                    winrt::AdaptiveRenderContext const& renderContext,
+                                                                    winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                    winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
+                                                                    boolean showGridLines,
+                                                                    winrt::ContainerStyle gridStyle,
+                                                                    uint32_t rowNumber,
+                                                                    uint32_t columnNumber)
     {
         auto cellVerticalAlignment = cell.VerticalContentAlignment();
         // If the cell doesn't have a vertical content alignment, pass in the one from the parent
@@ -38,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         // Handle Grid Lines or Cell Spacing
         auto hostConfig = renderContext.HostConfig();
 
-        winrt::FrameworkElement cellFrameworkElement{nullptr};
+        winrt::xaml::FrameworkElement cellFrameworkElement{nullptr};
         if (showGridLines)
         {
             // If we're showing grid lines put the cell in a border
@@ -49,7 +49,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
             // cells respectively in order to avoid double-thickness borders
-            winrt::Thickness borderThickness = {0, 0, 1, 1};
+            winrt::xaml::Thickness borderThickness = {0, 0, 1, 1};
             if (columnNumber == 0)
             {
                 borderThickness.Left = 1;
@@ -68,7 +68,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         else
         {
             // If we're not showing gridlines, use the rendered cell as the frameworkElement, and add the cell spacing
-            cellFrameworkElement = cellRenderedAsContainer.as<winrt::FrameworkElement>();
+            cellFrameworkElement = cellRenderedAsContainer.as<winrt::xaml::FrameworkElement>();
 
             auto tableConfig = hostConfig.Table();
 
@@ -77,7 +77,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             {
                 // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
                 // or leftmost cells to avoid creating margin outside the table.
-                winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+                winrt::xaml::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
                 if (columnNumber == 0)
                 {
                     marginThickness.Left = 0;
@@ -183,9 +183,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         renderContext.HorizontalContentAlignment(contextHorizontalAlignment);
     }
 
-    winrt::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveTableRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                         winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

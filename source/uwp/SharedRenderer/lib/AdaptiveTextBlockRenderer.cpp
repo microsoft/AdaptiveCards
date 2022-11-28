@@ -9,9 +9,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -56,12 +56,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
             // are flush on the left edge of the card by enabling TrimSideBearings
-            xamlTextBlock.OpticalMarginAlignment(winrt::OpticalMarginAlignment::TrimSideBearings);
+            xamlTextBlock.OpticalMarginAlignment(winrt::xaml::OpticalMarginAlignment::TrimSideBearings);
 
             // If this text block has a heading style, set the corresponding automation property
             if (textStyle == winrt::TextStyle::Heading)
             {
-                winrt::xaml_automation::AutomationProperties::SetHeadingLevel(xamlTextBlock, GetHeadingLevelFromContext(renderContext));
+                winrt::xaml_automation::AutomationProperties::SetHeadingLevel(xamlTextBlock,
+                                                                              GetHeadingLevelFromContext(renderContext));
             }
 
             return xamlTextBlock;
@@ -73,7 +74,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::xaml_automation::Peers::AutomationHeadingLevel AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
+    winrt::xaml_automation::Peers::AutomationHeadingLevel
+    AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(winrt::AdaptiveRenderContext const& renderContext)
     {
         auto textBlockConfig = renderContext.HostConfig().TextBlock();
 

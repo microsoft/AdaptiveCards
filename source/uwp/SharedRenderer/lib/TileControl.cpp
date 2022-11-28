@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         this->Content(m_containerElement);
     }
 
-    void TileControl::ImageOpened(const IInspectable& /* sender */, const winrt::RoutedEventArgs& /* args */)
+    void TileControl::ImageOpened(const IInspectable& /* sender */, const winrt::xaml::RoutedEventArgs& /* args */)
     {
         auto uiElement = m_resolvedImage;
 
@@ -32,7 +32,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
         }
     }
-    void TileControl::LoadImageBrush(winrt::UIElement const& uielement)
+    void TileControl::LoadImageBrush(winrt::xaml::UIElement const& uielement)
     {
         m_resolvedImage = uielement;
 
@@ -69,7 +69,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         winrt::xaml_media::RectangleGeometry clip;
         clip.Rect(rect);
-        if (const auto containerAsUIElement = m_containerElement.try_as<winrt::UIElement>())
+        if (const auto containerAsUIElement = m_containerElement.try_as<winrt::xaml::UIElement>())
         {
             containerAsUIElement.Clip(clip);
         }
@@ -151,7 +151,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         // Get containerElement.Children
 
-        winrt::IVector<winrt::UIElement> children{};
+        winrt::IVector<winrt::xaml::UIElement> children{};
         // Not sure what is the need to convert to xaml::controls::Panel?
         if (const auto containerElementAsPanel = m_containerElement.try_as<winrt::xaml_controls::Panel>())
         {
@@ -165,7 +165,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             {
                 winrt::xaml_shapes::Rectangle rectangle;
 
-                children.Append(rectangle.as<winrt::UIElement>());
+                children.Append(rectangle.as<winrt::xaml::UIElement>());
 
                 m_xamlChildren.push_back(rectangle);
             }

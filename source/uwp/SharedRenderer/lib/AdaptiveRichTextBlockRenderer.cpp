@@ -9,9 +9,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                           winrt::AdaptiveRenderContext const& renderContext,
-                                                           winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveRichTextBlockRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                                 winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

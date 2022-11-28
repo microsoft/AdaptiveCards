@@ -10,9 +10,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveChoiceSetInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                            winrt::AdaptiveRenderContext const& renderContext,
-                                                            winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -80,15 +80,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
+                                                                                      winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                      winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::xaml_controls::ComboBox comboBox{};
 
         comboBox.PlaceholderText(adaptiveChoiceSetInput.Placeholder());
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
-        comboBox.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
+        comboBox.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Stretch);
 
         auto items = comboBox.Items();
         auto choices = adaptiveChoiceSetInput.Choices();
@@ -115,7 +115,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         comboBox.SelectedIndex(selectedIndex);
 
-        comboBox.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        comboBox.Tapped([](winrt::IInspectable const&, winrt::xaml_input::TappedRoutedEventArgs const& args)
+                        { args.Handled(true); });
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
 
@@ -129,10 +130,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return inputLayout;
     }
 
-    winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                 winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
-                                                                                 bool isMultiSelect)
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
+                                                                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                       winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+                                                                                       bool isMultiSelect)
     {
         auto choices = adaptiveChoiceSetInput.Choices();
 
@@ -145,7 +146,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         for (auto input : choices)
         {
-            winrt::UIElement choiceItem{nullptr};
+            winrt::xaml::UIElement choiceItem{nullptr};
             if (isMultiSelect)
             {
                 winrt::xaml_controls::CheckBox checkBox{};
@@ -166,7 +167,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 }
 
                 radioButton.PreviewKeyDown(
-                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
+                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/,
+                                              winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
                     {
                         std::uint32_t currentButtonIndex;
                         auto children = stackPanel.Children();
@@ -196,7 +198,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Expanded", stackPanel);
 
-        winrt::UIElement inputLayout{nullptr};
+        winrt::xaml::UIElement inputLayout{nullptr};
 
         std::tie(inputLayout, std::ignore) =
             XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
@@ -207,9 +209,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         return inputLayout;
     }
 
-    winrt::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
-                                                                                 winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                                 winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
+    winrt::xaml::UIElement AdaptiveChoiceSetInputRenderer::BuildFilteredChoiceSetInput(winrt::AdaptiveRenderContext const& renderContext,
+                                                                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                                       winrt::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput)
     {
         winrt::xaml_controls::AutoSuggestBox autoSuggestBox{};
 

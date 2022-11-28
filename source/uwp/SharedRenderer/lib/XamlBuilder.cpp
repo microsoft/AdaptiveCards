@@ -25,14 +25,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         FireImagesLoadingHadError();
     }
 
-    winrt::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                                       XamlBuilder* xamlBuilder,
-                                                                       winrt::ContainerStyle defaultContainerStyle)
+    winrt::xaml::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
+                                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                                             XamlBuilder* xamlBuilder,
+                                                                             winrt::ContainerStyle defaultContainerStyle)
     {
         try
         {
-            winrt::FrameworkElement xamlTreeRoot{nullptr};
+            winrt::xaml::FrameworkElement xamlTreeRoot{nullptr};
 
             auto hostConfig = renderContext.HostConfig();
 
@@ -57,7 +57,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             auto [bodyElementContainer, rootElement] = CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder);
 
-            winrt::FrameworkElement rootAsFrameworkElement = rootElement.as<winrt::FrameworkElement>();
+            winrt::xaml::FrameworkElement rootAsFrameworkElement = rootElement.as<winrt::xaml::FrameworkElement>();
             uint32_t cardMinHeight = adaptiveCard.MinHeight();
 
             if (cardMinHeight > 0)
@@ -72,14 +72,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto rootSelectActionElement =
                 ActionHelpers::HandleSelectAction(nullptr, selectAction, renderContext, rootElement, ifSupportsInteractivity, true);
 
-            rootAsFrameworkElement = rootSelectActionElement.as<winrt::FrameworkElement>();
+            rootAsFrameworkElement = rootSelectActionElement.as<winrt::xaml::FrameworkElement>();
 
             // Enumerate the child items of the card and build xaml for them
             auto body = adaptiveCard.Body();
             auto bodyRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, adaptiveCard, nullptr);
 
-            BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](winrt::UIElement) {});
+            BuildPanelChildren(body, bodyElementContainer, renderContext, bodyRenderArgs, [](winrt::xaml::UIElement) {});
 
             winrt::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
 
@@ -165,7 +165,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    std::pair<winrt::xaml_controls::Panel, winrt::UIElement>
+    std::pair<winrt::xaml_controls::Panel, winrt::xaml::UIElement>
     XamlBuilder::CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                                        winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,
@@ -180,7 +180,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         try
         {
             winrt::xaml_controls::Panel bodyElementContainer{nullptr};
-            winrt::UIElement rootElementResult{nullptr};
+            winrt::xaml::UIElement rootElementResult{nullptr};
 
             winrt::xaml_controls::Grid rootElement{};
 
@@ -227,12 +227,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (adaptiveCardHeightType == winrt::HeightType::Stretch)
             {
-                rootElement.VerticalAlignment(winrt::VerticalAlignment::Stretch);
+                rootElement.VerticalAlignment(winrt::xaml::VerticalAlignment::Stretch);
             }
 
             if (auto const contextRtl = renderContext.Rtl())
             {
-                rootElement.FlowDirection(contextRtl.Value() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+                rootElement.FlowDirection(contextRtl.Value() ? winrt::xaml::FlowDirection::RightToLeft :
+                                                               winrt::xaml::FlowDirection::LeftToRight);
             }
 
             return {bodyElementContainer, rootElement};
@@ -264,7 +265,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                          winrt::xaml_controls::Panel parentPanel,
                                          winrt::AdaptiveRenderContext renderContext,
                                          winrt::AdaptiveRenderArgs renderArgs,
-                                         std::function<void(winrt::UIElement const& child)> childCreatedCallback)
+                                         std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback)
     {
         int iElement = 0;
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
@@ -283,7 +284,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto elementRenderer = elementRenderers.Get(elementType);
             auto hostConfig = renderContext.HostConfig();
 
-            winrt::UIElement newControl{nullptr};
+            winrt::xaml::UIElement newControl{nullptr};
             winrt::IAdaptiveCardElement renderedElement{nullptr};
             try
             {

@@ -20,8 +20,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                                  winrt::AdaptiveElementRendererRegistration const& elementRendererRegistration,
                                                  winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
                                                  winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
-                                                 winrt::ResourceDictionary const& overrideStyles,
-                                                 winrt::ResourceDictionary const& defaultActionSentimentStyles,
+                                                 winrt::xaml::ResourceDictionary const& overrideStyles,
+                                                 winrt::xaml::ResourceDictionary const& defaultActionSentimentStyles,
                                                  winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult) :
         HostConfig{hostConfig},
         FeatureRegistration{featureRegistration}, ElementRenderers{elementRendererRegistration},
@@ -53,7 +53,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
-                                                  winrt::UIElement const& showCardUIElement,
+                                                  winrt::xaml::UIElement const& showCardUIElement,
                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(actionSet, showCardAction, showCardUIElement, renderArgs);
@@ -61,18 +61,18 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
-                                                  winrt::UIElement const& showCardUIElement,
+                                                  winrt::xaml::UIElement const& showCardUIElement,
                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement)
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::xaml::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionSet, actionUIElement);
     }
 
-    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::UIElement const& actionUIElement)
+    void AdaptiveRenderContext::AddOverflowButton(winrt::AdaptiveCard const& actionCard, winrt::xaml::UIElement const& actionUIElement)
     {
         GetRenderResult()->AddOverflowButton(actionCard, actionUIElement);
     }
@@ -114,7 +114,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         }
     }
 
-    winrt::ResourceDictionary AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
+    winrt::xaml::ResourceDictionary AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {
         return m_actionSentimentDefaultDictionary;
     }

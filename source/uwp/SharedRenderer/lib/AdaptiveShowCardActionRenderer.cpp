@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
-                                                            winrt::AdaptiveRenderContext const& renderContext,
-                                                            winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveShowCardActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -22,10 +22,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             return nullptr;
         }
     }
-    winrt::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
-                                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                                   winrt::AdaptiveRenderArgs const& renderArgs,
-                                                                   bool isBottomActionBar)
+    winrt::xaml::UIElement AdaptiveShowCardActionRenderer::BuildShowCard(winrt::AdaptiveCard const& showCard,
+                                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                                         winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                         bool isBottomActionBar)
     {
         try
         {
@@ -57,7 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             localUiShowCard.Margin({sideMargin, topMargin, sideMargin, bottomMargin});
 
             // Set the visibility as Collapsed until the action is triggered
-            localUiShowCard.Visibility(winrt::Visibility::Collapsed);
+            localUiShowCard.Visibility(winrt::xaml::Visibility::Collapsed);
 
             return localUiShowCard;
         }

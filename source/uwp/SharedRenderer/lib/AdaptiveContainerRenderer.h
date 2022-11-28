@@ -11,7 +11,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         AdaptiveContainerRenderer() = default;
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& element,
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& element,
                                 winrt::AdaptiveRenderContext const& context,
                                 winrt::AdaptiveRenderArgs const& renderArgs);
     };

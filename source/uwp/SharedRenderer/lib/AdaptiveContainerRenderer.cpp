@@ -10,9 +10,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                       winrt::AdaptiveRenderContext const& renderContext,
-                                                       winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                             winrt::AdaptiveRenderContext const& renderContext,
+                                                             winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -37,14 +37,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             if (currentRtl)
             {
                 boolean rtlValue = currentRtl.GetBoolean();
-                containerPanel.FlowDirection(rtlValue ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+                containerPanel.FlowDirection(rtlValue ? winrt::xaml::FlowDirection::RightToLeft :
+                                                        winrt::xaml::FlowDirection::LeftToRight);
             }
 
             // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
             auto containerHeightType = cardElement.Height();
             if (containerHeightType == winrt::HeightType::Auto)
             {
-                containerPanel.VerticalAlignment(winrt::VerticalAlignment::Stretch);
+                containerPanel.VerticalAlignment(winrt::xaml::VerticalAlignment::Stretch);
             }
 
             uint32_t containerMinHeight = adaptiveContainerBase.MinHeight();

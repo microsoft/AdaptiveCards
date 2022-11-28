@@ -28,8 +28,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         virtual bool IsAllContentClippedOut() { return ((m_measuredCount > 0) && (m_visibleCount == 0)); }
         virtual bool IsTruncated() { return m_isTruncated; }
 
-        void AddElementToStretchablesList(winrt::UIElement const& element);
-        bool IsUIElementInStretchableList(winrt::UIElement const& element);
+        void AddElementToStretchablesList(winrt::xaml::UIElement const& element);
+        bool IsUIElementInStretchableList(winrt::xaml::UIElement const& element);
         void SetVerticalContentAlignment(winrt::VerticalContentAlignment verticalContentAlignment)
         {
             m_verticalContentAlignment = verticalContentAlignment;
@@ -67,11 +67,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 
-        static void AppendAltTextToUIElement(winrt::UIElement const& pUIElement, std::wstring& buffer);
+        static void AppendAltTextToUIElement(winrt::xaml::UIElement const& pUIElement, std::wstring& buffer);
 
-        static winrt::hstring GetAltAsString(winrt::UIElement const& element);
+        static winrt::hstring GetAltAsString(winrt::xaml::UIElement const& element);
 
-        static bool HasExplicitSize(winrt::FrameworkElement const& element);
+        static bool HasExplicitSize(winrt::xaml::FrameworkElement const& element);
     };
 }
 

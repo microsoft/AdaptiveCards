@@ -9,9 +9,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                         winrt::AdaptiveRenderContext const& renderContext,
-                                                         winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveNumberInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
 
             textBox.PlaceholderText(adaptiveNumberInput.Placeholder());
-            textBox.VerticalAlignment(winrt::VerticalAlignment::Top);
+            textBox.VerticalAlignment(winrt::xaml::VerticalAlignment::Top);
 
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Number", textBox);
 

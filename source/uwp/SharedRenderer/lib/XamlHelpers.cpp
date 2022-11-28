@@ -11,17 +11,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
-    winrt::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
-                                     uint32_t spacing,
-                                     uint32_t separatorThickness,
-                                     winrt::Windows::UI::Color const& separatorColor,
-                                     bool isHorizontal)
+    winrt::xaml::UIElement CreateSeparator(winrt::AdaptiveRenderContext const& renderContext,
+                                           uint32_t spacing,
+                                           uint32_t separatorThickness,
+                                           winrt::Windows::UI::Color const& separatorColor,
+                                           bool isHorizontal)
     {
         winrt::xaml_controls::Grid separator;
         separator.Background(winrt::xaml_media::SolidColorBrush{separatorColor});
 
         const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
-        winrt::Thickness margin{};
+        winrt::xaml::Thickness margin{};
 
         if (isHorizontal)
         {
@@ -43,11 +43,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,
-                                        winrt::FrameworkElement const& frameworkElement)
+                                        winrt::xaml::FrameworkElement const& frameworkElement)
     {
         auto resourceDictionary = renderContext.OverrideStyles();
 
-        if (auto style = TryGetResourceFromResourceDictionaries(resourceDictionary, resourceName).try_as<winrt::Style>())
+        if (auto style = TryGetResourceFromResourceDictionaries(resourceDictionary, resourceName).try_as<winrt::xaml::Style>())
         {
             frameworkElement.Style(style);
         }
@@ -62,7 +62,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         for (auto child : children)
         {
-            if (const auto childAsFrameworkElement = child.try_as<winrt::FrameworkElement>())
+            if (const auto childAsFrameworkElement = child.try_as<winrt::xaml::FrameworkElement>())
             {
                 if (const auto tag = childAsFrameworkElement.Tag())
                 {
@@ -80,15 +80,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                 // visible element, collapse the separator Images are
                                 // hidden while they are retrieved, we shouldn't hide
                                 // the separator
-                                separator.Visibility(winrt::Visibility::Collapsed);
+                                separator.Visibility(winrt::xaml::Visibility::Collapsed);
                             }
                             else
                             {
-                                separator.Visibility(winrt::Visibility::Visible);
+                                separator.Visibility(winrt::xaml::Visibility::Visible);
                             }
                         }
 
-                        foundPreviousVisibleElement |= (visibility == winrt::Visibility::Visible);
+                        foundPreviousVisibleElement |= (visibility == winrt::xaml::Visibility::Visible);
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                                   winrt::AdaptiveRenderContext const& renderContext,
                                                   winrt::AdaptiveRenderArgs renderArgs)
     {
-        winrt::UIElement elem{nullptr};
+        winrt::xaml::UIElement elem{nullptr};
 
         auto localContainerStyle = adaptiveContainer.Style();
         auto parentContainerStyle = renderArgs.ContainerStyle();
@@ -140,7 +140,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         // container to bleed
         auto bleedDirection = adaptiveContainer.BleedDirection();
 
-        winrt::Thickness marginThickness{0};
+        winrt::xaml::Thickness marginThickness{0};
         if (bleedDirection != winrt::BleedDirection::None)
         {
             if ((bleedDirection & winrt::BleedDirection::Left) != winrt::BleedDirection::None)
@@ -173,33 +173,33 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return hostConfig.SupportsInteractivity();
     }
 
-    winrt::GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
+    winrt::xaml::GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
     {
         const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
 
-        winrt::GridLength columnWidth;
+        winrt::xaml::GridLength columnWidth;
         if (!isVisible || isAuto || !isValidWidth)
         {
             // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
-            columnWidth.GridUnitType = winrt::GridUnitType::Auto;
+            columnWidth.GridUnitType = winrt::xaml::GridUnitType::Auto;
             columnWidth.Value = 0;
         }
         else if (pixelWidth)
         {
             // If it's visible and pixel width is specified, use pixel width
-            columnWidth.GridUnitType = winrt::GridUnitType::Pixel;
+            columnWidth.GridUnitType = winrt::xaml::GridUnitType::Pixel;
             columnWidth.Value = pixelWidth;
         }
         else if (isStretch || isUnsetWidth)
         {
             // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
-            columnWidth.GridUnitType = winrt::GridUnitType::Star;
+            columnWidth.GridUnitType = winrt::xaml::GridUnitType::Star;
             columnWidth.Value = 1;
         }
         else
         {
             // If it's visible and the user specified a valid non-pixel width, use that as a star width
-            columnWidth.GridUnitType = winrt::GridUnitType::Star;
+            columnWidth.GridUnitType = winrt::xaml::GridUnitType::Star;
             columnWidth.Value = ratioWidth;
         }
 
@@ -302,9 +302,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
-    std::tuple<winrt::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
-                                                                             winrt::AdaptiveRenderContext const& renderContext,
-                                                                             winrt::AdaptiveRenderArgs const& renderArgs)
+    std::tuple<winrt::xaml::UIElement, winrt::IAdaptiveCardElement> RenderFallback(winrt::IAdaptiveCardElement const& currentElement,
+                                                                                   winrt::AdaptiveRenderContext const& renderContext,
+                                                                                   winrt::AdaptiveRenderArgs const& renderArgs)
     {
         if (!currentElement)
         {
@@ -316,9 +316,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
-        winrt::UIElement fallbackControl{nullptr};
+        winrt::xaml::UIElement fallbackControl{nullptr};
         winrt::IAdaptiveCardElement renderedElement{nullptr};
-        winrt::UIElement result{nullptr};
+        winrt::xaml::UIElement result{nullptr};
 
         switch (elementFallback)
         {
@@ -385,12 +385,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return hasSeparator || (elementSpacing != winrt::Spacing::None);
     }
 
-    void AddRenderedControl(winrt::UIElement const& newControl,
+    void AddRenderedControl(winrt::xaml::UIElement const& newControl,
                             winrt::IAdaptiveCardElement const& element,
                             winrt::xaml_controls::Panel const& parentPanel,
-                            winrt::UIElement const& separator,
+                            winrt::xaml::UIElement const& separator,
                             winrt::xaml_controls::ColumnDefinition const& columnDefinition,
-                            std::function<void(winrt::UIElement const& child)> childCreatedCallback)
+                            std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback)
     {
         if (newControl)
         {
@@ -398,10 +398,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
             if (!isVisible)
             {
-                newControl.Visibility(winrt::Visibility::Collapsed);
+                newControl.Visibility(winrt::xaml::Visibility::Collapsed);
             }
 
-            auto newControlAsFrameworkElement = newControl.as<winrt::FrameworkElement>();
+            auto newControlAsFrameworkElement = newControl.as<winrt::xaml::FrameworkElement>();
 
             winrt::hstring id = element.Id();
 
@@ -422,7 +422,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
-    void AddHandledTappedEvent(winrt::UIElement const& uiElement)
+    void AddHandledTappedEvent(winrt::xaml::UIElement const& uiElement)
     {
         if (!uiElement)
         {
@@ -433,7 +433,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     }
 
     // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0
-    void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
+    void SetAutoImageSize(winrt::xaml::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
                           winrt::xaml_media::ImageSource const& imageSource,
                           bool setVisible)
@@ -485,15 +485,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         if (setVisible)
         {
-            imageControl.Visibility(winrt::Visibility::Visible);
+            imageControl.Visibility(winrt::xaml::Visibility::Visible);
         }
     }
 
-    winrt::UIElement AddSeparatorIfNeeded(int& currentElement,
-                                          winrt::IAdaptiveCardElement const& element,
-                                          winrt::AdaptiveHostConfig const& hostConfig,
-                                          winrt::AdaptiveRenderContext const& renderContext,
-                                          winrt::xaml_controls::Panel const& parentPanel)
+    winrt::xaml::UIElement AddSeparatorIfNeeded(int& currentElement,
+                                                winrt::IAdaptiveCardElement const& element,
+                                                winrt::AdaptiveHostConfig const& hostConfig,
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::xaml_controls::Panel const& parentPanel)
     {
         // First element does not need a separator added
         if (currentElement++ > 0)
@@ -512,7 +512,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return nullptr;
     }
 
-    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element)
+    void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::xaml::IFrameworkElement const& element)
     {
         auto spacingConfig = hostConfig.Spacing();
         uint32_t padding = spacingConfig.Padding();
@@ -561,8 +561,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         inlines.Append(hintRun);
     }
 
-    winrt::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                      winrt::AdaptiveRenderContext const& renderContext)
+    winrt::xaml::UIElement RenderInputLabel(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                            winrt::AdaptiveRenderContext const& renderContext)
     {
         winrt::hstring inputLabel = adaptiveInputElement.Label();
         // Retrieve if the input is required so we can file a warning if the label is empty
@@ -603,7 +603,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             }
             FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, false /*isHint*/, labelRun);
 
-            xamlRichTextBlock.TextWrapping(winrt::TextWrapping::Wrap);
+            xamlRichTextBlock.TextWrapping(winrt::xaml::TextWrapping::Wrap);
             return xamlRichTextBlock;
         }
         else if (isRequired)
@@ -633,8 +633,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         errorMessage.FontWeight(resultWeight);
     }
 
-    winrt::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                                             winrt::AdaptiveRenderContext const& renderContext)
+    winrt::xaml::UIElement RenderInputErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInputElement,
+                                                   winrt::AdaptiveRenderContext const& renderContext)
     {
         // Add the error message if present
         winrt::hstring errorMessage = adaptiveInputElement.ErrorMessage();
@@ -656,14 +656,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock);
 
             // Error message should begin collapsed and only be show when validated
-            errorMessageTextBlock.Visibility(winrt::Visibility::Collapsed);
-            errorMessageTextBlock.TextWrapping(winrt::TextWrapping::Wrap);
+            errorMessageTextBlock.Visibility(winrt::xaml::Visibility::Collapsed);
+            errorMessageTextBlock.TextWrapping(winrt::xaml::TextWrapping::Wrap);
             return errorMessageTextBlock;
         }
         return nullptr;
     }
 
-    winrt::xaml_controls::Border XamlHelpers::CreateValidationBorder(winrt::UIElement const& childElement,
+    winrt::xaml_controls::Border XamlHelpers::CreateValidationBorder(winrt::xaml::UIElement const& childElement,
                                                                      winrt::AdaptiveRenderContext const& renderContext)
     {
         auto hostConfig = renderContext.HostConfig();
@@ -679,9 +679,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return validationBorder;
     }
 
-    winrt::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                                winrt::AdaptiveRenderContext const& renderContext,
-                                                winrt::UIElement const& inputLayout)
+    winrt::xaml::UIElement HandleLabelAndErrorMessage(winrt::IAdaptiveInputElement const& adaptiveInput,
+                                                      winrt::AdaptiveRenderContext const& renderContext,
+                                                      winrt::xaml::UIElement const& inputLayout)
     {
         // Create a new stack panel to add the label and error message
         // The contents from the input panel will be copied to the new panel
@@ -706,7 +706,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             XamlHelpers::AppendXamlElementToPanel(separator, inputStackPanel);
         }
 
-        winrt::UIElement actualUIElement{nullptr};
+        winrt::xaml::UIElement actualUIElement{nullptr};
 
         // Copy the contents into the new panel and get the rendered element to set acessibility properties
         if (const auto inputPanel = inputLayout.try_as<winrt::xaml_controls::Panel>())
@@ -780,9 +780,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return inputStackPanel;
     }
 
-    std::tuple<winrt::UIElement, winrt::xaml_controls::Border>
+    std::tuple<winrt::xaml::UIElement, winrt::xaml_controls::Border>
     XamlHelpers::HandleInputLayoutAndValidation(winrt::IAdaptiveInputElement const& adaptiveInput,
-                                                winrt::UIElement const& inputUIElement,
+                                                winrt::xaml::UIElement const& inputUIElement,
                                                 bool hasTypeSpecificValidation,
                                                 winrt::AdaptiveRenderContext const& renderContext,
                                                 bool ifValidationBorderIsNeeded)
@@ -822,7 +822,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         // Different input renderers perform stuff differently
         // Input.Text and Input.Number render the border previously so the object received as parameter may be a
         // border Input.Time and Input.Date let this method render the border for them Input.Toggle
-        winrt::UIElement actualInputUIElement{nullptr};
+        winrt::xaml::UIElement actualInputUIElement{nullptr};
 
         if (hasValidation && ifValidationBorderIsNeeded)
         {
@@ -860,7 +860,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             {
                 if (const auto content = uiInputElementAsContentControl.Content())
                 {
-                    if (const auto contentAsDependencyObject = content.try_as<winrt::DependencyObject>())
+                    if (const auto contentAsDependencyObject = content.try_as<winrt::xaml::DependencyObject>())
                     {
                         auto uiElementDescribers =
                             winrt::xaml_automation::AutomationProperties::GetDescribedBy(actualInputUIElement);

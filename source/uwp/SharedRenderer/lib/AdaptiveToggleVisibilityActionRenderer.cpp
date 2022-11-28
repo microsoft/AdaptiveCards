@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveToggleVisibilityActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
-                                                                    winrt::AdaptiveRenderContext const& renderContext,
-                                                                    winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveToggleVisibilityActionRenderer::Render(winrt::IAdaptiveActionElement const& action,
+                                                                          winrt::AdaptiveRenderContext const& renderContext,
+                                                                          winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

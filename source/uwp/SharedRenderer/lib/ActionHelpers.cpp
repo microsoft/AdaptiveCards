@@ -11,9 +11,9 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 {
-    winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig)
+    winrt::xaml::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig)
     {
-        winrt::Thickness buttonMargin{};
+        winrt::xaml::Thickness buttonMargin{};
         const uint32_t buttonSpacing = actionsConfig.ButtonSpacing();
         const auto actionsOrientation = actionsConfig.ActionsOrientation();
 
@@ -29,7 +29,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return buttonMargin;
     }
 
-    void SetTooltip(winrt::hstring const& toolTipText, winrt::DependencyObject const& tooltipTarget)
+    void SetTooltip(winrt::hstring const& toolTipText, winrt::xaml::DependencyObject const& tooltipTarget)
     {
         if (!toolTipText.empty())
         {
@@ -42,7 +42,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
     }
 
-    void SetAutomationNameAndDescription(winrt::DependencyObject const& dependencyObject,
+    void SetAutomationNameAndDescription(winrt::xaml::DependencyObject const& dependencyObject,
                                          winrt::hstring const& name,
                                          winrt::hstring const& description)
     {
@@ -102,7 +102,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             adaptiveImage.Url(iconUrl);
             adaptiveImage.HorizontalAlignment(winrt::HAlignment::Center);
 
-            winrt::UIElement buttonIcon{nullptr};
+            winrt::xaml::UIElement buttonIcon{nullptr};
 
             if (const auto elementRenderer = renderContext.ElementRenderers().Get(L"Image"))
             {
@@ -121,16 +121,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             // Create title text block
             winrt::xaml_controls::TextBlock buttonText{};
             buttonText.Text(title);
-            buttonText.TextAlignment(winrt::TextAlignment::Center);
-            buttonText.VerticalAlignment(winrt::VerticalAlignment::Center);
+            buttonText.TextAlignment(winrt::xaml::TextAlignment::Center);
+            buttonText.VerticalAlignment(winrt::xaml::VerticalAlignment::Center);
 
             // Handle different arrangements inside button
-            auto buttonIconAsFrameworkElement = buttonIcon.as<winrt::FrameworkElement>();
+            auto buttonIconAsFrameworkElement = buttonIcon.as<winrt::xaml::FrameworkElement>();
 
             // Set icon height to iconSize(aspect ratio is automatically maintained)
             buttonIconAsFrameworkElement.Height(actionsConfig.IconSize());
 
-            winrt::UIElement separator{nullptr};
+            winrt::xaml::UIElement separator{nullptr};
 
             if (actionsConfig.IconPlacement() == winrt::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
@@ -163,7 +163,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     }
 
     void HandleActionStyling(winrt::IAdaptiveActionElement const& adaptiveActionElement,
-                             winrt::FrameworkElement const& buttonFrameworkElement,
+                             winrt::xaml::FrameworkElement const& buttonFrameworkElement,
                              bool isOverflowActionButton,
                              winrt::AdaptiveRenderContext const& renderContext)
     {
@@ -180,8 +180,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
         if (isOverflowActionButton)
         {
-            if (const auto overflowActionStyle =
-                    XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Overflow").try_as<winrt::Style>())
+            if (const auto overflowActionStyle = XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Overflow")
+                                                     .try_as<winrt::xaml::Style>())
             {
                 buttonFrameworkElement.Style(overflowActionStyle);
             }
@@ -193,8 +193,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
         else if (actionSentiment == L"positive")
         {
-            if (const auto positiveActionStyle =
-                    XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Positive").try_as<winrt::Style>())
+            if (const auto positiveActionStyle = XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Positive")
+                                                     .try_as<winrt::xaml::Style>())
             {
                 buttonFrameworkElement.Style(positiveActionStyle);
             }
@@ -205,7 +205,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
                 if (const auto positiveActionDefaultStyle =
                         XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"PositiveActionDefaultStyle")
-                            .try_as<winrt::Style>())
+                            .try_as<winrt::xaml::Style>())
                 {
                     buttonFrameworkElement.Style(positiveActionDefaultStyle);
                 }
@@ -215,7 +215,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         {
             if (const auto destructiveActionStyle =
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, L"Adaptive.Action.Destructive")
-                        .try_as<winrt::Style>())
+                        .try_as<winrt::xaml::Style>())
             {
                 buttonFrameworkElement.Style(destructiveActionStyle);
             }
@@ -226,7 +226,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
                 if (const auto destructiveActionDefaultStyle =
                         XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary, L"DestructiveActionDefaultStyle")
-                            .try_as<winrt::Style>())
+                            .try_as<winrt::xaml::Style>())
                 {
                     buttonFrameworkElement.Style(destructiveActionDefaultStyle);
                 }
@@ -239,10 +239,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
     }
 
-    winrt::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
-                                 winrt::AdaptiveRenderContext const& renderContext,
-                                 winrt::AdaptiveRenderArgs const& renderArgs,
-                                 bool isOverflowActionButton)
+    winrt::xaml::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
+                                       winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
+                                       bool isOverflowActionButton)
     {
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
@@ -252,24 +252,24 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
         if (actionsConfig.ActionsOrientation() == winrt::ActionsOrientation::Horizontal)
         {
-            button.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
+            button.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Stretch);
         }
         else
         {
-            winrt::HorizontalAlignment newAlignment;
+            winrt::xaml::HorizontalAlignment newAlignment;
             switch (actionsConfig.ActionAlignment())
             {
             case winrt::ActionAlignment::Center:
-                newAlignment = winrt::HorizontalAlignment::Center;
+                newAlignment = winrt::xaml::HorizontalAlignment::Center;
                 break;
             case winrt::ActionAlignment::Left:
-                newAlignment = winrt::HorizontalAlignment::Left;
+                newAlignment = winrt::xaml::HorizontalAlignment::Left;
                 break;
             case winrt::ActionAlignment::Right:
-                newAlignment = winrt::HorizontalAlignment::Center;
+                newAlignment = winrt::xaml::HorizontalAlignment::Center;
                 break;
             case winrt::ActionAlignment::Stretch:
-                newAlignment = winrt::HorizontalAlignment::Stretch;
+                newAlignment = winrt::xaml::HorizontalAlignment::Stretch;
                 break;
             }
             button.HorizontalAlignment(newAlignment);
@@ -301,7 +301,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         {
             auto actionInvoker = renderContext.ActionInvoker();
             auto clickToken = button.Click([adaptiveActionElement, actionInvoker](winrt::IInspectable const& /*sender*/,
-                                                                                  winrt::RoutedEventArgs const& /*args*/) -> void
+                                                                                  winrt::xaml::RoutedEventArgs const& /*args*/) -> void
                                            { actionInvoker.SendActionEvent(adaptiveActionElement); });
             button.IsEnabled(adaptiveActionElement.IsEnabled());
         }
@@ -342,12 +342,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
     }
 
-    winrt::UIElement HandleInlineAction(winrt::AdaptiveRenderContext const& renderContext,
-                                        winrt::AdaptiveRenderArgs const& renderArgs,
-                                        winrt::UIElement const& textInputUIElement,
-                                        winrt::UIElement const& textBoxParentContainer,
-                                        bool isMultilineTextBox,
-                                        winrt::IAdaptiveActionElement const& inlineAction)
+    winrt::xaml::UIElement HandleInlineAction(winrt::AdaptiveRenderContext const& renderContext,
+                                              winrt::AdaptiveRenderArgs const& renderArgs,
+                                              winrt::xaml::UIElement const& textInputUIElement,
+                                              winrt::xaml::UIElement const& textBoxParentContainer,
+                                              bool isMultilineTextBox,
+                                              winrt::IAdaptiveActionElement const& inlineAction)
     {
         auto hostConfig = renderContext.HostConfig();
 
@@ -369,24 +369,24 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
         // Create the first column and add the text box to it
         winrt::xaml_controls::ColumnDefinition textBoxColumnDefinition{};
-        textBoxColumnDefinition.Width({1, winrt::GridUnitType::Star});
+        textBoxColumnDefinition.Width({1, winrt::xaml::GridUnitType::Star});
         columnDefinitions.Append(textBoxColumnDefinition);
 
-        auto textBoxContainerAsFrameworkElement = textBoxParentContainer.as<winrt::FrameworkElement>();
+        auto textBoxContainerAsFrameworkElement = textBoxParentContainer.as<winrt::xaml::FrameworkElement>();
 
         winrt::xaml_controls::Grid::SetColumn(textBoxContainerAsFrameworkElement, 0);
         XamlHelpers::AppendXamlElementToPanel(textBoxContainerAsFrameworkElement, xamlGrid);
 
         // Create a separator column
         winrt::xaml_controls::ColumnDefinition separatorColumnDefinition{};
-        separatorColumnDefinition.Width({1.0, winrt::GridUnitType::Auto});
+        separatorColumnDefinition.Width({1.0, winrt::xaml::GridUnitType::Auto});
         columnDefinitions.Append(separatorColumnDefinition);
 
         const auto spacingSize = GetSpacingSizeFromSpacing(hostConfig, winrt::Spacing::Default);
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
-        auto separatorAsFrameworkElement = separator.as<winrt::FrameworkElement>();
+        auto separatorAsFrameworkElement = separator.as<winrt::xaml::FrameworkElement>();
 
         winrt::xaml_controls::Grid::SetColumn(separatorAsFrameworkElement, 1);
         XamlHelpers::AppendXamlElementToPanel(separator, xamlGrid);
@@ -394,12 +394,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         // Create a column for the button
 
         winrt::xaml_controls::ColumnDefinition inlineActionColumnDefinition{};
-        inlineActionColumnDefinition.Width({0, winrt::GridUnitType::Auto});
+        inlineActionColumnDefinition.Width({0, winrt::xaml::GridUnitType::Auto});
         columnDefinitions.Append(inlineActionColumnDefinition);
 
         const auto iconUrl = inlineAction.IconUrl();
 
-        winrt::UIElement actionUIElement{nullptr};
+        winrt::xaml::UIElement actionUIElement{nullptr};
 
         if (!iconUrl.empty())
         {
@@ -417,7 +417,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             // centered relative to the text box.
             winrt::xaml_controls::TextBlock titleTextBlock{};
             titleTextBlock.Text(inlineAction.Title());
-            titleTextBlock.VerticalAlignment(winrt::VerticalAlignment::Center);
+            titleTextBlock.VerticalAlignment(winrt::xaml::VerticalAlignment::Center);
 
             winrt::xaml_controls::Grid titleGrid{};
             XamlHelpers::AppendXamlElementToPanel(titleTextBlock, titleGrid);
@@ -428,12 +428,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         // Make the action the same size as the text box
         textBoxContainerAsFrameworkElement.Loaded(
             [actionUIElement, textBoxContainerAsFrameworkElement](winrt::IInspectable const& /*sender*/,
-                                                                  winrt::RoutedEventArgs const& /*args*/) -> void
+                                                                  winrt::xaml::RoutedEventArgs const& /*args*/) -> void
             {
-                if (const auto actionFrameworkElement = actionUIElement.as<winrt::FrameworkElement>())
+                if (const auto actionFrameworkElement = actionUIElement.as<winrt::xaml::FrameworkElement>())
                 {
                     actionFrameworkElement.Height(textBoxContainerAsFrameworkElement.ActualHeight());
-                    actionFrameworkElement.Visibility(winrt::Visibility::Visible);
+                    actionFrameworkElement.Visibility(winrt::xaml::Visibility::Visible);
                 }
             });
 
@@ -447,10 +447,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                                       L"",
                                                       !iconUrl.empty());
 
-        auto touchTargetFrameworkElement = touchTargetUIElement.as<winrt::FrameworkElement>();
+        auto touchTargetFrameworkElement = touchTargetUIElement.as<winrt::xaml::FrameworkElement>();
 
         // Align to bottom so the icon stays with the bottom of the text box as it grows in the multiline case
-        touchTargetFrameworkElement.VerticalAlignment(winrt::VerticalAlignment::Bottom);
+        touchTargetFrameworkElement.VerticalAlignment(winrt::xaml::VerticalAlignment::Bottom);
 
         // Add the action to the column
         winrt::xaml_controls::Grid::SetColumn(touchTargetFrameworkElement, 2);
@@ -463,21 +463,22 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             auto actionInvoker = renderContext.ActionInvoker();
 
             textInputUIElement.KeyDown(
-                [actionInvoker, inlineAction](winrt::IInspectable const& /*sender*/, winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
+                [actionInvoker, inlineAction](winrt::IInspectable const& /*sender*/,
+                                              winrt::xaml_input::KeyRoutedEventArgs const& args) -> void
                 { ActionHelpers::HandleKeydownForInlineAction(args, actionInvoker, inlineAction); });
         }
 
         return xamlGrid;
     }
 
-    winrt::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                       winrt::UIElement const& elementToWrap,
-                                       winrt::IAdaptiveActionElement const& action,
-                                       winrt::AdaptiveRenderContext const& renderContext,
-                                       bool fullWidth,
-                                       const std::wstring& style,
-                                       winrt::hstring const& altText,
-                                       bool allowTitleAsTooltip)
+    winrt::xaml::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                             winrt::xaml::UIElement const& elementToWrap,
+                                             winrt::IAdaptiveActionElement const& action,
+                                             winrt::AdaptiveRenderContext const& renderContext,
+                                             bool fullWidth,
+                                             const std::wstring& style,
+                                             winrt::hstring const& altText,
+                                             bool allowTitleAsTooltip)
     {
         auto hostConfig = renderContext.HostConfig();
 
@@ -574,16 +575,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     {
         auto actionInvoker = renderContext.ActionInvoker();
 
-        auto token = button.Click([action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
+        auto token = button.Click([action, actionInvoker](winrt::IInspectable const&, winrt::xaml::RoutedEventArgs const&)
                                   { actionInvoker.SendActionEvent(action); });
     }
 
-    winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                        winrt::IAdaptiveActionElement const& selectAction,
-                                        winrt::AdaptiveRenderContext const& renderContext,
-                                        winrt::UIElement const& uiElement,
-                                        bool supportsInteractivity,
-                                        bool fullWidthTouchTarget)
+    winrt::xaml::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                              winrt::IAdaptiveActionElement const& selectAction,
+                                              winrt::AdaptiveRenderContext const& renderContext,
+                                              winrt::xaml::UIElement const& uiElement,
+                                              bool supportsInteractivity,
+                                              bool fullWidthTouchTarget)
     {
         if (selectAction && supportsInteractivity)
         {
@@ -636,13 +637,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return nullptr;
     }
 
-    winrt::UIElement AddOverflowFlyoutItem(winrt::IAdaptiveActionElement const& action,
-                                           winrt::xaml_controls::Button const& overflowButton,
-                                           winrt::AdaptiveCard const& adaptiveCard,
-                                           winrt::AdaptiveActionSet const& adaptiveActionSet,
-                                           winrt::xaml_controls::Panel const& showCardPanel,
-                                           winrt::AdaptiveRenderContext const& renderContext,
-                                           winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AddOverflowFlyoutItem(winrt::IAdaptiveActionElement const& action,
+                                                 winrt::xaml_controls::Button const& overflowButton,
+                                                 winrt::AdaptiveCard const& adaptiveCard,
+                                                 winrt::AdaptiveActionSet const& adaptiveActionSet,
+                                                 winrt::xaml_controls::Panel const& showCardPanel,
+                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                 winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // Get the flyout items vector
         auto buttonWithFlyout = overflowButton.as<winrt::xaml_controls::IButtonWithFlyout>();
@@ -662,7 +663,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         winrt::IAdaptiveActionElement actionParam{action};
         winrt::AdaptiveActionInvoker actionInvoker = renderContext.ActionInvoker();
 
-        flyoutItem.Click([actionParam, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const)
+        flyoutItem.Click([actionParam, actionInvoker](winrt::IInspectable const&, winrt::xaml::RoutedEventArgs const)
                          { return actionInvoker.SendActionEvent(actionParam); });
 
         winrt::ActionType actionType = action.ActionType();
@@ -715,15 +716,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         }
     }
 
-    winrt::UIElement CreateActionButtonInActionSet(winrt::AdaptiveCard const& adaptiveCard,
-                                                   winrt::AdaptiveActionSet const& adaptiveActionSet,
-                                                   winrt::IAdaptiveActionElement const& actionToCreate,
-                                                   uint32_t columnIndex,
-                                                   winrt::xaml_controls::Panel const& actionsPanel,
-                                                   winrt::xaml_controls::Panel const& showCardPanel,
-                                                   winrt::IVector<winrt::xaml_controls::ColumnDefinition> const& columnDefinitions,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement CreateActionButtonInActionSet(winrt::AdaptiveCard const& adaptiveCard,
+                                                         winrt::AdaptiveActionSet const& adaptiveActionSet,
+                                                         winrt::IAdaptiveActionElement const& actionToCreate,
+                                                         uint32_t columnIndex,
+                                                         winrt::xaml_controls::Panel const& actionsPanel,
+                                                         winrt::xaml_controls::Panel const& showCardPanel,
+                                                         winrt::IVector<winrt::xaml_controls::ColumnDefinition> const& columnDefinitions,
+                                                         winrt::AdaptiveRenderContext const& renderContext,
+                                                         winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // Render each action using the registered renderer
         winrt::IAdaptiveActionElement action = actionToCreate;
@@ -755,7 +756,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             }
         }
 
-        winrt::UIElement actionControl = renderer.Render(action, renderContext, renderArgs);
+        winrt::xaml::UIElement actionControl = renderer.Render(action, renderContext, renderArgs);
 
         XamlHelpers::AppendXamlElementToPanel(actionControl, actionsPanel);
 
@@ -763,9 +764,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         {
             // If using the equal width columns, we'll add a column and assign the column
             winrt::xaml_controls::ColumnDefinition columnDefinition;
-            columnDefinition.Width({0, winrt::GridUnitType::Auto});
+            columnDefinition.Width({0, winrt::xaml::GridUnitType::Auto});
             columnDefinitions.Append(columnDefinition);
-            winrt::xaml_controls::Grid::SetColumn(actionControl.as<winrt::FrameworkElement>(), columnIndex);
+            winrt::xaml_controls::Grid::SetColumn(actionControl.as<winrt::xaml::FrameworkElement>(), columnIndex);
         }
 
         if (actionType == winrt::ActionType::ShowCard)
@@ -777,11 +778,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return actionControl;
     }
 
-    winrt::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
-                                          winrt::AdaptiveActionSet const& adaptiveActionSet,
-                                          winrt::IVector<winrt::IAdaptiveActionElement> const& children,
-                                          winrt::AdaptiveRenderContext const& renderContext,
-                                          winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement BuildActionSetHelper(winrt::AdaptiveCard const& adaptiveCard,
+                                                winrt::AdaptiveActionSet const& adaptiveActionSet,
+                                                winrt::IVector<winrt::IAdaptiveActionElement> const& children,
+                                                winrt::AdaptiveRenderContext const& renderContext,
+                                                winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
@@ -816,16 +817,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             switch (actionAlignment)
             {
             case winrt::ActionAlignment::Center:
-                actionStackPanel.HorizontalAlignment(winrt::HorizontalAlignment::Center);
+                actionStackPanel.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Center);
                 break;
             case winrt::ActionAlignment::Left:
-                actionStackPanel.HorizontalAlignment(winrt::HorizontalAlignment::Left);
+                actionStackPanel.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Left);
                 break;
             case winrt::ActionAlignment::Right:
-                actionStackPanel.HorizontalAlignment(winrt::HorizontalAlignment::Right);
+                actionStackPanel.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Right);
                 break;
             case winrt::ActionAlignment::Stretch:
-                actionStackPanel.HorizontalAlignment(winrt::HorizontalAlignment::Stretch);
+                actionStackPanel.HorizontalAlignment(winrt::xaml::HorizontalAlignment::Stretch);
                 break;
             }
 
@@ -861,7 +862,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         for (auto action : children)
         {
             auto mode = action.Mode();
-            winrt::UIElement actionControl{nullptr};
+            winrt::xaml::UIElement actionControl{nullptr};
 
             if (action.IconUrl().empty())
             {
@@ -919,7 +920,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             if (columnDefinitions)
             {
                 winrt::xaml_controls::ColumnDefinition columnDefinition{};
-                columnDefinition.Width({1.0, winrt::GridUnitType::Star});
+                columnDefinition.Width({1.0, winrt::xaml::GridUnitType::Star});
                 columnDefinitions.Append(columnDefinition);
                 winrt::xaml_controls::Grid::SetColumn(overflowButton, currentButtonIndex);
             }

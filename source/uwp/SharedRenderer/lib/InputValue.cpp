@@ -7,7 +7,7 @@
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 {
     InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                           winrt::UIElement const& uiInputElement,
+                           winrt::xaml::UIElement const& uiInputElement,
                            winrt::xaml_controls::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
         m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)
@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
         if (const auto inputAsControl = m_uiInputElement.try_as<winrt::xaml_controls::Control>())
         {
-            inputAsControl.Focus(winrt::FocusState::Programmatic);
+            inputAsControl.Focus(winrt::xaml::FocusState::Programmatic);
         }
     }
 
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto uiElementDescribers = winrt::xaml_automation::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
-        auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
+        auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::xaml::DependencyObject>();
 
         uint32_t index;
         bool found = uiElementDescribers.IndexOf(uiValidationErrorAsDependencyObject, index);
@@ -90,11 +90,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         {
             if (isInputValid)
             {
-                m_validationError.Visibility(winrt::Visibility::Collapsed);
+                m_validationError.Visibility(winrt::xaml::Visibility::Collapsed);
             }
             else
             {
-                m_validationError.Visibility(winrt::Visibility::Visible);
+                m_validationError.Visibility(winrt::xaml::Visibility::Visible);
             }
 
             SetAccessibilityProperties(isInputValid);
@@ -102,7 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     TextInputBase::TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                 winrt::UIElement const& uiTextInputElement,
+                                 winrt::xaml::UIElement const& uiTextInputElement,
                                  winrt::xaml_controls::Border const& validationBorder) :
         InputValue(adaptiveTextInput, uiTextInputElement, validationBorder),
         m_adaptiveTextInput(adaptiveTextInput)
@@ -421,7 +421,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 
         if (const auto choiceAsControl = firstChoice.try_as<winrt::xaml_controls::Control>())
         {
-            choiceAsControl.Focus(winrt::FocusState::Programmatic);
+            choiceAsControl.Focus(winrt::xaml::FocusState::Programmatic);
         }
     }
 

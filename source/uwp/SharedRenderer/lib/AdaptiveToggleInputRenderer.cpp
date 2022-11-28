@@ -8,9 +8,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveToggleInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                         winrt::AdaptiveRenderContext const& renderContext,
-                                                         winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveToggleInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -32,10 +32,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             checkBox.Tapped([](winrt::IInspectable const& /* sender */, winrt::xaml_input::TappedRoutedEventArgs const& args)
                             { return args.Handled(true); });
 
-            checkBox.VerticalAlignment(winrt::VerticalAlignment::Top);
+            checkBox.VerticalAlignment(winrt::xaml::VerticalAlignment::Top);
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
 
-            winrt::UIElement inputLayout{nullptr};
+            winrt::xaml::UIElement inputLayout{nullptr};
             std::tie(inputLayout, std::ignore) =
                 XamlHelpers::HandleInputLayoutAndValidation(adaptiveToggleInput, checkBox, false, renderContext, false);
 

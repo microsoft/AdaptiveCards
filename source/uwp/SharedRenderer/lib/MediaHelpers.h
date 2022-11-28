@@ -8,9 +8,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                                                       winrt::AdaptiveRenderArgs const& renderArgs,
                                                       winrt::AdaptiveMedia const& adaptiveMedia);
 
-    winrt::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
-                                                         winrt::AdaptiveRenderContext const& renderContext,
-                                                         winrt::AdaptiveRenderArgs const& renderArgs);
+    winrt::xaml::UIElement CreatePosterContainerWithPlayButton(winrt::xaml_controls::Image const& posterImage,
+                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                               winrt::AdaptiveRenderArgs const& renderArgs);
 
     std::tuple<winrt::Uri, winrt::hstring> GetMediaSource(winrt::AdaptiveHostConfig const& hostConfig,
                                                           winrt::AdaptiveMedia const& adaptiveMedia);
@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
     void HandleMediaClick(winrt::AdaptiveRenderContext const& renderContext,
                           winrt::AdaptiveMedia const& adaptiveMedia,
                           winrt::xaml_controls::MediaElement const& mediaElement,
-                          winrt::UIElement const& posterContainer,
+                          winrt::xaml::UIElement const& posterContainer,
                           winrt::Uri const& mediaSourceUrl,
                           winrt::hstring const& mimeType,
                           winrt::AdaptiveMediaEventInvoker const& mediaInvoker);

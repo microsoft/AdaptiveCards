@@ -11,19 +11,19 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     public:
         AdaptiveTableRenderer() = default;
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                winrt::AdaptiveRenderContext const& renderContext,
-                                winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        winrt::FrameworkElement RenderCell(winrt::AdaptiveTableCell const& cell,
-                                           winrt::AdaptiveRenderContext const& renderContext,
-                                           winrt::AdaptiveRenderArgs const& renderArgs,
-                                           winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
-                                           boolean showGridLines,
-                                           winrt::ContainerStyle gridStyle,
-                                           uint32_t rowNumber,
-                                           uint32_t columnNumber);
+        winrt::xaml::FrameworkElement RenderCell(winrt::AdaptiveTableCell const& cell,
+                                                 winrt::AdaptiveRenderContext const& renderContext,
+                                                 winrt::AdaptiveRenderArgs const& renderArgs,
+                                                 winrt::IReference<winrt::VerticalContentAlignment> const& verticalContentAlignment,
+                                                 boolean showGridLines,
+                                                 winrt::ContainerStyle gridStyle,
+                                                 uint32_t rowNumber,
+                                                 uint32_t columnNumber);
 
         void RenderRow(winrt::AdaptiveTableRow const& row,
                        winrt::IVector<winrt::AdaptiveTableColumnDefinition> const& columns,

@@ -9,13 +9,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
-                   winrt::UIElement const& uiInputElement,
+                   winrt::xaml::UIElement const& uiInputElement,
                    winrt::xaml_controls::Border const& validationBorder);
         InputValue();
 
         winrt::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
-        winrt::UIElement ErrorMessage() { return m_validationError; };
-        void ErrorMessage(winrt::UIElement const& errorMessage) { m_validationError = errorMessage; };
+        winrt::xaml::UIElement ErrorMessage() { return m_validationError; };
+        void ErrorMessage(winrt::xaml::UIElement const& errorMessage) { m_validationError = errorMessage; };
         bool Validate();
         void SetFocus();
         void SetAccessibilityProperties(bool isInputValid);
@@ -27,9 +27,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         virtual void SetValidation(bool isValid);
 
         winrt::IAdaptiveInputElement m_adaptiveInputElement;
-        winrt::UIElement m_uiInputElement;
+        winrt::xaml::UIElement m_uiInputElement;
         winrt::xaml_controls::Border m_validationBorder;
-        winrt::UIElement m_validationError;
+        winrt::xaml::UIElement m_validationError;
     };
 
     // Base class for AdaptiveTextInput
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         TextInputBase(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                      winrt::UIElement const& uiTextInputElement,
+                      winrt::xaml::UIElement const& uiTextInputElement,
                       winrt::xaml_controls::Border const& validationBorder);
 
     protected:

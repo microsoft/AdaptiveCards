@@ -9,9 +9,9 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::UIElement AdaptiveImageSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                      winrt::AdaptiveRenderContext const& renderContext,
-                                                      winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::xaml::UIElement AdaptiveImageSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
+                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -42,7 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                     auto uiImage = imageRenderer.Render(adaptiveImage, renderContext, childRenderArgs);
 
-                    if (const auto uiImageAsFrameworkElement = uiImage.try_as<winrt::FrameworkElement>())
+                    if (const auto uiImageAsFrameworkElement = uiImage.try_as<winrt::xaml::FrameworkElement>())
                     {
                         uiImageAsFrameworkElement.MaxHeight(imageSetConfig.MaxImageHeight());
                         XamlHelpers::AppendXamlElementToPanel(uiImageAsFrameworkElement, xamlGrid);

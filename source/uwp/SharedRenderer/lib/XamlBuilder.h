@@ -17,10 +17,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         void AllImagesLoaded() override;
         void ImagesLoadingHadError() override;
 
-        static winrt::FrameworkElement BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                                                     winrt::AdaptiveRenderContext const& renderContext,
-                                                                     XamlBuilder* xamlBuilder,
-                                                                     winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
+        static winrt::xaml::FrameworkElement
+        BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      XamlBuilder* xamlBuilder,
+                                      winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
 
         void AddListener(IXamlBuilderListener* listener);
         void RemoveListener(IXamlBuilderListener* listener);
@@ -31,11 +32,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                        winrt::xaml_controls::Panel ParentPanel,
                                        winrt::AdaptiveRenderContext context,
                                        winrt::AdaptiveRenderArgs renderArgs,
-                                       std::function<void(winrt::UIElement const& child)> childCreatedCallback);
+                                       std::function<void(winrt::xaml::UIElement const& child)> childCreatedCallback);
 
-        winrt::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                    winrt::AdaptiveRenderContext const& renderContext,
-                                    winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+                                          winrt::AdaptiveRenderContext const& renderContext,
+                                          winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
@@ -49,7 +50,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
 
-        static std::pair<winrt::xaml_controls::Panel, winrt::UIElement>
+        static std::pair<winrt::xaml_controls::Panel, winrt::xaml::UIElement>
         CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
                               winrt::AdaptiveRenderContext const& renderContext,
                               winrt::AdaptiveRenderArgs const& renderArgs,

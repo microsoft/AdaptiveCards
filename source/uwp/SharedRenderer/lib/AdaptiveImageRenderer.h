@@ -13,9 +13,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         AdaptiveImageRenderer(){};
         AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> xamlBuilder);
 
-        winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                winrt::AdaptiveRenderContext const& renderContext,
-                                winrt::AdaptiveRenderArgs const& renderArgs);
+        winrt::xaml::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> m_xamlBuilder;
