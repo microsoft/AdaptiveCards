@@ -24,11 +24,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     {
     public:
         ~ImageLoadTracker();
-        void TrackImage(winrt::ImageSource const& image);
+        void TrackImage(winrt::xaml_media::ImageSource const& image);
         void TrackBitmapImage(winrt::xaml_media_imaging::BitmapImage const& bitmapImage);
         void TrackSvgImage(winrt::xaml_media_imaging::SvgImageSource const& svgImage);
 
-        void MarkFailedLoadImage(winrt::ImageSource const& image);
+        void MarkFailedLoadImage(winrt::xaml_media::ImageSource const& image);
 
         void AbandonOutstandingImages();
         void AddListener(IImageLoadTrackerListener* listener);

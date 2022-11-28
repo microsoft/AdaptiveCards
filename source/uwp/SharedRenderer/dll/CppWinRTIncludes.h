@@ -57,6 +57,7 @@ namespace winrt
     namespace xaml_documents = ::winrt::Windows::UI::Xaml::Documents;
     namespace xaml_input = ::winrt::Windows::UI::Xaml::Input;
     namespace xaml_markup = ::winrt::Windows::UI::Xaml::Markup;
+    namespace xaml_media = ::winrt::Windows::UI::Xaml::Media;
     namespace xaml_media_imaging = ::winrt::Windows::UI::Xaml::Media::Imaging;
     namespace xaml_shapes = ::winrt::Windows::UI::Xaml::Shapes;
 
@@ -71,18 +72,6 @@ namespace winrt
     {
         using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation;
     }
-
-    using XamlReader = xaml::Markup::XamlReader;
-
-    using AlignmentX = xaml::Media::AlignmentX;
-    using AlignmentY = xaml::Media::AlignmentY;
-    using Brush = xaml::Media::Brush;
-    using FontFamily = xaml::Media::FontFamily;
-    using ImageBrush = xaml::Media::ImageBrush;
-    using ImageSource = xaml::Media::ImageSource;
-    using RectangleGeometry = xaml::Media::RectangleGeometry;
-    using SolidColorBrush = xaml::Media::SolidColorBrush;
-    using Stretch = xaml::Media::Stretch;
 
     // using namespace winrt::Windows::Data::Json
     using JsonObject = ::winrt::Windows::Data::Json::JsonObject;

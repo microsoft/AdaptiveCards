@@ -236,8 +236,8 @@ winrt::xaml_documents::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElemen
     auto backgroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, true);
     auto foregroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, false);
 
-    textHighlighter.Background(winrt::SolidColorBrush{backgroundColor});
-    textHighlighter.Foreground(winrt::SolidColorBrush{foregroundColor});
+    textHighlighter.Background(winrt::xaml_media::SolidColorBrush{backgroundColor});
+    textHighlighter.Foreground(winrt::xaml_media::SolidColorBrush{foregroundColor});
 
     return textHighlighter;
 }

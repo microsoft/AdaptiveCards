@@ -190,7 +190,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto containerStyle = renderArgs.ContainerStyle();
 
             auto backgroundColor = GetBackgroundColorFromStyle(containerStyle, hostConfig);
-            rootElement.Background(winrt::SolidColorBrush{backgroundColor});
+            rootElement.Background(winrt::xaml_media::SolidColorBrush{backgroundColor});
 
             auto backgroundImage = adaptiveCard.BackgroundImage();
             bool isBackgroundImageValid = IsBackgroundImageValid(backgroundImage);

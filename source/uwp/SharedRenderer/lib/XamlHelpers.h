@@ -194,7 +194,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::ImageSource const& imageSource,
+                          winrt::xaml_media::ImageSource const& imageSource,
                           bool setVisible);
 
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element);

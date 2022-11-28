@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    void ImageLoadTracker::TrackImage(winrt::ImageSource const& image)
+    void ImageLoadTracker::TrackImage(winrt::xaml_media::ImageSource const& image)
     {
         if (auto bitmapImage = image.try_as<winrt::xaml_media_imaging::BitmapImage>())
         {
@@ -71,7 +71,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    void ImageLoadTracker::MarkFailedLoadImage(winrt::ImageSource const& image)
+    void ImageLoadTracker::MarkFailedLoadImage(winrt::xaml_media::ImageSource const& image)
     {
         // Record failure
         m_hasFailure = true;

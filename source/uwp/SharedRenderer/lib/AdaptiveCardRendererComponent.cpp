@@ -161,7 +161,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
     {
-        auto resourceDictionary = winrt::xaml_markup::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
+        auto resourceDictionary =
+            winrt::xaml_markup::XamlReader::Load(c_defaultResourceDictionary).as<winrt::ResourceDictionary>();
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
 
@@ -187,15 +188,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
-                                                       winrt::SolidColorBrush{accentColor});
+                                                       winrt::xaml_media::SolidColorBrush{accentColor});
 
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
-                                                       winrt::SolidColorBrush{hoverAccentColor});
+                                                       winrt::xaml_media::SolidColorBrush{hoverAccentColor});
 
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
-                                                       winrt::SolidColorBrush{attentionColor});
+                                                       winrt::xaml_media::SolidColorBrush{attentionColor});
         TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
-                                                       winrt::SolidColorBrush{hoverAttentionColor});
+                                                       winrt::xaml_media::SolidColorBrush{hoverAttentionColor});
     }
 
     void AdaptiveCardRenderer::SetMergedDictionary()

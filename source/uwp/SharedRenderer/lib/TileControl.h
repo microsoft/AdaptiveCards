@@ -39,7 +39,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         /* winrt::FrameworkElement m_rootElement;*/
         winrt::UIElement m_resolvedImage{nullptr};
         winrt::xaml_controls::Canvas m_containerElement;
-        winrt::ImageBrush m_brushXaml;
+        winrt::xaml_media::ImageBrush m_brushXaml;
 
         winrt::AdaptiveBackgroundImage m_adaptiveBackgroundImage;
         winrt::Size m_imageSize{};

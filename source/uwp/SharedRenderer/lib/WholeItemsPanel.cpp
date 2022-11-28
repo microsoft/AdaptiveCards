@@ -122,7 +122,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     {
                         if (!HasExplicitSize(childAsImage))
                         {
-                            childAsImage.Stretch(winrt::Stretch::Uniform);
+                            childAsImage.Stretch(winrt::xaml_media::Stretch::Uniform);
                             keepItem = true;
                             m_isTruncated = false;
                         }
@@ -257,7 +257,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         // sides as specified by s_bleedMargin.
 
         winrt::Thickness margin = this->Margin();
-        winrt::RectangleGeometry clip;
+        winrt::xaml_media::RectangleGeometry clip;
 
         const double bleedMargin = static_cast<double>(s_bleedMargin);
         float x0 = static_cast<float>(-std::max(margin.Left, bleedMargin));

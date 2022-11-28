@@ -11,7 +11,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     TileControl::TileControl()
     {
         m_containerElement = winrt::xaml_controls::Canvas{};
-        m_brushXaml = winrt::ImageBrush{};
+        m_brushXaml = winrt::xaml_media::ImageBrush{};
         this->Content(m_containerElement);
     }
 
@@ -67,7 +67,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         // Define clip properties for m_containerElement
         winrt::Rect rect{0, 0, m_containerSize.Width, m_containerSize.Height};
 
-        winrt::RectangleGeometry clip;
+        winrt::xaml_media::RectangleGeometry clip;
         clip.Rect(rect);
         if (const auto containerAsUIElement = m_containerElement.try_as<winrt::UIElement>())
         {
@@ -221,11 +221,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                 if (fillMode == winrt::BackgroundImageFillMode::Cover)
                 {
-                    m_brushXaml.Stretch(winrt::Stretch::UniformToFill);
+                    m_brushXaml.Stretch(winrt::xaml_media::Stretch::UniformToFill);
 
                     // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
-                    m_brushXaml.AlignmentX(static_cast<winrt::AlignmentX>(hAlignment));
-                    m_brushXaml.AlignmentY(static_cast<winrt::AlignmentY>(vAlignment));
+                    m_brushXaml.AlignmentX(static_cast<winrt::xaml_media::AlignmentX>(hAlignment));
+                    m_brushXaml.AlignmentY(static_cast<winrt::xaml_media::AlignmentY>(vAlignment));
                 }
             }
         }

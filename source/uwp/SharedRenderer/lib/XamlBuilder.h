@@ -63,7 +63,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                          bool imageFiresOpenEvent);
 
         template<typename T>
-        void SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+        void SetImageSource(T const& destination,
+                            winrt::xaml_media::ImageSource const& imageSource,
+                            winrt::xaml_media::Stretch stretch = winrt::xaml_media::Stretch::UniformToFill);
 
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
@@ -74,9 +76,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                  winrt::IInspectable const& imageContainer,
                                  bool isVisible,
                                  bool isImageSvg = false,
-                                 winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+                                 winrt::xaml_media::Stretch stretch = winrt::xaml_media::Stretch::UniformToFill);
 
-        winrt::ImageSource CreateImageSource(bool isImageSvg);
+        winrt::xaml_media::ImageSource CreateImageSource(bool isImageSvg);
 
         template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg);
 

@@ -94,7 +94,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             winrt::xaml_shapes::Ellipse ellipse{};
             winrt::xaml_shapes::Ellipse backgroundEllipse{};
 
-            winrt::Stretch imageStretch = (isAspectRatioNeeded) ? winrt::Stretch::Fill : winrt::Stretch::UniformToFill;
+            winrt::xaml_media::Stretch imageStretch =
+                (isAspectRatioNeeded) ? winrt::xaml_media::Stretch::Fill : winrt::xaml_media::Stretch::UniformToFill;
 
             auto parentElement = renderArgs.ParentElement();
 
@@ -113,15 +114,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             {
                 // Set the stretch for the ellipse - this is different to the stretch used for the image brush
                 // above. This will force the ellipse to conform to fit within the confines of its parent.
-                ellipse.Stretch(winrt::Stretch::UniformToFill);
-                backgroundEllipse.Stretch(winrt::Stretch::UniformToFill);
+                ellipse.Stretch(winrt::xaml_media::Stretch::UniformToFill);
+                backgroundEllipse.Stretch(winrt::xaml_media::Stretch::UniformToFill);
             }
 
             if (!backgroundColor.empty())
             {
                 // Fill the background ellipse with solid color brush
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                backgroundEllipse.Fill(winrt::SolidColorBrush{color});
+                backgroundEllipse.Fill(winrt::xaml_media::SolidColorBrush{color});
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 winrt::xaml_controls::Grid imageGrid{};
@@ -144,7 +145,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 // Create a surrounding border with solid color background to contain the image
                 winrt::xaml_controls::Border border{};
                 auto color = GetColorFromString(HStringToUTF8(backgroundColor));
-                border.Background(winrt::SolidColorBrush{color});
+                border.Background(winrt::xaml_media::SolidColorBrush{color});
 
                 border.Child(xamlImage);
 
@@ -157,7 +158,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (isAspectRatioNeeded)
             {
-                xamlImage.Stretch(winrt::Stretch::Fill);
+                xamlImage.Stretch(winrt::xaml_media::Stretch::Fill);
             }
 
             auto parentElement = renderArgs.ParentElement();
@@ -281,7 +282,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::IInspectable const& imageContainer,
         bool isVisible,
         bool isImageSvg,
-        winrt::Stretch stretch)
+        winrt::xaml_media::Stretch stretch)
     {
         bool mustHideElement = true;
 
@@ -492,7 +493,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    winrt::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
+    winrt::xaml_media::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
     {
         if (isImageSvg)
         {
@@ -551,16 +552,19 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     template <typename T>
-    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
+    void XamlBuilder::SetImageSource(T const& destination,
+                                     winrt::xaml_media::ImageSource const& imageSource,
+                                     winrt::xaml_media::Stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
 
     template <>
-    void XamlBuilder::SetImageSource<winrt::xaml_shapes::Ellipse>(
-        winrt::xaml_shapes::Ellipse const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch)
+    void XamlBuilder::SetImageSource<winrt::xaml_shapes::Ellipse>(winrt::xaml_shapes::Ellipse const& destination,
+                                                                  winrt::xaml_media::ImageSource const& imageSource,
+                                                                  winrt::xaml_media::Stretch stretch)
     {
-        winrt::ImageBrush imageBrush{};
+        winrt::xaml_media::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
 
         imageBrush.Stretch(stretch);
@@ -581,7 +585,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             auto ellipseBrush = ellipseAsShape.Fill();
 
-            auto brushAsImageBrush = ellipseBrush.as<winrt::ImageBrush>();
+            auto brushAsImageBrush = ellipseBrush.as<winrt::xaml_media::ImageBrush>();
 
             auto imageSource = brushAsImageBrush.ImageSource();
             auto imageSourceAsBitmap = imageSource.as<winrt::xaml_media_imaging::BitmapSource>();
@@ -601,7 +605,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                     {
                         if (isVisible)
                         {
-                            auto lambdaBrushAsImageBrush = sender.as<winrt::ImageBrush>();
+                            auto lambdaBrushAsImageBrush = sender.as<winrt::xaml_media::ImageBrush>();
 
                             auto lambdaImageSource = lambdaBrushAsImageBrush.ImageSource();
 

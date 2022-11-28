@@ -152,7 +152,7 @@ void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 
         auto fontColor = GetColorFromAdaptiveColor(hostConfig, adaptiveTextColor, containerStyle, isSubtle, false);
 
-        xamlTextElement.Foreground(winrt::SolidColorBrush{fontColor});
+        xamlTextElement.Foreground(winrt::xaml_media::SolidColorBrush{fontColor});
     }
 
     uint32_t fontSize = GetFontSizeFromFontType(hostConfig, fontType, adaptiveTextSize);
@@ -166,5 +166,5 @@ void StyleTextElement(winrt::IAdaptiveTextElement const& adaptiveTextElement,
     xamlTextElement.FontWeight(xamlFontWeight);
 
     // Apply font family
-    xamlTextElement.FontFamily(winrt::FontFamily{fontFamilyName});
+    xamlTextElement.FontFamily(winrt::xaml_media::FontFamily{fontFamilyName});
 }

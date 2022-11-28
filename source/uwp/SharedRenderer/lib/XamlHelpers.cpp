@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                      bool isHorizontal)
     {
         winrt::xaml_controls::Grid separator;
-        separator.Background(winrt::SolidColorBrush{separatorColor});
+        separator.Background(winrt::xaml_media::SolidColorBrush{separatorColor});
 
         const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
         winrt::Thickness margin{};
@@ -125,7 +125,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         if (hasExplicitContainerStyle)
         {
             auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
-            containerBorder.Background(winrt::SolidColorBrush{backgroundColor});
+            containerBorder.Background(winrt::xaml_media::SolidColorBrush{backgroundColor});
 
             // If the container style doesn't match its parent apply padding.
             addContainerPadding |= (localContainerStyle != parentContainerStyle);
@@ -292,7 +292,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             auto resourceDictionary = renderContext.OverrideStyles();
             if (const auto backgroundOverlayBrush =
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, c_BackgroundImageOverlayBrushKey)
-                        .try_as<winrt::Brush>())
+                        .try_as<winrt::xaml_media::Brush>())
             {
                 winrt::xaml_shapes::Rectangle overlayRectangle;
                 overlayRectangle.Fill(backgroundOverlayBrush);
@@ -435,7 +435,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::ImageSource const& imageSource,
+                          winrt::xaml_media::ImageSource const& imageSource,
                           bool setVisible)
     {
         double pixelHeight;
@@ -530,7 +530,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         auto color = GetColorFromAdaptiveColor(hostConfig, textColor, winrt::ContainerStyle::Default, false, false);
 
-        labelRun.Foreground(winrt::SolidColorBrush{color});
+        labelRun.Foreground(winrt::xaml_media::SolidColorBrush{color});
 
         winrt::TextSize textSize = inputLabelConfig.Size();
 
@@ -650,7 +650,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             auto attentionColor =
                 GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Attention, winrt::ContainerStyle::Default, false, false);
 
-            errorMessageTextBlock.Foreground(winrt::SolidColorBrush{attentionColor});
+            errorMessageTextBlock.Foreground(winrt::xaml_media::SolidColorBrush{attentionColor});
 
             // Format the error message through host config
             FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock);
@@ -673,7 +673,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
         winrt::xaml_controls::Border validationBorder{};
-        validationBorder.BorderBrush(winrt::SolidColorBrush{attentionColor});
+        validationBorder.BorderBrush(winrt::xaml_media::SolidColorBrush{attentionColor});
         validationBorder.Child(childElement);
 
         return validationBorder;

@@ -65,14 +65,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 
         // Set it's fill and opacity
         winrt::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
-        rectangle.Fill(winrt::SolidColorBrush{whiteBrushColor});
+        rectangle.Fill(winrt::xaml_media::SolidColorBrush{whiteBrushColor});
         rectangle.Opacity(c_playIconOpacity);
 
         // Outline it in the Dark color
         auto containerStyle = renderArgs.ContainerStyle();
 
         auto darkBrushColor = GetColorFromAdaptiveColor(hostConfig, winrt::ForegroundColor::Dark, containerStyle, false, false);
-        winrt::SolidColorBrush darkBrush{darkBrushColor};
+        winrt::xaml_media::SolidColorBrush darkBrush{darkBrushColor};
         rectangle.Stroke(darkBrush);
 
         // Create a play symbol icon
