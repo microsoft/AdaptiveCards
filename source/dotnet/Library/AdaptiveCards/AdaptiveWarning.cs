@@ -62,5 +62,14 @@ namespace AdaptiveCards
         /// The warning message.
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// Convinience method that provides same string as Message
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }

@@ -802,5 +802,12 @@ namespace AdaptiveCardsSharedModelUnitTest
             (void) parser3.TransformToHtml();
             Assert::AreEqual<bool>(true, parser3.IsEscaped());
         }
+
+        TEST_METHOD(Rule9Test_MultipleOf3Test)
+        {
+            Assert::AreEqual<std::string>("<p>Hello***World***</p>", MarkDownParser("Hello***World***").TransformToHtml());
+        }
+
+
     };
 }

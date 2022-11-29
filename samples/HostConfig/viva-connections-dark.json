@@ -59,12 +59,12 @@
 					"subtle": "#a19f9d"
 				},
 				"dark": {
-					"default": "#ffffff",
-					"subtle": "#a19f9d"
-				},
-				"light": {
 					"default": "#252423",
 					"subtle": "#323130"
+				},
+				"light": {
+					"default": "#ffffff",
+					"subtle": "#a19f9d"
 				},
 				"accent": {
 					"default": "#7F85F5",
