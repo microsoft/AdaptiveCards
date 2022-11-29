@@ -950,6 +950,4 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 
     public static readonly ATN _ATN =
         new ATNDeserializer().Deserialize(_serializedATN);
-
-
 }
