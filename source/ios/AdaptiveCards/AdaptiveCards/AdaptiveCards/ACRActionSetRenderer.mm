@@ -193,6 +193,8 @@
     // this step ensures that action set view is added before subviews added by show cards
     [superview insertArrangedSubview:containingView atIndex:stackIndex];
 
+    superview.accessibilityElements = [superview.accessibilityElements arrayByAddingObjectsFromArray:childview.arrangedSubviews];
+    
     return containingView;
 }
 
