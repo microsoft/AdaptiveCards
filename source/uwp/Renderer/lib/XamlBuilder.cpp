@@ -149,7 +149,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     void XamlBuilder::RemoveListener(IXamlBuilderListener* listener)
-	{
+    {
         if (m_listeners.find(listener) != m_listeners.end())
         {
             m_listeners.erase(listener);

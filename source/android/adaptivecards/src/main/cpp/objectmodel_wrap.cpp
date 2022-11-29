@@ -373,7 +373,7 @@ namespace Swig {
           weak_global_ = true;
         }
       } else {
-	/* Java releases ownership of C++ object's lifetime */
+        /* Java releases ownership of C++ object's lifetime */
         if (weak_global_) {
           jenv->DeleteWeakGlobalRef((jweak)jthis_);
           jthis_ = jenv->NewGlobalRef(jself);
@@ -535,12 +535,12 @@ namespace Swig {
   public:
     JavaString(JNIEnv *jenv, jstring jstr) : jenv_(jenv), jstr_(jstr), cstr_(0) {
       if (jenv_ && jstr_)
-	cstr_ = (const char *) jenv_->GetStringUTFChars(jstr_, NULL);
+        cstr_ = (const char *) jenv_->GetStringUTFChars(jstr_, NULL);
     }
 
     ~JavaString() {
       if (jenv_ && jstr_ && cstr_)
-	jenv_->ReleaseStringUTFChars(jstr_, cstr_);
+        jenv_->ReleaseStringUTFChars(jstr_, cstr_);
     }
 
     const char *c_str(const char *null_string = "null JavaString") const {
@@ -578,16 +578,16 @@ namespace Swig {
     static jstring exceptionMessageFromThrowable(JNIEnv *jenv, jthrowable throwable) {
       jstring jmsg = NULL;
       if (jenv && throwable) {
-	jenv->ExceptionClear(); // Cannot invoke methods with any pending exceptions
-	jclass throwclz = jenv->GetObjectClass(throwable);
-	if (throwclz) {
-	  // All Throwable classes have a getMessage() method, so call it to extract the exception message
-	  jmethodID getMessageMethodID = jenv->GetMethodID(throwclz, "getMessage", "()Ljava/lang/String;");
-	  if (getMessageMethodID)
-	    jmsg = (jstring)jenv->CallObjectMethod(throwable, getMessageMethodID);
-	}
-	if (jmsg == NULL && jenv->ExceptionCheck())
-	  jenv->ExceptionClear();
+        jenv->ExceptionClear(); // Cannot invoke methods with any pending exceptions
+        jclass throwclz = jenv->GetObjectClass(throwable);
+        if (throwclz) {
+          // All Throwable classes have a getMessage() method, so call it to extract the exception message
+          jmethodID getMessageMethodID = jenv->GetMethodID(throwclz, "getMessage", "()Ljava/lang/String;");
+          if (getMessageMethodID)
+            jmsg = (jstring)jenv->CallObjectMethod(throwable, getMessageMethodID);
+        }
+        if (jmsg == NULL && jenv->ExceptionCheck())
+          jenv->ExceptionClear();
       }
       return jmsg;
     }
@@ -604,14 +604,14 @@ namespace Swig {
 
       // Call Java method Object.getClass().getName() to obtain the throwable's class name (delimited by '/')
       if (jenv && throwable) {
-	jenv->ExceptionClear(); // Cannot invoke methods with any pending exceptions
-	jclass throwclz = jenv->GetObjectClass(throwable);
-	if (throwclz) {
-	  jclass clzclz = jenv->GetObjectClass(throwclz);
-	  if (clzclz) {
-	    jmethodID getNameMethodID = jenv->GetMethodID(clzclz, "getName", "()Ljava/lang/String;");
-	    if (getNameMethodID) {
-	      jstring jstr_classname = (jstring)(jenv->CallObjectMethod(throwclz, getNameMethodID));
+        jenv->ExceptionClear(); // Cannot invoke methods with any pending exceptions
+        jclass throwclz = jenv->GetObjectClass(throwable);
+        if (throwclz) {
+          jclass clzclz = jenv->GetObjectClass(throwclz);
+          if (clzclz) {
+            jmethodID getNameMethodID = jenv->GetMethodID(clzclz, "getName", "()Ljava/lang/String;");
+            if (getNameMethodID) {
+              jstring jstr_classname = (jstring)(jenv->CallObjectMethod(throwclz, getNameMethodID));
               // Copy strings, since there is no guarantee that jenv will be active when handled
               if (jstr_classname) {
                 JavaString jsclassname(jenv, jstr_classname);
@@ -619,9 +619,9 @@ namespace Swig {
                 if (classname)
                   classname_ = copypath(classname);
               }
-	    }
-	  }
-	}
+            }
+          }
+        }
       }
 
       JavaExceptionMessage exceptionmsg(jenv, throwable);
@@ -698,9 +698,9 @@ namespace Swig {
     static char *copystr(const char *srcmsg) {
       char *target = 0;
       if (srcmsg) {
-	size_t msglen = strlen(srcmsg) + 1;
-	target = new char[msglen];
-	strncpy(target, srcmsg, msglen);
+        size_t msglen = strlen(srcmsg) + 1;
+        target = new char[msglen];
+        strncpy(target, srcmsg, msglen);
       }
       return target;
     }
@@ -724,11 +724,11 @@ namespace Swig {
 
       jclass clz = jenv->FindClass(classname);
       if (clz) {
-	jclass classclz = jenv->GetObjectClass(clz);
-	jmethodID isInstanceMethodID = jenv->GetMethodID(classclz, "isInstance", "(Ljava/lang/Object;)Z");
-	if (isInstanceMethodID) {
-	  matches = jenv->CallBooleanMethod(clz, isInstanceMethodID, throwable) != 0;
-	}
+        jclass classclz = jenv->GetObjectClass(clz);
+        jmethodID isInstanceMethodID = jenv->GetMethodID(classclz, "isInstance", "(Ljava/lang/Object;)Z");
+        if (isInstanceMethodID) {
+          matches = jenv->CallBooleanMethod(clz, isInstanceMethodID, throwable) != 0;
+        }
       }
 
 #if defined(DEBUG_DIRECTOR_EXCEPTION)

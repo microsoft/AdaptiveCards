@@ -48,40 +48,40 @@ To load the designer component you have 2 options:
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
 <!-- DESIGNER OPTION A: Card Designer + Standard Hosts 
-	(replace <VERSION> with the version you want to load, or "latest" for latest)
+  (replace <VERSION> with the version you want to load, or "latest" for latest)
 -->
 <script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer.min.js"></script>
 
 <!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts 
-	(replace <VERSION> with the version you want to load, or "latest" for latest)
-	<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer-standalone.min.js"></script>
+  (replace <VERSION> with the version you want to load, or "latest" for latest)
+  <script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer-standalone.min.js"></script>
 -->
 
 <!-- REQUIRED: monaco-editor is required for the designer to work -->
 <script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
 <script type="text/javascript">
-	window.onload = function() {
-		let hostContainers = [];
+  window.onload = function() {
+    let hostContainers = [];
 
-		// Optional: add the default Microsoft Host Apps (see docs below)
-		// hostContainers = ACDesigner.defaultMicrosoftHosts;
-		 
-		let designer = new ACDesigner.CardDesigner(hostContainers);
+    // Optional: add the default Microsoft Host Apps (see docs below)
+    // hostContainers = ACDesigner.defaultMicrosoftHosts;
+     
+    let designer = new ACDesigner.CardDesigner(hostContainers);
 
-		// The designer requires various CSS and image assets to work properly, 
-		// If you've loaded the script from a CDN it needs to know where these assets are located
-		// Use the same <VERSION> that you used above
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
+    // The designer requires various CSS and image assets to work properly, 
+    // If you've loaded the script from a CDN it needs to know where these assets are located
+    // Use the same <VERSION> that you used above
+    designer.assetPath = "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
 
-		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
-		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
-		require(['vs/editor/editor.main'], function () {
-			designer.monacoModuleLoaded();
-		});
+    // Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
+    require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      designer.monacoModuleLoaded();
+    });
 
-		designer.attachTo(document.getElementById("designerRootHost"));
-	};
+    designer.attachTo(document.getElementById("designerRootHost"));
+  };
 </script>
 
 <body>
@@ -117,19 +117,19 @@ import "adaptivecards-designer/dist/adaptivecards-designer.css";
 //import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-	ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
-		result.outputHtml = new markdownit().render(text);
-		result.didProcess = true;
-	}
+  ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
+    result.outputHtml = new markdownit().render(text);
+    result.didProcess = true;
+  }
 
-	let hostContainers = [];
-	
-	// Optional: add the default Microsoft Host Apps (see docs below)
-	// hostContainers = ACDesigner.defaultMicrosoftHosts;
+  let hostContainers = [];
+  
+  // Optional: add the default Microsoft Host Apps (see docs below)
+  // hostContainers = ACDesigner.defaultMicrosoftHosts;
 
-	let designer = new ACDesigner.CardDesigner(hostContainers);
-	designer.attachTo(document.getElementById("designerRootHost"));
-	designer.monacoModuleLoaded(monaco);
+  let designer = new ACDesigner.CardDesigner(hostContainers);
+  designer.attachTo(document.getElementById("designerRootHost"));
+  designer.monacoModuleLoaded(monaco);
 };
 
 ```
@@ -146,28 +146,28 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-	...
-	module: {
-		rules: [
-			{
-				test: /\.css$/,
-				use: [
-					'style-loader',
-					'css-loader'
-				]
-			}
-		]
-	},
-	plugins: [
-		new CopyWebpackPlugin([{
-			from: 'node_modules/adaptivecards-designer/dist/containers/*',
-			to: 'containers/',
-			flatten: true
-		}]),
-		new MonacoWebpackPlugin({
-			languages: ['json']
-		})
-	]
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new CopyWebpackPlugin([{
+      from: 'node_modules/adaptivecards-designer/dist/containers/*',
+      to: 'containers/',
+      flatten: true
+    }]),
+    new MonacoWebpackPlugin({
+      languages: ['json']
+    })
+  ]
 };
 ```
 
@@ -179,8 +179,8 @@ The Designer makes it easy to load a sample from a catalog. Simply create a file
 [
     {
         "displayName": "My Sample Payload",
-		"cardPayloadUrl": "url/to/the/payload.json",
-		"dataSampleUrl": "optional/url/to/sample/data.json
+        "cardPayloadUrl": "url/to/the/payload.json",
+        "dataSampleUrl": "optional/url/to/sample/data.json
     }
 ]
 ```
@@ -248,44 +248,44 @@ let designer = new ACDesigner.CardDesigner(hostContainers);
 
 /* Or pick and choose which built-in host apps to include, and/or add your custom host app */
 let hostContainers: ACDesigner.HostContainer[] = [
-	new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
-	new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
-	new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
+  new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
+  new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
+  new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
 ];
 let designer = new ACDesigner.CardDesigner(hostContainers);
 
 /* Modify the toolbar */
 let myButton = new Designer.ToolbarButton(
-	"myButton",
-	"My button",
-	null,
-	(sender) => { alert("My button was clicked"); });
+  "myButton",
+  "My button",
+  null,
+  (sender) => { alert("My button was clicked"); });
 myButton.separator = true;
 
 designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
 
-/* Collapse certain panes by default (AFTER calling attachTo)	*/
+/* Collapse certain panes by default (AFTER calling attachTo) */
 designer.treeViewToolbox.collapse();
 designer.jsonEditorToolbox.collapse();
 
-/* Set the card payload in the designer: (AFTER calling attachTo */ 
+/* Set the card payload in the designer: (AFTER calling attachTo */
 designer.setCard(
-	{
-		type: "AdaptiveCard",
-		version: "1.0",
-		body: [
-			{
-				type: "TextBlock",
-				text: "Hello world"
-			}
-		]
-	}
+  {
+    type: "AdaptiveCard",
+    version: "1.0",
+    body: [
+      {
+        type: "TextBlock",
+        text: "Hello world"
+      }
+    ]
+  }
 );
 
 /* Set sample data (AFTER calling attachTo) */ 
 designer.sampleData = {
-	name: "John Doe",
-	phone: "123-123-1234"
+  name: "John Doe",
+  phone: "123-123-1234"
 };
 ```
 

@@ -43,7 +43,7 @@
                 </ListView.Header>
             </ListView>
 
-            <CheckBox 
+            <CheckBox
                 x:Name="TimelineCheckBox"
                 Content="Add to Timeline"
                 VerticalAlignment="Bottom"

@@ -16,27 +16,27 @@ Here is a simplistic "Hello World" example on how to use the library to generate
 
 ```csharp
 string jsonTemplate = @"{
-	""type"": ""AdaptiveCard"",
-	""version"": ""1.0"",
-	""body"": [
-		{
-			""type"": ""TextBlock"",
-			""text"": ""Hello, ${person.firstName}!""
-		}
-	]
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello, ${person.firstName}!""
+        }
+    ]
 }";
 
 string jsonData = @"{
-	""person"": {
-		""firstName"": ""Andrew"",
-		""lastName"": ""Leader""
-	}
+    ""person"": {
+        ""firstName"": ""Andrew"",
+        ""lastName"": ""Leader""
+    }
 }";
 
 // The final JSON, it'll have "text": "Hello, Andrew!" in it!
 var template = new AdaptiveCardsTemplate(jsonTemplate);
 var context = new AdaptiveCardsEvaluationContext() {
-	Root = jsonData
+    Root = jsonData
 };
 
 string cardJson = template.Expand(context);
