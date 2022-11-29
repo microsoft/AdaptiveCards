@@ -50,7 +50,7 @@ namespace winrt
     using namespace ::winrt::Windows::UI::Xaml::Media::Imaging;
     using namespace ::winrt::Windows::UI::Xaml::Shapes;
     using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
-    
+
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
     namespace AdaptiveCards::Rendering::Uwp{}
     using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
