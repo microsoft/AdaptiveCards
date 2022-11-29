@@ -89,7 +89,7 @@ namespace AdaptiveCards
 #endif
 
         /// <summary>
-        /// Specifies whether grid lines should be displayed.	 
+        /// Specifies whether grid lines should be displayed.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3

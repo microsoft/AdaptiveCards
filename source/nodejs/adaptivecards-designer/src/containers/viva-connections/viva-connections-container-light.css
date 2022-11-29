@@ -176,8 +176,8 @@
   box-sizing: border-box;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:before {
-	content: " ";
-	font-size: 16px;
+  content: " ";
+  font-size: 16px;
   border-radius: 50%;
   background-color: #ffffff;
   height: 20px;
@@ -207,7 +207,7 @@
   position: relative;
   width: 20px;
   height: 20px;
-	top: -20px;
+  top: -20px;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after {
   background-color: #5B5FC7;
@@ -233,7 +233,7 @@
   border-radius: 2px;
   padding: 0 8px 1px 8px;
   color: #323130;
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 .ac-input.ac-textInput:focus, .ac-input.ac-dateInput:focus, .ac-input.ac-numberInput:focus, .ac-input.ac-multichoiceInput:focus, .ac-input.ac-timeInput:focus {
   outline-color: #5B5FC7;
@@ -298,12 +298,12 @@
 }
 
 .ac-anchor {
-	color: #7F85F5;
-	text-decoration: none;
+  color: #7F85F5;
+  text-decoration: none;
 }
 .ac-anchor:hover {
-	color: #3D3E78;
-	text-decoration: underline;
+  color: #3D3E78;
+  text-decoration: underline;
 }
 
 .vivaConnectionsContainer {

@@ -331,11 +331,11 @@ a.ac-anchor:hover {
 }
 
 .ac-carousel-container {
-	padding: 0px 16px 16px 16px !important;
+    padding: 0px 16px 16px 16px !important;
 }
 
 .ac-carousel-card-level-container {
-	margin: 0px -16px -16px -16px !important;
+    margin: 0px -16px -16px -16px !important;
 }
 
 .ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
