@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.5",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -13,10 +13,10 @@
 						{
 							"type": "TextBlock",
 							"text": "${title}",
-							"weight": "Bolder",
-							"size": "Medium",
-							"wrap": true,
-							"style": "heading"
+							"weight": "bolder",
+							"size": "medium",
+							"style": "heading",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
@@ -29,21 +29,19 @@
 							"text": "${disclaimer}",
 							"isSubtle": true,
 							"wrap": true,
-							"size": "Small"
+							"size": "small"
 						},
 						{
 							"type": "Container",
 							"$data": "${properties}",
 							"items": [
 								{
-									"type": "TextBlock",
-									"text": "${title}",
-									"wrap": true
-								},
-								{
 									"type": "Input.Text",
-									"id": "${if(title == 'Your Name', 'myName', if(title == 'Your email', 'myEmail', 'myTel'))}",
-									"placeholder": "${placeholder}"
+									"label": "${label}",
+									"id": "${id}",
+									"regex": "${validation}",
+									"errorMessage": "${error}",
+									"isRequired": true
 								}
 							]
 						}

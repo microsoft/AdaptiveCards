@@ -1,0 +1,44 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"fallbackText": "This card requires Media to be viewed. Ask your platform to update to Adaptive Cards v1.6 for this and more!",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Adaptive Cards Product Video",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "Media",
+			"poster": "https://adaptivecards.io/content/poster-video.png",
+			"altText": "Adaptive Cards overview video",
+			"sources": [
+				{
+					"mimeType": "video/mp4",
+					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+				}
+			],
+			"captionSources": [
+				{
+					"mimeType": "vtt",
+					"label": "English (vtt)",
+					"url": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/5ac07e8adb8d7dcd7480973321e57d279d1f7d2c/assets/ProductVideoSubtitles.vtt"
+				},
+				{
+					"mimeType": "srt",
+					"label": "English (srt)",
+					"url": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/da2eb4ad4de60d14b37decc062d3952da9dbb790/assets/ProductVideoSubtitles.srt"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Learn more",
+			"url": "https://adaptivecards.io"
+		}
+	]
+}

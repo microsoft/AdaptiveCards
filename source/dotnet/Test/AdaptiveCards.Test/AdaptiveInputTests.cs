@@ -31,5 +31,16 @@ namespace AdaptiveCards.Test
 
             StringAssert.Contains(ex.Message, "'id'");
         }
+
+        [TestMethod]
+        public void TestPassWordInputStyle()
+        {
+            var expectedJSON = Utilities.BuildExpectedCardJSON("textInput", new SerializableDictionary<string, object>() { ["style"] = "Password" });
+            var testCard = AdaptiveCard.FromJson(expectedJSON);
+            Assert.IsTrue(testCard.Warnings.Count == 0);
+            AdaptiveTextInput textInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "textInput") as AdaptiveTextInput;
+            Assert.IsNotNull(textInput);
+            Assert.AreEqual(AdaptiveTextInputStyle.Password, textInput.Style);
+        }
     }
 }

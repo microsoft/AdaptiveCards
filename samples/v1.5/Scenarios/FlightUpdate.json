@@ -1,0 +1,264 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Your Flight Update",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"size": "small",
+							"altText": "Airplane",
+							"url": "https://adaptivecards.io/content/airplane.png"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Flight Status",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "DELAYED",
+							"horizontalAlignment": "right",
+							"spacing": "none",
+							"size": "large",
+							"color": "attention",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"spacing": "medium",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Passengers",
+							"isSubtle": true,
+							"weight": "bolder",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "Sarah Hum",
+							"spacing": "small",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "Jeremy Goldberg",
+							"spacing": "small",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "Evan Litvak",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Seat",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"weight": "bolder",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "14A",
+							"horizontalAlignment": "right",
+							"spacing": "small",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "14B",
+							"horizontalAlignment": "right",
+							"spacing": "small",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "14C",
+							"horizontalAlignment": "right",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"spacing": "medium",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Flight",
+							"isSubtle": true,
+							"weight": "bolder",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "KL605",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Departs",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"weight": "bolder",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "2:20 AM",
+							"color": "attention",
+							"weight": "bolder",
+							"horizontalAlignment": "center",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Arrives",
+							"isSubtle": true,
+							"horizontalAlignment": "right",
+							"weight": "bolder",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "8:20 PM",
+							"color": "attention",
+							"horizontalAlignment": "right",
+							"weight": "bolder",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"spacing": "medium",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Amsterdam Airport",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "AMS",
+							"size": "extraLarge",
+							"color": "accent",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": " ",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/airplane.png",
+							"altText": "Flight to",
+							"size": "small"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "San Francisco Airport",
+							"isSubtle": true,
+							"horizontalAlignment": "right",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "SFO",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

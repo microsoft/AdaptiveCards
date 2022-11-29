@@ -12,19 +12,9 @@
 	"home_team": "Navy",
 	"home_conference": "American Athletic",
 	"home_points": 45,
-	"home_line_scores": [
-		10,
-		14,
-		14,
-		7
-	],
+	"home_line_scores": [10, 14, 14, 7],
 	"away_team": "Holy Cross",
 	"away_conference": null,
 	"away_points": 7,
-	"away_line_scores": [
-		0,
-		7,
-		0,
-		0
-	]
+	"away_line_scores": [0, 7, 0, 0]
 }

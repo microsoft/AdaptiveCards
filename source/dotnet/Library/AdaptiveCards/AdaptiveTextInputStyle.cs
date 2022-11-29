@@ -30,6 +30,11 @@ namespace AdaptiveCards
         /// <summary>
         /// Input is an email address. The client may use this information to provide optimized keyboard input for the user.
         /// </summary>
-        Email
+        Email,
+
+        /// <summary>
+        /// Display input text with password masking
+        /// </summary>
+        Password,
     }
 }
