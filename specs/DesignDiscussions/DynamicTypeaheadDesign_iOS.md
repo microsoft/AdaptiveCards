@@ -2,7 +2,7 @@
 
 ## Dynamic Typeahead search in adaptive cards in iOS client
 
-This document covers overall implementation of dynamic typeahead feature in iOS client. Also, we will cover all the changes needed to support Dynamic Type Ahead search to Input.ChoiceSet in adaptive cards in iOS client.
+This document covers overall implementation of dynamic typeahead feature in iOS client. Also, we will cover all the changes needed to add Dynamic Type Ahead support to Input.ChoiceSet in adaptive cards in iOS SDK.
 
 ### Schema Parsing
 
@@ -17,7 +17,7 @@ Rendering input.choiceset to support dynamic typeahead involves parsing of `choi
 
 Here are a few pros and cons of rendering of choiceset input control in a new screen to support dynamic typeahead search experience:
 Pros:
-1. We will have better and richer experience for the host in terms of choice selection, scrollable list and error messages state etc. 
+1. We will have better and richer experience for the host in terms of choice selection, scrollable list and error messages state etc. This will be the preferred design by host like Teams and Outlook.
 2. Hosts like MS Teams will not have to override the choiceset component because teams uses full screen experience for the dynamic typeahead search. 
 
 Cons:
@@ -66,7 +66,7 @@ Parameters of `onChoiceSetQueryChange` method for async communication in ACRActi
 | Parameter | Type | Description |
 | :------- | :----- | :------------------------------------------------------------------------------------------
 | baseCardElement | BaseCardElement | ChoiceSetInput element on which text change was observed |
-| searchRequest | DynamicTypeaheadRequestPayload | search request object format to be sent to the host |
+| searchRequest | DynamicTypeaheadSearchRequest | search request object format to be sent to the host |
 | completion | (void (^)(NSArray<Choices *> *choices, NSError *error)) | Completion block with choices[] as response or NSError in case of any failure
 
 **i. Search Request payload JSON object:**
@@ -121,12 +121,13 @@ UserInfo= ""
 
 We have to show error message to the user when bot return with the error. In this case, host will need to return localized reason for the error to the SDK so as to configure error message.We will use a maximum time limit to fetch dynamic choices in the host config.
 1. Default Invalid search error message:  We will display "No Matches found" error message to the user if there are no choices and no error returned from the host. Host will always have an option to customize this default invalid search error message.
-2. Default generic error message: We will display "Unable to show options right now" error message to the user if there are no choices and no error returned from the host. Host will always have an option to customize this default generic error message.
-3. We will have a way to customize error message based on the host's error response. Host can return localized error message to the SDK of type NSError (with reason) when invoke call completes.
+2. Default generic error message: We will display "Something went wrong." error message to the user if there are no choices but valid error returned from the host. Host will always have an option to customize this default generic error message.
 
-**ACRChoicesetDynamicTypeaheadView UI: Native controls in iOS vs fluent UI**
+We will have a way to customize the above error message based on the host's error response. Host can return localized error message in response to the invoke call to the SDK of type NSError (with reason).
 
-We are creating the custom UI for dynamic typeahead with native iOS controls directly from UIKit so as to achieve consistent experience for MS Teams and more richer experience. We do not want to introduce dependency on fluent UI. We will use UITextField for search bar, table view, loader components from UIKit library to build full screen UI to support dynamic typeahead etc. We decided to implement the design with custom UI controls (UITextField for searchbar, UITableView to display list of choices, UIActivityIndicatorView for loader) from UIKit.
+**Native controls in iOS vs fluent UI**
+
+We are creating ACRChoicesetDynamicTypeaheadView class for building custom UI for dynamic typeahead with native iOS controls (directly from UIKit). We do not want to introduce dependency on fluent UI. We will use UITextField for search bar, table view, loader components from UIKit library to build full screen UI to support dynamic typeahead. We decided to implement the design with custom UI controls (UITextField for searchbar, UITableView to display list of choices, UIActivityIndicatorView for loader) from UIKit.
 
 Pros: 
 1. We can provide better customization to the host and host can style the component as per their needs.
@@ -150,7 +151,6 @@ We can extend the functionality of existing static typeahead experience for supp
 ### How host can configure the styles of dynamic typeahead search UI?
 
 We will give host the ability to configure the full screen UX based on their requirements such as host can have their own UI for failure scenarios and loading indicator. We will expose few methods in the full screen view to configure the styles of UI and that can be easily accessed from choiceset custom renderer.
-<img src="assets/DynamicTypeahead/FullScreenInterface.png" height="300">
 
 Here are few examples of what UI styles can be updated by host:
 - configure the navigation bar in the view controller like title, back button and choices selection button.
@@ -160,21 +160,44 @@ Here are few examples of what UI styles can be updated by host:
 - configure the layout of the container view(stack view) that contains search view, loader and (eg. border/spacingtop/spacing down).
 - register class for list layout cell.
 - configure loading indicator to the table view and sdk will send request to the host to show/hide the loader.
-
-How host can configure the styles of UI during initialize of dynamic typeaehad view?
-- init method of filtered style view is called from custom choiceset renderer 
-- send request for configuring UI back to the host so that host has the flexibility to update the style and layout constraint.
+ 
+SDK will send request for configuring UI back to the host so that host has the flexibility to update the style and layout constraint. 
 
 <img src="assets/DynamicTypeahead/CustomizationsInterface.png" height="350">
+<img src="assets/DynamicTypeahead/FullScreenInterface.png" height="300">
 
 ### Host Config
-TODO: Sync with other platforms and add more
+
+We allow a new property called 'autoCompleteChoiceSet' in the host config object that will hold all the required configurations for dynamic type ahead supported Input.Choiceset. 
+
+```
+autoCompleteChoiceSet: 
+{ 
+	queryParams: 
+	{ 
+		count: 15 
+		skip: 0 
+		debounceTime: 250
+	},
+} 
+```
+
+| Name | Type | Default Value | Description
+| :------- | :----- | :----- | :------------------------------------------------------------------------------------------
+| queryParams.count | number | 15 | Indicates the maximum number of results that can be fetched for display in the dropdown list of dynamic typeahead supported choiceset.
+ | queryParams.skip | number | 0 | Indicates the number of results which must be skipped after which the results will be taken for display in the dropdown list of dynamic typeahead supported choiceset. 
+ | queryParams.debounceTime | TimeInterval in ms | 250 ms | minimum delay after which the invoke call to be made
+
+### Accessibility
+<TBD>
 
 ### Test Coverage
-Add samples in the SDK sample app (Visualizer for iOS) and add UTs for schema changes in the shared library.
+Add samples in the SDK sample app (AC Visualizer for iOS) and add UTs for schema changes in the shared library.
 TODO: Add more details around test coverage
 
 ### Adaptability
-We will make sure that the host has to do minimal overriding of the components and will be able to achieve the host specific styles and layouts with the help of host config file.
+We will make sure that it is easy for hosts too adopt this feature in later SDK versions and has to do minimal overriding. Host will be able to achieve the host specific styles with the help of host config file and api's provided by the SDK.
+1. We created a separate class ACRChoiceSetDynamicTypeaheadView responsible for rendering of the dynamic typeahead supported choiceset which provides greater flexibility for the developers to style this component as per the host. 
+2. The host needs to provide the meta data required(error UI details/fonts/styles) to render this component and the only additional effort to make this feature work in the host will be to set up the choiceset custom renderer to use dynamic typeahead UI if choices.data is valid. This will handle the request and sending responses back to the SDK.
 
 <!-- END AUTO-GENERATED -->
