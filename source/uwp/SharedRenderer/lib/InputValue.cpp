@@ -220,7 +220,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         {
             auto date = dateRef.Value();
 
-            winrt::DateTimeFormatter dateTimeFormatter{L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
+            ::winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter dateTimeFormatter{
+                L"{year.full}-{month.integer(2)}-{day.integer(2)}"};
             formattedDate = dateTimeFormatter.Format(date);
         }
 

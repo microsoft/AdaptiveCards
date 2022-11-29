@@ -511,10 +511,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     template <typename T>
     void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
     {
-        winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
+        ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
 
-        winrt::HttpClient httpClient{httpBaseProtocolFilter};
+        ::winrt::Windows::Web::Http::HttpClient httpClient{httpBaseProtocolFilter};
 
         // Create an ImageSource to hold the image data.  We use BitmapImage & SvgImageSource in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
@@ -529,7 +529,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
         getStreamOperation.Completed(
             [this, weakThis = this->get_weak(), imageControl](
-                winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
+                winrt::IAsyncOperationWithProgress<winrt::IInputStream, ::winrt::Windows::Web::Http::HttpProgress> const& operation,
                 winrt::AsyncStatus status) -> void
             {
                 if (status == winrt::AsyncStatus::Completed)

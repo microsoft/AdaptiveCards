@@ -11,6 +11,8 @@ using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace std::string_literals;
 
+using TextDecorations = ::winrt::Windows::UI::Text::TextDecorations;
+
 void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBlock,
                                   winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                                   winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
@@ -29,17 +31,17 @@ void StyleXamlTextBlockProperties(winrt::AdaptiveTextBlock const& adaptiveTextBl
     StyleTextElement(adaptiveTextBlock, renderContext, renderArgs, TextRunStyleParameters(), xamlTextBlock);
 }
 
-winrt::TextDecorations GetTextDecorations(TextRunStyleParameters const& styleProperties)
+TextDecorations GetTextDecorations(TextRunStyleParameters const& styleProperties)
 {
-    winrt::TextDecorations textDecorations = winrt::TextDecorations::None;
+    TextDecorations textDecorations = TextDecorations::None;
     if (styleProperties.IsStrikethrough())
     {
-        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Strikethrough);
+        textDecorations = EnumBitwiseOR(textDecorations, TextDecorations::Strikethrough);
     }
 
     if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
     {
-        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Underline);
+        textDecorations = EnumBitwiseOR(textDecorations, TextDecorations::Underline);
     }
     return textDecorations;
 }
@@ -164,7 +166,7 @@ uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
         // wrap html in <root></root> in case there's more than one toplevel element.
         winrt::hstring htmlHString = UTF8ToHString("<root>"s + htmlString + "</root>"s);
 
-        winrt::XmlDocument xmlDocument{};
+        ::winrt::Windows::Data::Xml::Dom::XmlDocument xmlDocument{};
         xmlDocument.LoadXml(htmlHString);
 
         characterLength = AddHtmlInlines(adaptiveTextElement, renderContext, renderArgs, xmlDocument, isInHyperlink, inlines);
@@ -180,7 +182,7 @@ uint32_t SetXamlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
     return characterLength;
 }
 
-static winrt::hstring GetTextFromXmlNode(winrt::IXmlNode const& node)
+static winrt::hstring GetTextFromXmlNode(IXmlNode const& node)
 {
     return node.InnerText();
 }
@@ -188,7 +190,7 @@ static winrt::hstring GetTextFromXmlNode(winrt::IXmlNode const& node)
 uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                        winrt::IXmlNode const& node,
+                        IXmlNode const& node,
                         bool isListOrdered,
                         bool isInHyperlink,
                         winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
@@ -273,7 +275,7 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 uint32_t AddLinkInline(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                        winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                        winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                       winrt::IXmlNode const& node,
+                       IXmlNode const& node,
                        bool isStrikethrough,
                        bool isItalic,
                        bool isUnderline,
@@ -335,7 +337,7 @@ uint32_t AddSingleTextInline(winrt::IAdaptiveTextElement const& adaptiveTextElem
 uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                        winrt::IXmlNode const& node,
+                        IXmlNode const& node,
                         TextRunStyleParameters const& styleParameters,
                         winrt::IVector<winrt::xaml_documents::Inline> const& inlines)
 {
@@ -409,7 +411,7 @@ uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
 uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                        winrt::IXmlNode const& node,
+                        IXmlNode const& node,
                         bool isInHyperlink,
                         winrt::IVector<winrt::xaml_documents::Inline> inlines)
 {

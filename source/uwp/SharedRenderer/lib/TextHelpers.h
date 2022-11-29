@@ -4,6 +4,8 @@
 
 #include "XamlBuilder.h"
 
+using IXmlNode = ::winrt::Windows::Data::Xml::Dom::IXmlNode;
+
 class TextRunStyleParameters
 {
 public:
@@ -31,14 +33,14 @@ private:
 uint32_t AddHtmlInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                        winrt::IXmlNode const& node,
+                        IXmlNode const& node,
                         bool isInHyperlink,
                         winrt::IVector<winrt::xaml_documents::Inline> inlines);
 
 uint32_t AddTextInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
                         winrt::render_xaml::AdaptiveRenderContext const& renderContext,
                         winrt::render_xaml::AdaptiveRenderArgs const& renderArgs,
-                        winrt::IXmlNode const& node,
+                        IXmlNode const& node,
                         TextRunStyleParameters const& styleParameters,
                         winrt::IVector<winrt::xaml_documents::Inline> const& inlines);
 
