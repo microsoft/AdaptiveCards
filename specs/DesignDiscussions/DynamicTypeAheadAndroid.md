@@ -6,7 +6,7 @@ This document covers changes to add Dynamic Type Ahead search support to Input.C
 2. SDK to host communication to fetch dynamic choices
 3. Customization icons and UI
 4. Debounce Logic
-
+   
 ### Rendering Dynamic Type Ahead
 
 We have considered two options for rendering the ChoiceSet control to support dynamic type ahead: </br>
@@ -47,12 +47,12 @@ New parameters to be send from host while rendering AC
 
 ![img](assets/TypeAhead/TypeAheadSearchHostCommunication.png)
 
-1. DynamicChoicesServiceAsync is responsible for fetching the dynamic choices asynchronously from the Host. This class makes a call to the host using IChoicesResolver to fetch dynamic choices in a background thread.
-2. Once the dynamic choices are returned by the Host, DynamicChoicesServiceAsync updated the choices on the UI thread.
-
-### Customizable icons 
-The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon will be customizable.
-Also, the UI for the 3 states which are start searching, no result and error will be customizable.
+1. The user types some text in the search text box in the new TypeAheadSearch screen. 
+2. The text change event is emitted to the text change listener present in the TypeAheadSearchActivity.
+3. To fetch the dynamic choices from the host, a call is made to the fetchDynamicChoices() method in the TypeAheadSearchViewModel.
+4. TypeAheadSearchViewModel will use DynamicChoicesService which is responsible for fetching the dynamic choices asynchronously from the Host. 
+5. DynamicChoicesService makes a call to the host using IChoicesResolver to fetch dynamic choices in a background thread.
+6. Once the dynamic choices are returned by the Host, DynamicChoicesService sends the dynamic choices to the TypeAheadSearchViewModel which updated the choices on the UI thread.
 
 ### New Interfaces and classes 
 1. IChoicesResolver method - getDynamicChoices() 
@@ -80,12 +80,6 @@ Also, the UI for the 3 states which are start searching, no result and error wil
 
 3. DynamicChoicesService - This class will make a call to host to fetch dynamic choices using IChoicesResolver on a background thread and update the resultant choices in the dropdown on an UI thread.
 
-### Debounce time
-A DebouncingTextWatcher will be added which will implement the default TextWatcher. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. The default value for this debounce time will be 250ms.  
-
-![img](assets/TypeAhead/debouce.png)
-
-
 ### Request object format to be sent to the host: 
 As the user types, the renderer will create a JSON object that includes all the properties from the Data.Query, along with what the user has typed, plus any additional options such as the current skip/count and max results to be returned. 
 
@@ -97,7 +91,79 @@ As the user types, the renderer will create a JSON object that includes all the 
 “skip”: 0 
 } 
 
+### Response object format to be sent back to SDK: 
+`HttpRequestResult<T>`
+
+We will reuse the existing HttpRequestResponse object will contain the following - 
+1. boolean m_success
+2. Exception m_exception
+3. T result
+In this case result will be an instance of List of ChoiceInput.
+
+
+Update to HttpRequestResponse class - 
+1. Replacing boolean m_success with a ResponseType.
+
+<img src="assets/TypeAhead/ResponseType.png" width="500" height="400" />
+
+
+### Customizable icons and views
+The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon etc. will be customizable.
+Also, the UI for the 3 states which are start searching, no result and error will be customizable.
+
+ITypeAheadIconParams - drawableResourceId, scaleType
+   
+   a. SearchIconParams: ITypeAheadIconParams
+   b. CrossIconParams: ITypeAheadIconParams
+
+ITypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
+
+   a. StartSearchingStateParams: ITypeAheadStateParams
+   b. NoResultStateParams: ITypeAheadStateParams
+   c. ErrorIconStateParams: ITypeAheadStateParams
+
+#### User Experience
+TypeAheadSearchViewModel - Will maintain the current state of the screen (loading, error etc) and will communicate with host to fetch dynamic choices.
+
+Type ahead search UI states - 
+
+1. StartSearching - Default state when new screen is opened and there are no static choices to be displayed
+2. Loading - Once user types something in the search box, SDK makes a call to the host to fetch the dynamic choices. During this time we show that loading state.
+3. NoResults - When SDK receives an empty list of dynamic choices from the host.
+4. Error - When SDK receives an error from the host while fetching dynamic choices.
+5. ShowingChoices - SDK receives a list of dynamic choices from the host and displays the same in the recycler view list.
+
+<img src="assets/TypeAhead/StartSearchingState.png" width="400" height="600" />
+<img src="assets/TypeAhead/loadingUX.png" width="400" height="600" />
+<img src="assets/TypeAhead/NoResultState.png" width="400" height="600" />
+<img src="assets/TypeAhead/ErrorState.png" width="400" height="600" />
+
+### Debounce time
+A DebouncingTextWatcher will be added which will implement the default TextWatcher. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. The default value for this debounce time will be 250ms.  
+
+![img](assets/TypeAhead/debouce.png)
+
 ### Host Config
+We allow a new property called 'autoCompleteChoiceSet' in the host config object that will hold all the required configurations for dynamic type ahead supported Input.Choiceset.
+
+```
+autoCompleteChoiceSet: 
+{ 
+	queryParams: 
+	{ 
+		count: 15 
+		skip: 0 
+		debounceTime: 250
+	},
+}
+```
 
 
-### User Experience 
+### Accessibility
+Providing an error message when search results are not invalid.
+Announce loading state message to the user while the search is in progress.
+Announce displayed error message to the user in case of any error.
+All the choices in the list should be accessible via keyboard.
+
+### Test Coverage
+Add samples in the SDK sample app (AC Visualizer for android) and add UTs for schema changes in the shared library.
