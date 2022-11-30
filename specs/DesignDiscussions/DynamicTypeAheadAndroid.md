@@ -34,7 +34,7 @@ choicesResolver is an implementation of the IChoicesResolver exposed by the SDK,
 New parameters to be send from host while rendering AC
 1. ActivityResultRegistry - Used while opening new activity and handling the activity result on closing
 2. IChoicesResolver - Used to fetch dynamic choices from the host
-3. TypeAheadSearchCustomIcons - Host provides custom icons (search, cross icons etc.) information though this data class
+3. TypeAheadSearchCustomUIParams - Host provides custom icons (search, cross icons etc.) information though this data class
 
 ### SDK to Host communication 
 
@@ -132,12 +132,12 @@ Type ahead search UI states -
 <img src="assets/TypeAhead/ErrorState.png" width="400" height="600" />
 
 ### Debounce time
-A DebouncingTextWatcher will be added which will implement the default TextWatcher. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. The default value for this debounce time will be 250ms.  
+A DebouncingTextWatcher will be added which will implement the default TextWatcher. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. By using coroutineScope we will have lifecycle awareness while fetching the dynamic choices and also cancel any stale fetch call while initiating a new one. The default value for this debounce time will be 250ms.  
 
 ![img](assets/TypeAhead/debouce.png)
 
 ### Host Config
-We allow a new property called 'autoCompleteChoiceSet' in the host config object that will hold all the required configurations for dynamic type ahead supported Input.Choiceset.
+We allow a new property called 'autoCompleteChoiceSet' in the host config object that will hold all the required configurations for dynamic type ahead supported Input.ChoiceSet.
 
 ```
 autoCompleteChoiceSet: 
