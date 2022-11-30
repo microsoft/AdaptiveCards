@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         try
         {
-            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+            return Helpers::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {

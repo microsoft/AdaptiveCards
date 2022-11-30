@@ -40,7 +40,9 @@
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 
-namespace XamlHelpers = ::AdaptiveCards::Rendering::Uwp::XamlHelpers;
+namespace Helpers = ::AdaptiveCards::Rendering::Uwp;
+
+namespace XamlHelpers = Helpers::XamlHelpers;
 
 #ifndef MAKE_HRESULT
 #define MAKE_HRESULT(sev, fac, code) \

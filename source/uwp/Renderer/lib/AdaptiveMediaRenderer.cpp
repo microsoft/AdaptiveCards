@@ -38,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::hstring altText = adaptiveMedia.AltText();
 
-            auto touchTargetUIElement = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::WrapInTouchTarget(
+            auto touchTargetUIElement = Helpers::ActionHelpers::WrapInTouchTarget(
                 cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element

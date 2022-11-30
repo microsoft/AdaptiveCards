@@ -102,7 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto selectAction = adaptiveContainer.SelectAction();
             auto hostConfig = renderContext.HostConfig();
 
-            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleSelectAction(
+            return Helpers::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, containerBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)

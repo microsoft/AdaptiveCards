@@ -40,7 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             bool isMultiline = adaptiveTextInput.IsMultiline();
             winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != winrt::TextInputStyle::Password;
-            textBoxParentContainer = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleInlineAction(
+            textBoxParentContainer = Helpers::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
         }
 
