@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "ImageLoadTracker.h"
 
+// TODO: we need to include SVG handling here as well
 namespace AdaptiveCards::Rendering::Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
@@ -18,10 +19,10 @@ namespace AdaptiveCards::Rendering::Uwp
         auto trackedImageDetails = winrt::make_self<TrackedImageDetails>();
 
         trackedImageDetails->imageOpenedRevoker =
-            bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageLoaded});
+            bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_BitmapImageLoaded});
 
         trackedImageDetails->imageFailedRevoker =
-            bitmapImage.ImageFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_ImageFailed});
+            bitmapImage.ImageFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_BitmapImageFailed});
 
         // Ensure we don't try and write the private data from multiple threads
         std::unique_lock lock{m_mutex};
@@ -34,6 +35,26 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
+    void ImageLoadTracker::TrackSvgImage(winrt::SvgImageSource const& svgImage)
+    {
+        auto trackedSvgImageDetails = winrt::make_self<TrackedSvgImageDetails>();
+
+        trackedSvgImageDetails->openedRevoker = svgImage.Opened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_SvgImageLoaded});
+
+        trackedSvgImageDetails->openFailedRevoker =
+            svgImage.OpenFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_SvgImageFailed});
+
+        // Ensure we don't try and write the private data from multiple threads
+        std::unique_lock lock{m_mutex};
+
+        if (m_svgEventRevokers.find(svgImage) == m_svgEventRevokers.end())
+        {
+            m_svgEventRevokers[svgImage] = trackedSvgImageDetails;
+            m_trackedImageCount++;
+            m_totalImageCount++;
+        }
+    }
+
     void ImageLoadTracker::MarkFailedLoadBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
         // Record failure
@@ -41,6 +62,15 @@ namespace AdaptiveCards::Rendering::Uwp
 
         // And then notify this image is done
         ImageLoadResultReceived(bitmapImage);
+    }
+
+    void MarkFailedLoadSvgImage(winrt::SvgImageSource const& svgImage)
+    {
+        // Record failure
+        m_hasFailure = true;
+
+        // And then notify this image is done
+        ImageLoadResultReceived(svgImage);
     }
 
     void ImageLoadTracker::AbandonOutstandingImages()
@@ -71,12 +101,22 @@ namespace AdaptiveCards::Rendering::Uwp
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_BitmapImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
 
-    void ImageLoadTracker::TrackedImage_ImageFailed(winrt::IInspectable const& sender, winrt::ExceptionRoutedEventArgs const& /*eventArgs*/)
+    void ImageLoadTracker::TrackedImage_BitmapImageFailed(winrt::IInspectable const& sender, winrt::ExceptionRoutedEventArgs const& /*eventArgs*/)
+    {
+        ImageLoadResultReceived(sender);
+    }
+
+    void ImageLoadTracker::TrackedImage_SvgImageLoaded(winrt::IInspectable const& sender, winrt::SvgImageSourceOpenedEventArgs const& /*eventArgs*/)
+    {
+        ImageLoadResultReceived(sender);
+    }
+
+    void ImageLoadTracker::TrackedImage_SvgImageFailed(winrt::IInspectable const& sender, winrt::SvgImageSourceFailedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
     }
@@ -96,6 +136,8 @@ namespace AdaptiveCards::Rendering::Uwp
             m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
     }
+
+    // TODO: need a dupe of ImageLoadResultReceived
 
     void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
     {
