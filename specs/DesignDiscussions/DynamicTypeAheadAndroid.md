@@ -1,12 +1,5 @@
 # Dynamic Type Ahead Search in Adaptive cards
 This document covers changes to add Dynamic Type Ahead search support to Input.ChoiceSet in adaptive cards in android SDK.
-
-### Overview
-1. Rendering the new dynamic type ahead control
-2. SDK to host communication to fetch dynamic choices
-3. Customization icons and UI
-4. Debounce Logic
-   
 ### Rendering Dynamic Type Ahead
 
 We have considered two options for rendering the ChoiceSet control to support dynamic type ahead: </br>
@@ -157,13 +150,11 @@ autoCompleteChoiceSet:
 	},
 }
 ```
-
-
 ### Accessibility
 Providing an error message when search results are not invalid.
 Announce loading state message to the user while the search is in progress.
 Announce displayed error message to the user in case of any error.
-All the choices in the list should be accessible via keyboard.
+Focus should go to all actionable icons/views as well as choices.
 
 ### Test Coverage
 Add samples in the SDK sample app (AC Visualizer for android) and add UTs for schema changes in the shared library.
