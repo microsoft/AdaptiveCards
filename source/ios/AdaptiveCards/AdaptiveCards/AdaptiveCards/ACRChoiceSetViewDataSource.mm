@@ -78,6 +78,17 @@ const CGFloat padding = 2.0f;
     }
 }
 
+- (NSString *)accessibilityLabel
+{
+    UIView *currentView = self.superview;
+
+    while (currentView && [currentView isKindOfClass:[UITableView class]] == NO) {
+        currentView = [currentView superview];
+    }
+
+    return currentView.accessibilityLabel;
+}
+
 @end
 
 @implementation ACRChoiceSetViewDataSource {
@@ -171,12 +182,8 @@ const CGFloat padding = 2.0f;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (!_accessibilityString) {
-        _accessibilityString = tableView.accessibilityLabel ? tableView.accessibilityLabel : @"";
-        tableView.accessibilityLabel = nil;
-    }
     cell.accessibilityTraits = cell.accessibilityTraits;
-    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@, %@", _accessibilityString, title, _isMultiChoicesAllowed ? @"check box" : @"radio button"];
+    cell.accessibilityValue = [NSString stringWithFormat:@"%@, %@", title, _isMultiChoicesAllowed ? @"check box" : @"radio button"];
     cell.accessibilityHint = NSLocalizedString(@"double tap to select", nil);
 
     NSString *elementId = [NSString stringWithCString:_choiceSetDataSource->GetId().c_str()
