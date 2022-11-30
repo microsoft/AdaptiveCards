@@ -40,6 +40,8 @@
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 
+namespace XamlHelpers = ::AdaptiveCards::Rendering::Uwp::XamlHelpers;
+
 #ifndef MAKE_HRESULT
 #define MAKE_HRESULT(sev, fac, code) \
     ((HRESULT)(((unsigned long)(sev) << 31) | ((unsigned long)(fac) << 16) | ((unsigned long)(code))))

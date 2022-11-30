@@ -8,8 +8,6 @@
 #include "LinkButton.h"
 #include "AdaptiveHostConfig.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
-
 namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 {
     winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig)

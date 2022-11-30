@@ -36,8 +36,6 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveCardRenderer::AdaptiveCardRenderer() :

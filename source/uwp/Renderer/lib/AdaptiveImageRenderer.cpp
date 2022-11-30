@@ -28,9 +28,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                                       cardElement.ElementTypeString(),
-                                                                                       ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
     }
@@ -123,8 +121,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 winrt::Grid imageGrid{};
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
+                XamlHelpers::AppendXamlElementToPanel(backgroundEllipse, imageGrid);
+                XamlHelpers::AppendXamlElementToPanel(ellipse, imageGrid);
 
                 frameworkElement = imageGrid;
             }
@@ -255,7 +253,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         frameworkElement.VerticalAlignment(winrt::VerticalAlignment::Top);
-        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
 
         auto selectAction = adaptiveImage.SelectAction();
 
@@ -263,12 +261,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::AutomationProperties::SetName(frameworkElement, altText);
 
-        return ActionHelpers::HandleSelectAction(adaptiveCardElement,
-                                                 selectAction,
-                                                 renderContext,
-                                                 frameworkElement,
-                                                 ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
-                                                 true);
+        return ActionHelpers::HandleSelectAction(
+            adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
     template<typename T>
@@ -524,17 +518,14 @@ namespace AdaptiveCards::Rendering::Uwp
                                 winrt::FrameworkElement k{nullptr};
                                 winrt::BitmapSource as{nullptr};
 
-                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse,
-                                                                                               lambdaParentElement,
-                                                                                               lamdaImageSourceAsBitmap,
-                                                                                               isVisible);
+                                XamlHelpers::SetAutoImageSize(ellipse, lambdaParentElement, lamdaImageSourceAsBitmap, isVisible);
                             }
                         }
                     });
             }
             else
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(ellipse, parentElement, imageSourceAsBitmap, isVisible);
+                XamlHelpers::SetAutoImageSize(ellipse, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
@@ -574,17 +565,14 @@ namespace AdaptiveCards::Rendering::Uwp
                         {
                             if (const auto lambdaParentElement = weakParent.get())
                             {
-                                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
-                                                                                               lambdaParentElement,
-                                                                                               imageSourceAsBitmapSource,
-                                                                                               isVisible);
+                                XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement, lambdaParentElement, imageSourceAsBitmapSource, isVisible);
                             }
                         }
                     });
             }
             else
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
+                XamlHelpers::SetAutoImageSize(xamlImage, parentElement, imageSourceAsBitmapSource, isVisible);
             }
         }
     }

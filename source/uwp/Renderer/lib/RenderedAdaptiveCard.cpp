@@ -102,9 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 if (auto cardElementAsColumn = cardElement.try_as<winrt::AdaptiveColumn>())
                 {
                     auto columnDefinition = elementTagContent.ColumnDefinition();
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(cardElementAsColumn,
-                                                                                    (visibilityToSet == winrt::Visibility::Visible),
-                                                                                    columnDefinition);
+                    XamlHelpers::HandleColumnWidth(cardElementAsColumn, (visibilityToSet == winrt::Visibility::Visible), columnDefinition);
                 }
             }
         }
@@ -113,7 +111,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (parentPanel)
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
+                XamlHelpers::SetSeparatorVisibility(parentPanel);
             }
         }
     }

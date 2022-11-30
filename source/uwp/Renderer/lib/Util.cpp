@@ -4,7 +4,6 @@
 
 #include <regex>
 
-#include "XamlHelpers.h"
 #include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"

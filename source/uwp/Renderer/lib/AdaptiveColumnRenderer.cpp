@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             }
 
             winrt::ContainerStyle containerStyle =
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleStylingAndPadding(adaptiveColumn, columnBorder, renderContext, renderArgs);
+                XamlHelpers::HandleStylingAndPadding(adaptiveColumn, columnBorder, renderContext, renderArgs);
 
             auto parentElement = renderArgs.ParentElement();
 
@@ -65,12 +65,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::VerticalContentAlignment verticalContentAlignment =
                 GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel, verticalContentAlignment);
+            XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel, verticalContentAlignment);
 
             // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
             columnPanel.VerticalAlignment(winrt::VerticalAlignment::Stretch);
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanel);
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanel);
 
             uint32_t columnMinHeight = adaptiveColumn.MinHeight();
 
@@ -89,12 +89,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (IsBackgroundImageValid(backgroundImage))
             {
                 winrt::Grid rootElement{};
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
+                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
 
                 auto columnHeightType = cardElement.Height();
 
                 // Add columnBorder to rootElement
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(columnBorder, rootElement, columnHeightType);
+                XamlHelpers::AppendXamlElementToPanel(columnBorder, rootElement, columnHeightType);
 
                 columnAsUIElement = rootElement;
             }
@@ -106,12 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto hostConfig = renderContext.HostConfig();
 
             auto columnControl = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::HandleSelectAction(
-                cardElement,
-                selectAction,
-                renderContext,
-                columnAsUIElement,
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig),
-                false);
+                cardElement, selectAction, renderContext, columnAsUIElement, XamlHelpers::SupportsInteractivity(hostConfig), false);
 
             return columnControl;
         }
@@ -123,9 +118,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 throw ex;
             }
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
     }
