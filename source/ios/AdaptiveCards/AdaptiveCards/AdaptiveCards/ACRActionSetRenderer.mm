@@ -194,7 +194,7 @@
     [superview insertArrangedSubview:containingView atIndex:stackIndex];
 
     superview.accessibilityElements = [superview.accessibilityElements arrayByAddingObjectsFromArray:childview.arrangedSubviews];
-    
+
     return containingView;
 }
 
