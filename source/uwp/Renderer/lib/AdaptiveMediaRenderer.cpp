@@ -8,7 +8,7 @@
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::MediaHelpers;
+using namespace Helpers::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
