@@ -15,13 +15,13 @@ namespace AdaptiveCards.Test
         public void TestThatInputsRequireId()
         {
             var json = @"{
-	""type"": ""AdaptiveCard"",
-	""version"": ""1.0"",
-	""body"": [
-		{
-			""type"": ""Input.Text""
-		}
-	]
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Input.Text""
+    }
+  ]
 }";
 
             var ex = Assert.ThrowsException<AdaptiveSerializationException>(() =>

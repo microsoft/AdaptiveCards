@@ -222,7 +222,7 @@ uint32_t AddListInlines(winrt::IAdaptiveTextElement const& adaptiveTextElement,
         catch (const std::out_of_range&)
         {
             // If stoul throws out_of_range, start the numbered list at 1.
-			iteration = 1;
+            iteration = 1;
         }
     }
 

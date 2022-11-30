@@ -47,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto [inputLayout, validationBorder] = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleInputLayoutAndValidation(
                 adaptiveTimeInput, timePicker, !max.empty() || !min.empty(), renderContext);
-				
+
             auto input = winrt::make_self<winrt::TimeInputValue>(adaptiveTimeInput, timePicker, validationBorder);
             renderContext.AddInputValue(*input, renderArgs);
 
