@@ -176,11 +176,7 @@ Type ahead search UI states -
 4. Error - When SDK receives an error from the host while fetching dynamic choices.
 5. DisplayingResults - SDK receives a list of dynamic choices from the host and displays the same in the recycler view list.
 
-<img src="assets/DynamicTypeahead/zeroState.png" width="170" height="380" />
-<img src="assets/DynamicTypeahead/searchInProgress.png" width="170" height="380" />
-<img src="assets/DynamicTypeahead/offlineState.png" width="170" height="380" />
-<img src="assets/DynamicTypeahead/NoResults.png" width="170" height="380" />
-<img src="assets/DynamicTypeahead/DisplayingResults.png" width="170" height="380" />
+<img src="assets/DynamicTypeahead/zeroState.png" width="170" height="380" /> <img src="assets/DynamicTypeahead/searchInProgress.png" width="170" height="380" /> <img src="assets/DynamicTypeahead/offlineState.png" width="170" height="380" /> <img src="assets/DynamicTypeahead/NoResults.png" width="170" height="380" /> <img src="assets/DynamicTypeahead/DisplayingResults.png" width="170" height="380" />
 
 ### Host Config
 
