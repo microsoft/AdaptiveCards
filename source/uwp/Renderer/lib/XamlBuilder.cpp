@@ -13,7 +13,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     XamlBuilder::XamlBuilder()
     {
-        m_imageLoadTracker = winrt::make_self<::AdaptiveCards::Rendering::Uwp::ImageLoadTracker>();
+        m_imageLoadTracker = winrt::make_self<ImageLoadTracker>();
         m_imageLoadTracker->AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
     }
 

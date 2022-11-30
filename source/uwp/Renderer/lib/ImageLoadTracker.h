@@ -20,8 +20,8 @@ namespace AdaptiveCards::Rendering::Uwp
         void MarkFailedLoadBitmapImage(winrt::BitmapImage const& bitmapImage);
 
         void AbandonOutstandingImages();
-        void AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener);
-        void RemoveListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener);
+        void AddListener(IImageLoadTrackerListener* listener);
+        void RemoveListener(IImageLoadTrackerListener* listener);
         int GetTotalImagesTracked();
 
     private:
@@ -30,7 +30,7 @@ namespace AdaptiveCards::Rendering::Uwp
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
         std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
-        std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
+        std::set<IImageLoadTrackerListener*> m_listeners;
 
         void TrackedImage_ImageLoaded(winrt::IInspectable const& sender,
                                       winrt::RoutedEventArgs const& eventArgs);

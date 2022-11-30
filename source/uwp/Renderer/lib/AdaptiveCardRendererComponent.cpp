@@ -46,8 +46,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
         m_xamlBuilder(winrt::make_self<Helpers::XamlBuilder>())
     {
-        ::AdaptiveCards::Rendering::Uwp::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
-        ::AdaptiveCards::Rendering::Uwp::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
+        Helpers::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
+        Helpers::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
     }

@@ -25,8 +25,8 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                      XamlBuilder* xamlBuilder,
                                                                      winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
 
-        void AddListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
-        void RemoveListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
+        void AddListener(IXamlBuilderListener* listener);
+        void RemoveListener(IXamlBuilderListener* listener);
         void SetFixedDimensions(uint32_t width, uint32_t height) noexcept;
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
