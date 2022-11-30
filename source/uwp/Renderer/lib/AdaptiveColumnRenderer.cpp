@@ -51,8 +51,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto childItems = adaptiveColumn.Items();
 
-            ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
-                childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
+            Helpers::XamlBuilder::BuildPanelChildren(childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)

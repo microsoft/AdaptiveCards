@@ -62,7 +62,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto parentElement = renderArgs.ParentElement();
 
             auto childItems = adaptiveContainer.Items();
-            ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildPanelChildren(
+            Helpers::XamlBuilder::BuildPanelChildren(
                 childItems, containerPanel.as<winrt::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children

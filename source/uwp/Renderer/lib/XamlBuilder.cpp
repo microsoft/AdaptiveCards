@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "XamlBuilder.h"
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveRenderArgs.h"
 #include "ActionHelpers.h"

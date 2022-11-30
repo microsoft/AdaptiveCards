@@ -44,7 +44,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_featureRegistration(winrt::make<implementation::AdaptiveFeatureRegistration>()),
         m_hostConfig(winrt::make<implementation::AdaptiveHostConfig>()),
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
-        m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::Uwp::XamlBuilder>())
+        m_xamlBuilder(winrt::make_self<Helpers::XamlBuilder>())
     {
         ::AdaptiveCards::Rendering::Uwp::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
         ::AdaptiveCards::Rendering::Uwp::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
@@ -105,9 +105,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 renderContext->LinkCardToParent(adaptiveCard, nullptr);
                 auto xamlTreeRoot =
-                    ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
-                                                                                                *renderContext,
-                                                                                                m_xamlBuilder.get());
+                    Helpers::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, *renderContext, m_xamlBuilder.get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
             }
             catch (...)
