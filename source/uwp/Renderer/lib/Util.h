@@ -131,16 +131,13 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveHostConfig co
                                                     bool isSubtle,
                                                     bool highlight);
 
-winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style,
-   winrt::AdaptiveHostConfig const& hostConfig);
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(winrt::ContainerStyle const& style, winrt::AdaptiveHostConfig const& hostConfig);
 
-winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style,
-                                                  winrt::AdaptiveHostConfig const& hostConfig);
+winrt::Windows::UI::Color GetBorderColorFromStyle(winrt::ContainerStyle style, winrt::AdaptiveHostConfig const& hostConfig);
 
-winrt::TextHighlighter
-GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
-               winrt::AdaptiveRenderContext const& renderContext,
-               winrt::AdaptiveRenderArgs const& renderArgs);
+winrt::TextHighlighter GetHighlighter(winrt::IAdaptiveTextElement const& adaptiveTextElement,
+                                      winrt::AdaptiveRenderContext const& renderContext,
+                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
 winrt::hstring GetFontFamilyFromFontType(winrt::AdaptiveHostConfig const& hostConfig, winrt::FontType const& fontType);
 
@@ -175,7 +172,6 @@ struct ShowCardInfo
     winrt::UIElement cardUIElement{nullptr};
 };
 
-
 struct SeparatorParemeters
 {
     winrt::Windows::UI::Color color{0};
@@ -207,16 +203,13 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig,
-                                                 winrt::hstring const& urlString);
+winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString);
 
 winrt::Windows::UI::Color GenerateLHoverColor(winrt::Windows::UI::Color const& originalColor);
 
 winrt::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
-winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year,
-                                                                                                  unsigned int month,
-                                                                                                  unsigned int day);
+winrt::IReference<winrt::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day);
 
 winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& textElement);
 

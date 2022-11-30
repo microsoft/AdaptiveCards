@@ -39,11 +39,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        static Uwp::AdaptiveHostConfigParseResult FromJsonString(hstring const& hostConfigJson);
-        static Uwp::AdaptiveHostConfigParseResult FromJson(winrt::JsonObject const& hostConfigJson);
+        static winrt::AdaptiveHostConfigParseResult FromJsonString(hstring const& hostConfigJson);
+        static winrt::AdaptiveHostConfigParseResult FromJson(winrt::JsonObject const& hostConfigJson);
 
     private:
-        static Uwp::AdaptiveHostConfigParseResult _FromJsonString(const std::string& jsonString);
+        static winrt::AdaptiveHostConfigParseResult _FromJsonString(const std::string& jsonString);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
