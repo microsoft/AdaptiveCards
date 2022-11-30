@@ -3476,6 +3476,9 @@ export class TextInput extends Input {
             input.maxLength = this.maxLength;
         }
 
+		if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+			input.style.background = "transparent";
+		}
         input.oninput = () => {
             this.valueChanged();
         };
