@@ -1,4 +1,4 @@
-# Dynamic Type Ahead Search in Adaptive cards
+# [Android] Dynamic Type Ahead Search in Adaptive cards
 This document covers changes to add Dynamic Type Ahead search support to Input.ChoiceSet in adaptive cards in android SDK.
 
 ### Prerequisite 
@@ -21,9 +21,9 @@ Cons:
 2. Additional effort in order to support dynamic type ahead as we can not reuse existing UI components from filtered style view. 
 3. We will not have consistent experience for both static (inline experience) and dynamic type ahead feature in the SDK. We will have to update the behavior for static filtered choiceSet to new screen separately.
 
-#### Rendering of ChoiceSet input control in new screen to support dynamic type ahead search experience 
-
 ![img](assets/TypeAhead/newScreenUX.png)
+
+#### Rendering of ChoiceSet input control in new screen to support dynamic type ahead search experience 
 
 ![img](assets/TypeAhead/TypeAheadSearchRendering.png)
 
@@ -51,30 +51,6 @@ New parameters to be send from host while rendering AC
 4. TypeAheadSearchViewModel will use DynamicChoicesService which is responsible for fetching the dynamic choices asynchronously from the Host. 
 5. DynamicChoicesService makes a call to the host using IChoicesResolver to fetch dynamic choices in a background thread.
 6. Once the dynamic choices are returned by the Host, DynamicChoicesService sends the dynamic choices to the TypeAheadSearchViewModel which updated the choices on the UI thread.
-
-### New Interfaces and classes 
-1. IChoicesResolver method - getDynamicChoices() 
-   params -  type: String, dataset: String, value: String, count: Int?, skip: Int?
-   returns - HttpRequestResult<List<ChoiceInput>>
-
-   ![img](assets/TypeAhead/choicesResolver.png)
-
-2. TypeAheadSearchCustomUIParams - Host provides customized icons object with default values
-   
-   ![img](assets/TypeAhead/TypeAheadSearchCustomUIParams.png)
-   
-   IconParams - drawableResourceId, scaleType, contentDescription </br>
-
-   ![img](assets/TypeAhead/ITypeAheadIconParams.png)
-
-   TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
-
-   ![img](assets/TypeAhead/ITypeAheadStateParams.png)
-
-   ProgressBarParams - contentDescription, color
-   ![img](assets/TypeAhead/progressBarParams.png)
-
-3. DynamicChoicesService - This class will make a call to host to fetch dynamic choices using IChoicesResolver on a background thread and update the resultant choices in the dropdown on an UI thread.
 
 ### Request object format to be sent to the host: 
 As the user types, the renderer will create a JSON object that includes all the properties from the Data.Query, along with what the user has typed, plus any additional options such as the current skip/count and max results to be returned. 
@@ -109,23 +85,6 @@ ResponseType will be a StringDef with 3 possible values - SUCCESS, ERROR, NO_INT
 
 <img src="assets/TypeAhead/HttpRequestResponse.png" />
 
-### Customizable icons and views
-The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon etc. will be customizable.
-Also, the UI for the 3 states which are start searching, no result and error will be customizable.
-
-1. IconParams - drawableResourceId, scaleType, contentDescription
-   
-   a. SearchIconParams: IconParams
-   b. CrossIconParams: IconParams
-
-2. TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
-
-   a. StartSearchingStateParams: TypeAheadStateParams
-   b. NoResultStateParams: TypeAheadStateParams
-   c. ErrorIconStateParams: TypeAheadStateParams
-
-3. ProgressBarParams - contentDescription, color
-
 ### User Experience
 TypeAheadSearchViewModel - Will maintain the current state of the screen (loading, error etc) and will communicate with host to fetch dynamic choices.
 
@@ -142,12 +101,53 @@ Type ahead search UI states -
 <img src="assets/TypeAhead/NoResultState.png" width="400" height="600" />
 <img src="assets/TypeAhead/ErrorState.png" width="400" height="600" />
 
+### Customizable icons and views
+The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon etc. will be customizable.
+Also, the UI for the 3 states which are start searching, no result and error will be customizable.
+
+1. IconParams - drawableResourceId, scaleType, contentDescription
+   
+   a. SearchIconParams: IconParams
+   b. CrossIconParams: IconParams
+
+2. TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
+
+   a. StartSearchingStateParams: TypeAheadStateParams
+   b. NoResultStateParams: TypeAheadStateParams
+   c. ErrorIconStateParams: TypeAheadStateParams
+
+3. ProgressBarParams - contentDescription, color
+   
+### New Interfaces and classes 
+1. IChoicesResolver method - getDynamicChoices() 
+   params -  type: String, dataset: String, value: String, count: Int?, skip: Int?
+   returns - HttpRequestResult<List<ChoiceInput>>
+
+   ![img](assets/TypeAhead/choicesResolver.png)
+
+2. TypeAheadSearchCustomUIParams - Host provides customized icons object with default values
+   
+   ![img](assets/TypeAhead/TypeAheadSearchCustomUIParams.png)
+   
+   IconParams - drawableResourceId, scaleType, contentDescription </br>
+
+   ![img](assets/TypeAhead/ITypeAheadIconParams.png)
+
+   TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
+
+   ![img](assets/TypeAhead/ITypeAheadStateParams.png)
+
+   ProgressBarParams - contentDescription, color
+   ![img](assets/TypeAhead/progressBarParams.png)
+
+3. DynamicChoicesService - This class will make a call to host to fetch dynamic choices using IChoicesResolver on a background thread and update the resultant choices in the dropdown on an UI thread.
+
 ### Debounce time
 1. A DebouncingTextWatcher will be added which will implement the default TextWatcher. 
 2. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. By using coroutineScope we will have lifecycle awareness while fetching the dynamic choices which means if the new screen is closed, we will cancel the ongoing fetch call to prevent any memory leaks.
 3. Also we can cancel any stale fetch call (fetch dynamic choices) while initiating a new one.  
 4. At a given time, we will only be waiting for one debounced fetch call to be completed. 
-5. The default value for this debounce time will be 250ms. 
+5. The default value for this debounce time will be 250ms. This is configurable for the host, host can choose to turn it off and gave a debounce logic on the host.
 
 ![img](assets/TypeAhead/debouce.png)
 
