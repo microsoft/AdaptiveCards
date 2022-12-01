@@ -1,5 +1,8 @@
 # Dynamic Type Ahead Search in Adaptive cards
 This document covers changes to add Dynamic Type Ahead search support to Input.ChoiceSet in adaptive cards in android SDK.
+
+### Prerequisite 
+[Link to feature document](https://github.com/microsoft/AdaptiveCards/blob/dipja/dynamic-type-ahead-doc/specs/DesignDiscussions/DynamicTypeAhead.md)
 ### Rendering Dynamic Type Ahead
 
 We have considered two options for rendering the ChoiceSet control to support dynamic type ahead: </br>
@@ -9,12 +12,14 @@ We have considered two options for rendering the ChoiceSet control to support dy
 Here are a few pros and cons of rendering of ChoiceSet input control in a new screen to support dynamic type ahead search experience: </br>
 
 Pros:
-Better and richer experience for the host in terms of choice selection, scrollable list and error messages state. This is the preferred by hosts like Teams and Outlook.
-Hosts like MS Teams will not have to override the ChoiceSet component because teams uses full screen experience for the dynamic type ahead search and those hosts can use the default rendering from the SDK.
+1. Better and richer experience for the host in terms of choice selection, scrollable list and error messages state. 
+2. New screen experience is the preferred by hosts like Teams and Outlook.
+3. Hosts like MS Teams will not need to override the ChoiceSet component because they need full screen experience for the dynamic type ahead search. Thus the hosts can use the default rendering from the SDK which saves time to onboard to new version of the SDK.
 
 Cons:
-We can not extend the existing functionality of filtered style view (inline static type ahead experience).
-Additional effort in order to support dynamic type ahead as we can not reuse existing UI components from filtered style view. We will not have consistent experience for both static (inline experience) and dynamic type ahead feature in the SDK.
+1. We cannot extend the existing functionality of filtered style view (inline static type ahead experience).
+2. Additional effort in order to support dynamic type ahead as we can not reuse existing UI components from filtered style view. 
+3. We will not have consistent experience for both static (inline experience) and dynamic type ahead feature in the SDK. We will have to update the behavior for static filtered choiceSet to new screen separately.
 
 #### Rendering of ChoiceSet input control in new screen to support dynamic type ahead search experience 
 
@@ -55,67 +60,73 @@ New parameters to be send from host while rendering AC
    ![img](assets/TypeAhead/choicesResolver.png)
 
 2. TypeAheadSearchCustomUIParams - Host provides customized icons object with default values
-   Contains the following:-
-   ITypeAheadIconParams - drawableResourceId, scaleType
    
-   a. SearchIconParams: ITypeAheadIconParams
-   b. CrossIconParams: ITypeAheadIconParams
+   ![img](assets/TypeAhead/TypeAheadSearchCustomUIParams.png)
+   
+   IconParams - drawableResourceId, scaleType, contentDescription </br>
 
    ![img](assets/TypeAhead/ITypeAheadIconParams.png)
 
-   ITypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
-
-   c. StartSearchingStateParams: ITypeAheadStateParams
-   d. NoResultStateParams: ITypeAheadStateParams
-   e. ErrorIconStateParams: ITypeAheadStateParams
+   TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
 
    ![img](assets/TypeAhead/ITypeAheadStateParams.png)
+
+   ProgressBarParams - contentDescription, color
+   ![img](assets/TypeAhead/progressBarParams.png)
 
 3. DynamicChoicesService - This class will make a call to host to fetch dynamic choices using IChoicesResolver on a background thread and update the resultant choices in the dropdown on an UI thread.
 
 ### Request object format to be sent to the host: 
 As the user types, the renderer will create a JSON object that includes all the properties from the Data.Query, along with what the user has typed, plus any additional options such as the current skip/count and max results to be returned. 
 
+![img](assets/TypeAhead/searchRequest.png)
+
+Sample Request
+```
 { 
 “type”: “Data.Query”, 
-“dataset”: “graph.microsoft.com/users”, 
-“value”: “surya”, 
+“dataset”: “companies”, 
+“value”: “Microsoft”, 
 “count”: 25, 
 “skip”: 0 
 } 
+```
 
 ### Response object format to be sent back to SDK: 
 `HttpRequestResult<T>`
 
 We will reuse the existing HttpRequestResponse object will contain the following - 
-1. boolean m_success
-2. Exception m_exception
+1. boolean isSuccess
+2. Exception exception
 3. T result
 In this case result will be an instance of List of ChoiceInput.
 
+<img src="assets/TypeAhead/HttpRequestResponse.png" />
 
 Update to HttpRequestResponse class - 
-1. Replacing boolean m_success with a ResponseType.
+1. Replacing boolean isSuccess with a ResponseType.
+ResponseType will be a StringDef with 3 possible values - SUCCESS, ERROR, NO_INTERNET_CONNECTION
 
-<img src="assets/TypeAhead/ResponseType.png" width="500" height="400" />
-
+<img src="assets/TypeAhead/HttpRequestResponse.png" />
 
 ### Customizable icons and views
 The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon etc. will be customizable.
 Also, the UI for the 3 states which are start searching, no result and error will be customizable.
 
-ITypeAheadIconParams - drawableResourceId, scaleType
+1. IconParams - drawableResourceId, scaleType, contentDescription
    
-   a. SearchIconParams: ITypeAheadIconParams
-   b. CrossIconParams: ITypeAheadIconParams
+   a. SearchIconParams: IconParams
+   b. CrossIconParams: IconParams
 
-ITypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
+2. TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
 
-   a. StartSearchingStateParams: ITypeAheadStateParams
-   b. NoResultStateParams: ITypeAheadStateParams
-   c. ErrorIconStateParams: ITypeAheadStateParams
+   a. StartSearchingStateParams: TypeAheadStateParams
+   b. NoResultStateParams: TypeAheadStateParams
+   c. ErrorIconStateParams: TypeAheadStateParams
 
-#### User Experience
+3. ProgressBarParams - contentDescription, color
+
+### User Experience
 TypeAheadSearchViewModel - Will maintain the current state of the screen (loading, error etc) and will communicate with host to fetch dynamic choices.
 
 Type ahead search UI states - 
@@ -132,7 +143,11 @@ Type ahead search UI states -
 <img src="assets/TypeAhead/ErrorState.png" width="400" height="600" />
 
 ### Debounce time
-A DebouncingTextWatcher will be added which will implement the default TextWatcher. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. By using coroutineScope we will have lifecycle awareness while fetching the dynamic choices and also cancel any stale fetch call while initiating a new one. The default value for this debounce time will be 250ms.  
+1. A DebouncingTextWatcher will be added which will implement the default TextWatcher. 
+2. We will use coroutineScope to add a debounce time before calling the host to fetch dynamic choices. By using coroutineScope we will have lifecycle awareness while fetching the dynamic choices which means if the new screen is closed, we will cancel the ongoing fetch call to prevent any memory leaks.
+3. Also we can cancel any stale fetch call (fetch dynamic choices) while initiating a new one.  
+4. At a given time, we will only be waiting for one debounced fetch call to be completed. 
+5. The default value for this debounce time will be 250ms. 
 
 ![img](assets/TypeAhead/debouce.png)
 
@@ -145,16 +160,15 @@ autoCompleteChoiceSet:
 	queryParams: 
 	{ 
 		count: 15 
-		skip: 0 
 		debounceTime: 250
 	},
 }
 ```
 ### Accessibility
-Providing an error message when search results are not invalid.
-Announce loading state message to the user while the search is in progress.
-Announce displayed error message to the user in case of any error.
-Focus should go to all actionable icons/views as well as choices.
+1. Providing an error message when search results are not invalid.
+2. Announce loading state message to the user while the search is in progress.
+3. Announce displayed error message to the user in case of any error.
+4. Focus should go to all actionable icons/views as well as choices.
 
 ### Test Coverage
-Add samples in the SDK sample app (AC Visualizer for android) and add UTs for schema changes in the shared library.
+Add unit tests in the SDK sample app (AC Visualizer for android) and UI tests as well.
