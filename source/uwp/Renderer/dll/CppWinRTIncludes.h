@@ -54,6 +54,9 @@ namespace winrt
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
     namespace AdaptiveCards::Rendering::Uwp{}
     using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
+
+    // render_xaml namespace alias used to differentiate in cases where a type exists in both
+    // the renderer and the object model (ie. ActionMode)
     namespace render_xaml = ::winrt::AdaptiveCards::Rendering::Uwp;
 
     namespace AdaptiveCards::Rendering::Uwp::implementation{}
