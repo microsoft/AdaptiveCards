@@ -5,9 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
+#import "ACRChoiceSetViewDataSource.h"
 #import "ACOBundle.h"
 #import "ACRInputLabelView.h"
+#import "ACRInputTableView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -144,7 +145,7 @@ const CGFloat padding = 2.0f;
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPathInternal:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
 
@@ -171,17 +172,26 @@ const CGFloat padding = 2.0f;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (!_accessibilityString) {
-        _accessibilityString = tableView.accessibilityLabel;
-        tableView.accessibilityLabel = nil;
-    }
-    cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
+    return cell;
+}
+
+- (void)configureCellForAccsessibility:(UITableViewCell *)cell tableView:(UITableView *)tableView
+{
+    NSString *accessibilityLabel = ([tableView isKindOfClass:[ACRInputTableView class]]) ? ((ACRInputTableView *)tableView).adaptiveAccessibilityLabel : tableView.accessibilityLabel;
+    _accessibilityString = accessibilityLabel ? accessibilityLabel : @"";
+    cell.accessibilityTraits = cell.accessibilityTraits;
+    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@, %@", _accessibilityString, cell.textLabel.text, _isMultiChoicesAllowed ? @"check box" : @"radio button"];
+    cell.accessibilityHint = NSLocalizedString(@"double tap to select", nil);
 
     NSString *elementId = [NSString stringWithCString:_choiceSetDataSource->GetId().c_str()
                                              encoding:NSUTF8StringEncoding];
-    cell.textLabel.accessibilityIdentifier = [NSString stringWithFormat:@"%@, %@", elementId, title];
+    cell.textLabel.accessibilityIdentifier = [NSString stringWithFormat:@"%@, %@", elementId, cell.textLabel.text];
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPathInternal:indexPath];
+    [self configureCellForAccsessibility:cell tableView:tableView];
     return cell;
 }
 
@@ -239,8 +249,7 @@ const CGFloat padding = 2.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPathInternal:indexPath];
     NSString *textString = nil;
 
     if (!_shouldWrap) {

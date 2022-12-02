@@ -7,8 +7,8 @@
 //
 
 #import "AdaptiveFileBrowserSource.h"
-#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/Fact.h>
 #import <AdaptiveCards/FactSet.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
@@ -28,6 +28,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
     __weak UIView *_adaptiveView;
     __weak id<ACVTableViewControllerFetchDataDelegate> _tableFetchDataDelegate;
     ACOHostConfig *_hostConfig;
+    NSSet *_restrictedPaths;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -46,6 +47,14 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
             _hostConfig = hostconfigParseResult.config;
         }
 
+#if APPRELEASE
+        // the most of cards below v1.2 don't have updated accssibility features, but these cards do serve well as visualization test during bug bash
+        // so instead of removing them, excluded these cards when built for release.
+        _restrictedPaths = [NSSet setWithObjects:@"ConsolidatedElementSamples", @"v1.0", @"v1.1", @"HostConfig", @"Templates", @"Elements", @"Tests", nil];
+
+#else
+        _restrictedPaths = [NSSet setWithObjects:@"ConsolidatedElementSamples", @"HostConfig", @"Templates", nil];
+#endif
         [self updateAdaptiveViewWithNewPath:_rootPath];
     }
     return self;
@@ -95,7 +104,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
         BOOL isDirectory = NO;
         NSString *resourcePath = [parentDir stringByAppendingPathComponent:path];
         if ([_fileManager fileExistsAtPath:resourcePath isDirectory:&isDirectory]) {
-            if (isDirectory && ![[_fileManager displayNameAtPath:path] isEqualToString:@"HostConfig"]) {
+            if (isDirectory && ![_restrictedPaths containsObject:[_fileManager displayNameAtPath:path]]) {
                 actions.push_back(buildAction(resourcePath.UTF8String, [_fileManager displayNameAtPath:path].UTF8String));
             } else if ([[resourcePath pathExtension] isEqualToString:@"json"]) {
                 [filesList addObject:resourcePath];
