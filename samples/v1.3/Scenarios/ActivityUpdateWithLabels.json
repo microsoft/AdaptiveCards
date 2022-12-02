@@ -90,7 +90,7 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
-						"title": "OK"
+						"title": "Send"
 					}
 				]
 			}
