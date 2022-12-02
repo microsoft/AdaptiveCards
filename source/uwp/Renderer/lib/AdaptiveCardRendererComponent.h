@@ -13,8 +13,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     private:
         winrt::ResourceDictionary m_overrideDictionary;
-        Uwp::AdaptiveHostConfig m_hostConfig;
-        Uwp::AdaptiveFeatureRegistration m_featureRegistration;
+        winrt::AdaptiveHostConfig m_hostConfig;
+        winrt::AdaptiveFeatureRegistration m_featureRegistration;
         winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         uint32_t m_desiredWidth = 0;
@@ -43,14 +43,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             UpdateActionSentimentResourceDictionary();
         }
 
-        Uwp::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
+        winrt::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
 
         void FeatureRegistration(winrt::AdaptiveFeatureRegistration const& featureRegistration)
         {
             m_featureRegistration = featureRegistration;
         }
 
-        Uwp::AdaptiveFeatureRegistration FeatureRegistration();
+        winrt::AdaptiveFeatureRegistration FeatureRegistration();
 
         void SetFixedDimensions(uint32_t desiredWidth, uint32_t desiredHeight);
         void ResetFixedDimensions() { m_explicitDimensions = false; };
@@ -70,20 +70,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             return GetHostConfig()->OverflowButtonAccessibilityText = text;
         }
 
-        Uwp::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
-        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
-        Uwp::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
+        winrt::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
+        winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
+        winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
 
-        Uwp::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
-        Uwp::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
+        winrt::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
+        winrt::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
 
         winrt::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
         winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
-        winrt::ResourceDictionary GetActionSentimentResourceDictionary()
-        {
-            return m_actionSentimentResourceDictionary;
-        }
+        winrt::ResourceDictionary GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
 
         auto ResourceResolvers() { return m_resourceResolvers; }
 
@@ -96,7 +93,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::ResourceDictionary m_defaultResourceDictionary;
         winrt::ResourceDictionary m_mergedResourceDictionary;
         winrt::ResourceDictionary m_actionSentimentResourceDictionary;
-        Uwp::AdaptiveCardResourceResolvers m_resourceResolvers;
+        winrt::AdaptiveCardResourceResolvers m_resourceResolvers;
         winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };

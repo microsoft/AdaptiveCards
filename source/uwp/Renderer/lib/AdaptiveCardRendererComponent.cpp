@@ -54,7 +54,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         UpdateActionSentimentResourceDictionary();
     }
 
-    Uwp::AdaptiveFeatureRegistration AdaptiveCardRenderer::FeatureRegistration()
+    winrt::AdaptiveFeatureRegistration AdaptiveCardRenderer::FeatureRegistration()
     {
         if (!m_featureRegistration)
         {
@@ -70,14 +70,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_desiredHeight = desiredHeight;
     }
 
-    bool AdaptiveCardRenderer::OverflowMaxActions() { return GetHostConfig()->OverflowMaxActions; }
+    bool AdaptiveCardRenderer::OverflowMaxActions()
+    {
+        return GetHostConfig()->OverflowMaxActions;
+    }
 
     void AdaptiveCardRenderer::OverflowMaxActions(bool overflowMaxActions)
     {
         GetHostConfig()->OverflowMaxActions = overflowMaxActions;
     }
 
-    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
+    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
     {
         auto renderedCard = winrt::make_self<implementation::RenderedAdaptiveCard>();
         renderedCard->SetOriginatingCard(adaptiveCard);
@@ -120,7 +123,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         return *renderedCard;
     }
 
-    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson)
+    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson)
     {
         auto adaptiveCardParseResult = winrt::AdaptiveCard::FromJsonString(adaptiveJson);
         if (auto parsedCard = adaptiveCardParseResult.AdaptiveCard())
@@ -141,7 +144,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    Uwp::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson)
+    winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson)
     {
         return RenderAdaptiveCardFromJsonString(JsonObjectToHString(adaptiveJson));
     }
