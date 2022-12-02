@@ -101,12 +101,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         inputScope.Names().Append(inputScopeName);
 
         textBox.InputScope(inputScope);
-		
+
         auto [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
-		renderContext.AddInputValue(*inputValue, renderArgs);
+        renderContext.AddInputValue(*inputValue, renderArgs);
 
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;

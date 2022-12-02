@@ -35,11 +35,11 @@ namespace AdaptiveCards
             /// An input was marked as requiring input, but didn't have a label.
             /// </summary>
             EmptyLabelInRequiredInput = 14,
-			
-			/// <summary>
+
+            /// <summary>
             /// An input has validation properties set, but no error message to display to users
             /// </summary>
-			NoErrorMessageForValidatedInput = 15
+            NoErrorMessageForValidatedInput = 15
         };
 
         /// <summary>

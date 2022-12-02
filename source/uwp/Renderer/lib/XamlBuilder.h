@@ -72,7 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void SetImageSource(T const& destination,
                             winrt::ImageSource const& imageSource,
                             winrt::Stretch stretch = winrt::Stretch::UniformToFill);
-							
+
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,

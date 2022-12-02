@@ -11,6 +11,7 @@
 @interface ACRInputTableView : UITableView
 
 @property IBInspectable CGFloat inputTableViewSpacing;
+@property NSString *adaptiveAccessibilityLabel;
 
 - (instancetype)initWithSuperview:(UIView *)view;
 

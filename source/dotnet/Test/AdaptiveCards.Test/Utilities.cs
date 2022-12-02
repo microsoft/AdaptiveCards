@@ -107,6 +107,14 @@ namespace AdaptiveCards.Test
 
             card.Body.Add(container);
 
+
+            AdaptiveChoiceSetInput choiceSetInput = new AdaptiveChoiceSetInput
+            {
+                Id = "choiceSetInput"
+            };
+
+            card.Body.Add(choiceSetInput);
+
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 Id = "submitAction",

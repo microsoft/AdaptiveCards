@@ -48,4 +48,18 @@
     return CGSizeMake(self.frame.size.width, height);
 }
 
+- (void)setAccessibilityLabel:(id)accessibilityLabel
+{
+    BOOL bUpdateTable = YES;
+    if (_adaptiveAccessibilityLabel && ![_adaptiveAccessibilityLabel isEqualToString:accessibilityLabel]) {
+        bUpdateTable = YES;
+    }
+
+    _adaptiveAccessibilityLabel = accessibilityLabel;
+
+    if (bUpdateTable) {
+        [self reloadData];
+    }
+}
+
 @end

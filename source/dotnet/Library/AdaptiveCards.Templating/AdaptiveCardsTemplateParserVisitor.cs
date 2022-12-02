@@ -31,134 +31,134 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
 [System.CLSCompliant(false)]
 public interface IAdaptiveCardsTemplateParserVisitor<Result> : IParseTreeVisitor<Result> {
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.json"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitJson([NotNull] AdaptiveCardsTemplateParser.JsonContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.obj"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>jsonPair</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitJsonPair([NotNull] AdaptiveCardsTemplateParser.JsonPairContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateRootData</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateData</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateWhen</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateWhen([NotNull] AdaptiveCardsTemplateParser.TemplateWhenContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.array"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitArray([NotNull] AdaptiveCardsTemplateParser.ArrayContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTemplateString</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTemplateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueString</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueString([NotNull] AdaptiveCardsTemplateParser.ValueStringContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueNumber</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueNumber([NotNull] AdaptiveCardsTemplateParser.ValueNumberContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueObject</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueObject([NotNull] AdaptiveCardsTemplateParser.ValueObjectContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueArray</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueArray([NotNull] AdaptiveCardsTemplateParser.ValueArrayContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTrue</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueTrue([NotNull] AdaptiveCardsTemplateParser.ValueTrueContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueFalse</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueFalse([NotNull] AdaptiveCardsTemplateParser.ValueFalseContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueNull</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueNull([NotNull] AdaptiveCardsTemplateParser.ValueNullContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templatedString</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplatedString([NotNull] AdaptiveCardsTemplateParser.TemplatedStringContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateRoot"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTemplateExpression</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateExpression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context);
+    /// <summary>
+    /// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.json"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitJson([NotNull] AdaptiveCardsTemplateParser.JsonContext context);
+    /// <summary>
+    /// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.obj"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>jsonPair</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitJsonPair([NotNull] AdaptiveCardsTemplateParser.JsonPairContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>templateRootData</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>templateData</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>templateWhen</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitTemplateWhen([NotNull] AdaptiveCardsTemplateParser.TemplateWhenContext context);
+    /// <summary>
+    /// Visit a parse tree produced by <see cref="AdaptiveCardsTemplateParser.array"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitArray([NotNull] AdaptiveCardsTemplateParser.ArrayContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueTemplateString</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueTemplateStringWithRoot</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueString</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueString([NotNull] AdaptiveCardsTemplateParser.ValueStringContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueNumber</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueNumber([NotNull] AdaptiveCardsTemplateParser.ValueNumberContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueObject</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueObject([NotNull] AdaptiveCardsTemplateParser.ValueObjectContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueArray</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueArray([NotNull] AdaptiveCardsTemplateParser.ValueArrayContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueTrue</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueTrue([NotNull] AdaptiveCardsTemplateParser.ValueTrueContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueFalse</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueFalse([NotNull] AdaptiveCardsTemplateParser.ValueFalseContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueNull</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueNull([NotNull] AdaptiveCardsTemplateParser.ValueNullContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>templatedString</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateString"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitTemplatedString([NotNull] AdaptiveCardsTemplateParser.TemplatedStringContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>templateStringWithRoot</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateRoot"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context);
+    /// <summary>
+    /// Visit a parse tree produced by the <c>valueTemplateExpression</c>
+    /// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateExpression"/>.
+    /// </summary>
+    /// <param name="context">The parse tree.</param>
+    /// <return>The visitor result.</return>
+    Result VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context);
 }
