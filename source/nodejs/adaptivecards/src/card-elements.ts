@@ -3155,6 +3155,66 @@ export abstract class Input extends CardElement implements IInput {
         return labelIds;
     }
 
+    protected onUserEvents(inputElement?: HTMLElement, eventType?: string) {
+        if (!inputElement) {
+            return
+        }
+        if (this.inputStyle === Enums.InputStyle.ReadWrite) {
+            if (eventType === "onMouseEnter") {
+                // TODO use host color from hostConfig.inputs
+                inputElement.style.border = "1px solid #686868";
+            }
+            if (eventType === "onMouseLeave") {
+                inputElement.style.border = "1px solid #E1E1E1";
+            }
+            if (eventType === "onClick" || eventType === "onFocus") {
+                // TODO use host color from hostConfig.inputs
+                inputElement.style.border = "1px solid #5b5fc7";
+            }
+        }
+    }
+
+    protected handleMouseEvents(inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | undefined, eventType: string, source: string, type: string) {
+        if (!inputElement || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+        if (eventType == "onMouseEnter") {
+            if (source == "Card") { 
+                const borderStyle = "1px solid #E1E1E1";
+                inputElement.style.border = borderStyle;
+                if (type == "date" || type == "time") {
+                    (inputElement as HTMLInputElement).readOnly = false;
+                    inputElement.required = false;
+                }
+                if (type == "choiceSet") {
+                    inputElement.style.appearance = "auto";
+                }
+            }
+            if (source == "Self") {
+                const borderStyle = "1px solid #686868";
+                inputElement.style.border = borderStyle;
+            }
+        }
+
+        if (eventType == "onMouseLeave") {
+            if (source == "Card") {
+                if (type == "date" || type == "time") {
+                    (inputElement as HTMLInputElement).readOnly = true;
+                    inputElement.required = true;
+                }
+                if (type == "choiceSet") {
+                    inputElement.style.appearance = "none";
+                }
+                const borderStyle = "1px solid transparent";
+                inputElement.style.border = borderStyle;
+            } 
+            if (source == "Self") {
+                const borderStyle = "1px solid #E1E1E1";
+                inputElement.style.border = borderStyle;
+            }
+        }
+    }
+
     protected updateInputControlAriaLabelledBy() {
         if (this._renderedInputControlElement) {
             const labelIds: string[] = this.getAllLabelIds();
@@ -3217,9 +3277,13 @@ export abstract class Input extends CardElement implements IInput {
 
             if (this._renderedLabelElement) {
                 this._renderedLabelElement.id = Utils.generateUniqueId();
-                this._renderedLabelElement.style.marginBottom =
-                    hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
-
+                if (this.labelAlignment === Enums.InputLabelAlignment.Horizontal) {
+                    // horizontal alignment, label should be in center of the div and no extra spacing needed
+                    this._renderedLabelElement.style.alignSelf = "center";
+                } else {
+                    this._renderedLabelElement.style.marginBottom =
+                        hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+                }
                 this._outerContainerElement.appendChild(this._renderedLabelElement);
             }
         }
@@ -3256,6 +3320,11 @@ export abstract class Input extends CardElement implements IInput {
 				this._inputControlContainerElement.style.width = "70%";
 			}
 
+            if (this.inputStyle === Enums.InputStyle.ReadWrite) {
+                this._outerContainerElement.classList.add(
+                    this.hostConfig.makeCssClassName("ac-input-outer-container-readWrite")
+                );
+            }
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
@@ -3511,13 +3580,30 @@ export class TextInput extends Input {
             }
         } else {
             result = document.createElement("input");
-			if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-				result.className = this.hostConfig.makeCssClassName("ac-inputRW", "ac-textInputRW");
-			} else {
-            	result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
-			}
+            result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             result.type = Enums.InputTextStyle[this.style].toLowerCase();
         }
+
+        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+			result.style.background = "transparent";
+            result.style.border = "1px solid transparent";
+		}
+
+        (this._parent as AdaptiveCard).registerMouseEnterCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(result, "onMouseEnter", "Card", "text")
+        );
+
+        (this._parent as AdaptiveCard).registerMouseLeaveCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(result, "onMouseLeave", "Card", "text")
+        );
+
+		result.onmouseenter = (ev: MouseEvent) => {
+            this.handleMouseEvents(result, "onMouseEnter", "Self", "text");
+        };
+
+		result.onmouseleave = (ev: MouseEvent) => {
+			this.handleMouseEvents(result, "onMouseLeave", "Self", "text");
+        };
 
         this.setupInput(result);
 
@@ -3899,6 +3985,7 @@ export class ChoiceSetInput extends Input {
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement | undefined;
+    private _inputElement: HTMLInputElement | undefined;
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
@@ -4164,10 +4251,34 @@ export class ChoiceSetInput extends Input {
                     this.valueChanged();
                 };
 
+                if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+                    this._selectElement.style.background = "transparent";
+                    this._selectElement.style.border = "1px solid transparent";
+                    this._selectElement.style.appearance = "none";
+                } 
+
+                
                 this.internalApplyAriaCurrent();
 
-                return this._selectElement;
+                (this._parent as AdaptiveCard).registerMouseEnterCallback(
+                    (ev: MouseEvent) => this.handleMouseEvents(this._selectElement, "onMouseEnter", "Card", "choiceSet")
+                );
+        
+                (this._parent as AdaptiveCard).registerMouseLeaveCallback(
+                    (ev: MouseEvent) => this.handleMouseEvents(this._selectElement,  "onMouseLeave", "Card", "choiceSet")
+                );
+        
+                this._selectElement.onmouseenter = (ev: MouseEvent) => {
+                    this.handleMouseEvents(this._selectElement,  "onMouseEnter", "Self", "choiceSet");
+                };
+        
+                this._selectElement.onmouseleave = (ev: MouseEvent) => {
+                    this.handleMouseEvents(this._selectElement, "onMouseLeave", "Self", "choiceSet");
+                };
             }
+
+            return this._selectElement;
+            
         }
     }
 
@@ -4397,7 +4508,7 @@ export class DateInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._dateInputElement = document.createElement("input");
-        
+        this._dateInputElement.setAttribute("type", "date");
 
         if (this.min) {
             this._dateInputElement.setAttribute("min", this.min);
@@ -4413,52 +4524,40 @@ export class DateInput extends Input {
         }
 
         this._dateInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
+        this._dateInputElement.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-dateInput"
+        );
 		if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-			this._dateInputElement.className = this.hostConfig.makeCssClassName(
-				"ac-inputRW",
-				"ac-dateInputRW"
-			);
-			if (this.defaultValue) {
-				const dateVal = this.defaultValue;
-				const dateArr = dateVal.split("-");
-				const textVal = dateArr[1]+"/"+dateArr[2]+"/"+dateArr[0];
-				this._dateInputElement.value = textVal;
-			}
-		} else {
-			this._dateInputElement.setAttribute("type", "date");
-			this._dateInputElement.className = this.hostConfig.makeCssClassName(
-				"ac-input",
-				"ac-dateInput"
-			);
-			if (this.defaultValue) {
-				this._dateInputElement.value = this.defaultValue;
-			}
-		}
+			this._dateInputElement.style.background = "transparent";
+            this._dateInputElement.style.border = "1px solid transparent";
+            this._dateInputElement.readOnly = true;
+            this._dateInputElement.required = true;
+		} 
+
+        if (this.defaultValue) {
+            this._dateInputElement.value = this.defaultValue;
+        }
+		
         this._dateInputElement.style.width = "100%";
 
         this._dateInputElement.oninput = () => {
             this.valueChanged();
         };
+        (this._parent as AdaptiveCard).registerMouseEnterCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(this._dateInputElement,  "onMouseEnter", "Card", "date")
+        );
 
-		this._dateInputElement.onmouseenter = () => {
-            if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-				this._dateInputElement.setAttribute("type", "date");
-				if (this.defaultValue) {
-					this._dateInputElement.value = this.defaultValue;
-				}
-			}
+        (this._parent as AdaptiveCard).registerMouseLeaveCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(this._dateInputElement,  "onMouseLeave", "Card", "date")
+        );
+
+		this._dateInputElement.onmouseenter = (ev: MouseEvent) => {
+            this.handleMouseEvents(this._dateInputElement,  "onMouseEnter", "Self", "date");
         };
 
-		this._dateInputElement.onmouseleave = () => {
-			if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-				this._dateInputElement.setAttribute("type", "");
-				if (this.defaultValue) {
-					const dateVal = this.defaultValue;
-					const dateArr = dateVal.split("-");
-					const textVal = dateArr[1]+"/"+dateArr[2]+"/"+dateArr[0];
-					this._dateInputElement.value = textVal;
-				}
-			}
+		this._dateInputElement.onmouseleave = (ev: MouseEvent) => {
+			this.handleMouseEvents(this._dateInputElement, "onMouseLeave", "Self", "date");
         };
 
         return this._dateInputElement;
@@ -4592,6 +4691,29 @@ export class TimeInput extends Input {
         if (this.defaultValue) {
             this._timeInputElement.value = this.defaultValue;
         }
+
+        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+			this._timeInputElement.style.background = "transparent";
+            this._timeInputElement.style.border = "1px solid transparent";
+            this._timeInputElement.readOnly = true;
+            this._timeInputElement.required = true;
+		}
+
+        (this._parent as AdaptiveCard).registerMouseEnterCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(this._timeInputElement,  "onMouseEnter", "Card", "time")
+        );
+
+        (this._parent as AdaptiveCard).registerMouseLeaveCallback(
+            (ev: MouseEvent) => this.handleMouseEvents(this._timeInputElement, "onMouseLeave", "Card", "time")
+        );
+
+		this._timeInputElement.onmouseenter = (ev: MouseEvent) => {
+            this.handleMouseEvents(this._timeInputElement, "onMouseEnter", "Self", "time");
+        };
+
+		this._timeInputElement.onmouseleave = (ev: MouseEvent) => {
+			this.handleMouseEvents(this._timeInputElement, "onMouseLeave", "Self", "time");
+        };
 
         return this._timeInputElement;
     }
@@ -8327,6 +8449,18 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private _fallbackCard?: AdaptiveCard;
 
+    private _mouseEnterCallbacks: any[] = [];
+
+    private _mouseLeaveCallbacks: any[] = [];
+
+    public registerMouseEnterCallback(callback: any) {
+        this._mouseEnterCallbacks.push(callback);
+    }
+
+    public registerMouseLeaveCallback(callback: any) {
+        this._mouseLeaveCallbacks.push(callback);
+    }
+
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
             return true;
@@ -8424,6 +8558,24 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
+    onMouseEvent(renderedCard?: HTMLElement, eventType?: string) {
+        const inputElementsWithReadWriteStyleClass = renderedCard?.getElementsByClassName('ac-input-outer-container-readWrite');
+        for (const inputContainer of Array.from(inputElementsWithReadWriteStyleClass || [])) {
+            const inputNode = inputContainer.getElementsByTagName('input');
+            if (inputNode && inputNode[0]) {
+                // border width and color decided by the host
+                let borderStyle = "";
+                if (eventType === "onMouseEnter") {
+                    borderStyle = "1px solid #E1E1E1";
+                }
+                if (eventType === "onMouseLeave") {
+                    borderStyle = "";
+                }
+                (inputNode[0] as HTMLElement).style.border = borderStyle;
+            }
+        }
+    } 
+
     onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     onExecuteAction?: (action: Action) => void;
     onElementVisibilityChanged?: (element: CardElement) => void;
@@ -8494,22 +8646,14 @@ export class AdaptiveCard extends ContainerWithActions {
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
-				renderedCard.onmouseenter = () => {
-					const inputElementsWithReadWriteStyleClass = renderedCard?.getElementsByClassName('ac-inputRW');
-					for (const inputElement of Array.from(inputElementsWithReadWriteStyleClass || [])) {
-						if (inputElement) {
-							(inputElement as HTMLElement).style.border = "1px solid #DDDDDD";
-						}
-					}
+				renderedCard.onmouseenter = (ev: MouseEvent) => {
+					//this.onMouseEvent(renderedCard, "onMouseEnter");
+                    this._mouseEnterCallbacks.forEach(callback => callback(ev));
 				};
 
-				renderedCard.onmouseleave = () => {
-					const inputElementsWithReadWriteStyleClass = renderedCard?.getElementsByClassName('ac-inputRW');
-					for (const inputElement of Array.from(inputElementsWithReadWriteStyleClass || [])) {
-						if (inputElement) {
-							(inputElement as HTMLElement).style.border = "";
-						}
-					}
+				renderedCard.onmouseleave = (ev: MouseEvent) => {
+					//this.onMouseEvent(renderedCard, "onMouseLeave");
+                    this._mouseLeaveCallbacks.forEach(callback => callback(ev));
 				};
             }
         }
