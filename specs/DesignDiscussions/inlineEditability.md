@@ -70,14 +70,14 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
-2. Introduce an optional new styling property in AC input fields schema which will allow developers to define if label of the input and the input field would be vertically or horizontally aligned. Default would be existing vertical. This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
+2. Introduce an optional new styling property in AC input fields schema which will allow developers to define position of label with respect to input field. It can be both "inline" and "above". Default would be existing "above". This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
 	*Note*: When card width is small due to browser resize etc, horizontal view can shift to vertical view of input fields.
 
-* **Vertical view:**
+* **Above view:**
 
 ![img](../assets/InlineEditability/IE6.PNG)
 
-* **Horizontal view:**
+* **Inline view:**
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
