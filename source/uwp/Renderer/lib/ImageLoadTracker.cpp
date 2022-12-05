@@ -8,15 +8,19 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
     {
-        for (auto& [_, trackedImageDetails] : m_eventRevokers)
+        for (auto& [_, trackedBitmapImageDetails] : m_bitmapEventRevokers)
         {
-            UnsubscribeFromEvents(trackedImageDetails);
+            UnsubscribeFromEvents(trackedBitmapImageDetails);
+        }
+        for (auto& [_, trackedSvgImageDetails] : m_svgEventRevokers)
+        {
+            UnsubscribeFromEvents(trackedSvgImageDetails);
         }
     }
 
     void ImageLoadTracker::TrackBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
-        auto trackedImageDetails = winrt::make_self<TrackedImageDetails>();
+        auto trackedImageDetails = winrt::make_self<TrackedBitmapImageDetails>();
 
         trackedImageDetails->imageOpenedRevoker =
             bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_BitmapImageLoaded});
@@ -27,9 +31,9 @@ namespace AdaptiveCards::Rendering::Uwp
         // Ensure we don't try and write the private data from multiple threads
         std::unique_lock lock{m_mutex};
 
-        if (m_eventRevokers.find(bitmapImage) == m_eventRevokers.end())
+        if (m_bitmapEventRevokers.find(bitmapImage) == m_bitmapEventRevokers.end())
         {
-            m_eventRevokers[bitmapImage] = trackedImageDetails;
+            m_bitmapEventRevokers[bitmapImage] = trackedImageDetails;
             m_trackedImageCount++;
             m_totalImageCount++;
         }
@@ -55,32 +59,29 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::MarkFailedLoadBitmapImage(winrt::BitmapImage const& bitmapImage)
+    void ImageLoadTracker::MarkFailedLoadImage(winrt::ImageSource const& image)
     {
         // Record failure
         m_hasFailure = true;
 
         // And then notify this image is done
-        ImageLoadResultReceived(bitmapImage);
-    }
-
-    void MarkFailedLoadSvgImage(winrt::SvgImageSource const& svgImage)
-    {
-        // Record failure
-        m_hasFailure = true;
-
-        // And then notify this image is done
-        ImageLoadResultReceived(svgImage);
+        ImageLoadResultReceived(image);
     }
 
     void ImageLoadTracker::AbandonOutstandingImages()
     {
         std::unique_lock lock{m_mutex};
-        for (auto& [_, trackedImageDetails] : m_eventRevokers)
+        for (auto& [_, trackedBitmapImageDetails] : m_bitmapEventRevokers)
         {
-            UnsubscribeFromEvents(trackedImageDetails);
+            UnsubscribeFromEvents(trackedBitmapImageDetails);
         }
-        m_eventRevokers.clear();
+        m_bitmapEventRevokers.clear();
+
+        for (auto& [_, trackedSvgImageDetails] : m_svgEventRevokers)
+        {
+            UnsubscribeFromEvents(trackedSvgImageDetails);
+        }
+        m_svgEventRevokers.clear();
     }
 
     void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
@@ -101,6 +102,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
+    // TODO: confirm that the sender here is actually the bitmap/svg
     void ImageLoadTracker::TrackedImage_BitmapImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
@@ -126,9 +128,24 @@ namespace AdaptiveCards::Rendering::Uwp
         std::unique_lock lock{m_mutex};
 
         m_trackedImageCount--;
-        if (m_eventRevokers.find(sender) != m_eventRevokers.end())
+
+        // Check if the sender is a bitmap
+        if (const auto bitmap = sender.try_as<winrt::BitmapImage>())
         {
-            UnsubscribeFromEvents(m_eventRevokers[sender]);
+            if (m_bitmapEventRevokers.find(bitmap) != m_bitmapEventRevokers.end())
+            {
+                UnsubscribeFromEvents(m_bitmapEventRevokers[bitmap]);
+            }
+        }
+        else
+        {
+            // Otherwise, we have an svg
+            // // TODO: do we need casting here?
+            //auto svg = imageSource.try_as<winrt::SvgImageSource>();
+            if (m_svgEventRevokers.find(sender) != m_svgEventRevokers.end())
+            {
+                UnsubscribeFromEvents(m_svgEventRevokers[sender]);
+            }
         }
 
         if (m_trackedImageCount == 0)
@@ -139,10 +156,16 @@ namespace AdaptiveCards::Rendering::Uwp
 
     // TODO: need a dupe of ImageLoadResultReceived
 
-    void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedBitmapImageDetails> const& trackedImageDetails)
     {
         trackedImageDetails->imageOpenedRevoker.revoke();
         trackedImageDetails->imageFailedRevoker.revoke();
+    }
+
+    void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedSvgImageDetails> const& trackedSvgImageDetails)
+    {
+        trackedSvgImageDetails->openedRevoker.revoke();
+        trackedSvgImageDetails->openFailedRevoker.revoke();
     }
 
     void ImageLoadTracker::FireAllImagesLoaded()
