@@ -4,7 +4,6 @@
 
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveActionInvoker.g.cpp"
-#include "Util.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
