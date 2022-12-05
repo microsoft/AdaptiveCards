@@ -185,7 +185,7 @@ Since this property is inherited to all Input fields, it will be supported by al
       }	
 ```
 
-2. Inherited properties of all Input fields will have one more property called `labelAlignment` whose type will be `InputLabelAlignment`
+2. Inherited properties of all Input fields will have one more property called `labelPosition` whose type will be `InputLabelPosition`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
