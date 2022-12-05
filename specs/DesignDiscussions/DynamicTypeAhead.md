@@ -55,13 +55,25 @@ Input.ChoiceSet
 Data.Query Definition
 | Property | Type | Required | Description
 | :---------- | :------- | :---------- | :------- |
-| type | Data.Query | Yes | Specifies that this is a Data.Query object.
+| type | "Data.Query" | Yes | Specifies that this is a Data.Query object.
 | dataset| String | Yes | The type of data that should be fetched dynamically
-| value | String | No | Populated for the invoke request to the bot with the input the user provided to the ChoiceSet
-| count | number | No | Populated for the invoke request to the bot to specify how many elements should be returned (can be ignored by the bot, if they want to send a diff amount)  
-| skip | number | No | Populated for the invoke request to the bot to indicate that we want to paginate and skip ahead in the list
 
-Recommendation: Introduce count and skip only when we add support for pagination. Pagination won’t be supported as a part of initial release. We will display only top 15 as in MS Teams today.
+**Card Payload**
+Input.ChoiceSet
+
+```json
+{
+    "type": "Input.ChoiceSet",
+    "id": "selectedUser",
+    "choices": [
+        { "title": "Static 1", "value": "Static 1" }
+    ],
+    "choices.data": {
+        "type": "Data.Query",
+        "dataset": "graph.microsoft.com/users"
+    },
+}
+```
 
 ## High Level Changes
 
@@ -244,3 +256,4 @@ Sequence Diagram
 3.  Github discussion link for dynamic type ahead - https://github.com/microsoft/AdaptiveCards/issues/3924
 4.  Debounce - https://medium.com/android-news/implementing-search-on-type-in-android-with-coroutines-ab117c8f13a4
 5.  PM spec for the feature - https://microsoft-my.sharepoint-df.com/:w:/p/sumalle/ESROA3hy5olOohFcjNykx7gBdTgWLcOhEXhizOcNbM9ClA
+6.  6. Figma (UX) - https://www.figma.com/file/xsrZo1AubJwIHmG2NmSK8O/WIP-Typeahead-search-AC-loops?node-id=264%3A44875

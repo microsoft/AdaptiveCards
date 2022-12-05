@@ -83,7 +83,7 @@ Update to HttpRequestResponse class -
 1. Replacing boolean isSuccess with a ResponseType.
 ResponseType will be a StringDef with 3 possible values - SUCCESS, ERROR, NO_INTERNET_CONNECTION
 
-<img src="assets/TypeAhead/HttpRequestResponse.png" />
+<img src="assets/TypeAhead/HttpRequestResponse2.png" />
 
 ### User Experience
 TypeAheadSearchViewModel - Will maintain the current state of the screen (loading, error etc) and will communicate with host to fetch dynamic choices.
@@ -105,10 +105,13 @@ Type ahead search UI states -
 The host is enabled to specify its custom drawable resource id for the TypeAheadSearchActivity. The search icon, cross icon etc. will be customizable.
 Also, the UI for the 3 states which are start searching, no result and error will be customizable.
 
+TypeAheadSearchCustomUIParams - 
 1. IconParams - drawableResourceId, scaleType, contentDescription
    
    a. SearchIconParams: IconParams
    b. CrossIconParams: IconParams
+   c. BackIconParams: IconParams
+   d. TickIconParams: IconParams
 
 2. TypeAheadStateParams - title, subtitle, drawableResourceId, scaleType
 
