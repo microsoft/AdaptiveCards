@@ -5,6 +5,7 @@
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.g.cpp"
 #include "ParseUtil.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

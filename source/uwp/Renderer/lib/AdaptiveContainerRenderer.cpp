@@ -6,6 +6,7 @@
 #include "AdaptiveContainerRenderer.h"
 #include "AdaptiveContainerRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

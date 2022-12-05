@@ -4,6 +4,7 @@
 
 #include "AdaptiveTableRenderer.h"
 #include "AdaptiveTableRenderer.g.cpp"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
