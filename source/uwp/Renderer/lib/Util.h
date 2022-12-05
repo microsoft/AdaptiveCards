@@ -4,7 +4,6 @@
 #include <string>
 
 #include "AdaptiveCards.Rendering.Uwp.h"
-#include "InputValue.h"
 #include <BaseCardElement.h>
 #include <BaseActionElement.h>
 #include <ChoiceInput.h>

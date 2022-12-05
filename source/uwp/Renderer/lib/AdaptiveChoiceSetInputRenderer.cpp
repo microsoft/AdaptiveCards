@@ -4,6 +4,7 @@
 
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.g.cpp"
+#include "InputValue.h"
 #include "ParseUtil.h"
 #include "WholeItemsPanel.h"
 
