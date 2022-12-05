@@ -198,8 +198,8 @@ Alignment for label in input fields.
 * **Type**: `InputLabelAlignment`
 * **Required**: No
 * **Allowed values**:
-  * `"vertical"` : should place label vertically on top of the input field.
-  * `"horizontal"` : should place label horizontally on left (or right in RTL setting) of the input field.
+  * `"inline"` : should place label inline with the input field
+  * `"above"` : should place label above the input field.
   
 ### Sample Payload:
 
@@ -209,26 +209,26 @@ Alignment for label in input fields.
           "label": "Name",
 	  "value": "Sneh",
 	  "inputStyle" : "readWrite",
-	  "labelAlignment" : "vertical"
+	  "labelAlignment" : "above"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
 	  "inputStyle" : "readWrite",
-          "labelAlignment" : "horizontal"
+          "labelAlignment" : "inline"
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "labelAlignment" : "horizontal"
+          "labelAlignment" : "inline"
       },
       {
           "type": "Input.Text",
           "label": "Flight origin",
           "value": "Seattle",
-          "labelAlignment" : "vertical"
+          "labelAlignment" : "above"
       },
       {
           "type": "Input.Text",
