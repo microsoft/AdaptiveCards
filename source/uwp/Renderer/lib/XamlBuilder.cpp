@@ -7,8 +7,6 @@
 #include "ActionHelpers.h"
 #include "WholeItemsPanel.h"
 
-using WholeItemsPanelWinRT = winrt::AdaptiveCards::Rendering::Uwp::implementation::WholeItemsPanel;
-
 namespace AdaptiveCards::Rendering::Uwp
 {
     XamlBuilder::XamlBuilder()
@@ -205,9 +203,9 @@ namespace AdaptiveCards::Rendering::Uwp
             uint32_t padding = spacingConfig.Padding();
 
             // Configure WholeItemsPanel to not clip bleeding containers
-            WholeItemsPanelWinRT::SetBleedMargin(padding);
+            winrt::implementation::WholeItemsPanel::SetBleedMargin(padding);
 
-            auto bodyElementHostImpl = winrt::make_self<WholeItemsPanelWinRT>();
+            auto bodyElementHostImpl = winrt::make_self<winrt::implementation::WholeItemsPanel>();
             bodyElementHostImpl->SetMainPanel(true);
             bodyElementHostImpl->SetAdaptiveHeight(true);
             winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
