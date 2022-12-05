@@ -189,13 +189,13 @@ Since this property is inherited to all Input fields, it will be supported by al
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **labelAlignment** | `InputLabelAlignment?` | No | Determines the alignement of the label with respect to the input field. Default is vertical when not specified | 1.7 |
+| **labelPosition** | `InputLabelPosition?` | No | Determines the position of the label with respect to the input field. Default is "above" when not specified | 1.7 |
 
-### InputLabelAlignment
+### InputLabelPosition
 
-Alignment for label in input fields.
+Position for label in input fields.
 
-* **Type**: `InputLabelAlignment`
+* **Type**: `InputLabelPosition`
 * **Required**: No
 * **Allowed values**:
   * `"inline"` : should place label inline with the input field
@@ -209,26 +209,26 @@ Alignment for label in input fields.
           "label": "Name",
 	  "value": "Sneh",
 	  "inputStyle" : "readWrite",
-	  "labelAlignment" : "above"
+	  "labelPosition" : "above"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
 	  "inputStyle" : "readWrite",
-          "labelAlignment" : "inline"
+          "labelPosition" : "inline"
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "labelAlignment" : "inline"
+          "labelPosition" : "inline"
       },
       {
           "type": "Input.Text",
           "label": "Flight origin",
           "value": "Seattle",
-          "labelAlignment" : "above"
+          "labelPosition" : "above"
       },
       {
           "type": "Input.Text",
