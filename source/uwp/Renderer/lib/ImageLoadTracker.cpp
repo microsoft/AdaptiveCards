@@ -18,6 +18,18 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
+    void ImageLoadTracker::TrackImage(winrt::ImageSource const& image)
+    {
+        if (auto bitmapImage = image.try_as<winrt::BitmapImage>())
+        {
+            TrackBitmapImage(bitmapImage);
+        }
+        else
+        {
+            TrackSvgImage(image.as<winrt::SvgImageSource>());
+        }
+    }
+
     void ImageLoadTracker::TrackBitmapImage(winrt::BitmapImage const& bitmapImage)
     {
         auto trackedImageDetails = winrt::make_self<TrackedBitmapImageDetails>();

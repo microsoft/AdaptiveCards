@@ -90,6 +90,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::FrameworkElement frameworkElement{nullptr};
 
+        // Image style doesn't work as expected with height property (repro with bitmap and svg)
         if (imageStyle == winrt::ImageStyle::Person)
         {
             winrt::Ellipse ellipse{};
@@ -102,14 +103,7 @@ namespace AdaptiveCards::Rendering::Uwp
             auto ellipseAsShape = ellipse.as<winrt::Shape>();
             auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
 
-            if (isImageSvg)
-            {
-                SetImageOnUIElementSvg(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
-            }
-            else
-            {
-                SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
-            }
+            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, isImageSvg, imageStretch);
 
             if (size == winrt::ImageSize::None || size == winrt::ImageSize::Stretch || size == winrt::ImageSize::Auto || hasExplicitMeasurements)
             {
@@ -169,14 +163,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             auto parentElement = renderArgs.ParentElement();
 
-            if (isImageSvg)
-            {
-                SetImageOnUIElementSvg(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
-            }
-            else
-            {
-                SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible);
-            }
+            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible, isImageSvg);
         }
 
         auto sizeOptions = hostConfig.ImageSizes();
@@ -296,6 +283,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                           winrt::IInspectable const& parentElement,
                                           winrt::IInspectable const& imageContainer,
                                           bool isVisible,
+                                          bool isImageSvg,
                                           winrt::Stretch stretch)
     {
         bool mustHideElement = true;
@@ -310,16 +298,18 @@ namespace AdaptiveCards::Rendering::Uwp
             // If we have a resolver
             if (resolver)
             {
-                // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+                // Create a Image to hold the image data.  We use BitmapImage & SvgImageSource in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
-                winrt::BitmapImage bitmapImage{};
+                auto image = CreateImageSource(isImageSvg);
 
                 if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                 {
-                    this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
+                    if (!isImageSvg)
+                    {
+                        image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+                    }
+                    this->m_imageLoadTracker->TrackImage(image);
                 }
-
-                bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
 
                 // Create the arguments to pass to the resolver
                 auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
@@ -328,7 +318,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
 
                 getResourceStreamOperation.Completed(
-                    [this, weakThis = this->get_weak(), uiElement, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
+                    [this, weakThis = this->get_weak(), uiElement, image, stretch, isAutoSize, parentElement, imageContainer, isVisible, isImageSvg](
                         winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation, winrt::AsyncStatus status) -> void
                     {
                         if (status == winrt::AsyncStatus::Completed)
@@ -338,16 +328,118 @@ namespace AdaptiveCards::Rendering::Uwp
                                 auto randomAccessStream = operation.GetResults();
                                 if (!randomAccessStream)
                                 {
-                                    this->m_imageLoadTracker->MarkFailedLoadImage(bitmapImage);
+                                    this->m_imageLoadTracker->MarkFailedLoadImage(image);
                                     return;
                                 }
-                                SetImageSource(uiElement, bitmapImage, stretch);
+                                SetImageSource(uiElement, image, stretch);
 
-                                auto setSourceAction = bitmapImage.SetSourceAsync(randomAccessStream);
+                                if (isImageSvg)
+                                {
+                                    auto setSourceOperation = image.as<winrt::SvgImageSource>().SetSourceAsync(randomAccessStream);
+
+                                    setSourceOperation.Completed(
+                                        [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                            winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
+                                        {
+                                            auto loadStatus = operation.GetResults();
+                                            if (status == winrt::AsyncStatus::Completed && isAutoSize &&
+                                                loadStatus == winrt::SvgImageSourceLoadStatus::Success)
+                                            {
+                                                if (auto strongThis = weakThis.get())
+                                                {
+                                                    strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                                }
+                                            }
+                                        });
+                                }
+                                else
+                                {
+                                    auto setSourceAction = image.as<winrt::BitmapImage>().SetSourceAsync(randomAccessStream);
+
+                                    setSourceAction.Completed(
+                                        [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                            winrt::IAsyncAction const&, winrt::AsyncStatus status)
+                                        {
+                                            if (status == winrt::AsyncStatus::Completed && isAutoSize)
+                                            {
+                                                if (auto strongThis = weakThis.get())
+                                                {
+                                                    strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (auto strongThis = weakThis.get())
+                            {
+                                this->m_imageLoadTracker->MarkFailedLoadImage(image);
+                            }
+                        }
+                    });
+            }
+        }
+
+        if (schemeName == L"data")
+        {
+            // Decode base 64 string
+            winrt::hstring dataPath = imageUrl.Path();
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
+            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
+
+            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+
+            auto image = CreateImageSource(isImageSvg);
+
+            if (!isImageSvg)
+            {
+                image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+            }
+            m_imageLoadTracker->TrackImage(image);
+
+            auto streamWriteOperation = dataWriter.StoreAsync();
+
+            streamWriteOperation.Completed(
+                [weakThis = this->get_weak(), dataWriter, image, uiElement, isAutoSize, parentElement, imageContainer, isVisible, isImageSvg](
+                    winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+                {
+                    if (auto strongThis = weakThis.get())
+                    {
+                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                        {
+                            stream.Seek(0);
+                            strongThis->SetImageSource(uiElement, image);
+
+                            if (isImageSvg)
+                            {
+                                auto setSourceOperation = image.as<winrt::SvgImageSource>().SetSourceAsync(stream);
+
+                                setSourceOperation.Completed(
+                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                                        winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
+                                    {
+                                        auto loadStatus = operation.GetResults();
+                                        if (status == winrt::AsyncStatus::Completed && isAutoSize &&
+                                            loadStatus == winrt::SvgImageSourceLoadStatus::Success)
+                                        {
+                                            if (auto strongThis = weakThis.get())
+                                            {
+                                                strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                            }
+                                        }
+                                    });
+                            }
+                            else
+                            {
+                                auto setSourceAction = image.as<winrt::BitmapImage>().SetSourceAsync(stream);
 
                                 setSourceAction.Completed(
                                     [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                        winrt::IAsyncAction const&, winrt::AsyncStatus status)
+                                        winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
                                     {
                                         if (status == winrt::AsyncStatus::Completed && isAutoSize)
                                         {
@@ -359,59 +451,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                     });
                             }
                         }
-                        else
-                        {
-                            if (auto strongThis = weakThis.get())
-                            {
-                                this->m_imageLoadTracker->MarkFailedLoadImage(bitmapImage);
-                            }
-                        }
-                    });
-            }
-        }
-
-        if (schemeName == L"data")
-        {
-            // Decode base 64 string
-            winrt::hstring dataPath = imageUrl.Path();
-            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
-            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
-
-            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
-
-            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
-
-            winrt::BitmapImage bitmapImage{};
-            bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
-            m_imageLoadTracker->TrackBitmapImage(bitmapImage);
-
-            auto streamWriteOperation = dataWriter.StoreAsync();
-
-            streamWriteOperation.Completed(
-                [weakThis = this->get_weak(), dataWriter, bitmapImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
-                {
-                    if (auto strongThis = weakThis.get())
-                    {
-                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
-                        {
-                            stream.Seek(0);
-                            strongThis->SetImageSource(uiElement, bitmapImage);
-                            auto setSourceAction = bitmapImage.SetSourceAsync(stream);
-
-                            setSourceAction.Completed(
-                                [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                    winrt::IAsyncAction const& /*operation*/, winrt::AsyncStatus status)
-                                {
-                                    if (status == winrt::AsyncStatus::Completed && isAutoSize)
-                                    {
-                                        if (auto strongThis = weakThis.get())
-                                        {
-                                            strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                                        }
-                                    }
-                                });
-                        }
                     }
                 });
             m_writeAsyncOperations.push_back(streamWriteOperation);
@@ -424,10 +463,18 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
-            winrt::BitmapImage bitmapImage{};
-            bitmapImage.UriSource(imageUrl);
+            auto image = CreateImageSource(isImageSvg);
 
-            SetImageSource(uiElement, bitmapImage, stretch);
+            if (isImageSvg)
+            {
+                image.as<winrt::SvgImageSource>().UriSource(imageUrl);
+            }
+            else
+            {
+                image.as<winrt::BitmapImage>().UriSource(imageUrl);
+            }
+
+            SetImageSource(uiElement, image, stretch);
 
             if (isAutoSize)
             {
@@ -436,180 +483,46 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            PopulateImageFromUrlAsync(imageUrl, uiElement);
+            // TODO: need to test this case
+            PopulateImageFromUrlAsync(imageUrl, uiElement, isImageSvg);
         }
     }
 
-    template<typename T>
-    void XamlBuilder::SetImageOnUIElementSvg(winrt::Uri const& imageUrl,
-                                             T const& uiElement,
-                                             winrt::AdaptiveCardResourceResolvers const& resolvers,
-                                             bool isAutoSize,
-                                             winrt::IInspectable const& parentElement,
-                                             winrt::IInspectable const& imageContainer,
-                                             bool isVisible,
-                                             winrt::Stretch stretch)
+    winrt::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
     {
-        bool mustHideElement = true;
-
-        // Get the image url scheme
-        winrt::hstring schemeName = imageUrl.SchemeName();
-
-        // Get the resolver for the image
-        if (resolvers)
+        if (isImageSvg)
         {
-            auto resolver = resolvers.Get(schemeName);
-            // If we have a resolver
-            if (resolver)
-            {
-                // Create a SvgImageSource to hold the image data.  We use SvgImageSource in order to allow
-                // the tracker to subscribe to the ImageLoaded/Failed events
-                winrt::SvgImageSource svgImage{};
-
-                // TODO: this will need to be updated
-                if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
-                {
-                    this->m_imageLoadTracker->TrackSvgImage(svgImage);
-                }
-
-                // Create the arguments to pass to the resolver
-                auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(imageUrl);
-
-                // And call the resolver to get the image stream
-                auto getResourceStreamOperation = resolver.GetResourceStreamAsync(args);
-
-                getResourceStreamOperation.Completed(
-                    [this, weakThis = this->get_weak(), uiElement, svgImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
-                        winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation, winrt::AsyncStatus status) -> void
-                    {
-                        if (status == winrt::AsyncStatus::Completed)
-                        {
-                            if (auto strongThis = weakThis.get())
-                            {
-                                auto randomAccessStream = operation.GetResults();
-                                if (!randomAccessStream)
-                                {
-                                    this->m_imageLoadTracker->MarkFailedLoadImage(svgImage);
-                                    return;
-                                }
-                                SetImageSource(uiElement, svgImage, stretch);
-
-                                auto setSourceOperation = svgImage.SetSourceAsync(randomAccessStream);
-
-                                setSourceOperation.Completed(
-                                    [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                        winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
-                                    {
-                                        auto loadStatus = operation.GetResults();
-                                        if (status == winrt::AsyncStatus::Completed && isAutoSize && loadStatus == winrt::SvgImageSourceLoadStatus::Success)
-                                        {
-                                            if (auto strongThis = weakThis.get())
-                                            {
-                                                strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                                            }
-                                        }
-                                    });
-                            }
-                        }
-                        else
-                        {
-                            if (auto strongThis = weakThis.get())
-                            {
-                                this->m_imageLoadTracker->MarkFailedLoadImage(svgImage);
-                            }
-                        }
-                    });
-            }
-        }
-
-        // TODO: height & person style don't work well together
-        if (schemeName == L"data")
-        {
-            // Decode base 64 string
-            winrt::hstring dataPath = imageUrl.Path();
-            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
-            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
-
-            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
-
-            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
-
-            winrt::SvgImageSource svgImage{};
-            m_imageLoadTracker->TrackSvgImage(svgImage);
-
-            auto streamWriteOperation = dataWriter.StoreAsync();
-
-            streamWriteOperation.Completed(
-                [weakThis = this->get_weak(), dataWriter, svgImage, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
-                {
-                    if (auto strongThis = weakThis.get())
-                    {
-                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
-                        {
-                            stream.Seek(0);
-                            strongThis->SetImageSource(uiElement, svgImage);
-                            auto setSourceOperation = svgImage.SetSourceAsync(stream);
-
-                            setSourceOperation.Completed(
-                                [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                                    winrt::IAsyncOperation<winrt::SvgImageSourceLoadStatus> const& operation, winrt::AsyncStatus status)
-                                {
-                                    auto loadStatus = operation.GetResults();
-                                    if (status == winrt::AsyncStatus::Completed && isAutoSize && loadStatus == winrt::SvgImageSourceLoadStatus::Success)
-                                    {
-                                        if (auto strongThis = weakThis.get())
-                                        {
-                                            strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                                        }
-                                    }
-                                });
-                        }
-                    }
-                });
-            m_writeAsyncOperations.push_back(streamWriteOperation);
-            mustHideElement = false;
-            return;
-        }
-
-        // Otherwise, no resolver...
-        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
-        {
-            // If we've been explicitly told to let Xaml handle the image loading, or there are
-            // no listeners waiting on the image load callbacks, use Xaml to load the images
-            winrt::SvgImageSource svgImage{};
-            svgImage.UriSource(imageUrl);
-
-            SetImageSource(uiElement, svgImage, stretch);
-
-            if (isAutoSize)
-            {
-                SetAutoSize(uiElement, parentElement, imageContainer, isVisible, true /* imageFiresOpenEvent */);
-            }
+            winrt::SvgImageSource svgImageSource{};
+            return svgImageSource;
         }
         else
         {
-            PopulateImageFromUrlAsync(imageUrl, uiElement);
+            winrt::BitmapImage bitmapImage{};
+            return bitmapImage;
         }
     }
 
-    // TODO: We need to adjust this method to handle SVG as well - need to test
-    template<typename T> void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl)
+    // TODO: need to test this method
+    template<typename T> void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
     {
         winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
 
         winrt::HttpClient httpClient{httpBaseProtocolFilter};
 
-        // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+        // Create an ImageSource to hold the image data.  We use BitmapImage & SvgImageSource in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
-        winrt::BitmapImage bitmapImage{};
-        this->m_imageLoadTracker->TrackBitmapImage(bitmapImage);
-        bitmapImage.CreateOptions(winrt::BitmapCreateOptions::None);
+        auto image = CreateImageSource(isImageSvg);
+        this->m_imageLoadTracker->TrackImage(image);
+
+        if (!isImageSvg)
+        {
+            image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+        }  
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
         getStreamOperation.Completed(
-            [this, weakThis = this->get_weak(), bitmapImage, imageControl](
+            [this, weakThis = this->get_weak(), imageControl](
                 winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress> const& operation,
                 winrt::AsyncStatus status) -> void
             {

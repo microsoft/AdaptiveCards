@@ -24,6 +24,7 @@ namespace AdaptiveCards::Rendering::Uwp
     {
     public:
         ~ImageLoadTracker();
+        void TrackImage(winrt::ImageSource const& image);
         void TrackBitmapImage(winrt::BitmapImage const& bitmapImage);
         void TrackSvgImage(winrt::SvgImageSource const& svgImage);
 
