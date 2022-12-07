@@ -40,7 +40,7 @@ describe("Mock function", function() {
         let dueDateInput = await ACInputDate.getInputWithId("dueDate");
         await dueDateInput.setDate(1993, 2, 4);
 
-        await ACAction.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("Send");
         
         Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
 
