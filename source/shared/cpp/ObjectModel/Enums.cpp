@@ -43,6 +43,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ChoiceSet, "choiceSet"},
             {AdaptiveCardSchemaKey::Choices, "choices"},
             {AdaptiveCardSchemaKey::ChoicesData, "choices.data"},
+            {AdaptiveCardSchemaKey::ChoicesDataType, "type"},
             {AdaptiveCardSchemaKey::Color, "color"},
             {AdaptiveCardSchemaKey::ColorConfig, "colorConfig"},
             {AdaptiveCardSchemaKey::Column, "column"},

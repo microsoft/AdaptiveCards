@@ -22,7 +22,7 @@ Json::Value ChoicesData::SerializeToJsonValue() const
 
     if (!m_type.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetType();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesDataType)] = GetChoicesDataType();
     }
 
     if (!m_dataset.empty())
@@ -47,7 +47,7 @@ std::shared_ptr<ChoicesData> ChoicesData::Deserialize(ParseContext& context, con
         return choicesData;
     }
 
-    auto type = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Type, false);
+    auto type = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ChoicesDataType, false);
     auto dataset = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Dataset, false);
     bool isValidChoicesData = true;
     if (type.empty())
@@ -75,7 +75,7 @@ std::shared_ptr<ChoicesData> ChoicesData::Deserialize(ParseContext& context, con
 
     if (isValidChoicesData)
     {
-        choicesData->SetType(type);
+        choicesData->SetChoicesDataType(type);
         choicesData->SetDataset(dataset);
     }
 
@@ -87,12 +87,12 @@ std::shared_ptr<ChoicesData> ChoicesData::DeserializeFromString(ParseContext& co
     return ChoicesData::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-std::string ChoicesData::GetType() const
+std::string ChoicesData::GetChoicesDataType() const
 {
     return m_type;
 }
 
-void ChoicesData::SetType(const std::string& type)
+void ChoicesData::SetChoicesDataType(const std::string& type)
 {
     m_type = type;
 }
