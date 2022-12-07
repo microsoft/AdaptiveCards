@@ -90,7 +90,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::FrameworkElement frameworkElement{nullptr};
 
-        // Image style doesn't work as expected with height property (repro with bitmap and svg)
+        // TODO: file bug - Image style doesn't work as expected with height property (repro with bitmap and svg)
         if (imageStyle == winrt::ImageStyle::Person)
         {
             winrt::Ellipse ellipse{};
@@ -375,6 +375,7 @@ namespace AdaptiveCards::Rendering::Uwp
                         {
                             if (auto strongThis = weakThis.get())
                             {
+                                // Question: should we only mark as a failed image if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
                                 this->m_imageLoadTracker->MarkFailedLoadImage(image);
                             }
                         }
@@ -518,7 +519,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!isImageSvg)
         {
             image.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
-        }  
+        }
 
         auto getStreamOperation = httpClient.GetInputStreamAsync(imageUrl);
         getStreamOperation.Completed(
@@ -672,7 +673,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     boolean XamlBuilder::IsSvgImage(std::string url)
     {
-		// Question: is this check sufficient?
+        // Question: is this check sufficient?
         auto foundSvg = url.find("svg");
         return !(foundSvg == std::string::npos);
     }

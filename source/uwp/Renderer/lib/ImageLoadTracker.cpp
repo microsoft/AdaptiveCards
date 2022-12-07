@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "ImageLoadTracker.h"
 
-// TODO: we need to include SVG handling here as well
 namespace AdaptiveCards::Rendering::Uwp
 {
     ImageLoadTracker::~ImageLoadTracker()
@@ -55,7 +54,8 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         auto trackedSvgImageDetails = winrt::make_self<TrackedSvgImageDetails>();
 
-        trackedSvgImageDetails->openedRevoker = svgImage.Opened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_SvgImageLoaded});
+        trackedSvgImageDetails->openedRevoker =
+            svgImage.Opened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_SvgImageLoaded});
 
         trackedSvgImageDetails->openFailedRevoker =
             svgImage.OpenFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_SvgImageFailed});
@@ -114,7 +114,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    // TODO: confirm that the sender here is actually the bitmap/svg
+    // Question: Is it safe to assume that sender will be a bitmapImage or svgImageSource for these methods?
     void ImageLoadTracker::TrackedImage_BitmapImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
@@ -152,11 +152,9 @@ namespace AdaptiveCards::Rendering::Uwp
         else
         {
             // Otherwise, we have an svg
-            // // TODO: do we need casting here?
-            //auto svg = imageSource.try_as<winrt::SvgImageSource>();
-            if (m_svgEventRevokers.find(sender) != m_svgEventRevokers.end())
+            if (m_svgEventRevokers.find(sender.as<winrt::SvgImageSource>()) != m_svgEventRevokers.end())
             {
-                UnsubscribeFromEvents(m_svgEventRevokers[sender]);
+                UnsubscribeFromEvents(m_svgEventRevokers[sender.as<winrt::SvgImageSource>()]);
             }
         }
 
@@ -165,8 +163,6 @@ namespace AdaptiveCards::Rendering::Uwp
             m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
     }
-
-    // TODO: need a dupe of ImageLoadResultReceived
 
     void ImageLoadTracker::UnsubscribeFromEvents(winrt::com_ptr<TrackedBitmapImageDetails> const& trackedImageDetails)
     {

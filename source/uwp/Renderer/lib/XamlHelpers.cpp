@@ -418,6 +418,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
+    // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
                           winrt::ImageSource const& imageSource,
