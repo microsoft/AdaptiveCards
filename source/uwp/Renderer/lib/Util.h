@@ -3,20 +3,7 @@
 #pragma once
 #include <string>
 
-#include <BaseCardElement.h>
-#include <BaseActionElement.h>
-#include <ChoiceInput.h>
-#include <Column.h>
-#include <Fact.h>
-#include <Image.h>
 #include <Inline.h>
-#include <MediaSource.h>
-#include <ToggleVisibilityTarget.h>
-#include <windows.foundation.collections.h>
-#include <ParseContext.h>
-#include "AdaptiveCardParseWarning.h"
-#include "RemoteResourceInformation.h"
-#include "TableCell.h"
 #include "AdaptiveElementRendererRegistration.h"
 #include "AdaptiveActionRendererRegistration.h"
 
