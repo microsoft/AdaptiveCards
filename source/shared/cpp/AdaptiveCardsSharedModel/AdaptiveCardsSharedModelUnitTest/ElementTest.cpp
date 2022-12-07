@@ -121,8 +121,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(context.warnings[0]->GetStatusCode() == WarningStatusCode::InvalidValue);
             Assert::AreEqual(context.warnings[0]->GetReason(), "Invalid type for Choices.data, only Data.Query is supported"s);
         }
-         TEST_METHOD(ChoiceSetWithInvalidChoicesDataTest)
-         {
+
+        TEST_METHOD(ChoiceSetWithInvalidChoicesDataTest)
+        {
             std::string choiceSetFragment {R"(
             {
                 "type": "Input.ChoiceSet",
@@ -140,7 +141,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(context.warnings.size(),1ui64);
             Assert::IsTrue(context.warnings[0]->GetStatusCode() == WarningStatusCode::RequiredPropertyMissing);
             Assert::AreEqual(context.warnings[0]->GetReason(), "non-empty string has to be given for dataset in choices.data, none given"s);
-         }
+        }
 
         TEST_METHOD(ChoiceSetMultiselectWithChoicesDataTest)
         {
@@ -163,6 +164,5 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(context.warnings[0]->GetStatusCode() == WarningStatusCode::InvalidValue);
             Assert::AreEqual(context.warnings[0]->GetReason(), "Input.ChoiceSet does not support filtering with multiselect"s);
         }
-
     };
 }

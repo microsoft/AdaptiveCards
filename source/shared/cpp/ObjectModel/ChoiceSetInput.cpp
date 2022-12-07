@@ -57,10 +57,10 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
         }
     }
 
-     if (m_choicesData != nullptr && m_choicesData->ShouldSerialize())
-     {
+    if (m_choicesData != nullptr && m_choicesData->ShouldSerialize())
+    {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesData)] = m_choicesData->SerializeToJsonValue();
-     }
+    }
 
     return root;
 }

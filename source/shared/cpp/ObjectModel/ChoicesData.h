@@ -13,17 +13,10 @@ class ChoicesData
 {
 public:
     ChoicesData();
-    ChoicesData(
-        std::string type,
-        std::string dataset) :
-        m_type(type),
-        m_dataset(dataset)
-    {
-    }
 
-    bool ShouldSerialize() const;
-    std::string Serialize() const;
-    Json::Value SerializeToJsonValue() const;
+    bool ShouldSerialize();
+    std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetChoicesDataType() const;
     void SetChoicesDataType(const std::string& type);

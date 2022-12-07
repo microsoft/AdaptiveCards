@@ -11,12 +11,12 @@ ChoicesData::ChoicesData()
 {
 }
 
-std::string ChoicesData::Serialize() const
+std::string ChoicesData::Serialize()
 {
     return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
-Json::Value ChoicesData::SerializeToJsonValue() const
+Json::Value ChoicesData::SerializeToJsonValue()
 {
     Json::Value root;
 
@@ -34,7 +34,7 @@ Json::Value ChoicesData::SerializeToJsonValue() const
 }
 
 // Indicates non-default values have been set. If false, serialization can be safely skipped.
-bool ChoicesData::ShouldSerialize() const
+bool ChoicesData::ShouldSerialize()
 {
     return m_type.compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) != 0 && !m_dataset.empty();
 }
