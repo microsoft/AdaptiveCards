@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Navigation;
 
 using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCardVisualizer.ViewModel;
+using Windows.System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,6 +41,8 @@ namespace AdaptiveCardVisualizer
 
         private async void Load()
         {
+            SetKeyboardAcceleratorForSettingsButton();
+
             IsEnabled = false;
 
             ViewModel = await MainPageViewModel.LoadAsync();
@@ -125,6 +128,21 @@ namespace AdaptiveCardVisualizer
         private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
         {
             SetIsInHostConfigEditor(false);
+        }
+
+        /*
+         * We need to set KeyboardAccelerator for Settings button in code behind
+         * because virtual key for "comma" doesn't exist in the Windows.System.VirtualKey enum
+         * and we're not able to assign this shortcut in the markup.
+        */
+        private void SetKeyboardAcceleratorForSettingsButton()
+        {
+            KeyboardAccelerator accelerator = new KeyboardAccelerator
+            {
+                Key = (Windows.System.VirtualKey)188, // 188 is VK_OEM_COMMA which doesn't exist in enum
+                Modifiers = VirtualKeyModifiers.Control
+            };
+            AppBarHostConfigEditor.KeyboardAccelerators.Add(accelerator);
         }
     }
 }
