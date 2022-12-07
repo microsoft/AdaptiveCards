@@ -62,7 +62,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto parentElement = renderArgs.ParentElement();
 
             auto childItems = adaptiveContainer.Items();
-            Helpers::XamlBuilder::BuildPanelChildren(
+            render_xaml::XamlBuilder::BuildPanelChildren(
                 childItems, containerPanel.as<winrt::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
@@ -102,7 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto selectAction = adaptiveContainer.SelectAction();
             auto hostConfig = renderContext.HostConfig();
 
-            return Helpers::ActionHelpers::HandleSelectAction(
+            return render_xaml::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, containerBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)

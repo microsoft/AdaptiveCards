@@ -141,7 +141,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             XamlHelpers::AppendXamlElementToPanel(xamlGrid, gridContainer, columnSetHeightType);
 
-            return Helpers::ActionHelpers::HandleSelectAction(
+            return render_xaml::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, columnSetBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)

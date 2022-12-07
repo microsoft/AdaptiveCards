@@ -30,7 +30,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 auto adaptiveActionSet = cardElement.as<winrt::AdaptiveActionSet>();
                 auto actions = adaptiveActionSet.Actions();
 
-                return Helpers::ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+                return render_xaml::ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
             }
         }
         catch (winrt::hresult_error const& ex)

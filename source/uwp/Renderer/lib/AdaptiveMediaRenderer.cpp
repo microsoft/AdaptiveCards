@@ -8,7 +8,7 @@
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
 
-using namespace Helpers::MediaHelpers;
+using namespace render_xaml::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -38,7 +38,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::hstring altText = adaptiveMedia.AltText();
 
-            auto touchTargetUIElement = Helpers::ActionHelpers::WrapInTouchTarget(
+            auto touchTargetUIElement = render_xaml::ActionHelpers::WrapInTouchTarget(
                 cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
