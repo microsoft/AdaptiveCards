@@ -10,24 +10,10 @@
 
 ### Properties
 
-* [activity](activityrequest.md#activity)
-* [attemptNumber](activityrequest.md#attemptnumber)
-* [consecutiveRefreshes](activityrequest.md#consecutiverefreshes)
+* [retryAsync](activityrequest.md#retryAsync)
 
 ## Properties
 
-###  activity
+###  retryAsync
 
-• **activity**: *[InvokeActivity](invokeactivity.md)*
-
-___
-
-###  attemptNumber
-
-• **attemptNumber**: *number*
-
-___
-
-###  consecutiveRefreshes
-
-• **consecutiveRefreshes**: *number*
+• **retryAsync**(): *void*

@@ -7,7 +7,7 @@ export class TestChannelAdapter extends Adaptive.ChannelAdapter {
         super();
     }
 
-    async sendRequestAsync(request: Adaptive.IActivityRequest): Promise<Adaptive.ActivityResponse> {
+    async sendRequestAsync(request: Adaptive.IExecuteRequest): Promise<Adaptive.ActivityResponse> {
         if (request.action.verb === "localException") {
             throw new Error("Local exception");
         }

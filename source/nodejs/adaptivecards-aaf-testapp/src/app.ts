@@ -24,19 +24,19 @@ window.onload = function() {
     applet.channelAdapter = new TestChannelAdapter("https://acv2testbot.azurewebsites.net/aaftestbot/invoke");
 
     applet.setCard(Shared.sampleCard);
-    // applet.onActivityRequestFailed = (sender, response) => { return 2000; }
-    applet.onActivityRequestSucceeded = (sender: Adaptive.AdaptiveApplet, response: Adaptive.SuccessResponse, parsedContent: string | Adaptive.AdaptiveCard) => {
+    // applet.onExecuteRequestFailed = (sender, response) => { return 2000; }
+    applet.onExecuteRequestSucceeded = (sender: Adaptive.AdaptiveApplet, response: Adaptive.SuccessResponse, parsedContent: string | Adaptive.AdaptiveCard) => {
         if (parsedContent !== undefined && typeof parsedContent === "string") {
             alert(parsedContent);
         }
     }
-    applet.onSSOTokenNeeded = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, tokenExchangeResource: Adaptive.TokenExchangeResource) => {
+    applet.onSSOTokenNeeded = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IExecuteRequest, tokenExchangeResource: Adaptive.TokenExchangeResource) => {
         request.authToken = "valid_sso_token";
         request.retryAsync();
 
         return true;
     }
-    applet.onShowSigninPrompt = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, signinButton: Adaptive.AuthCardButton) => {
+    applet.onShowSigninPrompt = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IExecuteRequest, signinButton: Adaptive.AuthCardButton) => {
         alert("Simulating auth prompt...");
 
         request.authCode = request.attemptNumber > 1 ? "valid_auth_code" : "invalid_auth_code";
