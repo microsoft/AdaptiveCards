@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.props')" />
+  <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <PropertyGroup Label="Globals">
+    <CppWinRTOptimized>true</CppWinRTOptimized>
+    <MinimalCoreWin>true</MinimalCoreWin>
+    <ProjectGuid>{8e2f84c6-5215-4c81-93fc-a35883762e10}</ProjectGuid>
+    <ProjectName>AdaptiveCardsObjectModel</ProjectName>
+    <RootNamespace>AdaptiveCards.ObjectModel.Winui3</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Store</ApplicationType>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <TargetName>AdaptiveCards.ObjectModel.Winui3</TargetName>
+    <DesktopCompatible>true</DesktopCompatible>
+    <UseWinUI>true</UseWinUI>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <GenerateManifest>false</GenerateManifest> <!--                  -->
+    <DesktopCompatible>true</DesktopCompatible>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <PreprocessorDefinitions>USE_WINUI3;_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>
+        $(ProjectDir)..\Lib;
+        $(WindowsSDK_WindowsMetadata);
+        $(AdditionalUsingDirectories)
+      </AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.Winui3.def</ModuleDefinitionFile>
+      <AdditionalDependencies>
+        user32.lib;
+        %(AdditionalDependencies);
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        GeneratedFiles;
+        ..\..\..\shared\cpp\ObjectModel;
+        ..\..\..\shared\cpp\ObjectModel\json;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveAuthCardButton.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveAuthentication.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCaptionSource.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContentSource.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveExecuteAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveExecuteActionParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRefresh.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRemoteResourceInformation.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRequirement.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTable.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableCell.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableRow.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTokenExchangeResource.cpp" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionElement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionParserRegistration.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionSet.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionSetParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveAuthCardButton.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveAuthentication.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveBackgroundImage.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCaptionSource.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContentSource.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCardElement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceSetInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnSetParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContainerParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveError.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveExecuteAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveExecuteActionParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCardParseResult.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveElementParserRegistration.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveDateInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFactSetParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageSetParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveInputElement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMedia.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMediaParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMediaSource.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveNumberInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveOpenUrlActionParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRefresh.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRemoteResourceInformation.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRequirement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRichTextBlock.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRichTextBlockParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveShowCardActionParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveSubmitActionParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTable.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableCell.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTableRow.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextBlockParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextElement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextRun.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTimeInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleInputParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityActionParser.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTokenExchangeResource.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveUnsupportedAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveUnsupportedElement.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveWarning.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\CustomActionWrapper.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\CustomElementWrapper.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCard.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceSetInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumn.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnSet.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContainer.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFact.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFactSet.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImage.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageSet.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveDateInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveNumberInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTimeInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleInput.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveOpenUrlAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveShowCardAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveSubmitAction.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\pch.h" />             <!--                           -->
+    <ClInclude Include="..\..\uwp\AdaptiveCardsObjectModel\lib\ObjectModelUtil.h" /> <!--                           -->
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveBackgroundImage.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMedia.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
+    </ClCompile>
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMediaParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveMediaSource.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveOpenUrlActionParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRichTextBlock.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveRichTextBlockParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextRun.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityActionParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleVisibilityAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveShowCardActionParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveSubmitActionParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveUnsupportedAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveUnsupportedElement.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionSet.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionSetParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\pch.cpp"> <!--                           -->
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionElement.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCardElement.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceSetInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnSetParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContainerParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveError.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCardParseResult.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveElementParserRegistration.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveDateInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFactSetParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageSetParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveInputElement.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveNumberInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextBlockParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTimeInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleInputParser.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveWarning.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\CustomActionWrapper.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\CustomElementWrapper.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumn.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveColumnSet.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveContainer.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFact.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveFactSet.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImage.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveImageSet.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveDateInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveNumberInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTimeInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveToggleInput.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveOpenUrlAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveShowCardAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveSubmitAction.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\lib\ObjectModelUtil.cpp" />
+    <ClCompile Include="..\..\uwp\AdaptiveCardsObjectModel\dll\dll.cpp" /> <!--                           -->
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="idl\AdaptiveCards.ObjectModel.Winui3.idl">
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt">
+      <DeploymentContent>false</DeploymentContent>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ObjectModelProjection\ObjectModelProjection.vcxproj">
+      <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.targets')" />
+    <Import Project="..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.211019.2\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.211019.2\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.1\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.2.221109.1\build\native\Microsoft.WindowsAppSDK.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.211019.2\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.ImplementationLibrary.1.0.211019.2\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
+  </Target>
+</Project>
