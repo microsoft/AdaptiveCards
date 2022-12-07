@@ -6,8 +6,8 @@ import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
 import {
     ActivityResponse,
-    IActivityRequest,
-    ActivityRequestTrigger,
+    IExecuteRequest,
+    ExecuteRequestTrigger,
     SuccessResponse,
     ErrorResponse,
     LoginRequestResponse
@@ -48,10 +48,10 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
     }
 }
 
-class ActivityRequest implements IActivityRequest {
+class ExecuteRequest implements IExecuteRequest {
     constructor(
         readonly action: ExecuteAction,
-        readonly trigger: ActivityRequestTrigger,
+        readonly trigger: ExecuteRequestTrigger,
         readonly consecutiveRefreshes: number
     ) {}
 
@@ -59,7 +59,7 @@ class ActivityRequest implements IActivityRequest {
     authToken?: string;
     attemptNumber: number = 0;
 
-    onSend: (sender: ActivityRequest) => void;
+    onSend: (sender: ExecuteRequest) => void;
 
     // eslint-disable-next-line @typescript-eslint/require-await
     async retryAsync(): Promise<void> {
@@ -146,7 +146,7 @@ export class AdaptiveApplet {
 
                         this.internalExecuteAction(
                             refreshAction,
-                            ActivityRequestTrigger.Automatic,
+                            ExecuteRequestTrigger.Automatic,
                             0
                         );
                     }
@@ -165,26 +165,26 @@ export class AdaptiveApplet {
         }
     }
 
-    private createActivityRequest(
+    private createExecuteRequest(
         action: ExecuteAction,
-        trigger: ActivityRequestTrigger,
+        trigger: ExecuteRequestTrigger,
         consecutiveRefreshes: number
-    ): ActivityRequest | undefined {
+    ): ExecuteRequest | undefined {
         if (this.card) {
-            const request = new ActivityRequest(action, trigger, consecutiveRefreshes);
-            request.onSend = (sender: ActivityRequest) => {
+            const request = new ExecuteRequest(action, trigger, consecutiveRefreshes);
+            request.onSend = (sender: ExecuteRequest) => {
                 sender.attemptNumber++;
 
-                void this.internalSendActivityRequestAsync(request);
+                void this.internalSendExecuteRequestAsync(request);
             };
 
-            const cancel = this.onPrepareActivityRequest
-                ? !this.onPrepareActivityRequest(this, request, action)
+            const cancel = this.onPrepareExecuteRequest
+                ? !this.onPrepareExecuteRequest(this, request, action)
                 : false;
 
             return cancel ? undefined : request;
         } else {
-            throw new Error("createActivityRequest: no card has been set.");
+            throw new Error("createExecuteRequest: no card has been set.");
         }
     }
 
@@ -292,7 +292,7 @@ export class AdaptiveApplet {
                         // If the user takes an action, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
 
-                        this.internalExecuteAction(action, ActivityRequestTrigger.Manual, 0);
+                        this.internalExecuteAction(action, ExecuteRequestTrigger.Manual, 0);
                     };
                     this._card.onInputValueChanged = (_input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
@@ -328,7 +328,7 @@ export class AdaptiveApplet {
 
                                     this.internalExecuteAction(
                                         this._card.refresh.action,
-                                        ActivityRequestTrigger.Automatic,
+                                        ExecuteRequestTrigger.Automatic,
                                         consecutiveRefreshes + 1
                                     );
                                 } else {
@@ -350,7 +350,7 @@ export class AdaptiveApplet {
                                         if (this._allowAutomaticCardUpdate) {
                                             this.internalExecuteAction(
                                                 action,
-                                                ActivityRequestTrigger.Automatic,
+                                                ExecuteRequestTrigger.Automatic,
                                                 consecutiveRefreshes + 1
                                             );
                                         }
@@ -395,12 +395,12 @@ export class AdaptiveApplet {
 
     private internalExecuteAction(
         action: Action,
-        trigger: ActivityRequestTrigger,
+        trigger: ExecuteRequestTrigger,
         consecutiveRefreshes: number
     ) {
         if (action instanceof ExecuteAction) {
             if (this.channelAdapter) {
-                const request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
+                const request = this.createExecuteRequest(action, trigger, consecutiveRefreshes);
 
                 if (request) {
                     void request.retryAsync();
@@ -415,7 +415,7 @@ export class AdaptiveApplet {
         }
     }
 
-    private createProgressOverlay(request: ActivityRequest): HTMLElement | undefined {
+    private createProgressOverlay(request: ExecuteRequest): HTMLElement | undefined {
         if (!this._progressOverlay) {
             if (this.onCreateProgressOverlay) {
                 this._progressOverlay = this.onCreateProgressOverlay(this, request);
@@ -435,7 +435,7 @@ export class AdaptiveApplet {
         return this._progressOverlay;
     }
 
-    private removeProgressOverlay(request: IActivityRequest) {
+    private removeProgressOverlay(request: IExecuteRequest) {
         if (this.onRemoveProgressOverlay) {
             this.onRemoveProgressOverlay(this, request);
         }
@@ -447,22 +447,22 @@ export class AdaptiveApplet {
         }
     }
 
-    private activityRequestSucceeded(
+    private executeRequestSucceeded(
         response: SuccessResponse,
         parsedContent: string | AdaptiveCard | undefined
     ) {
-        if (this.onActivityRequestSucceeded) {
-            this.onActivityRequestSucceeded(this, response, parsedContent);
+        if (this.onExecuteRequestSucceeded) {
+            this.onExecuteRequestSucceeded(this, response, parsedContent);
         }
     }
 
-    private activityRequestFailed(response: ErrorResponse): number {
-        return this.onActivityRequestFailed
-            ? this.onActivityRequestFailed(this, response)
+    private executeRequestFailed(response: ErrorResponse): number {
+        return this.onExecuteRequestFailed
+            ? this.onExecuteRequestFailed(this, response)
             : GlobalSettings.applets.defaultTimeBetweenRetryAttempts;
     }
 
-    private showAuthCodeInputDialog(request: ActivityRequest) {
+    private showAuthCodeInputDialog(request: ExecuteRequest) {
         const showBuiltInAuthCodeInputCard = this.onShowAuthCodeInputDialog
             ? this.onShowAuthCodeInputDialog(this, request)
             : true;
@@ -518,9 +518,9 @@ export class AdaptiveApplet {
         }
     }
 
-    private async internalSendActivityRequestAsync(request: ActivityRequest) {
+    private async internalSendExecuteRequestAsync(request: ExecuteRequest) {
         if (!this.channelAdapter) {
-            throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.");
+            throw new Error("internalSendExecuteRequestAsync: channelAdapter is not set.");
         }
 
         const overlay = this.createProgressOverlay(request);
@@ -537,19 +537,19 @@ export class AdaptiveApplet {
             if (request.attemptNumber === 1) {
                 logEvent(
                     Enums.LogLevel.Info,
-                    "Sending activity request to channel (attempt " + request.attemptNumber + ")"
+                    "Sending execute request to channel (attempt " + request.attemptNumber + ")"
                 );
             } else {
                 logEvent(
                     Enums.LogLevel.Info,
-                    "Re-sending activity request to channel (attempt " + request.attemptNumber + ")"
+                    "Re-sending execute request to channel (attempt " + request.attemptNumber + ")"
                 );
             }
 
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             } catch (error) {
-                logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
+                logEvent(Enums.LogLevel.Error, "Execute request failed: " + error);
 
                 this.removeProgressOverlay(request);
 
@@ -562,7 +562,7 @@ export class AdaptiveApplet {
 
                     if (response.rawContent === undefined) {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is undefined"
+                            "internalSendExecuteRequestAsync: Action.Execute result is undefined"
                         );
                     }
 
@@ -577,28 +577,28 @@ export class AdaptiveApplet {
                     if (typeof parsedContent === "string") {
                         logEvent(
                             Enums.LogLevel.Info,
-                            "The activity request returned a string after " +
+                            "The execute request returned a string after " +
                                 request.attemptNumber +
                                 " attempt(s)."
                         );
 
-                        this.activityRequestSucceeded(response, parsedContent);
+                        this.executeRequestSucceeded(response, parsedContent);
                     } else if (
                         typeof parsedContent === "object" &&
                         parsedContent["type"] === "AdaptiveCard"
                     ) {
                         logEvent(
                             Enums.LogLevel.Info,
-                            "The activity request returned an Adaptive Card after " +
+                            "The execute request returned an Adaptive Card after " +
                                 request.attemptNumber +
                                 " attempt(s)."
                         );
 
                         this.internalSetCard(parsedContent, request.consecutiveRefreshes);
-                        this.activityRequestSucceeded(response, this.card);
+                        this.executeRequestSucceeded(response, this.card);
                     } else {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" +
+                            "internalSendExecuteRequestAsync: Action.Execute result is of unsupported type (" +
                                 typeof response.rawContent +
                                 ")"
                         );
@@ -606,7 +606,7 @@ export class AdaptiveApplet {
 
                     done = true;
                 } else if (response instanceof ErrorResponse) {
-                    const retryIn: number = this.activityRequestFailed(response);
+                    const retryIn: number = this.executeRequestFailed(response);
 
                     if (
                         retryIn >= 0 &&
@@ -614,7 +614,7 @@ export class AdaptiveApplet {
                     ) {
                         logEvent(
                             Enums.LogLevel.Warning,
-                            `Activity request failed: ${response.error.message}. Retrying in ${retryIn}ms`
+                            `Execute request failed: ${response.error.message}. Retrying in ${retryIn}ms`
                         );
 
                         request.attemptNumber++;
@@ -627,7 +627,7 @@ export class AdaptiveApplet {
                     } else {
                         logEvent(
                             Enums.LogLevel.Error,
-                            `Activity request failed: ${response.error.message}. Giving up after ${request.attemptNumber} attempt(s)`
+                            `Execute request failed: ${response.error.message}. Giving up after ${request.attemptNumber} attempt(s)`
                         );
 
                         this.removeProgressOverlay(request);
@@ -637,7 +637,7 @@ export class AdaptiveApplet {
                 } else if (response instanceof LoginRequestResponse) {
                     logEvent(
                         Enums.LogLevel.Info,
-                        "The activity request returned a LoginRequestResponse after " +
+                        "The execute request returned a LoginRequestResponse after " +
                             request.attemptNumber +
                             " attempt(s)."
                     );
@@ -661,7 +661,7 @@ export class AdaptiveApplet {
 
                             if (response.signinButton === undefined) {
                                 throw new Error(
-                                    "internalSendActivityRequestAsync: the login request doesn't contain a valid signin URL."
+                                    "internalSendExecuteRequestAsync: the login request doesn't contain a valid signin URL."
                                 );
                             }
 
@@ -727,33 +727,33 @@ export class AdaptiveApplet {
     ) => void;
     onSSOTokenNeeded?: (
         sender: AdaptiveApplet,
-        request: IActivityRequest,
+        request: IExecuteRequest,
         tokenExchangeResource: TokenExchangeResource
     ) => boolean;
-    onPrepareActivityRequest?: (
+    onPrepareExecuteRequest?: (
         sender: AdaptiveApplet,
-        request: IActivityRequest,
+        request: IExecuteRequest,
         action: ExecuteAction
     ) => boolean;
-    onActivityRequestSucceeded?: (
+    onExecuteRequestSucceeded?: (
         sender: AdaptiveApplet,
         response: SuccessResponse,
         parsedContent: string | AdaptiveCard | undefined
     ) => void;
-    onActivityRequestFailed?: (sender: AdaptiveApplet, response: ErrorResponse) => number;
+    onExecuteRequestFailed?: (sender: AdaptiveApplet, response: ErrorResponse) => number;
     onCreateSerializationContext?: (sender: AdaptiveApplet) => SerializationContext;
     onCreateProgressOverlay?: (
         sender: AdaptiveApplet,
-        request: IActivityRequest
+        request: IExecuteRequest
     ) => HTMLElement | undefined;
-    onRemoveProgressOverlay?: (sender: AdaptiveApplet, request: IActivityRequest) => void;
+    onRemoveProgressOverlay?: (sender: AdaptiveApplet, request: IExecuteRequest) => void;
     onRenderManualRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
     onAction?: (sender: AdaptiveApplet, action: Action) => void;
     onShowManualRefreshButton?: (sender: AdaptiveApplet) => boolean;
-    onShowAuthCodeInputDialog?: (sender: AdaptiveApplet, request: IActivityRequest) => boolean;
+    onShowAuthCodeInputDialog?: (sender: AdaptiveApplet, request: IExecuteRequest) => boolean;
     onShowSigninPrompt?: (
         sender: AdaptiveApplet,
-        request: IActivityRequest,
+        request: IExecuteRequest,
         signinButton: AuthCardButton
     ) => void;
 
@@ -776,7 +776,7 @@ export class AdaptiveApplet {
 
     refreshCard() {
         if (this._card && this._card.refresh) {
-            this.internalExecuteAction(this._card.refresh.action, ActivityRequestTrigger.Manual, 0);
+            this.internalExecuteAction(this._card.refresh.action, ExecuteRequestTrigger.Manual, 0);
         }
     }
 

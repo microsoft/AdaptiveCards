@@ -7,21 +7,23 @@ import {
     TokenExchangeResource
 } from "./card-elements";
 
-export enum ActivityRequestTrigger {
+export enum ExecuteRequestTrigger {
     Automatic = "automatic",
     Manual = "manual"
 }
 
 export interface IActivityRequest {
+    retryAsync(): void;
+}
+
+export interface IExecuteRequest extends IActivityRequest {
     readonly action: ExecuteAction;
-    readonly trigger: ActivityRequestTrigger;
+    readonly trigger: ExecuteRequestTrigger;
     readonly attemptNumber: number;
     readonly consecutiveRefreshes: number;
 
     authCode?: string;
     authToken?: string;
-
-    retryAsync(): void;
 }
 
 export class ActivityRequestError {
@@ -48,7 +50,7 @@ export class LoginRequestResponse extends ActivityResponse {
     private _auth: Authentication;
     readonly signinButton?: AuthCardButton;
 
-    constructor(readonly request: IActivityRequest, auth: Authentication) {
+    constructor(readonly request: IExecuteRequest, auth: Authentication) {
         super(request);
         this._auth = auth;
 

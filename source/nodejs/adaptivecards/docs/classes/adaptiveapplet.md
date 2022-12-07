@@ -15,12 +15,12 @@
 ### Properties
 
 * [channelAdapter](adaptiveapplet.md#channeladapter)
-* [onActivityRequestFailed](adaptiveapplet.md#optional-onactivityrequestfailed)
-* [onActivityRequestSucceeded](adaptiveapplet.md#optional-onactivityrequestsucceeded)
+* [onExecuteRequestFailed](adaptiveapplet.md#optional-onexecuterequestfailed)
+* [onExecuteRequestSucceeded](adaptiveapplet.md#optional-onexecuterequestsucceeded)
 * [onCardChanged](adaptiveapplet.md#optional-oncardchanged)
 * [onCardChanging](adaptiveapplet.md#optional-oncardchanging)
 * [onCreateProgressOverlay](adaptiveapplet.md#optional-oncreateprogressoverlay)
-* [onPrepareActivityRequest](adaptiveapplet.md#optional-onprepareactivityrequest)
+* [onPrepareExecuteRequest](adaptiveapplet.md#optional-onprepareexecuterequest)
 * [onRenderRefreshButton](adaptiveapplet.md#optional-onrenderrefreshbutton)
 * [renderedElement](adaptiveapplet.md#renderedelement)
 * [userId](adaptiveapplet.md#optional-userid)
@@ -51,15 +51,15 @@
 
 ___
 
-### `Optional` onActivityRequestFailed
+### `Optional` onExecuteRequestFailed
 
-• **onActivityRequestFailed**? : *undefined | function*
+• **onExecuteRequestFailed**? : *undefined | function*
 
 ___
 
-### `Optional` onActivityRequestSucceeded
+### `Optional` onExecuteRequestSucceeded
 
-• **onActivityRequestSucceeded**? : *undefined | function*
+• **onExecuteRequestSucceeded**? : *undefined | function*
 
 ___
 
@@ -81,9 +81,9 @@ ___
 
 ___
 
-### `Optional` onPrepareActivityRequest
+### `Optional` onPrepareExecuteRequest
 
-• **onPrepareActivityRequest**? : *undefined | function*
+• **onPrepareExecuteRequest**? : *undefined | function*
 
 ___
 
