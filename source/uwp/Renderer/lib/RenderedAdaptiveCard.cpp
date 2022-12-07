@@ -130,7 +130,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto actionConfig = m_originatingHostConfig.Actions();
             auto showCardConfig = actionConfig.ShowCard();
             auto actionMode = showCardConfig.ActionMode();
-            bool handleInlineShowCard = (actionMode == winrt::render_xaml::ActionMode::Inline);
+            bool handleInlineShowCard = (actionMode == winrt_render_xaml::ActionMode::Inline);
 
             if (handleInlineShowCard)
             {

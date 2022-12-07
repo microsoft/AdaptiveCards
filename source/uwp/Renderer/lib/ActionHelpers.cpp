@@ -689,7 +689,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         auto showCardActionConfig = actionsConfig.ShowCard();
         auto showCardActionMode = showCardActionConfig.ActionMode();
         // ActionMode enum exists both in Rendering in ObjectModel namespaces. When the time permits, fix it.
-        if (showCardActionMode == winrt::render_xaml::ActionMode::Inline)
+        if (showCardActionMode == winrt::winrt_render_xaml::ActionMode::Inline)
         {
             // Get the card to be shown
             auto actionAsShowCardAction = action.as<winrt::AdaptiveShowCardAction>();
