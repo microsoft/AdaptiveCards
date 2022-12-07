@@ -11,8 +11,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     std::tuple<winrt::UIElement, winrt::Border> AdaptiveTextInputRenderer::HandleLayoutAndValidation(
         winrt::AdaptiveTextInput const& adaptiveTextInput,
         winrt::UIElement const& inputUIElement,
-        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext const& renderContext,
-        winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs const& renderArgs)
+        winrt::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // The text box may need to go into a number of parent containers to handle validation and inline actions.
         // textBoxParentContainer represents the current parent container.
@@ -101,12 +101,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         inputScope.Names().Append(inputScopeName);
 
         textBox.InputScope(inputScope);
-		
+
         auto [textInputControl, validationBorder] =
             HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
-		renderContext.AddInputValue(*inputValue, renderArgs);
+        renderContext.AddInputValue(*inputValue, renderArgs);
 
         ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
         return textInputControl;

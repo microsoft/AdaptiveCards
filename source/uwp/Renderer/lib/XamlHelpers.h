@@ -3,6 +3,7 @@
 #pragma once
 
 #include "WholeItemsPanel.h"
+
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,

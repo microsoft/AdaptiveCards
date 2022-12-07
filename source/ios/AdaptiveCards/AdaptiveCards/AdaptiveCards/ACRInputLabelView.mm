@@ -119,7 +119,7 @@
         }
 
         self.inputAccessibilityItem.isAccessibilityElement = YES;
-        self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+        self.labelText = self.label.text;
 
         if (HeightType::Stretch == inputBlck->GetHeight() && [inputView isKindOfClass:[ACRQuickReplyView class]]) {
             [self.stack addArrangedSubview:[(ACRColumnView *)viewGroup addPaddingFor:self]];

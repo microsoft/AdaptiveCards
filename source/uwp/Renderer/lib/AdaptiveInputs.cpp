@@ -7,7 +7,10 @@
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    winrt::JsonObject AdaptiveInputs::AsJson() { return StringToJsonObject(GetInputItemsAsJsonString()); }
+    winrt::JsonObject AdaptiveInputs::AsJson()
+    {
+        return StringToJsonObject(GetInputItemsAsJsonString());
+    }
 
     void AdaptiveInputs::AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -40,7 +43,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, Uwp::AdaptiveRenderArgs const& renderArgs)
+    void AdaptiveInputs::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, winrt::AdaptiveRenderArgs const& renderArgs)
     {
         uint32_t actionId = GetInternalIdFromAction(action);
         uint32_t cardId = renderArgs.ParentCard().InternalId();
@@ -52,7 +55,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_parentCard[cardId] = parentCardId;
     }
 
-    Uwp::IAdaptiveInputValue AdaptiveInputs::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
+    winrt::IAdaptiveInputValue AdaptiveInputs::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         hstring elementId = inputElement.as<winrt::IAdaptiveCardElement>().Id();
         return m_inputValues[HStringToUTF8(elementId)];
