@@ -11,7 +11,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_resourceResolvers[scheme] = resolver;
     }
 
-    Uwp::IAdaptiveCardResourceResolver AdaptiveCardResourceResolvers::Get(hstring const& scheme)
+    winrt::IAdaptiveCardResourceResolver AdaptiveCardResourceResolvers::Get(hstring const& scheme)
     {
         auto found = m_resourceResolvers.find(scheme);
         if (found != m_resourceResolvers.end())

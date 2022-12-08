@@ -12,8 +12,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveActionSetRenderer() = default;
 
         winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   Uwp::AdaptiveRenderContext const& renderContext,
-                                                   Uwp::AdaptiveRenderArgs const& renderArgs);
+                                winrt::AdaptiveRenderContext const& renderContext,
+                                winrt::AdaptiveRenderArgs const& renderArgs);
     };
 }
 namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation

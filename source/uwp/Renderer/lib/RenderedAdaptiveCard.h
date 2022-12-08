@@ -43,12 +43,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::UIElement const& showCardUIElement,
-                               Rendering::Uwp::AdaptiveRenderArgs const& renderArgs);
+                               winrt::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                winrt::IAdaptiveShowCardAction const& showCardAction,
                                winrt::UIElement const& showCardUIElement,
-                               Uwp::AdaptiveRenderArgs const& renderArgs);
+                               winrt::AdaptiveRenderArgs const& renderArgs);
 
         void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 
@@ -57,11 +57,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& renderArgs);
-        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
+        winrt::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
         void SetFrameworkElement(winrt::FrameworkElement const& value);
         void SetOriginatingCard(winrt::AdaptiveCard const& value);
-        void SetOriginatingHostConfig(Rendering::Uwp::AdaptiveHostConfig const& value);
+        void SetOriginatingHostConfig(winrt::AdaptiveHostConfig const& value);
         void SendActionEvent(winrt::IAdaptiveActionElement const& eventArgs);
         void SendMediaClickedEvent(winrt::AdaptiveMedia const& eventArgs);
 
@@ -71,10 +71,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void AddInlineShowCardHelper(uint32_t internalId,
                                      winrt::IAdaptiveShowCardAction const& showCardAction,
                                      winrt::UIElement const& showCardUIElement,
-                                     Uwp::AdaptiveRenderArgs const& renderArgs);
+                                     winrt::AdaptiveRenderArgs const& renderArgs);
 
         winrt::AdaptiveCard m_originatingCard;
-        Rendering::Uwp::AdaptiveHostConfig m_originatingHostConfig;
+        winrt::AdaptiveHostConfig m_originatingHostConfig;
         winrt::com_ptr<winrt::implementation::AdaptiveInputs> m_inputs;
         winrt::FrameworkElement m_frameworkElement;
 

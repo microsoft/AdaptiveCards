@@ -8,8 +8,12 @@ import { WaitUtils } from "./wait-utils";
 describe("Mock function", function() {
     let utils: TestUtils;
 
+    // This is a constant value for the wait time until the image is loaded.
+    // Only use this if you see some test flakiness. Values is given in ms.
+    const timeoutForImageLoad: number = 1000;
+
     // This is a constant value for the wait time between pressing an action and retrieving
-    // the input value. Only use this if you see some test flakiness. Value is given in ms
+    // the input value. Only use this if you see some test flakiness. Value is given in ms.
     const delayForCarouselTimer: number = 6000;
     const timeOutValueForCarousel: number = 30000;
     const timeOutValueForSuddenJumpTest: number = 20000;
@@ -36,7 +40,7 @@ describe("Mock function", function() {
         let dueDateInput = await ACInputDate.getInputWithId("dueDate");
         await dueDateInput.setDate(1993, 2, 4);
 
-        await ACAction.clickOnActionWithTitle("OK");
+        await ACAction.clickOnActionWithTitle("Send");
         
         Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
 
@@ -198,6 +202,8 @@ describe("Mock function", function() {
         await utils.goToTestCase("v1.0/Image.SelectAction");
 
         let image = await ACImage.getImage("cool link");
+
+        await TestUtils.getInstance().driver.wait(image.elementIsVisible(), timeoutForImageLoad);
         await image.click();
         
         Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
