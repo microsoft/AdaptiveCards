@@ -8,6 +8,7 @@
 #import "ACOHostConfig.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
+#import "ACODebouncer.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRChoiceSetCompactStyleView : UITextField <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
@@ -20,9 +21,13 @@
 /// bottom margin of filtered list view
 @property CGFloat spacingBottom;
 
+- (void)updateSelectedChoiceInTextField:(NSString *)choice;
+
+-(NSString *)getSelectedText;
+
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
-                            hostConfig:(ACOHostConfig *)acoConfig;
+                            hostConfig:(ACOHostConfig *)p;
 @end
 
 @interface ACOFilteredDataSource : NSObject
@@ -36,7 +41,11 @@
 
 - (NSString *)getItemAt:(NSInteger)index;
 
-- (void)filter:(NSString *)filter;
+-(instancetype)initWithUnfilteredList:(NSArray<NSString *> *) choices;
+
+- (void)updatefilteredListForStaticTypeahead:(NSString *) choices;
+
+- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *) choices;
 
 - (void)resetFilter;
 

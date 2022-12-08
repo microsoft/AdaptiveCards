@@ -10,12 +10,14 @@
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ChoicesData.h"
 #import "ACRInputLabelView.h"
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
+#import "ACRChoiceSetTypeaheadSearchView.h"
 
 using namespace AdaptiveCards;
 
@@ -24,6 +26,8 @@ using namespace AdaptiveCards;
     ACOFilteredListStateManager *_stateManager;
     ACOChoiceSetCompactStyleValidator *_validator;
     ACOFilteredListLayout *_filteredListLayout;
+    ACOBaseCardElement *_inputElem;
+    dispatch_queue_t _global_queue;
     NSString *_inputLabel;
     UITableView *_listView;
     UIView *_view;
@@ -41,6 +45,7 @@ using namespace AdaptiveCards;
         std::shared_ptr<BaseCardElement> elem = [acoElem element];
         std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
         _rootView = rootView;
+        _inputElem = acoElem;
 
         // configure helper objects
         _stateManager = [[ACOFilteredListStateManager alloc] init];
@@ -97,8 +102,8 @@ using namespace AdaptiveCards;
 
         _filteredListLayout = [[ACOFilteredListLayout alloc] initWithTopMargin:self.spacingTop bottomMargin:self.spacingBottom];
         _wrapLines = choiceSet->GetWrap() ? 0 : 1;
-
-        [_filteredDataSource filter:self.text];
+        _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        [_filteredDataSource updatefilteredListForStaticTypeahead:self.text];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -135,6 +140,15 @@ using namespace AdaptiveCards;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    UIViewController *rootViewController = traverseResponderChainForUIViewController(_rootView);
+    if (rootViewController) {
+        ACRChoiceSetTypeaheadSearchView *controller = [[ACRChoiceSetTypeaheadSearchView alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil  delegate:self];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [rootViewController presentViewController:navController animated:YES completion:nil];
+        return;
+    }
+    
     if (!_filteredDataSource.isEnabled) {
         BOOL prevState = _stateManager.isFilteredListVisible;
         // don't show keyboard if filtering is not enabled
@@ -167,10 +181,11 @@ using namespace AdaptiveCards;
     // find the newly edited string
     NSString *newString = [textField.text stringByReplacingCharactersInRange:range
                                                                   withString:string];
+    
     // implemented fluentUI north star behavior of removing the
     // filtered list when input field is empty
     if ([newString length]) {
-        [self filterList:newString];
+        [self updatefilteredListForStaticTypeahead:newString];
         [_stateManager expanded];
         if (!_stateManager.shouldUpdateFilteredList) {
             [_listView reloadData];
@@ -200,9 +215,14 @@ using namespace AdaptiveCards;
     return YES;
 }
 
-- (void)filterList:(NSString *)text
+- (void)updatefilteredListForStaticTypeahead:(NSString *)text
 {
-    [_filteredDataSource filter:text];
+    [_filteredDataSource updatefilteredListForStaticTypeahead:text];
+}
+
+- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *)choices
+{
+    [_filteredDataSource updatefilteredListForDynamicTypeahead:choices];
 }
 
 - (void)toggleStateListView:(UIButton *)button
@@ -354,12 +374,20 @@ using namespace AdaptiveCards;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     self.text = [_filteredDataSource getItemAt:indexPath.row];
-    [self filterList:self.text];
+    [self updatefilteredListForStaticTypeahead:self.text];
 
     [_stateManager collapsed];
     [self updateControls];
 
     [self resignFirstResponder];
+}
+
+- (void)updateSelectedChoiceInTextField:(NSString *)choice {
+    self.text = choice;
+}
+
+-(NSString *)getSelectedText {
+    return self.text;
 }
 
 @synthesize hasValidationProperties;
@@ -416,7 +444,17 @@ using namespace AdaptiveCards;
     return (index < 0 or index >= self.count) ? @"" : _filteredList[index];
 }
 
-- (void)filter:(NSString *)key
+-(instancetype)initWithUnfilteredList:(NSArray<NSString *> *) choices
+{
+    self = [self init];
+    if (self) {
+        [self updatefilteredListForDynamicTypeahead:choices];
+        _isEnabled = true;
+    }
+    return self;
+}
+
+- (void)updatefilteredListForStaticTypeahead:(NSString *)key
 {
     if (!self.isEnabled) {
         return;
@@ -426,6 +464,18 @@ using namespace AdaptiveCards;
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
         _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
+    }
+}
+
+- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *) choices
+{
+    if (!self.isEnabled) {
+        return;
+    }
+    if (!choices || choices.count == 0) {
+        [self resetFilter];
+    } else {
+        _filteredList = choices;
     }
 }
 

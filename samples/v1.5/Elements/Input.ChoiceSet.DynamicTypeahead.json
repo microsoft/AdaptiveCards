@@ -1,0 +1,30 @@
+{
+	"version": "1.0",
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"value": "Alligator gar",
+			"isMultiSelect": false,
+			"label": "Please choose an animal:",
+			"style": "filtered",
+			"id": "chosenAnimal",
+			"isRequired": true,
+			"errorMessage": "Please choose an animal",
+            "choices.data":
+            {
+                "type": "Data.Query",
+                "dataset": "graph.microsoft.com/users",
+                "count": 1,
+                "skip": 2
+            }
+		}
+	],
+	"actions": [
+		{
+			"title": "OK",
+			"type": "Action.Submit"
+		}
+	]
+}
