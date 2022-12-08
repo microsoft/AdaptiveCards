@@ -73,7 +73,8 @@
                         ToolTipService.ToolTip="Open Settings (Ctrl+,)"
                         IsCompact="True"
                         Click="AppBarHostConfigEditor_Click"
-                        AccessKey=","/>
+                        AccessKey=","
+                        KeyboardAcceleratorTextOverride="Ctrl+,"/>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>
