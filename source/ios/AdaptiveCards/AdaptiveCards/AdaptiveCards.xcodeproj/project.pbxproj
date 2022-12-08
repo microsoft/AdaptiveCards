@@ -264,6 +264,8 @@
 		CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */; };
 		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
+		CFB972012941C07A008E3795 /* ChoicesData.h in Headers */ = {isa = PBXBuildFile; fileRef = CFB971FF2941C079008E3795 /* ChoicesData.h */; };
+		CFB972022941C07A008E3795 /* ChoicesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFB972002941C079008E3795 /* ChoicesData.cpp */; };
 		DD278A02932F65F8BDD1EA5D /* Pods_AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255F5D3143215497D4067E21 /* Pods_AdaptiveCards.framework */; };
 		EC367F912F6036B68C5BBFDB /* Pods_AdaptiveCards_AdaptiveCardsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
@@ -740,6 +742,8 @@
 		CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityAction.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h; sourceTree = "<group>"; };
 		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
+		CFB971FF2941C079008E3795 /* ChoicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChoicesData.h; path = ../../../../shared/cpp/ObjectModel/ChoicesData.h; sourceTree = "<group>"; };
+		CFB972002941C079008E3795 /* ChoicesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChoicesData.cpp; path = ../../../../shared/cpp/ObjectModel/ChoicesData.cpp; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
@@ -1317,6 +1321,8 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				CFB972002941C079008E3795 /* ChoicesData.cpp */,
+				CFB971FF2941C079008E3795 /* ChoicesData.h */,
 				84AE295727FFA26F00D01B82 /* CaptionSource.cpp */,
 				84AE295627FFA26F00D01B82 /* CaptionSource.h */,
 				84AE295427FFA26F00D01B82 /* CMakeLists.txt */,
@@ -1680,6 +1686,7 @@
 				F448731D1EE2261F00FCAFAE /* ParseUtil.h in Headers */,
 				F448731E1EE2261F00FCAFAE /* pch.h in Headers */,
 				F448730A1EE2261F00FCAFAE /* Enums.h in Headers */,
+				CFB972012941C07A008E3795 /* ChoicesData.h in Headers */,
 				F44872F61EE2261F00FCAFAE /* AdaptiveCardParseException.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
 				F44872F81EE2261F00FCAFAE /* BaseActionElement.h in Headers */,
@@ -2125,6 +2132,7 @@
 				6B9D650B21095C7A00BB5C7B /* ACOMediaEvent.mm in Sources */,
 				6B7B1A9220B4D2AB00260731 /* MediaSource.cpp in Sources */,
 				F44873011EE2261F00FCAFAE /* Column.cpp in Sources */,
+				CFB972022941C07A008E3795 /* ChoicesData.cpp in Sources */,
 				F448730D1EE2261F00FCAFAE /* FactSet.cpp in Sources */,
 				F44873031EE2261F00FCAFAE /* ColumnSet.cpp in Sources */,
 				F4FE456F1F1985200071D9E5 /* ACRColumnSetView.mm in Sources */,
