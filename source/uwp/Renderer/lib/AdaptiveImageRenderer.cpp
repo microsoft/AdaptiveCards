@@ -90,7 +90,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::FrameworkElement frameworkElement{nullptr};
 
-        // TODO: file bug - Image style doesn't work as expected with height property (repro with bitmap and svg)
+        // Issue #8125
         if (imageStyle == winrt::ImageStyle::Person)
         {
             winrt::Ellipse ellipse{};
@@ -477,6 +477,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             SetImageSource(uiElement, image, stretch);
 
+            // Issue #8126
             if (isAutoSize)
             {
                 SetAutoSize(uiElement, parentElement, imageContainer, isVisible, true /* imageFiresOpenEvent */);
@@ -484,7 +485,6 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            // TODO: need to test this case
             PopulateImageFromUrlAsync(imageUrl, uiElement, isImageSvg);
         }
     }
@@ -503,7 +503,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    // TODO: need to test this method
+    // Issue #8127
     template<typename T> void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
     {
         winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
