@@ -31,8 +31,8 @@ namespace AdaptiveCards::Rendering::Uwp
         void MarkFailedLoadImage(winrt::ImageSource const& image);
 
         void AbandonOutstandingImages();
-        void AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener);
-        void RemoveListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener);
+        void AddListener(IImageLoadTrackerListener* listener);
+        void RemoveListener(IImageLoadTrackerListener* listener);
         int GetTotalImagesTracked();
 
     private:
@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::Uwp
         std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedBitmapImageDetails>> m_bitmapEventRevokers;
         std::unordered_map<winrt::IInspectable, winrt::com_ptr<TrackedSvgImageDetails>> m_svgEventRevokers;
 
-        std::set<::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener*> m_listeners;
+        std::set<IImageLoadTrackerListener*> m_listeners;
 
         void TrackedImage_BitmapImageLoaded(winrt::IInspectable const& sender,
                                       winrt::RoutedEventArgs const& eventArgs);
