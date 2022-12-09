@@ -36,8 +36,6 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
-
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     AdaptiveCardRenderer::AdaptiveCardRenderer() :
@@ -46,10 +44,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         m_featureRegistration(winrt::make<implementation::AdaptiveFeatureRegistration>()),
         m_hostConfig(winrt::make<implementation::AdaptiveHostConfig>()),
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
-        m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::Uwp::XamlBuilder>())
+        m_xamlBuilder(winrt::make_self<render_xaml::XamlBuilder>())
     {
-        ::AdaptiveCards::Rendering::Uwp::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
-        ::AdaptiveCards::Rendering::Uwp::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
+        render_xaml::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder);
+        render_xaml::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
     }
@@ -107,9 +105,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 renderContext->LinkCardToParent(adaptiveCard, nullptr);
                 auto xamlTreeRoot =
-                    ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
-                                                                                                *renderContext,
-                                                                                                m_xamlBuilder.get());
+                    render_xaml::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, *renderContext, m_xamlBuilder.get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
             }
             catch (...)

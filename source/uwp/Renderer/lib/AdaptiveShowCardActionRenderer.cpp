@@ -14,13 +14,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         try
         {
-            return ::AdaptiveCards::Rendering::Uwp::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+            return render_xaml::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                             action.ActionTypeString(),
-                                                                             ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, action.ActionTypeString(), ex.message());
             return nullptr;
         }
     }
@@ -41,7 +39,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             renderContext.LinkCardToParent(showCard, renderArgs);
 
             auto localUiShowCard =
-                ::AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, renderContext, nullptr, showCardConfigStyle);
+                render_xaml::XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, renderContext, nullptr, showCardConfigStyle);
             renderArgs.IsInShowCard(wasInShowCard);
 
             // Set the padding

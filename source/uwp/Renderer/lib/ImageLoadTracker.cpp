@@ -53,7 +53,7 @@ namespace AdaptiveCards::Rendering::Uwp
         m_eventRevokers.clear();
     }
 
-    void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
+    void ImageLoadTracker::AddListener(render_xaml::IImageLoadTrackerListener* listener)
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -61,7 +61,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void ImageLoadTracker::RemoveListener(::AdaptiveCards::Rendering::Uwp::IImageLoadTrackerListener* listener)
+    void ImageLoadTracker::RemoveListener(render_xaml::IImageLoadTrackerListener* listener)
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -69,7 +69,10 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
+    int ImageLoadTracker::GetTotalImagesTracked()
+    {
+        return m_totalImageCount;
+    }
 
     void ImageLoadTracker::TrackedImage_ImageLoaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*eventArgs*/)
     {
