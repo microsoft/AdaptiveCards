@@ -4,7 +4,6 @@
 
 #include "TileControl.h"
 #include "TileControl.g.cpp"
-#include "XamlHelpers.h"
 #include <cmath>
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
@@ -51,7 +50,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    void TileControl::OnApplyTemplate() { TileControl_base::OnApplyTemplate(); }
+    void TileControl::OnApplyTemplate()
+    {
+        TileControl_base::OnApplyTemplate();
+    }
 
     winrt::Size TileControl::MeasureOverride(winrt::Size const& availableSize)
     {

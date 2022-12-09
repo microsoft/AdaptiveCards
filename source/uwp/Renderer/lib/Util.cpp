@@ -4,7 +4,6 @@
 
 #include <regex>
 
-#include "XamlHelpers.h"
 #include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
@@ -28,9 +27,6 @@
 #include "AdaptiveSubmitActionRenderer.h"
 #include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "AdaptiveExecuteActionRenderer.h"
-
-using namespace AdaptiveCards;
-using namespace AdaptiveCards::Rendering::Uwp;
 
 std::string WStringToString(std::wstring_view in)
 {
@@ -499,8 +495,8 @@ bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::Ad
             std::string requirementVersionString = HStringToUTF8(req.Version());
             if (requirementVersionString != "*")
             {
-                SemanticVersion requirementSemanticVersion(requirementVersionString);
-                SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
+                AdaptiveCards::SemanticVersion requirementSemanticVersion(requirementVersionString);
+                AdaptiveCards::SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
                 if (registrationSemanticVersion < requirementSemanticVersion)
                 {
                     meetsRequirementsLocal = false;

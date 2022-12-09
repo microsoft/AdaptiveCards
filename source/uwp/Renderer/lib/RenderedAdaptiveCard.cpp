@@ -102,9 +102,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 if (auto cardElementAsColumn = cardElement.try_as<winrt::AdaptiveColumn>())
                 {
                     auto columnDefinition = elementTagContent.ColumnDefinition();
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleColumnWidth(cardElementAsColumn,
-                                                                                    (visibilityToSet == winrt::Visibility::Visible),
-                                                                                    columnDefinition);
+                    XamlHelpers::HandleColumnWidth(cardElementAsColumn, (visibilityToSet == winrt::Visibility::Visible), columnDefinition);
                 }
             }
         }
@@ -113,7 +111,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             if (parentPanel)
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
+                XamlHelpers::SetSeparatorVisibility(parentPanel);
             }
         }
     }
@@ -132,7 +130,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto actionConfig = m_originatingHostConfig.Actions();
             auto showCardConfig = actionConfig.ShowCard();
             auto actionMode = showCardConfig.ActionMode();
-            bool handleInlineShowCard = (actionMode == winrt::render_xaml::ActionMode::Inline);
+            bool handleInlineShowCard = (actionMode == winrt_render_xaml::ActionMode::Inline);
 
             if (handleInlineShowCard)
             {

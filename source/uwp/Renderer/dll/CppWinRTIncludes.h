@@ -55,9 +55,9 @@ namespace winrt
     namespace AdaptiveCards::Rendering::Uwp{}
     using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
 
-    // render_xaml namespace alias used to differentiate in cases where a type exists in both
+    // winrt_render_xaml namespace alias used to differentiate in cases where a type exists in both
     // the renderer and the object model (ie. ActionMode)
-    namespace render_xaml = ::winrt::AdaptiveCards::Rendering::Uwp;
+    namespace winrt_render_xaml = ::winrt::AdaptiveCards::Rendering::Uwp;
 
     namespace AdaptiveCards::Rendering::Uwp::implementation{}
     namespace implementation
