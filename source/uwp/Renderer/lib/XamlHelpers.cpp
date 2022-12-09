@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "WholeItemsPanel.h"
-#include "XamlHelpers.h"
 #include "ElementTagContent.h"
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
