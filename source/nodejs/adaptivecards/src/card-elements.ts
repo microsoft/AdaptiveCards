@@ -2579,7 +2579,7 @@ class StackedImageConfigurator {
 
     constructor(offset: number, dimension: number, style: string) {
         this.dimension = dimension;
-        this.normalizationConstant= (dimension * this.sign45 - 0.5 * dimension) * 2 
+        this.normalizationConstant = (dimension * this.sign45 - 0.5 * dimension) * 2 
         this.offset = this.sign45 * (offset - this.normalizationConstant); 
         this.style = style;
     }
@@ -2607,16 +2607,14 @@ class StackedImageConfigurator {
         element.style.border = this.border + "px" + " solid " + this.style;
     }
 
-    private configureImageForBottomLeft(element: HTMLElement)
-    {
+    private configureImageForBottomLeft(element: HTMLElement) {
         this.moveImageDown(element);
         this.makeImageRound(element); 
         this.applyBorder(element);
         element.style.zIndex = "2";
     }
 
-    private configureImageForTopRight(element: HTMLElement)
-    {
+    private configureImageForTopRight(element: HTMLElement) {
         this.moveImageUp(element);
         this.moveImageRight(element);
         this.makeImageRound(element); 
