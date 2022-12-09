@@ -4,8 +4,6 @@
 #include "DateTimeParser.h"
 #include "MarkDownParser.h"
 #include "TextHelpers.h"
-#include "XamlBuilder.h"
-#include "XamlHelpers.h"
 #include <safeint.h>
 
 using namespace AdaptiveCards::Rendering::Uwp;
