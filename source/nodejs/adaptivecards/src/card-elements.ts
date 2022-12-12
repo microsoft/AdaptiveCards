@@ -1927,6 +1927,8 @@ export class Image extends CardElement {
         schema.remove(CardElement.heightProperty);
     }
 
+    public renderedImageElement?: HTMLElement;
+
     @property(Image.urlProperty)
     url?: string;
 
@@ -2033,6 +2035,9 @@ export class Image extends CardElement {
             }
 
             const imageElement = document.createElement("img");
+
+            this.renderedImageElement = imageElement;
+
             imageElement.onload = (_e: Event) => {
                 raiseImageLoadedEvent(this);
             };
@@ -2404,6 +2409,7 @@ export class ImageSet extends CardElementContainer {
             item.setParent(<CardElement>sender);
         }
     );
+
     static readonly imageSizeProperty = new EnumProperty(
         Versions.v1_0,
         "imageSize",
@@ -2411,11 +2417,31 @@ export class ImageSet extends CardElementContainer {
         Enums.ImageSize.Medium
     );
 
+    static readonly imagePresentationStyle = new EnumProperty(
+        Versions.v1_6,
+        "style",
+        Enums.ImageSetPresentationStyle,
+        Enums.ImageSetPresentationStyle.Default
+    );
+
+    static readonly pixelOffset = new NumProperty(
+        Versions.v1_6,
+        "offset",
+        0,
+        undefined
+    );
+
     @property(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
     @property(ImageSet.imageSizeProperty)
     imageSize: Enums.ImageSize = Enums.ImageSize.Medium;
+
+    @property(ImageSet.imagePresentationStyle)
+    presentationStyle: Enums.ImageSetPresentationStyle = Enums.ImageSetPresentationStyle.Default;
+
+    @property(ImageSet.pixelOffset)
+    pixelOffset: number = 0;
 
     //#endregion
 
@@ -2447,14 +2473,44 @@ export class ImageSet extends CardElementContainer {
                 if (renderedImage) {
                     renderedImage.style.display = "inline-flex";
                     renderedImage.style.margin = "0px";
-                    renderedImage.style.marginRight = "10px";
+                    if (this.presentationStyle == Enums.ImageSetPresentationStyle.Default) {
+                        renderedImage.style.marginRight = "10px";
+                    }
 
                     Utils.appendChild(element, renderedImage);
                 }
             }
+            if (this.presentationStyle == Enums.ImageSetPresentationStyle.Stacked) {
+                this.applyStackedPresentationStyle();
+            }
         }
+        
 
         return element;
+    }
+
+    applyStackedPresentationStyle() {
+        if (this._images[0].renderedImageElement) {
+            let dimension = StackedImageConfigurator.parseNumericPixelDimension(this._images[0].renderedImageElement.style.height);
+            let bgColor = this.getEffectiveBackgroundColor();
+            if (dimension) {
+                let stackedImageConfigurator = new StackedImageConfigurator(this.pixelOffset, 
+                    dimension, bgColor);
+                stackedImageConfigurator.configureImagesArrayAsStackedLayout(this._images);
+            }
+        }
+    }
+
+    getEffectiveBackgroundColor() : string | undefined {
+        let parentContainer = this.getParentContainer();
+        let style = parentContainer?.getEffectiveStyle();
+
+        const styleDefinition = this.hostConfig.containerStyles.getStyleByName(
+            style,
+            this.hostConfig.containerStyles.getStyleByName(this.defaultStyle)
+        );
+
+        return Utils.stringToCssColor(styleDefinition.backgroundColor);
     }
 
     getItemCount(): number {
@@ -2509,6 +2565,92 @@ export class ImageSet extends CardElementContainer {
 
     indexOf(cardElement: CardElement): number {
         return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
+    }
+}
+
+class StackedImageConfigurator {
+    private sign45 = 0.7071;
+    private maxImageCounts: number = 2;
+    private offset: number = 0;
+    private normalizationConstant: number = 0;
+    private border: number = 5;
+    private dimension: number = 0;
+    private style: string;
+
+    constructor(offset: number, dimension: number, style: string | undefined) {
+        this.dimension = dimension;
+        this.normalizationConstant = (dimension * this.sign45 - 0.5 * dimension) * 2;
+        // offset determines how far images are placed from each other
+        // at zero, images are separated only by the border
+        // there is no restriction on how far they are apart in positive values, their actual
+        // positioning is limited by maximum size imposed by Image renderer
+        // a negative value can decrease upto the diameter of the image since a value less than the diameter
+        // put the images past each other, and the use of such value is not reasonable request
+        // users should change image positions in such case.
+        this.offset = this.sign45 * (Math.max(offset, -dimension) - this.normalizationConstant);
+        this.style = style ? style : "";
+    }
+
+    private moveImageRight(element: HTMLElement) {
+        element.style.marginLeft = this.offset + "px";
+    }
+
+    private moveImageUp(element: HTMLElement) {
+        element.style.marginBottom = this.offset + this.dimension+ "px";
+    }
+
+    private moveImageDown(element: HTMLElement) {
+        element.style.marginTop = this.offset + this.dimension + "px";
+    }
+
+    private makeImageRound(element: HTMLElement) {
+        element.style.borderRadius = "50%";
+        element.style.backgroundPosition = "50% 50%";
+        element.style.backgroundRepeat = "no-repeat";
+    }
+
+    private applyBorder(element: HTMLElement) {
+        element.style.height = (this.dimension + this.border * 2) + "px";
+        element.style.border = this.border + "px" + " solid " + this.style;
+    }
+
+    private configureImageForBottomLeft(element: HTMLElement) {
+        this.moveImageDown(element);
+        this.makeImageRound(element); 
+        this.applyBorder(element);
+        element.style.zIndex = "2";
+    }
+
+    private configureImageForTopRight(element: HTMLElement) {
+        this.moveImageUp(element);
+        this.moveImageRight(element);
+        this.makeImageRound(element); 
+        element.style.zIndex = "1";
+    }
+
+    // stacked layout is applied when there are two images in ImageSet,
+    // first image in the ImageSet is put bottom left of ImageSet,
+    // second image is placed top right diagonally to the first image at 45 angle
+    // first image is placed over the second image should the overlap to occur.
+    public configureImagesArrayAsStackedLayout(elements: Array<Image>) {
+        if (elements.length == 1) {
+            if (elements[0].renderedImageElement) {
+                this.makeImageRound(elements[0].renderedImageElement); 
+            }
+        }
+        else if (elements.length <= this.maxImageCounts) {
+            if (elements[0].renderedImageElement && elements[1].renderedImageElement) {
+                this.configureImageForBottomLeft(elements[0].renderedImageElement);
+                this.configureImageForTopRight(elements[1].renderedImageElement);
+            }
+        }
+    }
+
+    public static parseNumericPixelDimension(dimension: string): number | undefined  {
+        if (dimension?.substring(dimension.length - 2) == 'px') {
+            return parseInt(dimension.substring(0, dimension.length - 2));
+        }
+        return undefined;
     }
 }
 
