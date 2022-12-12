@@ -2493,7 +2493,7 @@ export class ImageSet extends CardElementContainer {
         if (this._images[0].renderedImageElement) {
             let dimension = StackedImageConfigurator.parseNumericPixelDimension(this._images[0].renderedImageElement.style.height);
             let bgColor = this.getEffectiveBackgroundColor();
-            if (dimension && bgColor) {
+            if (dimension) {
                 let stackedImageConfigurator = new StackedImageConfigurator(this.pixelOffset, 
                     dimension, bgColor);
                 stackedImageConfigurator.configureImagesArrayAsStackedLayout(this._images);
@@ -2577,11 +2577,18 @@ class StackedImageConfigurator {
     private dimension: number = 0;
     private style: string;
 
-    constructor(offset: number, dimension: number, style: string) {
+    constructor(offset: number, dimension: number, style: string | undefined) {
         this.dimension = dimension;
-        this.normalizationConstant = (dimension * this.sign45 - 0.5 * dimension) * 2 
-        this.offset = this.sign45 * (offset - this.normalizationConstant); 
-        this.style = style;
+        this.normalizationConstant = (dimension * this.sign45 - 0.5 * dimension) * 2;
+        // offset determines how far images are placed from each other
+        // at zero, images are separated only by the border
+        // there is no restriction on how far they are apart in positive values, their actual
+        // positioning is limited by maximum size imposed by Image renderer
+        // a negative value can decrease upto the diameter of the image since a value less than the diameter
+        // put the images past each other, and the use of such value is not reasonable request
+        // users should change image positions in such case.
+        this.offset = this.sign45 * (Math.max(offset, -dimension) - this.normalizationConstant);
+        this.style = style ? style : "";
     }
 
     private moveImageRight(element: HTMLElement) {
@@ -2621,13 +2628,17 @@ class StackedImageConfigurator {
         element.style.zIndex = "1";
     }
 
+    // stacked layout is applied when there are two images in ImageSet,
+    // first image in the ImageSet is put bottom left of ImageSet,
+    // second image is placed top right diagonally to the first image at 45 angle
+    // first image is placed over the second image should the overlap to occur.
     public configureImagesArrayAsStackedLayout(elements: Array<Image>) {
         if (elements.length == 1) {
             if (elements[0].renderedImageElement) {
                 this.makeImageRound(elements[0].renderedImageElement); 
             }
         }
-        else if (elements.length > 1) {
+        else if (elements.length <= this.maxImageCounts) {
             if (elements[0].renderedImageElement && elements[1].renderedImageElement) {
                 this.configureImageForBottomLeft(elements[0].renderedImageElement);
                 this.configureImageForTopRight(elements[1].renderedImageElement);
