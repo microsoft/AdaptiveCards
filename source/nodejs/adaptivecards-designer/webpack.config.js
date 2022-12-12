@@ -104,6 +104,10 @@ module.exports = (env, argv) => {
 				{
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/[name][ext]'
+				},
+				{
+					from: 'src/assets/*',
+					to: 'assets/[name][ext]'
 				}],
 				options: {
 					concurrency: 8
