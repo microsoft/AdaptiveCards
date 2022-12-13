@@ -4660,6 +4660,15 @@ export class TimeInput extends Input {
 
     private _timeInputElement: HTMLInputElement;
 
+    protected applyReadOnlyStyling(inputElement: HTMLInputElement): HTMLInputElement {
+        // css styling
+        inputElement.style.background = "transparent";
+        inputElement.style.border = "1px solid transparent";
+
+        inputElement.readOnly = true;
+        return inputElement;
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");

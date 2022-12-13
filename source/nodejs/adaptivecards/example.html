@@ -57,59 +57,16 @@
 	</style>
 
 	<script type="text/javascript">
-			var cardDF = {
-			"type": "AdaptiveCard",
-			"version": "1.5",
-			"body": [
-				{
-					"type": "TextBlock",
-					"text": "**Inline Editable Cards!**"
-				},
-				{
-					"type": "Input.Text",
-					"id": "inputTextId",
-					"value" : "$20000",
-					"label" : "Est. Amount"
-				},
-				{
-					"type": "Input.Text",
-					"id": "inputTextId2",
-					"value" : "$20000",
-					"label" : "Est. Amount",
-					"labelAlignment" : "horizontal"
-				},
-				{
-					"type": "Input.Text",
-					"id": "inputTextId3",
-					"value" : "$20000",
-					"label" : "Est. Amount",
-					"inputStyle": "readWrite",
-				},
-				{
-					"type": "Input.Text",
-					"id": "inputTextId4",
-					"value" : "$20000",
-					"label" : "Est. Amount",
-					"inputStyle": "readWrite",
-					"labelAlignment" : "horizontal"
-				}
-			],
-			"actions": [
-				{
-					"type": "Action.Submit",
-					"title": "Save",
-					"associatedInputs": "auto",
-					"disabledUnlessAssociatedInputsChange": true
-				},
-				{
-					"type": "Action.OpenUrl",
-					"title": "Learn More",
-					"url": "https://github.com/Microsoft/AdaptiveCards"
-				}
-			]
-		};
+		var cardText = {"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"**Inline Editable Cards!**"},{"type":"Input.Text","id":"inputTextId","value":"$20000","label":"Est. Amount"},{"type":"Input.Text","id":"inputTextId2","value":"$20000","label":"Est. Amount","labelAlignment":"horizontal"},{"type":"Input.Text","id":"inputTextId3","value":"$20000","label":"Est. Amount","inputStyle":"readWrite"},{"type":"Input.Text","id":"inputTextId4","value":"$20000","label":"Est. Amount","inputStyle":"readWrite","labelAlignment":"horizontal"}],"actions":[{"type":"Action.Submit","title":"Save","associatedInputs":"auto","disabledUnlessAssociatedInputsChange":true},{"type":"Action.OpenUrl","title":"Learn More","url":"https://github.com/Microsoft/AdaptiveCards"}]};
+
+		var cardDate = {"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"**Inline Editable Cards!**"},{"type":"Input.Date","id":"inputTextId","value":"2017-10-12","label":"Est. Date"},{"type":"Input.Date","id":"inputTextId2","value":"2017-10-12","label":"Est. Date","labelAlignment":"horizontal"},{"type":"Input.Date","id":"inputTextId3","value":"2017-10-12","label":"Est. Date","inputStyle":"readWrite"},{"type":"Input.Date","id":"inputTextId4","value":"2017-10-12","label":"Est. Date","inputStyle":"readWrite","labelAlignment":"horizontal"}],"actions":[{"type":"Action.Submit","title":"Save","associatedInputs":"auto","disabledUnlessAssociatedInputsChange":true},{"type":"Action.OpenUrl","title":"Learn More","url":"https://github.com/Microsoft/AdaptiveCards"}]};
+
+		var cardTime = {"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"**Inline Editable Cards!**"},{"type":"Input.Time","id":"inputTextId","value":"15:30","label":"Est. Time"},{"type":"Input.Time","id":"inputTextId2","value":"15:30","label":"Est. Date","labelAlignment":"horizontal"},{"type":"Input.Time","id":"inputTextId3","value":"15:30","label":"Est. Time","inputStyle":"readWrite"},{"type":"Input.Time","id":"inputTextId4","value":"15:30","label":"Est. Time","inputStyle":"readWrite","labelAlignment":"horizontal"}],"actions":[{"type":"Action.Submit","title":"Save","associatedInputs":"auto","disabledUnlessAssociatedInputsChange":true},{"type":"Action.OpenUrl","title":"Learn More","url":"https://github.com/Microsoft/AdaptiveCards"}]};
 	
-		function renderCard(card) {
+		var cardChoiceSet = {"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"**Inline Editable Cards!**"},{"type":"Input.ChoiceSet","id":"myColor","style":"compact","label":"select","isMultiSelect":false,"value":"1","choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}]},{"type":"Input.ChoiceSet","id":"myColor","style":"compact","labelAlignment":"horizontal","label":"select","isMultiSelect":false,"value":"1","choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}]},{"type":"Input.ChoiceSet","id":"myColor","style":"compact","label":"select","isMultiSelect":false,"inputStyle":"readWrite","value":"1","choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}]},{"type":"Input.ChoiceSet","id":"myColor","style":"compact","label":"select","isMultiSelect":false,"inputStyle":"readWrite","labelAlignment":"horizontal","value":"1","choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}]}],"actions":[{"type":"Action.Submit","title":"Save","associatedInputs":"auto","disabledUnlessAssociatedInputsChange":true},{"type":"Action.OpenUrl","title":"Learn More","url":"https://github.com/Microsoft/AdaptiveCards"}]};
+
+
+			function renderCard(card) {
 
 			// author a card
 			// in practice you'll probably get this from a service
@@ -146,8 +103,21 @@
 			renderCard(JSON.parse(card));
 		}
 
-		function loadCardInTextArea() {
-			const card = JSON.stringify(cardDF, null, "\t");
+		function loadCardInTextArea(num) {
+			let cardPayload = "";
+			if (num == 1) {
+				cardPayload = cardText;
+			} 
+			if (num == 2) {
+				cardPayload = cardDate;
+			}
+			if (num == 3) {
+				cardPayload = cardTime;
+			}
+			if (num == 4) {
+				cardPayload = cardChoiceSet;
+			}
+			const card = JSON.stringify(cardPayload, null, "\t");
 			document.getElementById('acpayload').value = card;
 		}
 
@@ -161,18 +131,29 @@
 </head>
 
 <body onload="renderCard()">
-	<h2>Inline Editable Playground</h2>
+	<h2>Inline Edit Playground</h2>
 
-	<br /> <br />
-	<button onclick="loadCardInTextArea()" class = "button">Load Card</button>
-	<br /> <br />
-	<textarea id="acpayload">
-	</textarea>
+	<div style="display: flex; flex-direction: row; align-items:stretch;">
+		<div style="display: flex; flex-direction: row; align-items: flex-start;">
+			<div style="display: flex; flex-direction: column; align-items:flex-start;">
+				<button onclick="loadCardInTextArea(1)" class = "button">Load Card -Input Text</button>
 
-	<br /> <br />
-	<button onclick="loadCard()"  class = "button">Render Card</button>
-	<br /> <br />
-	<div id="exampleDiv"></div>
+				<button onclick="loadCardInTextArea(2)" class = "button">Load Card -Input Date</button>
+				
+				<button onclick="loadCardInTextArea(3)" class = "button">Load Card -Input Time</button>
+				
+				<button onclick="loadCardInTextArea(4)" class = "button">Load Card -Input ChoiceSet</button>
+			</div>
+			<div style="margin-left: 200px;">
+				<textarea id="acpayload" style="height: 1000px;">
+				</textarea>
+			</div>
+		</div>
+		<div style="margin-left: 200px;">
+			<button onclick="loadCard()"  class = "button">Render Card</button>
+			<div id="exampleDiv"></div>
+		</div>
+	</div>
 
 </body>
 
