@@ -2,7 +2,7 @@
 
 ## Overview
 Right now position of the label is always above to the input field. We want to provide more options to card authors to position the label.
-Now, labels can also be place inline with the input. It can provide better experience and more flexibity to card authors in different sceanrios.
+Now, labels can also be place inline with the input. It can provide better experience and more flexibity to card authors in different scenarios.
 
 ## New Schema Changes in Adaptive Card
 
@@ -46,27 +46,13 @@ Position for label in input fields.
           "type": "Input.Text",
           "label": "Name",
 	  "value": "Sneh",
-	  "inputStyle" : "readWrite",
 	  "labelPosition" : "above"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
-	  "inputStyle" : "readWrite",
           "labelPosition" : "inline"
-      },
-      {
-          "type": "Input.Number",
-          "label": "Number of Guest",
-          "value": 5,
-          "labelPosition" : "inline"
-      },
-      {
-          "type": "Input.Text",
-          "label": "Flight origin",
-          "value": "Seattle",
-          "labelPosition" : "above"
       },
       {
           "type": "Input.Text",
@@ -84,6 +70,36 @@ In `inline` label position: Default width spacing label:value would be 3:7 of th
 In `above` label position : The width is always 100% of the container of input element.
 
 ![img](./assets/InputLabels/InputLabelPositon/aboveViews.PNG)
+
+
+## Example for inline views for different inputs:
+
+Input.Text:
+
+![img](./assets/InputLabels/InputLabelPositon/input_text.PNG)
+
+Input.Number:
+
+![img](./assets/InputLabels/InputLabelPositon/input_number.PNG)
+
+Input.Date:
+
+![img](./assets/InputLabels/InputLabelPositon/input_date.PNG)
+
+Input.Time:
+
+![img](./assets/InputLabels/InputLabelPositon/input_time.PNG)
+
+Input.ChoiceSet:
+
+![img](./assets/InputLabels/InputLabelPositon/input_choiceSet.PNG)
+
+Input.Toggle:
+
+![img](./assets/InputLabels/InputLabelPositon/input_toggle.PNG)
+
+
+
 
 
 
