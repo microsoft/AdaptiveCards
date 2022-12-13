@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 function shouldUseIndexerSyntax(name: string): boolean {
-    let regEx = /[a-zA-Z0-9_$]*/;
+    let regEx = /[a-zA-Z0-9_$]*(\[[0-9]*\])?/;
     let matches = regEx.exec(name);
 
     // If name doesn't only contain letters/digits/_
