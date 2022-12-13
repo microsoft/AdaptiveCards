@@ -37,6 +37,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/BaseElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/CaptionSource.cpp
+             ../../shared/cpp/ObjectModel/ChoicesData.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
              ../../shared/cpp/ObjectModel/CollectionCoreElement.cpp
