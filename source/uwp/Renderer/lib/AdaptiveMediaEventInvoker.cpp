@@ -4,7 +4,6 @@
 
 #include "AdaptiveMediaEventInvoker.h"
 #include "AdaptiveMediaEventInvoker.g.cpp"
-#include "Util.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

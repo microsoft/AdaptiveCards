@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveMediaEventInvoker.h"
