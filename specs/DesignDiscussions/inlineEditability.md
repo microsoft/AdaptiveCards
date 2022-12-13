@@ -70,14 +70,14 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
-2. Introduce an optional new styling property in AC input fields schema which will allow developers to define if label of the input and the input field would be vertically or horizontally aligned. Default would be existing vertical. This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
+2. Introduce an optional new styling property in AC input fields schema which will allow developers to define position of label with respect to input field. It can be both "inline" and "above". Default would be existing "above". This feature will be independent of whether input fields are inline editable or not. We will allow horizontal view for default input fields as well.
 	*Note*: When card width is small due to browser resize etc, horizontal view can shift to vertical view of input fields.
 
-* **Vertical view:**
+* **Above view:**
 
 ![img](../assets/InlineEditability/IE6.PNG)
 
-* **Horizontal view:**
+* **Inline view:**
 
 ![img](../assets/InlineEditability/IE7.PNG)
 
@@ -185,21 +185,21 @@ Since this property is inherited to all Input fields, it will be supported by al
       }	
 ```
 
-2. Inherited properties of all Input fields will have one more property called `labelAlignment` whose type will be `InputLabelAlignment`
+2. Inherited properties of all Input fields will have one more property called `labelPosition` whose type will be `InputLabelPosition`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **labelAlignment** | `InputLabelAlignment?` | No | Determines the alignement of the label with respect to the input field. Default is vertical when not specified | 1.7 |
+| **labelPosition** | `InputLabelPosition?` | No | Determines the position of the label with respect to the input field. Default is "above" when not specified | 1.7 |
 
-### InputLabelAlignment
+### InputLabelPosition
 
-Alignment for label in input fields.
+Position for label in input fields.
 
-* **Type**: `InputLabelAlignment`
+* **Type**: `InputLabelPosition`
 * **Required**: No
 * **Allowed values**:
-  * `"vertical"` : should place label vertically on top of the input field.
-  * `"horizontal"` : should place label horizontally on left (or right in RTL setting) of the input field.
+  * `"inline"` : should place label inline with the input field
+  * `"above"` : should place label above the input field.
   
 ### Sample Payload:
 
@@ -209,26 +209,26 @@ Alignment for label in input fields.
           "label": "Name",
 	  "value": "Sneh",
 	  "inputStyle" : "readWrite",
-	  "labelAlignment" : "vertical"
+	  "labelPosition" : "above"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
 	  "inputStyle" : "readWrite",
-          "labelAlignment" : "horizontal"
+          "labelPosition" : "inline"
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "labelAlignment" : "horizontal"
+          "labelPosition" : "inline"
       },
       {
           "type": "Input.Text",
           "label": "Flight origin",
           "value": "Seattle",
-          "labelAlignment" : "vertical"
+          "labelPosition" : "above"
       },
       {
           "type": "Input.Text",
