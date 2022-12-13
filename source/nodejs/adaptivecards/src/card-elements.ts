@@ -716,6 +716,22 @@ export abstract class CardElement extends CardObject {
     getActionById(_id: string): Action | undefined {
         return undefined;
     }
+    
+    getElementByIdFromAction(id: string): CardElement | undefined {
+        let result = undefined;
+        for (let i = 0; i < this.getActionCount(); i++) {
+            const action = this.getActionAt(i);
+
+            if (action instanceof ShowCardAction) {
+                result = action.card.getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 
     getEffectivePadding(): PaddingDefinition {
         const padding = this.getPadding();
@@ -6399,17 +6415,7 @@ export class ActionSet extends CardElement {
         let result = super.getElementById(id);
 
         if (!result) {
-            for (let i = 0; i < this.getActionCount(); i++) {
-                const action = this.getActionAt(i);
-
-                if (action instanceof ShowCardAction) {
-                    result = action.card.getElementById(id);
-
-                    if (result) {
-                        break;
-                    }
-                }
-            }
+            result = this.getElementByIdFromAction(id);
         }
 
         return result;
@@ -7962,17 +7968,7 @@ export abstract class ContainerWithActions extends Container {
         let result = super.getElementById(id);
 
         if (!result) {
-            for (let i = 0; i < this.getActionCount(); i++) {
-                const action = this.getActionAt(i);
-
-                if (action instanceof ShowCardAction) {
-                    result = action.card.getElementById(id);
-
-                    if (result) {
-                        break;
-                    }
-                }
-            }
+            result = this.getElementByIdFromAction(id);
         }
 
         return result;
