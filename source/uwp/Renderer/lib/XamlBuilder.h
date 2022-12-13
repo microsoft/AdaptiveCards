@@ -5,9 +5,6 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
-#include "InputValue.h"
-#include "RenderedAdaptiveCard.h"
-#include "AdaptiveRenderContext.h"
 
 namespace AdaptiveCards::Rendering::Uwp
 {
