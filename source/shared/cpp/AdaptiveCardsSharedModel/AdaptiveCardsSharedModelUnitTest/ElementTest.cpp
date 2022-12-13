@@ -22,6 +22,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
             return choicesData;
         }
+
         TEST_METHOD(ColumnPixelWidthTest)
         {
             auto columnTest = std::make_shared<AdaptiveCards::Column>();

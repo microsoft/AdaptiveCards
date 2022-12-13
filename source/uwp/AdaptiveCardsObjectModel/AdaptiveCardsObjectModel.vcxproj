@@ -126,6 +126,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AdaptiveChoicesData.cpp" />
     <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="lib\AdaptiveTableParser.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
+    <ClInclude Include="AdaptiveChoicesData.h" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />

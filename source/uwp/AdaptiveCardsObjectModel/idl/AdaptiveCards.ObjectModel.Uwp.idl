@@ -71,6 +71,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         ImageSet,
         ChoiceInput,
         ChoiceSetInput,
+	  ChoicesData,
         DateInput,
         NumberInput,
         TextInput,

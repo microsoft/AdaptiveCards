@@ -78,6 +78,7 @@
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
     <ClCompile Include="lib\AdaptiveContentSource.cpp" />
+    <ClCompile Include="AdaptiveChoicesData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveCaptionSource.h" />
     <ClInclude Include="lib\AdaptiveContentSource.h" />
+    <ClInclude Include="AdaptiveChoicesData.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />

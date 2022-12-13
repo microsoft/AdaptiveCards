@@ -23,6 +23,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         property<hstring> Value;
         property<Uwp::ChoiceSetStyle> ChoiceSetStyle;
         property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveChoiceInput>> Choices;
+        property<Uwp::AdaptiveChoicesData> ChoicesData{nullptr};
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
