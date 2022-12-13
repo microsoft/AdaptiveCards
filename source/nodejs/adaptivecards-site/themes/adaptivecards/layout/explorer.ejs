@@ -9,7 +9,7 @@
 					<ul role="group">
 						<% root.children.forEach(function(child) { %>
 						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>' role="treeitem">
-							<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
+							<a href="<%- url_for(child.htmlPath) %>" aria-label="<%= child.accessibleName %>"><%= child.name %></a>
 						</li>
 						<% }) %>
 					</ul>

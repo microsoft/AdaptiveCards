@@ -1,0 +1,85 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Microsoft Corporation",
+					"size": "medium",
+					"wrap": true,
+					"style": "heading"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Nasdaq Global Select: MSFT",
+					"isSubtle": true,
+					"spacing": "none",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Fri, May 3, 2019 1:00 PM",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "none",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "128.90",
+									"size": "extraLarge",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "▲ 2.69 USD (2.13%)",
+									"color": "good",
+									"spacing": "none",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "auto",
+							"items": [
+								{
+									"type": "FactSet",
+									"facts": [
+										{
+											"title": "Open",
+											"value": "127.42"
+										},
+										{
+											"title": "High",
+											"value": "129.43"
+										},
+										{
+											"title": "Low",
+											"value": "127.25"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -70,7 +70,7 @@
                     "subtle": "#CC2E89FC"
                 },
                 "dark": {
-                    "default": "#FF999999",
+                    "default": "#FF000000",
                     "subtle": "#99999999"
                 },
                 "light": {

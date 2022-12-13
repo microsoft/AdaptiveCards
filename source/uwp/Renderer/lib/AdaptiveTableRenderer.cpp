@@ -72,20 +72,24 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto tableConfig = hostConfig.Table();
 
             double cellSpacingDouble = static_cast<double>(tableConfig.CellSpacing());
-
-            // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
-            // or leftmost cells to avoid creating margin outside the table.
-            winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
-            if (columnNumber == 0)
+            if (cellSpacingDouble != 0)
             {
-                marginThickness.Left = 0;
+                // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
+                // or leftmost cells to avoid creating margin outside the table.
+                winrt::Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+                if (columnNumber == 0)
+                {
+                    marginThickness.Left = 0;
+                }
+                if (rowNumber == 0)
+                {
+                    marginThickness.Top = 0;
+                }
+                if (marginThickness.Left != 0 || marginThickness.Top != 0)
+                {
+                    cellFrameworkElement.Margin(marginThickness);
+                }
             }
-            if (rowNumber == 0)
-            {
-                marginThickness.Top = 0;
-            }
-
-            cellFrameworkElement.Margin(marginThickness);
         }
 
         // If the cell didn't have a vertical content alignment when we started, set it back to null
@@ -166,10 +170,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Set the row and column numbers on the cell
             winrt::Grid::SetColumn(cellFrameworkElement, columnNumber);
-            winrt::Grid::SetColumn(cellFrameworkElement, rowNumber);
+            winrt::Grid::SetRow(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
+            XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
             columnNumber++;
         }
 
@@ -210,7 +214,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             for (auto column : columns)
             {
                 winrt::ColumnDefinition xamlColumnDefinition{};
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
+                XamlHelpers::HandleTableColumnWidth(column, xamlColumnDefinition);
                 xamlColumnDefinitions.Append(xamlColumnDefinition);
             }
 
@@ -235,9 +239,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
     }

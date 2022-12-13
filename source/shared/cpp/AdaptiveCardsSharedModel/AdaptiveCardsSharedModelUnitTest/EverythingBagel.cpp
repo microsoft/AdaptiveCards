@@ -44,7 +44,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(vAlignment == backImage.GetVerticalAlignment());
     }
 
-    
     void ValidateRefresh(const Refresh& refresh)
     {
         Assert::IsTrue(refresh.GetAction() != nullptr);

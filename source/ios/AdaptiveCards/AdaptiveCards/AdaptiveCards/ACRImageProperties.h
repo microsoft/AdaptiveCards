@@ -5,9 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACOBaseCardElement.h>
-#import <AdaptiveCards/ACOHostConfig.h>
-#import <AdaptiveCards/ACREnums.h>
+#import "ACOBaseCardElement.h"
+#import "ACOHostConfig.h"
+#import "ACREnums.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

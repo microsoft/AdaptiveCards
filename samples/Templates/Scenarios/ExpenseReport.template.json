@@ -13,11 +13,11 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "Large",
-									"weight": "Bolder",
+									"size": "large",
+									"weight": "bolder",
 									"text": "**EXPENSE APPROVAL**",
-									"wrap": true,
-									"style": "heading"
+									"style": "heading",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -50,7 +50,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "ExtraLarge",
+									"size": "extraLarge",
 									"text": "${purpose}",
 									"wrap": true,
 									"style": "heading"
@@ -78,15 +78,15 @@
 				},
 				{
 					"type": "TextBlock",
-					"spacing": "Small",
-					"size": "Small",
-					"weight": "Bolder",
+					"spacing": "small",
+					"size": "small",
+					"weight": "bolder",
 					"text": "[${code}](https://adaptivecards.io)",
 					"wrap": true
 				},
 				{
 					"type": "FactSet",
-					"spacing": "Large",
+					"spacing": "large",
 					"facts": [
 						{
 							"title": "Submitted By",
@@ -118,7 +118,7 @@
 		},
 		{
 			"type": "Container",
-			"spacing": "Large",
+			"spacing": "large",
 			"style": "emphasis",
 			"items": [
 				{
@@ -129,7 +129,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "DATE",
 									"wrap": true
 								}
@@ -138,11 +138,11 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Large",
+							"spacing": "large",
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "CATEGORY",
 									"wrap": true
 								}
@@ -154,7 +154,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "AMOUNT",
 									"wrap": true
 								}
@@ -186,7 +186,7 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Medium",
+							"spacing": "medium",
 							"items": [
 								{
 									"type": "TextBlock",
@@ -209,16 +209,17 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Small",
+							"spacing": "small",
 							"selectAction": {
 								"type": "Action.ToggleVisibility",
+								"title": "expand",
 								"targetElements": [
 									"cardContent${$index}",
 									"chevronDown${$index}",
 									"chevronUp${$index}"
 								]
 							},
-							"verticalContentAlignment": "Center",
+							"verticalContentAlignment": "center",
 							"items": [
 								{
 									"type": "Image",
@@ -261,7 +262,7 @@
 										{
 											"type": "Input.Text",
 											"id": "comment${$index}",
-											"placeholder": "Add your comment here."
+											"label": "Add your comment here"
 										}
 									]
 								}
@@ -303,7 +304,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Large",
+			"spacing": "large",
 			"separator": true,
 			"columns": [
 				{
@@ -311,19 +312,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Total Expense Amount \t",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Non-reimbursable Amount",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Advance Amount",
 							"wrap": true
 						}
@@ -369,7 +370,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"text": "Amount to be Reimbursed",
 									"wrap": true
 								}
@@ -381,7 +382,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}",
 									"wrap": true
 								}
@@ -404,27 +405,23 @@
 					"type": "Column",
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent4",
-							"showHistory",
-							"hideHistory"
-						]
+						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
 					},
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
 							"id": "showHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Show history",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"id": "hideHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Hide history",
 							"wrap": true,
 							"isVisible": false
@@ -483,8 +480,10 @@
 									{
 										"type": "Input.Text",
 										"id": "RejectCommentID",
-										"placeholder": "Please specify an appropriate reason for rejection.",
-										"isMultiline": true
+										"label": "Please specify an appropriate reason for rejection",
+										"isMultiline": true,
+										"isRequired": true,
+										"errorMessage": "A reason for rejection is necessary"
 									}
 								],
 								"actions": [
@@ -506,6 +505,6 @@
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.2",
-	"fallbackText": "This card requires Adaptive Cards v1.2 support to be rendered properly."
+	"version": "1.5",
+	"fallbackText": "This card requires Adaptive Cards v1.5 support to be rendered properly."
 }

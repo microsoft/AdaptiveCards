@@ -59,5 +59,58 @@ namespace AdaptiveCards.Test
 
             StringAssert.Contains(card.ToJson(), expected);
         }
+
+        [TestMethod]
+        public void TestChoiceSetFilteredStyle()
+        {
+            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
+            var testCard = AdaptiveCard.FromJson(expectedJSON);
+            Assert.IsTrue(testCard.Warnings.Count == 0);
+            AdaptiveChoiceSetInput choiceSetInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "choiceSetInput") as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSetInput);
+            Assert.AreEqual(AdaptiveChoiceInputStyle.Filtered, choiceSetInput.Style);
+        }
+
+        [TestMethod]
+        public void TestChoiceSetFilteredStyleDeserialization()
+        {
+            var sampleJSON = Utilities.GetJSONCardFromFile("Input.ChoiceSet.Filtered.json", "v1.5", "Elements");
+            var card = AdaptiveCard.FromJson(sampleJSON);
+            Assert.IsTrue(card.Warnings.Count == 0);
+            AdaptiveChoiceSetInput choiceSetInput = Utilities.GetAdaptiveElementWithId(card.Card, "chosenAnimal") as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSetInput);
+            Assert.AreEqual(choiceSetInput.Style, AdaptiveChoiceInputStyle.Filtered);
+        }
+
+        [TestMethod]
+        public void TestChoiceSetFilteredStyleRoundTripTest()
+        {
+            var card = new AdaptiveCard(AdaptiveCard.KnownSchemaVersion);
+            card.Body.Add(new AdaptiveChoiceSetInput()
+            {
+                Id = "id0",
+                Style = AdaptiveChoiceInputStyle.Filtered,
+            });
+
+            const string expectedJson = @"{
+              ""type"": ""AdaptiveCard"",
+              ""version"": ""1.5"",
+              ""body"": [
+                {
+                  ""type"": ""Input.ChoiceSet"",
+                  ""id"": ""id0"",
+                  ""style"": ""filtered"",
+                  ""isMultiSelect"": false,
+                  ""choices"": []
+                }
+              ]
+            }";
+
+            var actualJson = Utilities.RemoveWhiteSpacesFromJSON(card.ToJson());
+
+            Assert.AreEqual(Utilities.RemoveWhiteSpacesFromJSON(expectedJson), actualJson);
+
+            Assert.AreEqual(Utilities.RemoveWhiteSpacesFromJSON(expectedJson), Utilities.RemoveWhiteSpacesFromJSON(AdaptiveCard.FromJson(actualJson).Card.ToJson()));
+        }
     }
 }

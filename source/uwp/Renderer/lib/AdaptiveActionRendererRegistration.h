@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         AdaptiveActionRendererRegistration() = default;
 
-        Uwp::IAdaptiveActionRenderer Get(winrt::hstring const& type);
+        winrt::IAdaptiveActionRenderer Get(winrt::hstring const& type);
         void Set(winrt::hstring const& type, winrt::IAdaptiveActionRenderer const& renderer);
         void Remove(winrt::hstring const& type);
 

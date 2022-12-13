@@ -15,11 +15,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveRenderContext();
 
-        AdaptiveRenderContext(Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
-                              Rendering::Uwp::AdaptiveFeatureRegistration const& featureRegistration,
-                              Rendering::Uwp::AdaptiveElementRendererRegistration const& elementRendererRegistration,
-                              Rendering::Uwp::AdaptiveActionRendererRegistration const& actionRendererRegistration,
-                              Rendering::Uwp::AdaptiveCardResourceResolvers const& resourceResolvers,
+        AdaptiveRenderContext(winrt::AdaptiveHostConfig const& hostConfig,
+                              winrt::AdaptiveFeatureRegistration const& featureRegistration,
+                              winrt::AdaptiveElementRendererRegistration const& elementRendererRegistration,
+                              winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
+                              winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
                               winrt::ResourceDictionary const& overrideStyles,
                               winrt::ResourceDictionary const& defaultActionSentimentStyles,
                               winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult);
@@ -36,13 +36,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<winrt::AdaptiveCardResourceResolvers> ResourceResolvers;
         property<winrt::ResourceDictionary> OverrideStyles;
 
-        Uwp::AdaptiveInputs UserInputs();
+        winrt::AdaptiveInputs UserInputs();
 
         void AddInputValue(winrt::IAdaptiveInputValue const& inputValue, winrt::AdaptiveRenderArgs const& renderArgs);
-        void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction, Uwp::AdaptiveRenderArgs const& renderArgs);
+        void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(winrt::AdaptiveCard const& card, winrt::AdaptiveRenderArgs const& args);
 
-        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
+        winrt::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
         void AddError(winrt::ErrorStatusCode statusCode, hstring const& message);
         void AddWarning(winrt::WarningStatusCode statusCode, hstring const& message);
@@ -50,12 +50,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                winrt::AdaptiveShowCardAction const& showCardAction,
                                winrt::UIElement const& showCardUIElement,
-                               Uwp::AdaptiveRenderArgs const& renderArgs);
+                               winrt::AdaptiveRenderArgs const& renderArgs);
 
         void AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                winrt::AdaptiveShowCardAction const& showCardAction,
                                winrt::UIElement const& showCardUIElement,
-                               Uwp::AdaptiveRenderArgs const& renderArgs);
+                               winrt::AdaptiveRenderArgs const& renderArgs);
 
         void AddOverflowButton(winrt::AdaptiveActionSet const& actionSet, winrt::UIElement const& actionUIElement);
 

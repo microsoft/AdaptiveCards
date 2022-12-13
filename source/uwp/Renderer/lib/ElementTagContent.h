@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 #pragma once
+
 #include "ElementTagContent.g.h"
-#include "XamlBuilder.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

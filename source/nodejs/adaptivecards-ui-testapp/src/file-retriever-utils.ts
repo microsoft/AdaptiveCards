@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 const v10TestCases: string[] = [
-    'Scenarios/ActivityUpdate', 
     'Elements/Container.SelectAction',
     'Elements/Column.SelectAction',
     'Elements/ColumnSet.SelectAction',
@@ -17,7 +16,9 @@ const v13TestCases: string[] = [
     'Elements/Input.Toggle.ErrorMessage'
 ];
 const v14TestCases: string[] = [];
-const v15TestCases: string[] = [];
+const v15TestCases: string[] = [
+    'Scenarios/ActivityUpdate'
+];
 const v16TestCases: string[] = [
     'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
     'Elements/Carousel.ScenarioCards.Timer', 'Tests/Carousel.HostConfig',

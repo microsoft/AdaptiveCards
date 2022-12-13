@@ -313,6 +313,9 @@ $(function () {
 				"wrap": true
 			},
 			"spacing": 8
+		},
+		"textBlock": {
+			"headingLevel": 2
 		}
 	}
 
@@ -455,14 +458,16 @@ $(function () {
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
 		var renderedCard;
 
+		var version = json.version.split(".");
+
 		if (dataJson) {
 			var template = new ACData.Template(json);
 			adaptiveCard.parse(template.expand({
 				$root: dataJson
-			}));
+			}), new AdaptiveCards.SerializationContext(new AdaptiveCards.Version(version[0], version[1])));
 			renderedCard = adaptiveCard.render();
 		} else {
-			adaptiveCard.parse(json);
+			adaptiveCard.parse(json, new AdaptiveCards.SerializationContext(new AdaptiveCards.Version(version[0], version[1])));
 			renderedCard = adaptiveCard.render();
 		}
 

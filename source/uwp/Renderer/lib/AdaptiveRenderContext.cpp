@@ -16,11 +16,11 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
     }
 
-    AdaptiveRenderContext::AdaptiveRenderContext(Rendering::Uwp::AdaptiveHostConfig const& hostConfig,
-                                                 Rendering::Uwp::AdaptiveFeatureRegistration const& featureRegistration,
-                                                 Rendering::Uwp::AdaptiveElementRendererRegistration const& elementRendererRegistration,
-                                                 Rendering::Uwp::AdaptiveActionRendererRegistration const& actionRendererRegistration,
-                                                 Rendering::Uwp::AdaptiveCardResourceResolvers const& resourceResolvers,
+    AdaptiveRenderContext::AdaptiveRenderContext(winrt::AdaptiveHostConfig const& hostConfig,
+                                                 winrt::AdaptiveFeatureRegistration const& featureRegistration,
+                                                 winrt::AdaptiveElementRendererRegistration const& elementRendererRegistration,
+                                                 winrt::AdaptiveActionRendererRegistration const& actionRendererRegistration,
+                                                 winrt::AdaptiveCardResourceResolvers const& resourceResolvers,
                                                  winrt::ResourceDictionary const& overrideStyles,
                                                  winrt::ResourceDictionary const& defaultActionSentimentStyles,
                                                  winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult) :
@@ -37,7 +37,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    Uwp::AdaptiveInputs AdaptiveRenderContext::UserInputs() { return GetRenderResult()->UserInputs(); }
+    winrt::AdaptiveInputs AdaptiveRenderContext::UserInputs()
+    {
+        return GetRenderResult()->UserInputs();
+    }
 
     void AdaptiveRenderContext::AddError(winrt::ErrorStatusCode statusCode, hstring const& message)
     {
@@ -52,7 +55,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveActionSet const& actionSet,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::UIElement const& showCardUIElement,
-                                                  Uwp::AdaptiveRenderArgs const& renderArgs)
+                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(actionSet, showCardAction, showCardUIElement, renderArgs);
     }
@@ -60,7 +63,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     void AdaptiveRenderContext::AddInlineShowCard(winrt::AdaptiveCard const& adaptiveCard,
                                                   winrt::AdaptiveShowCardAction const& showCardAction,
                                                   winrt::UIElement const& showCardUIElement,
-                                                  Uwp::AdaptiveRenderArgs const& renderArgs)
+                                                  winrt::AdaptiveRenderArgs const& renderArgs)
     {
         GetRenderResult()->AddInlineShowCard(adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
@@ -84,7 +87,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 
     void AdaptiveRenderContext::LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& submitAction,
-                                                       Uwp::AdaptiveRenderArgs const& renderArgs)
+                                                       winrt::AdaptiveRenderArgs const& renderArgs)
     {
         if (auto renderResult = GetRenderResult())
         {
@@ -100,7 +103,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
     }
 
-    Uwp::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
+    winrt::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(winrt::IAdaptiveInputElement const& inputElement)
     {
         if (auto renderResult = GetRenderResult())
         {

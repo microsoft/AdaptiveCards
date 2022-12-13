@@ -1,0 +1,1 @@
+../../AdaptiveCardsTests/Helpers/ACRCustomRenderers.h

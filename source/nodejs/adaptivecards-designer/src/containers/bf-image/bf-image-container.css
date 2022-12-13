@@ -46,8 +46,8 @@
     -ms-user-select: none;
     user-select: none;
     border: 1px solid #EEEEEE;
-	background-color: #EEEEEE;
-	color: #666666;
+    background-color: #EEEEEE;
+    color: #666666;
 }
 
 .ac-pushButton:hover {
