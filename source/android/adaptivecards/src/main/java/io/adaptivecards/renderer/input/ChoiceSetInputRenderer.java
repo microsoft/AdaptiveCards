@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,12 +35,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import io.adaptivecards.CrossIconParams;
+import io.adaptivecards.DynamicChoicesService;
+import io.adaptivecards.ErrorIconParams;
+import io.adaptivecards.NoResultIconParams;
 import io.adaptivecards.R;
+import io.adaptivecards.SearchIconParams;
+import io.adaptivecards.StartSearchingIconParams;
 import io.adaptivecards.TypeAheadSearchActivity;
 import io.adaptivecards.TypeAheadSearchLaunchParams;
 import io.adaptivecards.objectmodel.ChoiceInput;
@@ -47,6 +57,7 @@ import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.DynamicChoicesServiceAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -409,6 +420,157 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
     }
 
+    public View renderDynamicFilteredComboBox(
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        ChoiceSetInput choiceSetInput,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig,
+        RenderArgs renderArgs) {
+
+        final Vector<String> titleList = new Vector<>();
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+        long size = choiceInputVector.size();
+        int valueIndex = -1;
+        String value = choiceSetInput.GetValue();
+        List<String> staticChoices = new ArrayList();
+        for (int i = 0; i < size; i++)
+        {
+            ChoiceInput choiceInput = choiceInputVector.get(i);
+            titleList.addElement(choiceInput.GetTitle());
+            staticChoices.add(choiceInput.GetTitle());
+
+            if (choiceInput.GetValue().equals(value))
+            {
+                valueIndex = i;
+            }
+        }
+
+        Context currContext = context;
+        Activity activity = null;
+
+        while (currContext instanceof ContextWrapper) {
+            if (currContext instanceof Activity) {
+                activity =  (Activity) currContext;
+                break;
+            }
+            currContext = ((ContextWrapper) currContext).getBaseContext();
+        }
+
+        WeakReference<Activity> mActivityRef = new WeakReference<>(activity instanceof Activity ? (Activity) currContext : null);
+
+        LinearLayout layout = new LinearLayout(context);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.TOP;
+        //background = ContextCompat.getDrawable(context, R.drawable.adaptive_edit_box_selector);
+        //int padding = context.getResources().getDimension();
+        layout.setPaddingRelative(0, 0, 0, 10);
+
+        TextView textView = new TextView(context);
+        // set default placeholder if it is null or empty ?
+        textView.setHint(choiceSetInput.GetPlaceholder());
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams1.weight = 1F;
+        layoutParams1.gravity = Gravity.CENTER_VERTICAL;
+
+        textView.setHorizontallyScrolling(false);
+//        textSize = hostConfig.GetFontSize(FontType.Default, TextSize.Medium).toFloat()
+//        ellipsize = TextUtils.TruncateAt.END
+//        gravity = Gravity.CENTER_VERTICAL
+//        setHintTextColor(ContextCompat.getColor(context, com.microsoft.stardust.R.color.fluentcolor_gray_v300))
+//        setTextColor(MiscUtils.getColor(context, com.microsoft.teams.theme.R.attr.search_typeahead_single_select_text_color))
+//        isSingleLine = true
+
+//        applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
+//        applyTextSize(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize(), renderArgs);
+//        applyTextColor(textView, hostConfig, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle(), renderArgs);
+//        applyHorizontalAlignment(textView, textBlock.GetHorizontalAlignment(), renderArgs);
+//        applyAccessibilityHeading(textView, textBlock.GetStyle());
+//        applyAccessibilityProperties(textView, context, textHandleResult);
+
+        textView.setMaxLines(1);
+        textView.setOnClickListener(view -> {
+            ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
+            if (registry != null) {
+                // name can come from host config
+                ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            if (result.getData() != null && result.getData().getExtras() != null) {
+                                String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
+                                if (selectedChoice != null) {
+                                    textView.setText(selectedChoice);
+                                    //CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+                                    Log.d("SelectedChoice", selectedChoice);
+                                }
+                            }
+
+                            //launcher.unregister();
+                        }
+                        DynamicChoicesService.INSTANCE.removeICardActionHandler();
+                    });
+//                ActivityResultLauncher<Intent> mStartForResult = ActivityResultCaller.registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    (ActivityResultCallback<ActivityResult>) result -> {
+//                        if (result.getResultCode() == Activity.RESULT_OK) {
+//                            Intent intent = result.getData();
+//                            // Handle the Intent
+//                        }
+//                    });
+
+                Activity hostActivity = mActivityRef.get();
+
+                //hostActivity.onActivityRes
+
+                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+
+                TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
+                    staticChoices,
+                    "Search",
+                    new SearchIconParams(),
+                    new CrossIconParams(),
+                    new StartSearchingIconParams(),
+                    new NoResultIconParams(),
+                    new ErrorIconParams());
+                intent.putExtra("launchParams", launchParams);
+//                if (hostActivity != null) {
+//                    mStartForResult.launch(intent);
+//                    // request code shall come from host config and shall have a default value
+//                    // hostActivity.startActivityForResult(intent, 10);
+//                }
+
+                DynamicChoicesService.INSTANCE.setICardActionHandler(cardActionHandler);
+                CardRendererRegistration.getInstance().registerCardActionHandler(cardActionHandler);
+                launcher.launch(intent);
+            }
+            else {
+                //Log error in console
+            }
+        });
+
+        //Add chevron right view
+        LinearLayout.LayoutParams iconLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        iconLayoutParams.gravity = Gravity.CENTER_VERTICAL;
+
+
+//        apply {
+//            gravity = Gravity.CENTER_VERTICAL
+//        }
+//        IconView(context, null, 0).apply {
+//            iconSymbol = IconSymbol.CHEVRON_RIGHT
+//            iconViewSize = ViewSize.TINY
+//            setIconTintColor(ContextCompat.getColor(context, com.microsoft.stardust.R.color.fluentcolor_gray_v400))
+//        }.also {
+//            this.addView(it, iconLayoutParams)
+//        }
+//        this.setOnClickListener {
+//            openTypeAheadSearchActivity()
+//        }
+        return textView;
+    }
+
     public View renderFilteredComboBox(
         RenderedAdaptiveCard renderedCard,
         Context context,
@@ -599,32 +761,28 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             autoCompleteTextView.setText(titleList.get(valueIndex));
         }
 
-        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event){
-                //autoCompleteTextView.showDropDown();
-                // Activity activity1 = (Activity) v.getContext();
-
-                ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
-                if (registry != null) {
-                    // name can come from host config
-                    ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
-                        new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                // There are no request codes
-                                if (result.getData() != null && result.getData().getExtras() != null) {
-                                    String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
-                                    if (selectedChoice != null) {
-                                        autoCompleteTextView.setText(selectedChoice);
-                                        CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
-                                        Log.d("SelectedChoice", selectedChoice);
-                                    }
+        autoCompleteTextView.setOnClickListener(view -> {
+            ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
+            if (registry != null) {
+                // name can come from host config
+                ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            if (result.getData() != null && result.getData().getExtras() != null) {
+                                String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
+                                if (selectedChoice != null) {
+                                    autoCompleteTextView.setText(selectedChoice);
+                                    CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+                                    Log.d("SelectedChoice", selectedChoice);
                                 }
-
-                                //launcher.unregister();
                             }
-                        });
+
+                            //launcher.unregister();
+                        }
+                        DynamicChoicesService.INSTANCE.removeICardActionHandler();
+                    });
 //                ActivityResultLauncher<Intent> mStartForResult = ActivityResultCaller.registerForActivityResult(
 //                    new ActivityResultContracts.StartActivityForResult(),
 //                    (ActivityResultCallback<ActivityResult>) result -> {
@@ -634,41 +792,107 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 //                        }
 //                    });
 
-                    Activity hostActivity = mActivityRef.get();
+                Activity hostActivity = mActivityRef.get();
 
-                    //hostActivity.onActivityRes
+                //hostActivity.onActivityRes
 
-                    Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
-                    TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(staticChoices);
-                    intent.putExtra("launchParams", launchParams);
+                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
+                    staticChoices,
+                    "Search",
+                    new SearchIconParams(),
+                    new CrossIconParams(),
+                    new StartSearchingIconParams(R.drawable.ic_search_no_results, ImageView.ScaleType.FIT_CENTER, "Search Options", "Search Options"),
+                    new NoResultIconParams(R.drawable.ic_search_no_results_error, ImageView.ScaleType.FIT_CENTER, "No Results Found!", "No Results Found!"),
+                    new ErrorIconParams(R.drawable.ic_search_no_results_error, ImageView.ScaleType.FIT_CENTER, "Something went wrong", "Something went wrong"));
+                intent.putExtra("launchParams", launchParams);
 //                if (hostActivity != null) {
 //                    mStartForResult.launch(intent);
 //                    // request code shall come from host config and shall have a default value
 //                    // hostActivity.startActivityForResult(intent, 10);
 //                }
 
-                    CardRendererRegistration.getInstance().registerCardActionHandler(cardActionHandler);
-                    launcher.launch(intent);
-                }
-                else {
-                    //Log error in console
-                }
-                return true;
+                DynamicChoicesService.INSTANCE.setICardActionHandler(cardActionHandler);
+                CardRendererRegistration.getInstance().registerCardActionHandler(cardActionHandler);
+                launcher.launch(intent);
+            }
+            else {
+                //Log error in console
             }
         });
 
-        autoCompleteTextView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-//                autoCompleteTextView.showDropDown();
-//                return false;
-                Activity hostActivity = mActivityRef.get();
-                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
-                if (hostActivity != null)
-                    hostActivity.startActivity(intent);
-                return true;
-            }
-        });
+//        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event){
+//                //autoCompleteTextView.showDropDown();
+//                // Activity activity1 = (Activity) v.getContext();
+//
+//                ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
+//                if (registry != null) {
+//                    // name can come from host config
+//                    ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
+//                        new ActivityResultContracts.StartActivityForResult(),
+//                        result -> {
+//                            if (result.getResultCode() == Activity.RESULT_OK) {
+//                                // There are no request codes
+//                                if (result.getData() != null && result.getData().getExtras() != null) {
+//                                    String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
+//                                    if (selectedChoice != null) {
+//                                        autoCompleteTextView.setText(selectedChoice);
+//                                        CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+//                                        Log.d("SelectedChoice", selectedChoice);
+//                                    }
+//                                }
+//
+//                                //launcher.unregister();
+//                            }
+//                            DynamicChoicesService.INSTANCE.removeICardActionHandler();
+//                        });
+////                ActivityResultLauncher<Intent> mStartForResult = ActivityResultCaller.registerForActivityResult(
+////                    new ActivityResultContracts.StartActivityForResult(),
+////                    (ActivityResultCallback<ActivityResult>) result -> {
+////                        if (result.getResultCode() == Activity.RESULT_OK) {
+////                            Intent intent = result.getData();
+////                            // Handle the Intent
+////                        }
+////                    });
+//
+//                    Activity hostActivity = mActivityRef.get();
+//
+//                    //hostActivity.onActivityRes
+//
+//                    Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+//                    TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(staticChoices);
+//                    intent.putExtra("launchParams", launchParams);
+////                if (hostActivity != null) {
+////                    mStartForResult.launch(intent);
+////                    // request code shall come from host config and shall have a default value
+////                    // hostActivity.startActivityForResult(intent, 10);
+////                }
+//
+//                    DynamicChoicesService.INSTANCE.setICardActionHandler(cardActionHandler);
+//                    CardRendererRegistration.getInstance().registerCardActionHandler(cardActionHandler);
+//                    launcher.launch(intent);
+//                }
+//                else {
+//                    //Log error in console
+//                }
+//                return true;
+//            }
+//        });
+
+//        autoCompleteTextView.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+////                autoCompleteTextView.showDropDown();
+////                return false;
+//                Activity hostActivity = mActivityRef.get();
+//                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+//                if (hostActivity != null)
+//                    hostActivity.startActivity(intent);
+//                return true;
+//            }
+//        });
 
         autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {

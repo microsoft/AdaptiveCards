@@ -1,10 +1,13 @@
 package io.adaptivecards
 
-import io.adaptivecards.objectmodel.BaseActionElement
-import io.adaptivecards.renderer.RenderedAdaptiveCard
+import io.adaptivecards.objectmodel.ChoiceInput
+import io.adaptivecards.renderer.http.HttpRequestResult
 
 interface IChoicesResolver {
-    fun getDynamicChoices(queryText: String
-                          // choices.data
-    ): List<String>
+    fun getDynamicChoices(type: String,
+                          dataset: String,
+                          value: String,
+                          count: Int?,
+                          skip: Int?
+    ): HttpRequestResult<List<ChoiceInput>>
 }

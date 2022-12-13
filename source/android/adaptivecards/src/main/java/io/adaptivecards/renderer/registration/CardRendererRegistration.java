@@ -16,6 +16,8 @@ import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.HashMap;
 
+import io.adaptivecards.TypeAheadSearchCustomIcons;
+import io.adaptivecards.TypeAheadSearchLaunchParams;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -141,6 +143,14 @@ public class CardRendererRegistration
     public IBaseCardElementRenderer getRenderer(String cardElementType)
     {
         return m_typeToRendererMap.get(cardElementType);
+    }
+
+    public void registerTypeAheadSearchLaunchParams(TypeAheadSearchCustomIcons typeAheadSearchLaunchParams) {
+        m_typeAheadSearchCustomIcons = typeAheadSearchLaunchParams;
+    }
+
+    public TypeAheadSearchCustomIcons getTypeAheadSearchLaunchParams() {
+        return m_typeAheadSearchCustomIcons;
     }
 
     public void setInputWatcher(IInputWatcher inputWatcher) {
@@ -647,4 +657,5 @@ public class CardRendererRegistration
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
     private ActivityResultRegistry m_activityResultRegistry = null;
     private ICardActionHandler m_cardActionHandler = null;
+    private TypeAheadSearchCustomIcons m_typeAheadSearchCustomIcons = null;
 }

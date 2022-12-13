@@ -4,6 +4,11 @@ import java.io.Serializable
 
 data class TypeAheadSearchLaunchParams(
     //choicesData: ChoicesData,
-    // interface for communication with host
-    val staticChoices: List<String>? = null
+    val staticChoices: List<String>? = null,
+    val title: String,
+    val searchIconParams: SearchIconParams,
+    val crossIconParams: CrossIconParams,
+    val startSearchingIconParams: StartSearchingIconParams,
+    val noResultIconParams: NoResultIconParams,
+    val errorIconParams: ErrorIconParams
 ) : Serializable

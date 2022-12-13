@@ -57,11 +57,11 @@ public class AdaptiveCardRenderer
             FragmentManager fragmentManager,
             AdaptiveCard adaptiveCard,
             ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            //IChoicesResolver choicesResolver,
             ActivityResultRegistry activityResultRegistry,
             HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, choicesResolver, null, activityResultRegistry, hostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, activityResultRegistry, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
@@ -71,7 +71,7 @@ public class AdaptiveCardRenderer
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, null, hostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, null, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
@@ -79,7 +79,7 @@ public class AdaptiveCardRenderer
         FragmentManager fragmentManager,
         AdaptiveCard adaptiveCard,
         ICardActionHandler cardActionHandler,
-        @Nullable IChoicesResolver choicesResolver,
+        //@Nullable IChoicesResolver choicesResolver,
         @Nullable IOverflowActionRenderer overflowActionRenderer,
         ActivityResultRegistry activityResultRegistry,
         HostConfig hostConfig)

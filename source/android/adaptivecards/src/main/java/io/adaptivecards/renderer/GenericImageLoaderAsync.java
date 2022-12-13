@@ -226,7 +226,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 
     /**
      * Override this method to transform the resolved image before it is rendered.
-     * The result of this method will be passed to {@link #onSuccessfulPostExecute}.
+     * The result of this method will be passed to {@link #onSuccessfulPostExecute}
      * Default implementation applies no transformations.
      * @param bitmap the resolved image
      * @return the transformed image

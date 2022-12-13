@@ -35,6 +35,7 @@ import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
@@ -79,6 +80,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private TextView m_selectedHostConfigText;
     private Timer m_timer=new Timer();
     private final long DELAY = 1000; // milliseconds
+    private Boolean returnChoices = true;
 
     // Options for custom elements
     private Switch m_customActions;
@@ -128,6 +130,33 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_configEditText.addTextChangedListener(watcher);
 
         renderImporterCard(true);
+    }
+
+    @NonNull
+    @Override
+    public HttpRequestResult<List<ChoiceInput>> getDynamicChoices(@NonNull String queryText) {
+        List<ChoiceInput> dynamicChoices = new ArrayList();
+        synchronized (returnChoices) {
+            if (returnChoices) {
+                ChoiceInput choiceInput = new ChoiceInput();
+                choiceInput.SetTitle("a");
+                choiceInput.SetValue("a");
+
+                dynamicChoices.add(choiceInput);
+//                dynamicChoices.add("aa");
+//                dynamicChoices.add("aaa");
+//                dynamicChoices.add("aaaa");
+//                dynamicChoices.add("aaaaa");
+//                dynamicChoices.add("aaaaaa");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            returnChoices = !returnChoices;
+        }
+        return new HttpRequestResult<>(dynamicChoices);
     }
 
 //    @NonNull
@@ -393,7 +422,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 this,
                 getSupportFragmentManager(),
                 parseResult.GetAdaptiveCard(),
-                this,
                 this,
                 getActivityResultRegistry(),
                 hostConfig);
@@ -724,18 +752,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             showToast("Unknown Action!", Toast.LENGTH_LONG);
         }
-    }
-
-    @Override
-    public List<String> getDynamicChoices2(String queryText) {
-        List<String> dynamicChoices = new ArrayList();
-        dynamicChoices.add("a");
-        dynamicChoices.add("aa");
-        dynamicChoices.add("aaa");
-        dynamicChoices.add("aaaa");
-        dynamicChoices.add("aaaaa");
-        dynamicChoices.add("aaaaaa");
-        return dynamicChoices;
     }
 
     @Override

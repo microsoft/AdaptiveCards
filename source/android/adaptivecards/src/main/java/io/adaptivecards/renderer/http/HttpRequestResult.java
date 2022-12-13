@@ -2,12 +2,19 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.http;
 
+import io.adaptivecards.ResponseType;
+
 public class HttpRequestResult<RESULT>
 {
     public HttpRequestResult(Exception excep)
     {
+        this(excep, ResponseType.ERROR);
+    }
+
+    public HttpRequestResult(Exception excep, @ResponseType String responseType)
+    {
         m_excep = excep;
-        m_success = false;
+        m_responseType = responseType;
     }
 
     public HttpRequestResult(RESULT result)
@@ -31,10 +38,10 @@ public class HttpRequestResult<RESULT>
 
     public boolean isSuccessful()
     {
-        return m_success;
+        return ResponseType.SUCCESS.equalsIgnoreCase(m_responseType);
     }
 
     private Exception m_excep = null;
     private RESULT m_result = null;
-    private boolean m_success = true;
+    private @ResponseType String m_responseType = ResponseType.SUCCESS;
 }

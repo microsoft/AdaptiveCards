@@ -6,12 +6,14 @@ import java.util.List;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public interface ICardActionHandler
 {
     void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard);
-    List<String> getDynamicChoices2(String queryText);
+    HttpRequestResult<List<ChoiceInput>> getDynamicChoices(String queryText);
     void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard);
     void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard);
 }

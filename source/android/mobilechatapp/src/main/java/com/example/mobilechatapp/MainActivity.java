@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -48,6 +49,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 
 public class MainActivity extends AppCompatActivity implements ICardActionHandler, RecyclerViewAdapter.ItemClickListener
 {
@@ -405,6 +407,11 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         {
             showToast("Unknown Action!" , Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public HttpRequestResult<List<ChoiceInput>> getDynamicChoices(String queryText) {
+        return new HttpRequestResult<>();
     }
 
     @Override

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.adaptivecards.TypeAheadSearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFF">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:title="title" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include
+            android:id="@+id/type_ahead_search_bar"
+            layout="@layout/adaptive_card_choiceset_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_ahead_search_bar"
+            app:layout_constraintStart_toStartOf="parent" >
+
+            <include
+                android:id="@+id/custom_overlay_view"
+                layout="@layout/adaptive_card_choiceset_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!--            <ProgressBar-->
+            <!--                android:id="@+id/progressBar"-->
+            <!--                android:indeterminateTint="#000"-->
+            <!--                android:contentDescription="Loading Options"-->
+            <!--                android:scaleType="center"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="110dp"-->
+            <!--                android:layout_gravity="center_horizontal"-->
+            <!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent" />-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_marginTop="50dp"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}">-->
+
+            <!--                <ProgressBar-->
+            <!--                    android:id="@+id/progress_bar"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center_horizontal"-->
+            <!--                    android:contentDescription="Loading Options"-->
+            <!--                    android:scaleType="center" />-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center_horizontal"-->
+            <!--                    android:layout_marginTop="10dp"-->
+            <!--                    android:text="Loading Options"-->
+            <!--                    android:textColor="#6E6E6E"-->
+            <!--                    android:textSize="17sp" />-->
+
+
+            <!--            </LinearLayout>-->
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/error_image"-->
+            <!--                android:layout_width="80dp"-->
+            <!--                android:layout_height="80dp"-->
+            <!--                android:layout_marginTop="110dp"-->
+            <!--                android:layout_gravity="center_horizontal"-->
+            <!--                android:contentDescription="Search options"-->
+            <!--                android:gravity="center"-->
+            <!--                tools:background="@{viewModel.isLoading ? @android:drawable/ic_search_category_default : @android:drawable/ic_dialog_alert" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_results_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
+                android:scrollbars="vertical"
+                android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
+                app:adapter="@{viewModel.adaptor}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view" />
+
+            <include
+                android:id="@+id/custom_error_view"
+                layout="@layout/adaptive_card_choiceset_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:layout_marginTop="110dp"
+                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="visible"/>
+
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
