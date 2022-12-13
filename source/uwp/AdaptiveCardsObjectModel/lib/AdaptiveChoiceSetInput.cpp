@@ -5,7 +5,6 @@
 #include "AdaptiveChoiceSetInput.g.cpp"
 #include "AdaptiveChoiceInput.h"
 #include "AdaptiveChoicesData.h"
-#include <uwp/AdaptiveCardsObjectModel/AdaptiveChoicesData.cpp>
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
@@ -17,7 +16,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         ChoiceSetStyle = static_cast<Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         Value = UTF8ToHString(sharedChoiceSetInput->GetValue());
         Placeholder = UTF8ToHString(sharedChoiceSetInput->GetPlaceholder());
-        ChoicesData = *winrt::make_self<implementation::AdaptiveChoicesData>(sharedChoiceSetInput->GetChoicesData());
+
+        if (auto choicesData = sharedChoiceSetInput->GetChoicesData())
+        {
+            ChoicesData = *winrt::make_self<implementation::AdaptiveChoicesData>(sharedChoiceSetInput->GetChoicesData());
+        }
+
         InitializeBaseElement(sharedChoiceSetInput);
     }
 
@@ -32,7 +36,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         choiceSet->SetWrap(Wrap);
         choiceSet->SetPlaceholder(HStringToUTF8(Placeholder));
         choiceSet->GetChoices() = GenerateSharedVector<implementation::AdaptiveChoiceInput, ::AdaptiveCards::ChoiceInput>(Choices.get());
-        choiceSet->SetChoicesData(ChoicesData);
+
+        if (auto resource = peek_innards<implementation::AdaptiveChoicesData>(ChoicesData.get()))
+        {
+            choiceSet->SetChoicesData(resource->GetSharedModel());
+        }
+       
         return choiceSet;
     }
 }

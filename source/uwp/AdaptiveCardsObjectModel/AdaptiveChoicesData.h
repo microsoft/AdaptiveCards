@@ -12,21 +12,11 @@ struct DECLSPEC_UUID("C7B2DD8D-B84D-4DC1-991C-215DEF5689E3") AdaptiveChoicesData
     AdaptiveChoicesData() : AdaptiveChoicesData(std::make_shared<::AdaptiveCards::ChoicesData>())
     {
     }
-    AdaptiveChoicesData(const std::shared_ptr<::AdaptiveCards::ChoicesData>& sharedChoicesData);
 
-    // IAdaptiveChoiceInput
-    hstring Dataset();
-    void Dataset(hstring const& dataset);
+    AdaptiveChoicesData(const std::shared_ptr<::AdaptiveCards::AdaptiveChoicesData>& sharedChoicesData);
 
-    hstring ChoicesDataType();
-    void ChoicesDataType(hstring const& choicesDataType);
-
-    auto ElementType()
-    {
-        return Uwp::ElementType::ChoicesData;
-    }
-
-    std::shared_ptr<::AdaptiveCards::ChoicesData> GetSharedModel();
+    property<hstring> ChoicesDataType;
+    property<hstring> Dataset;
 
     // ITypePeek method
     void* PeekAt(REFIID riid) override
@@ -34,7 +24,12 @@ struct DECLSPEC_UUID("C7B2DD8D-B84D-4DC1-991C-215DEF5689E3") AdaptiveChoicesData
         return PeekHelper(riid, this);
     }
 
-private:
-    std::shared_ptr<::AdaptiveCards::ChoicesData> m_sharedChoicesData;
+    std::shared_ptr<::AdaptiveCards::ChoicesData> GetSharedModel();
 };
 } // namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+{
+struct AdaptiveChoicesData : AdaptiveChoicesDataT<AdaptiveChoicesData, implementation::AdaptiveChoicesData>
+{
+};
+} // namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation

@@ -488,6 +488,16 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Boolean Wrap;
         ChoiceSetStyle ChoiceSetStyle;
         Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
+        AdaptiveChoicesData ChoicesData;
+    };
+    
+    runtimeclass AdaptiveChoicesData
+    {
+        AdaptiveChoicesData();
+
+        ElementType ElementType { get; };
+        String Dataset;
+        String ChoicesDataType;
     };
 
     runtimeclass AdaptiveDateInput : IAdaptiveInputElement, IAdaptiveCardElement
