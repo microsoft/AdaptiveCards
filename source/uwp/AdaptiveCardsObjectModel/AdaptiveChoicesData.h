@@ -13,7 +13,7 @@ struct DECLSPEC_UUID("C7B2DD8D-B84D-4DC1-991C-215DEF5689E3") AdaptiveChoicesData
     {
     }
 
-    AdaptiveChoicesData(const std::shared_ptr<::AdaptiveCards::AdaptiveChoicesData>& sharedChoicesData);
+    AdaptiveChoicesData(const std::shared_ptr<::AdaptiveCards::ChoicesData>& sharedChoicesData);
 
     property<hstring> ChoicesDataType;
     property<hstring> Dataset;
