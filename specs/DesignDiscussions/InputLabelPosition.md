@@ -76,27 +76,27 @@ In `above` label position : The width is always 100% of the container of input e
 
 Input.Text:
 
-![img](./assets/InputLabels/InputLabelPositon/input_text.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_text.png)
 
 Input.Number:
 
-![img](./assets/InputLabels/InputLabelPositon/input_number.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_number.png)
 
 Input.Date:
 
-![img](./assets/InputLabels/InputLabelPositon/input_date.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_date.png)
 
 Input.Time:
 
-![img](./assets/InputLabels/InputLabelPositon/input_time.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_time.png)
 
 Input.ChoiceSet:
 
-![img](./assets/InputLabels/InputLabelPositon/input_choiceSet.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_choiceSet.png)
 
 Input.Toggle:
 
-![img](./assets/InputLabels/InputLabelPositon/input_toggle.PNG)
+![img](./assets/InputLabels/InputLabelPositon/input_toggle.png)
 
 
 
