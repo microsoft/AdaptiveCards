@@ -171,7 +171,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             // Set the row and column numbers on the cell
             winrt::Grid::SetColumn(cellFrameworkElement, columnNumber);
-            winrt::Grid::SetColumn(cellFrameworkElement, rowNumber);
+            winrt::Grid::SetRow(cellFrameworkElement, rowNumber);
 
             // Add the cell to the panel
             XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement, xamlGrid);
