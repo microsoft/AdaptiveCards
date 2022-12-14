@@ -492,43 +492,43 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("[empty destination]()");
             Assert::AreEqual<std::string>("<p><a href=\"\">empty destination</a></p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_2)
         {
             MarkDownParser parser("[Stay tuned to Know [aaa] m (aa)ore](https://aaa.bbb.com/(a)sites(Test).doc?somegar)bageValue*afterstar()");
             Assert::AreEqual<std::string>("<p><a href=\"https://aaa.bbb.com/(a)sites(Test).doc?somegar\">Stay tuned to Know [aaa] m (aa)ore</a>bageValue*afterstar()</p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_3)
         {
             MarkDownParser parser("[Stay tuned to Know more](https://aaa.bbb.com/(a)sites(Test).doc?somegarbageValue)*afterstar()");
             Assert::AreEqual<std::string>("<p><a href=\"https://aaa.bbb.com/(a)sites(Test).doc?somegarbageValue\">Stay tuned to Know more</a>*afterstar()</p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_4)
         {
             MarkDownParser parser("[Stay tuned to Know more](https://aaa.bbb.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa)*");
             Assert::AreEqual<std::string>("<p><a href=\"https://aaa.bbb.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa\">Stay tuned to Know more</a>*</p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_5)
         {
             MarkDownParser parser("[Stay tuned to Know more](https://aaa.bbb.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa)");
             Assert::AreEqual<std::string>("<p><a href=\"https://aaa.bbb.com/(a)sit(es(Test).doc?somegarbageValue)*afafafafafafa\">Stay tuned to Know more</a></p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_6)
         {
             MarkDownParser parser("[Stay tuned to Know)]()afafafa()");
             Assert::AreEqual<std::string>("<p><a href=\"\">Stay tuned to Know)</a>afafafa()</p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(LinkNestedParenthesisTest_7)
         {
             MarkDownParser parser("[](()");
             Assert::AreEqual<std::string>("<p>[](()</p>", parser.TransformToHtml());
-		}
+        }
 
         TEST_METHOD(ListTest_SimpleValidListTest)
         {

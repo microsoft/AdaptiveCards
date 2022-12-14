@@ -4,9 +4,10 @@
 
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.g.cpp"
+#include "InputValue.h"
 #include "ParseUtil.h"
+#include "WholeItemsPanel.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
     winrt::UIElement AdaptiveChoiceSetInputRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
@@ -16,7 +17,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         try
         {
             auto hostConfig = renderContext.HostConfig();
-            if (!SupportsInteractivity(hostConfig))
+            if (!XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"ChoiceSet was stripped from card because interactivity is not supported");
@@ -47,9 +48,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                                       cardElement.ElementTypeString(),
-                                                                                       ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
         return nullptr;
@@ -107,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::ComboBoxItem comboBoxItem{};
 
-            SetContent(comboBoxItem, title, wrap);
+            XamlHelpers::SetContent(comboBoxItem, title, wrap);
 
             if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
@@ -122,10 +121,10 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         comboBox.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
 
-        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Compact", comboBox);
 
         auto [inputLayout, validationBorder] =
-            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
+            XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, comboBox, false, renderContext);
 
         // Create the InputValue and add it to the context
         auto input = winrt::make_self<winrt::CompactChoiceSetInputValue>(adaptiveChoiceSetInput, comboBox, validationBorder);
@@ -154,7 +153,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             if (isMultiSelect)
             {
                 winrt::CheckBox checkBox{};
-                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", checkBox);
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", checkBox);
                 checkBox.IsChecked(IsChoiceSelected(values, input));
                 choiceItem = checkBox;
             }
@@ -162,27 +161,49 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             {
                 winrt::RadioButton radioButton{};
 
-                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", radioButton);
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", radioButton);
                 if (values.size() == 1)
                 {
                     // When isMultiSelect is false, only 1 specified value is accepted.
                     // Otherwise, leave all options unset
                     radioButton.IsChecked(IsChoiceSelected(values, input));
                 }
+
+                radioButton.PreviewKeyDown(
+                    [stackPanel, radioButton](winrt::IInspectable const& /*sender*/, winrt::KeyRoutedEventArgs const& args) -> void
+                    {
+                        std::uint32_t currentButtonIndex;
+                        auto children = stackPanel.Children();
+                        auto size = children.Size();
+                        if (const auto isButtonFound = children.IndexOf(radioButton, currentButtonIndex))
+                        {
+                            if (args.Key() == winrt::VirtualKey::Down)
+                            {
+                                auto newButtonIndex = (currentButtonIndex + 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                            }
+                            else if (args.Key() == winrt::VirtualKey::Up)
+                            {
+                                auto newButtonIndex = (currentButtonIndex + size - 1) % size;
+                                children.GetAt(newButtonIndex).as<winrt::RadioButton>().IsChecked(true);
+                            }
+                        }
+                    });
+
                 choiceItem = radioButton;
             }
             winrt::hstring title = input.Title();
-            SetContent(choiceItem, title, wrap);
-            AddHandledTappedEvent(choiceItem);
-            AppendXamlElementToPanel(choiceItem, stackPanel);
+            XamlHelpers::SetContent(choiceItem, title, wrap);
+            XamlHelpers::AddHandledTappedEvent(choiceItem);
+            XamlHelpers::AppendXamlElementToPanel(choiceItem, stackPanel);
         }
 
-        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Expanded", stackPanel);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.ChoiceSet.Expanded", stackPanel);
 
         winrt::UIElement inputLayout{nullptr};
 
         std::tie(inputLayout, std::ignore) =
-            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
+            XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, stackPanel, false, renderContext, false);
 
         // Create the InputValue and add it to the context
         auto input = winrt::make_self<winrt::ExpandedChoiceSetInputValue>(adaptiveChoiceSetInput, stackPanel, nullptr);
@@ -254,7 +275,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         // Handle input validation
         auto [inputLayout, validationBorder] =
-            HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
+            XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
         auto input = winrt::make_self<winrt::FilteredChoiceSetInputValue>(adaptiveChoiceSetInput, autoSuggestBox, validationBorder);
         renderContext.AddInputValue(*input, renderArgs);

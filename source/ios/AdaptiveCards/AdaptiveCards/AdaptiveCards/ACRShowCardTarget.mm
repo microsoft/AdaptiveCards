@@ -104,6 +104,7 @@
 
     [superview addArrangedSubview:adcView];
     _superview = superview;
+    superview.accessibilityElements = [((ACRContentStackView *)superview) getArrangedSubviews];
 }
 
 - (IBAction)toggleVisibilityOfShowCard

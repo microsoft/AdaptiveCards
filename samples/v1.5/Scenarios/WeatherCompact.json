@@ -1,0 +1,84 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Redmond, WA",
+			"size": "large",
+			"isSubtle": true,
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Mon, Nov 4, 2019 6:21 PM",
+			"spacing": "none",
+			"wrap": true
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"size": "small",
+							"altText": "Mostly cloudy weather"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "46",
+							"size": "extraLarge",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "°F",
+							"weight": "bolder",
+							"spacing": "small",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Hi 50",
+							"horizontalAlignment": "left",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "Lo 41",
+							"horizontalAlignment": "left",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

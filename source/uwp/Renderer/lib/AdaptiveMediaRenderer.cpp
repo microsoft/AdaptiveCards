@@ -7,8 +7,9 @@
 
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
+#include "WholeItemsPanel.h"
 
-using namespace AdaptiveCards::Rendering::Uwp::MediaHelpers;
+using namespace render_xaml::MediaHelpers;
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -25,7 +26,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto posterImage = GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia);
 
             // If the host doesn't support interactivity we're done here, just return the poster image
-            if (!::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig))
+            if (!XamlHelpers::SupportsInteractivity(hostConfig))
             {
                 renderContext.AddWarning(winrt::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
@@ -38,13 +39,13 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             winrt::hstring altText = adaptiveMedia.AltText();
 
-            auto touchTargetUIElement = ::AdaptiveCards::Rendering::Uwp::ActionHelpers::WrapInTouchTarget(
+            auto touchTargetUIElement = render_xaml::ActionHelpers::WrapInTouchTarget(
                 cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
             winrt::StackPanel mediaStackPanel{};
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
+            XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement, mediaStackPanel);
 
             // Check if this host allows inline playback
             auto mediaConfig = hostConfig.Media();
@@ -87,7 +88,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 // Make the media element collapsed until the user clicks
                 mediaElement.Visibility(winrt::Visibility::Collapsed);
 
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
+                XamlHelpers::AppendXamlElementToPanel(mediaElement, mediaStackPanel);
             }
 
             auto touchTargetAsButtonBase = touchTargetUIElement.as<winrt::ButtonBase>();
@@ -106,9 +107,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                                       cardElement.ElementTypeString(),
-                                                                                       ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
     }

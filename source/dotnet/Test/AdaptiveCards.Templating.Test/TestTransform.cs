@@ -13381,8 +13381,8 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(expectedWarning, log[0]);
         }
-	
-	    [TestMethod]
+
+        [TestMethod]
         public void TestJPathOnData()
         {
             string cardJson =

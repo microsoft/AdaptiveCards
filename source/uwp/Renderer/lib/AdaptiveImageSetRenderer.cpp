@@ -5,6 +5,7 @@
 #include "AdaptiveImageSetRenderer.h"
 #include "AdaptiveImageSetRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -44,7 +45,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                     if (const auto uiImageAsFrameworkElement = uiImage.try_as<winrt::FrameworkElement>())
                     {
                         uiImageAsFrameworkElement.MaxHeight(imageSetConfig.MaxImageHeight());
-                        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(uiImageAsFrameworkElement, xamlGrid);
+                        XamlHelpers::AppendXamlElementToPanel(uiImageAsFrameworkElement, xamlGrid);
                     }
                 }
             }
@@ -54,14 +55,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 return nullptr;
             }
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", xamlGrid);
             return xamlGrid;
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                             cardElement.ElementTypeString(),
-                                                                             ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, cardElement.ElementTypeString(), ex.message());
             return nullptr;
         }
     }

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "WholeItemsPanel.h"
-#include "XamlHelpers.h"
+
 #include "ElementTagContent.h"
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
+#include "WholeItemsPanel.h"
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
@@ -223,7 +223,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto pixelWidthRef = column.PixelWidth();
 
         uint32_t width = GetValueFromRef(widthRef, (uint32_t)0);
-        uint32_t pixelWidth = GetValueFromRef(widthRef, (uint32_t)0);
+        uint32_t pixelWidth = GetValueFromRef(pixelWidthRef, (uint32_t)0);
 
         bool isWidthUnset = (widthRef == nullptr) && (pixelWidthRef == nullptr);
 

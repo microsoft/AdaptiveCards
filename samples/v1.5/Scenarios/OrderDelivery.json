@@ -12,14 +12,16 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Redmond, WA",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
 							"text": "Malt & Vine",
 							"weight": "bolder",
 							"size": "extraLarge",
+							"spacing": "none",
+							"wrap": true,
+							"style": "heading"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Redmond, WA",
 							"spacing": "none",
 							"wrap": true
 						},

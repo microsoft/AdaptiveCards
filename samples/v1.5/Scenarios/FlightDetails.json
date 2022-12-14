@@ -1,0 +1,219 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Your Flight Details",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Container",
+							"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+							"items": [
+								{
+									"type": "Image",
+									"horizontalAlignment": "center",
+									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png",
+									"altText": "Departing airplane"
+								}
+							],
+							"bleed": true,
+							"style": "emphasis"
+						},
+						{
+							"type": "Container",
+							"spacing": "none",
+							"style": "emphasis",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "extraLarge",
+									"weight": "lighter",
+									"color": "accent",
+									"text": "Flight to JFK",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "small",
+									"text": "Continental Air Lines flight UA110",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "Confirmation code: RXJ34P",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "4 hours 15 minutes",
+									"wrap": true
+								}
+							],
+							"bleed": true,
+							"height": "stretch"
+						}
+					],
+					"width": 45
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Container",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "SFO",
+													"wrap": true
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"verticalContentAlignment": "center",
+											"items": [
+												{
+													"type": "Image",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+													"width": "10000px",
+													"height": "2px"
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"spacing": "small",
+											"verticalContentAlignment": "center",
+											"items": [
+												{
+													"type": "Image",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
+													"height": "16px",
+													"altText": "Flight to"
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"horizontalAlignment": "right",
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "JFK",
+													"wrap": true
+												}
+											],
+											"width": "auto"
+										}
+									]
+								},
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "RichTextBlock",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "8:15 PM\n"
+														},
+														{
+															"type": "TextRun",
+															"text": "Sat, Mar 4, 2017\n",
+															"isSubtle": true
+														},
+														{
+															"type": "TextRun",
+															"text": "San Francisco",
+															"isSubtle": true
+														}
+													]
+												}
+											],
+											"width": 1
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "RichTextBlock",
+													"horizontalAlignment": "right",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "3:30 AM\n"
+														},
+														{
+															"type": "TextRun",
+															"text": "Sat, Mar 4, 2017\n",
+															"isSubtle": true
+														},
+														{
+															"type": "TextRun",
+															"text": "New York",
+															"isSubtle": true
+														}
+													]
+												}
+											],
+											"width": 1
+										}
+									]
+								},
+								{
+									"type": "ActionSet",
+									"separator": true,
+									"actions": [
+										{
+											"type": "Action.Submit",
+											"title": "Check in",
+											"style": "positive"
+										},
+										{
+											"type": "Action.Submit",
+											"title": "View"
+										}
+									],
+									"spacing": "medium"
+								}
+							]
+						}
+					],
+					"width": 55
+				}
+			],
+			"height": "stretch"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5"
+}

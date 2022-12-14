@@ -1,0 +1,72 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Here are some cool photos",
+			"size": "large",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Sorry some of them are repeats",
+			"size": "medium",
+			"weight": "lighter",
+			"wrap": true
+		},
+		{
+			"type": "ImageSet",
+			"imageSize": "medium",
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/200/200?image=100",
+					"altText": "White beach panorama"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=200",
+					"altText": "Cow on a grassy field"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=301",
+					"altText": "Orange leaves on the sidewalk of a park"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/200/200?image=400",
+					"altText": "Green leaves"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=500",
+					"altText": "Top of a sky scrapper"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/200/200?image=600",
+					"altText": "Foggy forest"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=700",
+					"altText": "Picure of the blue ocean"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=800",
+					"altText": "Crowded train station"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/300/200?image=900",
+					"altText": "Sunset under a dock"
+				}
+			]
+		}
+	]
+}

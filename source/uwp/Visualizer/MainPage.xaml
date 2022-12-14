@@ -11,7 +11,7 @@
     <Page.Resources>
         <Style x:Key="CommandButton" TargetType="Button">
             <Setter Property="Margin" Value="5,0,0,0"/>
-        </Style>  
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -27,27 +27,54 @@
                     <AppBarButton
                         Icon="Add"
                         Label="New card"
+                        ToolTipService.ToolTip="New Card (Ctrl+N)" 
                         x:Name="AppBarNew"
                         Click="AppBarNew_Click"
-                        IsCompact="True"/>
+                        IsCompact="True"
+                        AccessKey="N">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator
+                                Modifiers="Control"
+                                Key="N"/>
+                        </AppBarButton.KeyboardAccelerators>
+                    </AppBarButton>
                     <AppBarButton
                         x:Name="AppBarOpen"
                         Icon="OpenFile"
                         Label="Open file"
+                        ToolTipService.ToolTip="Open File (Ctrl+O)" 
                         Click="AppBarOpen_Click"
-                        IsCompact="True"/>
+                        IsCompact="True"
+                        AccessKey="O">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator
+                                Modifiers="Control"
+                                Key="O"/>
+                        </AppBarButton.KeyboardAccelerators>
+                    </AppBarButton>
                     <AppBarButton
                         x:Name="AppBarSave"
                         Icon="Save"
                         Label="Save file"
+                        ToolTipService.ToolTip="Save File (Ctrl+S)"
                         Click="AppBarSave_Click"
-                        IsCompact="True"/>
+                        IsCompact="True"
+                        AccessKey="S">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator
+                                Modifiers="Control"
+                                Key="S"/>
+                        </AppBarButton.KeyboardAccelerators>
+                    </AppBarButton>
                     <AppBarButton
                         x:Name="AppBarHostConfigEditor"
                         Icon="Setting"
                         Label="Host config"
+                        ToolTipService.ToolTip="Open Settings (Ctrl+,)"
                         IsCompact="True"
-                        Click="AppBarHostConfigEditor_Click"/>
+                        Click="AppBarHostConfigEditor_Click"
+                        AccessKey=","
+                        KeyboardAcceleratorTextOverride="Ctrl+,"/>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>
@@ -62,7 +89,7 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Tabs-->
             <ListView
                 x:Name="ListViewTabs"
@@ -87,13 +114,13 @@
                 Visibility="{Binding CurrentDocument, Converter={StaticResource NotNullToVisibilityConverter}}"/>
 
         </Grid>
-        
+
         <!--Host config editor-->
         <Grid
             Grid.Row="1"
             x:Name="HostConfigEditorView"
             Visibility="Collapsed">
-            
+
             <Rectangle
                 Fill="Black"
                 Opacity="0.3"
@@ -120,5 +147,5 @@
         </Grid>
 
     </Grid>
-    
+
 </Page>

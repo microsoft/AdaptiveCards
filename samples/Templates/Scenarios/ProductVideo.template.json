@@ -5,6 +5,12 @@
 	"fallbackText": "This card requires Media to be viewed. Ask your platform to update to Adaptive Cards v1.6 for this and more!",
 	"body": [
 		{
+			"type": "TextBlock",
+			"text": "Adaptive Cards Product Video",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
 			"type": "Media",
 			"poster": "${ThumbnailUrl}",
 			"sources": [

@@ -37,19 +37,19 @@ namespace AdaptiveCards.Test
         {
             string url = "http://adaptivecards.io/content/cats/1.png";
             var json = @"{
-	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-	""type"": ""AdaptiveCard"",
-	""version"": ""1.0"",
-	""body"": [
-		{
-			""type"": ""Image"",
-			""url"": """+ url + @""",
-			""selectAction"": {
-				""type"": ""Invalid Action"",
-				""url"": ""https://www.youtube.com/watch?v=dQw4w9WgXcQ""
-			}
-		}
-	]
+  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": """+ url + @""",
+      ""selectAction"": {
+        ""type"": ""Invalid Action"",
+        ""url"": ""https://www.youtube.com/watch?v=dQw4w9WgXcQ""
+      }
+    }
+  ]
 }";
 
             var result = AdaptiveCard.FromJson(json);
@@ -167,7 +167,7 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(expectedCard, parseResult?.Card.ToJson());
         }
-		
+
         [TestMethod]
         public void TestActions_SerializationOfIsEnable()
         {

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "InputValue.h"
 #include "AdaptiveInputs.g.h"
 
@@ -22,7 +21,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         void LinkSubmitActionToCard(winrt::IAdaptiveActionElement const& action, winrt::AdaptiveRenderArgs const& renderArgs);
         void LinkCardToParent(uint32_t cardId, uint32_t parentCardId);
 
-        Uwp::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
+        winrt::IAdaptiveInputValue GetInputValue(winrt::IAdaptiveInputElement const& inputElement);
 
     private:
         std::string GetInputItemsAsJsonString();
