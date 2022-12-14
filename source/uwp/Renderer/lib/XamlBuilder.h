@@ -72,9 +72,14 @@ namespace AdaptiveCards::Rendering::Uwp
                                  winrt::IInspectable const& parentElement,
                                  winrt::IInspectable const& imageContainer,
                                  bool isVisible,
+                                 bool isImageSvg = false,
                                  winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
-        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
+        winrt::ImageSource CreateImageSource(bool isImageSvg);
+
+        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg);
+
+        boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
