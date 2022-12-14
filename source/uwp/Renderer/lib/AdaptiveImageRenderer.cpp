@@ -483,7 +483,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
+    winrt::ImageSource render_xaml::XamlBuilder::CreateImageSource(bool isImageSvg)
     {
         if (isImageSvg)
         {
@@ -660,7 +660,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    boolean XamlBuilder::IsSvgImage(std::string url)
+    boolean render_xaml::XamlBuilder::IsSvgImage(std::string url)
     {
         // Question: is this check sufficient?
         auto foundSvg = url.find("svg");
