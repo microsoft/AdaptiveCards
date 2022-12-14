@@ -17,6 +17,7 @@
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
+    <ClCompile Include="lib\AdaptiveChoicesData.cpp" />
     <ClCompile Include="lib\AdaptiveDateInput.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInput.cpp" />
     <ClCompile Include="lib\AdaptiveTextInput.cpp" />
@@ -78,7 +79,6 @@
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
     <ClCompile Include="lib\AdaptiveContentSource.cpp" />
-    <ClCompile Include="AdaptiveChoicesData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -97,6 +97,7 @@
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
+    <ClCompile Include="lib\AdaptiveChoicesData.cpp" />
     <ClInclude Include="lib\AdaptiveDateInput.h" />
     <ClInclude Include="lib\AdaptiveNumberInput.h" />
     <ClInclude Include="lib\AdaptiveTextInput.h" />
@@ -158,7 +159,6 @@
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveCaptionSource.h" />
     <ClInclude Include="lib\AdaptiveContentSource.h" />
-    <ClInclude Include="AdaptiveChoicesData.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />

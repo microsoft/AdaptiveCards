@@ -126,7 +126,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdaptiveChoicesData.cpp" />
     <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveCaptionSource.cpp" />
@@ -142,7 +141,6 @@
     <ClCompile Include="lib\AdaptiveTableParser.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
-    <ClInclude Include="AdaptiveChoicesData.h" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
@@ -202,6 +200,7 @@
     <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
+    <ClInclude Include="lib\AdaptiveChoicesData.h" />
     <ClInclude Include="lib\AdaptiveColumn.h" />
     <ClInclude Include="lib\AdaptiveColumnSet.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
@@ -275,6 +274,7 @@
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
+    <ClCompile Include="lib\AdaptiveChoicesData.cpp" />
     <ClCompile Include="lib\AdaptiveColumn.cpp" />
     <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
     <ClCompile Include="lib\AdaptiveContainer.cpp" />

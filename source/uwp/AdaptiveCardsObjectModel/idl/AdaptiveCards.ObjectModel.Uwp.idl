@@ -71,7 +71,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
         ImageSet,
         ChoiceInput,
         ChoiceSetInput,
-	  ChoicesData,
         DateInput,
         NumberInput,
         TextInput,
@@ -495,7 +494,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         AdaptiveChoicesData();
 
-        ElementType ElementType { get; };
         String Dataset;
         String ChoicesDataType;
     };
