@@ -17,7 +17,9 @@ const v13TestCases: string[] = [
 ];
 const v14TestCases: string[] = [];
 const v15TestCases: string[] = [
-    'Scenarios/ActivityUpdate'
+    'Scenarios/ActivityUpdate',
+    'Tests/ToggleVisibility.ShowCard.actions',
+    'Tests/ToggleVisibility.ShowCard.ActionSet'
 ];
 const v16TestCases: string[] = [
     'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
