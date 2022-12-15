@@ -1189,7 +1189,7 @@
         "isVisible": {},
         "requires": {},
         "labelPosition": {}
-        },
+      },
       "type": "object",
       "additionalProperties": false,
       "allOf": [
@@ -1339,7 +1339,7 @@
         "isVisible": {},
         "requires": {},
         "labelPosition": {}
-    },
+      },
       "type": "object",
       "additionalProperties": false,
       "allOf": [
@@ -1392,8 +1392,8 @@
         "isVisible": {},
         "requires": {},
         "labelPosition": {}
-    },
-    "type": "object",
+      },
+      "type": "object",
       "additionalProperties": false,
       "required": [
         "title"
@@ -2221,26 +2221,26 @@
           ]
         },
         {
-        "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
+          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
         }
     ]
     },
     "InputLabelPosition": {
-        "description": "Specifies position of the label with respect to input.",
-        "anyOf": [
+      "description": "Specifies position of the label with respect to input.",
+      "anyOf": [
         {
-            "enum": [
+          "enum": [
             "above",
             "inline"
-            ]
+          ]
         },
         {
-            "pattern": "^([a|A][b|B][o|O][v|V][e|E])|([i|I][n|N][l|L][i|I][n|N][e|E])$"
+          "pattern": "^([a|A][b|B][o|O][v|V][e|E])|([i|I][n|N][l|L][i|I][n|N][e|E])$"
         }
-        ]
+      ]
     },
     "VerticalAlignment": {
-    "anyOf": [
+      "anyOf": [
         {
           "enum": [
             "top",
@@ -3300,9 +3300,9 @@
           "version": "1.3"
         },
         "labelPosition": {
-            "$ref": "#/definitions/InputLabelPosition",
-            "description": "Label position hint for input.",
-            "version": "1.6"
+          "$ref": "#/definitions/InputLabelPosition",
+          "description": "Label position hint for input.",
+          "version": "1.6"
         },
         "fallback": {
           "anyOf": [
