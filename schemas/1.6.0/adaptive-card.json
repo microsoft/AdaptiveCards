@@ -2223,7 +2223,7 @@
         {
           "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
         }
-    ]
+      ]
     },
     "InputLabelPosition": {
       "description": "Specifies position of the label with respect to input.",
