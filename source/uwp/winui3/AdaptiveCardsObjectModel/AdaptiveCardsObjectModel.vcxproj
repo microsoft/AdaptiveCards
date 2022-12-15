@@ -116,8 +116,8 @@
     <ClCompile>
       <AdditionalIncludeDirectories>
         GeneratedFiles;
-        ..\..\shared\cpp\ObjectModel;
-        ..\..\shared\cpp\ObjectModel\json;
+        ..\..\..\shared\cpp\ObjectModel;
+        ..\..\..\shared\cpp\ObjectModel\json;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
