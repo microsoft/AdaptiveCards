@@ -307,7 +307,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\uwp\ObjectModelProjection\ObjectModelProjection.vcxproj">
+    <ProjectReference Include="..\..\ObjectModelProjection\ObjectModelProjection.vcxproj">
       <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
     </ProjectReference>
   </ItemGroup>
