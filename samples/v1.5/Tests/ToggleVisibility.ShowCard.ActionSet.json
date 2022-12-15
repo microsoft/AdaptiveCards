@@ -1,0 +1,44 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.4",
+	"body": [
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"title": "Action.ShowCard",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Container",
+								"id": "id2",
+								"items": [
+									{
+										"type": "ActionSet",
+										"actions": [
+											{
+												"type": "Action.ToggleVisibility",
+												"title": "Action.ToggleVisibility",
+												"targetElements": ["date"]
+											}
+										]
+									},
+									{
+										"id": "date",
+										"isRequired": true,
+										"label": "Input.Date Label",
+										"type": "Input.Date",
+										"isVisible": true
+									}
+								]
+							}
+						]
+					}
+				}
+			]
+		}
+	]
+}

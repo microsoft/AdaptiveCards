@@ -716,6 +716,22 @@ export abstract class CardElement extends CardObject {
     getActionById(_id: string): Action | undefined {
         return undefined;
     }
+    
+    getElementByIdFromAction(id: string): CardElement | undefined {
+        let result = undefined;
+        for (let i = 0; i < this.getActionCount(); i++) {
+            const action = this.getActionAt(i);
+
+            if (action instanceof ShowCardAction) {
+                result = action.card.getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 
     getEffectivePadding(): PaddingDefinition {
         const padding = this.getPadding();
@@ -6537,6 +6553,16 @@ export class ActionSet extends CardElement {
         return super.findDOMNodeOwner(node);
     }
 
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
+    }
+
     get isInteractive(): boolean {
         return true;
     }
@@ -8078,6 +8104,16 @@ export abstract class ContainerWithActions extends Container {
 
     getForbiddenActionNames(): string[] {
         return [];
+    }
+    
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
     }
 
     get isStandalone(): boolean {
