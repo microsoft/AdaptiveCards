@@ -238,8 +238,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         autoSuggestBox.ItemsSource(choiceList);
 
         // When we get focus open the suggestion list. This ensures the choices are shown on first focus.
-        autoSuggestBox.GettingFocus(
-            [](IInspectable const& sender, winrt::GettingFocusEventArgs const& /* args */) -> void
+        autoSuggestBox.GotFocus(
+            [](IInspectable const& sender, winrt::RoutedEventArgs const& /* args */) -> void
             {
                 if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
                 {
