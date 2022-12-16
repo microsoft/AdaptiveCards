@@ -4,6 +4,7 @@
 
 #include "AdaptiveDateInputRenderer.h"
 #include "AdaptiveDateInputRenderer.g.cpp"
+#include "InputValue.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
