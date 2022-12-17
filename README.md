@@ -103,3 +103,114 @@ There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/b
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
 the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Supported Features
+|Feature|Schema Version|Platform|Parsing|Rendering|
+|---|---|---|:---:|:---:|
+|Action.OpenUrl|v1.0|All| :o: | :o:|
+|Action.ShowCard|v1.0|All| :o: | :o:|
+|Action.Submit|v1.0|All| :o: | :o:|
+|Column|v1.0|All| :o: | :o:|
+|ColumnSet|v1.0|All| :o: | :o:|
+|Container|v1.0|All| :o: | :o:|
+|Fact|v1.0|All| :o: | :o:|
+|FactSet|v1.0|All| :o: | :o:|
+|Image|v1.0|All| :o: | :o:|
+|ImageSet|v1.0|All| :o: | :o:|
+|Input.ChoiceSet|v1.0|All| :o: | :o:|
+|Input.Date|v1.0|All| :o: | :o:|
+|Input.Number|v1.0|All| :o: | :o:|
+|Input.Text|v1.0|All| :o: | :o:|
+|Input.Time|v1.0|All| :o: | :o:|
+|Input.Toggle|v1.0|All| :o: | :o:|
+|SelectAction|v1.0|All| :o: | :o:|
+|TextBlock|v1.0|All| :o: | :o:|
+|Explicit Image Dimension|v1.1|All| :o: | :o:|
+|Background Color|v1.1|All| :o: | :o:|
+|Vertical Content Alignment|v1.1|All| :o: | :o:|
+|Action Icon|v1.1|All| :o: | :o:|
+|Action Style|v1.2|All| :o: | :o:|
+|Toggle Visibility|v1.2|All| :o: | :o:|
+|ActionSet|v1.2|All| :o: | :o:|
+|Fallback|v1.2|All| :o: | :o:|
+|Container BackgroundImage|v1.2|All| :o: | :o:|
+|Container MinHeight|v1.2|All| :o: | :o:|
+|Container Bleed|v1.2|All| :o: | :o:|
+|Container Style|v1.2|All| :o: | :o:|
+|Image Data Uri|v1.2|All| :o: | :o:|
+|Action Icon Data Uri|v1.2|All| :o: | :o:|
+|Input.Text Inline Action|v1.2|All| :o: | :o:|
+|TextBlock FontType|v1.2|All| :o: | :o:|
+|RichTextBlock|v1.2|All| :o: | :o:|
+|Input Label|v1.3|All| :o: | :o:|
+|Input ErrorMessage|v1.3|All| :o: | :o:|
+|AssociatedInputs|v1.3|All| :o: | :o:|
+|RichTextBlock UnderLine|v1.3|All| :o: | :o:|
+|Action.Refresh|v1.4|All| :o: | :o:|
+|AdaptiveCard Authentication|v1.4|All| :o: | :o:|
+|Action.Execute|v1.4|All| :o: | :o:|
+|Action IsEnabled|v1.5|JS| :o: | :o:|
+|Action IsEnabled|v1.5|iOS| :o: | :o:|
+|Action IsEnabled|v1.5|Android| :o: | :o:|
+|Action IsEnabled|v1.5|XAML| :o: | :o:|
+|Action IsEnabled|v1.5|.NET| :o: | :x:|
+|Action Mode|v1.5|JS| :o: | :o:|
+|Action Mode|v1.5|iOS| :o: | :o:|
+|Action Mode|v1.5|Android| :o: | :o:|
+|Action Mode|v1.5|XAML| :o: | :o:|
+|Action Mode|v1.5|.NET| :o: | :x:|
+|Action/SelectAction ToolTip|v1.5|JS| :o: | :o:|
+|Action/SelectAction ToolTip|v1.5|iOS| :o: | :o:|
+|Action/SelectAction ToolTip|v1.5|Android| :o: | :o:|
+|Action/SelectAction ToolTip|v1.5|XAML| :o: | :o:|
+|Action/SelectAction ToolTip|v1.5|.NET| :o: | :x:|
+|Input.ChoiceSet Filtered Style |v1.5|JS| :o: | :o:|
+|Input.ChoiceSet Filtered Style |v1.5|iOS| :o: | :o:|
+|Input.ChoiceSet Filtered Style |v1.5|Android| :o: | :o:|
+|Input.ChoiceSet Filtered Style |v1.5|XAML| :o: | :o:|
+|Input.ChoiceSet Filtered Style |v1.5|.NET| :o: | :x:|
+|Input.Text Password Style |v1.5|JS| :o: | :o:|
+|Input.Text Password Style |v1.5|iOS| :o: | :o:|
+|Input.Text Password Style |v1.5|Android| :o: | :o:|
+|Input.Text Password Style |v1.5|XAML| :o: | :o:|
+|Input.Text Password Style |v1.5|.NET| :o: | :x:|
+|TextBlock Heading Style|v1.5|JS| :o: | :o:|
+|TextBlock Heading Style|v1.5|iOS| :o: | :o:|
+|TextBlock Heading Style|v1.5|Android| :o: | :o:|
+|TextBlock Heading Style|v1.5|XAML| :o: | :o:|
+|TextBlock Heading Style|v1.5|.NET| :o: | :x:|
+|RTL |v1.5|JS| :o: | :o:|
+|RTL |v1.5|iOS| :o: | :o:|
+|RTL |v1.5|Android| :o: | :o:|
+|RTL |v1.5|XAML| :o: | :o:|
+|RTL |v1.5|.NET| :o: | :x:|
+|Table |v1.5|JS| :o: | :o:|
+|Table |v1.5|iOS| :o: | :o:|
+|Table |v1.5|Android| :o: | :o:|
+|Table |v1.5|XAML| :o: | :o:|
+|Table |v1.5|.NET| :o: | :x:|
+|Carousel|v1.6|JS| :o: | :o:|
+|Carousel|v1.6|iOS| :x: | :x:|
+|Carousel|v1.6|Android| :x: | :x:|
+|Carousel|v1.6|XAML| :x: | :x:|
+|Carousel|v1.6|.NET| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|JS| :o: | :o:|
+|ImageSet Stacked Presentation Style|v1.6|iOS| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|Android| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|XAML| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|.NET| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|JS| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|iOS| :o: | :x:|
+|Dynamic Type Ahead Search|v1.6|Android| :o: | :x:|
+|Dynamic Type Ahead Search|v1.6|XAML| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|.NET| :x: | :x:|
+|Label Position|v1.6|JS| :x: | :x:|
+|Label Position|v1.6|iOS| :x: | :x:|
+|Label Position|v1.6|Android| :x: | :x:|
+|Label Position|v1.6|XAML| :x: | :x:|
+|Label Position|v1.6|.NET| :x: | :x:|
+|Inline Editable Input Style|v1.6|JS| :x: | :x:|
+|Inline Editable Input Style|v1.6|iOS| :x: | :x:|
+|Inline Editable Input Style|v1.6|Android| :x: | :x:|
+|Inline Editable Input Style|v1.6|XAML| :x: | :x:|
+|Inline Editable Input Style|v1.6|.NET| :x: | :x:|
