@@ -5,6 +5,7 @@
 #include "AdaptiveNumberInputRenderer.h"
 #include "AdaptiveNumberInputRenderer.g.cpp"
 #include <limits>
+#include "InputValue.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

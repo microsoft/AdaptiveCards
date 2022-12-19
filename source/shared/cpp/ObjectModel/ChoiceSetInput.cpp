@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
+#include "ChoicesData.h"
 #include "ParseUtil.h"
 #include "Util.h"
 
@@ -56,7 +57,22 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
         }
     }
 
+    if (m_choicesData != nullptr && m_choicesData->ShouldSerialize())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesData)] = m_choicesData->SerializeToJsonValue();
+    }
+
     return root;
+}
+
+const std::shared_ptr<ChoicesData>& ChoiceSetInput::GetChoicesData() const
+{
+    return m_choicesData;
+}
+
+void ChoiceSetInput::SetChoicesData(const std::shared_ptr<ChoicesData> choicesData)
+{
+    m_choicesData = choicesData;
 }
 
 bool ChoiceSetInput::GetIsMultiSelect() const
@@ -121,13 +137,16 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
     choiceSet->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
     choiceSet->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
+    choiceSet->SetChoicesData(ParseUtil::DeserializeValue<ChoicesData>(
+        context, json, AdaptiveCardSchemaKey::ChoicesData, ChoicesData::Deserialize, false));
 
     // Parse Choices
     auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(
         context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
     choiceSet->m_choices = std::move(choices);
 
-    if (choiceSet->GetIsMultiSelect() && choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered)
+    if (choiceSet->GetIsMultiSelect() &&
+        (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered || choiceSet->m_choicesData->ShouldSerialize()))
     {
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
             WarningStatusCode::InvalidValue, "Input.ChoiceSet does not support filtering with multiselect"));
@@ -145,6 +164,7 @@ void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(
         {AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesData),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),

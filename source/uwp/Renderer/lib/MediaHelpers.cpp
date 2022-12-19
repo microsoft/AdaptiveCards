@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
+#include "WholeItemsPanel.h"
 
 const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;
