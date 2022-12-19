@@ -83,6 +83,7 @@
     <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfig.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="lib\ImageBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AsyncOperations.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="lib\AdaptiveTableRenderer.h" />
     <ClInclude Include="lib\AdaptiveTableConfig.h" />
     <ClInclude Include="dll\CppWinRTIncludes.h" />
+    <ClInclude Include="lib\ImageBuilder.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

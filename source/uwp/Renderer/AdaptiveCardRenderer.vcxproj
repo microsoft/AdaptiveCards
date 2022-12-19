@@ -153,6 +153,7 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\ImageBuilder.cpp" />
     <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClInclude Include="dll\CppWinRTIncludes.h" />
+    <ClInclude Include="lib\ImageBuilder.h" />
     <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />

@@ -5,6 +5,7 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
+#include "ImageBuilder.h"
 
 namespace AdaptiveCards::Rendering::Uwp
 {
@@ -45,6 +46,7 @@ namespace AdaptiveCards::Rendering::Uwp
         std::vector<winrt::IAsyncOperation<uint32_t>> m_writeAsyncOperations;
         uint32_t m_fixedWidth = 0;
         uint32_t m_fixedHeight = 0;
+        ImageBuilder *m_imageBuilder;
 
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
@@ -72,12 +74,9 @@ namespace AdaptiveCards::Rendering::Uwp
                                  winrt::IInspectable const& parentElement,
                                  winrt::IInspectable const& imageContainer,
                                  bool isVisible,
-                                 bool isImageSvg = false,
                                  winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
-        winrt::ImageSource CreateImageSource(bool isImageSvg);
-
-        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg);
+        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
 
         boolean IsSvgImage(std::string url);
 
