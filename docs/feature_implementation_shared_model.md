@@ -169,7 +169,7 @@ In order to register the new element:
 1. Add the element name to the `CardElementType` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
 2. Add the element name to the `AdaptiveCardSchemaKey` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
 3. Add all new property names to the `AdaptiveCardSchemaKey` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
-4. add an entry for every new property and element name to the `DEFINE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey, {...})` macro in the `shared\cpp\ObjectModel\Enums.cpp` file. The string value to be added is the same as the enum value starting with a lower case letter. The enumeration is sorted alphabetically.
+4. Add an entry for every new property and element name to the `DEFINE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey, {...})` macro in the `shared\cpp\ObjectModel\Enums.cpp` file. The string value to be added is the same as the enum value starting with a lower case letter. The enumeration is sorted alphabetically.
 5. add an entry for every new element name to the `DEFINE_ADAPTIVECARD_ENUM(CardElementType, {...})` macro in the `shared\cpp\ObjectModel\Enums.cpp` file. The string value to be added is the same as the element will appear in the json, in the case of inputs they have to be prefixed with `Input.`. The enumeration is sorted alphabetically.
 6. add an entry for the element in the `m_knownElements` and the `m_cardElementParsers` maps under the `ElementParserRegistration` constructor in the `shared\cpp\ObjectModel\ElementParserRegistration.cpp` file. 
 
