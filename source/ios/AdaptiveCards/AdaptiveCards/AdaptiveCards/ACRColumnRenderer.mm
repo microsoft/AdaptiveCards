@@ -34,6 +34,10 @@
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig;
 {
+    if (![viewGroup isKindOfClass:[ACRColumnSetView class]]) {
+        return nil;
+    }
+
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 

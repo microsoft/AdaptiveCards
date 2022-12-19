@@ -2,19 +2,16 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "XamlBuilder.h"
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveRenderArgs.h"
 #include "ActionHelpers.h"
 #include "WholeItemsPanel.h"
 
-using WholeItemsPanelWinRT = winrt::AdaptiveCards::Rendering::Uwp::implementation::WholeItemsPanel;
-
 namespace AdaptiveCards::Rendering::Uwp
 {
     XamlBuilder::XamlBuilder()
     {
-        m_imageLoadTracker = winrt::make_self<::AdaptiveCards::Rendering::Uwp::ImageLoadTracker>();
+        m_imageLoadTracker = winrt::make_self<ImageLoadTracker>();
         m_imageLoadTracker->AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
     }
 
@@ -23,7 +20,10 @@ namespace AdaptiveCards::Rendering::Uwp
         FireAllImagesLoaded();
     }
 
-    void XamlBuilder::ImagesLoadingHadError() { FireImagesLoadingHadError(); }
+    void XamlBuilder::ImagesLoadingHadError()
+    {
+        FireImagesLoadingHadError();
+    }
 
     winrt::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
                                                                        winrt::AdaptiveRenderContext const& renderContext,
@@ -36,7 +36,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             auto hostConfig = renderContext.HostConfig();
 
-            bool ifSupportsInteractivity = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SupportsInteractivity(hostConfig);
+            bool ifSupportsInteractivity = XamlHelpers::SupportsInteractivity(hostConfig);
 
             auto adaptiveCardConfig = hostConfig.AdaptiveCard();
 
@@ -83,8 +83,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             winrt::VerticalContentAlignment verticalContentAlignment = adaptiveCard.VerticalContentAlignment();
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer,
-                                                                                                verticalContentAlignment);
+            XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer, verticalContentAlignment);
 
             auto actions = adaptiveCard.Actions();
 
@@ -105,13 +104,11 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isInShowCard)
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                                             L"Adaptive.ShowCard.Card",
-                                                                                             rootAsFrameworkElement);
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement);
             }
             else
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
             }
 
             xamlTreeRoot = rootAsFrameworkElement;
@@ -135,7 +132,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         catch (winrt::hresult_error const& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailed(renderContext, ex.message());
+            XamlHelpers::ErrForRenderFailed(renderContext, ex.message());
             return nullptr;
         }
     }
@@ -149,7 +146,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     void XamlBuilder::RemoveListener(IXamlBuilderListener* listener)
-	{
+    {
         if (m_listeners.find(listener) != m_listeners.end())
         {
             m_listeners.erase(listener);
@@ -199,25 +196,25 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isBackgroundImageValid)
             {
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
+                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, renderContext);
             }
 
             auto spacingConfig = hostConfig.Spacing();
             uint32_t padding = spacingConfig.Padding();
 
             // Configure WholeItemsPanel to not clip bleeding containers
-            WholeItemsPanelWinRT::SetBleedMargin(padding);
+            winrt::implementation::WholeItemsPanel::SetBleedMargin(padding);
 
-            auto bodyElementHostImpl = winrt::make_self<WholeItemsPanelWinRT>();
+            auto bodyElementHostImpl = winrt::make_self<winrt::implementation::WholeItemsPanel>();
             bodyElementHostImpl->SetMainPanel(true);
             bodyElementHostImpl->SetAdaptiveHeight(true);
             winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+            XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
 
             winrt::HeightType adaptiveCardHeightType = adaptiveCard.Height();
 
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
+            XamlHelpers::AppendXamlElementToPanel(bodyElementHost, rootElement, adaptiveCardHeightType);
             bodyElementContainer = bodyElementHost;
 
             if (xamlBuilder && xamlBuilder->m_fixedDimensions)
@@ -241,9 +238,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         catch (winrt::hresult_error& ex)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::ErrForRenderFailedForElement(renderContext,
-                                                                                       L"RootElement (visual tree root)",
-                                                                                       ex.message());
+            XamlHelpers::ErrForRenderFailedForElement(renderContext, L"RootElement (visual tree root)", ex.message());
             return {nullptr, nullptr};
         }
     }
@@ -313,23 +308,20 @@ namespace AdaptiveCards::Rendering::Uwp
             // If we got a control, add a separator if needed and the control to the parent panel
             if (newControl)
             {
-                auto separator =
-                    ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+                auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 // If the renderedElement was an input, render the label and error message
                 if (auto const inputElement = renderedElement.try_as<winrt::IAdaptiveInputElement>())
                 {
-                    newControl = ::AdaptiveCards::Rendering::Uwp::XamlHelpers::HandleLabelAndErrorMessage(inputElement,
-                                                                                                          renderContext,
-                                                                                                          newControl);
+                    newControl = XamlHelpers::HandleLabelAndErrorMessage(inputElement, renderContext, newControl);
                 }
 
-                ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AddRenderedControl(newControl, element, parentPanel, separator, nullptr, childCreatedCallback);
+                XamlHelpers::AddRenderedControl(newControl, element, parentPanel, separator, nullptr, childCreatedCallback);
             }
 
             // Revert the ancestorHasFallback value
             renderArgs.AncestorHasFallback(ancestorHasFallback);
         }
-        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::SetSeparatorVisibility(parentPanel);
+        XamlHelpers::SetSeparatorVisibility(parentPanel);
     }
 }

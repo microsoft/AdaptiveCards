@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
+#include "WholeItemsPanel.h"
 
 const double c_playIconSize = 30;
 const double c_playIconCornerRadius = 5;
@@ -79,11 +80,11 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
         playIcon.Foreground(darkBrush);
 
-        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
+        XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
         winrt::RelativePanel::SetAlignVerticalCenterWithPanel(rectangle, true);
         winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(rectangle, true);
 
-        ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
+        XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
         winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIcon, true);
         winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIcon, true);
     }
@@ -106,7 +107,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
             playIconAsFrameworkElement.Height(c_playIconSize);
 
             // Add it to the panel and center it
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
+            XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
             winrt::RelativePanel::SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
             winrt::RelativePanel::SetAlignVerticalCenterWithPanel(playIconUIElement, true);
         }
@@ -140,7 +141,7 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
 
         if (posterImage)
         {
-            ::AdaptiveCards::Rendering::Uwp::XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
+            XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
         }
         AddPlayIcon(posterRelativePanel, renderContext, renderArgs);
 
@@ -199,14 +200,15 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                         resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
                     }
 
-                    const auto timedTextSrcResolvedHelper = [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
-                                                                                            winrt::TimedTextSourceResolveResultEventArgs const& args)
-                            {
-                                if (!args.Error())
-                                {
-                                    args.Tracks().GetAt(0).Label(label);
-                                }
-                            };
+                    const auto timedTextSrcResolvedHelper =
+                        [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
+                                                        winrt::TimedTextSourceResolveResultEventArgs const& args)
+                    {
+                        if (!args.Error())
+                        {
+                            args.Tracks().GetAt(0).Label(label);
+                        }
+                    };
                     if (!resourceResolver)
                     {
                         const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
@@ -284,7 +286,9 @@ namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
                 getResourceStreamOperation.Completed(
                     [mediaElement, mimeType, adaptiveMedia, renderContext](winrt::IAsyncOperation<winrt::IRandomAccessStream> operation,
                                                                            winrt::AsyncStatus status) -> void
-                    { return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType, adaptiveMedia, renderContext); });
+                    {
+                        return HandleMediaResourceResolverCompleted(operation, status, mediaElement, mimeType, adaptiveMedia, renderContext);
+                    });
             }
 
             mediaElement.MediaOpened(

@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             m_registration[type] = renderer;
         }
 
-        Uwp::IAdaptiveElementRenderer Get(hstring const& type)
+        winrt::IAdaptiveElementRenderer Get(hstring const& type)
         {
             auto it = m_registration.find(type);
             if (it != m_registration.end())

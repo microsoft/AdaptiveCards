@@ -14,9 +14,10 @@ class ChoicesData
 public:
     ChoicesData();
 
-    bool ShouldSerialize();
-    std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    Json::Value SerializeToJsonValue() const;
+
+    bool ShouldSerialize() const;
+    std::string Serialize() const;
 
     std::string GetChoicesDataType() const;
     void SetChoicesDataType(const std::string& type);

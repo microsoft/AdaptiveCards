@@ -126,7 +126,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />

@@ -158,11 +158,8 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
-      <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
-      <Link>LinkedCards\v1.1\Scenarios\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.5\Scenarios\*.json">
+      <Link>LinkedCards\v1.5\Scenarios\%(FileName)</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\Elements\*.json">
       <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>

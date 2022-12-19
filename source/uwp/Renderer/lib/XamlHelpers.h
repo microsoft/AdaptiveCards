@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "WholeItemsPanel.h"
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
@@ -195,7 +194,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::BitmapSource const& imageSource,
+                          winrt::ImageSource const& imageSource,
                           bool setVisible);
 
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element);

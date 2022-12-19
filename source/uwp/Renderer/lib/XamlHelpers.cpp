@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "WholeItemsPanel.h"
-#include "XamlHelpers.h"
+
 #include "ElementTagContent.h"
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
+#include "WholeItemsPanel.h"
 
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
@@ -223,7 +223,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         auto pixelWidthRef = column.PixelWidth();
 
         uint32_t width = GetValueFromRef(widthRef, (uint32_t)0);
-        uint32_t pixelWidth = GetValueFromRef(widthRef, (uint32_t)0);
+        uint32_t pixelWidth = GetValueFromRef(pixelWidthRef, (uint32_t)0);
 
         bool isWidthUnset = (widthRef == nullptr) && (pixelWidthRef == nullptr);
 
@@ -418,13 +418,26 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         uiElement.Tapped([](winrt::IInspectable const&, winrt::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
+    // TODO: file bug here - when size = auto and we use resource resolvers, this method is called twice and the second time the height and width are set to 0
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::BitmapSource const& imageSource,
+                          winrt::ImageSource const& imageSource,
                           bool setVisible)
     {
-        int32_t pixelHeight = imageSource.PixelHeight();
-        int32_t pixelWidth = imageSource.PixelWidth();
+        double pixelHeight;
+        double pixelWidth;
+
+        if (const auto bitmap = imageSource.try_as<winrt::BitmapSource>())
+        {
+            pixelHeight = bitmap.PixelHeight();
+            pixelWidth = bitmap.PixelWidth();
+        }
+        else
+        {
+            auto svg = imageSource.try_as<winrt::SvgImageSource>();
+            pixelHeight = svg.RasterizePixelHeight();
+            pixelWidth = svg.RasterizePixelWidth();
+        }
 
         double maxHeight = imageControl.MaxHeight();
         double maxWidth = imageControl.MaxWidth();

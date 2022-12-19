@@ -177,7 +177,7 @@
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:before {
   content: " ";
-	font-size: 16px;
+  font-size: 16px;
   border-radius: 50%;
   background-color: #1b1a19;
   height: 20px;
@@ -207,7 +207,7 @@
   position: relative;
   width: 20px;
   height: 20px;
-	top: -20px;
+  top: -20px;
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after {
   background-color: #7F85F5;
@@ -233,7 +233,7 @@
   border-radius: 2px;
   padding: 0 8px 1px 8px;
   color: #f3f2f1;
-	background-color: #1b1a19;
+  background-color: #1b1a19;
 }
 .ac-input.ac-textInput:focus, .ac-input.ac-dateInput:focus, .ac-input.ac-numberInput:focus, .ac-input.ac-multichoiceInput:focus, .ac-input.ac-timeInput:focus {
   outline-color: #7F85F5;
@@ -301,12 +301,12 @@
 }
 
 .ac-anchor {
-	color: #7F85F5;
-	text-decoration: none;
+  color: #7F85F5;
+  text-decoration: none;
 }
 .ac-anchor:hover {
-	color: #C5CBFA;
-	text-decoration: underline;
+  color: #C5CBFA;
+  text-decoration: underline;
 }
 
 .vivaConnectionsContainer {

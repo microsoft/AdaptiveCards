@@ -119,6 +119,8 @@
     partitionActions(elems, primary, secondary, adaptiveActionConfig.maxActions, rootView);
 
     NSUInteger stackIndex = [superview arrangedSubviewsCounts];
+    NSUInteger accessibilityIndex = superview.accessibilityElements.count;
+
     std::size_t renderedBtnNum = primary.size();
     for (auto i = 0; i < primary.size(); i++) {
         const auto &elem = primary.at(i);
@@ -192,6 +194,16 @@
 
     // this step ensures that action set view is added before subviews added by show cards
     [superview insertArrangedSubview:containingView atIndex:stackIndex];
+
+    NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:superview.accessibilityElements];
+    NSUInteger indexOffset = 0;
+    for (UIView *childElement in childview.arrangedSubviews) {
+
+        [mutableArray insertObject:childElement atIndex:accessibilityIndex + indexOffset];
+        indexOffset++;
+    }
+
+    superview.accessibilityElements = [mutableArray copy];
 
     return containingView;
 }

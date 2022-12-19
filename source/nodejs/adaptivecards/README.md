@@ -197,8 +197,8 @@ For example, you must remove `<script>` or other HTML elements that could be inj
 
 ```js
 AdaptiveCards.onProcessMarkdown = function(text, result) {
-	result.outputHtml = <your Markdown processing logic>;
-	result.didProcess = true;
+  result.outputHtml = <your Markdown processing logic>;
+  result.didProcess = true;
 }
 ```
 

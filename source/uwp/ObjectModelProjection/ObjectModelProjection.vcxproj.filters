@@ -103,7 +103,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />

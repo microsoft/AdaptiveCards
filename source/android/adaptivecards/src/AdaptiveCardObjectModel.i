@@ -125,6 +125,7 @@ STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContent
 #include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
+#include "../../../shared/cpp/ObjectModel/ChoicesData.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 #include "../../../shared/cpp/ObjectModel/DateInput.h"
@@ -198,6 +199,7 @@ STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContent
 %shared_ptr(AdaptiveCards::ColumnSet)
 %shared_ptr(AdaptiveCards::Fact)
 %shared_ptr(AdaptiveCards::FactSet)
+%shared_ptr(AdaptiveCards::ChoicesData)
 %shared_ptr(AdaptiveCards::ChoiceInput)
 %shared_ptr(AdaptiveCards::ChoiceSetInput)
 %shared_ptr(AdaptiveCards::DateInput)
@@ -917,6 +919,7 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
+%include "../../../shared/cpp/ObjectModel/ChoicesData.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 %include "../../../shared/cpp/ObjectModel/DateInput.h"

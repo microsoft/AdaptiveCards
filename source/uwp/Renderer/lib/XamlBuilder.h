@@ -5,9 +5,6 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
-#include "InputValue.h"
-#include "RenderedAdaptiveCard.h"
-#include "AdaptiveRenderContext.h"
 
 namespace AdaptiveCards::Rendering::Uwp
 {
@@ -20,28 +17,25 @@ namespace AdaptiveCards::Rendering::Uwp
         void AllImagesLoaded() override;
         void ImagesLoadingHadError() override;
 
-        static winrt::FrameworkElement
-        BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
-                                      winrt::AdaptiveRenderContext const& renderContext,
-                                      XamlBuilder* xamlBuilder,
-                                      winrt::ContainerStyle defaultContainerStyle =
-                                          winrt::ContainerStyle::Default);
+        static winrt::FrameworkElement BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,
+                                                                     winrt::AdaptiveRenderContext const& renderContext,
+                                                                     XamlBuilder* xamlBuilder,
+                                                                     winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
 
-        void AddListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
-        void RemoveListener(::AdaptiveCards::Rendering::Uwp::IXamlBuilderListener* listener);
+        void AddListener(IXamlBuilderListener* listener);
+        void RemoveListener(IXamlBuilderListener* listener);
         void SetFixedDimensions(uint32_t width, uint32_t height) noexcept;
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
-        static void BuildPanelChildren(
-            winrt::IVector<winrt::IAdaptiveCardElement> const& children,
-            winrt::Panel ParentPanel,
-            winrt::AdaptiveRenderContext context,
-            winrt::AdaptiveRenderArgs renderArgs,
-            std::function<void(winrt::UIElement const& child)> childCreatedCallback);
+        static void BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
+                                       winrt::Panel ParentPanel,
+                                       winrt::AdaptiveRenderContext context,
+                                       winrt::AdaptiveRenderArgs renderArgs,
+                                       std::function<void(winrt::UIElement const& child)> childCreatedCallback);
 
         winrt::UIElement BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-    winrt::AdaptiveRenderContext const& renderContext,
-    winrt::AdaptiveRenderArgs const& renderArgs);
+                                    winrt::AdaptiveRenderContext const& renderContext,
+                                    winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
@@ -55,11 +49,10 @@ namespace AdaptiveCards::Rendering::Uwp
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
 
-        static std::pair<winrt::Panel, winrt::UIElement>
-        CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
-                              winrt::AdaptiveRenderContext const& renderContext,
-                              winrt::AdaptiveRenderArgs const& renderArgs,
-                              XamlBuilder* xamlBuilder);
+        static std::pair<winrt::Panel, winrt::UIElement> CreateRootCardElement(winrt::IAdaptiveCard const& adaptiveCard,
+                                                                               winrt::AdaptiveRenderContext const& renderContext,
+                                                                               winrt::AdaptiveRenderArgs const& renderArgs,
+                                                                               XamlBuilder* xamlBuilder);
 
         template<typename T>
         void SetAutoSize(T const& destination,
@@ -69,10 +62,8 @@ namespace AdaptiveCards::Rendering::Uwp
                          bool imageFiresOpenEvent);
 
         template<typename T>
-        void SetImageSource(T const& destination,
-                            winrt::ImageSource const& imageSource,
-                            winrt::Stretch stretch = winrt::Stretch::UniformToFill);
-							
+        void SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+
         template<typename T>
         void SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,
@@ -81,10 +72,14 @@ namespace AdaptiveCards::Rendering::Uwp
                                  winrt::IInspectable const& parentElement,
                                  winrt::IInspectable const& imageContainer,
                                  bool isVisible,
+                                 bool isImageSvg = false,
                                  winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
-        template<typename T>
-        void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl);
+        winrt::ImageSource CreateImageSource(bool isImageSvg);
+
+        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg);
+
+        boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();

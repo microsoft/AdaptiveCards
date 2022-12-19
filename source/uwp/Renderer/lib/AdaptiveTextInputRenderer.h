@@ -12,17 +12,17 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         AdaptiveTextInputRenderer() = default;
 
         winrt::UIElement Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs);
+                                winrt::AdaptiveRenderContext const& renderContext,
+                                winrt::AdaptiveRenderArgs const& renderArgs);
 
     private:
         winrt::UIElement AdaptiveTextInputRenderer::RenderTextBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                                     winrt::AdaptiveRenderContext const& renderContext,
-                                                                                     winrt::AdaptiveRenderArgs const& renderArgs);
+                                                                  winrt::AdaptiveRenderContext const& renderContext,
+                                                                  winrt::AdaptiveRenderArgs const& renderArgs);
 
         winrt::UIElement AdaptiveTextInputRenderer::RenderPasswordBox(winrt::AdaptiveTextInput const& adaptiveTextInput,
-                                                                                         winrt::AdaptiveRenderContext const& renderContext,
-                                                                                         winrt::AdaptiveRenderArgs const& renderArgs);
+                                                                      winrt::AdaptiveRenderContext const& renderContext,
+                                                                      winrt::AdaptiveRenderArgs const& renderArgs);
 
         std::tuple<winrt::UIElement, winrt::Border> HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
                                                                               winrt::UIElement const& textBox,

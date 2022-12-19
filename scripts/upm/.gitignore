@@ -1,0 +1,2 @@
+# Don't ignore the .meta files under this directory. They are needed for the UPM packaging
+!*.meta
