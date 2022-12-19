@@ -9,6 +9,8 @@
 
 #include "App.g.h"
 
+using namespace Windows::UI::Xaml::Navigation;
+
 namespace PerfApp
 {
     /// <summary>
@@ -24,6 +26,6 @@ namespace PerfApp
 
     private:
         void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
-        void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
+        void OnNavigationFailed(Platform::Object ^sender, NavigationFailedEventArgs ^e);
     };
 }

@@ -10,6 +10,8 @@
 #include "MainPage.g.h"
 #include "MainPageViewModel.h"
 
+using namespace Windows::UI::Xaml;
+
 namespace PerfApp
 {
     /// <summary>
@@ -34,7 +36,7 @@ namespace PerfApp
         Platform::String^ m_currentFile;
 
         AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer ^ m_renderer;
-        void runButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-        void resetButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+        void runButton_Click(Platform::Object^ sender, RoutedEventArgs^ e);
+        void resetButton_Click(Platform::Object^ sender, RoutedEventArgs^ e);
     };
 }

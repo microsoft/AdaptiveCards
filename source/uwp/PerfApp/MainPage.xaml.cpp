@@ -48,12 +48,12 @@ public:
         m_viewModel = viewModel;
     }
 
-    virtual Windows::UI::Xaml::UIElement^ Render(IAdaptiveCardElement^ element, AdaptiveRenderContext^ context, AdaptiveRenderArgs^ renderArgs)
+    virtual UIElement^ Render(IAdaptiveCardElement^ element, AdaptiveRenderContext^ context, AdaptiveRenderArgs^ renderArgs)
     {
         AdaptiveTextBlockRenderer^ textBlockRenderer = ref new AdaptiveTextBlockRenderer();
 
         ULONGLONG startTextBlockTicks = GetTickCount64();
-        Windows::UI::Xaml::UIElement^ object = textBlockRenderer->Render(element, context, renderArgs);
+        UIElement^ object = textBlockRenderer->Render(element, context, renderArgs);
         ULONGLONG endTextBlockTicks = GetTickCount64();
 
         m_viewModel->AddTextBlockDataPoint(endTextBlockTicks - startTextBlockTicks);
@@ -129,12 +129,12 @@ MainPage::MainPage()
     DataContext = m_viewModel;
 }
 
-void PerfApp::MainPage::runButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PerfApp::MainPage::runButton_Click(Platform::Object^ sender, RoutedEventArgs^ e)
 {
     RenderCards();
 }
 
-void PerfApp::MainPage::resetButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PerfApp::MainPage::resetButton_Click(Platform::Object^ sender, RoutedEventArgs^ e)
 {
     m_viewModel->Reset();
 }
