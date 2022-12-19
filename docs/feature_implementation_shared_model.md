@@ -1,6 +1,6 @@
 # Shared Model Feature Implementation
 
-The object model is in charge of parsing, storing the logical structure of the Adaptive Card including the card elements and actions that comprise it as defined in the json and serializing the structure again if requested. The information stored in the object model is used during the rendering process. 
+The object model is in charge of parsing, storing the logical structure of the Adaptive Card including the card elements and actions that comprise it as defined in the json, and serializing the structure again if requested. The information stored in the object model is used during the rendering process. 
 
 The Windows, Android and iOS renderers share a single object model that is called the Shared Object Model so modifying the shared object model is a pre requisite for adding a new element renderer to any of those platforms.
 
