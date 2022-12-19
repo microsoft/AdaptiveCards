@@ -4,30 +4,32 @@
 #pragma once
 
 #include <winrt/base.h>
+#include <winrt/Windows.Data.Json.h>
+#include <winrt/Windows.Data.Xml.Dom.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#include <winrt/Windows.Media.Core.h>
+#include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.System.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.UI.Text.h>
 #include <winrt/Windows.Web.Http.h>
 #include <winrt/Windows.Web.Http.Filters.h>
-#include <winrt/Windows.UI.Core.h>
+
 #include <winrt/Windows.UI.Xaml.Automation.h>
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.UI.Xaml.Documents.h>
 #include <winrt/Windows.UI.Xaml.Input.h>
 #include <winrt/Windows.UI.Xaml.Markup.h>
 #include <winrt/Windows.UI.Xaml.Media.h>
-#include <winrt/Windows.UI.Xaml.Shapes.h>
-#include <winrt/Windows.UI.Xaml.Documents.h>
 #include <winrt/Windows.UI.Xaml.Media.Imaging.h>
-#include <winrt/Windows.Data.Json.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.Media.Core.h>
-#include <winrt/Windows.Media.Playback.h>
-#include <winrt/Windows.Data.Xml.Dom.h>
+#include <winrt/Windows.UI.Xaml.Shapes.h>
+
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
-#include <winrt/Windows.UI.Text.h>
 
 namespace winrt
 {
@@ -39,16 +41,18 @@ namespace winrt
     using namespace ::winrt::Windows::Storage::Streams;
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
-    using namespace ::winrt::Windows::UI::Xaml;
-    using namespace ::winrt::Windows::UI::Xaml::Controls;
-    using namespace ::winrt::Windows::UI::Xaml::Controls::Primitives;
-    using namespace ::winrt::Windows::UI::Xaml::Automation;
-    using namespace ::winrt::Windows::UI::Xaml::Automation::Peers;
-    using namespace ::winrt::Windows::UI::Xaml::Documents;
-    using namespace ::winrt::Windows::UI::Xaml::Input;
-    using namespace ::winrt::Windows::UI::Xaml::Markup;
-    using namespace ::winrt::Windows::UI::Xaml::Media::Imaging;
-    using namespace ::winrt::Windows::UI::Xaml::Shapes;
+
+    namespace xaml = ::winrt::Windows::UI::Xaml;
+    using namespace xaml;
+    using namespace xaml::Controls;
+    using namespace xaml::Controls::Primitives;
+    using namespace xaml::Automation;
+    using namespace xaml::Automation::Peers;
+    using namespace xaml::Documents;
+    using namespace xaml::Input;
+    using namespace xaml::Media::Imaging;
+    using namespace xaml::Shapes;
+
     using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
 
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
@@ -65,15 +69,17 @@ namespace winrt
         using namespace ::winrt::AdaptiveCards::Rendering::Uwp::implementation;
     }
 
-    using Brush = winrt::Windows::UI::Xaml::Media::Brush;
-    using FontFamily = winrt::Windows::UI::Xaml::Media::FontFamily;
-    using ImageBrush = ::winrt::Windows::UI::Xaml::Media::ImageBrush;
-    using ImageSource = ::winrt::Windows::UI::Xaml::Media::ImageSource;
-    using RectangleGeometry = winrt::Windows::UI::Xaml::Media::RectangleGeometry;
-    using SolidColorBrush = ::winrt::Windows::UI::Xaml::Media::SolidColorBrush;
-    using Stretch = ::winrt::Windows::UI::Xaml::Media::Stretch;
-    using AlignmentX = ::winrt::Windows::UI::Xaml::Media::AlignmentX;
-    using AlignmentY = ::winrt::Windows::UI::Xaml::Media::AlignmentY;
+    using XamlReader = xaml::Markup::XamlReader;
+
+    using AlignmentX = xaml::Media::AlignmentX;
+    using AlignmentY = xaml::Media::AlignmentY;
+    using Brush = xaml::Media::Brush;
+    using FontFamily = xaml::Media::FontFamily;
+    using ImageBrush = xaml::Media::ImageBrush;
+    using ImageSource = xaml::Media::ImageSource;
+    using RectangleGeometry = xaml::Media::RectangleGeometry;
+    using SolidColorBrush = xaml::Media::SolidColorBrush;
+    using Stretch = xaml::Media::Stretch;
 
     // using namespace winrt::Windows::Data::Json
     using JsonObject = ::winrt::Windows::Data::Json::JsonObject;
