@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 using AdaptiveCards.Rendering.Uwp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
