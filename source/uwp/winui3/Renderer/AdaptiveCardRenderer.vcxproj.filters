@@ -1,30 +1,186 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resources">
-      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Generated Files">
-      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    <Filter Include="lib">
+      <Extensions>cpp;h</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Class.cpp" />
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="..\..\sharedRenderer\lib\ImageLoadTracker.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\Util.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\XamlBuilder.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionEventArgs.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColorConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColorsConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHostConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSetConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetTextConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionsConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontSizesConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSizesConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSpacingConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerStylesDefinition.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerStyleDefinition.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\RenderedAdaptiveCard.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputs.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontWeightsConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSeparatorConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveChoiceSetInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColumnRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardGetResourceStreamArgs.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardRendererComponent.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveDateInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveElementRendererRegistration.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardResourceResolvers.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSetRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveNumberInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRenderContext.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextBlockRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTimeInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveToggleInputRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHostConfigParseResult.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColumnSetRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRenderArgs.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionInvoker.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\WholeItemsPanel.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\DateTimeParser.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\InputValue.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\pch.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\MediaHelpers.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaEventInvoker.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaEventArgs.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionSetRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\TileControl.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionRendererRegistration.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveOpenUrlActionRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSubmitActionRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveToggleVisibilityActionRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRichTextBlockRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\TextHelpers.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFeatureRegistration.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHighlightColorConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\ElementTagContent.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontTypeDefinition.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontTypesDefinition.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\ActionHelpers.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\XamlHelpers.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\LinkButton.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputLabelConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveErrorMessageConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputsConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveLabelConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveExecuteActionRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextBlockConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStylesConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfigBase.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTableRenderer.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTableConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfig.cpp"><Filter>lib</Filter></ClCompile>
+    <ClCompile Include="..\..\sharedRenderer\$(GeneratedFilesDir)module.g.cpp"><Filter>lib</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\..\sharedRenderer\lib\AsyncOperations.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\DefaultResourceDictionary.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\IImageLoadTrackerListener.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\ImageLoadTracker.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\IXamlBuilderListener.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\pch.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\Util.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\XamlBuilder.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\XamlHelpers.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionEventArgs.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColorConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColorsConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHostConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSetConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetTextConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionsConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontSizesConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSizesConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSpacingConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerStylesDefinition.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerStyleDefinition.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\RenderedAdaptiveCard.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputs.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontWeightsConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSeparatorConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardGetResourceStreamArgs.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardRendererComponent.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardResourceResolvers.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveChoiceSetInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColumnRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColumnSetRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveDateInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveElementRendererRegistration.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSetRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveNumberInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRenderContext.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextBlockRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTimeInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveToggleInputRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHostConfigParseResult.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRenderArgs.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionInvoker.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\WholeItemsPanel.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\DateTimeParser.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\InputValue.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\MediaHelpers.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaEventInvoker.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaEventArgs.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionSetRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\TileControl.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionRendererRegistration.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveOpenUrlActionRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSubmitActionRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveToggleVisibilityActionRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRichTextBlockRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\TextHelpers.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFeatureRegistration.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHighlightColorConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\ElementTagContent.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontTypeDefinition.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontTypesDefinition.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\ActionHelpers.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\LinkButton.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputLabelConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveErrorMessageConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputsConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveLabelConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveExecuteActionRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextBlockConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStylesConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfigBase.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTableRenderer.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTableConfig.h"><Filter>lib</Filter></ClInclude>
+    <ClInclude Include="..\..\sharedRenderer\dll\CppWinRTIncludes.h"><Filter>lib</Filter></ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="Class.idl" />
+    <Midl Include="idl\AdaptiveCards.Rendering.Winui3.idl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdaptiveCardRenderer.def" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
   </ItemGroup>
 </Project>
