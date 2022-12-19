@@ -6,6 +6,7 @@
 #include "AdaptiveContainerRenderer.h"
 #include "AdaptiveContainerRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -15,7 +16,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         try
         {
-            auto adaptiveContainer = cardElement.as<winrt::AdaptiveContainer>();
+            auto adaptiveContainer = cardElement.as<winrt::IAdaptiveContainer>();
+            auto adaptiveContainerBase = cardElement.as<winrt::IAdaptiveContainerBase>();
             auto containerPanel = winrt::make<winrt::implementation::WholeItemsPanel>();
 
             // Get any RTL setting set on either the current context or on this container. Any value set on the
@@ -45,7 +47,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 containerPanel.VerticalAlignment(winrt::VerticalAlignment::Stretch);
             }
 
-            uint32_t containerMinHeight = adaptiveContainer.MinHeight();
+            uint32_t containerMinHeight = adaptiveContainerBase.MinHeight();
 
             if (containerMinHeight > 0)
             {
@@ -55,7 +57,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             winrt::Border containerBorder{};
 
             auto containerStyle =
-                XamlHelpers::HandleStylingAndPadding(adaptiveContainer, containerBorder, renderContext, renderArgs);
+                XamlHelpers::HandleStylingAndPadding(adaptiveContainerBase, containerBorder, renderContext, renderArgs);
             auto newRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
@@ -99,7 +101,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Container", containerPanel);
 
-            auto selectAction = adaptiveContainer.SelectAction();
+            auto selectAction = adaptiveContainerBase.SelectAction();
             auto hostConfig = renderContext.HostConfig();
 
             return render_xaml::ActionHelpers::HandleSelectAction(
