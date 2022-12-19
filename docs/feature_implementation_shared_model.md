@@ -166,7 +166,7 @@ As of this moment only the logical structure of the element has been defined, th
 ### Registering the new element
 
 In order to register the new element:
-1. add the element name to the `CardElementType` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
+1. Add the element name to the `CardElementType` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
 2. add the element name to the `AdaptiveCardSchemaKey` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
 3. add all new property names to the `AdaptiveCardSchemaKey` enum located in the `shared\cpp\ObjectModel\Enums.h` file. The enumeration is sorted alphabetically.
 4. add an entry for every new property and element name to the `DEFINE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey, {...})` macro in the `shared\cpp\ObjectModel\Enums.cpp` file. The string value to be added is the same as the enum value starting with a lower case letter. The enumeration is sorted alphabetically.
