@@ -5,7 +5,6 @@
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveRenderContext.g.cpp"
 #include "InputValue.h"
-#include "Util.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

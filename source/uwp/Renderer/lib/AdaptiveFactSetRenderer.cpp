@@ -5,6 +5,7 @@
 #include "AdaptiveFactSetRenderer.h"
 #include "AdaptiveFactSetRenderer.g.cpp"
 #include "TextHelpers.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

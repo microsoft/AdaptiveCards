@@ -7,6 +7,7 @@
 
 #include "ActionHelpers.h"
 #include "MediaHelpers.h"
+#include "WholeItemsPanel.h"
 
 using namespace render_xaml::MediaHelpers;
 

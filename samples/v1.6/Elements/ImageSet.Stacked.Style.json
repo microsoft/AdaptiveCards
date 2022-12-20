@@ -1,0 +1,63 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "ImageSet",
+                            "style": "Stacked",
+                            "size": "medium",
+                            "offset": -25,
+                            "images": [
+                                {
+                                    "type": "Image",
+                                    "url": "https://picsum.photos/id/90/200",
+                                    "size": "Medium"
+                                },
+                                {
+                                    "type": "Image",
+                                    "url": "https://picsum.photos/id/52/200",
+                                    "size": "Medium"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Hello, World",
+                            "wrap": true,
+                            "size": "ExtraLarge",
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Hello: Hello World!",
+                            "wrap": true,
+                            "isSubtle": true,
+                            "size": "Large"
+                        }
+                    ],
+                    "backgroundImage": {
+                        "verticalAlignment": "Center",
+                        "horizontalAlignment": "Center"
+                    },
+                    "verticalContentAlignment": "Center",
+                    "spacing": "Medium"
+                }
+            ],
+            "style": "emphasis"
+        }
+    ]
+}
