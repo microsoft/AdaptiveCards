@@ -659,7 +659,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                            winrt::AdaptiveRenderArgs const& renderArgs)
     {
         // Get the flyout items vector
+#ifdef USE_WINUI3
+        auto buttonWithFlyout = overflowButton.as<winrt::IButton>();
+#else
         auto buttonWithFlyout = overflowButton.as<winrt::IButtonWithFlyout>();
+#endif
         auto menuFlyout = buttonWithFlyout.Flyout().as<winrt::MenuFlyout>();
         auto flyoutItems = menuFlyout.Items();
 
