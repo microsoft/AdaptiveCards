@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SimpleVisualizer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SimpleVisualizer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
