@@ -1142,7 +1142,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1186,7 +1187,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1230,7 +1232,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1289,7 +1292,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1333,7 +1337,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1385,7 +1390,8 @@
         "separator": {},
         "spacing": {},
         "isVisible": {},
-        "requires": {}
+        "requires": {},
+        "inputStyle": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -2216,6 +2222,20 @@
         },
         {
           "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
+        }
+      ]
+    },
+    "InputStyle": {
+      "description": "Style hint for input.",
+      "anyOf": [
+        {
+          "enum": [
+            "readWrite",
+            "default"
+          ]
+        },
+        {
+          "pattern": "^([r|R][e|E][a|A][d|D][w|W][r|R][i|I][t|T][e|E])|([d|D][e|E][f|F][a|A][u|U][l|L][t|T])$"
         }
       ]
     },
@@ -3317,6 +3337,11 @@
           },
           "description": "A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
           "version": "1.2"
+        },
+        "inputStyle": {
+          "$ref": "#/definitions/InputStyle",
+          "description": "Style hint for input.",
+          "version": "1.6"
         }
       },
       "type": "object",
