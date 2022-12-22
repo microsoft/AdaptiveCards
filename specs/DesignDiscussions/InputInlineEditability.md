@@ -31,7 +31,7 @@ This is the flow for user to interact with inline editable fields:-
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario3.PNG)
 
-2. When user hovers on the card, 
+2. When user hovers anywhere on the card, 
 	* we will show outer outline on that card.
 	* we will show a lighter color outline to all the input fields which are inline editable.
 	
@@ -39,7 +39,7 @@ This is the flow for user to interact with inline editable fields:-
 	
 ![img](./assets/InputInlineEdit/InputInlineEditScenario4.PNG)
 
-3. When user takes hovers over the input field, we will show a darker outline in that input field to guide user that the field is activated and he can now edit the field.
+3. When user hovers over the input field, we will show a darker outline in that input field to guide user that the field is activated and he can now edit the field.
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario5.PNG)
 
@@ -70,10 +70,6 @@ In order to achieve inline editable experience as mentioned above, we will add t
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario9.PNG)
 
-
-
-## Host configurable properties in card:
-1. Host can configure these style properties of `label` and `value` field: `font`, `font color` and `font weight`. 
 
 ## Use Case Clarifications:
 1. If `value` is `empty` in the input field, we will show label and placeholder text in lighter color like this in the [default] state,
