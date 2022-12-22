@@ -43,7 +43,7 @@ Position for label in input fields.
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **labelWidth** | `number` | No | Determines the width of the label in percent when label is placed inline with the input. labelWidth would be ignored when the label is displayed above the input. | 1.6 |
+| **labelWidth** | `string` or `number` | No | Determines the width of the label in percent like `40` or a specific pixel width like `"40px"` when label is placed inline with the input . labelWidth would be ignored when the label is displayed above the input. | 1.6 |
 
 
 ### Sample Payload:
@@ -67,7 +67,7 @@ Position for label in input fields.
           "label": "Flight destination",
           "value": "Hyderabad",
           "labelPosition" : "inline",
-          "labelWidth" : 40
+          "labelWidth" : "40px"
       }
 ```
 ## Host configurable properties in card:

@@ -31,8 +31,8 @@
 			"version": "1.6"
 		},
 		"labelWidth": {
-			"type": "number",
-			"description": "Determines the width of the label in percent when label is placed inline with the input. labelWidth would be ignored when the label is displayed above the input",
+			"type": "string|number",
+			"description": "Determines the width of the label in percent like 40 or a specific pixel width like '40px' when label is placed inline with the input . labelWidth would be ignored when the label is displayed above the input.",
 			"version": "1.6"
 		}
 	}
