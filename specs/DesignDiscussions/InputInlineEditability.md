@@ -3,7 +3,7 @@
 ## Overview
 
 Adaptive cards are used by apps to share information as well as to collect input from users to complete user scenarios.
-As of now, if we are showing some information in a card and if we also want to collect user’s input, we will have bunch of Input fields hidden behind a ShowCard button or we will launch some form using button click on the card to collect user's input.
+As of now, if we are showing some information in a card and if we also want to collect user’s input, we will have a bunch of Input fields hidden behind a ShowCard button or we will launch some form using button click on the card to collect user's input.
 In both cases we might have duplicate readable fields and input fields.
 
 We want to provide better experience to the user where he can read the fields and can also seamlessly update the values at the same place. 
@@ -13,7 +13,7 @@ UI of showing data and taking user input will become simplistic.
  
 ## Current experience:
 
-As shown in the below picture, An adaptive card displays data for Customer name, Est. Revenue and Est. Clode Date. If user wants to update those information, he will have to click on 'Edit' button which will open some form and there he can update values for 'Est. Revenue' etc. and Click on Save to send data back to the bot service.
+As shown in the below picture, An adaptive card displays data for Customer name, Est. Revenue and Est. Close Date. If user wants to update those information, he will have to click on 'Edit' button which will open some form and there he can update values for 'Est. Revenue' etc. and Click on Save to send data back to the bot service.
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario1.PNG)
 
@@ -24,7 +24,7 @@ As of now, Adaptive cards support `Input` fields to collect user input. This is 
 
 ## Proposed experience:
 
-We will allow bot developer to enhance the user experience of all `Input` fields in Adaptive card (such as `Input.Text`, `Input.Number`, `Input.Date`, `Input.Time`, `Input.Toggle` and `Input.Choiceset`) in way that, these input fields can appear just as readable fields when user is not taking any action and when user clicks or focusses or clicks on them, it allows user to update those fields and then user can use action buttons like Action.Submit/Action.Execute present on the card to send data back to the bot.
+We will allow bot developer to enhance the user experience of all `Input` fields in Adaptive card (such as `Input.Text`, `Input.Number`, `Input.Date`, `Input.Time`, `Input.Toggle` and `Input.Choiceset`). These input fields can appear just as readable fields when the user is not taking any action, and when the user clicks or focusses on them, it allows the user to update those fields. The user can then use action buttons like Action.Submit/Action.Execute present on the card to send data back to the bot.
 
 This is the flow for user to interact with inline editable fields:-
 1. This is an adaptive showing information like "Contact", "Email", "Est. Closing date" etc. with inline Editable style where input fields are displayed as **readable fields** in the **default** state.
@@ -47,12 +47,12 @@ This is the flow for user to interact with inline editable fields:-
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario6.PNG)
 
-5. When user has updated the input field, Action.Submit or Action.Execute button such as "Save" which has  `disabledUnlessAssociatedInputsChange` property (https://github.com/microsoft/AdaptiveCards/issues/7103) will get enabled automatically. It will guide user to hit the button to commit the changes made on the card.
+5. When the user has updated the input field, Action.Submit or Action.Execute button such as "Save" which has `disabledUnlessAssociatedInputsChange` property (https://github.com/microsoft/AdaptiveCards/issues/7103) will get enabled automatically. It will guide user to hit the button to commit the changes made on the card.
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario7.PNG)
 
 
-6. When user clicks hits on the Action.Submit or Action.Execute button, latest input values will be sent to the bot from host and bot can then update the card with latest information which we will show in default state.
+6. When the user clicks on the Action.Submit or Action.Execute button, latest input values will be sent to the bot from host and bot can then update the card with latest information which we will show in default state.
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario8.PNG)
 
@@ -76,11 +76,11 @@ In order to achieve inline editable experience as mentioned above, we will add t
 1. Host can configure these style properties of `label` and `value` field: `font`, `font color` and `font weight`. 
 
 ## Use Case Clarifications:
-1. If `value` is `empty` in the input field. We will show label and placeholder text in lighter color like this in the [default] state,
+1. If `value` is `empty` in the input field, we will show label and placeholder text in lighter color like this in the [default] state,
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario10.PNG)
 
-which user can go and update the value,
+which user can go and update the value.
 
 ![img](./assets/InputInlineEdit/InputInlineEditScenario11.PNG)
 
@@ -91,7 +91,7 @@ which user can go and update the value,
 
 ## Developer Recommendation:
 
-1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card with inline editable fields. Save button will send the modified user input values to the bot and bot will respond with a card with updated input values.
+1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card with inline editable fields. Save button will send the modified user input values to the bot, and the bot will respond with a card with updated input values.
 
 2. **Cancel Button:** Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card with inline editable fields. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
 ## Out of Scope:
