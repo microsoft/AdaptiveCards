@@ -23,13 +23,14 @@ Order of `label` and `value` will always be label first and value second. In RTL
 
 ## Proposed Schema Changes:
 
+### labelPosition
 Inherited properties of all Input fields will have one more property called `labelPosition` whose type will be `InputLabelPosition`
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **labelPosition** | `InputLabelPosition?` | No | Determines the position of the label with respect to the input field. Default is "above" when not specified | 1.6 |
 
-### InputLabelPosition
+#### InputLabelPosition
 
 Position for label in input fields.
 
@@ -38,32 +39,42 @@ Position for label in input fields.
 * **Allowed values**:
   * `"inline"` : should place label inline with the input field
   * `"above"` : should place label above the input field.
-  
+
+### labelWidth
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
+| **labelWidth** | `number` | No | Determines the width of the label in percent when label is placed inline with the input. labelWidth would be ignored when the label is displayed above the input. | 1.6 |
+
+
 ### Sample Payload:
 
 ```json
      {
           "type": "Input.Text",
           "label": "Name",
-	  "value": "Sneh",
-	  "labelPosition" : "above"
+          "value": "Sneh",
+          "labelPosition" : "above"
       },
       {
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
-          "labelPosition" : "inline"
+          "labelPosition" : "inline",
+          "labelWidth" : 30
       },
       {
           "type": "Input.Text",
           "label": "Flight destination",
-	  "value": "Hyderabad",
-      }	
+          "value": "Hyderabad",
+          "labelPosition" : "inline",
+          "labelWidth" : 40
+      }
 ```
 ## Host configurable properties in card:
 Host can configure input's styling property using HostConfig to define width percentage betwen label and input.
 
-In `inline` label position: Default width spacing label:value would be 3:7 of the container of input element. However, host can configure it for themselves via HostConfig.
+In `inline` label position: Default width spacing label:value would be 3:7 of the container of input element when `labelWidth` is not specified by the card author. However, host can configure it for themselves via HostConfig.
 
 ![img](./assets/InputLabels/InputLabelPositon/inlineViews.PNG)
 
