@@ -4,7 +4,6 @@
 
 #include "AdaptiveOpenUrlActionRenderer.h"
 #include "AdaptiveOpenUrlActionRenderer.g.cpp"
-#include "Util.h"
 #include "ActionHelpers.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation

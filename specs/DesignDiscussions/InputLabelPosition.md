@@ -7,7 +7,6 @@ Now, labels can also be place inline with the input. It can provide better exper
 ## New Schema Changes in Adaptive Card
 
 Introducing an optional new styling property in AC input fields schema which will allow developers to define `position` of the label with respect to input field. It can be both `inline` and `above`. Default would be existing `above`.
-	*Note*: When card width is small due to browser resize etc, horizontal view can shift to vertical view of input fields.
 
 * **Above view:**
 

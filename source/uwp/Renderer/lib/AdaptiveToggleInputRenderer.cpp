@@ -4,6 +4,7 @@
 
 #include "AdaptiveToggleInputRenderer.h"
 #include "AdaptiveToggleInputRenderer.g.cpp"
+#include "InputValue.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
