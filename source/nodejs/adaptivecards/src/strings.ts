@@ -70,7 +70,9 @@ export class Strings {
         elementAlreadyParented: () => "The element already belongs to another container.",
         actionAlreadyParented: () => "The action already belongs to another element.",
         elementTypeNotStandalone: (typeName: string) =>
-            `Elements of type ${typeName} cannot be used as standalone elements.`
+            `Elements of type ${typeName} cannot be used as standalone elements.`,
+        invalidInputLabelWidth: () =>
+            `Invalid input label width. Defaulting to label width from host config"`,
     };
     static readonly magicCodeInputCard = {
         tryAgain: () => "That didn't work... let's try again.",
