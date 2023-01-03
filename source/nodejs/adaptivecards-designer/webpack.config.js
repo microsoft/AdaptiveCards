@@ -48,8 +48,13 @@ module.exports = (env, argv) => {
 				},
 				{
 					test: /\.svg$/,
-					loader: "svg-url-loader",
-					exclude: /(node_modules|__tests__)/
+					use: {
+						loader: "svg-url-loader",
+						options: {
+							// make all svg images to work in IE
+							iesafe: true,
+						}
+					}
 				}
 			]
 		},
@@ -112,7 +117,7 @@ module.exports = (env, argv) => {
 					to: 'containers/[name][ext]'
 				},
 				{
-					from: 'src/assets/*',
+					from: 'src/assets/*.svg',
 					to: 'assets/[name][ext]'
 				}],
 				options: {
