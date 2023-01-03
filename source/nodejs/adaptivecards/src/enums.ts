@@ -54,6 +54,11 @@ export enum ImageSize {
     Large
 }
 
+export enum ImageSetPresentationStyle {
+    Default,
+    Stacked
+}
+
 export enum SizeUnit {
     Weight,
     Pixel

@@ -3,10 +3,11 @@
 #include "pch.h"
 
 #include "ActionHelpers.h"
+#include "AdaptiveHostConfig.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
 #include "LinkButton.h"
-#include "AdaptiveHostConfig.h"
+#include "WholeItemsPanel.h"
 
 namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 {

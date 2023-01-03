@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "winrt/AdaptiveCards.Rendering.Uwp.h"
-
 namespace winrt::AdaptiveCards::Rendering::Uwp
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
