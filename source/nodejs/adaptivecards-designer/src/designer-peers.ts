@@ -923,7 +923,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
                 valueColumn.addItem(textInput);
 
                 let removeAction = new Adaptive.SubmitAction();
-                removeAction.iconUrl = require("svg-url-loader!./assets/xmark.svg");
+                removeAction.iconUrl = require("./assets/xmark.svg");
                 removeAction.tooltip = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
