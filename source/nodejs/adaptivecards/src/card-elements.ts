@@ -3283,7 +3283,7 @@ export abstract class Input extends CardElement implements IInput {
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
     static readonly labelWidthProperty = new CustomProperty<SizeAndUnit | undefined>(
-        Versions.v1_5,
+        Versions.v1_6,
         "labelWidth",
         (
             sender: SerializableObject,
@@ -3341,7 +3341,7 @@ export abstract class Input extends CardElement implements IInput {
     );
 
     static readonly labelPositionProperty = new EnumProperty(
-        Versions.v1_5,
+        Versions.v1_6,
         "labelPosition",
         Enums.InputLabelPosition,
         Enums.InputLabelPosition.Above,
