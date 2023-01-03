@@ -1,4 +1,10 @@
 steps:
+- task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
+
 - task: Xcode@5
   displayName: 'Sample App Unit Test'
   inputs:
