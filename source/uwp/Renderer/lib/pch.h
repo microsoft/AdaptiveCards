@@ -36,6 +36,7 @@
 #include "HostConfig.h"
 
 // Commonly-used AdaptiveCardRenderer headers
+#include "AdaptiveRenderContext.h"
 #include "Util.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
