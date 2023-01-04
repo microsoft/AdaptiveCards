@@ -5,7 +5,7 @@
 #include "AdaptiveExecuteAction.h"
 #include "AdaptiveExecuteAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveExecuteAction::AdaptiveExecuteAction(std::shared_ptr<::AdaptiveCards::ExecuteAction> const& sharedExecuteAction) :
         DataJson{nullptr}
@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             DataJson = StringToJsonValue(sharedJson);
         }
 
-        AssociatedInputs = static_cast<Uwp::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+        AssociatedInputs = static_cast<Xaml_OM::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
         Verb = UTF8ToHString(sharedExecuteAction->GetVerb());
 
         InitializeBaseElement(sharedExecuteAction);

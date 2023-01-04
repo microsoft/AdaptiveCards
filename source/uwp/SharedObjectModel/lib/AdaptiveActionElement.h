@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct AdaptiveActionElementBase
     {
@@ -27,17 +27,17 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseActionElement>& sharedModel);
 
-        Uwp::FallbackType FallbackType() { return m_fallbackType; }
+        Xaml_OM::FallbackType FallbackType() { return m_fallbackType; }
 
-        void FallbackType(Uwp::FallbackType const& fallback)
+        void FallbackType(Xaml_OM::FallbackType const& fallback)
         {
-            if (fallback != Uwp::FallbackType::Content)
+            if (fallback != Xaml_OM::FallbackType::Content)
             {
                 FallbackContent = nullptr;
             }
             m_fallbackType = fallback;
         }
 
-        Uwp::FallbackType m_fallbackType;
+        Xaml_OM::FallbackType m_fallbackType;
     };
 }

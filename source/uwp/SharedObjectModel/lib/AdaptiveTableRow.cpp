@@ -5,14 +5,14 @@
 #include "AdaptiveTableRow.g.cpp"
 #include "AdaptiveTableCell.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveTableRow::AdaptiveTableRow(const std::shared_ptr<::AdaptiveCards::TableRow>& sharedTableRow)
     {
         VerticalCellContentAlignment =
-            opt_cast<Uwp::VerticalContentAlignment>(sharedTableRow->GetVerticalCellContentAlignment());
-        HorizontalCellContentAlignment = opt_cast<Uwp::HAlignment>(sharedTableRow->GetHorizontalCellContentAlignment());
-        Style = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedTableRow->GetStyle());
+            opt_cast<Xaml_OM::VerticalContentAlignment>(sharedTableRow->GetVerticalCellContentAlignment());
+        HorizontalCellContentAlignment = opt_cast<Xaml_OM::HAlignment>(sharedTableRow->GetHorizontalCellContentAlignment());
+        Style = static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::ContainerStyle>(sharedTableRow->GetStyle());
         Cells = GenerateVectorProjection<implementation::AdaptiveTableCell>(sharedTableRow->GetCells());
     }
 

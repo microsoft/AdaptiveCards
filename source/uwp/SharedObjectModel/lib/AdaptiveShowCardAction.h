@@ -6,14 +6,14 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveShowCardAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("429d6be9-a5f4-44dc-8dc3-3fe9b633ff1c") AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, ITypePeek>, AdaptiveActionElementBase
     {
         AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction =
                                    std::make_shared<::AdaptiveCards::ShowCardAction>());
 
-        property<Uwp::AdaptiveCard> Card{nullptr};
+        property<Xaml_OM::AdaptiveCard> Card{nullptr};
 
         auto ActionType() { return ActionType::ShowCard; }
 
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveShowCardAction : AdaptiveShowCardActionT<AdaptiveShowCardAction, implementation::AdaptiveShowCardAction>
     {

@@ -5,7 +5,7 @@
 #include "Table.h"
 #include "AdaptiveTable.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("CA752EA7-A7D4-4D1A-BAA3-3318A29FE52D") AdaptiveTable : AdaptiveTableT<AdaptiveTable, ITypePeek>,
         AdaptiveCardElementBase
@@ -13,15 +13,15 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         AdaptiveTable() : AdaptiveTable(std::make_shared<::AdaptiveCards::Table>()) {}
         AdaptiveTable(std::shared_ptr<::AdaptiveCards::Table> const& sharedTable);
 
-        auto ElementType() { return Uwp::ElementType::Table; }
+        auto ElementType() { return Xaml_OM::ElementType::Table; }
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveTableRow>> Rows;
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveTableColumnDefinition>> Columns;
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveTableRow>> Rows;
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveTableColumnDefinition>> Columns;
         property<bool> ShowGridLines;
         property<bool> FirstRowAsHeaders;
-        property_opt<Uwp::VerticalContentAlignment> VerticalCellContentAlignment;
-        property_opt<Uwp::HAlignment> HorizontalCellContentAlignment;
-        property<Uwp::ContainerStyle> GridStyle;
+        property_opt<Xaml_OM::VerticalContentAlignment> VerticalCellContentAlignment;
+        property_opt<Xaml_OM::HAlignment> HorizontalCellContentAlignment;
+        property<Xaml_OM::ContainerStyle> GridStyle;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -31,7 +31,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveTable : AdaptiveTableT<AdaptiveTable, implementation::AdaptiveTable>
     {

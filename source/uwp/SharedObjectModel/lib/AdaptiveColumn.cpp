@@ -4,16 +4,16 @@
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumn.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveColumn::AdaptiveColumn(std::shared_ptr<::AdaptiveCards::Column> const& sharedColumn)
     {
         Items = GenerateContainedElementsProjection(sharedColumn->GetItems());
         SelectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
-        Style = static_cast<Uwp::ContainerStyle>(sharedColumn->GetStyle());
-        VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
+        Style = static_cast<Xaml_OM::ContainerStyle>(sharedColumn->GetStyle());
+        VerticalContentAlignment = opt_cast<Xaml_OM::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         Bleed = sharedColumn->GetBleed();
-        BleedDirection = static_cast<Uwp::BleedDirection>(sharedColumn->GetBleedDirection());
+        BleedDirection = static_cast<Xaml_OM::BleedDirection>(sharedColumn->GetBleedDirection());
         m_width = UTF8ToHString(sharedColumn->GetWidth());
         PixelWidth = sharedColumn->GetPixelWidth();
         MinHeight = sharedColumn->GetMinHeight();

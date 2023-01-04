@@ -5,7 +5,7 @@
 #include "ToggleVisibilityTarget.h"
 #include "AdaptiveToggleVisibilityTarget.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveToggleVisibilityTarget
         : AdaptiveToggleVisibilityTargetT<AdaptiveToggleVisibilityTarget, ITypePeek>
@@ -18,7 +18,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         AdaptiveToggleVisibilityTarget(std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> const& sharedToggleTarget);
 
         property<hstring> ElementId;
-        property<Uwp::IsVisible> IsVisible;
+        property<Xaml_OM::IsVisible> IsVisible;
 
         std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> GetSharedModel();
 
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveToggleVisibilityTarget
         : AdaptiveToggleVisibilityTargetT<AdaptiveToggleVisibilityTarget, implementation::AdaptiveToggleVisibilityTarget>

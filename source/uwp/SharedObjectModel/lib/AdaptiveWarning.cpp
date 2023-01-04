@@ -4,9 +4,9 @@
 #include "AdaptiveWarning.h"
 #include "AdaptiveWarning.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
-    AdaptiveWarning::AdaptiveWarning(winrt::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode const& statusCode, hstring const& message) :
+    AdaptiveWarning::AdaptiveWarning(winrt::AdaptiveCards::ObjectModel::Xaml_OM::WarningStatusCode const& statusCode, hstring const& message) :
         StatusCode{statusCode}, Message{message}
     {
     }

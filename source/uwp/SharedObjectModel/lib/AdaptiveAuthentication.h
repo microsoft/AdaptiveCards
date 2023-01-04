@@ -5,7 +5,7 @@
 #include "Authentication.h"
 #include "AdaptiveAuthentication.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveAuthentication : AdaptiveAuthenticationT < AdaptiveAuthentication, ITypePeek>
     {
@@ -14,8 +14,8 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         property<hstring> Text;
         property<hstring> ConnectionName;
-        property<Uwp::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton>> Buttons;
+        property<Xaml_OM::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveAuthCardButton>> Buttons;
 
         std::shared_ptr<::AdaptiveCards::Authentication> GetSharedModel();
 
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveAuthentication : AdaptiveAuthenticationT<AdaptiveAuthentication, implementation::AdaptiveAuthentication>
     {

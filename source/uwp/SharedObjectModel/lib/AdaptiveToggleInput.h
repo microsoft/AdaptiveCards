@@ -6,7 +6,7 @@
 #include "AdaptiveInputElement.h"
 #include "AdaptiveToggleInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("502edea9-72fd-4856-a89e-54565181bed8") AdaptiveToggleInput : AdaptiveToggleInputT<AdaptiveToggleInput, ITypePeek>, AdaptiveInputElementBase
     {
@@ -29,7 +29,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveToggleInput : AdaptiveToggleInputT<AdaptiveToggleInput, implementation::AdaptiveToggleInput>
     {

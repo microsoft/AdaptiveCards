@@ -2,7 +2,7 @@
 #include "AdaptiveRequirement.h"
 #include "AdaptiveRequirement.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveRequirement::AdaptiveRequirement(hstring const& requirementName, hstring const& requirementversion) :
         Name{requirementName}, Version{requirementversion}

@@ -6,12 +6,12 @@
 #include "AdaptiveImageSet.g.cpp"
 #include "AdaptiveImage.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveImageSet::AdaptiveImageSet(const std::shared_ptr<::AdaptiveCards::ImageSet>& sharedImageSet)
     {
         Images = GenerateVectorProjection<implementation::AdaptiveImage>(sharedImageSet->GetImages());
-        ImageSize = static_cast<Uwp::ImageSize>(sharedImageSet->GetImageSize());
+        ImageSize = static_cast<Xaml_OM::ImageSize>(sharedImageSet->GetImageSize());
         InitializeBaseElement(sharedImageSet);
     }
 

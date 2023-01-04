@@ -2,17 +2,17 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct AdaptiveTextElement
     {
         property<hstring> Text;
-        property_opt<Uwp::TextSize> Size;
-        property_opt<Uwp::TextWeight> Weight;
-        property_opt<Uwp::ForegroundColor> Color;
+        property_opt<Xaml_OM::TextSize> Size;
+        property_opt<Xaml_OM::TextWeight> Weight;
+        property_opt<Xaml_OM::ForegroundColor> Color;
         property_opt<bool> IsSubtle;
         property<hstring> Language;
-        property_opt<Uwp::FontType> FontType;
+        property_opt<Xaml_OM::FontType> FontType;
 
     protected:
         template<typename T> void InitializeTextElement(const std::shared_ptr<T>& sharedModel)
@@ -21,10 +21,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             Language = UTF8ToHString(sharedModel->GetLanguage());
 
             IsSubtle = sharedModel->GetIsSubtle();
-            FontType = opt_cast<Uwp::FontType>(sharedModel->GetFontType());
-            Size = opt_cast<Uwp::TextSize>(sharedModel->GetTextSize());
-            Weight = opt_cast<Uwp::TextWeight>(sharedModel->GetTextWeight());
-            Color = opt_cast<Uwp::ForegroundColor>(sharedModel->GetTextColor());
+            FontType = opt_cast<Xaml_OM::FontType>(sharedModel->GetFontType());
+            Size = opt_cast<Xaml_OM::TextSize>(sharedModel->GetTextSize());
+            Weight = opt_cast<Xaml_OM::TextWeight>(sharedModel->GetTextWeight());
+            Color = opt_cast<Xaml_OM::ForegroundColor>(sharedModel->GetTextColor());
         }
 
         template<typename T> void CopyTextElementProperties(T& sharedCardElement)

@@ -4,7 +4,7 @@
 #include "AuthCardButton.h"
 #include "AdaptiveAuthCardButton.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("0DF8553F-E958-4E9C-897D-847691F1F3CC") AdaptiveAuthCardButton
         : AdaptiveAuthCardButtonT<AdaptiveAuthCardButton, ITypePeek>
@@ -23,7 +23,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveAuthCardButton : AdaptiveAuthCardButtonT<AdaptiveAuthCardButton, implementation::AdaptiveAuthCardButton>
     {

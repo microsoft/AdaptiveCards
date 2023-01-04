@@ -13,12 +13,12 @@
 
 #include <json.h>
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardParseResult _FromJsonString(
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCardParseResult _FromJsonString(
         std::string const& jsonString,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParserRegistration,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParserRegistration)
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& elementParserRegistration,
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& actionParserRegistration)
     {
         std::shared_ptr<::AdaptiveCards::ElementParserRegistration> sharedModelElementParserRegistration;
         if (auto innerElementRegistration = peek_innards<implementation::AdaptiveElementParserRegistration>(elementParserRegistration))
@@ -45,7 +45,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         catch(::AdaptiveCards::AdaptiveCardParseException const& e)
         {
             auto error = winrt::make_self<implementation::AdaptiveError>(
-                static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode>(e.GetStatusCode()),
+                static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::ErrorStatusCode>(e.GetStatusCode()),
                 UTF8ToHString(e.GetReason()));
             adaptiveParseResult->Errors().Append(*error);
         }
@@ -53,35 +53,35 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         return *adaptiveParseResult;
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardParseResult AdaptiveCard::FromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson)
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCardParseResult AdaptiveCard::FromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson)
     {
         return FromJson(adaptiveJson, nullptr, nullptr);
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardParseResult AdaptiveCard::FromJson(
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCardParseResult AdaptiveCard::FromJson(
         winrt::Windows::Data::Json::JsonObject const& adaptiveJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementRegistration,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionRegistration)
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& elementRegistration,
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& actionRegistration)
     {
         return _FromJsonString(JsonObjectToString(adaptiveJson), elementRegistration, actionRegistration);
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardParseResult AdaptiveCard::FromJsonString(hstring const& adaptiveJson)
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCardParseResult AdaptiveCard::FromJsonString(hstring const& adaptiveJson)
     {
         return FromJsonString(adaptiveJson, nullptr, nullptr);
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardParseResult AdaptiveCard::FromJsonString(
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCardParseResult AdaptiveCard::FromJsonString(
         hstring const& adaptiveJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementRegistration,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionRegistration)
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& elementRegistration,
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& actionRegistration)
     {
         return _FromJsonString(HStringToUTF8(adaptiveJson), elementRegistration, actionRegistration);
     }
 
     AdaptiveCard::AdaptiveCard(std::shared_ptr<::AdaptiveCards::AdaptiveCard> const& sharedAdaptiveCard) {
-        Body = winrt::single_threaded_vector<Uwp::IAdaptiveCardElement>();
-        Actions = winrt::single_threaded_vector<Uwp::IAdaptiveActionElement>();
+        Body = winrt::single_threaded_vector<Xaml_OM::IAdaptiveCardElement>();
+        Actions = winrt::single_threaded_vector<Xaml_OM::IAdaptiveActionElement>();
         Body = GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody());
         Actions = GenerateActionsProjection(sharedAdaptiveCard->GetActions());
         SelectAction = GenerateActionProjection(sharedAdaptiveCard->GetSelectAction());
@@ -89,10 +89,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         FallbackText = UTF8ToHString(sharedAdaptiveCard->GetFallbackText());
         Speak = UTF8ToHString(sharedAdaptiveCard->GetSpeak());
         Language = UTF8ToHString(sharedAdaptiveCard->GetLanguage());
-        Style = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
-        VerticalContentAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(
+        Style = static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        VerticalContentAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::VerticalContentAlignment>(
             sharedAdaptiveCard->GetVerticalContentAlignment());
-        Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedAdaptiveCard->GetHeight());
+        Height = static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::HeightType>(sharedAdaptiveCard->GetHeight());
         MinHeight = sharedAdaptiveCard->GetMinHeight();
 
         auto rtl = sharedAdaptiveCard->GetRtl();
@@ -109,13 +109,13 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         if (auto refresh = sharedAdaptiveCard->GetRefresh())
         {
-            Refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveRefresh>(refresh);
+            Refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveRefresh>(refresh);
         }
 
         if (auto authentication = sharedAdaptiveCard->GetAuthentication())
         {
             Authentication =
-                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveAuthentication>(authentication);
+                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveAuthentication>(authentication);
         }
 
         InternalId = sharedAdaptiveCard->GetInternalId().Hash();
@@ -173,17 +173,17 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         return adaptiveCard;
     }
 
-    winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation>
+    winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveRemoteResourceInformation>
     AdaptiveCard::GetResourceInformation()
     {
-        std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation> resourceInformation;
+        std::vector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveRemoteResourceInformation> resourceInformation;
         for (auto&& item : GetSharedModel()->GetResourceInformation())
         {
             auto resourceInfo = winrt::make_self<implementation::AdaptiveRemoteResourceInformation>(item);
             resourceInformation.push_back(*resourceInfo);
         }
 
-        return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation>(
+        return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveRemoteResourceInformation>(
                    std::move(resourceInformation))
             .GetView();
     }
