@@ -264,6 +264,11 @@
 		CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */; };
 		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
+		CFA164792950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */; };
+		CFA1647A2950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFA1647D295044AF00386C88 /* ACODebouncer.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA1647B295044AF00386C88 /* ACODebouncer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFA1647E295044AF00386C88 /* ACODebouncer.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFA1647C295044AF00386C88 /* ACODebouncer.mm */; };
+		CFA1648F29542F9000386C88 /* search-bar-clear.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CFA1648E29542F9000386C88 /* search-bar-clear.pdf */; };
 		CFB972012941C07A008E3795 /* ChoicesData.h in Headers */ = {isa = PBXBuildFile; fileRef = CFB971FF2941C079008E3795 /* ChoicesData.h */; };
 		CFB972022941C07A008E3795 /* ChoicesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFB972002941C079008E3795 /* ChoicesData.cpp */; };
 		DD278A02932F65F8BDD1EA5D /* Pods_AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255F5D3143215497D4067E21 /* Pods_AdaptiveCards.framework */; };
@@ -742,6 +747,11 @@
 		CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityAction.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h; sourceTree = "<group>"; };
 		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
+		CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetTypeaheadSearchView.mm; sourceTree = "<group>"; };
+		CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetTypeaheadSearchView.h; sourceTree = "<group>"; };
+		CFA1647B295044AF00386C88 /* ACODebouncer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACODebouncer.h; sourceTree = "<group>"; };
+		CFA1647C295044AF00386C88 /* ACODebouncer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACODebouncer.mm; sourceTree = "<group>"; };
+		CFA1648E29542F9000386C88 /* search-bar-clear.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "search-bar-clear.pdf"; path = "../../../../../../../../../Desktop/search-clear.imageset/search-bar-clear.pdf"; sourceTree = "<group>"; };
 		CFB971FF2941C079008E3795 /* ChoicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChoicesData.h; path = ../../../../shared/cpp/ObjectModel/ChoicesData.h; sourceTree = "<group>"; };
 		CFB972002941C079008E3795 /* ChoicesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChoicesData.cpp; path = ../../../../shared/cpp/ObjectModel/ChoicesData.cpp; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1079,6 +1089,7 @@
 				6B92A7F12679750D00CAE3BF /* chevrondown.svg */,
 				6B92A7F02679750C00CAE3BF /* chevronup.svg */,
 				6B8C766D26461F1A009548FA /* checked-checkbox-24.png */,
+				CFA1648E29542F9000386C88 /* search-bar-clear.pdf */,
 				6B8C766E26461F1A009548FA /* checked.png */,
 				6B8C766F26461F1A009548FA /* unchecked-checkbox-24.png */,
 				6B8C767026461F1A009548FA /* unchecked.png */,
@@ -1145,8 +1156,12 @@
 		6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */ = {
 			isa = PBXGroup;
 			children = (
-				6B92A7E32677DC8B00CAE3BF /* ACRChoiceSetCompactStyleView.mm */,
 				6B92A7E52677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h */,
+				6B92A7E32677DC8B00CAE3BF /* ACRChoiceSetCompactStyleView.mm */,
+				CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */,
+				CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */,
+				CFA1647B295044AF00386C88 /* ACODebouncer.h */,
+				CFA1647C295044AF00386C88 /* ACODebouncer.mm */,
 			);
 			name = CompactStyleChoiceSet;
 			sourceTree = "<group>";
@@ -1723,6 +1738,7 @@
 				F4F2556C1F98246000A80D39 /* ACOBaseActionElement.h in Headers */,
 				F427410A1EF864A900399FBB /* ACRBaseCardElementRenderer.h in Headers */,
 				F4CAE7821F75AB9000545555 /* ACOAdaptiveCard.h in Headers */,
+				CFA1647D295044AF00386C88 /* ACODebouncer.h in Headers */,
 				F4C1F6001F2C23FD0018CB78 /* ACRActionShowCardRenderer.h in Headers */,
 				F4C1F5E61F2ABB0E0018CB78 /* ACRActionOpenURLRenderer.h in Headers */,
 				F429793A1F31458800E89914 /* ACRActionSubmitRenderer.h in Headers */,
@@ -1789,6 +1805,7 @@
 				6BFF99E0260012380028069F /* ACORefresh.h in Headers */,
 				F974C5372800B8E100C1B3C7 /* CaptionSource.h in Headers */,
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
+				CFA1647A2950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h in Headers */,
 				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
 				6BFF24162714FA1D00183C59 /* AdaptiveCards.h in Headers */,
 				6BFF23F62714C0F000183C59 /* ACRRendererPrivate.h in Headers */,
@@ -1959,6 +1976,7 @@
 				6B8C768326461F1A009548FA /* ACRTextTelelphoneField.xib in Resources */,
 				6B8C768226461F1A009548FA /* ACRButtonExpandable.xib in Resources */,
 				6B92A7F22679750D00CAE3BF /* chevronup.svg in Resources */,
+				CFA1648F29542F9000386C88 /* search-bar-clear.pdf in Resources */,
 				6B3A23192755A3EF00764971 /* Localizable.strings in Resources */,
 				6B8C768E26461F1A009548FA /* ACRChoiceSetCellChecked.xib in Resources */,
 				6B92A7F32679750D00CAE3BF /* chevrondown.svg in Resources */,
@@ -2118,6 +2136,7 @@
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
+				CFA164792950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm in Sources */,
 				6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */,
 				CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */,
 				F429793B1F31458800E89914 /* ACRActionSubmitRenderer.mm in Sources */,
@@ -2206,6 +2225,7 @@
 				6BDE5C4626FEA7DC003A1DDB /* ACRShowCardTarget.mm in Sources */,
 				7ECFB640219A3940004727A9 /* ParseContext.cpp in Sources */,
 				6BC30F6E21E56CF900B9FAAE /* UtiliOS.mm in Sources */,
+				CFA1647E295044AF00386C88 /* ACODebouncer.mm in Sources */,
 				6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,

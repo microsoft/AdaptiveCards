@@ -141,7 +141,12 @@ using namespace AdaptiveCards;
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     UIViewController *rootViewController = traverseResponderChainForUIViewController(_rootView);
-    if (rootViewController) {
+    std::shared_ptr<BaseCardElement> elem = [_inputElem element];
+    std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
+    
+    if (rootViewController &&
+        choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
         ACRChoiceSetTypeaheadSearchView *controller = [[ACRChoiceSetTypeaheadSearchView alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil  delegate:self];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.modalPresentationStyle = UIModalPresentationFullScreen;

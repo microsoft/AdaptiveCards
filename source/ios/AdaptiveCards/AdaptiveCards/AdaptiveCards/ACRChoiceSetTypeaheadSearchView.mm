@@ -57,6 +57,7 @@ typedef enum {
     UITextField *_customSearchBar;
     UIActivityIndicatorView *_loader;
     UILabel *_searchStateTitleLabel;
+    UIImageView *_searchStateImageView;
     UILabel *_searchStateSubtitleLabel;
 }
 
@@ -142,6 +143,29 @@ typedef enum {
     [_customSearchBar.heightAnchor constraintEqualToConstant:36].active = YES;
     _customSearchBar.textColor = [UIColor colorWithRed:0.431 green:0.431 blue:0.431 alpha:1];
     _customSearchBar.backgroundColor = [UIColor colorWithRed:0.945 green:0.945 blue:0.945 alpha:1];
+    
+    UIImageView *searchIconView = [[UIImageView alloc] initWithImage:[UIImage systemImageNamed:@"magnifyingglass"]];
+    searchIconView.frame = CGRectMake(5, 5, 26, 26);
+    searchIconView.contentMode = UIViewContentModeCenter;
+    UIView *searchLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [searchLeftView addSubview:searchIconView];
+    
+    UIImageView *clearIconView = [[UIImageView alloc] initWithImage:[UIImage systemImageNamed:@"xmark.circle"]];
+    clearIconView.frame = CGRectMake(0, 5, 26, 26);
+    clearIconView.contentMode = UIViewContentModeCenter;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clearButtonTapped)];
+    singleTap.numberOfTapsRequired = 1;
+    [clearIconView setUserInteractionEnabled:YES];
+    [clearIconView addGestureRecognizer:singleTap];
+    
+    UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [rightView addSubview:clearIconView];
+    
+    _customSearchBar.rightViewMode = UITextFieldViewModeAlways;
+    _customSearchBar.rightView = rightView;
+    _customSearchBar.leftViewMode = UITextFieldViewModeAlways;
+    _customSearchBar.leftView = searchLeftView;
+    
     [_container addArrangedSubview:_customSearchBar];
     
     [_container addArrangedSubview:searchBarSeparator];
@@ -149,6 +173,7 @@ typedef enum {
     
     _loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     _loader.hidesWhenStopped = YES;
+    _loader.hidden = YES;
     _loader.translatesAutoresizingMaskIntoConstraints = NO;
     [_loader.heightAnchor constraintEqualToConstant:32].active = YES;
     [_loader.widthAnchor constraintEqualToConstant:32].active = YES;
@@ -163,7 +188,11 @@ typedef enum {
     [_searchStateTitleLabel.heightAnchor constraintEqualToConstant:20].active = YES;
     _searchStateTitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _searchStateTitleLabel.hidden = NO;
+    
+    _searchStateImageView = [[UIImageView alloc] initWithImage:[UIImage systemImageNamed:@"magnifyingglass"]];
+    _searchStateImageView.frame = CGRectMake(self.view.frame.size.width / 2 - 24, self.view.frame.size.height / 2 - 24, 48, 48);
     [self.view addSubview:_loader];
+    [self.view addSubview:_searchStateImageView];
     [self.view addSubview:_searchStateTitleLabel];
     [NSLayoutConstraint activateConstraints:@[
         [[_container trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor]],
@@ -177,8 +206,11 @@ typedef enum {
         [[_listView leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
         [[_searchStateTitleLabel topAnchor] constraintEqualToAnchor:[_loader bottomAnchor] constant:0],
         [[_searchStateTitleLabel centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
+        [[_searchStateTitleLabel topAnchor] constraintEqualToAnchor:[_searchStateImageView bottomAnchor] constant:0],
         [[_loader centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
-        [[_loader centerYAnchor] constraintEqualToAnchor:[self.view centerYAnchor]]
+        [[_loader centerYAnchor] constraintEqualToAnchor:[self.view centerYAnchor]],
+        [[_searchStateImageView centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
+        [[_searchStateImageView centerYAnchor] constraintEqualToAnchor:[self.view centerYAnchor]]
     ]];
     
     [NSLayoutConstraint activateConstraints:@[
@@ -213,6 +245,14 @@ typedef enum {
     NSLog(@"new search text %@", textField.text);
 }
 
+-(void)clearButtonTapped
+{
+    _customSearchBar.text = @"";
+    [_customSearchBar resignFirstResponder];
+    [_filteredDataSource resetFilter];
+    [self updateListViewLayout];
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *newSearchText = [textField.text stringByReplacingCharactersInRange:range
                                                                   withString:string];
@@ -228,6 +268,7 @@ typedef enum {
         case dynamicDataSource:
             _searchStateTitleLabel.text = @"Loading options";
             _searchStateTitleLabel.hidden = NO;
+            _searchStateImageView.hidden = YES;
             if (![_loader isAnimating])
             {
                 [_loader startAnimating];
@@ -238,11 +279,6 @@ typedef enum {
             break;
     }
     return YES;
-}
-
--(IBAction)clearButtonTapped:(id)sender
-{
-    
 }
 
 - (void)dealloc
@@ -280,20 +316,22 @@ typedef enum {
                     __strong typeof(self) strongSelf = weakSelf;
                     if (!error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            [strongSelf->_loader stopAnimating];
                             if (![output length]) {
                                 strongSelf->_searchStateTitleLabel.hidden = NO;
                                 strongSelf->_searchStateTitleLabel.text = @"Search option";
-                                [strongSelf->_loader stopAnimating];
+                                strongSelf->_searchStateImageView.hidden = NO;
                                 [strongSelf->_filteredDataSource resetFilter];
                             }
                             else if ([_choices count]) {
                                 strongSelf->_searchStateTitleLabel.hidden = YES;
-                                [strongSelf->_loader stopAnimating];
+                                strongSelf->_searchStateImageView.hidden = YES;
                                 [strongSelf->_filteredDataSource updatefilteredListForDynamicTypeahead:_choices];
                             } else {
                                 strongSelf->_searchStateTitleLabel.hidden = NO;
                                 strongSelf->_searchStateTitleLabel.text = @"No results found";
-                                [strongSelf->_loader stopAnimating];
+                                strongSelf->_searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+                                strongSelf->_searchStateImageView.hidden = NO;
                                 [strongSelf->_filteredDataSource resetFilter];
                             }
                             [strongSelf updateListViewLayout];
