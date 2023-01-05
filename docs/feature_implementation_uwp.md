@@ -1,0 +1,1 @@
+Tracked in [#8159](https://github.com/microsoft/AdaptiveCards/issues/8159)
