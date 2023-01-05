@@ -111,7 +111,7 @@ module.exports = (env, argv) => {
 					to: 'containers/[name][ext]'
 				},
 				{
-					from: 'src/assets/*.svg',
+					from: 'src/assets/*.*',
 					to: '../lib/assets/[name][ext]'
 				}],
 				options: {
