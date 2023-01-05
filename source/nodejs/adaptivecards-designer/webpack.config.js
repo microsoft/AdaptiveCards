@@ -48,7 +48,7 @@ module.exports = (env, argv) => {
 				},
 				{
 					test: /\.svg$/,
-					type: 'asset/resource'
+					type: 'asset/inline'
 				}
 			]
 		},
@@ -112,7 +112,7 @@ module.exports = (env, argv) => {
 				},
 				{
 					from: 'src/assets/*.svg',
-					to: 'assets/[name][ext]'
+					to: '../lib/assets/[name][ext]'
 				}],
 				options: {
 					concurrency: 8
