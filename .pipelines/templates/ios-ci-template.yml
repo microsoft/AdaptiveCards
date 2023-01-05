@@ -1,5 +1,9 @@
 steps:
-- template: ios-build-template.yml
+- task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
 
 - task: Xcode@5
   displayName: 'Sample App Unit Test'
@@ -15,7 +19,6 @@ steps:
     destinationSimulators: 'iPhone 12'
 
 - task: Xcode@5
-
   displayName: 'Framework Unit Test'
   inputs:
     actions: 'test'
