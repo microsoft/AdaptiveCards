@@ -9,7 +9,6 @@
 #include "AdaptiveOpenUrlActionParser.h"
 #include "AdaptiveToggleVisibilityActionParser.h"
 #include "AdaptiveExecuteActionParser.h"
-#include "windows.ui.xaml.h"
 #include "AdaptiveActionParserRegistration.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
