@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.Storage.Pickers;
-using Windows.UI.Xaml;
 using Windows.Storage.Provider;
 
 namespace AdaptiveCardVisualizer.ViewModel
