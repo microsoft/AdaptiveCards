@@ -48,13 +48,7 @@ module.exports = (env, argv) => {
 				},
 				{
 					test: /\.svg$/,
-					use: {
-						loader: "svg-url-loader",
-						options: {
-							// make all svg images to work in IE
-							iesafe: true,
-						}
-					}
+					type: 'asset/resource'
 				}
 			]
 		},
@@ -115,10 +109,6 @@ module.exports = (env, argv) => {
 				{
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/[name][ext]'
-				},
-				{
-					from: 'src/assets/*.svg',
-					to: 'assets/[name][ext]'
 				}],
 				options: {
 					concurrency: 8
