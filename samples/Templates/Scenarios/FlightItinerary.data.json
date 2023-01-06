@@ -78,7 +78,5 @@
 		"LocationSchema": "Default",
 		"CabinClass": "Economy",
 		"GroupPricing": false
-	},
-	"DepartsFrom": "Departs From",
-	"ArrivesAt": "Arrives At"
+	}
 }

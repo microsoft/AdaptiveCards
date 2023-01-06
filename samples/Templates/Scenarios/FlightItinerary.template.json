@@ -58,7 +58,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${DepartsFrom}",
+							"text": "Departs From",
 							"wrap": true,
 							"style": "default",
 							"weight": "bolder",
@@ -120,7 +120,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${ArrivesAt}",
+							"text": "Arrives At",
 							"wrap": true,
 							"horizontalAlignment": "right",
 							"style": "default",
@@ -193,7 +193,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${DepartsFrom}",
+							"text": "Departs From",
 							"wrap": true,
 							"style": "default",
 							"weight": "bolder",
@@ -255,7 +255,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${ArrivesAt}",
+							"text": "Arrives At",
 							"wrap": true,
 							"horizontalAlignment": "right",
 							"style": "default",
