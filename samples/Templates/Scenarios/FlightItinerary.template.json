@@ -58,17 +58,27 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[0].OriginStation == 11235}",
 							"text": "${Places[0].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${Segments[0].OriginStation == 13554}",
 							"text": "${Places[1].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -110,11 +120,21 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[0].DestinationStation == 11235}",
 							"text": "${Places[0].Name}",
 							"horizontalAlignment": "right",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -122,7 +142,8 @@
 							"text": "${Places[1].Name}",
 							"horizontalAlignment": "right",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -172,17 +193,27 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[1].OriginStation == 11235}",
 							"text": "${Places[0].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${Segments[1].OriginStation == 13554}",
 							"text": "${Places[1].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -224,11 +255,21 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[1].DestinationStation == 11235}",
 							"text": "${Places[0].Name}",
 							"horizontalAlignment": "right",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -236,7 +277,8 @@
 							"text": "${Places[1].Name}",
 							"horizontalAlignment": "right",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
