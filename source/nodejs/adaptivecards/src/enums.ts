@@ -72,6 +72,11 @@ export enum TextSize {
     ExtraLarge
 }
 
+export enum InputStyle {
+    ReadWrite,
+    Default
+}
+
 export enum TextWeight {
     Lighter,
     Default,

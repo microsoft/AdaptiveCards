@@ -301,5 +301,32 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
     }
+
+    .ac-textInput-readWriteStyle,
+    .ac-numberInput-readWriteStyle,
+    .ac-timeInput-readWriteStyle,
+    .ac-dateInput-readWriteStyle,
+    .ac-choiceSetInput-compact-readWriteStyle {
+        border: 1px solid transparent !important;
+        &:hover {
+            border: 1px solid #686868 !important;
+        }
+    }
+
+    .ac-choiceSetInput-compact-readWriteStyle {
+        appearance: none;
+    }
+
+    .ac-textInput-readWriteStyle-onCardHover,
+    .ac-numberInput-readWriteStyle-onCardHover,
+    .ac-timeInput-readWriteStyle-onCardHover,
+    .ac-dateInput-readWriteStyle-onCardHover,
+    .ac-choiceSetInput-compact-readWriteStyle-onCardHover {
+        border: 1px solid #DDDDDD !important;
+    }
+
+    .ac-choiceSetInput-compact-readWriteStyle-onCardHover {
+        appearance: auto;
+    }
 }
 

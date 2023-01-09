@@ -3263,6 +3263,16 @@ export abstract class Input extends CardElement implements IInput {
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
+    static readonly inputStyleProperty = new EnumProperty(
+        Versions.v1_5,
+        "inputStyle",
+        Enums.InputStyle,
+        Enums.InputStyle.Default,
+        [
+            { value: Enums.InputStyle.ReadWrite },
+            { value: Enums.InputStyle.Default }
+        ]
+    );
 
     @property(Input.labelProperty)
     label?: string;
@@ -3272,6 +3282,9 @@ export abstract class Input extends CardElement implements IInput {
 
     @property(Input.errorMessageProperty)
     errorMessage?: string;
+
+    @property(Input.inputStyleProperty)
+    inputStyle: Enums.InputStyle = Enums.InputStyle.Default;
 
     //#endregion
 
@@ -3458,6 +3471,21 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
+    protected registerEventsForReadWriteInputStyle(input: HTMLElement | undefined, inputEventHandler: (input: HTMLElement, eventType: string, eventSource: "card" | "input") => void) {
+        if (!input) {
+            return;
+        }
+        // registering for mouse events on card
+        const card = this._parent as AdaptiveCard;
+        card.registerMouseEnterCallback(
+            (ev: MouseEvent) => inputEventHandler(input, "onmouseenter" /*event type*/, "card" /*event source*/)
+        );
+
+        card.registerMouseLeaveCallback(
+            (ev: MouseEvent) => inputEventHandler(input, "onmouseleave" /*event type*/, "card" /*event source*/)
+        );
+    }
+
     onValueChanged: (sender: Input) => void;
 
     labelledBy?: string;
@@ -3629,6 +3657,23 @@ export class TextInput extends Input {
         };
     }
 
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: string, eventSource: "card" | "input") {
+        if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+
+        if (eventType == "onrender" && eventSource == "input") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle"));
+        }
+
+        if (eventType === "onmouseenter" && eventSource === "card") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle-onCardHover"));
+        }
+        if (eventType === "onmouseleave" && eventSource === "card") {
+            input.classList.remove(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle-onCardHover"));
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         let result: HTMLInputElement | HTMLTextAreaElement;
 
@@ -3647,6 +3692,11 @@ export class TextInput extends Input {
             result = document.createElement("input");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             result.type = Enums.InputTextStyle[this.style].toLowerCase();
+
+            if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite && !this.inlineAction) {
+                this.handleEventsForReadWriteInputStyle(result, "onrender", "input");
+                this.registerEventsForReadWriteInputStyle(result, this.handleEventsForReadWriteInputStyle.bind(this));
+            }
         }
 
         this.setupInput(result);
@@ -4167,6 +4217,23 @@ export class ChoiceSetInput extends Input {
         }
     }
 
+    protected handleEventsForReadWriteInputStyle(input: HTMLSelectElement, eventType: string, eventSource: "card" | "input") {
+        if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+
+        if (eventType == "onrender" && eventSource == "input") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle"));
+        }
+
+        if (eventType === "onmouseenter" && eventSource === "card") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle-onCardHover"));
+        }
+        if (eventType === "onmouseleave" && eventSource === "card") {
+            input.classList.remove(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle-onCardHover"));
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
@@ -4297,6 +4364,11 @@ export class ChoiceSetInput extends Input {
                 };
 
                 this.internalApplyAriaCurrent();
+
+                if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+                    this.handleEventsForReadWriteInputStyle(this._selectElement, "onrender", "input");
+                    this.registerEventsForReadWriteInputStyle( this._selectElement, this.handleEventsForReadWriteInputStyle.bind(this));
+                }
 
                 return this._selectElement;
             }
@@ -4430,6 +4502,21 @@ export class NumberInput extends Input {
 
     private _numberInputElement: HTMLInputElement;
 
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: string, eventSource: "card" | "input") {
+        if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+        if (eventType == "onrender" && eventSource == "input") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle"));
+        }
+        if (eventType === "onmouseenter" && eventSource === "card") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle-onCardHover"));
+        }
+        if (eventType === "onmouseleave" && eventSource === "card") {
+            input.classList.remove(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle-onCardHover"));
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
@@ -4462,6 +4549,11 @@ export class NumberInput extends Input {
         this._numberInputElement.oninput = () => {
             this.valueChanged();
         };
+
+        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+            this.handleEventsForReadWriteInputStyle(this._numberInputElement, "onrender", "input");
+            this.registerEventsForReadWriteInputStyle( this._numberInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
+        }
 
         return this._numberInputElement;
     }
@@ -4527,6 +4619,26 @@ export class DateInput extends Input {
 
     private _dateInputElement: HTMLInputElement;
 
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: string, eventSource: "card" | "input") {
+        if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+
+        if (eventType == "onrender" && eventSource == "input") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue);
+        }
+
+        if (eventType === "onmouseenter" && eventSource === "card") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle-onCardHover"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue, true /*show*/);
+        }
+        if (eventType === "onmouseleave" && eventSource === "card") {
+            input.classList.remove(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle-onCardHover"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue);
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
@@ -4558,6 +4670,11 @@ export class DateInput extends Input {
 
         if (this.defaultValue) {
             this._dateInputElement.value = this.defaultValue;
+        }
+
+        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+            this.handleEventsForReadWriteInputStyle(this._dateInputElement, "onrender", "input");
+            this.registerEventsForReadWriteInputStyle( this._dateInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
         }
 
         return this._dateInputElement;
@@ -4660,6 +4777,26 @@ export class TimeInput extends Input {
 
     private _timeInputElement: HTMLInputElement;
 
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: string, eventSource: "card" | "input") {
+        if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
+            return;
+        }
+
+        if (eventType == "onrender" && eventSource == "input") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue);
+        }
+
+        if (eventType === "onmouseenter" && eventSource === "card") {
+            input.classList.add(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle-onCardHover"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue, true /*show*/);
+        }
+        if (eventType === "onmouseleave" && eventSource === "card") {
+            input.classList.remove(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle-onCardHover"));
+            Utils.hideDateOrTimeInputPickers(input, this.defaultValue);
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");
@@ -4690,6 +4827,11 @@ export class TimeInput extends Input {
 
         if (this.defaultValue) {
             this._timeInputElement.value = this.defaultValue;
+        }
+
+        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
+            this.handleEventsForReadWriteInputStyle(this._timeInputElement, "onrender", "input");
+            this.registerEventsForReadWriteInputStyle( this._timeInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
         }
 
         return this._timeInputElement;
@@ -8434,6 +8576,10 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
+    private _mouseEnterCallbacks: any[] = [];
+
+    private _mouseLeaveCallbacks: any[] = [];
+    
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext(this.version);
     }
@@ -8582,6 +8728,18 @@ export class AdaptiveCard extends ContainerWithActions {
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
+
+                // register for on mouse enter on the card
+                renderedCard.onmouseenter = (ev: MouseEvent) => {
+                    // triggering registered callbacks on mouse enter on the card
+                    this._mouseEnterCallbacks.forEach(callback => callback(ev));
+                };
+
+                // register for on mouse leave on the card
+                renderedCard.onmouseleave = (ev: MouseEvent) => {
+                    // triggering registered callbacks on mouse leave on the card
+                    this._mouseLeaveCallbacks.forEach(callback => callback(ev));
+                };
             }
         }
 
@@ -8611,6 +8769,14 @@ export class AdaptiveCard extends ContainerWithActions {
 
     get hasVisibleSeparator(): boolean {
         return false;
+    }
+
+    public registerMouseEnterCallback(callback: any) {
+        this._mouseEnterCallbacks.push(callback);
+    }
+
+    public registerMouseLeaveCallback(callback: any) {
+        this._mouseLeaveCallbacks.push(callback);
     }
 }
 
