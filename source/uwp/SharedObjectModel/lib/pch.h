@@ -35,7 +35,12 @@
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
+#ifndef USE_WINUI3
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#else
+#define Uwp Winui3
+#include <winrt/AdaptiveCards.ObjectModel.Winui3.h>
+#endif
 #include <winrt/Windows.Data.Json.h>
 
 // Commonly-used AdaptiveCardRenderer headers
