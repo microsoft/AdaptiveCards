@@ -110,8 +110,8 @@ All elements not mentioned above are allowed inside a carousel.
 ## Updated Proposal 
 There had been strong demand to adorn the Carousel with other AdaptiveCard elements as shown in the image below. 
 Customers wanted to have an option that allow these decorative elements around the Carousel remain static when CarouselPage is changed.
-Customers also wanted to have a conditional layout template that can be switched between a standard layout and the layout with Carousel. 
-Thus, we have relaxed the rule of treating Carousel as special type of AdaptiveCard, and made Carousel as regular AdaptiveCard element while all other rules remain intact.
+Customers also wanted to have conditional layout template that can be switched between standard layout and layout with Carousel. 
+Thus, we have relaxed the rule of treating Carousel as a special type of AdaptiveCard, and made Carousel as a regular AdaptiveCard element while all other rules remain intact.
 
 ![image](https://user-images.githubusercontent.com/4112696/183519757-156a18a9-73e7-47d9-8e00-ad84d0070f99.png)
 

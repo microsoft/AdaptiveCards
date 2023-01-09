@@ -1,9 +1,9 @@
 # Stacked Images/Badging
 ### Problem 
-In order to enable the Messenger widget, Meta is requesting the ability to stack images like so:
+Customers are requesting the ability to stack images like so:
 ![img](assets/StackedImageSet/stackedImage.png)
 
-This will enable them to show a chat as a group chat in the Messenger widget.
+This will enable them to show a chat as a group chat in a messenger app.
 #### Key Features 
 *	Stack a maximum of 2 images. The green status indicator would not be displayed.
 *	The images will always be stacked diagonal as shown above.
