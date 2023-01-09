@@ -3264,7 +3264,7 @@ export abstract class Input extends CardElement implements IInput {
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
     static readonly inputStyleProperty = new EnumProperty(
-        Versions.v1_5,
+        Versions.v1_6,
         "inputStyle",
         Enums.InputStyle,
         Enums.InputStyle.Default,
