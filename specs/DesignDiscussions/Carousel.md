@@ -9,7 +9,7 @@ We propose that carousels are a special type of Adaptive Card rather than an ele
   * We don't have to worry about how container styles or rtl apply
 * **We can ignore `Action.ToggleVisibility`.**
 
-
+## Spec By Example
 It's probably best to lead with a proposed sample carousel card...
 
 ```json
