@@ -1,7 +1,6 @@
 # Carousel support for Adaptive Cards
 
-To help drive the discussion and requirements around the carousel element, @rebecch and I sat down to go over how to meet our goals with a narrow but expandable set of schema changes. 
-
+## Original Proposal
 We propose that carousels are a special type of Adaptive Card rather than an element. This greatly simplifies the design from both a schema perspective and a rendering perspective. In particular:
 * **We don't have to worry about nesting carousel elements.**
   * It's unclear how we could have a rational display of *N* nested carousels.
@@ -10,7 +9,6 @@ We propose that carousels are a special type of Adaptive Card rather than an ele
   * We don't have to worry about how container styles or rtl apply
 * **We can ignore `Action.ToggleVisibility`.**
 
-## Original Proposal
 
 It's probably best to lead with a proposed sample carousel card...
 
@@ -19,53 +17,45 @@ It's probably best to lead with a proposed sample carousel card...
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json", 
   "type": "AdaptiveCard",
   "version": "1.6",
-  "TBD": {
-    "type": "carousel",
-    "timer": "5000ms",
-    "someOtherCarouselProperty": true
-  },
-  "body": [
+  "body": 
     {
-      "type": "CarouselPage",
-      "id": "firstCarouselPage",
-      "selectAction": {
-        "type": "Action.OpenUrl",
-        "title": "Click for more information about the first carousel page!",
-        "url": "https://adaptivecards.io/"
-      },
-      "items": [
+      "type": "Carousel",
+      "timer": 5000,
+      "pages":[
         {
-          "type": "TextBlock",
-          "weight": "bolder",
-          "size": "large",
-          "text": "This is the first carousel page, and it's *awesome*!"
-        },
-        {
-          "type": "Container",
-          "items": [
-              {}
-          ]
-        }
-      ]
-    },
-    {
-      "type": "CarouselPage",
-      "id": "theSecondCarouselPage",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "Welcome to page 2!"
-        }
-      ]
-    },
-    {
-      "type": "CarouselPage",
-      "id": "last-carousel-page",
-      "items": [
-        {
-          "type": "Image",
-          "url": "https://adaptivecards.io/content/cats/3.png",
-          "altText": "That's a cool cat!"
+          {
+            "type": "CarouselPage",
+            "id": "firstCarouselPage",
+            "selectAction": {
+              "type": "Action.OpenUrl",
+              "title": "Click for more information about the first carousel page!",
+              "url": "https://adaptivecards.io/"
+            },
+            "items": [
+              {
+                "type": "TextBlock",
+                "weight": "bolder",
+                "size": "large",
+                "text": "This is the first carousel page, and it's *awesome*!"
+              },
+              {
+                "type": "Container",
+                "items": [
+                    {}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "CarouselPage",
+            "id": "theSecondCarouselPage",
+            "items": [
+              {
+                "type": "TextBlock",
+                "text": "Welcome to page 2!"
+              }
+            ]
+          }
         }
       ]
     }
@@ -80,18 +70,16 @@ It's probably best to lead with a proposed sample carousel card...
 }
 ```
 
-So here we have a sample carousel card. You'll probably notice the ominously-named `TBD` property right away -- we haven't come up with a name for it yet. At any rate, this property is an object containing a `type` property describing what type of card this is. Other properties in this object can be provided to configure behaviors of this type of card (in this example, the timer to use for automatically flipping through the items in a carousel).
-
-You'll probably also notice the new `CarouselPage` element. It acts pretty similarly to a `Container`, but with some differences:
+So here we have a sample carousel card. You'll probably notice the new `CarouselPage` element. It acts pretty similarly to a `Container`, but with some differences:
 * No `style` (or at least, we don't have a reason to have `style` here yet)
 * No `bleed`
 * We don't allow every element type within a `CarouselPage`, only the subset we decide on (see following sections for more details)
 
-Having this new element also has the advantage of allowing us to reuse it later should we decide to promote the idea of `Carousel` as a regular page element (a `Carousel` would be a collection of `CarouselPage`s in this regime, though we'd need to decide how to reconcile `TBD` against per-`Carousel` settings).
+Having this new element also has the advantage of allowing us to reuse it later should we decide to promote the idea of `Carousel` as a regular page element (a `Carousel` would be a collection of `CarouselPage`s in this regime.
 
 This sample also has a page-wide `Action.Execute`. When the user clicks this action (rendered as a button below the ⚬●⚬⚬ control), the host will receive the standard callback. The `id` of the currently-visible page should be exposed as a property on the `Action` the callback provides (we may also want to provide positional properties as well, but I'm not sure if they're needed).
 
-It's worth noting that we think we *should* allow `ActionSet` elements inside a `CarouselPage`, but they should be restricted to the same actions as the toplevel `actions` property.
+It's worth noting that we think we *should* allow `ActionSet` elements inside a `CarouselPage`, but they should be restricted to the same actions as the top level `actions` property.
 
 Another thing to note is that this implies the existence of a special carousel card inside of an `Action.ShowCard`, which we think is probably okay, but we should talk it through a bit more. If we do allow it, input gathering should happen as it currently does -- namely, the parent card's inputs are supplied if the `Action.ShowCard` has an `Action.Submit` or `Action.Execute` invoked from within it.
 
@@ -109,10 +97,25 @@ In order to meet our schedule, we need to avoid some common pain points that wou
 
 All elements not mentioned above are allowed inside a carousel.
 
+## Timer Property
+* `"timer" : number`
+  * when set, the number sets the duration before a Carousel page transitions to the next Carousel page.
+  * while hovering, mouse click, and touch events, this auto transition is canceled.
+
+## HostConfig Options
+* Max number of `CarouselPage`s
+* Minimum timer restriction
+* Do we need host config theming? We're leaning towards leaving this for native styling via CSS.
+
 ## Updated Proposal 
+There had been strong demand to adorn the Carousel with other AdaptiveCard elements as shown in the image below. 
+Customers wanted to have an option that allow these decorative elements around the Carousel remain static when CarouselPage is changed.
+Customers also wanted to have a conditional layout template that can be switched between a standard layout and the layout with Carousel. 
+Thus, we have relaxed the rule of treating Carousel as special type of AdaptiveCard, and made Carousel as regular AdaptiveCard element while all other rules remain intact.
+
 ![image](https://user-images.githubusercontent.com/4112696/183519757-156a18a9-73e7-47d9-8e00-ad84d0070f99.png)
 
-Treating Carousel as special type of AdaptiveCard simplifies design; however it imposes restriction on the design of card. The image as shown below, there have been desire to adorn the Carousel with other AdaptiveCard elements. Carousel plays important roles displaying complex information in a compact way by switching Carousel Pages with apps with small screen width. However, including the decorative AdaptiveCard elements in Carousel Page does produce desirable user experiences. We relaxed the rule and made Carousel as regular AdaptiveCard element.
+Snippet of json of the above image
 ```json
 "body": [
 		{
@@ -143,17 +146,6 @@ Treating Carousel as special type of AdaptiveCard simplifies design; however it 
 ## InitialPage Property
 * `"initialPage" : number`
   * Set initial Carousel Page
-
-## Timer Property
-* `"timer" : number`
-  * when set, the number set the duration before Carousel transitions to the next Carousel page.
-  * while hovering, mouse click, and touch events, the auto transition is canceled.
-
-## HostConfig Options
-
-* Max number of `CarouselPage`s
-* Minimum timer restriction
-* Do we need host config theming? We're leaning towards leaving this for native styling via CSS.
 
 ## Open Issues
 
