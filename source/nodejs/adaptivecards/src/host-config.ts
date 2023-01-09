@@ -241,7 +241,7 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
 export class InputLabelConfig {
     inputSpacing: Enums.Spacing = Enums.Spacing.Small;
-    inputLabelWidth : number = 30;
+    width : number = 30;
     readonly requiredInputs: RequiredInputLabelTextDefinition =
         new RequiredInputLabelTextDefinition();
     readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
@@ -255,8 +255,8 @@ export class InputLabelConfig {
             );
             this.requiredInputs = new RequiredInputLabelTextDefinition(obj["requiredInputs"]);
             this.optionalInputs = new BaseTextDefinition(obj["optionalInputs"]);
-            this.inputLabelWidth =
-                obj["inputLabelWidth"] != null ? obj["inputLabelWidth"] : this.inputLabelWidth;
+            this.width =
+                obj["width"] != null ? obj["width"] : this.width;
         }
     }
 }

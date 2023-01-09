@@ -3275,9 +3275,6 @@ export class Media extends CardElement {
 
 export abstract class Input extends CardElement implements IInput {
     
-    // default label width is 30% of the input container 
-    private static readonly _defaultInputLabelWidth = new SizeAndUnit(30, Enums.SizeUnit.Weight);
-
     //#region Schema
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
@@ -3498,7 +3495,7 @@ export abstract class Input extends CardElement implements IInput {
 
             if (this._renderedLabelElement && this.labelPosition === Enums.InputLabelPosition.Inline) {
                 if (!this.labelWidth) {
-                    const defaultLabelWidth = hostConfig.inputs.label.inputLabelWidth;
+                    const defaultLabelWidth = hostConfig.inputs.label.width;
                     this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
                     this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
                 }
