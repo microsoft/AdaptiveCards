@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPObjectModelTest", "UWPOb
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedObjectModel", "SharedObjectModel\SharedObjectModel.vcxitems", "{BB89BDE2-FA11-4F6E-A27D-7025063B8B21}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedRenderer", "SharedRenderer\SharedRenderer.vcxitems", "{DCF1BDA8-E94A-4D57-8ED6-5D30E29B69ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -298,5 +300,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedObjectModel\SharedObjectModel.vcxitems*{29129512-a203-4718-bbed-edaf7f4a02cd}*SharedItemsImports = 4
 		SharedObjectModel\SharedObjectModel.vcxitems*{bb89bde2-fa11-4f6e-a27d-7025063b8b21}*SharedItemsImports = 9
+		SharedRenderer\SharedRenderer.vcxitems*{dcf1bda8-e94a-4d57-8ed6-5d30e29b69ed}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
