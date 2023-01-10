@@ -11,7 +11,7 @@ steps:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
     scheme: 'ADCIOSVisualizer'
-    xcodeVersion: '12'
+    xcodeVersion: 'default'
     packageApp: false
     signingOption: 'default'
     sdk: 'iphonesimulator'
@@ -24,7 +24,7 @@ steps:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
     scheme: 'AdaptiveCards'
-    xcodeVersion: '12'
+    xcodeVersion: 'default'
     packageApp: false
     signingOption: 'default'
     sdk: 'iphonesimulator'
