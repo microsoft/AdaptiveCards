@@ -509,5 +509,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\XamlHelpers.cpp">
       <Filter>lib</Filter>
     </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
 </Project>
