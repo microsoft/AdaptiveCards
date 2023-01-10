@@ -72,8 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         if (const auto contentControl = item.try_as<winrt::ContentControl>())
         {
-            auto content = CreateTextBlockWithContent(contentString, wrap);
-            contentControl.Content(content);
+            contentControl.Content(CreateTextBlockWithContent(contentString, wrap));
         }
     }
 
