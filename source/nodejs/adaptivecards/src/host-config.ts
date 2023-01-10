@@ -241,7 +241,7 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
 export class InputLabelConfig {
     inputSpacing: Enums.Spacing = Enums.Spacing.Small;
-    width : number = 30;
+    width: number = 30;
     readonly requiredInputs: RequiredInputLabelTextDefinition =
         new RequiredInputLabelTextDefinition();
     readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
