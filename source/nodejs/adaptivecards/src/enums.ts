@@ -220,8 +220,7 @@ export enum CarouselInteractionEvent {
 }
 
 
-export enum InputEventType {
-    OnElementRender,
+export enum CardEventType {
     OnMouseEnterOnCard,
     OnMouseLeaveOnCard
 }
