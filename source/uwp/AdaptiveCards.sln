@@ -300,6 +300,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedObjectModel\SharedObjectModel.vcxitems*{29129512-a203-4718-bbed-edaf7f4a02cd}*SharedItemsImports = 4
 		SharedObjectModel\SharedObjectModel.vcxitems*{bb89bde2-fa11-4f6e-a27d-7025063b8b21}*SharedItemsImports = 9
+		SharedRenderer\SharedRenderer.vcxitems*{cf169157-f487-420c-8b9b-ca3abe2bb209}*SharedItemsImports = 4
 		SharedRenderer\SharedRenderer.vcxitems*{dcf1bda8-e94a-4d57-8ed6-5d30e29b69ed}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
