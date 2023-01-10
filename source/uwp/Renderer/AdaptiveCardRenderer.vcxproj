@@ -81,7 +81,6 @@
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>
-        $(ProjectDir)..\Lib;
         $(WindowsSDK_WindowsMetadata);
         $(AdditionalUsingDirectories);
        </AdditionalUsingDirectories>
@@ -114,7 +113,6 @@
     <ClCompile>
       <PreprocessorDefinitions>_WINRT_DLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>
-        ..\..;
         ..\..\shared\cpp\ObjectModel;
         ..\..\shared\cpp\ObjectModel\json;
         ..\AdaptiveCardsObjectModel;
