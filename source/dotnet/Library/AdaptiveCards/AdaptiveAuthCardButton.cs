@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Button for auth card
+    /// </summary>
     public class AdaptiveAuthCardButton
     {
         /// <summary>

@@ -26,11 +26,11 @@ namespace AdaptiveCards
         public override void WriteJson(JsonWriter writer, object backgroundImage, JsonSerializer serializer)
         {
             AdaptiveBackgroundImage bi = (AdaptiveBackgroundImage) backgroundImage;
-            if (!string.IsNullOrEmpty(bi.UrlString))
+            if (!string.IsNullOrEmpty(bi.Url))
             {
                 if (bi.HasDefaultValues())
                 {
-                    writer.WriteValue(bi.UrlString);
+                    writer.WriteValue(bi.Url);
                 }
                 else
                 {

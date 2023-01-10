@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -38,9 +40,28 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize ImageSize { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(ImageSize))]
+        [DefaultValue(null)]
+        public string _ImageSize
+        {
+            get => JToken.FromObject(ImageSize).ToString();
+            set => ImageSize = (AdaptiveImageSize)Enum.Parse(typeof(AdaptiveImageSize), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_ImageSize() => ImageSize != AdaptiveImageSize.Auto;
+#endif
     }
 }

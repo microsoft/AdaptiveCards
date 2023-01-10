@@ -33,6 +33,7 @@ namespace AdaptiveCards.Rendering
         ///     This funct will return modified text replacing {{DATE|TIME()}} style functions as the formatted text
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="lang"></param>
         /// <returns></returns>
         public static string ApplyTextFunctions(string text, string lang)
         {

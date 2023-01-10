@@ -36,7 +36,7 @@ namespace AdaptiveCards.Test
         public void TestPassWordInputStyle()
         {
             var card = Utilities.BuildASimpleTestCard();
-            var passwordStyleMockUpString  = new SerializableDictionary<string, object>() { ["style"] = "Password"};
+            var passwordStyleMockUpString  = new SerializableDictionary<object>() { ["style"] = "Password"};
             var expectedJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(card, "textInput", passwordStyleMockUpString);
             var testCard = AdaptiveCard.FromJson(expectedJSON);
             Assert.IsTrue(testCard.Warnings.Count == 0);

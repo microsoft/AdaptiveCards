@@ -101,9 +101,9 @@ namespace AdaptiveCards.Test
             var actions = result.Card.Actions;
 
             Assert.AreEqual(3, actions.Count);
-            Assert.AreEqual("default", actions[0].Style);
-            Assert.AreEqual("positive", actions[1].Style);
-            Assert.AreEqual("destructive", actions[2].Style);
+            Assert.AreEqual(AdaptiveActionStyle.Default, actions[0].Style);
+            Assert.AreEqual(AdaptiveActionStyle.Positive, actions[1].Style);
+            Assert.AreEqual(AdaptiveActionStyle.Destructive, actions[2].Style);
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace AdaptiveCards.Test
             var body = result.Card.Body;
             Assert.AreEqual(1, body.Count);
 
-            AdaptiveAction toggleVisibilityAction = (body[0] as AdaptiveImage).SelectAction;
+            AdaptiveAction toggleVisibilityAction = (body[0] as AdaptiveImage).SelectAction.Action;
             Assert.IsNotNull(toggleVisibilityAction);
 
             Assert.IsInstanceOfType(toggleVisibilityAction, typeof(AdaptiveToggleVisibilityAction));
@@ -187,7 +187,7 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(expectedPayloadValue, card.ToJson());
 
-            SerializableDictionary<string, object> expectedProperty = new SerializableDictionary<string, object>() { ["isEnabled"] = false };
+            SerializableDictionary<object> expectedProperty = new SerializableDictionary<object>() { ["isEnabled"] = false };
 
             expectedPayloadValue = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id, expectedProperty);
 
@@ -211,7 +211,7 @@ namespace AdaptiveCards.Test
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 Title = "Action.Submit",
-                DataJson = "{\"x\": 13}",
+                _Data = "{\"x\": 13}",
             };
 
             container.SelectAction = submitAction;
@@ -233,17 +233,17 @@ namespace AdaptiveCards.Test
 
             AdaptiveContainer container = element as AdaptiveContainer;
 
-            Assert.IsTrue(container.SelectAction.IsEnabled);
+            Assert.IsTrue(container.SelectAction.Action.IsEnabled);
 
             var expectedPayloadValue = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, "Container");
 
             Assert.AreEqual(expectedPayloadValue, cardInTest.ToJson());
 
-            SerializableDictionary<string, object> expectedProperty = new SerializableDictionary<string, object>() { ["isEnabled"] = false };
+            SerializableDictionary<object> expectedProperty = new SerializableDictionary<object>() { ["isEnabled"] = false };
 
             expectedPayloadValue = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, "Container", expectedProperty);
 
-            container.SelectAction.IsEnabled = false;
+            container.SelectAction.Action.IsEnabled = false;
 
             var cardInJson = cardInTest.ToJson();
 
@@ -271,7 +271,7 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(expectedJSON, card.ToJson());
 
-            var expectedProperty = new SerializableDictionary<string, object>() { ["mode"] = "secondary"};
+            var expectedProperty = new SerializableDictionary<object>() { ["mode"] = "secondary"};
 
             expectedJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(expectedCard, submitAction.Id, expectedProperty);
 
@@ -291,7 +291,7 @@ namespace AdaptiveCards.Test
 
             var expectedCard = Utilities.BuildASimpleTestCard();
 
-            var badValue = new SerializableDictionary<string, object>() { ["mode"] = "randomBadValue"};
+            var badValue = new SerializableDictionary<object>() { ["mode"] = "randomBadValue"};
 
             var element = Utilities.GetAdaptiveElementWithId(card, "submitAction");
 
@@ -311,7 +311,7 @@ namespace AdaptiveCards.Test
         {
             const string tooltipText = "this button submits the input";
 
-            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+            var tooltipValue = new SerializableDictionary<object>() { ["tooltip"] = tooltipText};
 
             var expectedCardJSON = Utilities.BuildExpectedCardJSON("submitAction", tooltipValue);
 
@@ -335,7 +335,7 @@ namespace AdaptiveCards.Test
 
             testElement.Tooltip = tooltipText;
 
-            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+            var tooltipValue = new SerializableDictionary<object>() { ["tooltip"] = tooltipText};
 
             var expectedCardJSON = Utilities.BuildExpectedCardJSON("submitAction", tooltipValue);
 
@@ -351,19 +351,19 @@ namespace AdaptiveCards.Test
 
             const string tooltipText = "this button submits the input";
 
-            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+            var tooltipValue = new SerializableDictionary<object>() { ["tooltip"] = tooltipText};
 
             var container = Utilities.GetAdaptiveElementWithId(expectedCard, "container") as AdaptiveContainer;
 
             Assert.IsNotNull(container);
 
-            container.SelectAction.AdditionalProperties = tooltipValue;
+            container.SelectAction.Action.AdditionalProperties = tooltipValue;
 
             var testElement = Utilities.GetAdaptiveElementWithId(cardInTest, "container") as AdaptiveContainer;
 
             Assert.IsNotNull(testElement);
 
-            testElement.SelectAction.Tooltip = tooltipText;
+            testElement.SelectAction.Action.Tooltip = tooltipText;
 
             RoundTripTest(expectedCard.ToJson(), cardInTest.ToJson());
         }
@@ -375,13 +375,13 @@ namespace AdaptiveCards.Test
 
             const string tooltipText = "this button submits the input";
 
-            var tooltipValue = new SerializableDictionary<string, object>() { ["tooltip"] = tooltipText};
+            var tooltipValue = new SerializableDictionary<object>() { ["tooltip"] = tooltipText};
 
             var container = Utilities.GetAdaptiveElementWithId(expectedCard, "container") as AdaptiveContainer;
 
             Assert.IsNotNull(container);
 
-            container.SelectAction.AdditionalProperties = tooltipValue;
+            container.SelectAction.Action.AdditionalProperties = tooltipValue;
 
             var expectedCardJSON = expectedCard.ToJson();
 
@@ -393,7 +393,7 @@ namespace AdaptiveCards.Test
 
             Assert.IsNotNull(deserializedContainer);
 
-            Assert.AreEqual(tooltipText, deserializedContainer.SelectAction.Tooltip);
+            Assert.AreEqual(tooltipText, deserializedContainer.SelectAction.Action.Tooltip);
         }
     }
 }

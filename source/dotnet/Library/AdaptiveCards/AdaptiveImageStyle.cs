@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -14,6 +15,9 @@ namespace AdaptiveCards
         /// <summary>
         ///     The image is displayed within a rectangle.
         /// </summary>
+#if !NETSTANDARD1_3
+        [XmlEnum("default")]
+#endif
         Default = 0,
 
         /// <summary>
@@ -25,6 +29,9 @@ namespace AdaptiveCards
         /// <summary>
         ///     The image is cropped to a circle, a common way to represent people photos.
         /// </summary>
+#if !NETSTANDARD1_3
+        [XmlEnum("person")]
+#endif
         Person = 1
     }
 }

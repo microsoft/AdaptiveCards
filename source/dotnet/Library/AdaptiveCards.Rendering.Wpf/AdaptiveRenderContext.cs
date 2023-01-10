@@ -299,7 +299,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             // The element is added to the dictionary if it's an action or  if it's a card element and the height is auto
                             // as stretch items are enclosed in a panel that is added in AdaptiveContainerRenderer.AddContainerElements 
                             if (!(element is AdaptiveElement) ||
-                                (element is AdaptiveElement adaptiveElement && adaptiveElement.Height == AdaptiveHeight.Auto))
+                                (element is AdaptiveElement adaptiveElement && adaptiveElement.Height == AdaptiveDimension.Auto))
                             {
                                 RenderedElementsWithId.Add(element.Id, rendered);
                             }

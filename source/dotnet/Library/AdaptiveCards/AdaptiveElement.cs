@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -17,10 +18,29 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveSpacing), "default")]
         public AdaptiveSpacing Spacing { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Spacing))]
+        [DefaultValue(null)]
+        public string _Spacing
+        {
+            get => JToken.FromObject(Spacing).ToString();
+            set => Spacing = (AdaptiveSpacing)Enum.Parse(typeof(AdaptiveSpacing), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Spacing() => Spacing != AdaptiveSpacing.Default;
+#endif
 
         /// <summary>
         /// Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
@@ -40,26 +60,37 @@ namespace AdaptiveCards
         public string Speak { get; set; }
 
         /// <summary>
-        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Auto"/>.
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveDimension.Auto"/>.
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
-        public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
+        [DefaultValue(null)]
+        public AdaptiveDimension Height { get; set; }
 
+#if !NETSTANDARD1_3
         /// <summary>
-        /// Determines whether the height property should be serialized or not.
+        /// XmlProperty for serialization of height
         /// </summary>
-        public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
+        [JsonIgnore]
+        [XmlAttribute(nameof(Height))]
+        [DefaultValue(null)]
+        public string _Height { get => Height?.ToString(); set => this.Height = (value != null) ? new AdaptiveDimension(value) : null; }
+        
+        /// <summary>
+        /// Control serialization of empty height values
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerialize_Height() => Height != null;
+#endif
 
         /// <summary>
         /// Indicates whether the element should be visible when the card has been rendered.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlAttribute]
 #endif
         [DefaultValue(true)]
         public bool IsVisible { get; set; } = true;

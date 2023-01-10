@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -48,10 +50,29 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveTextInputStyle), "text")]
         public AdaptiveTextInputStyle Style { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Style))]
+        [DefaultValue(null)]
+        public string _Style
+        {
+            get => JToken.FromObject(Style).ToString();
+            set => Style = (AdaptiveTextInputStyle)Enum.Parse(typeof(AdaptiveTextInputStyle), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Style() => Style != AdaptiveTextInputStyle.Text;
+#endif
 
         /// <summary>
         /// Controls whether multiple lines of text are allowed.
@@ -82,6 +103,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public AdaptiveAction InlineAction { get; set; }

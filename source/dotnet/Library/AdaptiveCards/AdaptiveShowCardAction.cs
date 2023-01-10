@@ -27,7 +27,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Required = Required.Always)]
 #if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveCard), ElementName = AdaptiveCard.TypeName)]
+        [XmlElement(typeof(AdaptiveCard), ElementName = "Card")]
 #endif
         public AdaptiveCard Card { get; set; }
     }

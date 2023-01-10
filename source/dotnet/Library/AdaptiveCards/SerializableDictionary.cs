@@ -1,85 +1,110 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    public class SerializableDictionary<TValue> : Dictionary<string, TValue>
 #if !NETSTANDARD1_3
-    [XmlRoot("dictionary")]
-    public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
+        , IXmlSerializable
+#endif
     {
         public SerializableDictionary()
             : base()
         {
         }
 
-        public SerializableDictionary(IEqualityComparer<TKey> comparer)
+        public SerializableDictionary(IEqualityComparer<string> comparer)
             : base(comparer)
         {
         }
 
+#if !NETSTANDARD1_3
         #region IXmlSerializable Members
         public System.Xml.Schema.XmlSchema GetSchema()
         {
             return null;
         }
 
+        [XmlType(TypeName = "Property")]
+        public class Property
+        {
+            [JsonProperty]
+            [XmlAttribute]
+            public string Name { get; set; }
+
+            [XmlElement]
+            public TValue Value { get; set; }
+        }
+
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-            XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
-
-            bool wasEmpty = reader.IsEmptyElement;
             reader.Read();
-
-            if (wasEmpty)
-                return;
-
-            while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+            reader.MoveToContent();
+            while (reader.IsStartElement())
             {
-                reader.ReadStartElement("item");
+                var name = reader.GetAttribute("Name");
+                var valueType = reader.GetAttribute("Type");
+                object value = reader.ReadElementContentAsObject();
+                switch (valueType)
+                {
+                    case "integer":
+                        value = Int64.Parse(value.ToString());
+                        break;
+                    case "number":
+                        value = Single.Parse(value.ToString());
+                        break;
+                    case "boolean":
+                        value = Boolean.Parse(value.ToString());
+                        break;
+                }
 
-                reader.ReadStartElement("key");
-                TKey key = (TKey)keySerializer.Deserialize(reader);
-                reader.ReadEndElement();
-
-                reader.ReadStartElement("value");
-                TValue value = (TValue)valueSerializer.Deserialize(reader);
-                reader.ReadEndElement();
-
-                this.Add(key, value);
-
-                reader.ReadEndElement();
-                reader.MoveToContent();
+                //var obj = reader.ReadContentAsObject();
+                this.Add(name, (TValue)value);
             }
             reader.ReadEndElement();
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-            XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
 
-            foreach (TKey key in this.Keys)
+            foreach (string key in this.Keys)
             {
-                writer.WriteStartElement("item");
-
-                writer.WriteStartElement("key");
-                keySerializer.Serialize(writer, key);
-                writer.WriteEndElement();
-
-                writer.WriteStartElement("value");
+                writer.WriteStartElement(nameof(Property));
+                writer.WriteAttributeString("Name", key);
                 TValue value = this[key];
-                valueSerializer.Serialize(writer, value);
-                writer.WriteEndElement();
+                string valueType = "string";
+                switch (value.GetType().Name)
+                {
+                    case "Boolean":
+                        valueType = "bool";
+                        break;
+                    case "Single":
+                    case "Double":
+                        valueType = "number";
+                        break;
+                    case "Int32":
+                    case "Int64":
+                    case "Int16":
+                    case "UInt16":
+                    case "UInt32":
+                    case "UInt64":
+                        valueType = "integer";
+                        break;
+                }
+                if (valueType != "string")
+                {
+                    writer.WriteAttributeString("Type", valueType);
+                }
 
+                writer.WriteValue(value);
                 writer.WriteEndElement();
             }
         }
         #endregion
-    }
 #endif
+    }
 }

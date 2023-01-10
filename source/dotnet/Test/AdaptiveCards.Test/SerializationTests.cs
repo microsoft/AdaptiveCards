@@ -432,7 +432,6 @@ namespace AdaptiveCards.Test
                         Title = "Show Card",
                         Card = new AdaptiveCard("1.0")
                         {
-                            Version = null,
                             Body =
                             {
                                 new AdaptiveTextBlock
@@ -526,15 +525,15 @@ namespace AdaptiveCards.Test
   }
 }";
             var card = AdaptiveCard.FromJson(json).Card;
-            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
+            var actualSelectAction = card.SelectAction.Action as AdaptiveOpenUrlAction;
 
             var expectedSelectAction = new AdaptiveOpenUrlAction
             {
                 Title = "Open URL",
-                UrlString = "http://adaptivecards.io"
+                Url = "http://adaptivecards.io"
             };
             Assert.AreEqual(expectedSelectAction.Title, actualSelectAction.Title);
-            Assert.AreEqual(expectedSelectAction.UrlString, actualSelectAction.UrlString);
+            Assert.AreEqual(expectedSelectAction.Url, actualSelectAction.Url);
         }
 
         [TestMethod]
@@ -546,7 +545,6 @@ namespace AdaptiveCards.Test
   ""body"": [
     {
       ""type"": ""Container"",
-      ""style"": ""default"",
       ""items"": []
     },
     {
@@ -561,7 +559,6 @@ namespace AdaptiveCards.Test
   ]
 }";
             var card = AdaptiveCard.FromJson(json).Card;
-            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
 
             var containerDefaultStyle = card.Body[0] as AdaptiveContainer;
             Assert.AreEqual(AdaptiveContainerStyle.Default, containerDefaultStyle.Style);
@@ -570,7 +567,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
 
             var containerNoneStyle = card.Body[2] as AdaptiveContainer;
-            Assert.IsNull(containerNoneStyle.Style);
+            Assert.AreEqual(containerNoneStyle.Style, AdaptiveContainerStyle.Default);
         }
 
         [TestMethod]
@@ -675,7 +672,7 @@ namespace AdaptiveCards.Test
             textRun3.SelectAction = new AdaptiveOpenUrlAction()
             {
                 Title = "Open URL",
-                UrlString = "http://adaptivecards.io/"
+                Url = "http://adaptivecards.io/"
             };
             richTB.Inlines.Add(textRun3);
 
@@ -782,7 +779,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(run3.Text, "This run has a link!");
             Assert.AreEqual("Action.OpenUrl", run3.SelectAction.Type);
             Assert.AreEqual("Open URL", run3.SelectAction.Title);
-            Assert.AreEqual("http://adaptivecards.io/", (run3.SelectAction as AdaptiveOpenUrlAction).UrlString); ;
+            Assert.AreEqual("http://adaptivecards.io/", (run3.SelectAction as AdaptiveOpenUrlAction).Url); ;
         }
 
         [TestMethod]
@@ -964,7 +961,9 @@ namespace AdaptiveCards.Test
       ""selectAction"": {
         ""type"": ""Action.ToggleVisibility"",
         ""targetElements"": [
-          ""id1"",
+          {
+            ""elementId"": ""id1""
+          },
           {
             ""elementId"": ""id2"",
             ""isVisible"": false
@@ -973,7 +972,9 @@ namespace AdaptiveCards.Test
             ""elementId"": ""id3"",
             ""isVisible"": true
           },
-          ""id4""
+          {
+            ""elementId"": ""id4""
+          }
         ]
       }
     }
@@ -982,7 +983,9 @@ namespace AdaptiveCards.Test
     {
       ""type"": ""Action.ToggleVisibility"",
       ""targetElements"": [
-        ""id1"",
+        {
+          ""elementId"": ""id1""
+        },
         {
           ""elementId"": ""id2"",
           ""isVisible"": false
@@ -991,7 +994,9 @@ namespace AdaptiveCards.Test
           ""elementId"": ""id3"",
           ""isVisible"": true
         },
-        ""id4""
+        {
+          ""elementId"": ""id4""
+        }
       ]
     }
   ]
@@ -1048,8 +1053,7 @@ namespace AdaptiveCards.Test
   ""body"": [
     {
       ""type"": ""ColumnSet"",
-      ""columns"": [],
-      ""style"": ""default""
+      ""columns"": []
     },
     {
       ""type"": ""ColumnSet"",
@@ -1232,7 +1236,7 @@ namespace AdaptiveCards.Test
                     },
                     new AdaptiveTextBlock()
                     {
-                        Style = AdaptiveTextBlockStyle.Paragraph,
+                        Style = AdaptiveTextBlockStyle.Default,
                         Text = "Text2"
                     },
                     new AdaptiveTextBlock()
@@ -1299,8 +1303,7 @@ namespace AdaptiveCards.Test
     },
     {
       ""type"": ""Container"",
-      ""items"": [],
-      ""rtl"": false
+      ""items"": []
     },
     {
       ""type"": ""Container"",
@@ -1311,12 +1314,11 @@ namespace AdaptiveCards.Test
       ""columns"": [
         {
           ""type"": ""Column"",
-          ""rtl"": true,
-          ""items"": []
+          ""items"": [],
+          ""rtl"": true
         },
         {
           ""type"": ""Column"",
-          ""rtl"": false,
           ""items"": []
         },
         {

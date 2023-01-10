@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -12,52 +11,65 @@ namespace AdaptiveCards
     /// <summary>
     /// Base class for all elements that contain other elements.
     /// </summary>
-    public abstract class AdaptiveCollectionElement : AdaptiveElement, IEnumerable<AdaptiveElement>
+    public abstract class AdaptiveCollectionElement : AdaptiveElement
     {
         /// <summary>
         /// The style used to display this element. See <see cref="AdaptiveContainerStyle" />.
         /// </summary>
-        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-        [DefaultValue(null)]
-        public AdaptiveContainerStyle? Style { get; set; }
+        [DefaultValue(typeof(AdaptiveContainerStyle), "default")]
+        public AdaptiveContainerStyle Style { get; set; }
 
 #if !NETSTANDARD1_3
         /// <summary>
-        /// Controls XML serialization of style.
+        /// Controls xml serialization of enum attribute
         /// </summary>
-        // The XML serializer doesn't handle nullable value types. This allows serialization if non-null.
         [JsonIgnore]
-        [XmlAttribute("Style")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public AdaptiveContainerStyle StyleXml { get { return (Style.HasValue) ? Style.Value : AdaptiveContainerStyle.Default; } set { Style = value; } }
+        [XmlAttribute(nameof(Style))]
+        [DefaultValue(null)]
+        public string _Style
+        {
+            get => JToken.FromObject(Style).ToString();
+            set => Style = (AdaptiveContainerStyle)Enum.Parse(typeof(AdaptiveContainerStyle), value, true);
+        }
 
         /// <summary>
-        /// Determines whether to serialize the style for XML.
+        /// hides default value for xml serialization
         /// </summary>
-        public bool ShouldSerializeStyleXml() => this.Style.HasValue;
+        public bool ShouldSerialize_Style() => Style != AdaptiveContainerStyle.Default;
 #endif
-        public abstract IEnumerator<AdaptiveElement> GetEnumerator();
-
-        public abstract void Add(AdaptiveElement value);
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
 
         /// <summary>
         /// The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(VerticalContentAlignment))]
+        [DefaultValue(null)]
+        public string _VerticalContentAlignment
+        {
+            get => JToken.FromObject(VerticalContentAlignment).ToString();
+            set => VerticalContentAlignment = (AdaptiveVerticalContentAlignment)Enum.Parse(typeof(AdaptiveVerticalContentAlignment), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_VerticalContentAlignment() => VerticalContentAlignment != AdaptiveVerticalContentAlignment.Top;
+#endif
 
         /// <summary>
         /// Action for this container. This allows for setting a default action at the container level.
@@ -67,7 +79,7 @@ namespace AdaptiveCards
         [XmlElement]
 #endif
         [DefaultValue(null)]
-        public AdaptiveAction SelectAction { get; set; }
+        public AdaptiveSelectAction SelectAction { get; set; }
 
         /// <summary>
         /// Defines if the element can bleed through its parent's padding.
@@ -82,12 +94,21 @@ namespace AdaptiveCards
         /// <summary>
         /// Explicit container element minimum height.
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
         [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(0)]
-        public uint PixelMinHeight { get; set; }
+        [DefaultValue(null)]
+        public string MinHeight { get; set; }
+
+        /// <summary>
+        /// PixelMinHeight if height is not auto/stretch
+        /// </summary>
+        [JsonIgnore]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public int PixelMinHeight { get => int.TryParse(MinHeight?.Replace("px", ""), out var val) ? (int)val : 0; set => MinHeight = $"{value}px"; }
+
     }
 }

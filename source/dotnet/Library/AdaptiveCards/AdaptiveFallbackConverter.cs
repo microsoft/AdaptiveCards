@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AdaptiveCards
 {
@@ -37,7 +38,7 @@ namespace AdaptiveCards
                 {
                     if (fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
                     {
-                        writer.WriteValue(AdaptiveFallbackElement.drop);
+                        writer.WriteValue(AdaptiveFallbackElement.AdaptiveFallbackType.Drop.ToString().ToLower());
                     }
                     else
                     {
@@ -90,11 +91,13 @@ namespace AdaptiveCards
                         var jObject = JObject.Load(reader);
 
                         var typeName = AdaptiveTypedElementConverter.GetElementTypeName(objectType, jObject);
+
                         Type type;
-                        if (!AdaptiveTypedElementConverter.TypedElementTypes.Value.TryGetValue(typeName, out type))
+                        if (typeName == null || !AdaptiveTypedElementConverter.TypedElementTypes.Value.TryGetValue(typeName, out type))
                         {
                             type = typeof(AdaptiveUnknownElement);
                         }
+                        Debug.Assert(type != null);
                         IsInFallback = true;
                         string objectId = jObject.Value<string>("id");
                         AdaptiveInternalID internalID = AdaptiveInternalID.Next();
@@ -144,7 +147,7 @@ namespace AdaptiveCards
             if (fallbackJSON.Type == JTokenType.String)
             {
                 var str = fallbackJSON.Value<string>();
-                if (str == AdaptiveFallbackElement.drop)
+                if (str == AdaptiveFallbackElement.AdaptiveFallbackType.Drop.ToString().ToLower())
                 {
                     // fallback is initialized with "drop" property and empty content
                     return new AdaptiveFallbackElement(AdaptiveFallbackElement.AdaptiveFallbackType.Drop);

@@ -25,9 +25,9 @@ namespace AdaptiveCards
             List<object> list = array.ToObject<List<object>>();
             List<AdaptiveTargetElement> arrayList = new List<AdaptiveTargetElement>();
 
-            foreach(object obj in list)
+            foreach (object obj in list)
             {
-                if(obj is string s)
+                if (obj is string s)
                 {
                     arrayList.Add(new AdaptiveTargetElement(s));
                 }
@@ -48,14 +48,7 @@ namespace AdaptiveCards
 
             foreach (var el in targetElements)
             {
-                if (el.IsVisible == null)
-                {
-                    jArray.Add(JToken.FromObject(el.ElementId));
-                }
-                else
-                {
-                    jArray.Add(JToken.FromObject(el));
-                }
+                jArray.Add(JToken.FromObject(el));
             }
 
             jArray.WriteTo(writer);

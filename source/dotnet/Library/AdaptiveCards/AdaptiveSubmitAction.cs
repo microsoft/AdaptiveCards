@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -35,50 +37,48 @@ namespace AdaptiveCards
 #endif
         public object Data { get; set; }
 
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Get or set the data as a JSON string.
+        /// </summary>
+        [JsonIgnore]
+        [XmlText]
+        [DefaultValue(null)]
+        public string _Data
+        {
+            get => (Data != null) ? JsonConvert.SerializeObject(Data, Formatting.Indented) : null;
+            set => Data = (value != null) ? JsonConvert.DeserializeObject(value, new JsonSerializerSettings { Converters = { new StrictIntConverter() } }) : null;
+        }
+#endif
+
         /// <summary>
         ///     Controls which inputs are associated with the submit action
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveAssociatedInputs), "auto")]
         public AdaptiveAssociatedInputs AssociatedInputs { get; set; }
 
+#if !NETSTANDARD1_3
         /// <summary>
-        /// Get or set the data as a JSON string.
+        /// Controls xml serialization of enum attribute
         /// </summary>
         [JsonIgnore]
-#if !NETSTANDARD1_3
-        [XmlText]
-#endif
-        public string DataJson
+        [XmlAttribute(nameof(AssociatedInputs))]
+        [DefaultValue(null)]
+        public string _AssociatedInputs
         {
-            get
-            {
-                if (Data != null)
-                {
-                    return JsonConvert.SerializeObject(Data, Formatting.Indented);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    Data = null;
-                }
-                else
-                {
-                    Data = JsonConvert.DeserializeObject(value, new JsonSerializerSettings
-                    {
-                        Converters = { new StrictIntConverter() }
-                    });
-                }
-            }
+            get => JToken.FromObject(AssociatedInputs).ToString();
+            set => AssociatedInputs = (AdaptiveAssociatedInputs)Enum.Parse(typeof(AdaptiveAssociatedInputs), value, true);
         }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_AssociatedInputs() => AssociatedInputs != AdaptiveAssociatedInputs.Auto;
+#endif
+
     }
 }

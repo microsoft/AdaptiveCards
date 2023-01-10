@@ -31,7 +31,7 @@ namespace AdaptiveCards
 #else
         // Dictionary<> is not supported with XmlSerialization because Dictionary is not serializable, SerializableDictionary<> is
         [XmlElement]
-        public SerializableDictionary<string, object> AdditionalProperties { get; set; } = new SerializableDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public SerializableDictionary<object> AdditionalProperties { get; set; } = new SerializableDictionary<object>(StringComparer.OrdinalIgnoreCase);
 
         /// <inheritdoc />
         public bool ShouldSerializeAdditionalProperties() => this.AdditionalProperties.Count > 0;

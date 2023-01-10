@@ -347,8 +347,8 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0, result.Warnings.Count);
-            Assert.AreEqual(20U, imageBlock.PixelWidth);
-            Assert.AreEqual(50U, imageBlock.PixelHeight);
+            Assert.AreEqual(20, imageBlock.PixelWidth);
+            Assert.AreEqual(50, imageBlock.PixelHeight);
         }
 
         [TestMethod]
@@ -373,8 +373,8 @@ namespace AdaptiveCards.Test
             var card = result?.Card;
             Assert.AreEqual(card.Body.Count, 1);
             var imageBlock = card.Body[0] as AdaptiveImage;
-            Assert.AreEqual(0U, imageBlock.PixelWidth);
-            Assert.AreEqual(0U, imageBlock.PixelHeight);
+            Assert.AreEqual(0, imageBlock.PixelWidth);
+            Assert.AreEqual(0, imageBlock.PixelHeight);
             Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
                 result.Warnings[0].Message,
@@ -406,8 +406,8 @@ namespace AdaptiveCards.Test
             var card = result?.Card;
             Assert.AreEqual(1, card.Body.Count);
             var imageBlock = card.Body[0] as AdaptiveImage;
-            Assert.AreEqual(0U, imageBlock.PixelWidth);
-            Assert.AreEqual(0U, imageBlock.PixelHeight);
+            Assert.AreEqual(0, imageBlock.PixelWidth);
+            Assert.AreEqual(0, imageBlock.PixelHeight);
             Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
                 @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
@@ -508,8 +508,8 @@ namespace AdaptiveCards.Test
                 var card = result?.Card;
                 Assert.AreEqual(1, card.Body.Count);
                 var imageBlock = card.Body[0] as AdaptiveImage;
-                Assert.AreEqual(0U, imageBlock.PixelWidth);
-                Assert.AreEqual(0U, imageBlock.PixelHeight);
+                Assert.AreEqual(0, imageBlock.PixelWidth);
+                Assert.AreEqual(0, imageBlock.PixelHeight);
                 Assert.AreEqual(2, result.Warnings.Count);
             }
         }
@@ -560,17 +560,17 @@ namespace AdaptiveCards.Test
 
             var result = AdaptiveCard.FromJson(payload);
             var card = result?.Card;
-            Assert.AreEqual(card.Height, AdaptiveHeight.Auto);
+            Assert.AreEqual(card.Height, AdaptiveDimension.Auto);
             Assert.AreEqual(card.Body.Count, 1);
             var columnSet = (AdaptiveColumnSet)card.Body[0];
-            Assert.AreEqual(columnSet.Height, AdaptiveHeight.Auto);
+            Assert.AreEqual(columnSet.Height, AdaptiveDimension.Auto);
             Assert.AreEqual(columnSet.Columns.Count, 2);
 
             foreach (var column in columnSet.Columns)
             {
                 Assert.AreEqual(column.Items.Count, 1);
                 var columnContent = column.Items[0];
-                Assert.AreEqual(columnContent.Height, AdaptiveHeight.Auto);
+                Assert.AreEqual(columnContent.Height, AdaptiveDimension.Auto);
             }
 
         }
@@ -595,7 +595,7 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(payload);
             var card = result?.Card;
             Assert.AreEqual(card.Body.Count, 1);
-            Assert.AreEqual(card.Height, AdaptiveHeight.Stretch);
+            Assert.AreEqual(card.Height, AdaptiveDimension.Stretch);
         }
 
         [TestMethod]
@@ -618,7 +618,7 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(payload);
             var card = result?.Card;
             Assert.AreEqual(card.Body.Count, 1);
-            Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
+            Assert.AreEqual(card.Body[0].Height, AdaptiveDimension.Stretch);
         }
 
         [TestMethod]
@@ -642,7 +642,7 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(payload);
             var card = result?.Card;
             Assert.AreEqual(card.Body.Count, 1);
-            Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
+            Assert.AreEqual(card.Body[0].Height, AdaptiveDimension.Stretch);
         }
 
         [TestMethod]
@@ -709,7 +709,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
 
             var columnSet = (AdaptiveColumnSet)card.Body[0];
-            Assert.AreEqual(columnSet.Height, AdaptiveHeight.Stretch);
+            Assert.AreEqual(columnSet.Height, AdaptiveDimension.Stretch);
 
             var columns = columnSet.Columns;
             Assert.AreEqual(4, columns.Count);
@@ -832,7 +832,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Image", firstElement.Type);
 
             var image = firstElement as AdaptiveImage;
-            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", image.UrlString);
+            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", image.Url);
             Assert.AreEqual((UInt32)50, image.PixelWidth);
             Assert.AreEqual((UInt32)50, image.PixelHeight);
 
@@ -845,7 +845,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Image", secondElement.Type);
 
             image = secondElement as AdaptiveImage;
-            Assert.AreEqual("http://adaptivecards.io/content/cats/2.png", image.UrlString);
+            Assert.AreEqual("http://adaptivecards.io/content/cats/2.png", image.Url);
 
             // One AdditionalProp
             Assert.AreEqual(1, image.AdditionalProperties.Count);
@@ -916,7 +916,7 @@ namespace AdaptiveCards.Test
             var card = new AdaptiveCard("1.0");
             card.BackgroundImage = testUrl;
 
-            Assert.AreEqual(card.BackgroundImage.UrlString, testUrl.ToString());
+            Assert.AreEqual(card.BackgroundImage.Url, testUrl.ToString());
             Assert.AreEqual(card.BackgroundImage.Url, testUrl);
         }
 
@@ -984,7 +984,7 @@ namespace AdaptiveCards.Test
             Assert.IsTrue(actionSet.Actions[1] is AdaptiveOpenUrlAction);
             var actionOpenUrl = (AdaptiveOpenUrlAction)actionSet.Actions[1];
             Assert.IsTrue(actionOpenUrl.Title == "OpenUrl");
-            Assert.IsFalse(String.IsNullOrWhiteSpace(actionOpenUrl.UrlString));
+            Assert.IsFalse(String.IsNullOrWhiteSpace(actionOpenUrl.Url));
 
             Assert.IsTrue(actionSet.Actions[2] is AdaptiveShowCardAction);
             var actionShowCard = (AdaptiveShowCardAction)actionSet.Actions[2];
@@ -1007,14 +1007,14 @@ namespace AdaptiveCards.Test
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 Title = "Action.Submit",
-                DataJson = "{\"x\": 13}"
+                _Data = "{\"x\": 13}"
             };
             actionSet.Actions.Add(submitAction);
 
             AdaptiveOpenUrlAction openUrlAction = new AdaptiveOpenUrlAction
             {
                 Title = "OpenUrl",
-                UrlString = "http://adaptivecards.io"
+                Url = "http://adaptivecards.io"
             };
             actionSet.Actions.Add(openUrlAction);
 
@@ -1141,20 +1141,20 @@ namespace AdaptiveCards.Test
 
             var result = AdaptiveCard.FromJson(payload);
             var card = result?.Card;
-            Assert.AreEqual(500u, card.PixelMinHeight);
+            Assert.AreEqual(500, card.PixelMinHeight);
 
             var containers = card.Body;
             Assert.AreEqual(containers.Count, 1);
 
             var columnSet = (AdaptiveColumnSet)card.Body[0];
-            Assert.AreEqual(100u, columnSet.PixelMinHeight);
+            Assert.AreEqual(100, columnSet.PixelMinHeight);
 
             var columns = columnSet.Columns;
-            Assert.AreEqual(200u, columns[0].PixelMinHeight);
-            Assert.AreEqual(0u, columns[1].PixelMinHeight);
+            Assert.AreEqual(200, columns[0].PixelMinHeight);
+            Assert.AreEqual(0, columns[1].PixelMinHeight);
 
             var container = (AdaptiveContainer)columns[1].Items[0];
-            Assert.AreEqual(300u, container.PixelMinHeight);
+            Assert.AreEqual(300, container.PixelMinHeight);
         }
 
         [TestMethod]
@@ -1264,6 +1264,7 @@ namespace AdaptiveCards.Test
                                 ""url"": ""http://adaptivecards.io/content/cats/1.png""
                             },
                             {
+                                ""type"": ""Image"",
                                 ""url"": ""http://adaptivecards.io/content/cats/1.png""
                             }
                         ]
@@ -1305,13 +1306,13 @@ namespace AdaptiveCards.Test
         public void TestParsingTextBlockWithStyle()
         {
             var testCard = Utilities.BuildASimpleTestCard();
-            var invalidCardJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(testCard, "textBlock", new SerializableDictionary<string, object>{ ["style"] = "randomText" });
+            var invalidCardJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(testCard, "textBlock", new SerializableDictionary<object>{ ["style"] = "randomText" });
             var parseResult = AdaptiveCard.FromJson(invalidCardJSON);
             Assert.IsTrue(parseResult.Warnings.Count > 0);
             var invalidCard = parseResult.Card;
             var textBlock = Utilities.GetAdaptiveElementWithId(invalidCard, "textBlock") as AdaptiveTextBlock;
             Assert.IsNotNull(textBlock);
-            Assert.AreEqual(textBlock.Style, AdaptiveTextBlockStyle.Paragraph); 
+            Assert.AreEqual(textBlock.Style, AdaptiveTextBlockStyle.Default); 
         }
 
         [TestMethod]

@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using AdaptiveCards.Rendering;
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -42,12 +43,31 @@ namespace AdaptiveCards
         /// <summary>
         /// The style to use when displaying this Input.ChoiceSet.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveChoiceInputStyle), "compact")]
         public AdaptiveChoiceInputStyle Style { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Style))]
+        [DefaultValue(null)]
+        public string _Style
+        {
+            get => JToken.FromObject(Style).ToString();
+            set => Style = (AdaptiveChoiceInputStyle)Enum.Parse(typeof(AdaptiveChoiceInputStyle), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Style() => Style != AdaptiveChoiceInputStyle.Compact;
+#endif
 
         /// <summary>
         /// Determines whether multiple selections are allowed.
@@ -62,8 +82,28 @@ namespace AdaptiveCards
         /// <summary>
         /// A collection of available choices.
         /// </summary>
-        [JsonRequired]
+        [JsonProperty]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveChoice), ElementName = "Choice")]
+#endif
         public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
+
+        /// <summary>
+        /// Controls serialization of property
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerializeChoices() => Choices.Count > 0;
+
+        /// <summary>
+        /// A dataQuery 
+        /// </summary>
+        [JsonProperty("choices.data", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveDataQuery), ElementName = "Data.Query")]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveDataQuery DataQuery { get; set; }
 
         /// <summary>
         /// Controls text wrapping behavior.

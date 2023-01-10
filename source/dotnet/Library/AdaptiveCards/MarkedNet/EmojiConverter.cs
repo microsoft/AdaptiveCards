@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MarkedNet
 {
+    /// <summary>
+    /// Emoji converter
+    /// </summary>
     public static class EmojiConverter
     {
         private static Dictionary<string, string> markup2Emoji = new Dictionary<string, string>();
@@ -1306,6 +1309,7 @@ namespace Microsoft.MarkedNet
             if (code3.HasValue)
                 emoji += code3.Value;
 
+#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 markup2Emoji.Add(markup, emoji);
@@ -1326,6 +1330,7 @@ namespace Microsoft.MarkedNet
                 Trace.TraceError($"Failed to add {emoji} because: {err.Message}");
 #endif
             }
+#pragma warning restore CS0168 // Variable is declared but never used
 
         }
 

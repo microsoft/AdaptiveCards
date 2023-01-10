@@ -57,6 +57,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
         public string Speak { get; set; }
     }
 }

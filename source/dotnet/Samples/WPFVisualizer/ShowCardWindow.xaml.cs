@@ -47,7 +47,7 @@ namespace WpfVisualizer
         {
             if (e.Action is AdaptiveOpenUrlAction openUrlAction)
             {
-                Process.Start(openUrlAction.Url.AbsoluteUri);
+                Process.Start(openUrlAction.Url);
             }
             else if (e.Action is AdaptiveShowCardAction)
             {
@@ -55,7 +55,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AdaptiveSubmitAction submitAction)
             {
-                MessageBox.Show(this, submitAction.DataJson, "SubmitAction");
+                MessageBox.Show(this, submitAction._Data, "SubmitAction");
                 Close();
             }
         }

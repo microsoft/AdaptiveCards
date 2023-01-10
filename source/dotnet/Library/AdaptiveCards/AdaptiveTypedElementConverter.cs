@@ -45,9 +45,13 @@ namespace AdaptiveCards
                 [AdaptiveExecuteAction.TypeName] = typeof(AdaptiveExecuteAction),
                 [AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction),
                 [AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction),
+                [AdaptiveUnknownAction.TypeName] = typeof(AdaptiveUnknownAction),
                 [AdaptiveMedia.TypeName] = typeof(AdaptiveMedia),
                 [AdaptiveToggleVisibilityAction.TypeName] = typeof(AdaptiveToggleVisibilityAction),
-                [AdaptiveActionSet.TypeName] = typeof(AdaptiveActionSet)
+                [AdaptiveActionSet.TypeName] = typeof(AdaptiveActionSet),
+                [AdaptiveTable.TypeName] = typeof(AdaptiveTable),
+                [AdaptiveUnknownElement.TypeName] = typeof(AdaptiveUnknownElement),
+
             };
             return types;
         });
@@ -90,63 +94,71 @@ namespace AdaptiveCards
 
             string typeName = GetElementTypeName(objectType, jObject);
 
-            if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
+            if (typeName != null)
             {
-                string objectId = jObject.Value<string>("id");
-                if (objectId == null)
+
+                if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
                 {
-                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    string objectId = jObject.Value<string>("id");
+                    if (objectId == null)
                     {
-                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                        if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                        {
+                            throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                        }
                     }
-                }
 
-                // add id of element to ParseContext
-                AdaptiveInternalID internalID = AdaptiveInternalID.Current();
-                if (type != typeof(AdaptiveCard))
+                    // add id of element to ParseContext
+                    AdaptiveInternalID internalID = AdaptiveInternalID.Current();
+                    if (type != typeof(AdaptiveCard))
+                    {
+                        internalID = AdaptiveInternalID.Next();
+                        ParseContext.PushElement(objectId, internalID);
+                    }
+
+                    var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
+                    try
+                    {
+                        serializer.Populate(jObject.CreateReader(), result);
+                        result.InternalID = internalID;
+                    }
+                    catch (JsonSerializationException) { }
+
+                    // remove id of element from ParseContext
+                    if (type != typeof(AdaptiveCard))
+                    {
+                        ParseContext.PopElement();
+                    }
+
+                    return result;
+                }
+                else // We're looking at an unknown element or action
                 {
-                    internalID = AdaptiveInternalID.Next();
+                    string objectId = jObject.Value<string>("id");
+                    AdaptiveInternalID internalID = AdaptiveInternalID.Next();
+
+                    // Handle deserializing unknown element
                     ParseContext.PushElement(objectId, internalID);
-                }
-
-                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
-                try
-                {
-                    serializer.Populate(jObject.CreateReader(), result);
-                    result.InternalID = internalID;
-                }
-                catch (JsonSerializationException) { }
-
-                // remove id of element from ParseContext
-                if (type != typeof(AdaptiveCard))
-                {
+                    AdaptiveTypedElement result = null;
+                    if (ParseContext.Type == ParseContext.ContextType.Element)
+                    {
+                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
+                        serializer.Populate(jObject.CreateReader(), result);
+                    }
+                    else if (ParseContext.Type == ParseContext.ContextType.Action)
+                    {
+                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
+                        serializer.Populate(jObject.CreateReader(), result);
+                    }
                     ParseContext.PopElement();
-                }
 
-                return result;
+                    Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
+                    return result;
+                }
             }
-            else // We're looking at an unknown element
+            else
             {
-                string objectId = jObject.Value<string>("id");
-                AdaptiveInternalID internalID = AdaptiveInternalID.Next();
-
-                // Handle deserializing unknown element
-                ParseContext.PushElement(objectId, internalID);
-                AdaptiveTypedElement result = null;
-                if (ParseContext.Type == ParseContext.ContextType.Element)
-                {
-                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
-                    serializer.Populate(jObject.CreateReader(), result);
-                }
-                else // ParseContext.Type == ParseContext.ContextType.Action
-                {
-                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
-                    serializer.Populate(jObject.CreateReader(), result);
-                }
-                ParseContext.PopElement();
-
-                Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
-                return result;
+                return jObject.ToObject(objectType);
             }
         }
 
@@ -170,10 +182,6 @@ namespace AdaptiveCards
                     typeName = objectType
                         .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
                         .GetValue("TypeName").ToString();
-                }
-                else
-                {
-                    throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
                 }
             }
 

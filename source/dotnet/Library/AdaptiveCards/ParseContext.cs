@@ -118,13 +118,13 @@ namespace AdaptiveCards
                 // add an entry for this element if it's fallback (we'll add one when we parse it for non-fallback)
                 if (!isFallback)
                 {
-                    try
-                    {
-                        elementIds[elementID].Add(nearestFallbackID);
-                    }
-                    catch (KeyNotFoundException)
+                    if (!elementIds.ContainsKey(elementID))
                     {
                         elementIds[elementID] = new List<AdaptiveInternalID>() { nearestFallbackID };
+                    }
+                    else
+                    {
+                        elementIds[elementID].Add(nearestFallbackID);
                     }
                 }
             }

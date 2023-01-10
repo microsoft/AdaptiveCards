@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering.Wpf
             bool? currentRtl = previousContextRtl;
 
             bool updatedRtl = false;
-            if (column.Rtl.HasValue)
+            if (column.Rtl)
             {
                 currentRtl = column.Rtl;
                 context.Rtl = currentRtl;
@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiContainer;
 
-            bool inheritsStyleFromParent = !column.Style.HasValue;
+            bool inheritsStyleFromParent = column.Style == default;
             bool columnHasPadding = false;
 
             if (!inheritsStyleFromParent)
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
-            childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style.Value;
+            childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style;
 
             // If the column has no padding or has padding and doesn't bleed, then the children can bleed
             // to the side the column would have bled

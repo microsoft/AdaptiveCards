@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -20,6 +22,9 @@ namespace AdaptiveCards
         public const string TypeName = "TextRun";
 
         /// <inheritdoc />
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -41,27 +46,84 @@ namespace AdaptiveCards
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
-        [DefaultValue(typeof(AdaptiveTextSize), "normal")]
+        [DefaultValue(typeof(AdaptiveTextSize), "default")]
         public AdaptiveTextSize Size { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Size))]
+        [DefaultValue(null)]
+        public string _Size
+        {
+            get => JToken.FromObject(Size).ToString();
+            set => Size = (AdaptiveTextSize)Enum.Parse(typeof(AdaptiveTextSize), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Size() => Size != AdaptiveTextSize.Default;
 #endif
-        [DefaultValue(typeof(AdaptiveTextWeight), "normal")]
-        public AdaptiveTextWeight Weight { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
+#endif
+        [DefaultValue(typeof(AdaptiveTextWeight), "default")]
+        public AdaptiveTextWeight Weight { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Weight))]
+        [DefaultValue(null)]
+        public string _Weight
+        {
+            get => JToken.FromObject(Weight).ToString();
+            set => Weight = (AdaptiveTextWeight)Enum.Parse(typeof(AdaptiveTextWeight), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Weight() => Weight != AdaptiveTextWeight.Default;
+#endif
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveTextColor), "default")]
         public AdaptiveTextColor Color { get; set; }
 
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Color))]
+        [DefaultValue(null)]
+        public string _Color
+        {
+            get => JToken.FromObject(Color).ToString();
+            set => Color = (AdaptiveTextColor)Enum.Parse(typeof(AdaptiveTextColor), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_Color() => Color != AdaptiveTextColor.Default;
+#endif
+        
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -92,41 +154,74 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
-        public bool Highlight { get; set; }
-
-        /// <inheritdoc />
-        [JsonRequired]
-#if !NETSTANDARD1_3
-        [XmlText]
-#endif
-        public string Text { get; set; } = " ";
+        public bool Underline { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
+        [DefaultValue(false)]
+        public bool Highlight { get; set; }
+
+        /// <inheritdoc />
+        [JsonRequired]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public string Text { get; set; } = "";
+
+#if !NETSTANDARD1_3
+        [JsonIgnore]
+        [XmlText]
+        public string _Text
+        {
+            // We use %20 to represent an whitespace only string in xml.
+            get => (Text != null && string.IsNullOrWhiteSpace(Text)) ? Text.Replace(" ", "%20") : Text;
+            set => Text = string.IsNullOrWhiteSpace(value?.Replace("%20", " ")) ? value?.Replace("%20", " ") : value;
+        }
+#endif
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
         [DefaultValue(typeof(AdaptiveFontType), "default")]
         public AdaptiveFontType FontType { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(FontType))]
+        [DefaultValue(null)]
+        public string _FontType
+        {
+            get => JToken.FromObject(FontType).ToString();
+            set => FontType = (AdaptiveFontType)Enum.Parse(typeof(AdaptiveFontType), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_FontType() => FontType != AdaptiveFontType.Default;
+#endif
 
         /// <summary>
         ///     Action for this text run
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveExecuteAction))]
+        [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
-
-        /// <summary>
-        /// Display this text underlined.
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(false)]
-        public bool Underline { get; set; }
     }
 }

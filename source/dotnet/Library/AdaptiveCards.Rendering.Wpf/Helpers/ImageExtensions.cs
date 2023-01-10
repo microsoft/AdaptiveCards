@@ -90,12 +90,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     if(adaptiveImage.PixelWidth == 0)
                     {
-                        adaptiveImage.PixelWidth = (uint) ((imageWidth / (float)imageHeight) * adaptiveImage.PixelHeight);
+                        adaptiveImage.PixelWidth = (int) ((imageWidth / (float)imageHeight) * adaptiveImage.PixelHeight);
                     }
 
                     if(adaptiveImage.PixelHeight == 0)
                     {
-                        adaptiveImage.PixelHeight = (uint) ((imageHeight / (float)imageWidth) * adaptiveImage.PixelWidth);
+                        adaptiveImage.PixelHeight = (int) ((imageHeight / (float)imageWidth) * adaptiveImage.PixelWidth);
                     }
 
                     image.Width = adaptiveImage.PixelWidth;

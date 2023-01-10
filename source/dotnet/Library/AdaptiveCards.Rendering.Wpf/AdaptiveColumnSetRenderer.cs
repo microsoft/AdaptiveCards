@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiColumnSet;
 
-            bool inheritsStyleFromParent = !columnSet.Style.HasValue;
+            bool inheritsStyleFromParent = columnSet.Style != default;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -35,7 +35,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 childrenRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
-            childrenRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
+            childrenRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
 
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
@@ -95,33 +95,33 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                     // do some sizing magic using the magic GridUnitType.Star
-                    var width = column.Width?.ToLower();
-                    if (string.IsNullOrEmpty(width))
+                    var width = column.Width;
+                    if (width == null)
 #pragma warning disable CS0618 // Type or member is obsolete
                         width = column.Size?.ToLower();
 #pragma warning restore CS0618 // Type or member is obsolete
 
                     ColumnDefinition columnDefinition = null;
 
-                    if (width == null || width == AdaptiveColumnWidth.Stretch.ToLower())
+                    if (width == null || width == AdaptiveColumnWidth.Stretch.ToString().ToLower())
                     {
                         columnDefinition = new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
                     }
-                    else if (width == AdaptiveColumnWidth.Auto.ToLower())
+                    else if (width == AdaptiveColumnWidth.Auto.ToString().ToLower())
                     {
                         columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
                     }
                     else
                     {
-                        if (double.TryParse(width, out double val) && val >= 0)
+                        if (width.IsPixel == false && width.Unit.HasValue && width.Unit >= 0)
                         {
                             // Weighted proportion (number only)
-                            columnDefinition = new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) };
+                            columnDefinition = new ColumnDefinition() { Width = new GridLength((double)width.Unit, GridUnitType.Star) };
                         }
-                        else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length - 2), out double pxVal) && pxVal >= 0)
+                        else if (width.IsPixel && width.Unit >= 0)
                         {
                             // Exact pixel (number followed by "px")
-                            columnDefinition = new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Pixel) };
+                            columnDefinition = new ColumnDefinition() { Width = new GridLength((int)width.Unit, GridUnitType.Pixel) };
                         }
                         else
                         {

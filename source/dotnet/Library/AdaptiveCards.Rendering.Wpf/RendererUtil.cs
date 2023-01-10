@@ -61,12 +61,12 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveAction selectAction = null;
             if (element is AdaptiveCollectionElement)
             {
-                selectAction = (element as AdaptiveCollectionElement).SelectAction;
+                selectAction = (element as AdaptiveCollectionElement).SelectAction.Action;
 
             }
             else if (element is AdaptiveImage)
             {
-                selectAction = (element as AdaptiveImage).SelectAction;
+                selectAction = (element as AdaptiveImage).SelectAction.Action;
             }
 
             if (selectAction != null)

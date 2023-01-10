@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -13,16 +14,25 @@ namespace AdaptiveCards
         /// <summary>
         /// Align to the top.
         /// </summary>
+#if !NETSTANDARD1_3
+        [XmlEnum("top")]
+#endif
         Top,
 
         /// <summary>
         /// Center within the container.
         /// </summary>
+#if !NETSTANDARD1_3
+        [XmlEnum("center")]
+#endif
         Center,
 
         /// <summary>
         /// Align to the bottom of the container.
         /// </summary>
+#if !NETSTANDARD1_3
+        [XmlEnum("bottom")]
+#endif
         Bottom
     }
 }

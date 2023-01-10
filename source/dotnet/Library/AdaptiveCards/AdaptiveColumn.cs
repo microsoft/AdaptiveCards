@@ -2,27 +2,28 @@
 // Licensed under the MIT License.
 using Newtonsoft.Json;
 using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+
     /// <summary>
     /// Represents the Column element.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveColumn.TypeName)]
 #endif
+    [JsonConverter(typeof(ActivatorConverter<AdaptiveColumn>))]
     public class AdaptiveColumn : AdaptiveContainer
     {
         /// <inheritdoc />
         public new const string TypeName = "Column";
 
         /// <inheritdoc />
+        [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.Include)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -35,21 +36,26 @@ namespace AdaptiveCards
         /// <summary>
         /// Width for the column (either ColumnWidth string or number which is relative size of the column).
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(null)]
-        public string Width { get; set; } // TODO: this should be a ColumnWidth type with implicit converter
-
-        /// <summary>
-        /// Sets the text flow direction
-        /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
-        [DefaultValue(null)]
-        public bool? Rtl { get; set; } = null;
+        public AdaptiveColumnWidth Width { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Xml Serialization for complex type of AdaptiveColumnWidth
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(Width))]
+        public string _Width { get => Width?.ToString(); set => this.Width = new AdaptiveColumnWidth(value); }
+
+        /// <summary>
+        /// Ignore Xml Serialization for complex type of AdaptiveColumnWidth when null
+        /// </summary>
+        public bool ShouldSerialize_Width() => Width != null;
+
+#endif
+
     }
 }

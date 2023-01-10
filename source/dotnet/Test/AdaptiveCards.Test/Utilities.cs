@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +13,9 @@ namespace AdaptiveCards.Test
     {
         internal static AdaptiveTypedElement GetAdaptiveElementWithId(AdaptiveCard card, string Id)
         {
-            Stack<AdaptiveTypedElement> stack = new Stack<AdaptiveTypedElement>();
-
-            foreach (var element in card.Body)
-            {
-                stack.Push(element);
-            }
-
-            foreach (var action in card.Actions)
-            {
-                stack.Push(action);
-            }
-
-            while (stack?.Count > 0)
-            {
-                var element = stack.Pop();
-                if (element.Id == Id)
-                {
-                    return element;
-                }
-
-                if (element is AdaptiveCollectionElement)
-                {
-                    foreach (var childElement in element as AdaptiveCollectionElement)
-                    {
-                        stack.Push(childElement);
-                    }
-                }
-            }
-
-            return null;
+            AdaptiveVisitor visitor = new AdaptiveVisitor();
+            visitor.Visit(card);
+            return visitor.Elements.SingleOrDefault(e => e.Id == Id);
         }
 
         /// <summary>
@@ -51,7 +25,7 @@ namespace AdaptiveCards.Test
         /// <param name="id"></param>
         /// <param name="testProperty"></param>
         /// <returns></returns>
-        internal static string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, SerializableDictionary<string, object> testProperty = null)
+        internal static string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, SerializableDictionary<object> testProperty = null)
         {
             AdaptiveTypedElement element = GetAdaptiveElementWithId(card, id);
 
@@ -59,7 +33,7 @@ namespace AdaptiveCards.Test
             {
                 if (element is AdaptiveCollectionElement)
                 {
-                    (element as AdaptiveCollectionElement).SelectAction.AdditionalProperties = testProperty;
+                    (element as AdaptiveCollectionElement).SelectAction.Action.AdditionalProperties = testProperty;
                 }
                 else
                 {
@@ -100,7 +74,7 @@ namespace AdaptiveCards.Test
             {
                 Id = "selectAction",
                 Title = "Action.Submit",
-                DataJson = "{\"x\": 20}",
+                _Data = "{\"x\": 20}",
             };
 
             container.SelectAction = selectAction;
@@ -111,7 +85,7 @@ namespace AdaptiveCards.Test
             {
                 Id = "submitAction",
                 Title = "Action.Submit",
-                DataJson = "{\"x\": 13}",
+                _Data = "{\"x\": 13}",
             };
 
             card.Actions.Add(submitAction);
@@ -119,7 +93,7 @@ namespace AdaptiveCards.Test
             return card;
         }
 		
-        internal static string BuildExpectedCardJSON(String id, SerializableDictionary<string, object> testProperty = null)
+        internal static string BuildExpectedCardJSON(String id, SerializableDictionary<object> testProperty = null)
         {
             return Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(BuildASimpleTestCard(), id, testProperty);
         }

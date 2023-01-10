@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -19,6 +21,7 @@ namespace AdaptiveCards
         public const string TypeName = "Action.Execute";
 
         /// <inheritdoc />
+        [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.Include)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
@@ -32,18 +35,51 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
+        [DefaultValue(null)]
         public object Data { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Get or set the data as a JSON string.
+        /// </summary>
+        [JsonIgnore]
+        [XmlText]
+        [DefaultValue(null)]
+        public string _Data
+        {
+            get => (Data != null) ? JsonConvert.SerializeObject(Data, Formatting.Indented) : null;
+            set => Data = (value != null) ? JsonConvert.DeserializeObject(value, new JsonSerializerSettings { Converters = { new StrictIntConverter() } }) : null;
+        }
+#endif
 
         /// <summary>
         ///     Controls which inputs are associated with the execute action
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlIgnore]
 #endif
         [DefaultValue(typeof(AdaptiveAssociatedInputs), "auto")]
         public AdaptiveAssociatedInputs AssociatedInputs { get; set; }
 
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(AssociatedInputs))]
+        [DefaultValue(null)]
+        public string _AssociatedInputs
+        {
+            get => JToken.FromObject(AssociatedInputs).ToString();
+            set => AssociatedInputs = (AdaptiveAssociatedInputs)Enum.Parse(typeof(AdaptiveAssociatedInputs), value, true);
+        }
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_AssociatedInputs() => AssociatedInputs != AdaptiveAssociatedInputs.Auto;
+#endif
 
         /// <summary>
         ///     The card author-defined verb associated with this action.
@@ -52,42 +88,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        public string Verb { get; set; } = "";
-
-        /// <summary>
-        /// Get or set the data as a JSON string.
-        /// </summary>
-        [JsonIgnore]
-#if !NETSTANDARD1_3
-        [XmlText]
-#endif
-        public string DataJson
-        {
-            get
-            {
-                if (Data != null)
-                {
-                    return JsonConvert.SerializeObject(Data, Formatting.Indented);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    Data = null;
-                }
-                else
-                {
-                    Data = JsonConvert.DeserializeObject(value, new JsonSerializerSettings
-                    {
-                        Converters = { new StrictIntConverter() }
-                    });
-                }
-            }
-        }
+        [DefaultValue(null)]
+        public string Verb { get; set; }
     }
 }

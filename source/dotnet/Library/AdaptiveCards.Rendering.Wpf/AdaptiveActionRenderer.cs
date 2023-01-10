@@ -33,21 +33,18 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if (!String.IsNullOrWhiteSpace(action.Style))
+            Style style = context.GetStyle($"Adaptive.Action.{action.Style}");
+
+            if (style == null && action.Style == AdaptiveActionStyle.Positive)
             {
-                Style style = context.GetStyle($"Adaptive.Action.{action.Style}");
-
-                if (style == null && String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
-                {
-                    style = context.GetStyle("PositiveActionDefaultStyle");
-                }
-                else if (style == null && String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
-                {
-                    style = context.GetStyle("DestructiveActionDefaultStyle");
-                }
-
-                uiButton.Style = style;
+                style = context.GetStyle("PositiveActionDefaultStyle");
             }
+            else if (style == null && action.Style == AdaptiveActionStyle.Destructive)
+            {
+                style = context.GetStyle("DestructiveActionDefaultStyle");
+            }
+
+            uiButton.Style = style;
 
             var contentStackPanel = new StackPanel();
 

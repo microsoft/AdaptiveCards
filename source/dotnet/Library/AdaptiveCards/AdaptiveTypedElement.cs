@@ -35,7 +35,7 @@ namespace AdaptiveCards
 #else
         // Dictionary<> is not supported with XmlSerialization because Dictionary is not serializable, SerializableDictionary<> is
         [XmlElement]
-        public SerializableDictionary<string, object> AdditionalProperties { get; set; } = new SerializableDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public SerializableDictionary<object> AdditionalProperties { get; set; } = new SerializableDictionary<object>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Determines whether the <see cref="AdditionalProperties"/> property should be serialized.
@@ -46,7 +46,6 @@ namespace AdaptiveCards
         /// <summary>
         /// The fallback property controls behavior when an unexpected element or error is encountered.
         /// </summary>
-        [JsonConverter(typeof(AdaptiveFallbackConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlElement]
@@ -79,10 +78,14 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlIgnore]
+        [XmlElement]
 #endif
-        [DefaultValue(null)]
-        public IDictionary<string, string> Requires;
+        public SerializableDictionary<string> Requires { get; set; } 
+
+        /// <summary>
+        /// Determines whether the <see cref="AdditionalProperties"/> property should be serialized.
+        /// </summary>
+        public bool ShouldSerializeRequires() => this.Requires != null && this.Requires.Count > 0;
 
 
         /// <summary>

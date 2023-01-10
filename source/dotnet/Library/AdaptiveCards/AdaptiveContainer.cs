@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -54,6 +55,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveMedia))]
         [XmlElement(typeof(AdaptiveActionSet))]
+        [XmlElement(typeof(AdaptiveTable))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
@@ -63,19 +65,42 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlAttribute]
 #endif
-        [DefaultValue(null)]
-        public bool? Rtl { get; set; } = null;
+        [DefaultValue(false)]
+        public bool Rtl { get; set; }
 
-        public override IEnumerator<AdaptiveElement> GetEnumerator()
+        /// <summary>
+        /// Determines how to align the content horizontally.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls xml serialization of enum attribute
+        /// </summary>
+        [JsonIgnore]
+        [XmlAttribute(nameof(HorizontalAlignment))]
+        [DefaultValue(null)]
+        public string _HorizontalAlignment
         {
-            return Items.GetEnumerator();
+            get => JToken.FromObject(HorizontalAlignment).ToString();
+            set => HorizontalAlignment = (AdaptiveHorizontalAlignment)Enum.Parse(typeof(AdaptiveHorizontalAlignment), value, true);
         }
-		
-        public override void Add(AdaptiveElement element)
+
+        /// <summary>
+        /// hides default value for xml serialization
+        /// </summary>
+        public bool ShouldSerialize_HorizontalAlignment() => HorizontalAlignment != AdaptiveHorizontalAlignment.Left;
+#endif
+        public void Add(AdaptiveElement element)
         {
-            Items.Add(element);
+            this.Items.Add(element);
         }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -14,11 +15,17 @@ namespace AdaptiveCards
         /// <summary>
         ///     The content is a paragraph (default).
         /// </summary>
-        Paragraph = 0,
+#if !NETSTANDARD1_3
+        [XmlEnum("default")]
+#endif
+        Default,
 
         /// <summary>
         ///     The content is a heading.
         /// </summary>
-        Heading = 1,
+#if !NETSTANDARD1_3
+        [XmlEnum("heading")]
+#endif
+        Heading
     }
 }

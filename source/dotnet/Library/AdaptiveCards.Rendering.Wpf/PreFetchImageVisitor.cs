@@ -44,19 +44,24 @@ namespace AdaptiveCards.Rendering.Wpf
             return null;
         }
 
+        protected Task GetImage(string url)
+        {
+            return GetImage(new Uri(url));
+        }
+
         protected async Task GetImage(Uri url)
         {
             LoadedImages[url] = await _resourceResolver.LoadAssetAsync(url).ConfigureAwait(false);
         }
 
-        public override void Visit(AdaptiveCard card)
+        protected override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
                 _tasks.Add(GetImage(card.BackgroundImage.Url));
             base.Visit(card);
         }
 
-        public override void Visit(AdaptiveImage image)
+        protected override void Visit(AdaptiveImage image)
         {
             _tasks.Add(GetImage(image.Url));
             base.Visit(image);
