@@ -8,12 +8,12 @@
 
   <Identity
     Name="22a2b2d3-1de6-4c6b-b954-7523c603f0ae"
-    Publisher="CN=krschau"
+    Publisher="CN=Microsoft Corporation"
     Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>WinUI3ObjectModelTest</DisplayName>
-    <PublisherDisplayName>krschau</PublisherDisplayName>
+    <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
