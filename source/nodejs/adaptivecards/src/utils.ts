@@ -273,7 +273,7 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
     };
 }
 
-export function hideDateOrTimeInputPickers(input: HTMLInputElement, value?: string, show?: boolean) {
+export function SetDateOrTimePickerVisibility(input: HTMLInputElement, value: string | undefined, show: boolean) {
     if (!!show) {
         // shows the time/date picker icon
         input.readOnly = false;
