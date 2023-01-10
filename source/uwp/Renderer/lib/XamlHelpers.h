@@ -61,6 +61,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
+    winrt::TextBlock CreateTextBlockWithContent(winrt::hstring const& contentString, bool wrap);
+
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
         SetContent(item, contentString, false /* wrap */);
@@ -70,13 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         if (const auto contentControl = item.try_as<winrt::ContentControl>())
         {
-            winrt::TextBlock content{};
-            content.Text(contentString);
-
-            if (wrap)
-            {
-                content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
-            }
+            auto content = CreateTextBlockWithContent(contentString, wrap);
             contentControl.Content(content);
         }
     }

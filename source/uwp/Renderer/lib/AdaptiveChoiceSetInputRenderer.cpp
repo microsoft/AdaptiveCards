@@ -103,17 +103,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         for (auto adaptiveChoiceInput : choices)
         {
             auto title = adaptiveChoiceInput.Title();
-
-            winrt::ComboBoxItem comboBoxItem{};
-
-            XamlHelpers::SetContent(comboBoxItem, title, wrap);
+            auto content = XamlHelpers::CreateTextBlockWithContent(title, wrap);
 
             if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 // If multiple values are specified, no option is selected
                 selectedIndex = currentIndex;
             }
-            items.Append(comboBoxItem);
+            items.Append(content);
             currentIndex++;
         }
 
