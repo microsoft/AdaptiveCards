@@ -27,7 +27,7 @@
 		},
 		"labelPosition": {
 			"type": "InputLabelPosition",
-			"description": "Label position hint for input",
+			"description": "Determines the position of the label. It can take 'inline' and 'above' values. By default, the label is placed 'above' when label position is not specified.",
 			"version": "1.6"
 		},
 		"labelWidth": {
