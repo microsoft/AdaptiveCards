@@ -3504,7 +3504,6 @@ export abstract class Input extends CardElement implements IInput {
                     this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
                     this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
                 }
-
                 else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
                     const labelWidthInPixel = this.labelWidth.physicalSize;
                     this._renderedLabelElement.style.width = labelWidthInPixel.toString() + "px";
