@@ -3257,12 +3257,6 @@ export class Media extends CardElement {
     }
 }
 
-enum InputEventType {
-    OnElementRender,
-    OnMouseEnterOnCard,
-    OnMouseLeaveOnCard
-}
-
 export abstract class Input extends CardElement implements IInput {
     //#region Schema
 
@@ -3477,18 +3471,18 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
-    protected registerEventsForReadWriteInputStyle(input: HTMLElement | undefined, inputEventHandler: (input: HTMLElement, eventType: InputEventType) => void) {
+    protected registerEventsForReadWriteInputStyle(input: HTMLElement | undefined, inputEventHandler: (input: HTMLElement, eventType: Enums.InputEventType) => void) {
         if (!input) {
             return;
         }
         // registering for mouse events on card
         const card = this._parent as AdaptiveCard;
         card.registerMouseEnterCallback(
-            (ev: MouseEvent) => inputEventHandler(input, InputEventType.OnMouseEnterOnCard /*event type*/)
+            (ev: MouseEvent) => inputEventHandler(input, Enums.InputEventType.OnMouseEnterOnCard /*event type*/)
         );
 
         card.registerMouseLeaveCallback(
-            (ev: MouseEvent) => inputEventHandler(input, InputEventType.OnMouseLeaveOnCard /*event type*/)
+            (ev: MouseEvent) => inputEventHandler(input, Enums.InputEventType.OnMouseLeaveOnCard /*event type*/)
         );
     }
 
@@ -3663,19 +3657,19 @@ export class TextInput extends Input {
         };
     }
 
-    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: InputEventType) {
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: Enums.InputEventType) {
         if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
             return;
         }
 
-        if (eventType === InputEventType.OnElementRender) {
+        if (eventType === Enums.InputEventType.OnElementRender) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle"));
         }
 
-        if (eventType === InputEventType.OnMouseEnterOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseEnterOnCard) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle-onCardHover"));
         }
-        if (eventType === InputEventType.OnMouseLeaveOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseLeaveOnCard) {
             input.classList.remove(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle-onCardHover"));
         }
     }
@@ -3700,7 +3694,7 @@ export class TextInput extends Input {
             result.type = Enums.InputTextStyle[this.style].toLowerCase();
 
             if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite && !this.inlineAction) {
-                this.handleEventsForReadWriteInputStyle(result, InputEventType.OnElementRender);
+                this.handleEventsForReadWriteInputStyle(result, Enums.InputEventType.OnElementRender);
                 this.registerEventsForReadWriteInputStyle(result, this.handleEventsForReadWriteInputStyle.bind(this));
             }
         }
@@ -4223,19 +4217,19 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    protected handleEventsForReadWriteInputStyle(input: HTMLSelectElement, eventType: InputEventType) {
+    protected handleEventsForReadWriteInputStyle(input: HTMLSelectElement, eventType: Enums.InputEventType) {
         if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
             return;
         }
 
-        if (eventType === InputEventType.OnElementRender) {
+        if (eventType === Enums.InputEventType.OnElementRender) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle"));
         }
 
-        if (eventType === InputEventType.OnMouseEnterOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseEnterOnCard) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle-onCardHover"));
         }
-        if (eventType === InputEventType.OnMouseLeaveOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseLeaveOnCard) {
             input.classList.remove(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle-onCardHover"));
         }
     }
@@ -4372,7 +4366,7 @@ export class ChoiceSetInput extends Input {
                 this.internalApplyAriaCurrent();
 
                 if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-                    this.handleEventsForReadWriteInputStyle(this._selectElement, InputEventType.OnElementRender);
+                    this.handleEventsForReadWriteInputStyle(this._selectElement, Enums.InputEventType.OnElementRender);
                     this.registerEventsForReadWriteInputStyle( this._selectElement, this.handleEventsForReadWriteInputStyle.bind(this));
                 }
 
@@ -4508,17 +4502,17 @@ export class NumberInput extends Input {
 
     private _numberInputElement: HTMLInputElement;
 
-    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: InputEventType) {
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: Enums.InputEventType) {
         if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
             return;
         }
-        if (eventType == InputEventType.OnElementRender) {
+        if (eventType == Enums.InputEventType.OnElementRender) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle"));
         }
-        if (eventType === InputEventType.OnMouseEnterOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseEnterOnCard) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle-onCardHover"));
         }
-        if (eventType === InputEventType.OnMouseLeaveOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseLeaveOnCard) {
             input.classList.remove(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle-onCardHover"));
         }
     }
@@ -4557,7 +4551,7 @@ export class NumberInput extends Input {
         };
 
         if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this.handleEventsForReadWriteInputStyle(this._numberInputElement, InputEventType.OnElementRender);
+            this.handleEventsForReadWriteInputStyle(this._numberInputElement, Enums.InputEventType.OnElementRender);
             this.registerEventsForReadWriteInputStyle( this._numberInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
         }
 
@@ -4625,21 +4619,21 @@ export class DateInput extends Input {
 
     private _dateInputElement: HTMLInputElement;
 
-    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: InputEventType) {
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: Enums.InputEventType) {
         if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
             return;
         }
 
-        if (eventType === InputEventType.OnElementRender) {
+        if (eventType === Enums.InputEventType.OnElementRender) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, false /*show*/);
         }
 
-        if (eventType === InputEventType.OnMouseEnterOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseEnterOnCard) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle-onCardHover"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, true /*show*/);
         }
-        if (eventType === InputEventType.OnMouseLeaveOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseLeaveOnCard) {
             input.classList.remove(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle-onCardHover"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, false /*show*/);
         }
@@ -4679,7 +4673,7 @@ export class DateInput extends Input {
         }
 
         if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this.handleEventsForReadWriteInputStyle(this._dateInputElement, InputEventType.OnElementRender);
+            this.handleEventsForReadWriteInputStyle(this._dateInputElement, Enums.InputEventType.OnElementRender);
             this.registerEventsForReadWriteInputStyle( this._dateInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
         }
 
@@ -4783,21 +4777,21 @@ export class TimeInput extends Input {
 
     private _timeInputElement: HTMLInputElement;
 
-    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: InputEventType) {
+    protected handleEventsForReadWriteInputStyle(input: HTMLInputElement, eventType: Enums.InputEventType) {
         if (!input || this.inputStyle === null || this.inputStyle !== Enums.InputStyle.ReadWrite) {
             return;
         }
 
-        if (eventType === InputEventType.OnElementRender) {
+        if (eventType === Enums.InputEventType.OnElementRender) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, false /*show*/);
         }
 
-        if (eventType === InputEventType.OnMouseEnterOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseEnterOnCard) {
             input.classList.add(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle-onCardHover"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, true /*show*/);
         }
-        if (eventType === InputEventType.OnMouseLeaveOnCard) {
+        if (eventType === Enums.InputEventType.OnMouseLeaveOnCard) {
             input.classList.remove(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle-onCardHover"));
             Utils.SetDateOrTimePickerVisibility(input, this.defaultValue, false /*show*/);
         }
@@ -4836,7 +4830,7 @@ export class TimeInput extends Input {
         }
 
         if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this.handleEventsForReadWriteInputStyle(this._timeInputElement, InputEventType.OnElementRender);
+            this.handleEventsForReadWriteInputStyle(this._timeInputElement, Enums.InputEventType.OnElementRender);
             this.registerEventsForReadWriteInputStyle( this._timeInputElement, this.handleEventsForReadWriteInputStyle.bind(this));
         }
 

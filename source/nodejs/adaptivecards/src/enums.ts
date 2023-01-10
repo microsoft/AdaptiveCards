@@ -218,3 +218,10 @@ export enum CarouselInteractionEvent {
     Pagination,
     Autoplay
 }
+
+
+export enum InputEventType {
+    OnElementRender,
+    OnMouseEnterOnCard,
+    OnMouseLeaveOnCard
+}
