@@ -73,7 +73,7 @@ export enum TextSize {
 }
 
 export enum InputStyle {
-    ReadWrite,
+    RevealOnHover,
     Default
 }
 

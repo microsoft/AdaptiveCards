@@ -1,4 +1,4 @@
-# Inline Editability for Adaptive Cards
+# Input Reveal On Hover
 
 ## Overview
 
@@ -15,88 +15,87 @@ UI of showing data and taking user input will become simplistic.
 
 As shown in the below picture, An adaptive card displays data for Customer name, Est. Revenue and Est. Close Date. If user wants to update those information, he will have to click on 'Edit' button which will open some form and there he can update values for 'Est. Revenue' etc. and Click on Save to send data back to the bot service.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario1.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario1.PNG)
 
 
 As of now, Adaptive cards support `Input` fields to collect user input. This is how current user experience of `Input` fields looks like. 
 
- ![img](./assets/InputInlineEdit/InputInlineEditScenario2.PNG)
+ ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario2.PNG)
 
 ## Proposed experience:
 
 We will allow bot developer to enhance the user experience of all `Input` fields in Adaptive card (such as `Input.Text`, `Input.Number`, `Input.Date`, `Input.Time`, `Input.Toggle` and `Input.Choiceset`). These input fields can appear just as readable fields when the user is not taking any action, and when the user clicks or focusses on them, it allows the user to update those fields. The user can then use action buttons like Action.Submit/Action.Execute present on the card to send data back to the bot.
 
-This is the flow for user to interact with inline editable fields:-
-1. This is an adaptive showing information like "Contact", "Email", "Est. Closing date" etc. with inline Editable style where input fields are displayed as **readable fields** in the **default** state.
+This is the proposed flow for user:-
+1. This is an adaptive showing information like "Contact", "Email", "Est. Closing date" etc. with new style where input fields are displayed as **readable fields** in the **default** state.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario3.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario3.PNG)
 
-2. When user hovers anywhere on the card, 
-	* we will show outer outline on that card.
-	* we will show a lighter color outline to all the input fields which are inline editable.
+2. When user hovers anywhere on the card,
+	* we will show a lighter color outline to all the input fields.
 	
 	This will guide user to the input fields which he can go an update right on the card.
 	
-![img](./assets/InputInlineEdit/InputInlineEditScenario4.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario4.PNG)
 
 3. When user hovers over the input field, we will show a darker outline in that input field to guide user that the field is activated and he can now edit the field.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario5.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario5.PNG)
 
 4. User can go and edit the field.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario6.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario6.PNG)
 
 5. When the user has updated the input field, Action.Submit or Action.Execute button such as "Save" which has `disabledUnlessAssociatedInputsChange` property (https://github.com/microsoft/AdaptiveCards/issues/7103) will get enabled automatically. It will guide user to hit the button to commit the changes made on the card.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario7.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario7.PNG)
 
 
 6. When the user clicks on the Action.Submit or Action.Execute button, latest input values will be sent to the bot from host and bot can then update the card with latest information which we will show in default state.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario8.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario8.PNG)
 
 ## New Capabilites in the card
-In order to achieve inline editable experience as mentioned above, we will add these capabilities in the card for developers and host:
+In order to achieve new experience as mentioned above, we will add these capabilities in the card for developers and host:
 
 ## New Schema Changes in Adaptive Card
-1. Introduce an optional styling property `inputStyle` in AC input fields schema for developer to choose between existing input fields styling i.e.`default` vs inline editable styling i.e.`readWrite`.
+1. Introduce an optional styling property `inputStyle` in AC input fields schema for developer to choose between existing input fields styling i.e.`default` vs new styling i.e.`revealOnHover`.
 
 * **InputStyle: Default view:**
 
- ![img](./assets/InputInlineEdit/InputInlineEditScenario2.PNG)
+ ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario2.PNG)
 
-* **InputStyle: ReadWrite View:**
+* **InputStyle: RevealOnHover View:**
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario9.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario9.PNG)
 
 
 ## Use Case Clarifications:
 1. If `value` is `empty` in the input field, we will show label and placeholder text in lighter color like this in the [default] state,
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario10.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario10.PNG)
 
 which user can go and update the value.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario11.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario11.PNG)
 
 2. If `label` is `empty`, we will just show `value` field in readable format in the default state which user can go and update the value.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario12.PNG)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario12.PNG)
 
 
 ## Developer Recommendation:
 
-1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card with inline editable fields. Save button will send the modified user input values to the bot, and the bot will respond with a card with updated input values.
+1. **Save Button:** Our recommendation is to have a `Save` button (Action.Submit or Action.Execute) with `disabledUnlessAssociatedInputsChange` on the card containing inputs fields with `revealOnHover` style. Save button will send the modified user input values to the bot, and the bot will respond with a card with updated input values.
 
-2. **Cancel Button:** Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card with inline editable fields. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
+2. **Cancel Button:** Our recommendation is to have a `Cancel` button (Action.Submit or Action.Execute) on the card containing inputs fields with `revealOnHover` style. If user has made some changes in the input fields but want to revert back to original state, they can click on "Cancel" button. "Cancel" button will send the card with last saved input values.
 ## Out of Scope:
 
-1. Inline Action in Input.text: We will not support inline Editable styles for input text containing inline action. It will be shown as default input style only. Reason being, such sceanrios are reply with a comment or adding a message where user collaboration is not needed.
+1. Inline Action in Input.text: We will not support `revealOnHover` style for input text containing inline action. It will be shown as default input style only. Reason being, such sceanrios are reply with a comment or adding a message where user collaboration is not needed.
 
-![img](./assets/InputInlineEdit/InputInlineEditScenario13.png)
+![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario13.png)
 
-2. Mobile is `out of scope` for inline editable design since there is no focus state on mobile and alignment will be always `vertical` as of today.
+2. Mobile is `out of scope` for `revealOnHover` input style design since there is no focus state on mobile and alignment will be always `vertical` as of today.
 
 ## Proposed Schema Changes:
 
@@ -114,7 +113,7 @@ Style hint for input fields.
 * **Type**: `InputStyle`
 * **Required**: No
 * **Allowed values**:
-  * `"readWrite"` : Should show input fields as inline editable field, which is showing them in readable view unless user takes any action.
+  * `"revealOnHover"` : Should show input fields as read only view unless user hovers on the card.
   * `"default"` : Should show the existing view for input controls.
 
 Since this property is inherited to all Input fields, it will be supported by all:
@@ -133,7 +132,7 @@ Since this property is inherited to all Input fields, it will be supported by al
           "type": "Input.Text",
           "label": "Name",
           "value": "Sneh",
-          "inputStyle" : "readWrite"
+          "inputStyle" : "revealOnHover"
       },
       {
           "type": "Input.Date",
@@ -144,12 +143,12 @@ Since this property is inherited to all Input fields, it will be supported by al
           "type": "Input.Time",
           "label": "Time of Arrival",
           "value": "09:30",
-          "inputStyle" : "readWrite"
+          "inputStyle" : "revealOnHover"
       },
       {
           "type": "Input.Number",
           "label": "Number of Guest",
           "value": 5,
-          "inputStyle" : "readWrite"
+          "inputStyle" : "revealOnHover"
       }	
 ```
