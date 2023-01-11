@@ -70,6 +70,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\..\SharedRenderer\SharedRenderer.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -86,7 +87,6 @@
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <PreprocessorDefinitions>USE_WINUI3;_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
-        $(ProjectDir)..\Lib;
         $(WindowsSDK_WindowsMetadata);
         $(AdditionalUsingDirectories)
       </AdditionalUsingDirectories>
@@ -127,178 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sharedRenderer\lib\ActionHelpers.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTableConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveErrorMessageConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveExecuteActionRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextBlockConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHighlightColorConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputLabelConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveLabelConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputsConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTableRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfigBase.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextStylesConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\ElementTagContent.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\LinkButton.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\XamlHelpers.cpp" />
-    <ClInclude Include="..\..\sharedRenderer\dll\CppWinRTIncludes.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\ActionHelpers.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionInvoker.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionRendererRegistration.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionsConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionSetRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveChoiceSetInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColumnRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColumnSetRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardGetResourceStreamArgs.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardRendererComponent.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardResourceResolvers.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveErrorMessageConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveExecuteActionRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFeatureRegistration.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontTypeDefinition.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontTypesDefinition.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTableConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextBlockConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHighlightColorConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHostConfigParseResult.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerStyleDefinition.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveContainerStylesDefinition.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveDateInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveElementRendererRegistration.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontSizesConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFontWeightsConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSetRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSizesConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputLabelConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveLabelConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputs.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveInputsConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaEventInvoker.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveNumberInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveMediaEventArgs.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveOpenUrlActionRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRenderArgs.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRenderContext.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveRichTextBlockRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSubmitActionRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTableRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextBlockRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStyleConfigBase.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTextStylesConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveTimeInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveToggleInputRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveToggleVisibilityActionRenderer.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\DateTimeParser.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\ElementTagContent.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\LinkButton.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\TextHelpers.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\InputValue.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\MediaHelpers.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\RenderedAdaptiveCard.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSeparatorConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveSpacingConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveCardConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColorConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveColorsConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveHostConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveImageSetConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveActionEventArgs.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AdaptiveFactSetTextConfig.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\AsyncOperations.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\DefaultResourceDictionary.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\IImageLoadTrackerListener.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\ImageLoadTracker.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\IXamlBuilderListener.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\pch.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\TileControl.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\Util.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\WholeItemsPanel.h" />
-    <ClInclude Include="..\..\sharedRenderer\lib\XamlBuilder.h" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionRendererRegistration.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFeatureRegistration.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontTypeDefinition.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontTypesDefinition.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaEventInvoker.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveMediaEventArgs.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveOpenUrlActionRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRichTextBlockRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveToggleVisibilityActionRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSubmitActionRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\MediaHelpers.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionSetRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionInvoker.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionsConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveChoiceSetInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColumnRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColumnSetRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardGetResourceStreamArgs.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardRendererComponent.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardResourceResolvers.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHostConfigParseResult.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerStyleDefinition.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveContainerStylesDefinition.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveDateInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveElementRendererRegistration.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontSizesConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFontWeightsConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSetRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSizesConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveInputs.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveNumberInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRenderArgs.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveRenderContext.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextBlockRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTextInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveTimeInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveToggleInputRenderer.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\DateTimeParser.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\TextHelpers.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\InputValue.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\RenderedAdaptiveCard.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSeparatorConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveShowCardActionConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveSpacingConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveCardConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColorConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveColorsConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveHostConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveImageSetConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveActionEventArgs.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\AdaptiveFactSetTextConfig.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\ImageLoadTracker.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\TileControl.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\Util.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\WholeItemsPanel.cpp" />
-    <ClCompile Include="..\..\sharedRenderer\lib\XamlBuilder.cpp" />
-    <ClInclude Include="..\..\sharedRenderer\lib\XamlHelpers.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\ObjectModelProjection\ObjectModelProjection.vcxproj">
       <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
     </ProjectReference>
@@ -313,11 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
