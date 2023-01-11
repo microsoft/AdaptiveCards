@@ -255,10 +255,10 @@ $font-family: 'Segoe UI', sans-serif;
     $hover-background-color: null,
     $validation-failed-border: 1px solid red !important,
     $validation-failed-outline: 1px solid red,
-    $border-readWrite-style-onrender: 1px solid transparent,
-    $border-readWrite-style-onhover: 1px solid #686868 !important,
-    $border-readWrite-style-oncard-hover: 1px solid #DDDDDD,
-    $background-color-readWrite-style-onrender: white,
+    $transparent-border: 1px solid transparent,
+    $transparent-background: white,
+    $revealOnHover-subdued-border: 1px solid #DDDDDD,
+    $revealOnHover-active-border: 1px solid #686868 !important
     ) {
 
     .ac-input {
@@ -305,32 +305,24 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-textInput-readWriteStyle,
-        &.ac-numberInput-readWriteStyle,
-        &.ac-timeInput-readWriteStyle,
-        &.ac-dateInput-readWriteStyle,
-        &.ac-choiceSetInput-compact-readWriteStyle {
-            border: $border-readWrite-style-onrender;
-            background-color: $background-color-readWrite-style-onrender;
+        &.ac-inputStyle-revealOnHover {
+            border: $transparent-border;
+            background-color: $transparent-background;
             &:hover {
-                border: $border-readWrite-style-onhover;
+                border: $revealOnHover-active-border;
             }
         }
 
-        &.ac-choiceSetInput-compact-readWriteStyle {
+        &.ac-choiceSetInput-inputStyle-revealOnHover {
             appearance: none;
         }
     }
 
-    .ac-adaptiveCard:hover .ac-textInput-readWriteStyle,
-    .ac-adaptiveCard:hover .ac-numberInput-readWriteStyle,
-    .ac-adaptiveCard:hover .ac-timeInput-readWriteStyle,
-    .ac-adaptiveCard:hover .ac-dateInput-readWriteStyle,
-    .ac-adaptiveCard:hover .ac-choiceSetInput-compact-readWriteStyle {
-        border: $border-readWrite-style-oncard-hover;
+    .ac-adaptiveCard:hover .ac-inputStyle-revealOnHover {
+        border: $revealOnHover-subdued-border;
     }
 
-    .ac-adaptiveCard:hover .ac-choiceSetInput-compact-readWriteStyle {
+    .ac-adaptiveCard:hover .ac-choiceSetInput-inputStyle-revealOnHover {
         appearance: auto;
     }
 }

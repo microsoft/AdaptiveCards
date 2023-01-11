@@ -273,20 +273,17 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
     };
 }
 
-export function SetDateOrTimePickerVisibility(input: HTMLInputElement, value: string | undefined, show: boolean) {
-    if (!!show) {
+export function updateDateOrTimePickerVisibility(input: HTMLInputElement, hover: boolean) {
+    if (!!hover) {
         // shows the time/date picker icon
         input.readOnly = false;
-        if (value) {
-            // shows the cross button icon
-            input.required = false;
-        }
-        return;
-    }
-    // hides the time/date picker icon
-    input.readOnly = true;
-    if (value) {
+        // shows the cross button icon
+        input.required = false;
+    } else {
+        // hides the time/date picker icon
+        input.readOnly = true;
         // hides the cross button icon
         input.required = true;
     }
+    
 }

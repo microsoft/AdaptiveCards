@@ -349,6 +349,11 @@ export abstract class CardElement extends CardObject {
         }
     }
 
+    protected updateInputsVisualState(hover: boolean) {
+        const allInputs: Input[] = this.getAllInputs();
+        allInputs.forEach((input) => input.updateVisualState(hover));
+    }
+
     protected isDisplayed(): boolean {
         return (
             this._renderedElement !== undefined &&
@@ -3291,9 +3296,10 @@ export abstract class Input extends CardElement implements IInput {
         Enums.InputStyle,
         Enums.InputStyle.Default,
         [
-            { value: Enums.InputStyle.ReadWrite },
+            { value: Enums.InputStyle.RevealOnHover },
             { value: Enums.InputStyle.Default }
-        ]);
+        ]
+    );
     static readonly labelWidthProperty = new CustomProperty<SizeAndUnit | undefined>(
         Versions.v1_6,
         "labelWidth",
@@ -3528,6 +3534,7 @@ export abstract class Input extends CardElement implements IInput {
                 }
             }
 
+            this.updateVisualState(false /*hover*/);
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
@@ -3591,19 +3598,13 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
-    protected registerEventsForReadWriteInputStyle(input: HTMLElement | undefined, inputEventHandler: (input: HTMLElement, eventType: Enums.CardEventType) => void) {
-        if (!input) {
-            return;
+    updateVisualState(hover: boolean): void {
+        if (!hover) {
+            // when user is not hovering on the card, we will show input fields as read only view
+            if (this._renderedInputControlElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover"));
+            }
         }
-        // registering for mouse events on card
-        const card = this._parent as AdaptiveCard;
-        card.registerMouseEnterCallback(
-            (ev: MouseEvent) => inputEventHandler(input, Enums.CardEventType.OnMouseEnterOnCard /*event type*/)
-        );
-
-        card.registerMouseLeaveCallback(
-            (ev: MouseEvent) => inputEventHandler(input, Enums.CardEventType.OnMouseLeaveOnCard /*event type*/)
-        );
     }
 
     onValueChanged: (sender: Input) => void;
@@ -3795,10 +3796,6 @@ export class TextInput extends Input {
             result = document.createElement("input");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
             result.type = Enums.InputTextStyle[this.style].toLowerCase();
-
-            if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite && !this.inlineAction) {
-                result.classList.add(this.hostConfig.makeCssClassName("ac-textInput-readWriteStyle"));
-            }
         }
 
         this.setupInput(result);
@@ -3872,6 +3869,12 @@ export class TextInput extends Input {
         }
 
         return renderedInputControl;
+    }
+
+    updateVisualState(hover: boolean): void {
+        if (!(this.inlineAction || this.isMultiline)) {
+            super.updateVisualState(hover);
+        }
     }
 
     getJsonTypeName(): string {
@@ -4059,6 +4062,9 @@ export class ToggleInput extends Input {
 
     protected get isNullable(): boolean {
         return false;
+    }
+
+    updateVisualState(hover: boolean): void {
     }
 
     getJsonTypeName(): string {
@@ -4450,11 +4456,20 @@ export class ChoiceSetInput extends Input {
 
                 this.internalApplyAriaCurrent();
 
-                if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-                    this._selectElement.classList.add(this.hostConfig.makeCssClassName("ac-choiceSetInput-compact-readWriteStyle"));
-                }
-
                 return this._selectElement;
+            }
+        }
+    }
+
+    updateVisualState(hover: boolean): void {
+        if (!this.isMultiSelect && this.isCompact) {
+            super.updateVisualState(hover);
+            if (this._selectElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+                this._selectElement.classList.add(
+                    this.hostConfig.makeCssClassName(
+                        "ac-choiceSetInput-inputStyle-revealOnHover"
+                    )
+                );
             }
         }
     }
@@ -4619,10 +4634,6 @@ export class NumberInput extends Input {
             this.valueChanged();
         };
 
-        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this._numberInputElement.classList.add(this.hostConfig.makeCssClassName("ac-numberInput-readWriteStyle"));
-        }
-
         return this._numberInputElement;
     }
 
@@ -4720,17 +4731,15 @@ export class DateInput extends Input {
             this._dateInputElement.value = this.defaultValue;
         }
 
-        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this._dateInputElement.classList.add(this.hostConfig.makeCssClassName("ac-dateInput-readWriteStyle"));
-            Utils.SetDateOrTimePickerVisibility(this._dateInputElement, this.defaultValue, false /*show*/);
-
-            const handleHoverOnCard = (input: HTMLInputElement, eventType: Enums.CardEventType) => 
-                Utils.SetDateOrTimePickerVisibility(input, this._dateInputElement.value, eventType === Enums.CardEventType.OnMouseEnterOnCard /*show*/);
-
-            this.registerEventsForReadWriteInputStyle( this._dateInputElement, handleHoverOnCard.bind(this));
-        }
-
         return this._dateInputElement;
+    }
+
+    updateVisualState(hover: boolean): void {
+        super.updateVisualState(hover);
+
+        if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            Utils.updateDateOrTimePickerVisibility(this._dateInputElement, hover);
+        }
     }
 
     getJsonTypeName(): string {
@@ -4862,16 +4871,15 @@ export class TimeInput extends Input {
             this._timeInputElement.value = this.defaultValue;
         }
 
-        if (this.inputStyle !== null && this.inputStyle === Enums.InputStyle.ReadWrite) {
-            this._timeInputElement.classList.add(this.hostConfig.makeCssClassName("ac-timeInput-readWriteStyle"));
-            Utils.SetDateOrTimePickerVisibility(this._timeInputElement, this.defaultValue, false /*show*/);
-
-            const handleHoverOnCard = (input: HTMLInputElement, eventType: Enums.CardEventType) => 
-                Utils.SetDateOrTimePickerVisibility(input, this._timeInputElement.value, eventType === Enums.CardEventType.OnMouseEnterOnCard /*show*/);
-            this.registerEventsForReadWriteInputStyle( this._timeInputElement, handleHoverOnCard.bind(this));
-        }
-
         return this._timeInputElement;
+    }
+
+    updateVisualState(hover: boolean): void {
+        super.updateVisualState(hover);
+
+        if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            Utils.updateDateOrTimePickerVisibility(this._timeInputElement, hover);
+        }
     }
 
     getJsonTypeName(): string {
@@ -8633,10 +8641,6 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
-    private _mouseEnterCallbacks: any[] = [];
-
-    private _mouseLeaveCallbacks: any[] = [];
-    
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext(this.version);
     }
@@ -8788,14 +8792,12 @@ export class AdaptiveCard extends ContainerWithActions {
 
                 // register for on mouse enter on the card
                 renderedCard.onmouseenter = (ev: MouseEvent) => {
-                    // triggering registered callbacks on mouse enter on the card
-                    this._mouseEnterCallbacks.forEach(callback => callback(ev));
+                    this.updateInputsVisualState(true /* hover */);
                 };
 
                 // register for on mouse leave on the card
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
-                    // triggering registered callbacks on mouse leave on the card
-                    this._mouseLeaveCallbacks.forEach(callback => callback(ev));
+                    this.updateInputsVisualState(false /* hover */);
                 };
             }
         }
@@ -8826,14 +8828,6 @@ export class AdaptiveCard extends ContainerWithActions {
 
     get hasVisibleSeparator(): boolean {
         return false;
-    }
-
-    public registerMouseEnterCallback(callback: any) {
-        this._mouseEnterCallbacks.push(callback);
-    }
-
-    public registerMouseLeaveCallback(callback: any) {
-        this._mouseLeaveCallbacks.push(callback);
     }
 }
 
