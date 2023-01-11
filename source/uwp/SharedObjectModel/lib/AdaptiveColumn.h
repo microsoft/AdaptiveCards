@@ -6,7 +6,7 @@
 #include "Column.h"
 #include "AdaptiveColumn.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("d674610a-a76b-4283-bd09-b5a25c41433d") AdaptiveColumn : AdaptiveColumnT < AdaptiveColumn, ITypePeek>,AdaptiveCardElementBase
     {
@@ -18,15 +18,15 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void Width(hstring const& width);
         hstring m_width;
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::IAdaptiveCardElement>> Items;
-        property_opt<Uwp::VerticalContentAlignment> VerticalContentAlignment;
-        property<Uwp::AdaptiveBackgroundImage> BackgroundImage{nullptr};
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::IAdaptiveCardElement>> Items;
+        property_opt<Xaml_OM::VerticalContentAlignment> VerticalContentAlignment;
+        property<Xaml_OM::AdaptiveBackgroundImage> BackgroundImage{nullptr};
         property_opt<bool> Rtl;
-        property<Uwp::ContainerStyle> Style;
-        property<Uwp::IAdaptiveActionElement> SelectAction;
+        property<Xaml_OM::ContainerStyle> Style;
+        property<Xaml_OM::IAdaptiveActionElement> SelectAction;
         property<bool> Bleed;
         property<uint32_t> MinHeight;
-        property<Uwp::BleedDirection> BleedDirection;
+        property<Xaml_OM::BleedDirection> BleedDirection;
 
         auto ElementType() { return ElementType::Column; }
 
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveColumn : AdaptiveColumnT<AdaptiveColumn, implementation::AdaptiveColumn>
     {

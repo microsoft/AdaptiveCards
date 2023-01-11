@@ -3,9 +3,9 @@
 #include "pch.h"
 #include "CustomActionWrapper.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::Xaml_OM
 {
-    CustomActionWrapper::CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement) :
+    CustomActionWrapper::CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionElement const& actionElement) :
         AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)
     {
         BaseElement::SetId(GetActionElementId());
@@ -42,14 +42,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return JsonObjectToJsonCpp(jsonObject);
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement CustomActionWrapper::GetWrappedElement()
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionElement CustomActionWrapper::GetWrappedElement()
     {
         return m_actionElement;
     }
 
     void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        if (auto resources = m_actionElement.try_as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources>())
+        if (auto resources = m_actionElement.try_as<winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveElementWithRemoteResources>())
         {
             RemoteResourceElementToRemoteResourceInformationVector(resources, resourceInfo);
         }

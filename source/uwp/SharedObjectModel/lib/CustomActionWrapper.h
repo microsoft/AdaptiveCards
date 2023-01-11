@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::Xaml_OM
 {
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement);
+        CustomActionWrapper(winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionElement const& actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement GetWrappedElement();
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionElement GetWrappedElement();
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -28,6 +28,6 @@ namespace AdaptiveCards::ObjectModel::Uwp
         std::string GetActionElementTitle() const;
         void SetActionElementTitle(const std::string& value);
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement m_actionElement;
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionElement m_actionElement;
     };
 }

@@ -8,15 +8,15 @@
 #include "AdaptiveActionSet.h"
 #include "AdaptiveElementParserRegistration.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveActionSetParser::FromJson(
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement AdaptiveActionSetParser::FromJson(
         winrt::Windows::Data::Json::JsonObject const& inputJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveWarning> const& warnings)
     {
-        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveActionSet, ::AdaptiveCards::ActionSet, ::AdaptiveCards::ActionSetParser>(
-            inputJson, elementParsers, actionParsers, warnings).as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
+        return ::AdaptiveCards::ObjectModel::Xaml_OM::FromJson<implementation::AdaptiveActionSet, ::AdaptiveCards::ActionSet, ::AdaptiveCards::ActionSetParser>(
+            inputJson, elementParsers, actionParsers, warnings).as<winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement>();
     }
 }

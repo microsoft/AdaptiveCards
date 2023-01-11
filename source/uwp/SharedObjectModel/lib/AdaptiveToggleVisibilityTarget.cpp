@@ -6,12 +6,12 @@
 #include "AdaptiveToggleVisibilityTarget.g.cpp"
 #include "ToggleVisibilityTarget.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveToggleVisibilityTarget::AdaptiveToggleVisibilityTarget(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
     {
         ElementId = UTF8ToHString(sharedToggleTarget->GetElementId());
-        IsVisible = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::IsVisible>(sharedToggleTarget->GetIsVisible());
+        IsVisible = static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::IsVisible>(sharedToggleTarget->GetIsVisible());
     }
 
     std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> AdaptiveToggleVisibilityTarget::GetSharedModel()

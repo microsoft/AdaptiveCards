@@ -4,17 +4,17 @@
 #include "AdaptiveTableCell.h"
 #include "AdaptiveTableCell.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveTableCell::AdaptiveTableCell(const std::shared_ptr<::AdaptiveCards::TableCell>& sharedTableCell)
     {
         Items = GenerateContainedElementsProjection(sharedTableCell->GetItems());
         SelectAction = GenerateActionProjection(sharedTableCell->GetSelectAction());
-        Style = static_cast<Uwp::ContainerStyle>(sharedTableCell->GetStyle());
-        VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedTableCell->GetVerticalContentAlignment());
+        Style = static_cast<Xaml_OM::ContainerStyle>(sharedTableCell->GetStyle());
+        VerticalContentAlignment = opt_cast<Xaml_OM::VerticalContentAlignment>(sharedTableCell->GetVerticalContentAlignment());
         MinHeight = sharedTableCell->GetMinHeight();
         Bleed = sharedTableCell->GetBleed();
-        BleedDirection = static_cast<Uwp::BleedDirection>(sharedTableCell->GetBleedDirection());
+        BleedDirection = static_cast<Xaml_OM::BleedDirection>(sharedTableCell->GetBleedDirection());
         Rtl = sharedTableCell->GetRtl();
 
         auto backgroundImage = sharedTableCell->GetBackgroundImage();

@@ -4,7 +4,7 @@
 #include "AdaptiveCaptionSource.h"
 #include "AdaptiveCaptionSource.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveCaptionSource::AdaptiveCaptionSource(std::shared_ptr<::AdaptiveCards::CaptionSource> const& sharedCaptionSource)
     {

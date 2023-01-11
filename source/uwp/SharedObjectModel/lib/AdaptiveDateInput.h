@@ -6,7 +6,7 @@
 #include "AdaptiveInputElement.h"
 #include "AdaptiveDateInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("9aa05662-098b-4588-addb-af62378a8706") AdaptiveDateInput : AdaptiveDateInputT < AdaptiveDateInput, ITypePeek>,
         AdaptiveInputElementBase
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveDateInput : AdaptiveDateInputT<AdaptiveDateInput, implementation::AdaptiveDateInput>
     {
