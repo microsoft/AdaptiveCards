@@ -2108,7 +2108,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.selectAction.setupElementForAccessibility(imageElement);
+                this.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2139,6 +2139,12 @@ export class Image extends CardElement {
         }
 
         return element;
+    }
+
+    protected setupElementForAccessibility(element: HTMLImageElement) {
+        this.selectAction?.setupElementForAccessibility(element);
+        // Image elements cannot have aria-description
+        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;

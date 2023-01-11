@@ -102,6 +102,8 @@ export class Strings {
         mediaPlayerPlayMedia: () => "Play media",
         youTubeVideoPlayer: () => "YouTube video player",
         vimeoVideoPlayer: () => "Vimeo video player",
-        dailymotionVideoPlayer: () => "Dailymotion video player"
+        dailymotionVideoPlayer: () => "Dailymotion video player",
+        carouselNavigationPreviousTooltip: () => "Previous carousel page",
+        carouselNavigationNextTooltip: () => "Next carousel page"
     };
 }

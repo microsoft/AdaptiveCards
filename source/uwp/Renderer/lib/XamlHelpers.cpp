@@ -230,6 +230,18 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidth, width));
     }
 
+    winrt::TextBlock CreateTextBlockWithContent(winrt::hstring const& contentString, bool wrap)
+    {
+        winrt::TextBlock content{};
+        content.Text(contentString);
+        if (wrap)
+        {
+            content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
+        }
+
+        return content;
+    }
+
     winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
     {
         try

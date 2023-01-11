@@ -1,5 +1,9 @@
 steps:
-- template: ios-build-template.yml
+- task: CocoaPods@0
+  displayName: 'Installing dependency via pod'
+  inputs:
+    workingDirectory: 'source/ios/AdaptiveCards'
+    forceRepoUpdate: false
 
 - task: Xcode@5
   displayName: 'Sample App Unit Test'
@@ -7,7 +11,7 @@ steps:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
     scheme: 'ADCIOSVisualizer'
-    xcodeVersion: '12'
+    xcodeVersion: 'default'
     packageApp: false
     signingOption: 'default'
     sdk: 'iphonesimulator'
@@ -15,13 +19,12 @@ steps:
     destinationSimulators: 'iPhone 12'
 
 - task: Xcode@5
-
   displayName: 'Framework Unit Test'
   inputs:
     actions: 'test'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
     scheme: 'AdaptiveCards'
-    xcodeVersion: '12'
+    xcodeVersion: 'default'
     packageApp: false
     signingOption: 'default'
     sdk: 'iphonesimulator'

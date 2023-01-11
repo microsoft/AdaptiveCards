@@ -530,6 +530,10 @@ export class Carousel extends Container {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
+        prevElement.title = prevElement.ariaLabel ?? Strings.defaults.carouselNavigationPreviousTooltip();
+
+        nextElement.title = nextElement.ariaLabel ?? Strings.defaults.carouselNavigationNextTooltip();
+
         this._carousel = carousel;
     }
 
