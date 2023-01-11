@@ -7,6 +7,7 @@
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {

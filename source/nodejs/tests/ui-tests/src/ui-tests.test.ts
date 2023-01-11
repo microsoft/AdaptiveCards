@@ -199,7 +199,7 @@ describe("Mock function", function() {
     }));
 
     test("Image: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Image.SelectAction");
+        await utils.goToTestCase("v1.5/Image.SelectAction");
 
         let image = await ACImage.getImage("cool link");
 
@@ -239,7 +239,47 @@ describe("Mock function", function() {
         await emphasisContainer.click();
         
         Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://msn.com");
-    }));    
+    }));
+    
+    test("ToggleVisibility: Test ToggleVisibility and ShowCard within actions", (async () => {
+        await utils.goToTestCase("v1.5/ToggleVisibility.ShowCard.actions");
+
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
+
+        let inputDate = await ACInputDate.getInputWithId("date");
+        let dateIsVisible = await inputDate.elementIsVisible();
+        Assert.strictEqual(dateIsVisible, true);
+
+        let inputTime = await ACInputTime.getInputWithId("time");
+        let timeIsVisible = await inputTime.elementIsVisible();
+        Assert.strictEqual(timeIsVisible, true);
+        
+        await ACAction.clickOnActionWithTitle("Action.ToggleVisibility");
+        await WaitUtils.waitUntilElementIsNotVisible("date");
+
+        dateIsVisible = await inputDate.elementIsVisible();
+        timeIsVisible = await inputTime.elementIsVisible();
+        
+        Assert.strictEqual(dateIsVisible, false);
+        Assert.strictEqual(timeIsVisible, false);
+    }), 2500);
+
+    test("ToggleVisibility: Test ToggleVisibility and ShowCard within ActionSet", (async () => {
+        await utils.goToTestCase("v1.5/ToggleVisibility.ShowCard.ActionSet");
+
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
+
+        let inputDate = await ACInputDate.getInputWithId("date");
+        let dateIsVisible = await inputDate.elementIsVisible();
+        Assert.strictEqual(dateIsVisible, true);
+
+        await ACAction.clickOnActionWithTitle("Action.ToggleVisibility");
+        await WaitUtils.waitUntilElementIsNotVisible("date");
+
+        dateIsVisible = await inputDate.elementIsVisible();
+
+        Assert.strictEqual(dateIsVisible, false);
+    }), 2500);
 
     test("Carousel: Test actions are rendered and active", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");

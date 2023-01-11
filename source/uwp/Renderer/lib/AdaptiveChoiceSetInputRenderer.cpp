@@ -4,7 +4,9 @@
 
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.g.cpp"
+#include "InputValue.h"
 #include "ParseUtil.h"
+#include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
@@ -102,16 +104,12 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         {
             auto title = adaptiveChoiceInput.Title();
 
-            winrt::ComboBoxItem comboBoxItem{};
-
-            XamlHelpers::SetContent(comboBoxItem, title, wrap);
-
             if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 // If multiple values are specified, no option is selected
                 selectedIndex = currentIndex;
             }
-            items.Append(comboBoxItem);
+            items.Append(XamlHelpers::CreateTextBlockWithContent(title, wrap));
             currentIndex++;
         }
 
@@ -236,8 +234,8 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         autoSuggestBox.ItemsSource(choiceList);
 
         // When we get focus open the suggestion list. This ensures the choices are shown on first focus.
-        autoSuggestBox.GettingFocus(
-            [](IInspectable const& sender, winrt::GettingFocusEventArgs const& /* args */) -> void
+        autoSuggestBox.GotFocus(
+            [](IInspectable const& sender, winrt::RoutedEventArgs const& /* args */) -> void
             {
                 if (const auto autoSuggestBox = sender.try_as<winrt::AutoSuggestBox>())
                 {

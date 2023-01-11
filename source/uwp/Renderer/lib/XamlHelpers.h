@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "WholeItemsPanel.h"
-
 namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
@@ -63,6 +61,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return GetValueFromRef(toggleButton.IsChecked(), false);
     }
 
+    winrt::TextBlock CreateTextBlockWithContent(winrt::hstring const& contentString, bool wrap);
+
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
         SetContent(item, contentString, false /* wrap */);
@@ -72,14 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     {
         if (const auto contentControl = item.try_as<winrt::ContentControl>())
         {
-            winrt::TextBlock content{};
-            content.Text(contentString);
-
-            if (wrap)
-            {
-                content.TextWrapping(winrt::TextWrapping::WrapWholeWords);
-            }
-            contentControl.Content(content);
+            contentControl.Content(CreateTextBlockWithContent(contentString, wrap));
         }
     }
 
@@ -196,7 +189,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     void SetAutoImageSize(winrt::FrameworkElement const& imageControl,
                           winrt::IInspectable const& parentElement,
-                          winrt::BitmapSource const& imageSource,
+                          winrt::ImageSource const& imageSource,
                           bool setVisible);
 
     void ApplyMarginToXamlElement(winrt::IAdaptiveHostConfig const& hostConfig, winrt::IFrameworkElement const& element);

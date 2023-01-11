@@ -716,6 +716,22 @@ export abstract class CardElement extends CardObject {
     getActionById(_id: string): Action | undefined {
         return undefined;
     }
+    
+    getElementByIdFromAction(id: string): CardElement | undefined {
+        let result = undefined;
+        for (let i = 0; i < this.getActionCount(); i++) {
+            const action = this.getActionAt(i);
+
+            if (action instanceof ShowCardAction) {
+                result = action.card.getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 
     getEffectivePadding(): PaddingDefinition {
         const padding = this.getPadding();
@@ -2092,7 +2108,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.selectAction.setupElementForAccessibility(imageElement);
+                this.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2123,6 +2139,12 @@ export class Image extends CardElement {
         }
 
         return element;
+    }
+
+    protected setupElementForAccessibility(element: HTMLImageElement) {
+        this.selectAction?.setupElementForAccessibility(element);
+        // Image elements cannot have aria-description
+        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -3258,8 +3280,8 @@ export class Media extends CardElement {
 }
 
 export abstract class Input extends CardElement implements IInput {
+    
     //#region Schema
-
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
@@ -3271,6 +3293,73 @@ export abstract class Input extends CardElement implements IInput {
         [
             { value: Enums.InputStyle.ReadWrite },
             { value: Enums.InputStyle.Default }
+        ]);
+    static readonly labelWidthProperty = new CustomProperty<SizeAndUnit | undefined>(
+        Versions.v1_6,
+        "labelWidth",
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            let result: SizeAndUnit | undefined = prop.defaultValue;
+            const value = source[prop.name];
+            let invalidLabelWidth = false;
+            
+            if (typeof value === "number" && !isNaN(value)) {
+                result = new SizeAndUnit(value, Enums.SizeUnit.Weight);
+                if (result.physicalSize < 0 || result.physicalSize > 100) {
+                    invalidLabelWidth = true;
+                }
+            }
+            else if (typeof value === "string") {
+                try {
+                    result = SizeAndUnit.parse(value);
+                } catch (e) {
+                    invalidLabelWidth = true;
+                }
+            } else {
+                invalidLabelWidth = true;
+            }
+
+            if (invalidLabelWidth) {
+                context.logParseEvent(
+                    sender,
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    Strings.errors.invalidInputLabelWidth()
+                );
+                result = undefined;
+            }
+
+            return result;
+        },
+        (
+            sender: SerializableObject,
+            property: PropertyDefinition,
+            target: PropertyBag,
+            value: SizeAndUnit | undefined,
+            context: BaseSerializationContext
+        ) => {
+            if (value instanceof SizeAndUnit) {
+                if (value.unit === Enums.SizeUnit.Pixel) {
+                    context.serializeValue(target, "labelWidth", value.physicalSize + "px");
+                } else {
+                    context.serializeNumber(target, "labelWidth", value.physicalSize);
+                }
+            }
+        },
+        undefined
+    );
+
+    static readonly labelPositionProperty = new EnumProperty(
+        Versions.v1_6,
+        "labelPosition",
+        Enums.InputLabelPosition,
+        Enums.InputLabelPosition.Above,
+        [
+            { value: Enums.InputLabelPosition.Inline },
+            { value: Enums.InputLabelPosition.Above }
         ]
     );
 
@@ -3285,6 +3374,12 @@ export abstract class Input extends CardElement implements IInput {
 
     @property(Input.inputStyleProperty)
     inputStyle: Enums.InputStyle = Enums.InputStyle.Default;
+    
+    @property(Input.labelWidthProperty)
+    labelWidth?: SizeAndUnit;
+
+    @property(Input.labelPositionProperty)
+    labelPosition?: Enums.InputLabelPosition;
 
     //#endregion
 
@@ -3345,7 +3440,11 @@ export abstract class Input extends CardElement implements IInput {
 
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
+        if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+            this._outerContainerElement.style.flexDirection = "row";
+        } else {
+            this._outerContainerElement.style.flexDirection = "column";
+        }
 
         const renderedInputControlId = Utils.generateUniqueId();
 
@@ -3375,9 +3474,13 @@ export abstract class Input extends CardElement implements IInput {
 
             if (this._renderedLabelElement) {
                 this._renderedLabelElement.id = Utils.generateUniqueId();
-                this._renderedLabelElement.style.marginBottom =
-                    hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
-
+                if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+                    // For inline label position: label should be in center of the div and no extra spacing needed
+                    this._renderedLabelElement.style.alignSelf = "center";
+                } else {
+                    this._renderedLabelElement.style.marginBottom =
+                        hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+                }
                 this._outerContainerElement.appendChild(this._renderedLabelElement);
             }
         }
@@ -3407,6 +3510,23 @@ export abstract class Input extends CardElement implements IInput {
 
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
             this._outerContainerElement.appendChild(this._inputControlContainerElement);
+
+            if (this._renderedLabelElement && this.labelPosition === Enums.InputLabelPosition.Inline) {
+                if (!this.labelWidth) {
+                    const defaultLabelWidth = hostConfig.inputs.label.width;
+                    this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
+                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
+                    const labelWidthInPercent = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
+                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
+                    const labelWidthInPixel = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPixel.toString() + "px";
+                }
+            }
 
             this.updateInputControlAriaLabelledBy();
 
@@ -6596,6 +6716,16 @@ export class ActionSet extends CardElement {
         return super.findDOMNodeOwner(node);
     }
 
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
+    }
+
     get isInteractive(): boolean {
         return true;
     }
@@ -8137,6 +8267,16 @@ export abstract class ContainerWithActions extends Container {
 
     getForbiddenActionNames(): string[] {
         return [];
+    }
+    
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
     }
 
     get isStandalone(): boolean {

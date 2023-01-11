@@ -162,6 +162,11 @@ export enum InputTextStyle {
     Password
 }
 
+export enum InputLabelPosition {
+    Inline,
+    Above
+}
+
 export enum ValidationPhase {
     Parse,
     ToJSON,
