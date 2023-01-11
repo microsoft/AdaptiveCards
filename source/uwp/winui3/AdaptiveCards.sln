@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectModelCsProjection", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinUI3ObjectModelTest", "WinUI3ObjectModelTest\WinUI3ObjectModelTest.csproj", "{68A0612F-58C1-4A06-9D9F-6FD6D5F3E9F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedRenderer", "..\SharedRenderer\SharedRenderer.vcxitems", "{DCF1BDA8-E94A-4D57-8ED6-5D30E29B69ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,8 +31,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Debug|Any CPU.Build.0 = Debug|x64
-		{8E2F84C6-5215-4C81-93FC-A35883762E10}.Release|ARM.ActiveCfg = Release|x64
-		{8E2F84C6-5215-4C81-93FC-A35883762E10}.Release|ARM.Build.0 = Release|x64
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Debug|ARM.ActiveCfg = Debug|ARM
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Debug|ARM.Build.0 = Debug|ARM
 		{2D040C7D-757A-4292-BB59-62BC53A83C9F}.Debug|arm64.ActiveCfg = Debug|ARM64
@@ -129,5 +129,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\SharedObjectModel\SharedObjectModel.vcxitems*{8e2f84c6-5215-4c81-93fc-a35883762e10}*SharedItemsImports = 4
 		..\SharedObjectModel\SharedObjectModel.vcxitems*{bb89bde2-fa11-4f6e-a27d-7025063b8b21}*SharedItemsImports = 9
+		..\SharedRenderer\SharedRenderer.vcxitems*{dcf1bda8-e94a-4d57-8ed6-5d30e29b69ed}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
