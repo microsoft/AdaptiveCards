@@ -3,6 +3,12 @@
 
 #pragma once
 
+#ifndef USE_WINUI3
+#define Xaml_OM Uwp
+#else
+#define Xaml_OM Winui3
+#endif
+
 #include <winrt/base.h>
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Data.Xml.Dom.h>
@@ -53,7 +59,7 @@ namespace winrt
     using namespace xaml::Media::Imaging;
     using namespace xaml::Shapes;
 
-    using namespace ::winrt::AdaptiveCards::ObjectModel::Uwp;
+    using namespace ::winrt::AdaptiveCards::ObjectModel::Xaml_OM;
 
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
     namespace AdaptiveCards::Rendering::Uwp{}
@@ -104,4 +110,4 @@ namespace winrt
 
     // using namespace winrt::Windows::UI::Text
     using TextDecorations = ::winrt::Windows::UI::Text::TextDecorations;
-}
+} // namespace winrt
