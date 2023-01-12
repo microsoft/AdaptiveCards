@@ -13,7 +13,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<render_xaml::XamlBuilder> xamlBuilder) :
+    AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> xamlBuilder) :
         m_xamlBuilder(xamlBuilder)
     {
     }
@@ -44,7 +44,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    winrt::UIElement render_xaml::XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
+    winrt::UIElement ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                           winrt::AdaptiveRenderContext const& renderContext,
                                                           winrt::AdaptiveRenderArgs const& renderArgs)
     {
@@ -270,7 +270,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     template<typename T>
-    void render_xaml::XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
                                                        T const& uiElement,
                                                        winrt::AdaptiveCardResourceResolvers const& resolvers,
                                                        bool isAutoSize,
@@ -483,7 +483,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    winrt::ImageSource render_xaml::XamlBuilder::CreateImageSource(bool isImageSvg)
+    winrt::ImageSource ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::CreateImageSource(bool isImageSvg)
     {
         if (isImageSvg)
         {
@@ -499,7 +499,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
     // Issue #8127
     template<typename T>
-    void render_xaml::XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
     {
         winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
@@ -542,13 +542,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     template<typename T>
-    void render_xaml::XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
 
     template<>
-    void render_xaml::XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
                                                                   winrt::ImageSource const& imageSource,
                                                                   winrt::Stretch stretch)
     {
@@ -560,7 +560,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     };
 
     template<>
-    void render_xaml::XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& ellipse,
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& ellipse,
                                                                winrt::IInspectable const& parentElement,
                                                                winrt::IInspectable const& imageContainer,
                                                                bool isVisible,
@@ -615,7 +615,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     template<typename T>
-    void render_xaml::XamlBuilder::SetAutoSize(T const& destination,
+    void ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::SetAutoSize(T const& destination,
                                                winrt::IInspectable const& parentElement,
                                                winrt::IInspectable const&, /* imageContainer */
                                                bool isVisible,
@@ -660,7 +660,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    boolean render_xaml::XamlBuilder::IsSvgImage(std::string url)
+    boolean ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::IsSvgImage(std::string url)
     {
         // Question: is this check sufficient?
         auto foundSvg = url.find("svg");

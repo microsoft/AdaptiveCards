@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         try
         {
             renderContext.LinkSubmitActionToCard(action, renderArgs);
-            return render_xaml::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
+            return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {

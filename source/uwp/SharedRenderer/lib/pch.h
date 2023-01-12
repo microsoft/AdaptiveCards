@@ -41,9 +41,7 @@
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 
-namespace render_xaml = ::AdaptiveCards::Rendering::Xaml_Rendering;
-
-namespace XamlHelpers = render_xaml::XamlHelpers;
+namespace XamlHelpers = ::AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers;
 
 #ifndef MAKE_HRESULT
 #define MAKE_HRESULT(sev, fac, code) \

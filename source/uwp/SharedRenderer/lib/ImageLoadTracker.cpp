@@ -96,7 +96,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         m_svgEventRevokers.clear();
     }
 
-    void ImageLoadTracker::AddListener(render_xaml::IImageLoadTrackerListener* listener)
+    void ImageLoadTracker::AddListener(::AdaptiveCards::Rendering::Xaml_Rendering::IImageLoadTrackerListener* listener)
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -104,7 +104,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    void ImageLoadTracker::RemoveListener(render_xaml::IImageLoadTrackerListener* listener)
+    void ImageLoadTracker::RemoveListener(::AdaptiveCards::Rendering::Xaml_Rendering::IImageLoadTrackerListener* listener)
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
