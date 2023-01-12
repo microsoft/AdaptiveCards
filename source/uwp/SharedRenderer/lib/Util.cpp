@@ -589,7 +589,7 @@ winrt::IAdaptiveTextElement CopyTextElement(winrt::IAdaptiveTextElement const& t
     return nullptr;
 }
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     void RegisterDefaultElementRenderers(winrt::implementation::AdaptiveElementRendererRegistration* registration,
                                          winrt::com_ptr<XamlBuilder> xamlBuilder)

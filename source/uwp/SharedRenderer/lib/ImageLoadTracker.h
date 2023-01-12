@@ -4,7 +4,7 @@
 
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     // Q: Can we have TrackedImageDetails and TrackedSvgImageDetails extend a base class?
     // If we do this, we could just store one map of the image details

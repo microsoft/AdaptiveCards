@@ -4,7 +4,7 @@
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveCardResourceResolvers.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     void AdaptiveCardResourceResolvers::Set(hstring const& scheme, winrt::IAdaptiveCardResourceResolver const& resolver)
     {

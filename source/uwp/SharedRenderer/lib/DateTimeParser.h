@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     class DateTimeParser
     {

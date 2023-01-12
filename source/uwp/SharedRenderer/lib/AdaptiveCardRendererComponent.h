@@ -6,7 +6,7 @@
 #include "AdaptiveCardRenderer.g.h"
 #include "AdaptiveHostConfig.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     // This class is effectively a singleton, and stays around between subsequent renders.
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
@@ -98,7 +98,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };
 }
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer, implementation::AdaptiveCardRenderer>
     {

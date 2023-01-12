@@ -9,7 +9,7 @@
 #include "LinkButton.h"
 #include "WholeItemsPanel.h"
 
-namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 {
     winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig)
     {

@@ -6,7 +6,7 @@
 #include "AdaptiveTableRenderer.g.cpp"
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::FrameworkElement AdaptiveTableRenderer::RenderCell(winrt::AdaptiveTableCell const& cell,
                                                               winrt::AdaptiveRenderContext const& renderContext,

@@ -6,7 +6,7 @@
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     struct XamlBuilder : winrt::implements<XamlBuilder, winrt::IInspectable, IImageLoadTrackerListener>
     {

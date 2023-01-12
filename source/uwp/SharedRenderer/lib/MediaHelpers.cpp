@@ -10,7 +10,7 @@ const double c_playIconOpacity = .5;
 const winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
 const std::unordered_set<winrt::hstring> supportedCaptionTypes = {L"vtt", L"srt"};
 
-namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 {
     winrt::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,

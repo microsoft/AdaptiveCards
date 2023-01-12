@@ -4,7 +4,7 @@
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveFeatureRegistration.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveFeatureRegistration::AdaptiveFeatureRegistration(std::shared_ptr<::AdaptiveCards::FeatureRegistration> sharedParserRegistration) :
         m_sharedFeatureRegistration(sharedParserRegistration)

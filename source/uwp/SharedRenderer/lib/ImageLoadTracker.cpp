@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "ImageLoadTracker.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     ImageLoadTracker::~ImageLoadTracker()
     {

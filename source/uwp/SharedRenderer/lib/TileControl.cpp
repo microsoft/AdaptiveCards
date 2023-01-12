@@ -6,7 +6,7 @@
 #include "TileControl.g.cpp"
 #include <cmath>
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     TileControl::TileControl()
     {

@@ -11,7 +11,7 @@
 #include <robuffer.h>
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<render_xaml::XamlBuilder> xamlBuilder) :
         m_xamlBuilder(xamlBuilder)
@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 }
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //

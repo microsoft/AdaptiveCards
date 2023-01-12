@@ -6,7 +6,7 @@
 #include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveFontTypesDefinition.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveFontTypesDefinition::AdaptiveFontTypesDefinition(::AdaptiveCards::FontTypesDefinition const& typesDefinition) :
         Default{winrt::make<implementation::AdaptiveFontTypeDefinition>(typesDefinition.defaultFontType)},

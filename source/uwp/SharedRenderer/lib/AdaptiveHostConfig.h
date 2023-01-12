@@ -4,7 +4,7 @@
 
 #include "AdaptiveHostConfig.g.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct DECLSPEC_UUID("6A0EFDB7-AC1B-4C76-981E-2188297095AD") AdaptiveHostConfig
         : AdaptiveHostConfigT<AdaptiveHostConfig, ITypePeek>
@@ -46,7 +46,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         static winrt::AdaptiveHostConfigParseResult _FromJsonString(const std::string& jsonString);
     };
 }
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct AdaptiveHostConfig : AdaptiveHostConfigT<AdaptiveHostConfig, implementation::AdaptiveHostConfig>
     {

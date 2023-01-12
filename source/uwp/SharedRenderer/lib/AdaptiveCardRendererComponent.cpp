@@ -36,7 +36,7 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveCardRenderer::AdaptiveCardRenderer() :
         m_elementRendererRegistration(winrt::make_self<implementation::AdaptiveElementRendererRegistration>()),

@@ -7,7 +7,7 @@
 #include "AdaptiveBase64Util.h"
 #include "WholeItemsPanel.h"
 
-namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 

@@ -4,7 +4,7 @@
 #include "InputValue.h"
 #include "json/json.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
 {
     InputValue::InputValue(winrt::IAdaptiveInputElement const& adaptiveInputElement,
                            winrt::UIElement const& uiInputElement,

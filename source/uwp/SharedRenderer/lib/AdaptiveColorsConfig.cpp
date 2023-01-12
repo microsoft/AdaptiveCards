@@ -5,7 +5,7 @@
 #include "AdaptiveColorConfig.h"
 #include "AdaptiveColorsConfig.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveColorsConfig::AdaptiveColorsConfig(::AdaptiveCards::ColorsConfig colorsConfig)
     {

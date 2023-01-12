@@ -7,7 +7,7 @@
 #include "ActionHelpers.h"
 #include "InputValue.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     std::tuple<winrt::UIElement, winrt::Border>
     AdaptiveTextInputRenderer::HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,

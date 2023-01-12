@@ -4,7 +4,7 @@
 
 #include "AdaptiveActionsConfig.g.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct AdaptiveActionsConfig : AdaptiveActionsConfigT<AdaptiveActionsConfig>
     {
@@ -20,7 +20,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         property<uint32_t> IconSize;
     };
 }
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct AdaptiveActionsConfig : AdaptiveActionsConfigT<AdaptiveActionsConfig, implementation::AdaptiveActionsConfig>
     {

@@ -5,7 +5,7 @@
 #include "AdaptiveFactSetTextConfig.h"
 #include "AdaptiveFactSetTextConfig.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveFactSetTextConfig::AdaptiveFactSetTextConfig(::AdaptiveCards::FactSetTextConfig const& textConfig) :
         AdaptiveTextStyleConfigBase(textConfig)
