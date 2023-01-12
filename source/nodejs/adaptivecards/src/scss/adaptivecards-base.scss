@@ -313,16 +313,20 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-choiceSetInput-inputStyle-revealOnHover {
-            appearance: none;
+        &.ac-multichoiceInput {
+            &.ac-choiceSetInput-compact {
+                &.ac-inputStyle-revealOnHover {
+                    appearance: none;
+                }
+            }
         }
     }
 
-    .ac-adaptiveCard:hover .ac-inputStyle-revealOnHover {
+    .ac-adaptiveCard:hover .ac-input.ac-inputStyle-revealOnHover {
         border: $revealOnHover-subdued-border;
     }
 
-    .ac-adaptiveCard:hover .ac-choiceSetInput-inputStyle-revealOnHover {
+    .ac-adaptiveCard:hover .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-inputStyle-revealOnHover {
         appearance: auto;
     }
 }

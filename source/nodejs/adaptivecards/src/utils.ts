@@ -272,18 +272,3 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
         e.cancelBubble = true;
     };
 }
-
-export function updateDateOrTimePickerVisibility(input: HTMLInputElement, hover: boolean) {
-    if (!!hover) {
-        // shows the time/date picker icon
-        input.readOnly = false;
-        // shows the cross button icon
-        input.required = false;
-    } else {
-        // hides the time/date picker icon
-        input.readOnly = true;
-        // hides the cross button icon
-        input.required = true;
-    }
-    
-}
