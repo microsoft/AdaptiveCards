@@ -223,9 +223,3 @@ export enum CarouselInteractionEvent {
     Pagination,
     Autoplay
 }
-
-
-export enum CardEventType {
-    OnMouseEnterOnCard,
-    OnMouseLeaveOnCard
-}
