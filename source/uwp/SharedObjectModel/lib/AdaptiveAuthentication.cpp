@@ -7,7 +7,7 @@
 #include "AdaptiveAuthCardButton.h"
 #include "AdaptiveAuthentication.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveAuthentication::AdaptiveAuthentication(const std::shared_ptr<::AdaptiveCards::Authentication>& sharedAuthentication)
     {
@@ -19,14 +19,14 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             TokenExchangeResource = *winrt::make_self<implementation::AdaptiveTokenExchangeResource>(tokenExchangeResource);
         }
 
-        std::vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton> buttons;
+        std::vector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveAuthCardButton> buttons;
         for (auto& button : sharedAuthentication->GetButtons())
         {
             auto newShared = winrt::make_self<implementation::AdaptiveAuthCardButton>(button);
             buttons.push_back(*newShared);
         }
 
-        Buttons = winrt::single_threaded_vector<Uwp::AdaptiveAuthCardButton>(std::move(buttons));
+        Buttons = winrt::single_threaded_vector<Xaml_OM::AdaptiveAuthCardButton>(std::move(buttons));
     }
 
     std::shared_ptr<::AdaptiveCards::Authentication> AdaptiveAuthentication::GetSharedModel()

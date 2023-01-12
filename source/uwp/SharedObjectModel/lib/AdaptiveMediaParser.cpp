@@ -8,16 +8,16 @@
 #include "AdaptiveMediaParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveMediaParser::FromJson(
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement AdaptiveMediaParser::FromJson(
         winrt::Windows::Data::Json::JsonObject const& inputJson,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
-        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveWarning> const& warnings)
     {
-        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveMedia, ::AdaptiveCards::Media, ::AdaptiveCards::MediaParser>(
+        return ::AdaptiveCards::ObjectModel::Xaml_OM::FromJson<implementation::AdaptiveMedia, ::AdaptiveCards::Media, ::AdaptiveCards::MediaParser>(
                    inputJson, elementParsers, actionParsers, warnings)
-            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
+            .as<winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement>();
     }
 }

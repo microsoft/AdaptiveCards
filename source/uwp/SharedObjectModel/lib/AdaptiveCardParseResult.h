@@ -1,19 +1,19 @@
 #pragma once
 #include "AdaptiveCardParseResult.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult>
     {
         AdaptiveCardParseResult() : AdaptiveCardParseResult(nullptr) {}
-        AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card);
+        AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveCard const& card);
 
-        property<Uwp::AdaptiveCard> AdaptiveCard{nullptr};
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveError>> Errors;
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>> Warnings;
+        property<Xaml_OM::AdaptiveCard> AdaptiveCard{nullptr};
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveError>> Errors;
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveWarning>> Warnings;
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveCardParseResult : AdaptiveCardParseResultT<AdaptiveCardParseResult, implementation::AdaptiveCardParseResult>
     {

@@ -5,7 +5,7 @@
 #include "AdaptiveUnsupportedAction.h"
 #include "AdaptiveUnsupportedAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveUnsupportedAction::AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknown)
     {

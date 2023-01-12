@@ -3,9 +3,9 @@
 #include "pch.h"
 #include "CustomElementWrapper.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::Xaml_OM
 {
-    CustomElementWrapper::CustomElementWrapper(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement) :
+    CustomElementWrapper::CustomElementWrapper(winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement const& cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)
     {
         BaseElement::SetId(GetCardElementId());
@@ -25,7 +25,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     void CustomElementWrapper::SetSpacing(Spacing value)
     {
-        m_cardElement.Spacing(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::Spacing>(value));
+        m_cardElement.Spacing(static_cast<winrt::AdaptiveCards::ObjectModel::Xaml_OM::Spacing>(value));
     }
 
     void CustomElementWrapper::SetId(std::string&& value)
@@ -48,13 +48,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
     void CustomElementWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
         if (auto remoteResources =
-                m_cardElement.as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources>())
+                m_cardElement.as<winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveElementWithRemoteResources>())
         {
             RemoteResourceElementToRemoteResourceInformationVector(remoteResources, resourceInfo);
         }
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement CustomElementWrapper::GetWrappedElement()
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement CustomElementWrapper::GetWrappedElement()
     {
         return m_cardElement;
     }

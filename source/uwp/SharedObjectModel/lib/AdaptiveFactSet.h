@@ -5,13 +5,13 @@
 #include "FactSet.h"
 #include "AdaptiveFactSet.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("3aacc7c9-f600-4928-ae06-4cc21a83f4b3") AdaptiveFactSet : AdaptiveFactSetT<AdaptiveFactSet, ITypePeek>, AdaptiveCardElementBase
     {
         AdaptiveFactSet(const std::shared_ptr<::AdaptiveCards::FactSet>& sharedFactSet = std::make_shared<::AdaptiveCards::FactSet>());
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveFact>> Facts;
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveFact>> Facts;
 
         auto ElementType() { return ElementType::FactSet; }
 
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveFactSet : AdaptiveFactSetT<AdaptiveFactSet, implementation::AdaptiveFactSet>
     {

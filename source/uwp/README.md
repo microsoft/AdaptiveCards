@@ -1,8 +1,8 @@
 
 
-# Adaptive Cards in UWP
+# Adaptive Cards in XAML
 
-This directory contains the renderers and tooling for the UWP platform. 
+This directory contains the renderers and tooling for the UWP and Windows AppSDK (WinUI 3) platforms. 
 
 ## Requirements
 
@@ -14,16 +14,23 @@ Since Adaptive Cards are hosted directly within the Windows OS we had implementa
 
 ## How to test
 
-To run the test project, see the [AdaptiveCardTestApp](AdaptiveCardTestApp/README.md) folder
+To run the test project for UWP, see the [AdaptiveCardTestApp](AdaptiveCardTestApp/README.md) folder
 
 ## Testing
 
-The UWP Renderer currently supports the following type of testing:
+The UWP Renderer currently supports the following types of testing:
 
 | Type | Project | Location |
 | --- | --- | --- |
 | Unit tests | UWPUnitTests | [Location](./UWPUnitTests) |
 | UI tests | UWPUITests | [Location](./UWPUITests) |
+
+The WinUI 3 Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Object Model tests | WinUI3ObjectModelTest | [Location](./winui3/WinUI3ObjectModelTest) |
+
 ## How to add a new NuGet package
 
 Due to limitations in our build system and Test infrastructure libraries used for UI tests, the process to add new NuGet packages has changed. The new process requires us to push any NuGet packages to a new NuGet feed called `AdaptiveCards-public` where we can have packages that come from any number of sources.
@@ -45,7 +52,7 @@ Once the new package has been tested locally and is ready to be merged:
 1. If you already have NuGet, you can skip to step 3, otherwise download the [lastest NuGet version](https://www.nuget.org/downloads)
 2. [Optional] Add the nuget.exe location to the PATH environment variable
 3. Open Visual Studio and start a Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
-4. Manually push any nuget packages you added by typing the following into the Package manager console. You must do this from a directory under AdaptiveCards2\source, the location of Nuget.config:
+4. Manually push any nuget packages you added by typing the following into the Package manager console. You must do this from a directory under AdaptiveCards\source, the location of Nuget.config:
 
 ``` nuget.exe push -Source "AdaptiveCards-Public" -ApiKey az <PackagePath\PackageName.nupkg> -SkipDuplicate```
 
@@ -53,7 +60,7 @@ Once the new package has been tested locally and is ready to be merged:
 >
 > * Downloaded NuGet packages are usually located at `C:\Users\<UserName>\.nuget\packages`
 
-### Troubleshooting:
+### Troubleshooting
 
 If you see the following, you may be trying to run nuget.exe from a path not under AdaptiveCards\source:
 

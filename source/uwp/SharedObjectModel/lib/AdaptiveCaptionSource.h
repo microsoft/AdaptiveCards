@@ -6,7 +6,7 @@
 #include "CaptionSource.h"
 #include "AdaptiveCaptionSource.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("64A2DA59-EFA4-47E3-B704-9B3777DE2907") AdaptiveCaptionSource
         : AdaptiveCaptionSourceT<AdaptiveCaptionSource, ITypePeek>, AdaptiveContentSource
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveCaptionSource : AdaptiveCaptionSourceT<AdaptiveCaptionSource, implementation::AdaptiveCaptionSource>
     {

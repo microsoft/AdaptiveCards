@@ -5,21 +5,21 @@
 #include "ColumnSet.h"
 #include "AdaptiveColumnSet.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("3f54eed2-03e8-480b-aede-6f4faae4b731") AdaptiveColumnSet : AdaptiveColumnSetT<AdaptiveColumnSet, ITypePeek>, AdaptiveCardElementBase
     {
         AdaptiveColumnSet(const std::shared_ptr<::AdaptiveCards::ColumnSet>& sharedColumnSet = std::make_unique<::AdaptiveCards::ColumnSet>());
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveColumn>> Columns;
-        property<Uwp::IAdaptiveActionElement> SelectAction;
-        property<Uwp::ContainerStyle> Style;
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveColumn>> Columns;
+        property<Xaml_OM::IAdaptiveActionElement> SelectAction;
+        property<Xaml_OM::ContainerStyle> Style;
         property<uint32_t> MinHeight;
         property<bool> Bleed;
-        property<Uwp::BleedDirection> BleedDirection;
+        property<Xaml_OM::BleedDirection> BleedDirection;
 
         // IAdaptiveCardElement
-        auto ElementType() { return Uwp::ElementType::ColumnSet; }
+        auto ElementType() { return Xaml_OM::ElementType::ColumnSet; }
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveColumnSet : AdaptiveColumnSetT<AdaptiveColumnSet, implementation::AdaptiveColumnSet>
     {

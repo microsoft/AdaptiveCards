@@ -5,14 +5,14 @@
 #include "ImageSet.h"
 #include "AdaptiveImageSet.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, ITypePeek>, AdaptiveCardElementBase
     {
         AdaptiveImageSet(const std::shared_ptr<::AdaptiveCards::ImageSet>& sharedImageSet = std::make_shared<::AdaptiveCards::ImageSet>());
 
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::AdaptiveImage>> Images;
-        property<Uwp::ImageSize> ImageSize;
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveImage>> Images;
+        property<Xaml_OM::ImageSize> ImageSize;
 
         // IAdaptiveCardElement
         auto ElementType() { return ElementType::ImageSet; }
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveImageSet : AdaptiveImageSetT<AdaptiveImageSet, implementation::AdaptiveImageSet>
     {

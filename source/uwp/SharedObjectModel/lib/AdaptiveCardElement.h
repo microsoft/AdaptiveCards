@@ -5,26 +5,26 @@
 #include "SemanticVersion.h"
 #include "BaseElement.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct AdaptiveCardElementBase
     {
         void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel);
 
-        property<Uwp::Spacing> Spacing;
+        property<Xaml_OM::Spacing> Spacing;
         property<bool> Separator;
         property<bool> IsVisible;
         property<hstring> Id;
         property<uint32_t> InternalId;
         property<hstring> ElementTypeString;
         property<winrt::Windows::Data::Json::JsonObject> AdditionalProperties;
-        property<Uwp::HeightType> Height;
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>> Requirements;
+        property<Xaml_OM::HeightType> Height;
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveRequirement>> Requirements;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType FallbackType() { return m_fallbackType; }
-        void FallbackType(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& fallback);
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FallbackContent() { return m_fallbackContent; }
-        void FallbackContent(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& content);
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::FallbackType FallbackType() { return m_fallbackType; }
+        void FallbackType(winrt::AdaptiveCards::ObjectModel::Xaml_OM::FallbackType const& fallback);
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement FallbackContent() { return m_fallbackContent; }
+        void FallbackContent(winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement const& content);
 
         winrt::Windows::Data::Json::JsonObject ToJson();
 
@@ -33,7 +33,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() = 0;
 
     private:
-        winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType m_fallbackType;
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement m_fallbackContent;
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::FallbackType m_fallbackType;
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement m_fallbackContent;
     };
 }

@@ -5,7 +5,7 @@
 #include "UnknownElement.h"
 #include "AdaptiveUnsupportedElement.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
         : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, ITypePeek>,
@@ -25,7 +25,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveUnsupportedElement : AdaptiveUnsupportedElementT<AdaptiveUnsupportedElement, implementation::AdaptiveUnsupportedElement>
     {

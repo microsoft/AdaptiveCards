@@ -5,7 +5,7 @@
 #include "ChoiceInput.h"
 #include "AdaptiveChoiceInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
         : AdaptiveChoiceInputT<AdaptiveChoiceInput, ITypePeek>
@@ -20,7 +20,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         hstring Value();
         void Value(hstring const& value);
 
-        auto ElementType() { return Uwp::ElementType::ChoiceInput; }
+        auto ElementType() { return Xaml_OM::ElementType::ChoiceInput; }
 
         std::shared_ptr<::AdaptiveCards::ChoiceInput> GetSharedModel();
 
@@ -32,7 +32,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveChoiceInput : AdaptiveChoiceInputT<AdaptiveChoiceInput, implementation::AdaptiveChoiceInput>
     {

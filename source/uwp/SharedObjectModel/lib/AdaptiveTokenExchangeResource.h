@@ -4,7 +4,7 @@
 #include "TokenExchangeResource.h"
 #include "AdaptiveTokenExchangeResource.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveTokenExchangeResource
         : AdaptiveTokenExchangeResourceT<AdaptiveTokenExchangeResource, ITypePeek>
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         std::shared_ptr<::AdaptiveCards::TokenExchangeResource> GetSharedModel();
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveTokenExchangeResource : AdaptiveTokenExchangeResourceT<AdaptiveTokenExchangeResource, implementation::AdaptiveTokenExchangeResource>
     {

@@ -4,19 +4,19 @@
 
 #include "AdaptiveActionParserRegistration.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
         : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, ITypePeek>
     {
         using RegistrationMap =
-            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
     public:
         AdaptiveActionParserRegistration();
 
-        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser const& Parser);
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser Get(hstring const& type);
+        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionParser const& Parser);
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveActionParser Get(hstring const& type);
         void Remove(hstring const& type);
 
         // ITypePeek method
@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveActionParserRegistration
         : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, implementation::AdaptiveActionParserRegistration>
@@ -42,20 +42,20 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
     };
 }
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::Xaml_OM
 {
     constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
 
     class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
-        SharedModelActionParser(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& parserRegistration);
+        SharedModelActionParser(winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration const& parserRegistration);
 
         // AdaptiveCards::ActionElementParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration GetAdaptiveParserRegistration();
+        winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration GetAdaptiveParserRegistration();
 
     private:
         // This a a weak reference to the UWP level AdaptiveActionParserRegistration for this parse. Store as a weak
@@ -65,6 +65,6 @@ namespace AdaptiveCards::ObjectModel::Uwp
         //      m_parserRegistration(AdaptiveActionParserRegistration)->
         //          m_sharedParserRegistration(ActionParserRegistration)->
         //              m_cardElementParsers (Contains this object)
-        winrt::weak_ref<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration> m_parserRegistration;
+        winrt::weak_ref<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveActionParserRegistration> m_parserRegistration;
     };
 }

@@ -6,7 +6,7 @@
 #include "AdaptiveInputElement.h"
 #include "AdaptiveNumberInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("e54a7a83-8961-4745-8663-bbf5d45b6345") AdaptiveNumberInput : AdaptiveNumberInputT<AdaptiveNumberInput, ITypePeek>, AdaptiveInputElementBase
     {
@@ -28,7 +28,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveNumberInput : AdaptiveNumberInputT<AdaptiveNumberInput, implementation::AdaptiveNumberInput>
     {

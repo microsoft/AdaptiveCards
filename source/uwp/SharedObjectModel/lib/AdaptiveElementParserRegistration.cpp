@@ -23,7 +23,7 @@
 #include "CustomElementWrapper.h"
 #include "AdaptiveElementParserRegistration.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
@@ -31,14 +31,14 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         // Register this (UWP) registration with a well known guid string in the shared model
         // registration so we can get it back again
-        m_sharedParserRegistration->AddParser(::AdaptiveCards::ObjectModel::Uwp::c_uwpElementParserRegistration,
-                                              std::make_shared<::AdaptiveCards::ObjectModel::Uwp::SharedModelElementParser>(*this));
+        m_sharedParserRegistration->AddParser(::AdaptiveCards::ObjectModel::Xaml_OM::c_uwpElementParserRegistration,
+                                              std::make_shared<::AdaptiveCards::ObjectModel::Xaml_OM::SharedModelElementParser>(*this));
 
         m_isInitializing = false;
     }
 
     void AdaptiveElementParserRegistration::Set(hstring const& type,
-                                                winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser const& Parser)
+                                                winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveElementParser const& Parser)
     {
         auto typeString = HStringToUTF8(type);
 
@@ -47,13 +47,13 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         if (!m_isInitializing)
         {
             m_sharedParserRegistration->AddParser(
-                typeString, std::make_shared<::AdaptiveCards::ObjectModel::Uwp::SharedModelElementParser>(*this));
+                typeString, std::make_shared<::AdaptiveCards::ObjectModel::Xaml_OM::SharedModelElementParser>(*this));
         }
 
         (*m_registration)[typeString] = Parser;
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser AdaptiveElementParserRegistration::Get(hstring const& type)
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveElementParser AdaptiveElementParserRegistration::Get(hstring const& type)
     {
         auto found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
@@ -98,7 +98,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     }
 }
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::Xaml_OM
 {
     std::shared_ptr<::AdaptiveCards::BaseCardElement>
     SharedModelElementParser::DeserializeFromString(::AdaptiveCards::ParseContext& context, const std::string& jsonString)
@@ -106,7 +106,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return Deserialize(context, ::AdaptiveCards::ParseUtil::GetJsonValueFromString(jsonString));
     }
 
-    SharedModelElementParser::SharedModelElementParser(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& parserRegistration)
+    SharedModelElementParser::SharedModelElementParser(winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration const& parserRegistration)
     {
         m_parserRegistration = winrt::make_weak(parserRegistration);
     }
@@ -122,17 +122,17 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         // Get the action parser registration from the shared model
         auto adaptiveActionParserRegistration = GetAdaptiveActionParserRegistrationFromSharedModel(context.actionParserRegistration);
-        auto adaptiveWarnings = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>();
+        auto adaptiveWarnings = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveWarning>();
 
         auto cardElement =
             parser.FromJson(jsonObject, adaptiveElementParserRegistration, adaptiveActionParserRegistration, adaptiveWarnings);
 
         AdaptiveWarningsToSharedWarnings(adaptiveWarnings, context.warnings);
 
-        return std::make_shared<::AdaptiveCards::ObjectModel::Uwp::CustomElementWrapper>(cardElement);
+        return std::make_shared<::AdaptiveCards::ObjectModel::Xaml_OM::CustomElementWrapper>(cardElement);
     }
 
-    winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration SharedModelElementParser::GetAdaptiveParserRegistration()
+    winrt::AdaptiveCards::ObjectModel::Xaml_OM::AdaptiveElementParserRegistration SharedModelElementParser::GetAdaptiveParserRegistration()
     {
         return m_parserRegistration.get();
     }

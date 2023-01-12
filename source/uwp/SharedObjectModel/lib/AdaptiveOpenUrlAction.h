@@ -6,7 +6,7 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveOpenUrlAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, ITypePeek>, AdaptiveActionElementBase
     {
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveOpenUrlAction : AdaptiveOpenUrlActionT<AdaptiveOpenUrlAction, implementation::AdaptiveOpenUrlAction>
     {

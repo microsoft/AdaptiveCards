@@ -6,15 +6,15 @@
 #include "AdaptiveTableRow.h"
 #include "AdaptiveTableColumnDefinition.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveTable::AdaptiveTable(std::shared_ptr<::AdaptiveCards::Table> const& sharedTable)
     {
         ShowGridLines = sharedTable->GetShowGridLines();
         FirstRowAsHeaders = sharedTable->GetFirstRowAsHeaders();
-        VerticalCellContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedTable->GetVerticalCellContentAlignment());
-        HorizontalCellContentAlignment = opt_cast<Uwp::HAlignment>(sharedTable->GetHorizontalCellContentAlignment());
-        GridStyle = static_cast<Uwp::ContainerStyle>(sharedTable->GetGridStyle());
+        VerticalCellContentAlignment = opt_cast<Xaml_OM::VerticalContentAlignment>(sharedTable->GetVerticalCellContentAlignment());
+        HorizontalCellContentAlignment = opt_cast<Xaml_OM::HAlignment>(sharedTable->GetHorizontalCellContentAlignment());
+        GridStyle = static_cast<Xaml_OM::ContainerStyle>(sharedTable->GetGridStyle());
         Rows = GenerateVectorProjection<implementation::AdaptiveTableRow>(sharedTable->GetRows());
         Columns = GenerateVectorProjection<implementation::AdaptiveTableColumnDefinition>(sharedTable->GetColumns());
 
