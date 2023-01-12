@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     {
         AdaptiveShowCardActionConfig(::AdaptiveCards::ShowCardActionConfig const& showCardActionConfig = {});
 
-        property<winrt_render_xaml::ActionMode> ActionMode;
+        property<winrt::AdaptiveCards::Rendering::Xaml_Rendering::ActionMode> ActionMode;
         property<winrt::ContainerStyle> Style;
         property<uint32_t> InlineTopMargin;
     };
