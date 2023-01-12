@@ -351,7 +351,7 @@ export abstract class CardElement extends CardObject {
 
     protected updateInputsVisualState(hover: boolean) {
         const allInputs: Input[] = this.getAllInputs();
-        allInputs.forEach((input) => input.updateVisualStateOnHover(hover));
+        allInputs.forEach((input) => input.updateVisualState(false /*initialRender*/, hover /*hover*/));
     }
 
     protected isDisplayed(): boolean {
@@ -3534,7 +3534,7 @@ export abstract class Input extends CardElement implements IInput {
                 }
             }
 
-            this.updateVisualStateOnRender();
+            this.updateVisualState(true /*initialRender*/, false /*hover*/);
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
@@ -3598,13 +3598,12 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
-    updateVisualStateOnHover(hover: boolean): void {
-    }
-
-    updateVisualStateOnRender(): void {
-        // on initial render with inputStyle as RevealOnHover, we will show input fields as read only view
-        if (this._renderedInputControlElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover"));
+    updateVisualState(initialRender: boolean, hover: boolean): void {
+        if (initialRender) {
+            // on initial render, we will show input fields as read only view
+            if (this._renderedInputControlElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover"));
+            }
         }
     }
 
@@ -3872,9 +3871,9 @@ export class TextInput extends Input {
         return renderedInputControl;
     }
 
-    updateVisualStateOnRender(): void {
+    updateVisualState(initialRender: boolean, hover: boolean): void {
         if (!(this.inlineAction || this.isMultiline)) {
-            super.updateVisualStateOnRender();
+            super.updateVisualState(initialRender, hover);
         }
     }
 
@@ -4065,9 +4064,9 @@ export class ToggleInput extends Input {
         return false;
     }
 
-    updateVisualStateOnRender(): void {
+    updateVisualState(initialRender: boolean, hover: boolean): void {
     }
-    
+
     getJsonTypeName(): string {
         return "Input.Toggle";
     }
@@ -4462,9 +4461,9 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    updateVisualStateOnRender(): void {
+    updateVisualState(initialRender: boolean, hover: boolean): void {
         if (!this.isMultiSelect && this.isCompact) {
-            super.updateVisualStateOnRender();
+            super.updateVisualState(initialRender, hover);
         }
     }
 
@@ -4728,17 +4727,12 @@ export class DateInput extends Input {
         return this._dateInputElement;
     }
 
-    updateVisualStateOnRender(): void {
-        super.updateVisualStateOnRender();
+    updateVisualState(initialRender: boolean, hover: boolean): void {
+        super.updateVisualState(initialRender, hover);
 
         if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            updateInputAdornersVisibility(this._dateInputElement, false /*show*/);
-        }
-    }
-
-    updateVisualStateOnHover(hover: boolean): void {
-        if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            updateInputAdornersVisibility(this._dateInputElement, hover /*show*/);
+            // we will hide date picker icon during intial render or when user is not hover
+            updateInputAdornersVisibility(this._dateInputElement, initialRender || !hover /*hide*/);
         }
     }
 
@@ -4874,17 +4868,12 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
-    updateVisualStateOnRender(): void {
-        super.updateVisualStateOnRender();
+    updateVisualState(initialRender: boolean, hover: boolean): void {
+        super.updateVisualState(initialRender, hover);
 
         if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            updateInputAdornersVisibility(this._timeInputElement, false /*show*/);
-        }
-    }
-
-    updateVisualStateOnHover(hover: boolean): void {
-        if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            updateInputAdornersVisibility(this._timeInputElement, hover /*show*/);
+            // we will hide time picker icon during intial render or when user is not hover
+            updateInputAdornersVisibility(this._timeInputElement, initialRender || !hover /*hide*/);
         }
     }
 
@@ -8084,17 +8073,17 @@ function raiseElementVisibilityChangedEvent(
     }
 }
 
-function updateInputAdornersVisibility(input: HTMLInputElement, show: boolean) {
-    if (!!show) {
-        // shows the time/date picker icon
-        input.readOnly = false;
-        // shows the cross button icon
-        input.required = false;
-    } else {
+function updateInputAdornersVisibility(input: HTMLInputElement, hide: boolean) {
+    if (!!hide) {
         // hides the time/date picker icon
         input.readOnly = true;
         // hides the cross button icon
         input.required = true;
+    } else {
+         // shows the time/date picker icon
+         input.readOnly = false;
+         // shows the cross button icon
+         input.required = false;
     }
     
 }
