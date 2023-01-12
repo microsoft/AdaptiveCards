@@ -41,7 +41,7 @@
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
 
-namespace render_xaml = ::AdaptiveCards::Rendering::Uwp;
+namespace render_xaml = ::AdaptiveCards::Rendering::Xaml_Rendering;
 
 namespace XamlHelpers = render_xaml::XamlHelpers;
 

@@ -5,8 +5,10 @@
 
 #ifndef USE_WINUI3
 #define Xaml_OM Uwp
+#define Xaml_Rendering Uwp
 #else
 #define Xaml_OM Winui3
+#define Xaml_Rendering Winui3
 #endif
 
 #include <winrt/base.h>
@@ -62,17 +64,17 @@ namespace winrt
     using namespace ::winrt::AdaptiveCards::ObjectModel::Xaml_OM;
 
     // In order to avoid "namespace not defined" errors we have to define the namespace here too.
-    namespace AdaptiveCards::Rendering::Uwp{}
-    using namespace ::winrt::AdaptiveCards::Rendering::Uwp;
+    namespace AdaptiveCards::Rendering::Xaml_Rendering{}
+    using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering;
 
     // winrt_render_xaml namespace alias used to differentiate in cases where a type exists in both
     // the renderer and the object model (ie. ActionMode)
     namespace winrt_render_xaml = ::winrt::AdaptiveCards::Rendering::Uwp;
 
-    namespace AdaptiveCards::Rendering::Uwp::implementation{}
+    namespace AdaptiveCards::Rendering::Xaml_Rendering::implementation{}
     namespace implementation
     {
-        using namespace ::winrt::AdaptiveCards::Rendering::Uwp::implementation;
+        using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation;
     }
 
     using XamlReader = xaml::Markup::XamlReader;
