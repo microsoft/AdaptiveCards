@@ -6,7 +6,7 @@
 #include "AdaptiveRenderContext.g.cpp"
 #include "InputValue.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveRenderContext::AdaptiveRenderContext() :
         HostConfig{nullptr}, FeatureRegistration{nullptr}, ElementRenderers{nullptr}, ActionRenderers{nullptr},

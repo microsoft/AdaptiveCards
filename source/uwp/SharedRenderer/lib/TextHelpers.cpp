@@ -6,7 +6,7 @@
 #include "TextHelpers.h"
 #include <safeint.h>
 
-using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveCards::Rendering::Xaml_Rendering;
 using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace std::string_literals;

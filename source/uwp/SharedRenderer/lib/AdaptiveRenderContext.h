@@ -7,7 +7,7 @@
 #include "AdaptiveMediaEventInvoker.h"
 #include "AdaptiveRenderContext.g.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext
         : AdaptiveRenderContextT<AdaptiveRenderContext, ITypePeek>
@@ -71,7 +71,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct AdaptiveRenderContext : AdaptiveRenderContextT<AdaptiveRenderContext, implementation::AdaptiveRenderContext>
     {

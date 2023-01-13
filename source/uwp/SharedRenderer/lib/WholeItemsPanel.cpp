@@ -11,7 +11,7 @@
 
 static const float OutsidePanelY = -1000.0f;
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     uint32_t WholeItemsPanel::s_bleedMargin = 0;
 

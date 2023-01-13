@@ -212,7 +212,7 @@ template<typename T> inline T GetValueFromRef(winrt::IReference<T> const& ref, T
     return defaultValue;
 }
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     struct XamlBuilder;
 

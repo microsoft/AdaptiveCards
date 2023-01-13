@@ -11,16 +11,15 @@
 #include <robuffer.h>
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<render_xaml::XamlBuilder> xamlBuilder) :
+    AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> xamlBuilder) :
         m_xamlBuilder(xamlBuilder)
     {
     }
 
-    winrt::UIElement AdaptiveImageRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
-                                                   winrt::AdaptiveRenderContext const& renderContext,
-                                                   winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::UIElement AdaptiveImageRenderer::Render(
+        winrt::IAdaptiveCardElement const& cardElement, winrt::AdaptiveRenderContext const& renderContext, winrt::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -34,7 +33,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     }
 }
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -44,9 +43,10 @@ namespace AdaptiveCards::Rendering::Uwp
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    winrt::UIElement render_xaml::XamlBuilder::BuildImage(winrt::IAdaptiveCardElement const& adaptiveCardElement,
-                                                          winrt::AdaptiveRenderContext const& renderContext,
-                                                          winrt::AdaptiveRenderArgs const& renderArgs)
+    winrt::UIElement XamlBuilder::BuildImage(
+        winrt::IAdaptiveCardElement const& adaptiveCardElement,
+        winrt::AdaptiveRenderContext const& renderContext,
+        winrt::AdaptiveRenderArgs const& renderArgs)
     {
         auto adaptiveImage = adaptiveCardElement.as<winrt::AdaptiveImage>();
 
@@ -101,7 +101,8 @@ namespace AdaptiveCards::Rendering::Uwp
             auto ellipseAsShape = ellipse.as<winrt::Shape>();
             auto backgrondEllipseAsShape = backgroundEllipse.as<winrt::Shape>();
 
-            SetImageOnUIElement(imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, isImageSvg, imageStretch);
+            SetImageOnUIElement(
+                imageUrl, ellipse, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, isImageSvg, imageStretch);
 
             if (size == winrt::ImageSize::None || size == winrt::ImageSize::Stretch || size == winrt::ImageSize::Auto || hasExplicitMeasurements)
             {
@@ -161,7 +162,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
             auto parentElement = renderArgs.ParentElement();
 
-            SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible, isImageSvg);
+            SetImageOnUIElement(
+                imageUrl, xamlImage, resourceResolvers, (size == winrt::ImageSize::Auto), parentElement, frameworkElement, isVisible, isImageSvg);
         }
 
         auto sizeOptions = hostConfig.ImageSizes();
@@ -269,16 +271,17 @@ namespace AdaptiveCards::Rendering::Uwp
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    template<typename T>
-    void render_xaml::XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
-                                                       T const& uiElement,
-                                                       winrt::AdaptiveCardResourceResolvers const& resolvers,
-                                                       bool isAutoSize,
-                                                       winrt::IInspectable const& parentElement,
-                                                       winrt::IInspectable const& imageContainer,
-                                                       bool isVisible,
-                                                       bool isImageSvg,
-                                                       winrt::Stretch stretch)
+    template <typename T>
+    void XamlBuilder::SetImageOnUIElement(
+        winrt::Uri const& imageUrl,
+        T const& uiElement,
+        winrt::AdaptiveCardResourceResolvers const& resolvers,
+        bool isAutoSize,
+        winrt::IInspectable const& parentElement,
+        winrt::IInspectable const& imageContainer,
+        bool isVisible,
+        bool isImageSvg,
+        winrt::Stretch stretch)
     {
         bool mustHideElement = true;
 
@@ -483,7 +486,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::ImageSource render_xaml::XamlBuilder::CreateImageSource(bool isImageSvg)
+    winrt::ImageSource XamlBuilder::CreateImageSource(bool isImageSvg)
     {
         if (isImageSvg)
         {
@@ -498,8 +501,8 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     // Issue #8127
-    template<typename T>
-    void render_xaml::XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
+    template <typename T>
+    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg)
     {
         winrt::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
@@ -541,16 +544,14 @@ namespace AdaptiveCards::Rendering::Uwp
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
-    template<typename T>
-    void render_xaml::XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
+    template <typename T>
+    void XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
 
-    template<>
-    void render_xaml::XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination,
-                                                                  winrt::ImageSource const& imageSource,
-                                                                  winrt::Stretch stretch)
+    template <>
+    void XamlBuilder::SetImageSource<winrt::Ellipse>(winrt::Ellipse const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch)
     {
         winrt::ImageBrush imageBrush{};
         imageBrush.ImageSource(imageSource);
@@ -559,12 +560,13 @@ namespace AdaptiveCards::Rendering::Uwp
         destination.Fill(imageBrush);
     };
 
-    template<>
-    void render_xaml::XamlBuilder::SetAutoSize<winrt::Ellipse>(winrt::Ellipse const& ellipse,
-                                                               winrt::IInspectable const& parentElement,
-                                                               winrt::IInspectable const& imageContainer,
-                                                               bool isVisible,
-                                                               bool imageFiresOpenEvent)
+    template <>
+    void XamlBuilder::SetAutoSize<winrt::Ellipse>(
+        winrt::Ellipse const& ellipse,
+        winrt::IInspectable const& parentElement,
+        winrt::IInspectable const& imageContainer,
+        bool isVisible,
+        bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement && m_enableXamlImageHandling)
@@ -614,12 +616,13 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    template<typename T>
-    void render_xaml::XamlBuilder::SetAutoSize(T const& destination,
-                                               winrt::IInspectable const& parentElement,
-                                               winrt::IInspectable const&, /* imageContainer */
-                                               bool isVisible,
-                                               bool imageFiresOpenEvent)
+    template <typename T>
+    void XamlBuilder::SetAutoSize(
+        T const& destination,
+        winrt::IInspectable const& parentElement,
+        winrt::IInspectable const&, /* imageContainer */
+        bool isVisible,
+        bool imageFiresOpenEvent)
     {
         if (parentElement && m_enableXamlImageHandling)
         {
@@ -640,9 +643,9 @@ namespace AdaptiveCards::Rendering::Uwp
                 auto weakImage = winrt::make_weak(xamlImage);
 
                 xamlImage.ImageOpened(
-                    [weakImage, weakParent, imageSource, isVisible](winrt::IInspectable const& /*sender*/,
-                                                                                  winrt::RoutedEventArgs const&
-                                                                                  /*args*/) -> void
+                    [weakImage, weakParent, imageSource, isVisible](
+                        winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const&
+                        /*args*/) -> void
                     {
                         if (const auto lambdaImageAsFrameworkElement = weakImage.get())
                         {
@@ -660,7 +663,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    boolean render_xaml::XamlBuilder::IsSvgImage(std::string url)
+    boolean XamlBuilder::IsSvgImage(std::string url)
     {
         // Question: is this check sufficient?
         auto foundSvg = url.find("svg");

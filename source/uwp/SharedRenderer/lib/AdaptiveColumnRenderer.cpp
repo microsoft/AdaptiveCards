@@ -9,7 +9,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveColumnRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                     winrt::AdaptiveRenderContext const& renderContext,
@@ -52,7 +52,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto childItems = adaptiveColumn.Items();
 
-            render_xaml::XamlBuilder::BuildPanelChildren(childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
+            ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildPanelChildren(childItems, columnPanel, renderContext, newRenderArgs, [](auto&&) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
@@ -105,7 +105,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             auto hostConfig = renderContext.HostConfig();
 
-            auto columnControl = render_xaml::ActionHelpers::HandleSelectAction(
+            auto columnControl = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, columnAsUIElement, XamlHelpers::SupportsInteractivity(hostConfig), false);
 
             return columnControl;

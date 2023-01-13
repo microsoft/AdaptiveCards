@@ -9,7 +9,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveColumnSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                        winrt::AdaptiveRenderContext const& renderContext,
@@ -142,7 +142,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
             XamlHelpers::AppendXamlElementToPanel(xamlGrid, gridContainer, columnSetHeightType);
 
-            return render_xaml::ActionHelpers::HandleSelectAction(
+            return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, columnSetBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)

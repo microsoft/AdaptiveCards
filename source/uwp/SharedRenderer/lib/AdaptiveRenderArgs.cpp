@@ -5,7 +5,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveRenderArgs.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     // This constructor is kept so all elements keep working as expected
     AdaptiveRenderArgs::AdaptiveRenderArgs(winrt::ContainerStyle const& containerStyle,

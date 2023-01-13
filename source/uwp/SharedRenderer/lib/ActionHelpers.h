@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 {
     winrt::UIElement BuildAction(winrt::IAdaptiveActionElement const& adaptiveActionElement,
                                                     winrt::AdaptiveRenderContext const& renderContext,

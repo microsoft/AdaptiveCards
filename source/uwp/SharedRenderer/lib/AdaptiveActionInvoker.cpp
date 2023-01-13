@@ -5,7 +5,7 @@
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveActionInvoker.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     void AdaptiveActionInvoker::SendActionEvent(winrt::IAdaptiveActionElement const& actionElement)
     {

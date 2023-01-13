@@ -7,7 +7,7 @@
 #include "ActionHelpers.h"
 #include "InputValue.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     std::tuple<winrt::UIElement, winrt::Border>
     AdaptiveTextInputRenderer::HandleLayoutAndValidation(winrt::AdaptiveTextInput const& adaptiveTextInput,
@@ -41,7 +41,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             bool isMultiline = adaptiveTextInput.IsMultiline();
             winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != winrt::TextInputStyle::Password;
-            textBoxParentContainer = render_xaml::ActionHelpers::HandleInlineAction(
+            textBoxParentContainer = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
         }
 

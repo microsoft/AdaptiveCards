@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp::MediaHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
 {
     winrt::Image GetMediaPosterAsImage(winrt::AdaptiveRenderContext const& renderContext,
                                        winrt::AdaptiveRenderArgs const& renderArgs,

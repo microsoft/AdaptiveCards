@@ -7,7 +7,7 @@
 #include "ActionHelpers.h"
 #include "WholeItemsPanel.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
     XamlBuilder::XamlBuilder()
     {

@@ -6,7 +6,7 @@
 #include "AdaptiveCardRenderer.g.h"
 #include "AdaptiveHostConfig.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     // This class is effectively a singleton, and stays around between subsequent renders.
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::ResourceDictionary m_overrideDictionary;
         winrt::AdaptiveHostConfig m_hostConfig;
         winrt::AdaptiveFeatureRegistration m_featureRegistration;
-        winrt::com_ptr<render_xaml::XamlBuilder> m_xamlBuilder;
+        winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         uint32_t m_desiredWidth = 0;
         uint32_t m_desiredHeight = 0;
@@ -79,7 +79,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 
         winrt::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
-        winrt::com_ptr<render_xaml::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
+        winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
         winrt::ResourceDictionary GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
 
         auto ResourceResolvers() { return m_resourceResolvers; }
@@ -98,7 +98,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
         winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };
 }
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer, implementation::AdaptiveCardRenderer>
     {

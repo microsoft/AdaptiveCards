@@ -5,7 +5,7 @@
 
 #include "ElementTagContent.g.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     struct DECLSPEC_UUID("0331D653-957C-4385-A327-D326750C10B6") ElementTagContent
         : public ElementTagContentT<ElementTagContent, ITypePeek>
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::factory_implementation
 {
     struct ElementTagContent : ElementTagContentT<ElementTagContent, implementation::ElementTagContent>
     {

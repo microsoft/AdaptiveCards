@@ -12,7 +12,7 @@
 
 using namespace concurrency;
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     RenderedAdaptiveCard::RenderedAdaptiveCard() :
         RenderedAdaptiveCard(winrt::single_threaded_vector<winrt::AdaptiveError>(),
@@ -130,7 +130,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto actionConfig = m_originatingHostConfig.Actions();
             auto showCardConfig = actionConfig.ShowCard();
             auto actionMode = showCardConfig.ActionMode();
-            bool handleInlineShowCard = (actionMode == winrt_render_xaml::ActionMode::Inline);
+            bool handleInlineShowCard = (actionMode == winrt::AdaptiveCards::Rendering::Xaml_Rendering::ActionMode::Inline);
 
             if (handleInlineShowCard)
             {

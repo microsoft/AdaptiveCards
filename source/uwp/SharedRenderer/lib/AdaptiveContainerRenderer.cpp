@@ -8,7 +8,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "WholeItemsPanel.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveContainerRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                        winrt::AdaptiveRenderContext const& renderContext,
@@ -64,7 +64,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto parentElement = renderArgs.ParentElement();
 
             auto childItems = adaptiveContainer.Items();
-            render_xaml::XamlBuilder::BuildPanelChildren(
+            ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildPanelChildren(
                 childItems, containerPanel.as<winrt::Panel>(), renderContext, newRenderArgs, [](winrt::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
@@ -104,7 +104,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             auto selectAction = adaptiveContainerBase.SelectAction();
             auto hostConfig = renderContext.HostConfig();
 
-            return render_xaml::ActionHelpers::HandleSelectAction(
+            return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
                 cardElement, selectAction, renderContext, containerBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)

@@ -6,7 +6,7 @@
 #include "ElementTagContent.h"
 #include "ElementTagContent.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     ElementTagContent::ElementTagContent(winrt::IAdaptiveCardElement const& cardElement,
                                          winrt::Panel const& parentPanel,

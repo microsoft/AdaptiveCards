@@ -5,7 +5,7 @@
 #include "AdaptiveFontSizesConfig.h"
 #include "AdaptiveFontSizesConfig.g.cpp"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveFontSizesConfig::AdaptiveFontSizesConfig(::AdaptiveCards::FontSizesConfig const& fontSizesConfig)
     {

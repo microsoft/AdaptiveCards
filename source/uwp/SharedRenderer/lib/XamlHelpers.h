@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
+namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
     void SetStyleFromResourceDictionary(winrt::AdaptiveRenderContext const& renderContext,
                                         winrt::hstring const& resourceName,

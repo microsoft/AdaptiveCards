@@ -8,7 +8,7 @@
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
 
-namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveActionSetRenderer::Render(winrt::IAdaptiveCardElement const& cardElement,
                                                        winrt::AdaptiveRenderContext const& renderContext,
@@ -30,7 +30,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
                 auto adaptiveActionSet = cardElement.as<winrt::AdaptiveActionSet>();
                 auto actions = adaptiveActionSet.Actions();
 
-                return render_xaml::ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+                return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
             }
         }
         catch (winrt::hresult_error const& ex)
