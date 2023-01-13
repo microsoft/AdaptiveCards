@@ -26,6 +26,20 @@
 #include <winrt/Windows.Web.Http.h>
 #include <winrt/Windows.Web.Http.Filters.h>
 
+#ifdef USE_WINUI3
+#include <winrt/Microsoft.UI.Xaml.Automation.h>
+#include <winrt/Microsoft.UI.Xaml.Automation.Peers.h>
+#include <winrt/Microsoft.UI.Xaml.Controls.h>
+#include <winrt/Microsoft.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Microsoft.UI.Xaml.Documents.h>
+#include <winrt/Microsoft.UI.Xaml.Input.h>
+#include <winrt/Microsoft.UI.Xaml.Markup.h>
+#include <winrt/Microsoft.UI.Xaml.Media.h>
+#include <winrt/Microsoft.UI.Xaml.Media.Imaging.h>
+#include <winrt/Microsoft.UI.Xaml.Shapes.h>
+
+#include <winrt/AdaptiveCards.ObjectModel.Winui3.h>
+#else
 #include <winrt/Windows.UI.Xaml.Automation.h>
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
@@ -38,6 +52,7 @@
 #include <winrt/Windows.UI.Xaml.Shapes.h>
 
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#endif
 
 namespace winrt
 {
@@ -50,7 +65,12 @@ namespace winrt
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
 
+#ifdef USE_WINUI3
+    namespace xaml = ::winrt::Microsoft::UI::Xaml;
+#else
     namespace xaml = ::winrt::Windows::UI::Xaml;
+#endif
+
     using namespace xaml;
     using namespace xaml::Controls;
     using namespace xaml::Controls::Primitives;
