@@ -10,6 +10,7 @@
 #import "ACRView.h"
 #import "ACODebouncer.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
+#import "ACRChoiceSetTypeaheadSearchView.h"
 
 @interface ACOTypeaheadDynamicChoicesService() <ACODebouncerDelegate>
 @end
@@ -17,17 +18,29 @@
 @implementation ACOTypeaheadDynamicChoicesService {
     __weak ACRView *_rootView;
     ACODebouncer *_debouncer;
+    dispatch_queue_t _global_queue;
+    ACOBaseCardElement *_inputElem;
+    id<ACOTypeaheadDynamicChoicesProtocol> _typeaheadSearchDelegate;
 }
 
 -(instancetype)initWithRootView:(ACRView *)rootView
+                      inputElem:(ACOBaseCardElement *)inputElem
+        typeaheadSearchDelegate:(id<ACOTypeaheadDynamicChoicesProtocol>) delegate
 {
-    _rootView = rootView;
-    _debouncer = [[ACODebouncer alloc] initWithDelay:0.2];
-    _debouncer.delegate = self;
+    self = [super init];
+    if(self) {
+        _rootView = rootView;
+        _debouncer = [[ACODebouncer alloc] initWithDelay:0.2];
+        _debouncer.delegate = self;
+        _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        _inputElem = inputElem;
+        _typeaheadSearchDelegate = delegate;
+    }
+
+    return self;
 }
 
 - (void)fetchChoicesFromDynamicSourceWithSearchQuery:(NSString *)searchQuery
-                                            pageSize:(int) pageSize
 {
     [_debouncer postInput:searchQuery];
 }
@@ -49,27 +62,11 @@
                 [self->_rootView.acrActionDelegate onChoiceSetQueryChange:key acoElem:self->_inputElem completion:^(NSArray<NSString *> * _choices, NSError *error) {
                     __strong typeof(self) strongSelf = weakSelf;
                     dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!error) {
-                            [strongSelf->_loader stopAnimating];
-                            [strongSelf->_filteredDataSource updatefilteredListForStaticAndDynamicTypeahead:key dynamicChoices:_choices];
-                        if (strongSelf->_filteredDataSource.count) {
-                            [strongSelf configureSearchStateUI:displayingResults];
-                        } else if(![key length]) {
-                            [strongSelf configureSearchStateUI:zeroState];
-                            [strongSelf->_filteredDataSource resetFilter];
-                        } else {
-                            [strongSelf configureSearchStateUI:displayingInvalidSearchError];
-                        }
-                            [strongSelf updateListViewLayout];
-                        }
-                        else
-                        {
-                            [strongSelf configureSearchStateUI:displayingGenericError];
-                            [strongSelf updateListViewLayout];
-                        }
+                        [strongSelf->_typeaheadSearchDelegate updateUIWithqueryString:key dynamicChoices:_choices withError:error];
                     });
                 }];
             }
         });
     }
 }
+@end

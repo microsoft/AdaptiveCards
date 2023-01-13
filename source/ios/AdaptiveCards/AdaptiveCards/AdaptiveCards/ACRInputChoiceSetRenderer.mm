@@ -125,17 +125,15 @@
     if (!choiceSet) {
         return;
     }
-    const auto style = choiceSet->GetChoiceSetStyle();
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
     if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
         ACRChoiceSetTypeaheadSearchView *typeaheadSearchView = (ACRChoiceSetTypeaheadSearchView *)view;
         
-        UITextField *_customSearchBar = (UITextField *)typeaheadSearchView.searchBar;
+        UISearchBar *_customSearchBar = (UISearchBar *)typeaheadSearchView.searchBar;
         [_customSearchBar.heightAnchor constraintEqualToConstant:36].active = YES;
-        _customSearchBar.textColor = [UIColor colorWithRed:0.431 green:0.431 blue:0.431 alpha:1];
-        _customSearchBar.backgroundColor = [UIColor colorWithRed:0.945 green:0.945 blue:0.945 alpha:1];
-        _customSearchBar.layer.cornerRadius = 10;
-        _customSearchBar.borderStyle = UITextBorderStyleRoundedRect;
+        UITextField *searchField = [_customSearchBar valueForKey:@"searchField"];
+        searchField.textColor = [UIColor colorWithRed:0.431 green:0.431 blue:0.431 alpha:1];
+        _customSearchBar.searchBarStyle = UISearchBarStyleMinimal;
         
         UIView *_customSearchBarSeparator = (UIView *)typeaheadSearchView.searchBarSeparator;
         _customSearchBarSeparator.layer.backgroundColor = [[UIColor colorWithRed:0.784 green:0.784 blue:0.784 alpha:1] CGColor];

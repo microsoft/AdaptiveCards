@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface ACRSearchBar: UITextField <UITextFieldDelegate>
 
--(UITextField *)buildCustomSearchBarWithPlaceholder:(NSString *)placeholder;
+@interface ACRSearchBar: UITextField<UITextFieldDelegate>
+
+-(instancetype)buildCustomSearchBarWithPlaceholder:(NSString *)placeholder;
 
 @end

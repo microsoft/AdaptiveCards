@@ -268,8 +268,6 @@
 		CF998EDF29700D95008A59F7 /* ACRTypeaheadSearchParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EDD29700D94008A59F7 /* ACRTypeaheadSearchParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CF998EE229706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m in Sources */ = {isa = PBXBuildFile; fileRef = CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */; };
 		CF998EE329706DEE008A59F7 /* ACOTypeaheadDynamicChoicesService.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CF998EE629707C9E008A59F7 /* ACRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CF998EE529707C9E008A59F7 /* ACRSearchBar.m */; };
-		CF998EE729707CA3008A59F7 /* ACRSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EE429707C8D008A59F7 /* ACRSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CFA164792950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */; };
 		CFA1647A2950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CFA1647D295044AF00386C88 /* ACODebouncer.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA1647B295044AF00386C88 /* ACODebouncer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -757,8 +755,6 @@
 		CF998EDD29700D94008A59F7 /* ACRTypeaheadSearchParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRTypeaheadSearchParameters.h; sourceTree = "<group>"; };
 		CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOTypeaheadDynamicChoicesService.h; sourceTree = "<group>"; };
 		CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesService.m; sourceTree = "<group>"; };
-		CF998EE429707C8D008A59F7 /* ACRSearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRSearchBar.h; sourceTree = "<group>"; };
-		CF998EE529707C9E008A59F7 /* ACRSearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACRSearchBar.m; sourceTree = "<group>"; };
 		CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetTypeaheadSearchView.mm; sourceTree = "<group>"; };
 		CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetTypeaheadSearchView.h; sourceTree = "<group>"; };
 		CFA1647B295044AF00386C88 /* ACODebouncer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACODebouncer.h; sourceTree = "<group>"; };
@@ -1178,8 +1174,6 @@
 				CFA1647C295044AF00386C88 /* ACODebouncer.mm */,
 				CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */,
 				CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */,
-				CF998EE429707C8D008A59F7 /* ACRSearchBar.h */,
-				CF998EE529707C9E008A59F7 /* ACRSearchBar.m */,
 			);
 			name = CompactStyleChoiceSet;
 			sourceTree = "<group>";
@@ -1791,7 +1785,6 @@
 				F4F44BA1204CED2400A2F24C /* ACRCustomRenderer.h in Headers */,
 				6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */,
 				6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */,
-				CF998EE729707CA3008A59F7 /* ACRSearchBar.h in Headers */,
 				6B9BDF8020F40D1000F13155 /* ACOResourceResolvers.h in Headers */,
 				6BB211FD20FF9FEA009EA1BA /* ACRActionSetRenderer.h in Headers */,
 				6B9BDFCA20F6BF5D00F13155 /* ACOIResourceResolver.h in Headers */,
@@ -2130,7 +2123,6 @@
 				F42979461F322C9000E89914 /* ACRNumericTextField.mm in Sources */,
 				F43A94111F1D60E30001920B /* ACRFactSetRenderer.mm in Sources */,
 				F44873141EE2261F00FCAFAE /* ImageSet.cpp in Sources */,
-				CF998EE629707C9E008A59F7 /* ACRSearchBar.m in Sources */,
 				F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */,
 				F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */,
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,

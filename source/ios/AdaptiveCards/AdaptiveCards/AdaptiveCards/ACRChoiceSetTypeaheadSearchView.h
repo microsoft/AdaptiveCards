@@ -13,6 +13,7 @@
 #import "HostConfig.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRTypeaheadSearchParameters.h"
+#import "ACOTypeaheadDynamicChoicesService.h"
 
 typedef enum {
     error = 0,
@@ -20,11 +21,11 @@ typedef enum {
     success
 } ACODynamicTypeaheadResponseType;
 
-@interface ACRChoiceSetTypeaheadSearchView : UIViewController <UITableViewDelegate,UITableViewDataSource>
+@interface ACRChoiceSetTypeaheadSearchView : UIViewController <UISearchBarDelegate, UITableViewDelegate,UITableViewDataSource,ACOTypeaheadDynamicChoicesProtocol>
 
 @property NSString *id;
 @property (weak) UIView *filteredListView;
-@property UITextField *searchBar;
+@property UISearchBar *searchBar;
 @property UIView *searchBarSeparator;
 @property UIActivityIndicatorView *loader;
 @property UILabel *searchStateTitleLabel;

@@ -21,8 +21,9 @@
 #import "ACRSearchBar.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
+#import "ACOTypeaheadDynamicChoicesService.h"
 
-@interface ACRChoiceSetTypeaheadSearchView() <UITableViewDelegate,UITableViewDataSource>
+@interface ACRChoiceSetTypeaheadSearchView() <UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,ACOTypeaheadDynamicChoicesProtocol>
 @end
 
 typedef enum {
@@ -54,12 +55,13 @@ typedef enum {
     UIStackView *_container;
     ACRChoiceSetCompactStyleView *_delegate;
     ACRTypeaheadStateAllParameters *_searchStateParams;
-    UITextField *_customSearchBar;
+    UISearchBar *_searchBar;
     UIView *_customSearchBarSeparator;
     UIActivityIndicatorView *_loader;
     UILabel *_searchStateTitleLabel;
     UIImageView *_searchStateImageView;
     UILabel *_searchStateSubtitleLabel;
+    ACOTypeaheadDynamicChoicesService *_dynamicChoicesService;
 }
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
@@ -76,15 +78,11 @@ typedef enum {
         _inputElem = acoElem;
         _delegate = delegate;
         _searchStateParams = searchStateParams;
-        
         _filteredDataSource = [[ACOFilteredDataSource alloc] init];
         _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
-        
-        _rootView = rootView;
         _wrapLines = choiceSet->GetWrap() ? 0 : 1;
-
+        _dynamicChoicesService = [[ACOTypeaheadDynamicChoicesService alloc] initWithRootView:_rootView inputElem:_inputElem typeaheadSearchDelegate:self];
         std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
-        
         _dataSourceType = none;
         if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 )
         {
@@ -117,8 +115,12 @@ typedef enum {
     _container.spacing = 14;
     _container.backgroundColor = UIColor.whiteColor;
     [mainview addSubview:_container];
-    _customSearchBar = [self buildCustomSearchBarWithPlaceholder:@"Enter a search term"];
-    self.searchBar = _customSearchBar;
+    _searchBar = [UISearchBar new];
+    [_searchBar sizeToFit];
+    _searchBar.delegate = self;
+    [_searchBar becomeFirstResponder];
+    self.searchBar = _searchBar;
+    
     _customSearchBarSeparator = [[UIView alloc] init];
     self.searchBarSeparator = _customSearchBarSeparator;
     _listView = [[UITableView alloc] init];
@@ -126,7 +128,7 @@ typedef enum {
     _listView.delegate = self;
     _listView.accessibilityIdentifier = [NSString stringWithUTF8String:choiceSet->GetId().c_str()];
     self.filteredListView = _listView;
-    [_container addArrangedSubview:_customSearchBar];
+    [_container addArrangedSubview:_searchBar];
     [_container addArrangedSubview:_customSearchBarSeparator];
     [_container addArrangedSubview:_listView];
 
@@ -150,8 +152,8 @@ typedef enum {
         [[_container leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
         [[_container widthAnchor] constraintEqualToAnchor:[self.view widthAnchor]],
         [[_container topAnchor] constraintEqualToAnchor:[self.view topAnchor]],
-        [[_customSearchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:16],
-        [[_customSearchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor] constant:-16],
+        [[_searchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
+        [[_searchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor]],
         [[_customSearchBarSeparator leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
         [[_customSearchBarSeparator trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor] constant:0],
         [[_listView leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
@@ -193,6 +195,63 @@ typedef enum {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
+#pragma mark - UISearchBarDelegate  Methods
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if([searchBar.text length] == 0) {
+        [_searchBar resignFirstResponder];
+        [_filteredDataSource resetFilter];
+        [self configureSearchStateUI:_filteredDataSource.count ? displayingResults : zeroState];
+    }
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *newSearchText = [_searchBar.text stringByReplacingCharactersInRange:range
+                                                                       withString:text];
+    switch (_dataSourceType) {
+        case staticDataSource:
+            [_filteredDataSource updatefilteredListForStaticTypeahead:newSearchText];
+            break;
+        case dynamicDataSource:
+            _searchStateTitleLabel.text = @"Loading options";
+            _searchStateTitleLabel.hidden = NO;
+            _searchStateImageView.hidden = YES;
+            [_filteredDataSource clearList];
+            if (![_loader isAnimating])
+            {
+                [_loader startAnimating];
+            }
+            [_dynamicChoicesService fetchChoicesFromDynamicSourceWithSearchQuery:newSearchText];
+            break;
+        default:
+            break;
+    }
+    [_listView reloadData];
+    return YES;
+}
+
+#pragma mark - ACOTypeaheadDynamicChoicesService Methods
+
+- (void)updateUIWithqueryString:(NSString*)queryString dynamicChoices:(NSArray<NSString *> *)choices withError:(NSError *)error {
+    if (!error) {
+        [_loader stopAnimating];
+        [_filteredDataSource updatefilteredListForStaticAndDynamicTypeahead:queryString dynamicChoices:choices];
+        
+        if (_filteredDataSource.count) {
+            [self configureSearchStateUI:displayingResults];
+        } else if(![queryString length]) {
+            [self configureSearchStateUI:zeroState];
+        } else {
+            [self configureSearchStateUI:displayingInvalidSearchError];
+        }
+    }
+    else {
+        [self configureSearchStateUI:displayingGenericError];
+    }
+}
+
 -(void)configureSearchStateUI:(TSTypeaehadSearchViewState)searchViewState
 {
     switch (searchViewState) {
@@ -223,6 +282,7 @@ typedef enum {
         default:
             break;
     }
+    [_listView reloadData];
 }
 
 #pragma mark - UITableViewDelegate Methods
@@ -255,14 +315,10 @@ typedef enum {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    _customSearchBar.text = [_filteredDataSource getItemAt:indexPath.row];
+    _searchBar.text = [_filteredDataSource getItemAt:indexPath.row];
     [_delegate updateSelectedChoiceInTextField:[_filteredDataSource getItemAt:indexPath.row]];
     [self dismiss];
     [self resignFirstResponder];
-}
-
-- (void) updateListViewLayout {
-    [_listView reloadData];
 }
 
 @end
