@@ -1,30 +1,42 @@
 {
-	"version": "1.0",
-	"type": "AdaptiveCard",
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"body": [
-		{
-			"type": "Input.ChoiceSet",
-			"value": "Alligator gar",
-			"isMultiSelect": false,
-			"label": "Please choose an animal:",
-			"style": "filtered",
-			"id": "chosenAnimal",
-			"isRequired": true,
-			"errorMessage": "Please choose an animal",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "id": "myColor",
+            "choices": [
+                {
+                    "title": "Red",
+                    "value": "1"
+                },
+                {
+                    "title": "Green",
+                    "value": "2"
+                },
+                {
+                    "title": "Blue",
+                    "value": "3"
+                }
+            ],
             "choices.data":
             {
                 "type": "Data.Query",
-                "dataset": "graph.microsoft.com/users"
-            },
-			"choices": [
-			]
-		}
-	],
-	"actions": [
-		{
-			"title": "OK",
-			"type": "Action.Submit"
-		}
-	]
+                "dataset": "graph.microsoft.com/users",
+                "count": 1,
+                "skip": 2
+            }
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit"
+        }
+    ]
 }

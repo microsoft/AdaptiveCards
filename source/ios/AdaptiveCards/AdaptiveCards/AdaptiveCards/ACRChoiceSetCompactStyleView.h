@@ -34,6 +34,7 @@
 
 @property (readonly) NSUInteger count;
 @property (readonly) BOOL isEnabled;
+// @property (nonatomic, retain) NSMutableArray *filteredList;
 
 - (instancetype)init:(BOOL)filteringEnabled;
 
@@ -41,13 +42,13 @@
 
 - (NSString *)getItemAt:(NSInteger)index;
 
--(instancetype)initWithUnfilteredList:(NSArray<NSString *> *) choices;
-
 - (void)updatefilteredListForStaticTypeahead:(NSString *) choices;
 
-- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *) choices;
+- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSArray<NSString *> *)choices;
 
 - (void)resetFilter;
+
+- (void)clearList;
 
 @end
 

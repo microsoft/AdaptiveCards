@@ -9,10 +9,12 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
+#import "ACRChoiceSetTypeaheadSearchView.h"
 #import "ACRChoiceSetViewDataSource.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
+#import "ChoicesData.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputChoiceSetRenderer
@@ -110,6 +112,51 @@
         [filteredListView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:@"filterred-cell"];
 
         choiceSetView.spacingBottom = 10.0f;
+    }
+}
+/// override this method to configure the styles of UI
+- (void)configureUI:(UIViewController *)view
+           rootView:(ACRView *)rootView
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    if (!choiceSet) {
+        return;
+    }
+    const auto style = choiceSet->GetChoiceSetStyle();
+    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
+    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
+        ACRChoiceSetTypeaheadSearchView *typeaheadSearchView = (ACRChoiceSetTypeaheadSearchView *)view;
+        
+        UITextField *_customSearchBar = (UITextField *)typeaheadSearchView.searchBar;
+        [_customSearchBar.heightAnchor constraintEqualToConstant:36].active = YES;
+        _customSearchBar.textColor = [UIColor colorWithRed:0.431 green:0.431 blue:0.431 alpha:1];
+        _customSearchBar.backgroundColor = [UIColor colorWithRed:0.945 green:0.945 blue:0.945 alpha:1];
+        _customSearchBar.layer.cornerRadius = 10;
+        _customSearchBar.borderStyle = UITextBorderStyleRoundedRect;
+        
+        UIView *_customSearchBarSeparator = (UIView *)typeaheadSearchView.searchBarSeparator;
+        _customSearchBarSeparator.layer.backgroundColor = [[UIColor colorWithRed:0.784 green:0.784 blue:0.784 alpha:1] CGColor];
+        [_customSearchBarSeparator.heightAnchor constraintEqualToConstant:0.5].active = YES;
+        
+        UITableView *filteredListView = (UITableView *)typeaheadSearchView.filteredListView;
+        [filteredListView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        filteredListView.rowHeight = UITableViewAutomaticDimension;
+        [filteredListView registerClass:UITableViewCell.self forCellReuseIdentifier:@"SauceCell"];
+        
+        UILabel *searchStateTitleLabel = (UILabel *)typeaheadSearchView.searchStateTitleLabel;
+        searchStateTitleLabel.backgroundColor = [UIColor whiteColor];
+        searchStateTitleLabel.textColor = [UIColor colorWithRed:0.443 green:0.443 blue:0.443 alpha:1];
+        searchStateTitleLabel.alpha = 0.9;
+        searchStateTitleLabel.textAlignment = NSTextAlignmentCenter;
+        searchStateTitleLabel.font = [UIFont fontWithName:@"SegoeUI-Regular" size:16];
+        [searchStateTitleLabel.heightAnchor constraintEqualToConstant:20].active = YES;
+        
+        UIActivityIndicatorView *loader = (UIActivityIndicatorView *)typeaheadSearchView.loader;
+        [loader.heightAnchor constraintEqualToConstant:32].active = YES;
+        [loader.widthAnchor constraintEqualToConstant:32].active = YES;
     }
 }
 @end

@@ -264,6 +264,12 @@
 		CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */; };
 		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
+		CF998EDE29700D95008A59F7 /* ACRTypeaheadSearchParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = CF998EDC29700D94008A59F7 /* ACRTypeaheadSearchParameters.mm */; };
+		CF998EDF29700D95008A59F7 /* ACRTypeaheadSearchParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EDD29700D94008A59F7 /* ACRTypeaheadSearchParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CF998EE229706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m in Sources */ = {isa = PBXBuildFile; fileRef = CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */; };
+		CF998EE329706DEE008A59F7 /* ACOTypeaheadDynamicChoicesService.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CF998EE629707C9E008A59F7 /* ACRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CF998EE529707C9E008A59F7 /* ACRSearchBar.m */; };
+		CF998EE729707CA3008A59F7 /* ACRSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = CF998EE429707C8D008A59F7 /* ACRSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CFA164792950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */; };
 		CFA1647A2950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CFA1647D295044AF00386C88 /* ACODebouncer.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA1647B295044AF00386C88 /* ACODebouncer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -747,6 +753,12 @@
 		CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityAction.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h; sourceTree = "<group>"; };
 		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
+		CF998EDC29700D94008A59F7 /* ACRTypeaheadSearchParameters.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTypeaheadSearchParameters.mm; sourceTree = "<group>"; };
+		CF998EDD29700D94008A59F7 /* ACRTypeaheadSearchParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRTypeaheadSearchParameters.h; sourceTree = "<group>"; };
+		CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOTypeaheadDynamicChoicesService.h; sourceTree = "<group>"; };
+		CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesService.m; sourceTree = "<group>"; };
+		CF998EE429707C8D008A59F7 /* ACRSearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRSearchBar.h; sourceTree = "<group>"; };
+		CF998EE529707C9E008A59F7 /* ACRSearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACRSearchBar.m; sourceTree = "<group>"; };
 		CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetTypeaheadSearchView.mm; sourceTree = "<group>"; };
 		CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetTypeaheadSearchView.h; sourceTree = "<group>"; };
 		CFA1647B295044AF00386C88 /* ACODebouncer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACODebouncer.h; sourceTree = "<group>"; };
@@ -1160,8 +1172,14 @@
 				6B92A7E32677DC8B00CAE3BF /* ACRChoiceSetCompactStyleView.mm */,
 				CFA164782950449300386C88 /* ACRChoiceSetTypeaheadSearchView.h */,
 				CFA164772950449300386C88 /* ACRChoiceSetTypeaheadSearchView.mm */,
+				CF998EDD29700D94008A59F7 /* ACRTypeaheadSearchParameters.h */,
+				CF998EDC29700D94008A59F7 /* ACRTypeaheadSearchParameters.mm */,
 				CFA1647B295044AF00386C88 /* ACODebouncer.h */,
 				CFA1647C295044AF00386C88 /* ACODebouncer.mm */,
+				CF998EE029706D92008A59F7 /* ACOTypeaheadDynamicChoicesService.h */,
+				CF998EE129706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m */,
+				CF998EE429707C8D008A59F7 /* ACRSearchBar.h */,
+				CF998EE529707C9E008A59F7 /* ACRSearchBar.m */,
 			);
 			name = CompactStyleChoiceSet;
 			sourceTree = "<group>";
@@ -1773,6 +1791,7 @@
 				F4F44BA1204CED2400A2F24C /* ACRCustomRenderer.h in Headers */,
 				6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */,
 				6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */,
+				CF998EE729707CA3008A59F7 /* ACRSearchBar.h in Headers */,
 				6B9BDF8020F40D1000F13155 /* ACOResourceResolvers.h in Headers */,
 				6BB211FD20FF9FEA009EA1BA /* ACRActionSetRenderer.h in Headers */,
 				6B9BDFCA20F6BF5D00F13155 /* ACOIResourceResolver.h in Headers */,
@@ -1795,6 +1814,7 @@
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				6BFF99C725FFF53E0028069F /* Authentication.h in Headers */,
+				CF998EDF29700D95008A59F7 /* ACRTypeaheadSearchParameters.h in Headers */,
 				6BFF99C325FFF53E0028069F /* AuthCardButton.h in Headers */,
 				6BFF99C425FFF53E0028069F /* ExecuteAction.h in Headers */,
 				6BFF99C625FFF53E0028069F /* TokenExchangeResource.h in Headers */,
@@ -1838,6 +1858,7 @@
 				6B25D3E226138E3700A47AFB /* ACOEnums.h in Headers */,
 				6B25D3EB2613D83700A47AFB /* ACORenderContext.h in Headers */,
 				6BFF23F02714C0F000183C59 /* ACRViewPrivate.h in Headers */,
+				CF998EE329706DEE008A59F7 /* ACOTypeaheadDynamicChoicesService.h in Headers */,
 				6BFF23F12714C0F000183C59 /* ACOAuthenticationPrivate.h in Headers */,
 				6BFF23EF2714C0F000183C59 /* ACRInputLabelViewPrivate.h in Headers */,
 				6BFF23F42714C0F000183C59 /* ACOParseContextPrivate.h in Headers */,
@@ -2092,6 +2113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF998EDE29700D95008A59F7 /* ACRTypeaheadSearchParameters.mm in Sources */,
 				7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */,
 				6B5BA8BF2707BBD000719853 /* ACOWarning.mm in Sources */,
 				300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */,
@@ -2108,6 +2130,7 @@
 				F42979461F322C9000E89914 /* ACRNumericTextField.mm in Sources */,
 				F43A94111F1D60E30001920B /* ACRFactSetRenderer.mm in Sources */,
 				F44873141EE2261F00FCAFAE /* ImageSet.cpp in Sources */,
+				CF998EE629707C9E008A59F7 /* ACRSearchBar.m in Sources */,
 				F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */,
 				F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */,
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,
@@ -2133,6 +2156,7 @@
 				6BFCA142264F54B500195CA7 /* ACRTableRow.mm in Sources */,
 				6BFCA145264F54B500195CA7 /* ACRTableCellView.mm in Sources */,
 				6BFF99FB26003EBA0028069F /* ACOAutoCardButton.mm in Sources */,
+				CF998EE229706DB9008A59F7 /* ACOTypeaheadDynamicChoicesService.m in Sources */,
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,

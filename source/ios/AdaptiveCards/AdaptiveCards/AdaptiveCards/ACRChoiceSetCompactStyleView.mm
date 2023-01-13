@@ -18,6 +18,7 @@
 #import "HostConfig.h"
 #import "UtiliOS.h"
 #import "ACRChoiceSetTypeaheadSearchView.h"
+#include "ACRTypeaheadSearchParameters.h"
 
 using namespace AdaptiveCards;
 
@@ -147,7 +148,16 @@ using namespace AdaptiveCards;
     
     if (rootViewController &&
         choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
-        ACRChoiceSetTypeaheadSearchView *controller = [[ACRChoiceSetTypeaheadSearchView alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil  delegate:self];
+        ACRTypeaheadZeroStateParams *zeroStateParams = [[ACRTypeaheadZeroStateParams alloc] initWithtitle:@"Search options" subtitle:nil];
+        ACRTypeaheadOfflineStateParams *offlineStateParams = [[ACRTypeaheadOfflineStateParams alloc] initWithtitle:@"the device is offline" subtitle:nil];
+        ACRTypeaheadNoResultsStateParams *noResultStateParams = [[ACRTypeaheadNoResultsStateParams alloc] initWithtitle:@"No results" subtitle:nil];
+        ACRTypeaheadErrorStateParams *errorStateParams = [[ACRTypeaheadErrorStateParams alloc] initWithtitle:@"Something went wrong" subtitle:nil];
+        ACRTypeaheadStateAllParameters *typeaheadParams = [[ACRTypeaheadStateAllParameters alloc] initWithzeroStateParams:zeroStateParams
+                                                                                                         errorStateParams:errorStateParams
+                                                                                                       noResultStateParams:noResultStateParams
+                                                                                                        offlineStateParams:offlineStateParams];
+        
+        ACRChoiceSetTypeaheadSearchView *controller = [[ACRChoiceSetTypeaheadSearchView alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil delegate:self searchStateParams:typeaheadParams];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:navController animated:YES completion:nil];
@@ -223,11 +233,6 @@ using namespace AdaptiveCards;
 - (void)updatefilteredListForStaticTypeahead:(NSString *)text
 {
     [_filteredDataSource updatefilteredListForStaticTypeahead:text];
-}
-
-- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *)choices
-{
-    [_filteredDataSource updatefilteredListForDynamicTypeahead:choices];
 }
 
 - (void)toggleStateListView:(UIButton *)button
@@ -406,7 +411,9 @@ using namespace AdaptiveCards;
 @end
 
 @implementation ACOFilteredDataSource {
-    NSMutableArray<NSString *> *_unfilteredList;
+    NSMutableArray<NSString *> *_staticUnfilteredList;
+    NSArray<NSString *> *_staticFilteredList;
+    NSArray<NSString *> *_dynamicFilteredList;
     NSArray<NSString *> *_filteredList;
     NSString *_filter;
 }
@@ -415,8 +422,10 @@ using namespace AdaptiveCards;
 {
     self = [super init];
     if (self) {
-        _unfilteredList = [[NSMutableArray alloc] init];
-        _filteredList = _unfilteredList;
+        _staticUnfilteredList = [[NSMutableArray alloc] init];
+        _staticFilteredList = _staticUnfilteredList;
+        _dynamicFilteredList = [[NSMutableArray alloc] init];
+        _filteredList = _staticFilteredList;
         _filter = @"SELF CONTAINS[c] %@";
         _isEnabled = YES;
     }
@@ -435,7 +444,7 @@ using namespace AdaptiveCards;
 - (void)addToSource:(NSString *)item
 {
     if (item) {
-        [_unfilteredList addObject:item];
+        [_staticUnfilteredList addObject:item];
     }
 }
 
@@ -449,16 +458,6 @@ using namespace AdaptiveCards;
     return (index < 0 or index >= self.count) ? @"" : _filteredList[index];
 }
 
--(instancetype)initWithUnfilteredList:(NSArray<NSString *> *) choices
-{
-    self = [self init];
-    if (self) {
-        [self updatefilteredListForDynamicTypeahead:choices];
-        _isEnabled = true;
-    }
-    return self;
-}
-
 - (void)updatefilteredListForStaticTypeahead:(NSString *)key
 {
     if (!self.isEnabled) {
@@ -466,27 +465,57 @@ using namespace AdaptiveCards;
     }
     if (!key || key.length == 0) {
         [self resetFilter];
+        _staticFilteredList = _staticUnfilteredList;
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
-        _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
+        _staticFilteredList = [_staticUnfilteredList filteredArrayUsingPredicate:predicate];
+        _filteredList = _staticFilteredList;
     }
 }
 
-- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *) choices
+- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *)choices
 {
     if (!self.isEnabled) {
         return;
     }
     if (!choices || choices.count == 0) {
         [self resetFilter];
+        _dynamicFilteredList = @[];
     } else {
-        _filteredList = choices;
+        _dynamicFilteredList = choices;
+        _filteredList = _dynamicFilteredList;
     }
+}
+
+- (void)mergeStaticAndDynamicFilteredList
+{
+    NSMutableArray *array1 = [[NSMutableArray alloc] init];
+    for(id obj in _dynamicFilteredList)
+    {
+        [array1 addObject:obj];
+    }
+    for(id obj in _staticFilteredList)
+    {
+        [array1 addObject:obj];
+    }
+    _filteredList = array1;
+}
+    
+- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSArray<NSString *> *)choices
+{
+    [self updatefilteredListForStaticTypeahead:key];
+    [self updatefilteredListForDynamicTypeahead:choices];
+    [self mergeStaticAndDynamicFilteredList];
 }
 
 - (void)resetFilter
 {
-    _filteredList = _unfilteredList;
+    _filteredList = _staticUnfilteredList;
+}
+
+- (void)clearList
+{
+    _filteredList = @[];
 }
 
 @end
