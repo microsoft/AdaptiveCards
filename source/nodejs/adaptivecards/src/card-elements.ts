@@ -8799,12 +8799,10 @@ export class AdaptiveCard extends ContainerWithActions {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
 
-                // register for on mouse enter on the card
                 renderedCard.onmouseenter = (ev: MouseEvent) => {
                     this.updateInputsVisualState(true /* hover */);
                 };
 
-                // register for on mouse leave on the card
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
                     this.updateInputsVisualState(false /* hover */);
                 };
