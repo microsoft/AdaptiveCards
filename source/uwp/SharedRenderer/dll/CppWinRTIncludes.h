@@ -67,6 +67,7 @@ namespace winrt
 
 #ifdef USE_WINUI3
     namespace xaml = ::winrt::Microsoft::UI::Xaml;
+    using MediaElement = xaml::Controls::MediaPlayerElement;
 #else
     namespace xaml = ::winrt::Windows::UI::Xaml;
 #endif
