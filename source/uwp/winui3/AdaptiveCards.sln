@@ -16,6 +16,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedRenderer", "..\SharedRenderer\SharedRenderer.vcxitems", "{DCF1BDA8-E94A-4D57-8ED6-5D30E29B69ED}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdaptiveCardRenderer", "Renderer\AdaptiveCardRenderer.vcxproj", "{40C8962D-3E19-4142-A0B4-1614548AA3D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE5A624F-8376-43DE-B2FC-F758F78E9C99} = {BE5A624F-8376-43DE-B2FC-F758F78E9C99}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RendererCsProjection", "RendererCsProjection\RendererCsProjection.csproj", "{90FC73CA-F54D-486F-A7F8-32CD3FF508BB}"
 Global
