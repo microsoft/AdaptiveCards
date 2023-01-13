@@ -3,12 +3,12 @@
 
 #pragma once
 
-#ifndef USE_WINUI3
-#define Xaml_OM Uwp
-#define Xaml_Rendering Uwp
-#else
+#ifdef USE_WINUI3
 #define Xaml_OM Winui3
 #define Xaml_Rendering Winui3
+#else
+#define Xaml_OM Uwp
+#define Xaml_Rendering Uwp
 #endif
 
 #include <winrt/base.h>
