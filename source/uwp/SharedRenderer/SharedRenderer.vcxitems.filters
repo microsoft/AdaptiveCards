@@ -1,0 +1,514 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dll">
+      <UniqueIdentifier>{ddb720b8-38ca-4527-af0d-c461cb8e4cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{f0d5bd17-6de3-451b-8140-05034df4bd3b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)dll\CppWinRTIncludes.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\ActionHelpers.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionEventArgs.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionInvoker.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionRendererRegistration.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionsConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionSetRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardGetResourceStreamArgs.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardRendererComponent.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardResourceResolvers.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveChoiceSetInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorsConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColumnRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColumnSetRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerStyleDefinition.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerStylesDefinition.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveDateInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveElementRendererRegistration.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveErrorMessageConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveExecuteActionRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetTextConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFeatureRegistration.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontSizesConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontTypeDefinition.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontTypesDefinition.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontWeightsConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveHighlightColorConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveHostConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveHostConfigParseResult.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSetConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSetRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSizesConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputLabelConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputs.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputsConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveLabelConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaEventArgs.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaEventInvoker.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveNumberInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveOpenUrlActionRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveRenderArgs.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveRenderContext.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveRichTextBlockRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveSeparatorConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveShowCardActionConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveShowCardActionRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveSpacingConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveSubmitActionRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTableConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTableRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextBlockConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextBlockRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStyleConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStyleConfigBase.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStylesConfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveTimeInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveToggleInputRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveToggleVisibilityActionRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\DateTimeParser.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\DefaultResourceDictionary.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\ElementTagContent.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\IImageLoadTrackerListener.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\ImageLoadTracker.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\InputValue.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\IXamlBuilderListener.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\LinkButton.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\pch.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\RenderedAdaptiveCard.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\TextHelpers.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\TileControl.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\Util.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\WholeItemsPanel.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\XamlBuilder.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\XamlHelpers.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\ActionHelpers.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionEventArgs.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionInvoker.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionRendererRegistration.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionsConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionSetRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardGetResourceStreamArgs.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardRendererComponent.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardResourceResolvers.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveChoiceSetInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorsConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColumnRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColumnSetRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerStyleDefinition.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveContainerStylesDefinition.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveDateInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveElementRendererRegistration.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveErrorMessageConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveExecuteActionRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFactSetTextConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFeatureRegistration.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontSizesConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontTypeDefinition.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontTypesDefinition.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveFontWeightsConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveHighlightColorConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveHostConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveHostConfigParseResult.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSetConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSetRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveImageSizesConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputLabelConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputs.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveInputsConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveLabelConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaEventArgs.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaEventInvoker.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveMediaRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveNumberInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveOpenUrlActionRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveRenderArgs.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveRenderContext.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveRichTextBlockRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveSeparatorConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveShowCardActionConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveShowCardActionRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveSpacingConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveSubmitActionRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTableConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTableRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextBlockConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextBlockRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStyleConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStyleConfigBase.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTextStylesConfig.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveTimeInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveToggleInputRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveToggleVisibilityActionRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\DateTimeParser.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\ElementTagContent.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\ImageLoadTracker.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\InputValue.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\LinkButton.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\pch.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\RenderedAdaptiveCard.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\TextHelpers.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\TileControl.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\Util.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\WholeItemsPanel.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\XamlBuilder.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\XamlHelpers.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+  </ItemGroup>
+</Project>
