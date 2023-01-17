@@ -745,6 +745,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
                 case winrt::FallbackType::Content:
                     action = action.FallbackContent();
+                    actionType = action.ActionType();
                     XamlHelpers::WarnForFallbackContentElement(renderContext, actionTypeString, action.ActionTypeString());
                     break; // Go again
 
@@ -870,18 +871,30 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             if (currentButtonIndex < maxActions && mode == winrt::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
             {
-                // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                actionControl = CreateActionButtonInActionSet(adaptiveCard,
-                                                              adaptiveActionSet,
-                                                              action,
-                                                              currentButtonIndex,
-                                                              actionsPanel,
-                                                              showCardsStackPanel,
-                                                              columnDefinitions,
-                                                              renderContext,
-                                                              renderArgs);
+                try
+                {
+                    // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
+                    actionControl = CreateActionButtonInActionSet(adaptiveCard,
+                                                                  adaptiveActionSet,
+                                                                  action,
+                                                                  currentButtonIndex,
+                                                                  actionsPanel,
+                                                                  showCardsStackPanel,
+                                                                  columnDefinitions,
+                                                                  renderContext,
+                                                                  renderArgs);
 
-                currentButtonIndex++;
+                    currentButtonIndex++;
+                }
+                catch (winrt::hresult_error const& ex)
+                {
+                    // We want to continue if the error is E_FAIL
+                    // There was no fallback mechanism for this action, but we need to render the rest of the ActionSet
+                    if (ex.code() != E_FAIL)
+                    {
+                        throw ex
+                    }
+                }
             }
             else if (currentButtonIndex >= maxActions &&
                      (mode == winrt::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary) && !overflowMaxActions)
