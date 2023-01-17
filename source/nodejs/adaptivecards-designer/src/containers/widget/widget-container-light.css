@@ -340,7 +340,8 @@ a.ac-anchor:hover {
 }
 
 .ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
-.ac-carousel-container .swiper-button-next.ac-carousel-right {
+.ac-carousel-container .swiper-button-next.ac-carousel-right,
+.swiper-button-prev.ac-carousel-up .swiper-button-next.ac-carousel-down {
     display:none;
 }
 
@@ -351,24 +352,34 @@ a.ac-anchor:hover {
 .ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-left,
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-right,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-left,
-.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right {
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right
+.ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-up,
+.ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-down,
+.ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-up,
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-down {
     display: flex;
 }
 
 .swiper-button-prev.ac-carousel-left,
-.swiper-button-next.ac-carousel-right {
+.swiper-button-next.ac-carousel-right,
+.swiper-button-prev.ac-carousel-up,
+.swiper-button-next.ac-carousel-down {
     border-radius:3px;
     height:38px;
     width:16px;
 }
 
 .swiper-button-prev.ac-carousel-left:hover,
-.swiper-button-next.ac-carousel-right:hover {
+.swiper-button-next.ac-carousel-right:hover,
+.swiper-button-prev.ac-carousel-up:hover,
+.swiper-button-prev.ac-carousel-down:hover {
     background: transparent !important;
 }
 
 .swiper-button-prev.ac-carousel-left::after,
-.swiper-button-next.ac-carousel-right::after {
+.swiper-button-next.ac-carousel-right::after,
+.swiper-button-prev.ac-carousel-up::after,
+.swiper-button-prev.ac-carousel-down::after {
     color:rgba(0, 0, 0, 0.4458);
     font-size:8px !important;
 }
@@ -376,7 +387,11 @@ a.ac-anchor:hover {
 .swiper-button-prev.ac-carousel-left:active::after,
 .swiper-button-prev.ac-carousel-left:hover::after,
 .swiper-button-next.ac-carousel-right:active::after,
-.swiper-button-next.ac-carousel-right:hover::after {
+.swiper-button-next.ac-carousel-right:hover::after,
+.swiper-button-prev.ac-carousel-up:active::after,
+.swiper-button-prev.ac-carousel-up:hover::after,
+.swiper-button-next.ac-carousel-down:active::after,
+.swiper-button-next.ac-carousel-down:hover::after {
     color:rgba(0, 0, 0, 0.6063) !important;
 }
 
