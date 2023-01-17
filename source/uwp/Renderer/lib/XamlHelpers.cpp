@@ -321,15 +321,28 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
             if (fallbackElementRenderer)
             {
-                fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
-
-                renderedElement = fallbackElement;
+                try
+                {
+                    fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
+                    renderedElement = fallbackElement;
+                }
+                catch (winrt::hresult_error const& ex)
+                {
+                    if (ex.code() == E_PERFORM_FALLBACK)
+                    {
+                        std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
+                    }
+                    else
+                    {
+                        throw(ex);
+                    }
+                }
             }
-
-            if (!fallbackControl)
+            else
             {
                 std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
             }
+
             fallbackHandled = true;
             break;
         }
