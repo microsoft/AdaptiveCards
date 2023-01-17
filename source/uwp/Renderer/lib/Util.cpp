@@ -481,25 +481,28 @@ bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::Ad
     winrt::IVector<winrt::AdaptiveRequirement> requirements = cardElement.Requirements();
     bool meetsRequirementsLocal = true;
 
-    for (auto req : requirements)
+    if (requirements)
     {
-        // winrt::hstring name = req.Name();
-        winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
+        for (auto req : requirements)
+        {
+            // winrt::hstring name = req.Name();
+            winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
 
-        if (registrationVersion.empty())
-        {
-            meetsRequirementsLocal = false;
-        }
-        else
-        {
-            std::string requirementVersionString = HStringToUTF8(req.Version());
-            if (requirementVersionString != "*")
+            if (registrationVersion.empty())
             {
-                AdaptiveCards::SemanticVersion requirementSemanticVersion(requirementVersionString);
-                AdaptiveCards::SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
-                if (registrationSemanticVersion < requirementSemanticVersion)
+                meetsRequirementsLocal = false;
+            }
+            else
+            {
+                std::string requirementVersionString = HStringToUTF8(req.Version());
+                if (requirementVersionString != "*")
                 {
-                    meetsRequirementsLocal = false;
+                    AdaptiveCards::SemanticVersion requirementSemanticVersion(requirementVersionString);
+                    AdaptiveCards::SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
+                    if (registrationSemanticVersion < requirementSemanticVersion)
+                    {
+                        meetsRequirementsLocal = false;
+                    }
                 }
             }
         }
