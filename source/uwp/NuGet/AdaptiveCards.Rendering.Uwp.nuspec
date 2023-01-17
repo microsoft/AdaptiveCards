@@ -12,11 +12,9 @@
         <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
         <license type="file">EULA-Windows.txt</license>
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-
         <dependencies>
             <dependency id="AdaptiveCards.ObjectModel.Uwp" version="1.0.0" />
         </dependencies>
-
     </metadata>
     <files>
         <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" target="lib\uap10.0"/>
