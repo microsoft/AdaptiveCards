@@ -892,7 +892,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                     // There was no fallback mechanism for this action, but we need to render the rest of the ActionSet
                     if (ex.code() != E_FAIL)
                     {
-                        throw ex
+                        throw ex;
                     }
                 }
             }
