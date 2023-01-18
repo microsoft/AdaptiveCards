@@ -5,4 +5,5 @@
     <string name="load_config">Host Config</string>
     <string name="default_config">Default Config</string>
     <string name="no_card">No Card</string>
+    <string name="type_ahead_search">Search</string>
 </resources>

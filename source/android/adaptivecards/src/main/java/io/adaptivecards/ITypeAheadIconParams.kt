@@ -1,6 +1,7 @@
 package io.adaptivecards
 
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import java.io.Serializable
 
 interface ITypeAheadIconParams : Serializable {
@@ -10,15 +11,15 @@ interface ITypeAheadIconParams : Serializable {
 }
 
 data class SearchIconParams(
-    override val drawableResourceId: Int = android.R.drawable.ic_search_category_default,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_baseline_search_24,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Search Field"
 ) : ITypeAheadIconParams
 
 data class CrossIconParams(
-    override val drawableResourceId: Int = android.R.drawable.ic_menu_close_clear_cancel,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_cross_mark,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
-    override val contentDescription: String = "Clear text button"
+    override val contentDescription: String = "Clear text button",
 ) : ITypeAheadIconParams
 
 
@@ -27,21 +28,21 @@ data class CrossIconParams(
 
 // <----------------------------------------------------------------------------------------------->
 data class StartSearchingIconParams(
-    override val drawableResourceId: Int = android.R.drawable.ic_search_category_default,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Search Field",
     val text: String = "Search Options"
 ) : ITypeAheadIconParams
 
 data class NoResultIconParams(
-    override val drawableResourceId: Int = android.R.drawable.ic_dialog_alert,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Search Field",
     val text: String = "No Results Found!"
 ) : ITypeAheadIconParams
 
 data class ErrorIconParams(
-    override val drawableResourceId: Int = android.R.drawable.ic_dialog_alert,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Search Field",
     val text: String = "Something went wrong"

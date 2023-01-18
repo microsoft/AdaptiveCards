@@ -21,7 +21,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
-
 class RenderedCardFragment : Fragment(), ICardActionHandler {
     private var mRenderedCardViewModel: RenderedCardViewModel? = null
     private var mTestCasesViewModel: TestCasesViewModel? = null

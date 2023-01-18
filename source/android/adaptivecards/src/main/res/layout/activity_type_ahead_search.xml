@@ -16,113 +16,79 @@
         android:background="#FFFFFF"
         android:orientation="vertical">
 
-<!--        <com.google.android.material.appbar.AppBarLayout-->
-<!--            android:id="@+id/appbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--            <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="56dp"-->
-<!--                app:title="title" />-->
-<!--        </com.google.android.material.appbar.AppBarLayout>-->
-
-        <LinearLayout
-            android:id="@+id/type_ahead_search_bar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:background="#0F6CBD"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/search_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                tools:src="@android:drawable/ic_search_category_default" />
-
-            <EditText
-                android:id="@+id/type_ahead_search_query"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:cursorVisible="true"
-                android:hint="Start typing to search"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:textColor="#212121"
-                android:textColorHint="#6E6E6E"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textAlignment="center"
                 android:textSize="16sp"
-                tools:ignore="Autofill" />
+                app:titleTextColor="#FFFFFF"
+                android:background="#0F6CBD"
+                app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/clear_text_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:src="@android:drawable/ic_menu_close_clear_cancel" />
+            <LinearLayout
+                android:id="@+id/type_ahead_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/adaptive_card_nav_bar_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp">
 
-        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/search_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    tools:src="@drawable/ic_baseline_search_24"
+                    android:visibility="visible"
+                    android:backgroundTint="#FFFFFF" />
 
-        <!--        <com.microsoft.stardust.DividerView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginBottom="@dimen/padding_6"-->
-        <!--            app:stardust_color="?attr/semanticcolor_divider"-->
-        <!--            app:stardust_dividerSize="size0" />-->
+                <EditText
+                    android:id="@+id/type_ahead_search_query"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:cursorVisible="true"
+                    android:layout_marginEnd="8dp"
+                    android:hint="Start typing to search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF"
+                    android:textSize="16sp"
+                    android:drawablePadding="5dp"
+                    tools:ignore="Autofill" />
 
-        <!--        <com.microsoft.teams.statelayout.StateLayout-->
-        <!--            android:id="@id/state_layout"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            app:allowRefresh="false"-->
-        <!--            app:showSyncIndicator="false"-->
-        <!--            app:state="@{viewModel.state}">-->
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/clearTextIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:contentDescription="Cancel"
+                    android:focusable="true"
+                    android:backgroundTint="#FFFFFF"
+                    tools:src="@android:drawable/ic_menu_close_clear_cancel"
+                    tools:visibility="visible" />
 
-<!--        <include-->
-<!--            android:id="@+id/custom_empty_view"-->
-<!--            layout="@layout/adaptive_card_choiceset_no_results"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/type_ahead_search_bar"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
+            </LinearLayout>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/empty_image"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:visibility="visible"-->
-<!--            android:src="@android:drawable/ic_dialog_alert"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/type_ahead_search_bar"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:tint="#000000" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/empty_message"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:text="Nothing here!"-->
-<!--            android:alpha="0.3"-->
-<!--            android:textColor="#000000"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/empty_image"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -133,63 +99,12 @@
                 layout="@layout/adaptive_card_choiceset_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="200dp"
                 android:layout_gravity="center_horizontal"
                 android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-<!--            <ProgressBar-->
-<!--                android:id="@+id/progressBar"-->
-<!--                android:indeterminateTint="#000"-->
-<!--                android:contentDescription="Loading Options"-->
-<!--                android:scaleType="center"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="110dp"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginTop="50dp"-->
-<!--                android:orientation="vertical"-->
-<!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}">-->
-
-<!--                <ProgressBar-->
-<!--                    android:id="@+id/progress_bar"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:contentDescription="Loading Options"-->
-<!--                    android:scaleType="center" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:text="Loading Options"-->
-<!--                    android:textColor="#6E6E6E"-->
-<!--                    android:textSize="17sp" />-->
-
-
-<!--            </LinearLayout>-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/error_image"-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_marginTop="110dp"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:contentDescription="Search options"-->
-<!--                android:gravity="center"-->
-<!--                tools:background="@{viewModel.isLoading ? @android:drawable/ic_search_category_default : @android:drawable/ic_dialog_alert" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_results_list"
@@ -210,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:visibility="gone"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="200dp"
                 app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

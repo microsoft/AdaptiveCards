@@ -14,17 +14,6 @@ import io.adaptivecards.renderer.DynamicChoicesServiceAsync
 
 class TypeAheadSearchViewModel : ViewModel() {
 
-    // Initialize view model, adaptor in constructor or init block
-
-    fun init(choices : MutableList<String>) {
-        // get navigation params and initiate choices.data, static choices etc.
-        staticChoices = choices
-        totalResults = choices.size
-        adapter = FilteredAdapter(choices)
-        if (totalResults == 0)
-            _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
-    }
-
     //private var mChoiceList: List<TypeAheadSearch.Item>? = null
 
     private var totalResults: Int = 0
@@ -81,18 +70,39 @@ class TypeAheadSearchViewModel : ViewModel() {
         totalResults = 0
         _isLoading.value = false
         _queryText.value = ""
-        _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
+
+        // Show start searching view by default
+        _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
     }
 
+    // Initialize view model, adaptor in constructor or init block
+
+    fun init(choices : MutableList<String>) {
+        // get navigation params and initiate choices.data, static choices etc.
+        staticChoices = choices
+        totalResults = choices.size
+        adapter = FilteredAdapter(choices)
+        showDefaultView()
+    }
+
+    private fun showDefaultView() {
+        if (staticChoices.size == 0) {
+            _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
+        }
+        else {
+            // Show static choices when present
+            _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
+        }
+    }
+
+
     fun fetchDynamicOptions(queryText: String) {
-        _queryText.postValue(queryText)
         if (queryText.isEmpty()) {
-            //clear search box text and dynamic choices
-            //return ArrayList()
-            adapter.setChoices(staticChoices)
+            clearText()
             return
         }
 
+        _queryText.postValue(queryText)
         _isLoading.postValue(true)
         _uiState.postValue(DynamicTypeAheadUiState.Loading)
 
@@ -164,6 +174,19 @@ class TypeAheadSearchViewModel : ViewModel() {
             android.R.drawable.stat_notify_error
             android.R.drawable.ic_menu_search
             android.R.drawable.ic_search_category_default
+            android.R.drawable.arrow_up_float
+            android.R.drawable.arrow_down_float
+            android.R.drawable.alert_dark_frame
+            android.R.drawable.arrow_down_float
+
+            android.R.drawable.ic_delete
+            android.R.drawable.ic_input_delete
+            android.R.drawable.ic_input_add
+
+            android.R.drawable.ic_menu_send
+            
+            android.R.drawable.ic_dialog_alert
+
             val choicesView = inflater.inflate(android.R.layout.select_dialog_item, parent, false)
             // Return a new holder instance
             return ViewHolder(choicesView)
@@ -226,9 +249,9 @@ class TypeAheadSearchViewModel : ViewModel() {
 //        }
         queryText.postValue("")
         //notify the property listeners
-        adapter.setChoices(ArrayList())
+        adapter.setChoices(staticChoices)
         _isLoading.postValue(false)
-        _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
+        showDefaultView()
     }
 }
 

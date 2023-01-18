@@ -1,12 +1,18 @@
 package io.adaptivecards
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.*
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
@@ -35,6 +41,39 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
     private var activityTypeAheadSearchBinding: ActivityTypeAheadSearchBinding? = null
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_modal_screen, menu)
+        menu?.let {
+            val menuItem = menu.findItem(R.id.action_submit)
+            val submitButton = menuItem.actionView as ImageButton
+            submitButton.setImageDrawable(resources.getDrawable(R.drawable.ic_tick_mark))
+            submitButton.background = null
+            submitButton.setOnClickListener {
+                onOptionsItemSelected(menuItem)
+            }
+            //val padding = resources.getDimensionPixelSize(12dp) / 2
+            //btn.setPadding(padding, padding, padding, padding)
+            submitButton.contentDescription = menuItem.title
+            submitButton.isEnabled = true
+            submitButton.imageAlpha = 255
+            submitButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        } else if (item.itemId == R.id.action_submit) {
+            //onSubmitClicked()
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
@@ -62,6 +101,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             //activityTypeAheadSearchBinding.customErrorView
 
             recyclerView = activityTypeAheadSearchBinding.searchResultsList
+            // is it required ?
             activityTypeAheadSearchBinding.viewModel = viewModel
 
             if (launchParams is TypeAheadSearchLaunchParams) {
@@ -105,11 +145,23 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 //            if (!loading && viewModel.state.type != ViewStateType.ERROR && viewModel.state.type != ViewStateType.EMPTY) {
 //                //stateLayout.announceForAccessibility(String.format(resources.getString(R.string.results_found), viewModel.totalResults))
 //            }
+
+            //val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+//            val backImageView = findViewById<ImageView>(R.id.back_icon)
+//            backImageView.apply {
+//                setBackgroundResource(android.R.drawable.ic_menu_revert)
+//            }
+
+//            val tickImageView = findViewById<ImageView>(R.id.tick_icon)
+//            tickImageView.apply {
+//                setBackgroundResource(android.R.drawable.ic_input_add)
+//            }
         }
 
 
         val observer1 = Observer<String?> { queryText ->
-            val imageView = findViewById<ImageView>(R.id.clear_text_icon)
+            val imageView = findViewById<ImageView>(R.id.clearTextIcon)
             if (queryText.isNullOrEmpty()) {
                 imageView.visibility = View.GONE
             }
@@ -140,6 +192,14 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         activityTypeAheadSearchBinding?.clearTextIcon?.setBackgroundResource(crossIconParams.drawableResourceId)
         activityTypeAheadSearchBinding?.clearTextIcon?.setOnClickListener { viewModel.clearText().also { searchTextView.text.clear() } }
 
+        activityTypeAheadSearchBinding?.toolbar?.let { setSupportActionBar(it) }
+
+        supportActionBar?.let { actionBar ->
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_left_arrow.apply { Color.BLACK })
+            actionBar.title = "Search"
+        }
+
         setContentView(activityTypeAheadSearchBinding?.root)
     }
 
@@ -155,7 +215,11 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     val imageView = findViewById<ImageView>(R.id.error_image)
                     imageView.apply {
                         setBackgroundResource(searchIconParams.drawableResourceId)
+                        //backgroundTintMode = PorterDuff.Mode.SRC_ATOP
+                        //setBackgroundColor(Color.parseColor("#C8C8C8"))
                     }
+                    val textView = findViewById<TextView>(R.id.error_msg_text)
+                    textView.text = "Search Options"
                 }
             }
             is DynamicTypeAheadUiState.ShowingChoices -> {
@@ -187,7 +251,14 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     it.customOverlayView.visibility = View.GONE
                     it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.apply { setBackgroundResource(noResultIconParams.drawableResourceId) }
+                    imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_search_no_results_error))
+//                    imageView.apply {
+//                        setBackgroundResource(noResultIconParams.drawableResourceId)
+//                        backgroundTintMode = PorterDuff.Mode.SRC_ATOP
+//                        //setBackgroundColor(Color.parseColor("#C8C8C8"))
+//                    }
+                    val textView = findViewById<TextView>(R.id.error_msg_text)
+                    textView.text = noResultIconParams.text
                 }
             }
             is DynamicTypeAheadUiState.Error -> {
@@ -199,7 +270,21 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     it.customOverlayView.visibility = View.GONE
                     it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.apply { setBackgroundResource(errorIconParams.drawableResourceId) }
+                    imageView.apply {
+                        setBackgroundResource(errorIconParams.drawableResourceId)
+//                        val unwrappedDrawable: Drawable? =
+//                            AppCompatResources.getDrawable(context, errorIconParams.drawableResourceId)
+//                        unwrappedDrawable?.let { wrappedDrawable ->
+//                            DrawableCompat.wrap(
+//                                wrappedDrawable
+//                            )
+//                            DrawableCompat.setTint(wrappedDrawable, Color.BLUE)
+//                            setImageDrawable(wrappedDrawable)
+//                        }
+
+                    }
+                    val textView = findViewById<TextView>(R.id.error_msg_text)
+                    textView.text = errorIconParams.text
                 }
             }
         }
