@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ACTProjection-Platform Condition="'$(Platform)' == 'Win32'">x86</ACTProjection-Platform>
+        <ACTProjection-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</ACTProjection-Platform>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- AdaptiveCards.Templating and its dependencies -->
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\AdaptiveCards.Templating.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\AdaptiveExpressions.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\Newtonsoft.Json.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\Antlr4.Runtime.Standard.dll" />
+
+        <!-- The projection and its runtime -->
+        <Reference Include="$(MSBuildThisFileDirectory)..\..\lib\uap10.0\AdaptiveCards.Templating.Projection.winmd">
+            <IsWinMDFile>true</true>
+            <Implementation>AdaptiveCards.Templating.Projection.dll</Implementation>
+        </Reference>
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\AdaptiveCards.Templating.Projection.Server.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\WinRT.Host.Shim.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-AnyCPU\native\WinRT.Runtime.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(ACTProjection-Platform)\native\AdaptiveCards.Templating.Projection.dll" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(ACTProjection-Platform)\native\AdaptiveCards.Templating.Projection.runtimeconfig.json" />
+        <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(ACTProjection-Platform)\native\en-us\WinRT.Host.dll.mui" />
+        <!-- <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(ACTProjection-Platform)\native\AdaptiveCards.Templating.Projection.pdb" /> -->
+    </ItemGroup>
+</Project>

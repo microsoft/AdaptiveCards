@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AdaptiveCards.Templating.Projection</id>
+        <version>1.0.0</version>
+        <authors>Microsoft</authors>
+        <summary>Adaptive Cards Templating for WinRT</summary>
+        <description>TODO</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>adaptivecards;adaptive-cards</tags>
+        <projectUrl>https://adaptivecards.io</projectUrl>
+        <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+        <license type="expression">MIT</license>
+        <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+        <dependencies>
+          <group targetFramework="net6.0-windows10.0.17763" />
+          <group targetFramework="uap10.0" />
+          <group targetFramework="native" />
+        </dependencies>
+    </metadata>
+    <files>
+      <!-- AdaptiveCards.Templating and its dependencies -->
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveCards.Templating.dll" target="runtimes\win10-AnyCPU\native\AdaptiveCards.Templating.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveExpressions.dll" target="runtimes\win10-AnyCPU\native\AdaptiveExpressions.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\Newtonsoft.Json.dll" target="runtimes\win10-AnyCPU\native\Newtonsoft.Json.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\Antlr4.Runtime.Standard.dll" target="runtimes\win10-AnyCPU\native\Antlr4.Runtime.Standard.dll" />
+
+      <!-- The projection itself -->
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveCards.Templating.Projection.winmd" target="lib/net6.0-windows10.0.17763" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveCards.Templating.Projection.winmd" target="lib/uap10.0" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveCards.Templating.Projection.winmd" target="lib/native" />
+
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\AdaptiveCards.Templating.Projection.dll" target="runtimes\win10-AnyCPU\native\AdaptiveCards.Templating.Projection.Server.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\x64\native\WinRT.Host.dll" target="runtimes\win10-x64\native\AdaptiveCards.Templating.Projection.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\x86\native\WinRT.Host.dll" target="runtimes\win10-x86\native\AdaptiveCards.Templating.Projection.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\arm64\native\WinRT.Host.dll" target="runtimes\win10-arm64\native\AdaptiveCards.Templating.Projection.dll" />
+
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\WinRT.Host.runtimeconfig.json" target="runtimes\win10-x64\native\AdaptiveCards.Templating.Projection.runtimeconfig.json" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\WinRT.Host.runtimeconfig.json" target="runtimes\win10-x86\native\AdaptiveCards.Templating.Projection.runtimeconfig.json" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\WinRT.Host.runtimeconfig.json" target="runtimes\win10-arm64\native\AdaptiveCards.Templating.Projection.runtimeconfig.json" />
+      
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\x64\native\en-US\WinRT.Host.dll.mui" target="runtimes\win10-x64\native\en-US\WinRT.Host.dll.mui" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\x86\native\en-US\WinRT.Host.dll.mui" target="runtimes\win10-x86\native\en-US\WinRT.Host.dll.mui" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\hosting\arm64\native\en-US\WinRT.Host.dll.mui" target="runtimes\win10-arm64\native\en-US\WinRT.Host.dll.mui" />
+
+      <file src="AdaptiveCards.Templating.Projection.native.targets"
+            target="build\native\AdaptiveCards.Templating.Projection.targets" />
+      <file src="AdaptiveCards.Templating.Projection.net60.targets"
+            target="build\AdaptiveCards.Templating.Projection.targets" />
+
+      <!-- Include the managed DLLs -->
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\WinRT.Host.Shim.dll"
+            target="runtimes\win10-AnyCPU\native\WinRT.Host.Shim.dll" />
+      <file src="..\bin\debug\net6.0-windows10.0.17763.0\WinRT.Runtime.dll"
+            target="runtimes\win10-AnyCPU\native\WinRT.Runtime.dll" />
+
+    </files>
+</package>

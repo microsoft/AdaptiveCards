@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.1" GeneratePathProperty="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<CsWinRTComponent>true</CsWinRTComponent>
+		<RootNamespace>AdaptiveCards.Templating.Projection</RootNamespace>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<Title>AdaptiveCards.Templating.Projection (for WinRT)</Title>
+		<Authors>AdaptiveCards</Authors>
+		<Company>Microsoft Corporation</Company>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<IncludeSymbols>False</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<AssemblyName>AdaptiveCards.Templating.Projection</AssemblyName>
+		<EnableDynamicLoading>false</EnableDynamicLoading>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<NuspecFile>$(ProjectDir)NuGet\AdaptiveCards.Templating.Projection.nuspec</NuspecFile>
+		<NuspecBasePath>$(ProjectDir)NuGet</NuspecBasePath>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<Target Name="CopyCsWinRTHostingFiles" BeforeTargets="AfterBuild">
+		<ItemGroup>
+			<HostingFiles Include="$(PkgMicrosoft_Windows_CsWinRT)\hosting\**\native\WinRT.Host.dll"></HostingFiles>
+			<HostingFiles Include="$(PkgMicrosoft_Windows_CsWinRT)\hosting\**\native\en-US\WinRT.Host.dll.mui"></HostingFiles>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(HostingFiles)" DestinationFiles="@(HostingFiles -> '$(OutDir)hosting\%(RecursiveDir)%(filename)%(extension)')" SkipUnchangedFiles="true">
+		</Copy>
+	</Target>
+
+	<Target Name="CopyCsWinRTTargets" BeforeTargets="AfterBuild">
+		<ItemGroup>
+			<CsWinRTAuthoringTargets Include="$(PkgMicrosoft_Windows_CsWinRT)\build\Microsoft.Windows.CsWinRT.Authoring*targets"></CsWinRTAuthoringTargets>
+		</ItemGroup>
+		<Copy SourceFiles="@(CsWinRTAuthoringTargets)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true">
+		</Copy>
+	</Target>
+
+	<Target Name="CopyCsWinRTManagedDlls" BeforeTargets="AfterBuild">
+		<ItemGroup>
+			<CsWinRTManagedDlls Include="$(PkgMicrosoft_Windows_CsWinRT)\lib\net6.0\WinRT.*.dll"></CsWinRTManagedDlls>
+		</ItemGroup>
+		<Copy SourceFiles="@(CsWinRTManagedDlls)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true">
+		</Copy>
+	</Target>
+
+	<Target Name="CopyNugetToLocalPackages" AfterTargets="Pack">
+		<ItemGroup>
+			<LocalNugetPack Include="$(PackageOutputPath)*.nupkg"></LocalNugetPack>
+		</ItemGroup>
+		<Copy SourceFiles="@(LocalNugetPack)" DestinationFolder="$(SolutionDir)localpackages" SkipUnchangedFiles="true">
+		</Copy>
+	</Target>
+</Project>

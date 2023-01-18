@@ -5,6 +5,7 @@ using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace AdaptiveCards.Templating
 {
@@ -96,21 +97,37 @@ namespace AdaptiveCards.Templating
                 return jsonTemplateString;
             }
 
-            string jsonData = "";
+            string rootJsonData = "";
+            string hostJsonData = "";
 
-            if (context != null && context.Root != null)
+            if (context != null)
             {
-                if (context.Root is string)
+                if (context.Root != null)
                 {
-                    jsonData = context.Root as string;
+                    if (context.Root is string)
+                    {
+                        rootJsonData = context.Root as string;
+                    }
+                    else
+                    {
+                        rootJsonData = JsonConvert.SerializeObject(context.Root);
+                    }
                 }
-                else
+
+                if (context.Host != null)
                 {
-                    jsonData = JsonConvert.SerializeObject(context.Root);
+                    if (context.Host is string)
+                    {
+                        hostJsonData = context.Host as string;
+                    }
+                    else
+                    {
+                        hostJsonData = JsonConvert.SerializeObject(context.Host);
+                    }
                 }
             }
 
-            AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
+            AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, rootJsonData, hostJsonData);
             AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
 
             templateExpansionWarnings = eval.getTemplateVisitorWarnings();
