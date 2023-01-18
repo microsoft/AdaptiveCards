@@ -8,12 +8,12 @@
 
   <Identity
     Name="9f958379-af7e-435b-a19e-3b823ef087f0"
-    Publisher="CN=krschau"
+    Publisher="CN=Microsoft Corporation"
     Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>AdaptiveCardVisualizer</DisplayName>
-    <PublisherDisplayName>krschau</PublisherDisplayName>
+    <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
