@@ -164,7 +164,7 @@ export class Carousel extends Container {
         Enums.Orientation.Horizontal
     );
     @property(Carousel.orientationProperty)
-    carouselOritentation: Enums.Orientation = Enums.Orientation.Horizontal; 
+    carouselOrientation: Enums.Orientation = Enums.Orientation.Horizontal; 
 
     static readonly verticalCarouselHeightProperty = new PixelSizeProperty(
         Versions.v1_6,
@@ -391,7 +391,7 @@ export class Carousel extends Container {
             "swiper-button-next"
         );
 
-        if (this.carouselOritentation === Enums.Orientation.Horizontal) {
+        if (this.carouselOrientation === Enums.Orientation.Horizontal) {
             prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
                 "ac-carousel-left"
             ));
@@ -520,6 +520,9 @@ export class Carousel extends Container {
         rtl: boolean | undefined
     ): void {
 
+        const adjustedPrevElement = (Enums.Orientation.Horizontal === this.carouselOrientation) ? (rtl === undefined || !rtl ? prevElement : nextElement) : prevElement;
+        const adjustedNextElement = (Enums.Orientation.Horizontal === this.carouselOrientation) ? (rtl === undefined || !rtl ? nextElement : prevElement) : nextElement;
+
         const swiperOptions: SwiperOptions = {
             loop: !this.isDesignMode(),
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
@@ -528,8 +531,8 @@ export class Carousel extends Container {
                 clickable: true
             },
             navigation: {
-                prevEl: rtl === undefined || !rtl ? prevElement : nextElement,
-                nextEl: rtl === undefined || !rtl ? nextElement : prevElement
+                prevEl: adjustedPrevElement,
+                nextEl: adjustedNextElement
             },
             a11y: {
                 enabled: true
@@ -539,7 +542,7 @@ export class Carousel extends Container {
                 onlyInViewport: true
             },
             initialSlide: this._currentIndex,
-            direction: this.carouselOritentation === Enums.Orientation.Horizontal ? "horizontal" : "vertical"
+            direction: this.carouselOrientation === Enums.Orientation.Horizontal ? "horizontal" : "vertical"
         };
 
         if (this.timer && !this.isDesignMode()) {
