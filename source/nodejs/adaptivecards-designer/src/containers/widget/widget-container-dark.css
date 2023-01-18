@@ -339,8 +339,9 @@ a.ac-anchor:hover {
 }
 
 .ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
-.ac-carousel-container .swiper-button-next.ac-carousel-right
-.swiper-button-prev.ac-carousel-up .swiper-button-next.ac-carousel-down {
+.ac-carousel-container .swiper-button-next.ac-carousel-right,
+.ac-carousel-container .swiper-button-prev.ac-carousel-up,
+.ac-carousel-container .swiper-button-next.ac-carousel-down {
     display:none;
 }
 
@@ -416,6 +417,10 @@ a.ac-anchor:hover {
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
     height:6px !important;
     width:6px !important;
+}
+
+.swiper-pagination.ac-carousel-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-vertical {
+	right: 4px;
 }
 
 .widget-header-text {
