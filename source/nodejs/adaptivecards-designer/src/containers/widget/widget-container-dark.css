@@ -334,6 +334,10 @@ a.ac-anchor:hover {
     padding: 0px 16px 16px 16px !important;
 }
 
+.ac-carousel-container-vertical {
+    display: flex;
+}
+
 .ac-carousel-card-level-container {
     margin: 0px -16px -16px -16px !important;
 }
@@ -455,4 +459,20 @@ a.ac-anchor:hover {
     .swiper-pagination-bullet {
         background-color: ButtonBorder !important;
     }
+}
+
+.ac-carousel-navigation-vertical {
+    position: absolute;
+    align-self: center;
+    right: 0px;
+}
+
+.ac-carousel-navigation-vertical .swiper-button-prev.ac-carousel-up {
+    padding-bottom: 10px;
+    position: relative !important;
+}
+
+.ac-carousel-navigation-vertical .swiper-button-next.ac-carousel-down {
+    padding-top: 10px;
+    position: relative !important;
 }

@@ -335,6 +335,10 @@ a.ac-anchor:hover {
     padding: 0px 16px 16px 16px !important;
 }
 
+.ac-carousel-container-vertical {
+    display: flex;
+}
+
 .ac-carousel-card-level-container {
     margin: 0px -16px -16px -16px !important;
 }
@@ -353,7 +357,7 @@ a.ac-anchor:hover {
 .ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-left,
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-right,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-left,
-.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right,
 .ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-up,
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-down,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-up,
@@ -421,7 +425,7 @@ a.ac-anchor:hover {
 }
 
 .swiper-pagination.ac-carousel-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-vertical {
-	right: 4px;
+    right: 4px;
 }
 
 .widget-header-text {
@@ -456,4 +460,20 @@ a.ac-anchor:hover {
     .swiper-pagination-bullet {
         background-color: ButtonBorder !important;
     }
+}
+
+.ac-carousel-navigation-vertical {
+    position: absolute;
+    align-self: center;
+    right: 0px;
+}
+
+.ac-carousel-navigation-vertical .swiper-button-prev.ac-carousel-up {
+    padding-bottom: 10px;
+    position: relative !important;
+}
+
+.ac-carousel-navigation-vertical .swiper-button-next.ac-carousel-down {
+    padding-top: 10px;
+    position: relative !important;
 }

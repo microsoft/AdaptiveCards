@@ -342,6 +342,10 @@ export class Carousel extends Container {
         this._containerForAdorners = containerForAdorners;
 
         cardLevelContainer.appendChild(containerForAdorners);
+        
+        const navigationContainer: HTMLElement = document.createElement("div");
+        navigationContainer.className = this.hostConfig.makeCssClassName("ac-carousel-navigation");
+        containerForAdorners.appendChild(navigationContainer);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
         carouselWrapper.className = this.hostConfig.makeCssClassName(
@@ -397,6 +401,13 @@ export class Carousel extends Container {
         } else {
             carouselContainer.style.height = this.verticalCarouselHeight + "px";
 
+            containerForAdorners.classList.add(this.hostConfig.makeCssClassName(
+                "ac-carousel-container-vertical"
+            ));
+            navigationContainer.classList.add(this.hostConfig.makeCssClassName(
+                "ac-carousel-navigation-vertical"
+            ))
+
             prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
                 "ac-carousel-up"
             ));
@@ -405,9 +416,9 @@ export class Carousel extends Container {
             ));
         }
 
-        containerForAdorners.appendChild(prevElementDiv);
+        navigationContainer.appendChild(prevElementDiv);
         Utils.addCancelSelectActionEventHandler(prevElementDiv);
-        containerForAdorners.appendChild(nextElementDiv);
+        navigationContainer.appendChild(nextElementDiv);
         Utils.addCancelSelectActionEventHandler(nextElementDiv);
 
         const pagination: HTMLElement = document.createElement("div");
@@ -417,7 +428,7 @@ export class Carousel extends Container {
         );
         Utils.addCancelSelectActionEventHandler(pagination);
 
-        containerForAdorners.appendChild(pagination);
+        navigationContainer.appendChild(pagination);
 
         if (this.isDesignMode()) {
             // If we are in design mode, we need to ensure these elements are in front of the peers
