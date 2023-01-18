@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveCards.ObjectModel.Uwp;
-using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
 using System;
@@ -10,10 +8,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
+using XamlCardVisualizer.CustomElements;
+
+#if !USE_WINUI3
+using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using XamlCardVisualizer.CustomElements;
+#endif
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
