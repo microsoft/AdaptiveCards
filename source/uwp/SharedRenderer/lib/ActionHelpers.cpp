@@ -11,6 +11,7 @@
 
 #ifdef USE_WINUI3
 #include <winrt/Microsoft.UI.Input.h>
+using InputKeyboardSource = winrt::Microsoft::UI::Input::InputKeyboardSource;
 #endif
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
@@ -336,19 +337,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         if (args.Key() == winrt::VirtualKey::Enter)
         {
 #ifdef USE_WINUI3
-            auto const& shiftKeyState =
-                winrt::Microsoft::UI::Input::InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Shift);
-            bool isShiftUp = shiftKeyState == winrt::Windows::UI::Core::CoreVirtualKeyStates::None;
-            auto const& controlKeyState =
-                winrt::Microsoft::UI::Input::InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Control);
-            bool isControlUp = controlKeyState == winrt::Windows::UI::Core::CoreVirtualKeyStates::None;
+            auto const& shiftKeyState = InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Shift);
+            auto const& controlKeyState = InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Control);
 #else
             auto coreWindow = winrt::CoreWindow::GetForCurrentThread();
 
-            bool isShiftUp = coreWindow.GetKeyState(winrt::VirtualKey::Shift) == winrt::CoreVirtualKeyStates::None;
-            bool isControlUp = coreWindow.GetKeyState(winrt::VirtualKey::Control) == winrt::CoreVirtualKeyStates::None;
+            auto const& shiftKeyState = coreWindow.GetKeyState(winrt::VirtualKey::Shift);
+            auto const& controlKeyState = coreWindow.GetKeyState(winrt::VirtualKey::Control);
 #endif
-            if (isShiftUp && isControlUp)
+            if (shiftKeyState == winrt::CoreVirtualKeyStates::None &&
+                controlKeyState == winrt::CoreVirtualKeyStates::None)
             {
                 actionInvoker.SendActionEvent(inlineAction);
                 args.Handled(true);
