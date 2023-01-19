@@ -346,7 +346,7 @@ a.ac-anchor:hover {
 .ac-carousel-container .swiper-button-next.ac-carousel-right,
 .ac-carousel-container .swiper-button-prev.ac-carousel-up,
 .ac-carousel-container .swiper-button-next.ac-carousel-down {
-    display:none;
+    visibility: hidden;
 }
 
 .swiper-slide.ac-carousel-page {
@@ -361,15 +361,20 @@ a.ac-anchor:hover {
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-down,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-up,
 .ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-down {
-    display: flex;
+    visibility: visible;
 }
 
 .swiper-button-prev.ac-carousel-left,
-.swiper-button-next.ac-carousel-right,
+.swiper-button-next.ac-carousel-right {
+    border-radius:3px;
+    height:38px;
+    width:16px;
+}
+
 .swiper-button-prev.ac-carousel-up,
 .swiper-button-next.ac-carousel-down {
     border-radius:3px;
-    height:38px;
+    height:14px;
     width:16px;
 }
 
@@ -424,7 +429,9 @@ a.ac-anchor:hover {
 }
 
 .swiper-pagination.ac-carousel-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-vertical {
-	right: 4px;
+    right: -6px;
+    position: relative !important;
+    transform: translate3d(0, 0, 0) !important;
 }
 
 .widget-header-text {
@@ -465,14 +472,11 @@ a.ac-anchor:hover {
     position: absolute;
     align-self: center;
     right: 0px;
+    display: flex;
+    flex-direction: column;
 }
 
-.ac-carousel-navigation-vertical .swiper-button-prev.ac-carousel-up {
-    padding-bottom: 10px;
-    position: relative !important;
-}
-
+.ac-carousel-navigation-vertical .swiper-button-prev.ac-carousel-up ,
 .ac-carousel-navigation-vertical .swiper-button-next.ac-carousel-down {
-    padding-top: 10px;
     position: relative !important;
 }

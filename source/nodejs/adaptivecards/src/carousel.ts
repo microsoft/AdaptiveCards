@@ -416,19 +416,20 @@ export class Carousel extends Container {
             ));
         }
 
-        navigationContainer.appendChild(prevElementDiv);
-        Utils.addCancelSelectActionEventHandler(prevElementDiv);
-        navigationContainer.appendChild(nextElementDiv);
-        Utils.addCancelSelectActionEventHandler(nextElementDiv);
-
         const pagination: HTMLElement = document.createElement("div");
         pagination.className = this.hostConfig.makeCssClassName(
             "swiper-pagination",
             "ac-carousel-pagination"
         );
-        Utils.addCancelSelectActionEventHandler(pagination);
+
+        navigationContainer.appendChild(prevElementDiv);
+        Utils.addCancelSelectActionEventHandler(prevElementDiv);
 
         navigationContainer.appendChild(pagination);
+        Utils.addCancelSelectActionEventHandler(pagination);
+
+        navigationContainer.appendChild(nextElementDiv);
+        Utils.addCancelSelectActionEventHandler(nextElementDiv);
 
         if (this.isDesignMode()) {
             // If we are in design mode, we need to ensure these elements are in front of the peers
