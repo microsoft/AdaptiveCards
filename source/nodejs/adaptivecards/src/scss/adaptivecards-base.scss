@@ -305,7 +305,7 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-inputStyle-revealOnHover {
+        &.ac-inputStyle-revealOnHover-onrender {
             border: $transparent-border;
             background-color: $transparent-background;
             &:hover {
@@ -313,20 +313,12 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-multichoiceInput {
-            &.ac-choiceSetInput-compact {
-                &.ac-inputStyle-revealOnHover {
-                    appearance: none;
-                }
-            }
+        &.ac-inputStyle-revealOnHover-onhover {
+            border: $revealOnHover-subdued-border;
         }
-    }
 
-    .ac-adaptiveCard:hover .ac-input.ac-inputStyle-revealOnHover {
-        border: $revealOnHover-subdued-border;
-    }
-
-    .ac-adaptiveCard:hover .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-inputStyle-revealOnHover {
-        appearance: auto;
+        &.ac-inputStyle-revealOnHover-onfocus {
+            border: $revealOnHover-subdued-border;
+        }
     }
 }
