@@ -44,6 +44,9 @@ namespace AdaptiveCardVisualizer
             DataContext = ViewModel;
 
             IsEnabled = true;
+#if USE_WINUI3
+            ViewModel._root = this.Content.XamlRoot;
+#endif
         }
 
         private void loadFileButton_Clicked(object sender, RoutedEventArgs args)

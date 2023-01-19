@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #if USE_WINUI3
 using AdaptiveCards.Rendering.Winui3;
+using Microsoft.UI.Xaml;
 #else
 using AdaptiveCards.Rendering.Uwp;
 #endif
@@ -37,6 +38,10 @@ namespace AdaptiveCardVisualizer.ViewModel
         }
 
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
+
+#if USE_WINUI3
+        public XamlRoot _root;
+#endif
 
         public bool UseFixedDimensions
         {

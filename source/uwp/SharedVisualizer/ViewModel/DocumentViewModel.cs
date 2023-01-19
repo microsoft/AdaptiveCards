@@ -102,6 +102,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                         _renderedAdaptiveCard.Action += async (sender, e) =>
                         {
                             var m_actionDialog = new ContentDialog();
+#if USE_WINUI3
+                            m_actionDialog.XamlRoot = this.MainPageViewModel._root;
+#endif
 
                             if (e.Action.ActionType == ActionType.ShowCard)
                             {
@@ -127,6 +130,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                             _renderedAdaptiveCard.MediaClicked += async (sender, e) =>
                             {
                                 var onPlayDialog = new ContentDialog();
+#if USE_WINUI3
+                                onPlayDialog.XamlRoot = this.MainPageViewModel._root;
+#endif
                                 onPlayDialog.Content = "MediaClickedEvent:";
 
                                 foreach (var source in e.Media.Sources)
