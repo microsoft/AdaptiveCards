@@ -10,7 +10,13 @@ using Windows.Data.Json;
 using Windows.Storage;
 using XamlCardVisualizer.CustomElements;
 
-#if !USE_WINUI3
+#if USE_WINUI3
+using AdaptiveCards.ObjectModel.Winui3;
+using AdaptiveCards.Rendering.Winui3;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+#else
 using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
