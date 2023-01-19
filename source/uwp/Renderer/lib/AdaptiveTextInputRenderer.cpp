@@ -41,8 +41,14 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             bool isMultiline = adaptiveTextInput.IsMultiline();
             winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != winrt::TextInputStyle::Password;
-            textBoxParentContainer = render_xaml::ActionHelpers::HandleInlineAction(
+            auto textBoxWithInlineAction = render_xaml::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
+
+            // If the inlineAction is ShowCard, textBoxWithInlineAction will be null and we should not update the parent container
+            if (textBoxWithInlineAction)
+            {
+                textBoxParentContainer = textBoxWithInlineAction;
+            }
         }
 
         if (!adaptiveTextInput.IsMultiline())
