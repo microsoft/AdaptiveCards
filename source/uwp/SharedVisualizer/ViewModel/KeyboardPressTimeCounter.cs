@@ -3,7 +3,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+#if USE_WINUI3
+using CommunityToolkit.WinUI;
+#else
 using Windows.UI.Core;
+#endif
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -56,7 +61,12 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private async Task SendShowErrorsUpdateAsync()
         {
+#if USE_WINUI3
+            var queueController = Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnDedicatedThread();
+            await queueController.DispatcherQueue.EnqueueAsync(() =>
+#else
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+#endif
             {
                 GenericDocumentView.MakeErrorsLike();
             });
