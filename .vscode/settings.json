@@ -11,5 +11,6 @@
 			"runningStatusMessage": "Updating specs...",
 			"finishStatusMessage": "Updated specs!"
 		}
-	]
+	],
+	"cmake.configureOnOpen": false
 }

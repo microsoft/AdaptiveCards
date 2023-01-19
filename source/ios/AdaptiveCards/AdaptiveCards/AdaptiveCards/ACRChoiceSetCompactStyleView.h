@@ -8,7 +8,6 @@
 #import "ACOHostConfig.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
-#import "ACODebouncer.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRChoiceSetCompactStyleView : UITextField <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
@@ -20,10 +19,6 @@
 @property CGFloat spacingTop;
 /// bottom margin of filtered list view
 @property CGFloat spacingBottom;
-
-- (void)updateSelectedChoiceInTextField:(NSString *)choice;
-
--(NSString *)getSelectedText;
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
@@ -42,9 +37,13 @@
 
 - (NSString *)getItemAt:(NSInteger)index;
 
+- (BOOL)findMatch:(NSString *)queryString;
+
+- (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText;
+
 - (void)updatefilteredListForStaticTypeahead:(NSString *) choices;
 
-- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSArray<NSString *> *)choices;
+- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices;
 
 - (void)resetFilter;
 
@@ -75,6 +74,8 @@
 - (BOOL)isValid:(NSString *)input;
 
 - (NSString *)getValue:(NSString *)input;
+
+-(void)updateDynamicTitleMap:(NSDictionary *)titleMap;
 
 @end
 

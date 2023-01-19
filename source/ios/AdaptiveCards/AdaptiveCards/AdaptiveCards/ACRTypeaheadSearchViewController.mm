@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ACRChoiceSetTypeaheadSearchView.h"
+#import "ACRTypeaheadSearchViewController.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOBundle.h"
@@ -18,13 +18,11 @@
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
-#import "ACRSearchBar.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
-
-@interface ACRChoiceSetTypeaheadSearchView() <UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,ACOTypeaheadDynamicChoicesProtocol>
-@end
+#import "ACRChoiceSetFilteredStyleView.h"
+#include "ACOHostConfigPrivate.h"
 
 typedef enum {
     none = 0,
@@ -40,7 +38,13 @@ typedef enum {
     displayingResults,
 } TSTypeaehadSearchViewState;
 
-@implementation ACRChoiceSetTypeaheadSearchView {
+typedef enum {
+    error = 0,
+    networkError,
+    success
+} ACODynamicTypeaheadResponseType;
+
+@implementation ACRTypeaheadSearchViewController {
     UITextField *_textField;
     ACOFilteredDataSource *_filteredDataSource;
     ACOBaseCardElement *_inputElem;
@@ -53,7 +57,7 @@ typedef enum {
     TSTypeaehadSearchViewState _searchViewState;
     ACOChoiceSetCompactStyleValidator *_validator;
     UIStackView *_container;
-    ACRChoiceSetCompactStyleView *_delegate;
+    id<ACRChoiceSetFilteredDelegate> _choiceSetDelegate;
     ACRTypeaheadStateAllParameters *_searchStateParams;
     UISearchBar *_searchBar;
     UIView *_customSearchBarSeparator;
@@ -62,12 +66,13 @@ typedef enum {
     UIImageView *_searchStateImageView;
     UILabel *_searchStateSubtitleLabel;
     ACOTypeaheadDynamicChoicesService *_dynamicChoicesService;
+    NSString *searchText;
 }
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
-                            hostConfig:(ACOHostConfig *)acoConfig
-                              delegate:(ACRChoiceSetCompactStyleView *)delegate
+                            hostConfig:(ACOHostConfig *)hostConfig
+                     choiceSetDelegate:(id<ACRChoiceSetFilteredDelegate>)choiceSetDelegate
                      searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams
 {
     self = [super init];
@@ -76,7 +81,7 @@ typedef enum {
         std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
         _rootView = rootView;
         _inputElem = acoElem;
-        _delegate = delegate;
+        _choiceSetDelegate = choiceSetDelegate;
         _searchStateParams = searchStateParams;
         _filteredDataSource = [[ACOFilteredDataSource alloc] init];
         _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
@@ -100,7 +105,6 @@ typedef enum {
     std::shared_ptr<BaseCardElement> elem = [_inputElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     self.view.backgroundColor = UIColor.whiteColor;
-    [self setupNavigationItemView];
     UIView *mainview = [[UIView alloc] initWithFrame:CGRectZero];
     [mainview setFrame:self.view.bounds];
     [mainview setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -113,12 +117,16 @@ typedef enum {
     _container.layoutMarginsRelativeArrangement = YES;
     _container.translatesAutoresizingMaskIntoConstraints = NO;
     _container.spacing = 14;
+    self.stackViewContainer = _container;
+    // [ACOHostConfig convertHexColorCodeToUIColor:"#F4F4F4"];
     _container.backgroundColor = UIColor.whiteColor;
     [mainview addSubview:_container];
     _searchBar = [UISearchBar new];
     [_searchBar sizeToFit];
     _searchBar.delegate = self;
     [_searchBar becomeFirstResponder];
+    _searchBar.text = [_choiceSetDelegate getSelectedText];
+    _searchBar.placeholder = _validator.placeHolder ?: @"Enter a search term";
     self.searchBar = _searchBar;
     
     _customSearchBarSeparator = [[UIView alloc] init];
@@ -152,8 +160,8 @@ typedef enum {
         [[_container leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
         [[_container widthAnchor] constraintEqualToAnchor:[self.view widthAnchor]],
         [[_container topAnchor] constraintEqualToAnchor:[self.view topAnchor]],
-        [[_searchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
-        [[_searchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor]],
+        [[_searchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:8],
+        [[_searchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor] constant:-8],
         [[_customSearchBarSeparator leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
         [[_customSearchBarSeparator trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor] constant:0],
         [[_listView leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
@@ -170,7 +178,13 @@ typedef enum {
        [[_listView bottomAnchor] constraintEqualToAnchor:[self.view bottomAnchor] constant:-16]
     ]];
     [_listView reloadData];
-    [self configureSearchStateUI:_filteredDataSource.count ? displayingResults : zeroState];
+    if (_searchBar.text) {
+        [self fetchChoicesWithQueryString:_searchBar.text];
+    } else {
+        [self resetFilteredList];
+    }
+    
+    [self setupNavigationItemView];
     
     ACRBaseCardElementRenderer *renderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)choiceSet->GetElementType()]];
     if (renderer && [renderer respondsToSelector:@selector(configure:rootView:baseCardElement:hostConfig:)]) {
@@ -180,15 +194,31 @@ typedef enum {
 
 - (void)setupNavigationItemView {
     [self.navigationItem setTitle:@"typeahead search"];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                     style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(backButtonClicked)];
+    UIImage *image = [UIImage systemImageNamed:@"chevron.backward"];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(navigateBack)];
     self.navigationItem.leftBarButtonItem = backButton;
+    
+    if(_searchBar.text !=nil && _searchBar.text.length)
+    {
+        UIImage *rightImage = [UIImage systemImageNamed:@"checkmark"];
+        UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:rightImage
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(checkmarkButtonClicked)];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }
 }
 
-- (void)backButtonClicked {
+- (void)navigateBack {
     [self dismiss];
+}
+
+- (void)checkmarkButtonClicked {
+    [self dismiss];
+    [_choiceSetDelegate updateSelectedChoiceInTextField:_searchBar.text];
 }
 
 -(void)dismiss {
@@ -200,19 +230,24 @@ typedef enum {
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if([searchBar.text length] == 0) {
-        [_searchBar resignFirstResponder];
-        [_filteredDataSource resetFilter];
-        [self configureSearchStateUI:_filteredDataSource.count ? displayingResults : zeroState];
+        [self resetFilteredList];
     }
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    NSString *newSearchText = [_searchBar.text stringByReplacingCharactersInRange:range
-                                                                       withString:text];
+    NSString *queryString = [_searchBar.text stringByReplacingCharactersInRange:range
+                                                                     withString:text];
+    [self fetchChoicesWithQueryString:queryString];
+    [_listView reloadData];
+    return YES;
+}
+
+-(void)fetchChoicesWithQueryString:(NSString *)queryString
+{
     switch (_dataSourceType) {
         case staticDataSource:
-            [_filteredDataSource updatefilteredListForStaticTypeahead:newSearchText];
+            [_filteredDataSource updatefilteredListForStaticTypeahead:queryString];
             break;
         case dynamicDataSource:
             _searchStateTitleLabel.text = @"Loading options";
@@ -223,21 +258,33 @@ typedef enum {
             {
                 [_loader startAnimating];
             }
-            [_dynamicChoicesService fetchChoicesFromDynamicSourceWithSearchQuery:newSearchText];
+            [_dynamicChoicesService fetchChoicesFromDynamicSourceWithSearchQuery:queryString];
             break;
         default:
             break;
     }
-    [_listView reloadData];
-    return YES;
+}
+
+-(void)resetFilteredList
+{
+    _searchBar.text = @"";
+    if (@available(iOS 16.0, *)) {
+        self.navigationItem.rightBarButtonItem.hidden = YES;
+    } else {
+        // Fallback on earlier versions
+    }
+    [_choiceSetDelegate updateSelectedChoiceInTextField:@""];
+    [_filteredDataSource resetFilter];
+    [self configureSearchStateUI:_filteredDataSource.count ? displayingResults : zeroState];
 }
 
 #pragma mark - ACOTypeaheadDynamicChoicesService Methods
 
-- (void)updateUIWithqueryString:(NSString*)queryString dynamicChoices:(NSArray<NSString *> *)choices withError:(NSError *)error {
+- (void)updateSearchUIWithqueryString:(NSString*)queryString dynamicChoices:(NSDictionary *)choices withError:(NSError *)error {
     if (!error) {
         [_loader stopAnimating];
         [_filteredDataSource updatefilteredListForStaticAndDynamicTypeahead:queryString dynamicChoices:choices];
+        [_validator updateDynamicTitleMap:choices];
         
         if (_filteredDataSource.count) {
             [self configureSearchStateUI:displayingResults];
@@ -250,34 +297,33 @@ typedef enum {
     else {
         [self configureSearchStateUI:displayingGenericError];
     }
+    self.navigationItem.rightBarButtonItem.hidden = YES;
+    if ([_filteredDataSource findMatch:queryString])
+    {
+        self.navigationItem.rightBarButtonItem.hidden = NO;
+    }
 }
 
 -(void)configureSearchStateUI:(TSTypeaehadSearchViewState)searchViewState
 {
+    _searchStateImageView.hidden = NO;
+    _searchStateTitleLabel.hidden = NO;
     switch (searchViewState) {
         case zeroState:
-            _searchStateTitleLabel.hidden = NO;
             _searchStateTitleLabel.text = _searchStateParams.zeroStateParams.title;
             _searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
-            _searchStateImageView.hidden = NO;
             break;
         case displayingResults:
             _searchStateTitleLabel.hidden = YES;
             _searchStateImageView.hidden = YES;
-            _searchStateTitleLabel.hidden = YES;
-            _searchStateImageView.hidden = YES;
             break;
         case displayingGenericError:
-            _searchStateTitleLabel.hidden = NO;
             _searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
             _searchStateTitleLabel.text = _searchStateParams.errorStateParams.title;
-            _searchStateImageView.hidden = NO;
             break;
         case displayingInvalidSearchError:
-            _searchStateTitleLabel.hidden = NO;
             _searchStateTitleLabel.text = _searchStateParams.noResultStateParams.title;
             _searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
-            _searchStateImageView.hidden = NO;
             break;
         default:
             break;
@@ -303,7 +349,15 @@ typedef enum {
     if (!cell) {
         cell = [[UITableViewCell alloc] init];
     }
-    cell.textLabel.text = [_filteredDataSource getItemAt:indexPath.row];
+    NSString *resultText = [_filteredDataSource getItemAt:indexPath.row];
+    NSRange highlightedRanges = [_filteredDataSource getHighlightRangeForSearchText:_searchBar.text resultText:resultText];
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:resultText];
+    [attrString beginEditing];
+    [attrString addAttributes:@{
+        NSFontAttributeName: [UIFont boldSystemFontOfSize:cell.textLabel.font.pointSize]}
+                              range:highlightedRanges];
+    [attrString endEditing];
+    cell.textLabel.attributedText = attrString;
     cell.textLabel.numberOfLines = _wrapLines;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
     cell.accessibilityValue = [NSString stringWithFormat:@"%ld of %ld", indexPath.row + 1, [self tableView:tableView numberOfRowsInSection:0]];
@@ -316,7 +370,7 @@ typedef enum {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     _searchBar.text = [_filteredDataSource getItemAt:indexPath.row];
-    [_delegate updateSelectedChoiceInTextField:[_filteredDataSource getItemAt:indexPath.row]];
+    [_choiceSetDelegate updateSelectedChoiceInTextField:[_filteredDataSource getItemAt:indexPath.row]];
     [self dismiss];
     [self resignFirstResponder];
 }

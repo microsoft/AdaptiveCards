@@ -21,7 +21,7 @@
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties;
-- (void)onChoiceSetQueryChange:(NSString *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSArray<NSString *> *choices, NSError *error))completion;
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion;
 
 #pragma mark - callbacks for overflow actions
 

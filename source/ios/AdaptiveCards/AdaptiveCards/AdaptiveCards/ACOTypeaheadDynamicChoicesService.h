@@ -7,16 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@protocol ACOTypeaheadDynamicChoicesProtocol <NSObject>
-- (void)updateUIWithqueryString:(NSString*)queryString dynamicChoices:(NSArray<NSString *> *)choices withError:(NSError *)error;
-@end
+#import "ACOTypeaheadDebouncer.h"
+#import "ACOTypeaheadSearchHandler.h"
+#import "ACRView.h"
 
 @interface ACOTypeaheadDynamicChoicesService: NSObject<ACODebouncerDelegate>
 
 -(instancetype)initWithRootView:(ACRView *)rootView
                       inputElem:(ACOBaseCardElement *)inputElem
-        typeaheadSearchDelegate:(id<ACOTypeaheadDynamicChoicesProtocol>) delegate;
+        typeaheadSearchDelegate:(id<ACRTypeaheadSearchProtocol>)typeaheadSearchProtocol;
 
 - (void)fetchChoicesFromDynamicSourceWithSearchQuery:(NSString *)searchQuery;
 

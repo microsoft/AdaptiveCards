@@ -7,21 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ACODebouncer.h"
+#import "ACOTypeaheadDebouncer.h"
 #import "BaseCardElement.h"
 #import "ACRView.h"
 #import "HostConfig.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRTypeaheadSearchParameters.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
+#import "ACRChoiceSetFilteredStyleView.h"
+#import "ACOTypeaheadSearchHandler.h"
 
-typedef enum {
-    error = 0,
-    networkError,
-    success
-} ACODynamicTypeaheadResponseType;
-
-@interface ACRChoiceSetTypeaheadSearchView : UIViewController <UISearchBarDelegate, UITableViewDelegate,UITableViewDataSource,ACOTypeaheadDynamicChoicesProtocol>
+@interface ACRTypeaheadSearchViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate,UITableViewDataSource,ACRTypeaheadSearchProtocol>
 
 @property NSString *id;
 @property (weak) UIView *filteredListView;
@@ -31,10 +27,11 @@ typedef enum {
 @property UILabel *searchStateTitleLabel;
 @property UILabel *searchStateSubtitleLabel;
 @property UIImageView *searchStateImageView;
+@property UIStackView *stackViewContainer;
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
                             hostConfig:(ACOHostConfig *)acoConfig
-                              delegate:(ACRChoiceSetCompactStyleView *)delegate
-                  searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams;
+                     choiceSetDelegate:(id<ACRChoiceSetFilteredDelegate>)choiceSetDelegate
+                     searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams;
 @end

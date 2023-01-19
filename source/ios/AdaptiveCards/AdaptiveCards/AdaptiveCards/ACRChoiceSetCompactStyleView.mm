@@ -17,7 +17,6 @@
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
-#import "ACRChoiceSetTypeaheadSearchView.h"
 #include "ACRTypeaheadSearchParameters.h"
 
 using namespace AdaptiveCards;
@@ -141,29 +140,6 @@ using namespace AdaptiveCards;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    UIViewController *rootViewController = traverseResponderChainForUIViewController(_rootView);
-    std::shared_ptr<BaseCardElement> elem = [_inputElem element];
-    std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
-    
-    if (rootViewController &&
-        choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
-        ACRTypeaheadZeroStateParams *zeroStateParams = [[ACRTypeaheadZeroStateParams alloc] initWithtitle:@"Search options" subtitle:nil];
-        ACRTypeaheadOfflineStateParams *offlineStateParams = [[ACRTypeaheadOfflineStateParams alloc] initWithtitle:@"the device is offline" subtitle:nil];
-        ACRTypeaheadNoResultsStateParams *noResultStateParams = [[ACRTypeaheadNoResultsStateParams alloc] initWithtitle:@"No results" subtitle:nil];
-        ACRTypeaheadErrorStateParams *errorStateParams = [[ACRTypeaheadErrorStateParams alloc] initWithtitle:@"Something went wrong" subtitle:nil];
-        ACRTypeaheadStateAllParameters *typeaheadParams = [[ACRTypeaheadStateAllParameters alloc] initWithzeroStateParams:zeroStateParams
-                                                                                                         errorStateParams:errorStateParams
-                                                                                                       noResultStateParams:noResultStateParams
-                                                                                                        offlineStateParams:offlineStateParams];
-        
-        ACRChoiceSetTypeaheadSearchView *controller = [[ACRChoiceSetTypeaheadSearchView alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil delegate:self searchStateParams:typeaheadParams];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [rootViewController presentViewController:navController animated:YES completion:nil];
-        return;
-    }
-    
     if (!_filteredDataSource.isEnabled) {
         BOOL prevState = _stateManager.isFilteredListVisible;
         // don't show keyboard if filtering is not enabled
@@ -392,14 +368,6 @@ using namespace AdaptiveCards;
     [self resignFirstResponder];
 }
 
-- (void)updateSelectedChoiceInTextField:(NSString *)choice {
-    self.text = choice;
-}
-
--(NSString *)getSelectedText {
-    return self.text;
-}
-
 @synthesize hasValidationProperties;
 
 @synthesize id;
@@ -473,7 +441,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void)updatefilteredListForDynamicTypeahead:(NSArray<NSString *> *)choices
+- (void)updatefilteredListForDynamicTypeahead:(NSDictionary *)choices
 {
     if (!self.isEnabled) {
         return;
@@ -482,7 +450,12 @@ using namespace AdaptiveCards;
         [self resetFilter];
         _dynamicFilteredList = @[];
     } else {
-        _dynamicFilteredList = choices;
+        NSMutableArray *dynamicList = [[NSMutableArray alloc] init];
+        for(id key in choices)
+        {
+            [dynamicList addObject:key];
+        }
+        _dynamicFilteredList = dynamicList;
         _filteredList = _dynamicFilteredList;
     }
 }
@@ -501,11 +474,21 @@ using namespace AdaptiveCards;
     _filteredList = array1;
 }
     
-- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSArray<NSString *> *)choices
+- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices
 {
     [self updatefilteredListForStaticTypeahead:key];
     [self updatefilteredListForDynamicTypeahead:choices];
     [self mergeStaticAndDynamicFilteredList];
+}
+
+- (BOOL)findMatch:(NSString *)queryString
+{
+    return [_filteredList containsObject:queryString];
+}
+
+- (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText
+{
+    return [resultText rangeOfString:searchText options:NSCaseInsensitiveSearch];
 }
 
 - (void)resetFilter
@@ -591,7 +574,8 @@ using namespace AdaptiveCards;
 @end
 
 @implementation ACOChoiceSetCompactStyleValidator {
-    NSMutableDictionary<NSString *, NSString *> *_titlesMap;
+    NSMutableDictionary<NSString *, NSString *> *_staticListTitlesMap;
+    NSDictionary<NSString *, NSString *> *_dynamicListTitlesMap;
 }
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem dataSource:(ACOFilteredDataSource *)dataSource
@@ -603,13 +587,13 @@ using namespace AdaptiveCards;
         self.isRequired = choiceSet->GetIsRequired();
         self.placeHolder = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
 
-        _titlesMap = [[NSMutableDictionary alloc] init];
+        _staticListTitlesMap = [[NSMutableDictionary alloc] init];
         NSString *defaultValue = [NSString stringWithCString:choiceSet->GetValue().c_str()
                                                     encoding:NSUTF8StringEncoding];
         for (auto choice : choiceSet->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
-            _titlesMap[title] = value;
+            _staticListTitlesMap[title] = value;
             if ([value isEqualToString:defaultValue]) {
                 _userInitialChoice = title;
             }
@@ -624,9 +608,9 @@ using namespace AdaptiveCards;
     BOOL isValid = YES;
     if (self.isRequired) {
         isValid = !(!input || !input.length ||
-                    ![_titlesMap objectForKey:input]);
+                    ![_staticListTitlesMap objectForKey:input] || ![_dynamicListTitlesMap objectForKey:input]);
     } else if (input && input.length) {
-        isValid = [_titlesMap objectForKey:input] != nil;
+        isValid = ([_staticListTitlesMap objectForKey:input] != nil || [_dynamicListTitlesMap objectForKey:input] != nil);
     }
     return isValid;
 }
@@ -634,10 +618,15 @@ using namespace AdaptiveCards;
 - (NSString *)getValue:(NSString *)input
 {
     if (input && input.length) {
-        NSString *value = [_titlesMap objectForKey:input];
-        return value ? value : @"";
+        NSString *value = [_staticListTitlesMap objectForKey:input];
+        return value ? value : ([_dynamicListTitlesMap objectForKey:input] ?: @"");
     }
     return @"";
+}
+
+- (void)updateDynamicTitleMap:(NSDictionary *)titleMap
+{
+    _dynamicListTitlesMap = titleMap;
 }
 
 @end

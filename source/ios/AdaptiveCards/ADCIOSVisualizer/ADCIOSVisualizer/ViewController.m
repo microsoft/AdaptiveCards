@@ -235,25 +235,45 @@ CGFloat kFileBrowserWidth = 0;
     self.hostconfig = payload;
 }
 
-- (void)onChoiceSetQueryChange:(NSString *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSArray<NSString *> *choices, NSError *error))completion
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion
 {
     NSMutableArray<NSString *> *choices = [[NSMutableArray alloc] init];
-    if ([searchRequest length])
+    NSString *queryString = [searchRequest valueForKey:@"value"];
+    NSMutableDictionary *responseDict = [NSMutableDictionary new];
+    NSMutableDictionary *choicesList = [[NSMutableDictionary alloc] init];
+    [responseDict setDictionary: @{
+        @"value": choicesList,
+        @"type" : @"application/vnd.microsoft.search.searchResponse"
+    }];
+    if ([queryString length])
     {
-        if([searchRequest isEqualToString:@"A"])
-        {
-            [choices addObject:@"apple"];
-            [choices addObject:@"apricot"];
-            [choices addObject:@"apple12"];
+        NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if(data!=nil) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                 options:kNilOptions
+                                                                   error:nil];
+            NSArray *dataList = [dict valueForKey:@"data"];
+            NSNumber *pageSize = [searchRequest valueForKey:@"top"];
+            for(int i=0; i<[pageSize intValue] && i<[dataList count]; i++)
+            {
+                NSDictionary *item = [dataList objectAtIndex:i];
+                if (item) {
+                    choicesList[[item objectForKey:@"id"]] = [item objectForKey:@"description"];
+                }
+            }
+            [responseDict setValue:choicesList forKey:@"value"];
+            completion(responseDict, nil);
+            return;
+        } else {
+            [responseDict setValue:nil forKey:@"value"];
+            [responseDict setValue:@"application/vnd.microsoft.search.error" forKey:@"type"];
+            completion(responseDict, nil);
+            return;
         }
-        else if ([searchRequest isEqualToString:@"Ap"])
-        {
-            [choices addObject:@"apricot"];
-        }
-        completion(choices, nil);
-        return;
     }
-    completion(choices, nil);
+    completion(responseDict, nil);
 }
 
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action

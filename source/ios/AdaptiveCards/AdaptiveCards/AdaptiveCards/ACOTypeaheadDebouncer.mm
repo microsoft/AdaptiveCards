@@ -6,7 +6,7 @@
 //  Copyright © 2022 Microsoft. All rights reserved.
 //
 
-#import "ACODebouncer.h"
+#import "ACOTypeaheadDebouncer.h"
 
 @interface ACODebouncer ()
 @property (nonatomic) NSTimeInterval delay;
