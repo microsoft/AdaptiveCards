@@ -65,7 +65,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
         template<typename T>
-        void SetImageOnUIElement(winrt::Uri const& imageUrl,
+        winrt::ImageSource SetImageOnUIElement(winrt::Uri const& imageUrl,
                                  T const& uiElement,
                                  winrt::AdaptiveCardResourceResolvers const& resolvers,
                                  bool isAutoSize,
@@ -77,11 +77,36 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-        template<typename T> void PopulateImageFromUrlAsync(winrt::Uri const& imageUrl, T const& imageControl, bool const& isImageSvg);
+        template<typename T>
+        winrt::ImageSource PopulateImageFromUrlAsync(winrt::Uri const& imageUrl,
+                                                     T const& uiElement,
+                                                     bool isAutoSize,
+                                                     winrt::IInspectable const& parentElement,
+                                                     winrt::IInspectable const& imageContainer,
+                                                     bool isVisible,
+                                                     bool isImageSvg);
+
+        template<typename T>
+        void SetUriSourceFromAccessStream(T const& uiElement,
+                                          bool isAutoSize,
+                                          winrt::IInspectable const& parentElement,
+                                          winrt::IInspectable const& imageContainer,
+                                          bool isVisible,
+                                          bool isImageSvg,
+                                          winrt::InMemoryRandomAccessStream const& stream,
+                                          winrt::ImageSource const& imageSource);
 
         boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
+
+        void ParseSvgForXmlDocument(winrt::Uri const& imageUrl, winrt::ImageSource const& imageSource);
+
+        template<typename T> void ParseSvgForXmlDocument(T const& stream, winrt::ImageSource const& imageSource);
+        void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc, winrt::ImageSource const& imageSource);
+        
+        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize);
+        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize);
     };
 }

@@ -92,6 +92,12 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(in);
 }
 
+double HStringToDouble(winrt::hstring const& in)
+{
+    std::string inAsUTF8 = HStringToUTF8(in);
+    return std::atof(inAsUTF8.c_str());
+}
+
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
