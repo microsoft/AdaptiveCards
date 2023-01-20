@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             LastKeyStroke = DateTime.Now;
 
             autoEvent = new AutoResetEvent(false);
-            if(!TimerIsRunning)
+            if (!TimerIsRunning)
             {
                 timer = new Timer(CheckIfSendIsNecessary, autoEvent, 2000, 500);
             }
@@ -58,9 +60,6 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 GenericDocumentView.MakeErrorsLike();
             });
-            
         }
-
-
     }
 }

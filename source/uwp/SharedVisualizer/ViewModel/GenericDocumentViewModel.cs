@@ -13,8 +13,6 @@ using Windows.Storage.Provider;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
-    
-
     public abstract class GenericDocumentViewModel : BindableBase
     {
         public MainPageViewModel MainPageViewModel { get; private set; }
@@ -168,7 +166,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 }
                 else
                 {
-                    await FileIO.WriteTextAsync(File, Payload);      
+                    await FileIO.WriteTextAsync(File, Payload);
                 }
             }
             catch (Exception ex)

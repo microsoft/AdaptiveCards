@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+#if !USE_WINUI3
 using AdaptiveCards.Rendering.Uwp;
+#endif
+using AdaptiveCardVisualizer.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +12,6 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using AdaptiveCardVisualizer.Helpers;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {

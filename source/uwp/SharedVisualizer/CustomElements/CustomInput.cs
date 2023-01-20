@@ -3,14 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Data.Json;
 
+#if !USE_WINUI3
 using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCards.ObjectModel.Uwp;
-using Windows.Data.Json;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+#endif
 
 namespace XamlCardVisualizer.CustomElements
 {

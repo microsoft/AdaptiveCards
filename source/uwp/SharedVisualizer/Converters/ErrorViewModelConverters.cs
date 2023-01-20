@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCardVisualizer.ViewModel;
 using System;
+
+#if !USE_WINUI3
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using AdaptiveCardVisualizer.ViewModel;
+#endif
 
 namespace AdaptiveCardVisualizer.Converters
 {
