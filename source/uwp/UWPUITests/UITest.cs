@@ -29,6 +29,14 @@ namespace UWPUITests
             // Set the date on the Date control
             TestHelpers.SetDateToUIElement(7, 16);
 
+            // Submit data
+            TestHelpers.FindElementByName("Send").Click();
+
+            // Retrieve the "Comment" Button and click it
+            var commentButton = TestHelpers.FindElementByName("Comment");
+            Assert.IsNotNull(commentButton, "Could not find 'Comment' button");
+            commentButton.Click();
+
             // Retrieve the "Add a comment" Input.Text and fill it with information
             var commentTextBox = TestHelpers.CastTo<Edit>(TestHelpers.FindElementByName("Add a comment"));
             commentTextBox.SendKeys("A comment");
