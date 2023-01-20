@@ -126,6 +126,12 @@ namespace AdaptiveCardVisualizer.ViewModel
         private void CreateMessageDialog(string text)
         {
             var messageDialog = new MessageDialog(text);
+#if USE_WINUI3
+            // Get the current window's HWND by passing in the Window object
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+            // Associate the HWND with the file picker
+            WinRT.Interop.InitializeWithWindow.Initialize(messageDialog, hwnd);
+#endif
             // Set the index of the command to be used as cancel (when ESC is pressed)
             // As there's only one command, command 0 is selected
             messageDialog.CancelCommandIndex = 0;
@@ -135,6 +141,12 @@ namespace AdaptiveCardVisualizer.ViewModel
         private async Task SaveNewFileAsync()
         {
             var savePicker = new FileSavePicker();
+#if USE_WINUI3
+            // Get the current window's HWND by passing in the Window object
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+            // Associate the HWND with the file picker
+            WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+#endif
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
             savePicker.FileTypeChoices.Add("Adaptive Card JSON", new List<string>() { ".json" });
             savePicker.SuggestedFileName = "NewAdaptiveCard.json";

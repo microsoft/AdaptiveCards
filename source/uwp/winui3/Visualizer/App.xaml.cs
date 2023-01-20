@@ -46,8 +46,14 @@ namespace AdaptiveCardVisualizer
         {
             m_window = new MainWindow();
             m_window.Activate();
+#if USE_WINUI3
+            Window = m_window;
+#endif
         }
 
-        private Window m_window;
+        public Window m_window;
+#if USE_WINUI3
+        public static Window Window;
+#endif
     }
 }

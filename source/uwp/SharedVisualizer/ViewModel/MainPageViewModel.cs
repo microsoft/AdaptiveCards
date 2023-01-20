@@ -97,6 +97,12 @@ namespace AdaptiveCardVisualizer.ViewModel
                 openPicker.ViewMode = PickerViewMode.List;
                 openPicker.FileTypeFilter.Add(".json");
 
+#if USE_WINUI3
+                // Get the current window's HWND by passing in the Window object
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+                // Associate the HWND with the file picker
+                WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwnd);
+#endif
                 StorageFile file = await openPicker.PickSingleFileAsync();
                 if (file != null)
                 {
