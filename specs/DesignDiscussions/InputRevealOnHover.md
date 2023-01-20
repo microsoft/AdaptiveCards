@@ -27,18 +27,18 @@ As of now, Adaptive cards support `Input` fields to collect user input. This is 
 We will allow bot developer to enhance the user experience of all `Input` fields in Adaptive card (such as `Input.Text`, `Input.Number`, `Input.Date`, `Input.Time`, `Input.Toggle` and `Input.Choiceset`). These input fields can appear just as readable fields when the user is not taking any action, and when the user clicks or focusses on them, it allows the user to update those fields. The user can then use action buttons like Action.Submit/Action.Execute present on the card to send data back to the bot.
 
 This is the proposed flow for user:-
-1. This is an adaptive showing information like "Contact", "Email", "Est. Closing date" etc. with new style where input fields are displayed as **readable fields** in the **default** state.
+1. This is an adaptive showing information like "Contact", "Email", "Est. Closing date" etc. with new style where input fields are displayed as **readable fields** in the **default** state i.e. without borders and input adorners (date/time pickers etc)
 
 ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario3.PNG)
 
 2. When user hovers anywhere on the card,
-	* we will show a lighter color outline to all the input fields.
+	* we will show a lighter color outline to all the input fields 
 	
-	This will guide user to the input fields which he can go an update right on the card.
+	This is reveal the inputs as editable fields with borders and input adorners. It will guide the user to go and update the field.
 	
 ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario4.PNG)
 
-3. When user hovers over the input field, we will show a darker outline in that input field to guide user that the field is activated and he can now edit the field.
+3. When user hovers over the input field, we will show a distinct visual cue over the input field to guide user that the field is activated and he can now edit the field.
 
 ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario5.PNG)
 

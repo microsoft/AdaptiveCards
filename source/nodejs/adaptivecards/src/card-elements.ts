@@ -351,7 +351,8 @@ export abstract class CardElement extends CardObject {
 
     protected updateInputsVisualState(hover: boolean) {
         const allInputs: Input[] = this.getAllInputs();
-        allInputs.forEach((input) => input.updateVisualState(undefined, hover /*hoverOnCard*/));
+        const inputEventType = !!hover ? InputEventType.MouseEnterOnCard : InputEventType.MouseLeaveOnCard;
+        allInputs.forEach((input) => input.updateVisualState(inputEventType));
     }
 
     protected isDisplayed(): boolean {
@@ -3284,6 +3285,12 @@ export class Media extends CardElement {
     }
 }
 
+enum InputEventType {
+    InitialRender,
+    MouseEnterOnCard,
+    MouseLeaveOnCard,
+    FocusLeave
+}
 export abstract class Input extends CardElement implements IInput {
     
     //#region Schema
@@ -3534,10 +3541,10 @@ export abstract class Input extends CardElement implements IInput {
                 }
             }
 
-            this.updateVisualState(true /*initialRender*/);
+            this.updateVisualState(InputEventType.InitialRender);
             if (this._renderedInputControlElement) {
                 this._renderedInputControlElement.onblur = (ev: MouseEvent) => {
-                    this.updateVisualState(undefined, undefined, true /*focusLeave*/);
+                    this.updateVisualState(InputEventType.FocusLeave);
                 };
             }
             this.updateInputControlAriaLabelledBy();
@@ -3603,19 +3610,19 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
+    updateVisualState(eventType: InputEventType): void {
         if (!this._renderedInputControlElement || this.inputStyle !== Enums.InputStyle.RevealOnHover) {
             return;
         }
-        if (!!initialRender) {
+        if (eventType === InputEventType.InitialRender) {
             // on initial render, we will show input fields as read only view
             this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onrender"));
         }
-        if (!!hoverOnCard) {
+        else if (eventType === InputEventType.MouseEnterOnCard) {
             // on hover on the card, we will reveal the inputs by showing borders etc
             // ac-inputStyle-revealOnHover-onhover class is also used to identify if mouse is hovering on the card
             this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
-        } else if (hoverOnCard === false) {
+        } else if (eventType === InputEventType.MouseLeaveOnCard) {
             this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
         }
     }
@@ -3884,9 +3891,9 @@ export class TextInput extends Input {
         return renderedInputControl;
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
+    updateVisualState(eventType: InputEventType): void {
         if (!(this.inlineAction || this.isMultiline)) {
-            super.updateVisualState(initialRender, hoverOnCard, focusLeave);
+            super.updateVisualState(eventType);
         }
     }
 
@@ -4077,7 +4084,7 @@ export class ToggleInput extends Input {
         return false;
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
+    updateVisualState(eventType: InputEventType): void {
     }
 
     getJsonTypeName(): string {
@@ -4474,12 +4481,12 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
+    updateVisualState(eventType: InputEventType): void {
         if (!this.isMultiSelect && this.isCompact) {
-            super.updateVisualState(initialRender, hoverOnCard, focusLeave);
+            super.updateVisualState(eventType);
 
             if (this._selectElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-                const hideDropDownPicker = shouldHideInputAdornersForRevealOnHover(this._selectElement, initialRender, hoverOnCard, focusLeave);
+                const hideDropDownPicker = shouldHideInputAdornersForRevealOnHover(this._selectElement, eventType);
                 
                 if (hideDropDownPicker) {
                     this._selectElement.style.appearance = "none";
@@ -4752,11 +4759,11 @@ export class DateInput extends Input {
         return this._dateInputElement;
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
-        super.updateVisualState(initialRender, hoverOnCard, focusLeave);
+    updateVisualState(eventType: InputEventType): void {
+        super.updateVisualState(eventType);
 
         if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            const hideDatePicker = shouldHideInputAdornersForRevealOnHover(this._dateInputElement, initialRender, hoverOnCard, focusLeave);
+            const hideDatePicker = shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
             updateInputAdornersVisibility(this._dateInputElement, hideDatePicker  /*hide*/);
         }
     }
@@ -4893,11 +4900,11 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
-    updateVisualState(initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean): void {
-        super.updateVisualState(initialRender, hoverOnCard, focusLeave);
+    updateVisualState(eventType: InputEventType): void {
+        super.updateVisualState(eventType);
 
         if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            const hideTimePicker = shouldHideInputAdornersForRevealOnHover(this._timeInputElement, initialRender, hoverOnCard, focusLeave);
+            const hideTimePicker = shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
             updateInputAdornersVisibility(this._timeInputElement, hideTimePicker /*hide*/);
         }
     }
@@ -8113,16 +8120,22 @@ function updateInputAdornersVisibility(input: HTMLInputElement, hide: boolean) {
     
 }
 
-function shouldHideInputAdornersForRevealOnHover(input: HTMLElement, initialRender?: boolean, hoverOnCard?: boolean, focusLeave?: boolean) {
+function shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
     // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
     // 1. intial render of card: hide input adorners
     // 2. mouse hover on the card: show input adorners
     // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
     // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
+
+    // check if input still has the focus
     const isInputInFocus = input === document.activeElement;
+
+    // check if mouse is still on the card
     const isMouseOverCard = input.classList.contains("ac-inputStyle-revealOnHover-onhover");
 
-    const hideInputAdorners = !!initialRender || (!!focusLeave && !isMouseOverCard) || (hoverOnCard === false && !isInputInFocus);
+    const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
+                              (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
+                              (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
     return hideInputAdorners;
 }
 
