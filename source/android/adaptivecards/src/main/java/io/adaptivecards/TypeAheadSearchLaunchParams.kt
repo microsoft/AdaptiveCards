@@ -8,6 +8,8 @@ data class TypeAheadSearchLaunchParams(
     val title: String,
     val searchIconParams: SearchIconParams,
     val crossIconParams: CrossIconParams,
+    val tickIconParams: TickIconParams,
+    val backIconParams: BackIconParams,
     val startSearchingIconParams: StartSearchingIconParams,
     val noResultIconParams: NoResultIconParams,
     val errorIconParams: ErrorIconParams

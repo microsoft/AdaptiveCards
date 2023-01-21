@@ -34,6 +34,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
     private lateinit var crossIconParams: CrossIconParams
     private lateinit var searchIconParams: SearchIconParams
+    private lateinit var backIconParams: BackIconParams
+    private lateinit var tickIconParams: TickIconParams
     private lateinit var startSearchingIconParams: StartSearchingIconParams
     private lateinit var errorIconParams: ErrorIconParams
     private lateinit var noResultIconParams: NoResultIconParams
@@ -47,7 +49,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         menu?.let {
             val menuItem = menu.findItem(R.id.action_submit)
             val submitButton = menuItem.actionView as ImageButton
-            submitButton.setImageDrawable(resources.getDrawable(R.drawable.ic_tick_mark))
+            submitButton.setImageResource(tickIconParams.drawableResourceId)
+            //submitButton.setImageDrawable(resources.getDrawable(R.drawable.ic_tick_mark))
             submitButton.background = null
             submitButton.setOnClickListener {
                 onOptionsItemSelected(menuItem)
@@ -87,6 +90,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             startSearchingIconParams = launchParams.startSearchingIconParams
             errorIconParams = launchParams.errorIconParams
             noResultIconParams = launchParams.noResultIconParams
+            tickIconParams = launchParams.tickIconParams
+            backIconParams = launchParams.backIconParams
         }
         // pass choices data, host communication interface
         viewModel.init(choices)
@@ -196,7 +201,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
         supportActionBar?.let { actionBar ->
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_left_arrow.apply { Color.BLACK })
+            actionBar.setHomeAsUpIndicator(backIconParams.drawableResourceId)
             actionBar.title = "Search"
         }
 
@@ -251,7 +256,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     it.customOverlayView.visibility = View.GONE
                     it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_search_no_results_error))
+                    imageView.setImageResource(noResultIconParams.drawableResourceId)
+                    //imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_illustration_generic_error))
 //                    imageView.apply {
 //                        setBackgroundResource(noResultIconParams.drawableResourceId)
 //                        backgroundTintMode = PorterDuff.Mode.SRC_ATOP

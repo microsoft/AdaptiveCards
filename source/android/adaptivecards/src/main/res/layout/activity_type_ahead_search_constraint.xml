@@ -60,57 +60,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <!--            <ProgressBar-->
-            <!--                android:id="@+id/progressBar"-->
-            <!--                android:indeterminateTint="#000"-->
-            <!--                android:contentDescription="Loading Options"-->
-            <!--                android:scaleType="center"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="110dp"-->
-            <!--                android:layout_gravity="center_horizontal"-->
-            <!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"-->
-            <!--                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent" />-->
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_marginTop="50dp"-->
-            <!--                android:orientation="vertical"-->
-            <!--                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}">-->
-
-            <!--                <ProgressBar-->
-            <!--                    android:id="@+id/progress_bar"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:contentDescription="Loading Options"-->
-            <!--                    android:scaleType="center" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:layout_marginTop="10dp"-->
-            <!--                    android:text="Loading Options"-->
-            <!--                    android:textColor="#6E6E6E"-->
-            <!--                    android:textSize="17sp" />-->
-
-
-            <!--            </LinearLayout>-->
-
-            <!--            <ImageView-->
-            <!--                android:id="@+id/error_image"-->
-            <!--                android:layout_width="80dp"-->
-            <!--                android:layout_height="80dp"-->
-            <!--                android:layout_marginTop="110dp"-->
-            <!--                android:layout_gravity="center_horizontal"-->
-            <!--                android:contentDescription="Search options"-->
-            <!--                android:gravity="center"-->
-            <!--                tools:background="@{viewModel.isLoading ? @android:drawable/ic_search_category_default : @android:drawable/ic_dialog_alert" />-->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_results_list"
                 android:layout_width="match_parent"

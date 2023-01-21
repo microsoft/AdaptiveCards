@@ -15,7 +15,6 @@
         android:layout_height="96dp"
         android:layout_gravity="center"
         android:contentDescription=""
-        android:padding="20dp"
         tools:src="@android:drawable/stat_notify_error"
         android:backgroundTint="#0078DC" />
 

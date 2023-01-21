@@ -46,6 +46,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import io.adaptivecards.BackIconParams;
 import io.adaptivecards.CrossIconParams;
 import io.adaptivecards.DynamicChoicesService;
 import io.adaptivecards.ErrorIconParams;
@@ -53,6 +54,7 @@ import io.adaptivecards.NoResultIconParams;
 import io.adaptivecards.R;
 import io.adaptivecards.SearchIconParams;
 import io.adaptivecards.StartSearchingIconParams;
+import io.adaptivecards.TickIconParams;
 import io.adaptivecards.TypeAheadSearchActivity;
 import io.adaptivecards.TypeAheadSearchLaunchParams;
 import io.adaptivecards.objectmodel.ChoiceInput;
@@ -537,6 +539,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     "Search",
                     new SearchIconParams(),
                     new CrossIconParams(),
+                    new TickIconParams(),
+                    new BackIconParams(),
                     new StartSearchingIconParams(),
                     new NoResultIconParams(),
                     new ErrorIconParams());
@@ -826,9 +830,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     "Search",
                     new SearchIconParams(),
                     new CrossIconParams(),
-                    new StartSearchingIconParams(android.R.drawable.ic_search_category_default, ImageView.ScaleType.FIT_CENTER, "Search Options", "Search Options"),
-                    new NoResultIconParams(android.R.drawable.stat_notify_error, ImageView.ScaleType.FIT_CENTER, "No Results Found!", "No Results Found!"),
-                    new ErrorIconParams(android.R.drawable.stat_notify_error, ImageView.ScaleType.FIT_CENTER, "Something went wrong", "Something went wrong"));
+                    new TickIconParams(),
+                    new BackIconParams(),
+                    new StartSearchingIconParams(R.drawable.ic_search, ImageView.ScaleType.FIT_CENTER, "Search Options", "Search Options"),
+                    new NoResultIconParams(R.drawable.ic_search, ImageView.ScaleType.FIT_CENTER, "No Results Found!", "No Results Found!"),
+                    new ErrorIconParams(R.drawable.ic_illustration_generic_error, ImageView.ScaleType.FIT_CENTER, "Something went wrong", "Something went wrong"));
                 intent.putExtra("launchParams", launchParams);
 //                if (hostActivity != null) {
 //                    mStartForResult.launch(intent);
@@ -1175,6 +1181,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     "Search",
                     new SearchIconParams(),
                     new CrossIconParams(),
+                    new TickIconParams(),
+                    new BackIconParams(),
                     new StartSearchingIconParams(R.drawable.ic_search_no_results, ImageView.ScaleType.FIT_CENTER, "Search Options", "Search Options"),
                     new NoResultIconParams(R.drawable.ic_search_no_results_error, ImageView.ScaleType.FIT_CENTER, "No Results Found!", "No Results Found!"),
                     new ErrorIconParams(R.drawable.ic_search_no_results_error, ImageView.ScaleType.FIT_CENTER, "Something went wrong", "Something went wrong"));

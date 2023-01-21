@@ -22,7 +22,17 @@ data class CrossIconParams(
     override val contentDescription: String = "Clear text button",
 ) : ITypeAheadIconParams
 
+data class BackIconParams(
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_left_arrow,
+    override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
+    override val contentDescription: String = "Back button",
+) : ITypeAheadIconParams
 
+data class TickIconParams(
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_tick_mark,
+    override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
+    override val contentDescription: String = "Done button",
+) : ITypeAheadIconParams
 
 
 
@@ -42,7 +52,7 @@ data class NoResultIconParams(
 ) : ITypeAheadIconParams
 
 data class ErrorIconParams(
-    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_illustration_generic_error,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Search Field",
     val text: String = "Something went wrong"

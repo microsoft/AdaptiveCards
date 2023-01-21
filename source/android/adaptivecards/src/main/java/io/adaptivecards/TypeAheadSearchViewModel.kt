@@ -3,10 +3,13 @@ package io.adaptivecards
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.AsyncTask
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.marginTop
+import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.objectmodel.ChoiceInput
@@ -170,24 +173,11 @@ class TypeAheadSearchViewModel : ViewModel() {
             val context = parent.context
             val inflater = LayoutInflater.from(context)
             // Inflate the custom layout
-            android.R.drawable.ic_dialog_alert
-            android.R.drawable.stat_notify_error
-            android.R.drawable.ic_menu_search
-            android.R.drawable.ic_search_category_default
-            android.R.drawable.arrow_up_float
-            android.R.drawable.arrow_down_float
-            android.R.drawable.alert_dark_frame
-            android.R.drawable.arrow_down_float
-
-            android.R.drawable.ic_delete
-            android.R.drawable.ic_input_delete
-            android.R.drawable.ic_input_add
-
-            android.R.drawable.ic_menu_send
-            
-            android.R.drawable.ic_dialog_alert
-
-            val choicesView = inflater.inflate(android.R.layout.select_dialog_item, parent, false)
+            android.R.layout.select_dialog_item
+            val choicesView = inflater.inflate(R.layout.adaptive_card_select_item, parent, false)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                textView.setTextAppearance(android.R.attr.textAppearanceSmall)
+//            }
             // Return a new holder instance
             return ViewHolder(choicesView)
         }

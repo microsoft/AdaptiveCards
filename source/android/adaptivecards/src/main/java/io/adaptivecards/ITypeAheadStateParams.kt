@@ -15,14 +15,14 @@ data class StartSearchingStateParams(
 ): ITypeAheadStateParams
 
 data class NoResultStateParams(
-    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search_no_results,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "No result state",
     override val text: String = "No Results Found!"
 ): ITypeAheadStateParams
 
 data class ErrorStateParams(
-    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_search_no_results_error,
+    @DrawableRes override val drawableResourceId: Int = R.drawable.ic_illustration_generic_error,
     override val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
     override val contentDescription: String = "Error State",
     override val text: String = "Something went wrong"
