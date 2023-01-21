@@ -86,14 +86,14 @@ namespace AdaptiveCards::Rendering::Uwp
                                                      bool isVisible,
                                                      bool isImageSvg);
 
-        template<typename T>
+        template<typename T, typename S>
         void SetUriSourceFromAccessStream(T const& uiElement,
                                           bool isAutoSize,
                                           winrt::IInspectable const& parentElement,
                                           winrt::IInspectable const& imageContainer,
                                           bool isVisible,
                                           bool isImageSvg,
-                                          winrt::InMemoryRandomAccessStream const& stream,
+                                          S const& stream,
                                           winrt::ImageSource const& imageSource);
 
         boolean IsSvgImage(std::string url);
@@ -106,7 +106,7 @@ namespace AdaptiveCards::Rendering::Uwp
         template<typename T> void ParseSvgForXmlDocument(T const& stream, winrt::ImageSource const& imageSource);
         void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc, winrt::ImageSource const& imageSource);
         
-        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize);
-        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize);
+        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize, bool const& fromSvg = false);
+        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize, bool const& fromSvg = false);
     };
 }
