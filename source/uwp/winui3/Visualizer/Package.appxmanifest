@@ -7,7 +7,7 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="9f958379-af7e-435b-a19e-3b823ef087f0"
+    Name="AdaptiveCardVisualizer"
     Publisher="CN=Microsoft Corporation"
     Version="1.0.0.0" />
 
