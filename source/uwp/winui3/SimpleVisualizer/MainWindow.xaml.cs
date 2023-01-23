@@ -27,7 +27,7 @@ namespace SimpleVisualizer
         {
             showButton.Visibility = Visibility.Collapsed;
 
-            var jsonContents = ReadFile(Package.Current.InstalledLocation.Path + "\\Assets", "weather.json");
+            var jsonContents = ReadFile(Package.Current.InstalledLocation.Path, "WeatherLarge.json");
             var card = AdaptiveCard.FromJsonString(jsonContents);
 
             var renderer = new AdaptiveCardRenderer();
