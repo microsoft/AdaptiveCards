@@ -80,6 +80,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
+        baseContext.theme
         val launchParams = intent.getSerializableExtra("launchParams")
         viewModel = ViewModelProvider(this)[TypeAheadSearchViewModel::class.java]
         val choices : MutableList<String> = ArrayList()

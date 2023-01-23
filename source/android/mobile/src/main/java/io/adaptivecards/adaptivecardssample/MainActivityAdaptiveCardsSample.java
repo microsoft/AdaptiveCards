@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -419,7 +420,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             registerCustomFeatures();
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(
-                this,
+                new ContextThemeWrapper(this, R.style.adaptiveCardStyling),
                 getSupportFragmentManager(),
                 parseResult.GetAdaptiveCard(),
                 this,

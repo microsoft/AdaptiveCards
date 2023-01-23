@@ -532,7 +532,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                 //hostActivity.onActivityRes
 
-                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                Intent intent = new Intent(context, TypeAheadSearchActivity.class);
 
                 TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
                     staticChoices,
