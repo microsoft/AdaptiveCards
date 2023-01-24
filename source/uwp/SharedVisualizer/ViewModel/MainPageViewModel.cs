@@ -40,7 +40,7 @@ namespace AdaptiveCardVisualizer.ViewModel
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
 
 #if USE_WINUI3
-        public XamlRoot _xamlRoot;
+        public XamlRoot XamlRoot { get; set; }
 #endif
 
         public bool UseFixedDimensions

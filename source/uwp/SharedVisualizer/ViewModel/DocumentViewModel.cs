@@ -103,7 +103,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                         {
                             var m_actionDialog = new ContentDialog();
 #if USE_WINUI3
-                            m_actionDialog.XamlRoot = this.MainPageViewModel._xamlRoot;
+                            m_actionDialog.XamlRoot = this.MainPageViewModel.XamlRoot;
 #endif
 
                             if (e.Action.ActionType == ActionType.ShowCard)
@@ -131,7 +131,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             {
                                 var onPlayDialog = new ContentDialog();
 #if USE_WINUI3
-                                onPlayDialog.XamlRoot = this.MainPageViewModel._xamlRoot;
+                                onPlayDialog.XamlRoot = this.MainPageViewModel.XamlRoot;
 #endif
                                 onPlayDialog.Content = "MediaClickedEvent:";
 

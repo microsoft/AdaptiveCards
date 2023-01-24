@@ -45,7 +45,7 @@ namespace AdaptiveCardVisualizer
 
             IsEnabled = true;
 #if USE_WINUI3
-            ViewModel._xamlRoot = this.Content.XamlRoot;
+            ViewModel.XamlRoot = this.Content.XamlRoot;
 #endif
         }
 
