@@ -349,6 +349,12 @@ export abstract class CardElement extends CardObject {
         }
     }
 
+    /*
+     * Called when mouse enters or leaves the card.
+     * Inputs elements need to update their visual state in such events like showing or hiding borders etc.
+     * It calls Input.updateVisualState(eventType) for all inputs.
+     * This method on input (updateVisualState) is supposed to be called from card level on mouse events.
+     */
     protected updateInputsVisualState(hover: boolean) {
         const allInputs: Input[] = this.getAllInputs();
         const inputEventType = !!hover ? InputEventType.MouseEnterOnCard : InputEventType.MouseLeaveOnCard;
@@ -3291,6 +3297,7 @@ enum InputEventType {
     MouseLeaveOnCard,
     FocusLeave
 }
+
 export abstract class Input extends CardElement implements IInput {
     
     //#region Schema
