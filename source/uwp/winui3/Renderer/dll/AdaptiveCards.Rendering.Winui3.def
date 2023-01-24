@@ -1,4 +1,4 @@
-LIBRARY "AdaptiveCards.Rendering.Winui3.dll"
+LIBRARY "AdaptiveCards.Rendering.WinUI3.dll"
 
 EXPORTS
 DllCanUnloadNow = WINRT_CanUnloadNow                    PRIVATE

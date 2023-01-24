@@ -5,5 +5,5 @@
 #define VER_FILESUBTYPE             VFT2_UNKNOWN
 #define VER_FILEDESCRIPTION_STR     "Adaptive Cards WinUI3 Renderer"
 #define VER_INTERNALNAME_STR        VER_FILEDESCRIPTION_STR
-#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.Rendering.Winui3.dll"
+#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.Rendering.WinUI3.dll"
 #include <common.ver>
