@@ -420,7 +420,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             registerCustomFeatures();
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(
-                new ContextThemeWrapper(this, R.style.adaptiveCardStyling),
+                this, //new ContextThemeWrapper(this, R.style.adaptiveCardStyling),
                 getSupportFragmentManager(),
                 parseResult.GetAdaptiveCard(),
                 this,

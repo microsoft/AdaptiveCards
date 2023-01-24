@@ -13,7 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:background="#FFFFFF">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -21,70 +20,139 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:background="#0F6CBD"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                app:titleTextColor="#FFFFFF"
+                android:background="#0F6CBD"
                 app:title="title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/adaptive_card_nav_bar_background"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/search_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    tools:src="@android:drawable/ic_menu_search"
+                    android:visibility="visible"
+                    android:backgroundTint="#FFFFFF"/>
+
+                <EditText
+                    android:id="@+id/type_ahead_search_query"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:cursorVisible="true"
+                    android:layout_marginEnd="8dp"
+                    android:hint="Start typing to search"
+                    android:imeOptions="actionSearch"
+                    tools:ignore="Autofill"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF"
+                    android:textSize="16sp" />
+
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textColorHint="#FFFFFF"-->
+<!--                android:textSize="16sp"-->
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/clearTextIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:contentDescription="Cancel"
+                    android:focusable="true"
+                    android:backgroundTint="#FFFFFF"
+                    tools:src="@android:drawable/ic_menu_close_clear_cancel"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include
-            android:id="@+id/type_ahead_search_bar"
-            layout="@layout/adaptive_card_choiceset_search_bar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="visible"
+            android:clipToPadding="false"
+            android:descendantFocusability="afterDescendants"
+            android:scrollbars="vertical"
+            app:adapter="@{viewModel.adaptor}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/appbar"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/type_ahead_search_bar"
-            app:layout_constraintStart_toStartOf="parent" >
+        <ProgressBar
+            android:id="@+id/customOverlayView"
+            android:indeterminateTint="#000"
+            android:contentDescription="Loading Options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_marginTop="240dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <include
-                android:id="@+id/custom_overlay_view"
-                layout="@layout/adaptive_card_choiceset_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="110dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/error_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:contentDescription=""
+            android:layout_marginTop="220dp"
+            tools:src="@android:drawable/stat_notify_error"
+            android:src="@android:drawable/stat_notify_error"
+            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="#0078DC"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_results_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:descendantFocusability="afterDescendants"
-                android:scrollbars="vertical"
-                android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
-                app:adapter="@{viewModel.adaptor}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view" />
+        <TextView
+            android:id="@+id/error_msg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="Something went wrong!"
+            app:layout_constraintTop_toBottomOf="@+id/error_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-            <include
-                android:id="@+id/custom_error_view"
-                layout="@layout/adaptive_card_choiceset_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"
-                android:layout_marginTop="110dp"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_empty_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="visible"/>
+<!--        android:textColor="#0078DC"-->
 
-        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

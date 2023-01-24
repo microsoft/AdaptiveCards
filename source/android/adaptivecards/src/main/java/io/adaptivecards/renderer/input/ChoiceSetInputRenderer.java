@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -824,7 +825,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                 //hostActivity.onActivityRes
 
-                Intent intent = new Intent(hostActivity, TypeAheadSearchActivity.class);
+                if (context instanceof ContextThemeWrapper) {
+                    ContextThemeWrapper contextThemeWrapper = (ContextThemeWrapper) context;
+                    contextThemeWrapper.getTheme();
+                }
+                Intent intent = new Intent(context, TypeAheadSearchActivity.class);
                 TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
                     staticChoices,
                     "Search",

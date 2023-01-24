@@ -1,23 +1,20 @@
 package io.adaptivecards
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.*
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.marginEnd
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
-import io.adaptivecards.databinding.ActivityTypeAheadSearchBinding
+import io.adaptivecards.databinding.ActivityTypeAheadSearchConstraintBinding
 
 class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var viewModel: TypeAheadSearchViewModel
@@ -41,7 +38,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var noResultIconParams: NoResultIconParams
 
 
-    private var activityTypeAheadSearchBinding: ActivityTypeAheadSearchBinding? = null
+    private var activityTypeAheadSearchBinding: ActivityTypeAheadSearchConstraintBinding? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
@@ -56,7 +53,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 onOptionsItemSelected(menuItem)
             }
             //val padding = resources.getDimensionPixelSize(12dp) / 2
-            //btn.setPadding(padding, padding, padding, padding)
+            //submitButton.setPadding(6, 6, 6, 6)
             submitButton.contentDescription = menuItem.title
             submitButton.isEnabled = true
             submitButton.imageAlpha = 255
@@ -80,7 +77,6 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
-        baseContext.theme
         val launchParams = intent.getSerializableExtra("launchParams")
         viewModel = ViewModelProvider(this)[TypeAheadSearchViewModel::class.java]
         val choices : MutableList<String> = ArrayList()
@@ -96,7 +92,19 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         }
         // pass choices data, host communication interface
         viewModel.init(choices)
-        activityTypeAheadSearchBinding = ActivityTypeAheadSearchBinding.inflate(layoutInflater)
+
+//        theme?.let {
+//            it.applyStyle(R.attr.adaptiveCardEditBoxStyling, true)
+//        }
+
+        //layoutInflater.context.setTheme(R.style.adaptiveCardEditBoxStyling)
+
+//        if (theme.resolveAttribute(R.attr.adaptiveCardEditBoxStyling, buttonStyle, true)) {
+//            val themedContext: Context = ContextThemeWrapper(context, R.style.adaptiveInlineActionImage)
+//        }
+
+
+        activityTypeAheadSearchBinding = ActivityTypeAheadSearchConstraintBinding.inflate(layoutInflater)
         activityTypeAheadSearchBinding?.let { activityTypeAheadSearchBinding ->
             searchTextView = activityTypeAheadSearchBinding.typeAheadSearchQuery
             //progressView = activityTypeAheadSearchBinding.progressBar
@@ -113,6 +121,23 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             if (launchParams is TypeAheadSearchLaunchParams) {
                 activityTypeAheadSearchBinding.clearTextIcon.setBackgroundResource(launchParams.crossIconParams.drawableResourceId)
                 activityTypeAheadSearchBinding.searchIcon.setBackgroundResource(launchParams.searchIconParams.drawableResourceId)
+            }
+
+//            theme?.let {
+//                it.applyStyle(R.id.type_ahead_search_query, true)
+//            }
+
+
+
+        }
+
+        val observer1 = Observer<String?> { queryText ->
+            activityTypeAheadSearchBinding?.let {
+                if (queryText.isNullOrEmpty()) {
+                    it.clearTextIcon.visibility = View.GONE
+                }
+                else
+                    it.clearTextIcon.visibility = View.VISIBLE
             }
         }
 
@@ -166,14 +191,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         }
 
 
-        val observer1 = Observer<String?> { queryText ->
-            val imageView = findViewById<ImageView>(R.id.clearTextIcon)
-            if (queryText.isNullOrEmpty()) {
-                imageView.visibility = View.GONE
-            }
-            else
-                imageView.visibility = View.VISIBLE
-        }
+
 
         //viewModel.isLoading.observe(this, observer)
         viewModel.uiState.observe(this, ::processState)
@@ -217,15 +235,17 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
                     it.customOverlayView.visibility = View.GONE
-                    it.customErrorView.visibility = View.VISIBLE
+                    //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.apply {
+                    it.errorImage.apply {
                         setBackgroundResource(searchIconParams.drawableResourceId)
                         //backgroundTintMode = PorterDuff.Mode.SRC_ATOP
                         //setBackgroundColor(Color.parseColor("#C8C8C8"))
                     }
                     val textView = findViewById<TextView>(R.id.error_msg_text)
-                    textView.text = "Search Options"
+                    it.errorMsgText.text = "Search Options"
+                    it.errorMsgText.visibility = View.VISIBLE
+                    it.errorImage.visibility = View.VISIBLE
                 }
             }
             is DynamicTypeAheadUiState.ShowingChoices -> {
@@ -235,7 +255,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     //it.emptyImage.visibility = View.GONE
                     //it.emptyMessage.visibility = View.GONE
                     it.customOverlayView.visibility = View.GONE
-                    it.customErrorView.visibility = View.GONE
+                    //it.customErrorView.visibility = View.GONE
+                    it.errorMsgText.visibility = View.GONE
+                    it.errorImage.visibility = View.GONE
                 }
             }
             is DynamicTypeAheadUiState.Loading -> {
@@ -245,7 +267,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     //it.emptyImage.visibility = View.GONE
                     //it.emptyMessage.visibility = View.GONE
                     it.customOverlayView.visibility = View.VISIBLE
-                    it.customErrorView.visibility = View.GONE
+                    //it.customErrorView.visibility = View.GONE
+                    it.errorMsgText.visibility = View.GONE
+                    it.errorImage.visibility = View.GONE
                 }
             }
             is DynamicTypeAheadUiState.NoResults -> {
@@ -255,9 +279,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
                     it.customOverlayView.visibility = View.GONE
-                    it.customErrorView.visibility = View.VISIBLE
+                    //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.setImageResource(noResultIconParams.drawableResourceId)
+                    it.errorImage.setImageResource(noResultIconParams.drawableResourceId)
                     //imageView.setImageDrawable(resources.getDrawable(R.drawable.ic_illustration_generic_error))
 //                    imageView.apply {
 //                        setBackgroundResource(noResultIconParams.drawableResourceId)
@@ -265,7 +289,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 //                        //setBackgroundColor(Color.parseColor("#C8C8C8"))
 //                    }
                     val textView = findViewById<TextView>(R.id.error_msg_text)
-                    textView.text = noResultIconParams.text
+                    it.errorMsgText.text = noResultIconParams.text
+                    it.errorMsgText.visibility = View.VISIBLE
+                    it.errorImage.visibility = View.VISIBLE
                 }
             }
             is DynamicTypeAheadUiState.Error -> {
@@ -275,9 +301,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
                     it.customOverlayView.visibility = View.GONE
-                    it.customErrorView.visibility = View.VISIBLE
+                    //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
-                    imageView.apply {
+                    it.errorImage.apply {
                         setBackgroundResource(errorIconParams.drawableResourceId)
 //                        val unwrappedDrawable: Drawable? =
 //                            AppCompatResources.getDrawable(context, errorIconParams.drawableResourceId)
@@ -291,7 +317,9 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
                     }
                     val textView = findViewById<TextView>(R.id.error_msg_text)
-                    textView.text = errorIconParams.text
+                    it.errorMsgText.text = errorIconParams.text
+                    it.errorMsgText.visibility = View.VISIBLE
+                    it.errorImage.visibility = View.VISIBLE
                 }
             }
         }

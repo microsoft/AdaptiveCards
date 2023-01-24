@@ -2,6 +2,7 @@ package io.adaptivecards
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.res.Resources
 import android.os.AsyncTask
 import android.os.Build
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.objectmodel.ChoiceInput
 import io.adaptivecards.renderer.DynamicChoicesServiceAsync
+import kotlin.coroutines.coroutineContext
 
 class TypeAheadSearchViewModel : ViewModel() {
 
@@ -28,6 +30,8 @@ class TypeAheadSearchViewModel : ViewModel() {
     private var mIsMultiSelect = false
 
     private var staticChoices : MutableList<String>
+
+    private var theme: Resources.Theme? = null
 
     //private val mDataSet: TypeAheadSearch.DataSet? = null
 
