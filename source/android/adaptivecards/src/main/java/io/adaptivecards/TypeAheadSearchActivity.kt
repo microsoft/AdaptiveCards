@@ -97,7 +97,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 //            it.applyStyle(R.attr.adaptiveCardEditBoxStyling, true)
 //        }
 
-        //layoutInflater.context.setTheme(R.style.adaptiveCardEditBoxStyling)
+        layoutInflater.context.setTheme(R.style.adaptiveCardStyling)
 
 //        if (theme.resolveAttribute(R.attr.adaptiveCardEditBoxStyling, buttonStyle, true)) {
 //            val themedContext: Context = ContextThemeWrapper(context, R.style.adaptiveInlineActionImage)
