@@ -32,7 +32,7 @@ This is the proposed flow for user:-
 ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario3.PNG)
 
 2. When user hovers anywhere on the card,
-	* we will show a lighter color outline to all the input fields 
+	* we will show a lighter color outline to all the input fields and we will also reveal input adorners like date picker in case of Input.Date
 	
 	This is reveal the inputs as editable fields with borders and input adorners. It will guide the user to go and update the field.
 	
@@ -95,7 +95,8 @@ which user can go and update the value.
 
 ![img](./assets/InputRevealOnHover/InputRevealOnHoverScenario13.png)
 
-2. Mobile is `out of scope` for `revealOnHover` input style design since there is no focus state on mobile and alignment will be always `vertical` as of today.
+## Mobile Experience:
+In Mobile, input fields with `revealOnHover` input style will behave just as current input fields experience meaning there will not be any effect of `revealOnHover` input style. This is so beacuse there is no hover on mobile and user should immediately see what fields are editable when card appears i.e., input fields will still appear with borders and input adorners (date/time picker etc) when user first sees the card.
 
 ## Proposed Schema Changes:
 
