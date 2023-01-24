@@ -114,7 +114,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc, winrt::ImageSource const& imageSource);
         
-        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false);
-        winrt::IAsyncAction SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false);
+        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false, bool dropIfUnset = false);
+        winrt::IAsyncAction SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false, bool dropIfUnset = false);
     };
 }

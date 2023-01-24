@@ -754,11 +754,15 @@ namespace AdaptiveCards::Rendering::Uwp
             auto height = rootElement.GetAttribute(L"height");
             auto width = rootElement.GetAttribute(L"width");
 
+            // We only need to set height or width, not both (fixes aspect ratio for person style)
+            bool isHeightSet = false;
+
             if (!height.empty())
             {
                 if (auto heightAsDouble = HStringToDouble(height))
                 {
                     SetRasterizedPixelHeight(imageSource, heightAsDouble, true);
+                    isHeightSet = true;
                 }
             }
 
@@ -766,20 +770,24 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 if (auto widthAsDouble = HStringToDouble(width))
                 {
-                    SetRasterizedPixelWidth(imageSource, widthAsDouble, true);
+                    SetRasterizedPixelWidth(imageSource, widthAsDouble, true, isHeightSet);
                 }
             }
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg)
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg, bool dropIfUnset)
     {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {
             co_await winrt::resume_foreground(image.Dispatcher());
             try {
                 auto currentSize = image.RasterizePixelHeight();
-                if (fromSvg || isinf(currentSize))
+                bool sizeIsUnset = isinf(currentSize);
+
+                bool dropHeight = sizeIsUnset && dropIfUnset;
+
+                if (!dropHeight && (fromSvg || isinf(currentSize)))
                 {
                     image.RasterizePixelHeight(imageSize);
                 }
@@ -791,7 +799,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg)
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg, bool dropIfUnset)
     {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {
@@ -799,7 +807,11 @@ namespace AdaptiveCards::Rendering::Uwp
             try
             {
                 auto currentSize = image.RasterizePixelWidth();
-                if (fromSvg || isinf(currentSize))
+                bool sizeIsUnset = isinf(currentSize);
+
+                bool dropWidth = sizeIsUnset && dropIfUnset;
+
+                if (!dropWidth && (fromSvg || sizeIsUnset))
                 {
                     image.RasterizePixelWidth(imageSize);
                 }
