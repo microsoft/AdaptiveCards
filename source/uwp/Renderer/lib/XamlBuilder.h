@@ -87,7 +87,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                      bool isImageSvg);
 
         template<typename T, typename S>
-        void SetUriSourceFromAccessStream(T const& uiElement,
+        void HandleAccessStreamForImageSource(T const& uiElement,
                                           bool isAutoSize,
                                           winrt::IInspectable const& parentElement,
                                           winrt::IInspectable const& imageContainer,
@@ -96,17 +96,25 @@ namespace AdaptiveCards::Rendering::Uwp
                                           S const& stream,
                                           winrt::ImageSource const& imageSource);
 
+        winrt::IAsyncAction SetSvgUriSource(winrt::SvgImageSource image, winrt::Uri imageUrl);
+
+        template<typename T, typename S>
+        winrt::IAsyncAction SetSvgImageSourceAsync(winrt::SvgImageSource image,
+                                                S stream,
+                                                T uiElement,
+                                                bool isAutoSize,
+                                                winrt::IInspectable parentElement,
+                                                winrt::IInspectable imageContainer,
+                                                bool isVisible);
+
         boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
 
-        void ParseSvgForXmlDocument(winrt::Uri const& imageUrl, winrt::ImageSource const& imageSource);
-
-        template<typename T> void ParseSvgForXmlDocument(T const& stream, winrt::ImageSource const& imageSource);
         void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc, winrt::ImageSource const& imageSource);
         
-        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize, bool const& fromSvg = false);
-        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize, bool const& fromSvg = false);
+        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false);
+        winrt::IAsyncAction SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize, bool fromSvg = false);
     };
 }
