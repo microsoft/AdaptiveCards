@@ -9,6 +9,11 @@
 #include "LinkButton.h"
 #include "WholeItemsPanel.h"
 
+#ifdef USE_WINUI3
+#include <winrt/Microsoft.UI.Input.h>
+using InputKeyboardSource = winrt::Microsoft::UI::Input::InputKeyboardSource;
+#endif
+
 namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 {
     winrt::Thickness GetButtonMargin(winrt::AdaptiveActionsConfig const& actionsConfig)
@@ -331,10 +336,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     {
         if (args.Key() == winrt::VirtualKey::Enter)
         {
+#ifdef USE_WINUI3
+            auto const& shiftKeyState = InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Shift);
+            auto const& controlKeyState = InputKeyboardSource::GetKeyStateForCurrentThread(winrt::VirtualKey::Control);
+#else
             auto coreWindow = winrt::CoreWindow::GetForCurrentThread();
 
-            if ((coreWindow.GetKeyState(winrt::VirtualKey::Shift) == winrt::CoreVirtualKeyStates::None) &&
-                (coreWindow.GetKeyState(winrt::VirtualKey::Control) == winrt::CoreVirtualKeyStates::None))
+            auto const& shiftKeyState = coreWindow.GetKeyState(winrt::VirtualKey::Shift);
+            auto const& controlKeyState = coreWindow.GetKeyState(winrt::VirtualKey::Control);
+#endif
+            if (shiftKeyState == winrt::CoreVirtualKeyStates::None &&
+                controlKeyState == winrt::CoreVirtualKeyStates::None)
             {
                 actionInvoker.SendActionEvent(inlineAction);
                 args.Handled(true);

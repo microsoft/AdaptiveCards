@@ -232,7 +232,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
             {
                 playbackItem.TimedMetadataTracks().SetPresentationMode(0, winrt::TimedMetadataTrackPresentationMode::PlatformPresented);
             });
+#ifdef USE_WINUI3
+        mediaElement.Source(playbackItem);
+
+#else
         mediaElement.SetPlaybackSource(playbackItem);
+#endif
     }
 
     void HandleMediaResourceResolverCompleted(winrt::IAsyncOperation<winrt::IRandomAccessStream> const& operation,
@@ -291,6 +296,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                     });
             }
 
+#ifdef USE_WINUI3
+            mediaElement.MediaPlayer().MediaOpened(
+                [](winrt::IInspectable const& sender, winrt::IInspectable const&) -> void
+                {
+                    if (const auto mediaElement = sender.try_as<winrt::MediaElement>())
+                    {
+                        mediaElement.MediaPlayer().Play();
+                    }
+            });
+#else
             mediaElement.MediaOpened(
                 [](winrt::IInspectable const& sender, winrt::RoutedEventArgs const& /*args*/) -> void
                 {
@@ -299,6 +314,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                         mediaElement.Play();
                     }
                 });
+#endif
         }
         else
         {
