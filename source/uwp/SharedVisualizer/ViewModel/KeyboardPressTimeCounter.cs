@@ -62,8 +62,14 @@ namespace AdaptiveCardVisualizer.ViewModel
         private async Task SendShowErrorsUpdateAsync()
         {
 #if USE_WINUI3
-            var queueController = Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnDedicatedThread();
-            await queueController.DispatcherQueue.EnqueueAsync(() =>
+            var dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            if (dispatcher == null)
+            { 
+                var queueController = Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnCurrentThread();
+                dispatcher = queueController.DispatcherQueue;
+            }
+            // Default priority is Normal
+            await dispatcher.EnqueueAsync(() =>
 #else
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 #endif
