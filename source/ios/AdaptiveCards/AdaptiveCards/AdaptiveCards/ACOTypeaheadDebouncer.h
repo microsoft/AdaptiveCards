@@ -22,7 +22,7 @@
              only perform the callback when a certain minimum time has been elapsed
              since last keystroke by the user.
  */
-@interface ACODebouncer<GenericType>: NSObject
+@interface ACOTypeaheadDebouncer<GenericType>: NSObject
 
 @property (strong, nonatomic) id <ACODebouncerDelegate> delegate;
 

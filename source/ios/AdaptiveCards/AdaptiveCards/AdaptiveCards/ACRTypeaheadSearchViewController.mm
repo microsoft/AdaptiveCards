@@ -253,7 +253,7 @@ typedef enum {
             _searchStateTitleLabel.text = @"Loading options";
             _searchStateTitleLabel.hidden = NO;
             _searchStateImageView.hidden = YES;
-            [_filteredDataSource clearList];
+            _filteredListView.hidden = YES;
             if (![_loader isAnimating])
             {
                 [_loader startAnimating];
@@ -308,6 +308,7 @@ typedef enum {
 {
     _searchStateImageView.hidden = NO;
     _searchStateTitleLabel.hidden = NO;
+    _filteredListView.hidden = YES;
     switch (searchViewState) {
         case zeroState:
             _searchStateTitleLabel.text = _searchStateParams.zeroStateParams.title;
@@ -316,6 +317,7 @@ typedef enum {
         case displayingResults:
             _searchStateTitleLabel.hidden = YES;
             _searchStateImageView.hidden = YES;
+            _filteredListView.hidden = NO;
             break;
         case displayingGenericError:
             _searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];

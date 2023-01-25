@@ -8,11 +8,11 @@
 
 #import "ACOTypeaheadDebouncer.h"
 
-@interface ACODebouncer ()
+@interface ACOTypeaheadDebouncer ()
 @property (nonatomic) NSTimeInterval delay;
 @end
 
-@implementation ACODebouncer
+@implementation ACOTypeaheadDebouncer
 
 - (instancetype)initWithDelay:(NSTimeInterval)delay
 {

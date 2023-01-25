@@ -19,7 +19,7 @@ static NSString * const AdaptiveCardChoices = @"action";
 
 @implementation ACOTypeaheadDynamicChoicesService {
     __weak ACRView *_rootView;
-    ACODebouncer *_debouncer;
+    ACOTypeaheadDebouncer *_debouncer;
     dispatch_queue_t _global_queue;
     ACOBaseCardElement *_inputElem;
     id<ACRTypeaheadSearchProtocol> _typeaheadSearchDelegate;
@@ -32,7 +32,7 @@ static NSString * const AdaptiveCardChoices = @"action";
     self = [super init];
     if(self) {
         _rootView = rootView;
-        _debouncer = [[ACODebouncer alloc] initWithDelay:0.2];
+        _debouncer = [[ACOTypeaheadDebouncer alloc] initWithDelay:0.2];
         _debouncer.delegate = self;
         _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         _inputElem = inputElem;
@@ -88,7 +88,7 @@ static NSString * const AdaptiveCardChoices = @"action";
             __weak typeof(self) weakSelf = self;
             if ([self->_rootView.acrActionDelegate
                  respondsToSelector:@selector(onChoiceSetQueryChange:acoElem:completion:)]) {
-                NSDictionary *requestPayload = [self getRequestPayloadForTypeaheadSearchWithQueryText:key withSkipValue:[NSNumber numberWithInt:15] AndTopValue:[NSNumber numberWithInt:15]];
+                NSDictionary *requestPayload = [self getRequestPayloadForTypeaheadSearchWithQueryText:key withSkipValue:[NSNumber numberWithInt:0] AndTopValue:[NSNumber numberWithInt:15]];
                 [self->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload acoElem:self->_inputElem completion:^(NSDictionary * response, NSError *error) {
                     __strong typeof(self) strongSelf = weakSelf;
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -96,6 +96,8 @@ static NSString * const AdaptiveCardChoices = @"action";
                         [strongSelf->_typeaheadSearchDelegate updateSearchUIWithqueryString:key dynamicChoices:choices withError:error];
                     });
                 }];
+            } else {
+                [self->_typeaheadSearchDelegate updateSearchUIWithqueryString:key dynamicChoices:nil withError:nil];
             }
         });
     }

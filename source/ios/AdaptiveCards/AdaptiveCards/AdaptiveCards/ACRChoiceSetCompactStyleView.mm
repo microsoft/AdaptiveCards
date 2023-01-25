@@ -496,11 +496,6 @@ using namespace AdaptiveCards;
     _filteredList = _staticUnfilteredList;
 }
 
-- (void)clearList
-{
-    _filteredList = @[];
-}
-
 @end
 
 @implementation ACOFilteredListStateManager {

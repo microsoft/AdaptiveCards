@@ -47,8 +47,6 @@
 
 - (void)resetFilter;
 
-- (void)clearList;
-
 @end
 
 @interface ACOFilteredListStateManager : NSObject

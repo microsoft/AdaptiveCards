@@ -93,7 +93,7 @@
     }
     const auto style = choiceSet->GetChoiceSetStyle();
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
-    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
+    if (choicesData && choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
         ACRChoiceSetFilteredStyleView *choiceSetView = (ACRChoiceSetFilteredStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
         choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
@@ -101,7 +101,7 @@
         [button setImage:[UIImage systemImageNamed:@"chevron.right"] forState:UIControlStateNormal];
         [button setImage:[UIImage systemImageNamed:@"chevron.up"] forState:UIControlStateSelected];
     }
-    else if (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered) {
+    else if ([view isKindOfClass:ACRChoiceSetCompactStyleView.class] && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *choiceSetView = (ACRChoiceSetCompactStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
         choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
