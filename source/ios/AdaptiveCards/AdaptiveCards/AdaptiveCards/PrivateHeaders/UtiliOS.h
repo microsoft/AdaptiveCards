@@ -133,3 +133,5 @@ NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);
 id traverseResponderChainForUIViewController(UIView *view);
 
 CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover);
+
+void addSelectActionToView(ACOHostConfig *acoConfig, ACOBaseActionElement *acoSelectAction, ACRView *rootView, UIView *view, UIView<ACRIContentHoldingView> *viewGroup);

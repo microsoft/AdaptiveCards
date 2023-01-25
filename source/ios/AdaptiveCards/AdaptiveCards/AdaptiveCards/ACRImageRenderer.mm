@@ -123,15 +123,9 @@
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+
     // instantiate and add tap gesture recognizer
-    ACRBaseTarget *target = [ACRTapGestureRecognizerFactory addTapGestureRecognizerToUIView:viewGroup
-                                                                                   rootView:rootView
-                                                                              recipientView:view
-                                                                              actionElement:acoSelectAction
-                                                                                 hostConfig:acoConfig];
-    if (target && acoSelectAction.inlineTooltip) {
-        [target addGestureRecognizer:view toolTipText:acoSelectAction.inlineTooltip];
-    }
+    addSelectActionToView(acoConfig, acoSelectAction, rootView, view, viewGroup);
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;

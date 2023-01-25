@@ -15,6 +15,7 @@
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
 #import "ACRTableRow.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -1073,4 +1074,16 @@ CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover)
     }
 
     return CGRectMake(0, 0, coverRect.size.width * scalerMidPoint, coverRect.size.height * scalerMidPoint);
+}
+
+void addSelectActionToView(ACOHostConfig *acoConfig, ACOBaseActionElement *acoSelectAction, ACRView *rootView, UIView *view, UIView<ACRIContentHoldingView> *viewGroup)
+{
+    ACRBaseTarget *target = [ACRTapGestureRecognizerFactory addTapGestureRecognizerToUIView:viewGroup
+                                                                                   rootView:rootView
+                                                                              recipientView:view
+                                                                              actionElement:acoSelectAction
+                                                                                 hostConfig:acoConfig];
+    if (target && acoSelectAction.inlineTooltip) {
+        [target addGestureRecognizer:view toolTipText:acoSelectAction.inlineTooltip];
+    }
 }
