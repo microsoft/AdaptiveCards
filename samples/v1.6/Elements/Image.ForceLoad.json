@@ -1,0 +1,21 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Image",
+			"height": "32px",
+			"width": "32px",
+			"url": "https://live-tile-images.scdn.co/dw-dark-previewl.gif",
+			"horizontalAlignment": "Center"
+		}, {
+			"type": "Image",
+			"height": "32px",
+			"width": "32px",
+			"url": "https://live-tile-images.scdn.co/dw-dark-previewl.gif",
+			"forceLoad": true,
+			"horizontalAlignment": "Center"
+		}
+	]
+}

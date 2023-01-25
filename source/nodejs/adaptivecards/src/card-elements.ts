@@ -1948,6 +1948,7 @@ export class Image extends CardElement {
     static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [
         "Action.ShowCard"
     ]);
+    static readonly shouldForceLoadProperty = new BoolProperty(Versions.v1_6, "forceLoad", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1980,6 +1981,9 @@ export class Image extends CardElement {
 
     @property(Image.selectActionProperty)
     selectAction?: Action;
+
+    @property(Image.shouldForceLoadProperty)
+    forceLoad: boolean;
 
     //#endregion
 
@@ -2140,6 +2144,8 @@ export class Image extends CardElement {
                 imageElement.style.backgroundColor = backgroundColor;
             }
 
+            this.configureImageForForceLoading();
+
             imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
@@ -2187,6 +2193,24 @@ export class Image extends CardElement {
 
     getResourceInformation(): IResourceInformation[] {
         return this.url ? [{ url: this.url, mimeType: "image" }] : [];
+    }
+
+    // configures Image element to fetch a new image data from url source instead of relying on cache
+    private configureImageForForceLoading(): void {
+        if (this.forceLoad) {
+            // currently rudimentary refreshing scheme is used
+            // by attaching unique query string to url, we bypass the cache usage
+            this.url = this.appendUniqueQueryStringToURL(this.url);
+        }
+    }
+
+    private appendUniqueQueryStringToURL(url: string | undefined) : string | undefined
+    {
+        // we can do better by appending unique key such as uuid instead of epoch
+        // however the current usage is for front-end ui and networking,  
+        // since ui is running in single main thread, this is sufficient mechanism
+        // without needing to depend on external library for our small use cases.
+        return (url && url.length) ? url + '?' + Date.now() : url;
     }
 }
 
