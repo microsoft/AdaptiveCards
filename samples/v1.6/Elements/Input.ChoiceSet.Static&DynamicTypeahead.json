@@ -1,0 +1,50 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "id": "myColor",
+            "choices": [
+                {
+                    "title": "Microsoft.IdentityModel.Tokens.static",
+                    "value": "1"
+                },
+                {
+                    "title": "Microsoft.IdentityModel.Logging.static",
+                    "value": "2"
+                },
+                {
+                    "title": "Microsoft.IdentityModel.Auth.static",
+                    "value": "3"
+                },
+                {
+                    "title": "Ms.IdentityModel.static",
+                    "value": "4"
+                },
+                {
+                    "title": "Ms.IdentityModel.tokens.static",
+                    "value": "5"
+                }
+            ],
+            "choices.data":
+            {
+                "type": "Data.Query",
+                "dataset": "graph.microsoft.com/users",
+                "count": 1,
+                "skip": 2
+            }
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit"
+        }
+    ]
+}

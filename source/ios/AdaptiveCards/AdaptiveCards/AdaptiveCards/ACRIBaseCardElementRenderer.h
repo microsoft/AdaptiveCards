@@ -28,6 +28,10 @@
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig;
 
+- (void)configureVC:(UIViewController *)view
+           rootView:(ACRView *)rootView
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 @end
 
 @protocol ACRIKVONotificationHandler

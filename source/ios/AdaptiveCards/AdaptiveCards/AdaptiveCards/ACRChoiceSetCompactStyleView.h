@@ -36,7 +36,13 @@
 
 - (NSString *)getItemAt:(NSInteger)index;
 
-- (void)filter:(NSString *)filter;
+- (BOOL)findMatch:(NSString *)queryString;
+
+- (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText;
+
+- (void)updatefilteredListForStaticTypeahead:(NSString *) choices;
+
+- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices;
 
 - (void)resetFilter;
 
@@ -65,6 +71,8 @@
 - (BOOL)isValid:(NSString *)input;
 
 - (NSString *)getValue:(NSString *)input;
+
+-(void)updateDynamicTitleMap:(NSDictionary *)titleMap;
 
 @end
 

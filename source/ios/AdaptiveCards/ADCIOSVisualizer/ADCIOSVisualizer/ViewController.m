@@ -403,6 +403,41 @@ CGFloat kFileBrowserWidth = 0;
     return YES; // skip SDK defult display
 }
 
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion
+{
+    NSString *queryString = [searchRequest valueForKey:@"value"];
+    NSMutableDictionary *responseDict = [NSMutableDictionary new];
+    NSMutableDictionary *resultsArray = [[NSMutableDictionary alloc] init];
+    [responseDict setDictionary: @{
+        @"value": resultsArray,
+        @"type" : @"application/vnd.microsoft.search.searchResponse"
+    }];
+    
+    if ([queryString length]) {
+        NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if(data!=nil) {
+            NSDictionary *resultsDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:kNilOptions
+                                                                                error:nil];
+            NSArray *dataList = [resultsDictionary valueForKey:@"data"];
+            NSNumber *pageSize = [searchRequest valueForKey:@"top"];
+            for(int index=0; index<[pageSize intValue] && index<[dataList count]; index++) {
+                id itemDict = [dataList objectAtIndex:index];
+                if ([itemDict isKindOfClass:NSDictionary.class]) {
+                    resultsArray[[itemDict objectForKey:@"id"]] = [itemDict objectForKey:@"description"];
+                }
+            }
+            [responseDict setValue:resultsArray forKey:@"value"];
+        } else {
+            [responseDict setValue:nil forKey:@"value"];
+            [responseDict setValue:@"application/vnd.microsoft.search.error" forKey:@"type"];
+        }
+    }
+    completion(responseDict, nil);
+}
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview

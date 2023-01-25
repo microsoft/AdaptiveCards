@@ -10,9 +10,12 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACRChoiceSetFilteredStyleView.h"
+#import "ACRTypeaheadSearchViewController.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
+#import "ChoicesData.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputChoiceSetRenderer
@@ -37,9 +40,14 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
     ACRInputLabelView *inputLabelView = nil;
     const auto style = choiceSet->GetChoiceSetStyle();
-    if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
+    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
+        ACRChoiceSetFilteredStyleView *typeaheadStyleView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
+        inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:typeaheadStyleView accessibilityItem:typeaheadStyleView viewGroup:viewGroup dataSource:nil];
+    }
+    else if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *compactStyleView = [[ACRChoiceSetCompactStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
         inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:compactStyleView accessibilityItem:compactStyleView viewGroup:viewGroup dataSource:nil];
     } else {
@@ -83,7 +91,15 @@
         return;
     }
     const auto style = choiceSet->GetChoiceSetStyle();
-    if (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered) {
+    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
+    if (choicesData && choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
+        ACRChoiceSetFilteredStyleView *choiceSetView = (ACRChoiceSetFilteredStyleView *)view;
+        choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
+        choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
+        UIButton *button = (UIButton *)choiceSetView.showFilteredListControl;
+        [button setImage:[UIImage systemImageNamed:@"chevron.right"] forState:UIControlStateNormal];
+    }
+    else if ([view isKindOfClass:ACRChoiceSetCompactStyleView.class] && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *choiceSetView = (ACRChoiceSetCompactStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
         choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
@@ -112,4 +128,50 @@
         choiceSetView.spacingBottom = 10.0f;
     }
 }
+
+- (void)configureVC:(UIViewController *)view
+           rootView:(ACRView *)rootView
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    if (!choiceSet) {
+        return;
+    }
+    std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
+    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
+        ACRTypeaheadSearchViewController *typeaheadSearchView = (ACRTypeaheadSearchViewController *)view;
+
+        UISearchBar *_customSearchBar = (UISearchBar *)typeaheadSearchView.searchBar;
+        [_customSearchBar.heightAnchor constraintEqualToConstant:36].active = YES;
+        _customSearchBar.backgroundColor = UIColor.whiteColor;
+        UITextField *searchField = [_customSearchBar valueForKey:@"searchField"];
+        searchField.textColor = [UIColor colorWithRed:0.431 green:0.431 blue:0.431 alpha:1];
+        _customSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+
+        UIView *_customSearchBarSeparator = (UIView *)typeaheadSearchView.searchBarSeparator;
+        _customSearchBarSeparator.layer.backgroundColor = [[UIColor colorWithRed:0.784 green:0.784 blue:0.784 alpha:1] CGColor];
+        [_customSearchBarSeparator.heightAnchor constraintEqualToConstant:0.5].active = YES;
+
+        UITableView *filteredListView = (UITableView *)typeaheadSearchView.filteredListView;
+        filteredListView.backgroundColor = UIColor.whiteColor;
+        [filteredListView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        filteredListView.rowHeight = UITableViewAutomaticDimension;
+        [filteredListView registerClass:UITableViewCell.self forCellReuseIdentifier:@"SauceCell"];
+
+        UILabel *searchStateTitleLabel = (UILabel *)typeaheadSearchView.searchStateTitleLabel;
+        searchStateTitleLabel.backgroundColor = [UIColor whiteColor];
+        searchStateTitleLabel.textColor = [UIColor colorWithRed:0.443 green:0.443 blue:0.443 alpha:1];
+        searchStateTitleLabel.alpha = 0.9;
+        searchStateTitleLabel.textAlignment = NSTextAlignmentCenter;
+        searchStateTitleLabel.font = [UIFont fontWithName:@"SegoeUI-Regular" size:16];
+        [searchStateTitleLabel.heightAnchor constraintEqualToConstant:20].active = YES;
+
+        UIActivityIndicatorView *loader = (UIActivityIndicatorView *)typeaheadSearchView.loader;
+        [loader.heightAnchor constraintEqualToConstant:32].active = YES;
+        [loader.widthAnchor constraintEqualToConstant:32].active = YES;
+    }
+}
+
 @end

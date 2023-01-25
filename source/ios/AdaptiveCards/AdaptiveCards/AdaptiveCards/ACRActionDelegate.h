@@ -22,6 +22,15 @@
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties;
 
+/**
+- when choices.data property is present in input.choiceset
+ - This callback is called on input change in choiceset control and used to fetch dynamic choices from the host.
+   - "searchRequest": search request object format to be sent to the host
+   - "acoElem": ChoiceSetInput element on which text change was observed
+   - "completion": completion block with results dictionary as response or error in case of any failure
+ */
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion;
+
 #pragma mark - callbacks for overflow actions
 
 /**
