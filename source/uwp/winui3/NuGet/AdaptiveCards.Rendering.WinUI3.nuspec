@@ -40,6 +40,8 @@
         <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pri" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
 
+        <file src="..\AnyCPU\RendererCsProjection\$Configuration$\$TargetFramework$\RendererCsProjection.dll" target="lib\$TargetFramework$\RendererCsProjection.dll" />
+
         <file src="EULA-Windows.txt" target="\"/>
         <file src="AdaptiveCards.Rendering.WinUI3.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.Rendering.WinUI3.native.targets" target="build\native\AdaptiveCards.Rendering.WinUI3.targets"/>
