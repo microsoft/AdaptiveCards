@@ -6,7 +6,6 @@
 		{
 			"type": "Carousel",
 			"timer": 5000,
-			"orientation": "vertical",
 			"heightInPixels": "100px",
 			"pages": [
 				{

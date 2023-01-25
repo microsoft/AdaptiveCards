@@ -166,12 +166,12 @@ export class Carousel extends Container {
     @property(Carousel.orientationProperty)
     carouselOrientation: Enums.Orientation = Enums.Orientation.Horizontal; 
 
-    static readonly verticalCarouselHeightProperty = new PixelSizeProperty(
+    static readonly carouselHeightProperty = new PixelSizeProperty(
         Versions.v1_6,
-        "verticalCarouselHeight"
+        "heightInPixels"
     );
-    @property(Carousel.verticalCarouselHeightProperty)
-    verticalCarouselHeight?: number;
+    @property(Carousel.carouselHeightProperty)
+    carouselHeight?: number;
     
     private isValidParsedPageIndex(index: number) : boolean {
         return this._pages ? this.isValidPageIndex(index, this._pages.length) : false;
@@ -225,6 +225,11 @@ export class Carousel extends Container {
         super.adjustRenderedElementSize(renderedElement);
         if (this.height == "stretch" && this._containerForAdorners !== undefined) { 
             this._containerForAdorners.style.height = "100%";
+        }
+
+        // Assign the explicit height to carouselPageContainer if given
+        if (this.carouselHeight) {
+            this._carouselPageContainer.style.height = this.carouselHeight + "px";
         }
     }
 
@@ -483,14 +488,8 @@ export class Carousel extends Container {
     }
 
     validateOrientationProperties() {
-        if (this.verticalCarouselHeight) {
-            if (this.carouselOrientation === Enums.Orientation.Horizontal) {
-                this.carouselOrientation = Enums.Orientation.Vertical;
-            }
-        } else {
-            if (this.carouselOrientation === Enums.Orientation.Vertical) {
-                this.carouselOrientation = Enums.Orientation.Horizontal;
-            }
+        if (!this.carouselHeight) {
+            this.carouselOrientation = Enums.Orientation.Horizontal;
         }
     }
 
@@ -511,8 +510,6 @@ export class Carousel extends Container {
         prevElementDiv: HTMLElement,
         nextElementDiv: HTMLElement
     ) {
-        this._carouselPageContainer.style.height = this.verticalCarouselHeight + "px";
-
         this._containerForAdorners.classList.add(this.hostConfig.makeCssClassName(
             "ac-carousel-container-vertical"
         ));

@@ -7,7 +7,7 @@
 		{
 			"type": "Carousel",
 			"orientation": "vertical",
-			"verticalCarouselHeight": "200px",
+			"heightInPixels": "200px",
 			"pages": [
 				{
 					"type": "CarouselPage",
