@@ -412,6 +412,11 @@ a.ac-anchor:hover {
     position: relative;
 }
 
+.swiper-pagination-vertical .swiper-pagination-bullet {
+    margin-left: 1px !important;
+    margin-right: 1px !important;
+}
+
 .swiper-pagination-bullet::after {
     content:'';
     position: absolute;
@@ -428,10 +433,19 @@ a.ac-anchor:hover {
     width:6px !important;
 }
 
+.swiper-pagination-vertical .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
 .swiper-pagination.ac-carousel-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-vertical {
-    right: -6px;
+    right: -5px;
     position: relative !important;
     transform: translate3d(0, 0, 0) !important;
+}
+
+.ac-carousel-pagination-rtl {
+    right: 5px !important;
 }
 
 .widget-header-text {

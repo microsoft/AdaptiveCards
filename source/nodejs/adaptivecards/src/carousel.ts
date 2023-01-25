@@ -331,11 +331,14 @@ export class Carousel extends Container {
             return undefined;
         }
 
+        this.validateOrientationProperties();
+
         const cardLevelContainer: HTMLElement = document.createElement("div");
         cardLevelContainer.className = this.hostConfig.makeCssClassName("ac-carousel-card-level-container");
 
         const carouselContainer: HTMLElement = document.createElement("div");
         carouselContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
+        this._carouselPageContainer = carouselContainer;
 
         const containerForAdorners: HTMLElement = document.createElement("div");
         containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
@@ -392,28 +395,9 @@ export class Carousel extends Container {
         );
 
         if (this.carouselOrientation === Enums.Orientation.Horizontal) {
-            prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-left"
-            ));
-            nextElementDiv.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-right"
-            ));
+            this.updateCssForHorizontalCarousel(prevElementDiv, nextElementDiv);
         } else {
-            carouselContainer.style.height = this.verticalCarouselHeight + "px";
-
-            containerForAdorners.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-container-vertical"
-            ));
-            navigationContainer.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-navigation-vertical"
-            ))
-
-            prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-up"
-            ));
-            nextElementDiv.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-down"
-            ));
+            this.updateCssForVerticalCarousel(navigationContainer, prevElementDiv, nextElementDiv);
         }
 
         const pagination: HTMLElement = document.createElement("div");
@@ -466,11 +450,15 @@ export class Carousel extends Container {
 
         containerForAdorners.appendChild(carouselContainer);
 
-        this._carouselPageContainer = carouselContainer;
-
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
         this.applyRTL(carouselContainer);
+
+        if (this.rtl) {
+            pagination.classList.add(this.hostConfig.makeCssClassName(
+                "ac-carousel-pagination-rtl"
+            ));
+        }
 
         if (!this.isDesignMode()) {
             if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
@@ -511,6 +499,52 @@ export class Carousel extends Container {
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
+    validateOrientationProperties() {
+        if (this.verticalCarouselHeight) {
+            if (this.carouselOrientation === Enums.Orientation.Horizontal) {
+                this.carouselOrientation = Enums.Orientation.Vertical;
+            }
+        } else {
+            if (this.carouselOrientation === Enums.Orientation.Vertical) {
+                this.carouselOrientation = Enums.Orientation.Horizontal;
+            }
+        }
+    }
+
+    updateCssForHorizontalCarousel(
+        prevElementDiv: HTMLElement,
+        nextElementDiv: HTMLElement
+    ) {
+        prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-left"
+        ));
+        nextElementDiv.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-right"
+        ));
+    }
+
+    updateCssForVerticalCarousel(
+        navigationContainer: HTMLElement,
+        prevElementDiv: HTMLElement,
+        nextElementDiv: HTMLElement
+    ) {
+        this._carouselPageContainer.style.height = this.verticalCarouselHeight + "px";
+
+        this._containerForAdorners.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-container-vertical"
+        ));
+        navigationContainer.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-navigation-vertical"
+        ))
+
+        prevElementDiv.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-up"
+        ));
+        nextElementDiv.classList.add(this.hostConfig.makeCssClassName(
+            "ac-carousel-down"
+        ));
+    }
+
     private _carousel?: Swiper;
 
     private initializeCarouselControl(
@@ -521,8 +555,11 @@ export class Carousel extends Container {
         rtl: boolean | undefined
     ): void {
 
-        const adjustedPrevElement = (Enums.Orientation.Horizontal === this.carouselOrientation) ? (rtl === undefined || !rtl ? prevElement : nextElement) : prevElement;
-        const adjustedNextElement = (Enums.Orientation.Horizontal === this.carouselOrientation) ? (rtl === undefined || !rtl ? nextElement : prevElement) : nextElement;
+        const nextElementAdjustedForRtl = (rtl === undefined || !rtl ? nextElement : prevElement);
+        const prevElementAdjustedForRtl = (rtl === undefined || !rtl ? prevElement : nextElement);
+
+        const prevElementAdjustedForOrientation = (Enums.Orientation.Horizontal === this.carouselOrientation) ? prevElementAdjustedForRtl : prevElement;
+        const nextElementAdjustedForOrientation = (Enums.Orientation.Horizontal === this.carouselOrientation) ? nextElementAdjustedForRtl : nextElement;
 
         const swiperOptions: SwiperOptions = {
             loop: !this.isDesignMode(),
@@ -532,8 +569,8 @@ export class Carousel extends Container {
                 clickable: true
             },
             navigation: {
-                prevEl: adjustedPrevElement,
-                nextEl: adjustedNextElement
+                prevEl: prevElementAdjustedForOrientation,
+                nextEl: nextElementAdjustedForOrientation
             },
             a11y: {
                 enabled: true

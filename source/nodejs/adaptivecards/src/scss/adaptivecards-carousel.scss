@@ -82,8 +82,7 @@
     left: 0px;
 } 
 
-.ac-carousel-up,
-.swiper-rtl.ac-carousel-down {
+.ac-carousel-up {
 	top: 0px !important;
 	right: 0px !important;
 	left: auto !important;
@@ -91,8 +90,7 @@
 	margin: 0px !important;
 }
 
-.ac-carousel-down,
-.swiper-rtl.ac-carousel-up {
+.ac-carousel-down {
 	bottom: 0px !important;
 	right: 0px !important;
 	left: auto !important;
