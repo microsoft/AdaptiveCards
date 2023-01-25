@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class DebouncingTextWatcher(
     private val coroutineScope: LifecycleCoroutineScope,
     private val onDebouncingSearchTextChange: (String) -> Unit,
-    private val delayTime: Long = 250
+    private val delayTime: Long = 250 // get host config value
 ) : TextWatcher {
     private var debouncingSearchJob: Job? = null
 

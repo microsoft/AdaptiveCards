@@ -1,18 +1,15 @@
 package io.adaptivecards
 
-import android.content.Context
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginEnd
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.databinding.ActivityTypeAheadSearchConstraintBinding
 
@@ -204,7 +201,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             //KeyboardUtilities.showKeyboard(this)
             addTextChangedListener(
                 DebouncingTextWatcher(
-                    lifecycle.coroutineScope,
+                    lifecycleScope,
                     { s: String ->
                         viewModel.fetchDynamicOptions(s)
                     },

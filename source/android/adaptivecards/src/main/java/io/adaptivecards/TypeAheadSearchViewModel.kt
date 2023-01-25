@@ -3,19 +3,18 @@ package io.adaptivecards
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Resources
-import android.os.AsyncTask
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.marginTop
-import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.objectmodel.ChoiceInput
-import io.adaptivecards.renderer.DynamicChoicesServiceAsync
-import kotlin.coroutines.coroutineContext
+import io.adaptivecards.renderer.http.HttpRequestResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TypeAheadSearchViewModel : ViewModel() {
 
@@ -53,6 +52,9 @@ class TypeAheadSearchViewModel : ViewModel() {
     fun getAdaptor(): FilteredAdapter {
         return adapter
     }
+
+//    @Bindable
+//    fun getEditorTheme() = R.style.adaptiveCardEditBoxStyling
 
     private val _isLoading: SingleLiveEvent<Boolean> by lazy {
         SingleLiveEvent()
@@ -113,22 +115,65 @@ class TypeAheadSearchViewModel : ViewModel() {
         _isLoading.postValue(true)
         _uiState.postValue(DynamicTypeAheadUiState.Loading)
 
-        DynamicChoicesService.getDynamicChoices(
-            queryText,
-            {
-                if (it.size > 0)
-                    _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
-                else
-                    _uiState.postValue(DynamicTypeAheadUiState.NoResults)
-                adapter.setChoices(it)
-                _isLoading.postValue(false)
-            },
-            {
-                adapter.setChoices(ArrayList())
-                _isLoading.postValue(false)
-                _uiState.postValue(DynamicTypeAheadUiState.Error)
+        //viewModelScope
+        //lifecycleScope
+
+        viewModelScope.launch(Dispatchers.IO) {
+            var result: HttpRequestResult<MutableList<ChoiceInput>>? = null
+            DynamicChoicesService.getICardActionHandler()?.let {
+                result = it.getDynamicChoices(queryText)
+                println("Accessing async task on ${Thread.currentThread().name}")
+
             }
-        )
+
+            withContext(Dispatchers.Main) {
+                if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
+                    val choices: List<ChoiceInput> = result!!.result
+                    val values: MutableList<String> = ArrayList()
+                    // save the dynamic choices as well
+                    for (choice in choices) {
+                        values.add(choice.GetValue())
+                    }
+                    // TODO: Put a check to only take 10-15 choices
+                    if (values.isNotEmpty())
+                        _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
+                    else
+                        _uiState.postValue(DynamicTypeAheadUiState.NoResults)
+                    adapter.setChoices(values)
+                    _isLoading.postValue(false)
+                }
+                else if (_queryText.value.equals(queryText)) {
+                    adapter.setChoices(ArrayList())
+                    _isLoading.postValue(false)
+                    _uiState.postValue(DynamicTypeAheadUiState.Error)
+                }
+                println("Accessing UI on ${Thread.currentThread().name}")
+                //binding.displayText.text = text
+            }
+        }
+
+        println("Accessing main on ${Thread.currentThread().name}")
+
+//        DynamicChoicesService.getDynamicChoices(
+//            queryText,
+//            {
+//                if (_queryText.value.equals(queryText)) {
+//                    if (it.size > 0)
+//                        _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
+//                    else
+//                        _uiState.postValue(DynamicTypeAheadUiState.NoResults)
+//                    adapter.setChoices(it)
+//                    _isLoading.postValue(false)
+//                }
+//            },
+//            {
+//                if(_queryText.value.equals(queryText)) {
+//                    adapter.setChoices(ArrayList())
+//                    _isLoading.postValue(false)
+//                    _uiState.postValue(DynamicTypeAheadUiState.Error)
+//                }
+//            }
+//        )
 
 //        val dynamicChoicesServiceImpl = DynamicChoicesServiceImpl(
 //            {
