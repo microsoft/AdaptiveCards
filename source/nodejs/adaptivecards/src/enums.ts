@@ -72,6 +72,11 @@ export enum TextSize {
     ExtraLarge
 }
 
+export enum InputStyle {
+    RevealOnHover,
+    Default
+}
+
 export enum TextWeight {
     Lighter,
     Default,
