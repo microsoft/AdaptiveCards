@@ -6,8 +6,8 @@ using System.Linq;
 using Windows.Data.Json;
 
 #if USE_WINUI3
-using AdaptiveCards.Rendering.Winui3;
-using AdaptiveCards.ObjectModel.Winui3;
+using AdaptiveCards.Rendering.WinUI3;
+using AdaptiveCards.ObjectModel.WinUI3;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
