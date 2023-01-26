@@ -11,7 +11,7 @@ import {
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
-	BoolProperty,
+    BoolProperty,
     NumProperty,
     property,
     PropertyBag,
@@ -156,9 +156,9 @@ export class Carousel extends Container {
         }
     }
 
-	static readonly loopProperty = new BoolProperty(Versions.v1_6, "loop", true);
-	@property(Carousel.loopProperty)
-	carouselLoop: boolean = true;
+    static readonly loopProperty = new BoolProperty(Versions.v1_6, "loop", true);
+    @property(Carousel.loopProperty)
+    carouselLoop: boolean = true;
     
     private isValidParsedPageIndex(index: number) : boolean {
         return this._pages ? this.isValidPageIndex(index, this._pages.length) : false;
