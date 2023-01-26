@@ -11,6 +11,7 @@ import {
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
+    BoolProperty,
     NumProperty,
     EnumProperty,
     property,
@@ -156,6 +157,10 @@ export class Carousel extends Container {
             this.setValue(Carousel.initialPageProperty, 0); 
         }
     }
+
+    static readonly loopProperty = new BoolProperty(Versions.v1_6, "loop", true);
+    @property(Carousel.loopProperty)
+    carouselLoop: boolean = true;
     
     static readonly orientationProperty = new EnumProperty(
         Versions.v1_6,
@@ -540,7 +545,7 @@ export class Carousel extends Container {
         const nextElementAdjustedForOrientation = (Enums.Orientation.Horizontal === this.carouselOrientation) ? nextElementAdjustedForRtl : nextElement;
 
         const swiperOptions: SwiperOptions = {
-            loop: !this.isDesignMode(),
+            loop: !this.isDesignMode() && this.carouselLoop,
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
                 el: paginationElement,
