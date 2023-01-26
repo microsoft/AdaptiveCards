@@ -1,0 +1,5 @@
+LIBRARY "AdaptiveCards.Rendering.WinUI3.dll"
+
+EXPORTS
+DllCanUnloadNow = WINRT_CanUnloadNow                    PRIVATE
+DllGetActivationFactory = WINRT_GetActivationFactory    PRIVATE

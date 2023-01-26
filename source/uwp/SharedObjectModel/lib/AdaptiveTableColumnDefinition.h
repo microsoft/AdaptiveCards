@@ -5,7 +5,7 @@
 #include "TableColumnDefinition.h"
 #include "AdaptiveTableColumnDefinition.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("3ED8BE31-8D92-461B-8E8F-2C6C0F78E2ED") AdaptiveTableColumnDefinition
         : AdaptiveTableColumnDefinitionT<AdaptiveTableColumnDefinition, ITypePeek>
@@ -16,8 +16,8 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         }
         AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition);
 
-        property_opt<Uwp::VerticalContentAlignment> VerticalCellContentAlignment;
-        property_opt<Uwp::HAlignment> HorizontalCellContentAlignment;
+        property_opt<Xaml_OM::VerticalContentAlignment> VerticalCellContentAlignment;
+        property_opt<Xaml_OM::HAlignment> HorizontalCellContentAlignment;
         property_opt<uint32_t> Width;
         property_opt<uint32_t> PixelWidth;
 
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveTableColumnDefinition
         : AdaptiveTableColumnDefinitionT<AdaptiveTableColumnDefinition, implementation::AdaptiveTableColumnDefinition>

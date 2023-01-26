@@ -11,6 +11,7 @@ import {
 } from "./card-elements";
 import * as Enums from "./enums";
 import {
+    BoolProperty,
     NumProperty,
     property,
     PropertyBag,
@@ -154,6 +155,10 @@ export class Carousel extends Container {
             this.setValue(Carousel.initialPageProperty, 0); 
         }
     }
+
+    static readonly loopProperty = new BoolProperty(Versions.v1_6, "loop", true);
+    @property(Carousel.loopProperty)
+    carouselLoop: boolean = true;
     
     private isValidParsedPageIndex(index: number) : boolean {
         return this._pages ? this.isValidPageIndex(index, this._pages.length) : false;
@@ -183,6 +188,8 @@ export class Carousel extends Container {
     private _containerForAdorners: HTMLElement;
     private _currentIndex: number = 0;
     private _previousEventType: Enums.CarouselInteractionEvent = Enums.CarouselInteractionEvent.Pagination;
+    private _observer: ResizeObserver | null;
+    private _carousel: Swiper | null;
 
     // Question: Why do we place this on the Carousel instead of the CarouselPage?
     protected forbiddenChildElements(): string[] {
@@ -442,29 +449,8 @@ export class Carousel extends Container {
             this.rtl
         );
 
-        cardLevelContainer.addEventListener(
-            "keydown",
-            (_event) => {
-                // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
-                const activeIndex = this._carousel?.activeIndex;
-                this.initializeCarouselControl(
-                    carouselContainer,
-                    nextElementDiv,
-                    prevElementDiv,
-                    pagination,
-                    this.rtl
-                );
-                if (activeIndex) {
-                    this._carousel?.slideTo(activeIndex);
-                }
-            },
-            { once: true }
-        );
-
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
-
-    private _carousel?: Swiper;
 
     private initializeCarouselControl(
         carouselContainer: HTMLElement,
@@ -475,7 +461,7 @@ export class Carousel extends Container {
     ): void {
 
         const swiperOptions: SwiperOptions = {
-            loop: !this.isDesignMode(),
+            loop: !this.isDesignMode() && this.carouselLoop,
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
                 el: paginationElement,
@@ -492,6 +478,7 @@ export class Carousel extends Container {
                 enabled: true,
                 onlyInViewport: true
             },
+            resizeObserver: false,
             initialSlide: this._currentIndex
         };
 
@@ -530,7 +517,17 @@ export class Carousel extends Container {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
+        carousel.on('destroy', () => {
+            this.destroyResizeObserver();
+        });
+
+        prevElement.title = prevElement.ariaLabel ?? Strings.defaults.carouselNavigationPreviousTooltip();
+
+        nextElement.title = nextElement.ariaLabel ?? Strings.defaults.carouselNavigationNextTooltip();
+
         this._carousel = carousel;
+
+        this.createResizeObserver();
     }
 
     private createCarouselPageInstance(
@@ -593,6 +590,58 @@ export class Carousel extends Container {
         }
         this.previousEventType = eventType;
     }
+
+    /// Swiper version 8 added requestAnimationFrame() call in its resize observer code
+    /// The new call causes flickering issue,
+    /// We've copied resize observer code from Swiper version 7 with some modifications
+    private createResizeObserver() : void {
+
+        if (!this.checkIfCarouselInValidStateForResizeEvent()) {
+            return;
+        }
+
+        this._observer = new ResizeObserver((entries) => {
+            const width = this._carousel?.width;
+            const height = this._carousel?.height;
+            let newWidth = width;
+            let newHeight = height;
+            entries.forEach(({ contentBoxSize, contentRect, target }) => {
+            if (target && target !== this._carousel?.el) {
+                return;
+            }
+
+            newWidth = contentRect
+                ? contentRect.width
+                : (contentBoxSize[0] || contentBoxSize).inlineSize;
+
+            newHeight = contentRect
+                ? contentRect.height
+                : (contentBoxSize[0] || contentBoxSize).blockSize;
+            });
+
+            if (newWidth !== width || newHeight !== height) {
+                if (this.checkIfCarouselInValidStateForResizeEvent()) {
+                    this._carousel?.emit('beforeResize');
+                    this._carousel?.emit('resize');
+                }
+            }
+
+        });
+
+        this._observer.observe(this._carousel?.el!);
+    }
+
+    private destroyResizeObserver(): void {
+        if (this._observer && this._observer.unobserve && this._carousel?.el) {
+            this._observer.unobserve(this._carousel.el);
+            this._observer = null;
+        }
+    };
+
+    private checkIfCarouselInValidStateForResizeEvent()
+    {
+        return this._carousel && !this._carousel.destroyed;
+    }
 }
 
 export class CarouselEvent {
@@ -607,3 +656,4 @@ GlobalRegistry.defaultElements.register(
     Carousel,
     Versions.v1_6
 );
+

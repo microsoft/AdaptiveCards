@@ -1,7 +1,7 @@
 #pragma once
 #include "AdaptiveRequirement.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct AdaptiveRequirement : AdaptiveRequirementT<AdaptiveRequirement>
     {
@@ -12,7 +12,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         property<hstring> Version;
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveRequirement : AdaptiveRequirementT<AdaptiveRequirement, implementation::AdaptiveRequirement>
     {

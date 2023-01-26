@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "AdaptiveContentSource.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     void AdaptiveContentSource::InitializeContentSource(std::shared_ptr<::AdaptiveCards::ContentSource> const& sharedContentSource)
     {

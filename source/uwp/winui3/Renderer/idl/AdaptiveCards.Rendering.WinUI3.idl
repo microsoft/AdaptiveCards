@@ -1,0 +1,668 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace AdaptiveCards
+{
+    namespace Rendering
+    {
+        namespace WinUI3
+        {
+            runtimeclass AdaptiveHostConfigParseResult;
+
+            enum ActionsOrientation
+            {
+                Vertical = 0,
+                Horizontal,
+            };
+
+            enum ActionAlignment
+            {
+                Left = 0,
+                Center,
+                Right,
+                Stretch,
+            };
+
+            enum ActionMode
+            {
+                Inline = 0,
+                Popup,
+            };
+
+            enum IconPlacement
+            {
+                AboveTitle = 0,
+                LeftOfTitle,
+            };
+
+            runtimeclass AdaptiveCardRenderer
+            {
+                AdaptiveCardRenderer();
+
+                AdaptiveCardResourceResolvers ResourceResolvers { get; };
+                AdaptiveHostConfig HostConfig;
+                Microsoft.UI.Xaml.ResourceDictionary OverrideStyles;
+                AdaptiveFeatureRegistration FeatureRegistration;
+
+                Boolean OverflowMaxActions;
+                String OverflowButtonText;
+                String OverflowButtonAccessibilityText;
+
+                void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
+                void ResetFixedDimensions();
+
+                RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard adaptiveCard);
+                RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(String adaptiveCard);
+                RenderedAdaptiveCard RenderAdaptiveCardFromJson(Windows.Data.Json.JsonObject adaptiveCard);
+
+                AdaptiveElementRendererRegistration ElementRenderers { get; };
+                AdaptiveActionRendererRegistration ActionRenderers { get; };
+            }
+
+            runtimeclass AdaptiveActionEventArgs
+            {
+                AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement Action { get; };
+                AdaptiveInputs Inputs { get; };
+            }
+
+            runtimeclass AdaptiveMediaEventArgs
+            {
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveMedia Media { get; };
+            }
+
+            runtimeclass AdaptiveContainerStyleDefinition
+            {
+                AdaptiveContainerStyleDefinition();
+
+                Windows.UI.Color BackgroundColor;
+                Windows.UI.Color BorderColor;
+                AdaptiveColorsConfig ForegroundColors;
+            }
+
+            runtimeclass AdaptiveContainerStylesDefinition
+            {
+                AdaptiveContainerStylesDefinition();
+
+                AdaptiveContainerStyleDefinition Default;
+                AdaptiveContainerStyleDefinition Emphasis;
+                AdaptiveContainerStyleDefinition Good;
+                AdaptiveContainerStyleDefinition Attention;
+                AdaptiveContainerStyleDefinition Warning;
+                AdaptiveContainerStyleDefinition Accent;
+            }
+
+            runtimeclass AdaptiveFontSizesConfig
+            {
+                AdaptiveFontSizesConfig();
+
+                UInt32 Small;
+                UInt32 Default;
+                UInt32 Medium;
+                UInt32 Large;
+                UInt32 ExtraLarge;
+            }
+
+            runtimeclass AdaptiveFontWeightsConfig
+            {
+                AdaptiveFontWeightsConfig();
+
+                UInt16 Lighter;
+                UInt16 Default;
+                UInt16 Bolder;
+            }
+
+            runtimeclass AdaptiveFontTypeDefinition
+            {
+                AdaptiveFontTypeDefinition();
+
+                String FontFamily;
+                AdaptiveFontWeightsConfig FontWeights;
+                AdaptiveFontSizesConfig FontSizes;
+            }
+
+            runtimeclass AdaptiveFontTypesDefinition
+            {
+                AdaptiveFontTypesDefinition();
+
+                AdaptiveFontTypeDefinition Default;
+                AdaptiveFontTypeDefinition Monospace;
+            }
+
+            runtimeclass AdaptiveHighlightColorConfig
+            {
+                AdaptiveHighlightColorConfig();
+
+                Windows.UI.Color Default;
+                Windows.UI.Color Subtle;
+            }
+
+            runtimeclass AdaptiveColorConfig
+            {
+                AdaptiveColorConfig();
+
+                Windows.UI.Color Default;
+                Windows.UI.Color Subtle;
+                AdaptiveHighlightColorConfig HighlightColors;
+            }
+
+            runtimeclass AdaptiveColorsConfig
+            {
+                AdaptiveColorsConfig();
+
+                AdaptiveColorConfig Default;
+                AdaptiveColorConfig Accent;
+                AdaptiveColorConfig Dark;
+                AdaptiveColorConfig Light;
+                AdaptiveColorConfig Good;
+                AdaptiveColorConfig Warning;
+                AdaptiveColorConfig Attention;
+            }
+
+            interface IAdaptiveTextStyleConfig
+            {
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
+                AdaptiveCards.ObjectModel.WinUI3.ForegroundColor Color;
+                Boolean IsSubtle;
+                AdaptiveCards.ObjectModel.WinUI3.FontType FontType;
+            }
+
+            runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); }
+
+            runtimeclass AdaptiveTextStylesConfig
+            {
+                AdaptiveTextStylesConfig();
+
+                AdaptiveTextStyleConfig Heading;
+                AdaptiveTextStyleConfig ColumnHeader;
+            }
+
+            runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
+            {
+                AdaptiveFactSetTextConfig();
+
+                Boolean Wrap;
+                UInt32 MaxWidth;
+            }
+
+            runtimeclass AdaptiveSpacingConfig
+            {
+                AdaptiveSpacingConfig();
+
+                UInt32 Small;
+                UInt32 Default;
+                UInt32 Medium;
+                UInt32 Large;
+                UInt32 ExtraLarge;
+                UInt32 Padding;
+            }
+
+            runtimeclass AdaptiveSeparatorConfig
+            {
+                AdaptiveSeparatorConfig();
+
+                UInt32 LineThickness;
+                Windows.UI.Color LineColor;
+            }
+
+            runtimeclass AdaptiveImageSizesConfig
+            {
+                AdaptiveImageSizesConfig();
+
+                UInt32 Small;
+                UInt32 Medium;
+                UInt32 Large;
+            }
+
+            runtimeclass AdaptiveImageSetConfig
+            {
+                AdaptiveImageSetConfig();
+
+                AdaptiveCards.ObjectModel.WinUI3.ImageSize ImageSize;
+                UInt32 MaxImageHeight;
+            }
+
+            runtimeclass AdaptiveImageConfig
+            {
+                AdaptiveImageConfig();
+
+                AdaptiveCards.ObjectModel.WinUI3.ImageSize ImageSize;
+            }
+
+            runtimeclass AdaptiveCardConfig
+            {
+                AdaptiveCardConfig();
+
+                Boolean AllowCustomStyle;
+            }
+
+            runtimeclass AdaptiveFactSetConfig
+            {
+                AdaptiveFactSetConfig();
+
+                AdaptiveFactSetTextConfig Title;
+                AdaptiveFactSetTextConfig Value;
+                UInt32 Spacing;
+            }
+
+            runtimeclass AdaptiveShowCardActionConfig
+            {
+                AdaptiveShowCardActionConfig();
+
+                ActionMode ActionMode;
+                AdaptiveCards.ObjectModel.WinUI3.ContainerStyle Style;
+                UInt32 InlineTopMargin;
+            }
+
+            runtimeclass AdaptiveActionsConfig
+            {
+                AdaptiveActionsConfig();
+
+                AdaptiveShowCardActionConfig ShowCard;
+                ActionsOrientation ActionsOrientation;
+                ActionAlignment ActionAlignment;
+                UInt32 ButtonSpacing;
+                UInt32 MaxActions;
+                AdaptiveCards.ObjectModel.WinUI3.Spacing Spacing;
+                IconPlacement IconPlacement;
+                UInt32 IconSize;
+            }
+
+            runtimeclass AdaptiveMediaConfig
+            {
+                AdaptiveMediaConfig();
+
+                String DefaultPoster;
+                String PlayButton;
+                Boolean AllowInlinePlayback;
+            }
+
+            runtimeclass AdaptiveInputLabelConfig
+            {
+                AdaptiveInputLabelConfig();
+
+                AdaptiveCards.ObjectModel.WinUI3.ForegroundColor Color;
+                Boolean IsSubtle;
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
+                String Suffix;
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
+            }
+
+            runtimeclass AdaptiveLabelConfig
+            {
+                AdaptiveLabelConfig();
+
+                AdaptiveCards.ObjectModel.WinUI3.Spacing InputSpacing;
+
+                AdaptiveInputLabelConfig RequiredInputs;
+                AdaptiveInputLabelConfig OptionalInputs;
+            }
+
+            runtimeclass AdaptiveErrorMessageConfig
+            {
+                AdaptiveErrorMessageConfig();
+
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
+                AdaptiveCards.ObjectModel.WinUI3.Spacing Spacing;
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
+            }
+
+            runtimeclass AdaptiveInputsConfig
+            {
+                AdaptiveInputsConfig();
+
+                AdaptiveErrorMessageConfig ErrorMessage;
+                AdaptiveLabelConfig Label;
+            }
+
+            runtimeclass AdaptiveTextBlockConfig
+            {
+                AdaptiveTextBlockConfig();
+
+                UInt32 HeadingLevel;
+            }
+
+            runtimeclass AdaptiveTableConfig
+            {
+                AdaptiveTableConfig();
+
+                UInt32 CellSpacing;
+            }
+
+            runtimeclass AdaptiveHostConfig
+            {
+                AdaptiveHostConfig();
+
+                String FontFamily;
+                AdaptiveFontSizesConfig FontSizes;
+                AdaptiveFontWeightsConfig FontWeights;
+                AdaptiveFontTypesDefinition FontTypes;
+                Boolean SupportsInteractivity;
+                String ImageBaseUrl;
+                AdaptiveContainerStylesDefinition ContainerStyles;
+                AdaptiveImageSizesConfig ImageSizes;
+                AdaptiveSeparatorConfig Separator;
+                AdaptiveSpacingConfig Spacing;
+                AdaptiveCardConfig AdaptiveCard;
+                AdaptiveImageSetConfig ImageSet;
+                AdaptiveImageConfig Image;
+                AdaptiveFactSetConfig FactSet;
+                AdaptiveActionsConfig Actions;
+                AdaptiveMediaConfig Media;
+                AdaptiveInputsConfig Inputs;
+                AdaptiveTextBlockConfig TextBlock;
+                AdaptiveTextStylesConfig TextStyles;
+                AdaptiveTableConfig Table;
+
+                static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
+                static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
+            }
+
+            runtimeclass AdaptiveHostConfigParseResult
+            {
+                AdaptiveHostConfigParseResult();
+
+                AdaptiveHostConfig HostConfig { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveError> Errors { get; };
+            }
+
+            runtimeclass AdaptiveCardResourceResolvers
+            {
+                AdaptiveCardResourceResolvers();
+
+                void Set(String scheme, IAdaptiveCardResourceResolver resolver);
+                IAdaptiveCardResourceResolver Get(String scheme);
+            }
+
+            interface IAdaptiveCardResourceResolver
+            {
+                Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> GetResourceStreamAsync(
+                    AdaptiveCardGetResourceStreamArgs args);
+            }
+
+            runtimeclass AdaptiveCardGetResourceStreamArgs
+            {
+                AdaptiveCardGetResourceStreamArgs();
+
+                Windows.Foundation.Uri Url { get; };
+
+                [method_name("CreateAdaptiveCardGetResourceStreamArgs")] AdaptiveCardGetResourceStreamArgs(
+                    Windows.Foundation.Uri uri);
+            }
+
+            runtimeclass RenderedAdaptiveCard
+            {
+                RenderedAdaptiveCard();
+
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard OriginatingCard { get; };
+                AdaptiveHostConfig OriginatingHostConfig { get; };
+                Microsoft.UI.Xaml.FrameworkElement FrameworkElement { get; };
+                AdaptiveInputs UserInputs { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveError> Errors { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveWarning> Warnings { get; };
+
+                event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
+                event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
+            }
+
+            runtimeclass AdaptiveInputs
+            {
+                AdaptiveInputs();
+
+                Windows.Data.Json.JsonObject AsJson();
+                Windows.Foundation.Collections.ValueSet AsValueSet();
+
+                Boolean ValidateInputs(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement submitAction);
+            }
+
+            runtimeclass AdaptiveFeatureRegistration
+            {
+                AdaptiveFeatureRegistration();
+
+                void Set(String name, String version);
+                String Get(String name);
+                void Remove(String name);
+            }
+
+            runtimeclass AdaptiveElementRendererRegistration
+            {
+                void Set(String type, IAdaptiveElementRenderer renderer);
+                IAdaptiveElementRenderer Get(String type);
+                void Remove(String type);
+            }
+
+            runtimeclass AdaptiveActionRendererRegistration
+            {
+                AdaptiveActionRendererRegistration();
+
+                void Set(String type, IAdaptiveActionRenderer renderer);
+                IAdaptiveActionRenderer Get(String type);
+                void Remove(String type);
+            }
+
+            runtimeclass AdaptiveActionInvoker
+            {
+                AdaptiveActionInvoker();
+                AdaptiveActionInvoker(RenderedAdaptiveCard renderResult);
+
+                void SendActionEvent(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement actionElement);
+            }
+
+            runtimeclass AdaptiveMediaEventInvoker
+            {
+                AdaptiveMediaEventInvoker();
+                AdaptiveMediaEventInvoker(RenderedAdaptiveCard renderResult);
+
+                void SendMediaClickedEvent(AdaptiveCards.ObjectModel.WinUI3.AdaptiveMedia mediaElement);
+            }
+
+            runtimeclass AdaptiveRenderArgs
+            {
+                AdaptiveRenderArgs();
+
+                AdaptiveCards.ObjectModel.WinUI3.ContainerStyle ContainerStyle;
+                IInspectable ParentElement;
+                Boolean IsInShowCard;
+                Boolean AllowAboveTitleIconPlacement;
+                Boolean AncestorHasFallback;
+                Boolean AddContainerPadding;
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard ParentCard;
+            }
+
+            interface IAdaptiveInputValue
+            {
+                AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement InputElement { get; };
+                String CurrentValue { get; };
+                Microsoft.UI.Xaml.UIElement ErrorMessage
+                {
+                    get;
+                    set;
+                };
+                Boolean Validate();
+                void SetFocus();
+            }
+
+            runtimeclass AdaptiveRenderContext
+            {
+                AdaptiveRenderContext();
+
+                AdaptiveHostConfig HostConfig { get; };
+                AdaptiveFeatureRegistration FeatureRegistration { get; };
+                AdaptiveElementRendererRegistration ElementRenderers { get; };
+                AdaptiveActionRendererRegistration ActionRenderers { get; };
+                AdaptiveCardResourceResolvers ResourceResolvers { get; };
+                AdaptiveActionInvoker ActionInvoker { get; };
+                AdaptiveMediaEventInvoker MediaEventInvoker { get; };
+                Microsoft.UI.Xaml.ResourceDictionary OverrideStyles { get; };
+                AdaptiveInputs UserInputs { get; };
+                Windows.Foundation.IReference<Boolean> Rtl;
+                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinUI3.TextStyle> TextStyle;
+                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinUI3.HAlignment> HorizontalContentAlignment;
+
+                void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
+                void LinkSubmitActionToCard(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement submitAction,
+                                            AdaptiveRenderArgs renderArgs);
+                void LinkCardToParent(AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
+                IAdaptiveInputValue GetInputValue(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement inputElement);
+
+                void AddError(AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode statusCode, String message);
+                void AddWarning(AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode statusCode, String message);
+            }
+
+            interface IAdaptiveElementRenderer
+            {
+                Microsoft.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardElement element,
+                                                 AdaptiveRenderContext context,
+                                                 AdaptiveRenderArgs renderArgs);
+            }
+
+            interface IAdaptiveActionRenderer
+            {
+                Microsoft.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement element,
+                                                 AdaptiveRenderContext context,
+                                                 AdaptiveRenderArgs renderArgs);
+            }
+
+            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveTableRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveTextBlockRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveTextBlockRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveRichTextBlockRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveRichTextBlockRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveImageRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveImageRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveImageSetRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveImageSetRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveContainerRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveColumnRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveColumnRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveColumnSetRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveColumnSetRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveChoiceSetInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveChoiceSetInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveDateInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveDateInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveNumberInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveNumberInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveTextInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveTextInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveTimeInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveTimeInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveToggleInputRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveToggleInputRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveFactSetRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveFactSetRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveMediaRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveMediaRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveActionSetRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveActionRenderer
+            {
+                AdaptiveOpenUrlActionRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveActionRenderer
+            {
+                AdaptiveShowCardActionRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveActionRenderer
+            {
+                AdaptiveSubmitActionRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveActionRenderer
+            {
+                AdaptiveExecuteActionRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveActionRenderer
+            {
+                AdaptiveToggleVisibilityActionRenderer();
+            }
+
+            runtimeclass TileControl : Microsoft.UI.Xaml.Controls.ContentControl
+            {
+                TileControl();
+
+                Microsoft.UI.Xaml.UIElement ResolvedImage { get; };
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveBackgroundImage BackgroundImage;
+                Windows.Foundation.Size ImageSize;
+                void LoadImageBrush(Microsoft.UI.Xaml.UIElement uielement);
+            }
+
+            runtimeclass WholeItemsPanel : Microsoft.UI.Xaml.Controls.Panel
+            {
+                WholeItemsPanel();
+
+                String GetAltText();
+                Boolean IsAllContentClippedOut();
+                Boolean IsTruncated();
+            }
+
+            runtimeclass ElementTagContent
+            {
+                ElementTagContent();
+
+                Microsoft.UI.Xaml.Controls.ColumnDefinition ColumnDefinition { get; };
+                AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardElement CardElement { get; };
+                Microsoft.UI.Xaml.UIElement Separator { get; };
+                Microsoft.UI.Xaml.Controls.Panel ParentPanel { get; };
+                Boolean ExpectedVisibility;
+                Boolean IsStretchable;
+            }
+        }
+    }
+}

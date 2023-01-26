@@ -6,7 +6,7 @@
 #include "AdaptiveBackgroundImage.h"
 #include "AdaptiveTableCell.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("8670BAA9-7DAC-4714-81F3-8D1553CD0E4E") AdaptiveTableCell : AdaptiveTableCellT < AdaptiveTableCell, ITypePeek>,
         AdaptiveCardElementBase
@@ -15,20 +15,20 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         AdaptiveTableCell(const std::shared_ptr<::AdaptiveCards::TableCell>& sharedTableCell);
 
         // IAdaptiveContainer
-        property<winrt::Windows::Foundation::Collections::IVector<Uwp::IAdaptiveCardElement>> Items;
-        property_opt<Uwp::VerticalContentAlignment> VerticalContentAlignment;
-        property<Uwp::AdaptiveBackgroundImage> BackgroundImage{nullptr};
+        property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::IAdaptiveCardElement>> Items;
+        property_opt<Xaml_OM::VerticalContentAlignment> VerticalContentAlignment;
+        property<Xaml_OM::AdaptiveBackgroundImage> BackgroundImage{nullptr};
         property_opt<bool> Rtl;
 
         // IAdaptiveContainerBase
-        property<Uwp::ContainerStyle> Style;
-        property<Uwp::IAdaptiveActionElement> SelectAction;
+        property<Xaml_OM::ContainerStyle> Style;
+        property<Xaml_OM::IAdaptiveActionElement> SelectAction;
         property<bool> Bleed;
-        property<Uwp::BleedDirection> BleedDirection;
+        property<Xaml_OM::BleedDirection> BleedDirection;
         property<uint32_t> MinHeight;
 
         // IAdaptiveCardElement
-        auto ElementType() { return Uwp::ElementType::TableCell; }
+        auto ElementType() { return Xaml_OM::ElementType::TableCell; }
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveTableCell : AdaptiveTableCellT<AdaptiveTableCell, implementation::AdaptiveTableCell>
     {

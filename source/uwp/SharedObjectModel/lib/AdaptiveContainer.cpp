@@ -7,17 +7,17 @@
 #include <windows.foundation.collections.h>
 #include <winrt/Windows.Foundation.h>
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveContainer::AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedContainer)
     {
-        VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        VerticalContentAlignment = opt_cast<Xaml_OM::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
         Items = GenerateContainedElementsProjection(sharedContainer->GetItems());
         SelectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
-        Style = static_cast<Uwp::ContainerStyle>(sharedContainer->GetStyle());
+        Style = static_cast<Xaml_OM::ContainerStyle>(sharedContainer->GetStyle());
         MinHeight = sharedContainer->GetMinHeight();
         Bleed = sharedContainer->GetBleed();
-        BleedDirection = static_cast<Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
+        BleedDirection = static_cast<Xaml_OM::BleedDirection>(sharedContainer->GetBleedDirection());
         Rtl = sharedContainer->GetRtl();
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();

@@ -4,14 +4,14 @@
 #include "AdaptiveTableColumnDefinition.h"
 #include "AdaptiveTableColumnDefinition.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
     {
         VerticalCellContentAlignment =
-            opt_cast<Uwp::VerticalContentAlignment>(sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+            opt_cast<Xaml_OM::VerticalContentAlignment>(sharedTableColumnDefinition->GetVerticalCellContentAlignment());
         HorizontalCellContentAlignment =
-            opt_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+            opt_cast<Xaml_OM::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
         Width = sharedTableColumnDefinition->GetWidth();
         PixelWidth = sharedTableColumnDefinition->GetPixelWidth();
     }

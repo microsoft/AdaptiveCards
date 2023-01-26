@@ -5,19 +5,19 @@
 #include "AdaptiveImage.h"
 #include "AdaptiveImage.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     AdaptiveImage::AdaptiveImage(const std::shared_ptr<::AdaptiveCards::Image>& sharedImage)
     {
         Url = UTF8ToHString(sharedImage->GetUrl());
         BackgroundColor = UTF8ToHString(sharedImage->GetBackgroundColor());
-        Style = static_cast<Uwp::ImageStyle>(sharedImage->GetImageStyle());
-        Size = static_cast<Uwp::ImageSize>(sharedImage->GetImageSize());
+        Style = static_cast<Xaml_OM::ImageStyle>(sharedImage->GetImageStyle());
+        Size = static_cast<Xaml_OM::ImageSize>(sharedImage->GetImageSize());
         PixelWidth = sharedImage->GetPixelWidth();
         PixelHeight = sharedImage->GetPixelHeight();
         AltText = UTF8ToHString(sharedImage->GetAltText());
         SelectAction = GenerateActionProjection(sharedImage->GetSelectAction());
-        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+        HorizontalAlignment = opt_cast<Xaml_OM::HAlignment>(sharedImage->GetHorizontalAlignment());
 
         InitializeBaseElement(sharedImage);
     }

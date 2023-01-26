@@ -6,7 +6,7 @@
 #include "AdaptiveTextElement.h"
 #include "AdaptiveTextRun.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
 {
     struct DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveTextRun : AdaptiveTextRunT<AdaptiveTextRun, ITypePeek>, AdaptiveTextElement
     {
@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         // IAdaptiveTextRun
         property<bool> Highlight;
-        property<Uwp::IAdaptiveActionElement> SelectAction;
+        property<Xaml_OM::IAdaptiveActionElement> SelectAction;
         property<bool> Italic;
         property<bool> Strikethrough;
         property<bool> Underline;
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::factory_implementation
 {
     struct AdaptiveTextRun : AdaptiveTextRunT<AdaptiveTextRun, implementation::AdaptiveTextRun>
     {
