@@ -4,8 +4,8 @@
 #pragma once
 
 #ifdef USE_WINUI3
-#define Xaml_OM Winui3
-#define Xaml_Rendering Winui3
+#define Xaml_OM WinUI3
+#define Xaml_Rendering WinUI3
 #else
 #define Xaml_OM Uwp
 #define Xaml_Rendering Uwp
@@ -40,7 +40,7 @@
 #include <UI.Xaml.Shapes.h>
 
 #ifdef USE_WINUI3
-#include <winrt/AdaptiveCards.ObjectModel.Winui3.h>
+#include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
 #else
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
 #endif

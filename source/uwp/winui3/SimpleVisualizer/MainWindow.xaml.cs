@@ -6,10 +6,10 @@ using System.IO;
 using System.Text;
 using Windows.ApplicationModel;
 
-using AdaptiveCards.ObjectModel.Winui3;
+using AdaptiveCards.ObjectModel.WinUI3;
 using Newtonsoft.Json;
 
-using AdaptiveCardRenderer = AdaptiveCards.Rendering.Winui3.AdaptiveCardRenderer;
+using AdaptiveCardRenderer = AdaptiveCards.Rendering.WinUI3.AdaptiveCardRenderer;
 
 namespace SimpleVisualizer
 {
