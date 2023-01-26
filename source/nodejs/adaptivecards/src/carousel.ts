@@ -464,13 +464,7 @@ export class Carousel extends Container {
 
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
-        this.applyRTL(carouselContainer);
-
-        if (this.rtl) {
-            pagination.classList.add(this.hostConfig.makeCssClassName(
-                "ac-carousel-pagination-rtl"
-            ));
-        }
+        this.applyRTL(pagination);
 
         if (!this.isDesignMode()) {
             if (this.isValidRenderedPageIndex(this.initialPageIndex)) {
@@ -490,6 +484,15 @@ export class Carousel extends Container {
         );
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
+    }
+
+    applyRTL(pagination: HTMLElement) {
+        super.applyRTL(this._carouselPageContainer);
+        if (this.rtl) {
+            pagination.classList.add(this.hostConfig.makeCssClassName(
+                "ac-carousel-pagination-rtl"
+            ));
+        }
     }
 
     validateOrientationProperties() {
