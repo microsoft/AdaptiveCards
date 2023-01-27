@@ -2146,7 +2146,7 @@ export class Image extends CardElement {
 
             this.configureImageForForceLoading();
 
-            imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+            imageElement.src = <string>this.preProcessPropertyValue( {prop = Image.urlProperty, propertyValue = nil});
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
             if (altTextProperty) {

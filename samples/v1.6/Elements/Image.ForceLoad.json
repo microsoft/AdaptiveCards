@@ -7,13 +7,13 @@
 			"type": "Image",
 			"height": "32px",
 			"width": "32px",
-			"url": "https://live-tile-images.scdn.co/dw-dark-previewl.gif",
+			"url": "https://media.giphy.com/media/83eQIMgNvkiY/giphy.gif",
 			"horizontalAlignment": "Center"
 		}, {
 			"type": "Image",
 			"height": "32px",
 			"width": "32px",
-			"url": "https://live-tile-images.scdn.co/dw-dark-previewl.gif",
+			"url": "https://media.giphy.com/media/83eQIMgNvkiY/giphy.gif",
 			"forceLoad": true,
 			"horizontalAlignment": "Center"
 		}
