@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
@@ -96,6 +97,8 @@
             android:clipToPadding="false"
             android:descendantFocusability="afterDescendants"
             android:scrollbars="vertical"
+            android:background="#FFFFFF"
+            android:elevation="3dp"
             app:adapter="@{viewModel.adaptor}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/appbar"
@@ -148,6 +151,17 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="#CCCCCC"
+            app:layout_constraintTop_toBottomOf="@+id/search_results_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 <!--        android:textColor="#0078DC"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>

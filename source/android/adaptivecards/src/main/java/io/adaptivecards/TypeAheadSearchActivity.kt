@@ -231,6 +231,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 activityTypeAheadSearchBinding?.let {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
+                    it.divider.visibility = View.GONE
                     it.customOverlayView.visibility = View.GONE
                     //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
@@ -251,6 +252,12 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 activityTypeAheadSearchBinding?.let {
                     //it.emptyImage.visibility = View.GONE
                     //it.emptyMessage.visibility = View.GONE
+
+                    //it.parent.background = "#CCCCCC"
+                    // TODO: change background color to grey
+
+
+                    it.divider.visibility = View.GONE
                     it.customOverlayView.visibility = View.GONE
                     //it.customErrorView.visibility = View.GONE
                     it.errorMsgText.visibility = View.GONE
@@ -263,6 +270,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 activityTypeAheadSearchBinding?.let {
                     //it.emptyImage.visibility = View.GONE
                     //it.emptyMessage.visibility = View.GONE
+                    it.divider.visibility = View.GONE
                     it.customOverlayView.visibility = View.VISIBLE
                     //it.customErrorView.visibility = View.GONE
                     it.errorMsgText.visibility = View.GONE
@@ -275,6 +283,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 activityTypeAheadSearchBinding?.let {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
+                    it.divider.visibility = View.GONE
                     it.customOverlayView.visibility = View.GONE
                     //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
@@ -297,6 +306,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 activityTypeAheadSearchBinding?.let {
                     //it.emptyImage.visibility = View.VISIBLE
                     //it.emptyMessage.visibility = View.VISIBLE
+                    it.divider.visibility = View.GONE
                     it.customOverlayView.visibility = View.GONE
                     //it.customErrorView.visibility = View.VISIBLE
                     val imageView = findViewById<ImageView>(R.id.error_image)
