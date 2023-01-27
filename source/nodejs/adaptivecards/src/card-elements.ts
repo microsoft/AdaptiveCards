@@ -2144,9 +2144,7 @@ export class Image extends CardElement {
                 imageElement.style.backgroundColor = backgroundColor;
             }
 
-            this.configureImageForForceLoading();
-
-            imageElement.src = <string>this.preProcessPropertyValue( {prop = Image.urlProperty, propertyValue = nil});
+            this.setImageSource(imageElement);    
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
             if (altTextProperty) {
@@ -2195,22 +2193,43 @@ export class Image extends CardElement {
         return this.url ? [{ url: this.url, mimeType: "image" }] : [];
     }
 
-    // configures Image element to fetch a new image data from url source instead of relying on cache
-    private configureImageForForceLoading(): void {
-        if (this.forceLoad) {
-            // currently rudimentary refreshing scheme is used
-            // by attaching unique query string to url, we bypass the cache usage
-            this.url = this.appendUniqueQueryStringToURL(this.url);
+    private setImageSource(imageElement: HTMLImageElement): void {
+        const imageForceLoader: ImageForceLoader = new ImageForceLoader(this.forceLoad, this.url);
+        imageForceLoader.configureImage(this);
+        imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+        imageForceLoader.resetImage(this);
+    } 
+}
+
+// configures Image element to fetch a new image data from url source instead of relying on cache
+// currently rudimentary refreshing scheme is used
+// by attaching unique query string to url, we bypass the cache usage
+class ImageForceLoader{
+    private uniqueHash : string;
+    public readonly urlWithForceLoadOption : string;
+    constructor(
+        readonly doForceLoad: boolean,
+        readonly url : string | undefined,
+    )
+    {
+        if (url && url.length && doForceLoad) {
+            // we can do better by appending unique key such as uuid instead of epoch
+            // however the current usage is for front-end ui and networking,  
+            // since ui is running in single main thread, this is sufficient mechanism
+            // without needing to depend on external library for our small use cases.
+            this.uniqueHash = '?' + Date.now();
+            this.urlWithForceLoadOption = url + this.uniqueHash;
         }
     }
 
-    private appendUniqueQueryStringToURL(url: string | undefined) : string | undefined
-    {
-        // we can do better by appending unique key such as uuid instead of epoch
-        // however the current usage is for front-end ui and networking,  
-        // since ui is running in single main thread, this is sufficient mechanism
-        // without needing to depend on external library for our small use cases.
-        return (url && url.length) ? url + '?' + Date.now() : url;
+    public configureImage(image: Image): void {
+        if (this.urlWithForceLoadOption && this.urlWithForceLoadOption.length) {
+            image.url = this.urlWithForceLoadOption;
+        }
+    }
+
+    public resetImage(image: Image): void {
+        image.url = this.url;
     }
 }
 
