@@ -335,13 +335,19 @@ a.ac-anchor:hover {
     padding: 0px 16px 16px 16px !important;
 }
 
+.ac-carousel-container-vertical {
+    display: flex;
+}
+
 .ac-carousel-card-level-container {
     margin: 0px -16px -16px -16px !important;
 }
 
 .ac-container.ac-adaptiveCard .swiper-button-prev.ac-carousel-left,
-.ac-carousel-container .swiper-button-next.ac-carousel-right {
-    display:none;
+.ac-carousel-container .swiper-button-next.ac-carousel-right,
+.ac-carousel-container .swiper-button-prev.ac-carousel-up,
+.ac-carousel-container .swiper-button-next.ac-carousel-down {
+    visibility: hidden;
 }
 
 .swiper-slide.ac-carousel-page {
@@ -351,8 +357,12 @@ a.ac-anchor:hover {
 .ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-left,
 .ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-right,
 .ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-left,
-.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right {
-    display: flex;
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-right,
+.ac-container.ac-adaptiveCard:hover .swiper-button-prev.ac-carousel-up,
+.ac-container.ac-adaptiveCard:hover .swiper-button-next.ac-carousel-down,
+.ac-container.ac-adaptiveCard:focus .swiper-button-prev.ac-carousel-up,
+.ac-container.ac-adaptiveCard:focus .swiper-button-next.ac-carousel-down {
+    visibility: visible;
 }
 
 .swiper-button-prev.ac-carousel-left,
@@ -362,13 +372,24 @@ a.ac-anchor:hover {
     width:16px;
 }
 
+.swiper-button-prev.ac-carousel-up,
+.swiper-button-next.ac-carousel-down {
+    border-radius:3px;
+    height:14px;
+    width:16px;
+}
+
 .swiper-button-prev.ac-carousel-left:hover,
-.swiper-button-next.ac-carousel-right:hover {
+.swiper-button-next.ac-carousel-right:hover,
+.swiper-button-prev.ac-carousel-up:hover,
+.swiper-button-next.ac-carousel-down:hover {
     background: transparent !important;
 }
 
 .swiper-button-prev.ac-carousel-left::after,
-.swiper-button-next.ac-carousel-right::after {
+.swiper-button-next.ac-carousel-right::after,
+.swiper-button-prev.ac-carousel-up::after,
+.swiper-button-next.ac-carousel-down::after {
     color:rgba(0, 0, 0, 0.4458);
     font-size:8px !important;
 }
@@ -376,7 +397,11 @@ a.ac-anchor:hover {
 .swiper-button-prev.ac-carousel-left:active::after,
 .swiper-button-prev.ac-carousel-left:hover::after,
 .swiper-button-next.ac-carousel-right:active::after,
-.swiper-button-next.ac-carousel-right:hover::after {
+.swiper-button-next.ac-carousel-right:hover::after,
+.swiper-button-prev.ac-carousel-up:active::after,
+.swiper-button-prev.ac-carousel-up:hover::after,
+.swiper-button-next.ac-carousel-down:active::after,
+.swiper-button-next.ac-carousel-down:hover::after {
     color:rgba(0, 0, 0, 0.6063) !important;
 }
 
@@ -386,6 +411,11 @@ a.ac-anchor:hover {
     width:4px !important;
     vertical-align:middle;
     position: relative;
+}
+
+.swiper-pagination-vertical .swiper-pagination-bullet {
+    margin-left: 1px !important;
+    margin-right: 1px !important;
 }
 
 .swiper-pagination-bullet::after {
@@ -402,6 +432,21 @@ a.ac-anchor:hover {
 .swiper-pagination-bullet.swiper-pagination-bullet-active{
     height:6px !important;
     width:6px !important;
+}
+
+.swiper-pagination-vertical .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.swiper-pagination.ac-carousel-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-vertical {
+    right: -5px;
+    position: relative !important;
+    transform: translate3d(0, 0, 0) !important;
+}
+
+.ac-carousel-pagination-rtl {
+    right: 5px !important;
 }
 
 .widget-header-text {
@@ -436,4 +481,17 @@ a.ac-anchor:hover {
     .swiper-pagination-bullet {
         background-color: ButtonBorder !important;
     }
+}
+
+.ac-carousel-navigation-vertical {
+    position: absolute;
+    align-self: center;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ac-carousel-navigation-vertical .swiper-button-prev.ac-carousel-up ,
+.ac-carousel-navigation-vertical .swiper-button-next.ac-carousel-down {
+    position: relative !important;
 }
