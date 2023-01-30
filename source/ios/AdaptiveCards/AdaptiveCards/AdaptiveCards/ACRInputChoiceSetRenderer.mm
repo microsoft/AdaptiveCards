@@ -12,6 +12,7 @@
 #import "ACRChoiceSetViewDataSource.h"
 #import "ACRChoiceSetFilteredStyleView.h"
 #import "ACRTypeaheadSearchViewController.h"
+#import "ACRTypeaheadSearchParameters.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
@@ -44,7 +45,17 @@
     ACRInputLabelView *inputLabelView = nil;
     const auto style = choiceSet->GetChoiceSetStyle();
     if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
-        ACRChoiceSetFilteredStyleView *typeaheadStyleView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
+        auto inputLabel = choiceSet->GetLabel();
+        NSString *typeaheadViewTitle = (!inputLabel.empty()) ? [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding] : @"Typeahead Search";
+        ACRTypeaheadZeroStateParams *zeroStateParams = [[ACRTypeaheadZeroStateParams alloc] initWithtitle:@"Search options" subtitle:nil];
+        ACRTypeaheadOfflineStateParams *offlineStateParams = [[ACRTypeaheadOfflineStateParams alloc] initWithtitle:@"the device is offline" subtitle:nil];
+        ACRTypeaheadNoResultsStateParams *noResultStateParams = [[ACRTypeaheadNoResultsStateParams alloc] initWithtitle:@"No results" subtitle:nil];
+        ACRTypeaheadErrorStateParams *errorStateParams = [[ACRTypeaheadErrorStateParams alloc] initWithtitle:@"Something went wrong" subtitle:nil];
+        ACRTypeaheadStateAllParameters *typeaheadParams = [[ACRTypeaheadStateAllParameters alloc] initWithzeroStateParams:zeroStateParams
+                                                                                                         errorStateParams:errorStateParams
+                                                                                                       noResultStateParams:noResultStateParams
+                                                                                                        offlineStateParams:offlineStateParams];
+        ACRChoiceSetFilteredStyleView *typeaheadStyleView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig searchStateParams:typeaheadParams typeaheadViewTitle:typeaheadViewTitle];
         inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:typeaheadStyleView accessibilityItem:typeaheadStyleView viewGroup:viewGroup dataSource:nil];
     }
     else if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {

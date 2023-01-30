@@ -22,7 +22,7 @@ using namespace AdaptiveCards;
 @implementation ACRChoiceSetCompactStyleView {
     ACOFilteredDataSource *_filteredDataSource;
     ACOFilteredListStateManager *_stateManager;
-    ACOChoiceSetCompactStyleValidator *_validator;
+    ACOChoiceSetFilteredStyleValidator *_validator;
     ACOFilteredListLayout *_filteredListLayout;
     NSString *_inputLabel;
     UITableView *_listView;
@@ -48,7 +48,7 @@ using namespace AdaptiveCards;
         if (!_filteredDataSource.isEnabled) {
             self.accessibilityTraits |= (UIAccessibilityTraitButton | UIAccessibilityTraitStaticText);
         }
-        _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
+        _validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
 
         if (@available(iOS 11.0, *)) {
             self.spacingTop = self.window.safeAreaInsets.top + 8.0f;
@@ -563,7 +563,7 @@ using namespace AdaptiveCards;
 
 @end
 
-@implementation ACOChoiceSetCompactStyleValidator {
+@implementation ACOChoiceSetFilteredStyleValidator {
     NSMutableDictionary<NSString *, NSString *> *_staticListTitlesMap;
     NSDictionary<NSString *, NSString *> *_dynamicListTitlesMap;
 }

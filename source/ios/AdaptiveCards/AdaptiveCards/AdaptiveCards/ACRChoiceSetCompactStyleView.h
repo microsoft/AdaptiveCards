@@ -60,7 +60,7 @@
 
 @end
 
-@interface ACOChoiceSetCompactStyleValidator : NSObject
+@interface ACOChoiceSetFilteredStyleValidator : NSObject
 
 @property BOOL isRequired;
 @property NSString *placeHolder;

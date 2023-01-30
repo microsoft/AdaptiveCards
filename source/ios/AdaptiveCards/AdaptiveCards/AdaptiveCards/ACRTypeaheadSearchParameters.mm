@@ -5,7 +5,7 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#include "ACRTypeaheadSearchParameters.h"
+#import "ACRTypeaheadSearchParameters.h"
 
 
 @implementation ACRTypeaheadStateParameters

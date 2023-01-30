@@ -11,9 +11,12 @@
 #import "ACRView.h"
 #import <UIKit/UIKit.h>
 
+@class ACRTypeaheadStateAllParameters;
+
 @protocol ACRChoiceSetFilteredDelegate <NSObject>
 - (void)updateSelectedChoiceInTextField:(NSString *)text;
 - (NSString *)getSelectedText;
+- (NSString *)getChoiceSetId;
 @end
 
 @interface ACRChoiceSetFilteredStyleView : UITextField <UITextFieldDelegate, ACRIBaseInputHandler, ACRChoiceSetFilteredDelegate>
@@ -22,6 +25,8 @@
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
-                            hostConfig:(ACOHostConfig *)hostConfig;
+                            hostConfig:(ACOHostConfig *)hostConfig
+                     searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams
+                    typeaheadViewTitle:(NSString *)typeaheadViewTitle;
 
 @end

@@ -31,6 +31,9 @@
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
                             hostConfig:(ACOHostConfig *)acoConfig
+                    filteredDataSource:(ACOFilteredDataSource *)filteredDataSource
+                filteredStyleValidator:(ACOChoiceSetFilteredStyleValidator *)validator
+                    typeaheadViewTitle:(NSString *)typeaheadViewTitle
                      choiceSetDelegate:(id<ACRChoiceSetFilteredDelegate>)choiceSetDelegate
                      searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams;
 @end

@@ -438,6 +438,27 @@ CGFloat kFileBrowserWidth = 0;
     completion(responseDict, nil);
 }
 
+- (void)didUpdateTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC searchStateImageView:(UIImageView *)searchStateImageView searchViewState:(TSTypeaehadSearchViewState)searchViewState
+{
+    switch (searchViewState) {
+        case zeroState:
+            searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (BOOL)shouldLaunchTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
+}
+
+- (BOOL)shouldConfigureNavigationItemViewWithVC:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
+}
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview

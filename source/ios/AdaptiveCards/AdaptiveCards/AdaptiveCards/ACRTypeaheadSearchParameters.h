@@ -11,14 +11,14 @@
 
 @protocol ACRITypeaheadSearchStateDelegate <NSObject>
 
-@property (nonatomic, retain, nullable) NSString *title;
-@property (nonatomic, retain, nullable) NSString *subtitle;
+@property NSString * _Nullable title;
+@property NSString * _Nullable subtitle;
 
 @end
 
 @interface ACRTypeaheadStateParameters : NSObject <ACRITypeaheadSearchStateDelegate>
-- (nonnull instancetype)initWithtitle:(nullable NSString *)title
-                              subtitle:(nullable NSString *)subtitle;
+- (instancetype _Nullable )initWithtitle:(NSString *_Nullable)title
+                                subtitle:(NSString *_Nullable)subtitle;
 
 @end
 
@@ -35,13 +35,13 @@
 @end
 
 @interface ACRTypeaheadStateAllParameters : NSObject
-@property (nonatomic, nonnull) ACRTypeaheadZeroStateParams *zeroStateParams;
-@property (nonatomic, nonnull) ACRTypeaheadErrorStateParams *errorStateParams;
-@property (nonatomic, nonnull) ACRTypeaheadNoResultsStateParams *noResultStateParams;
-@property (nonatomic, nonnull) ACRTypeaheadOfflineStateParams *offlineStateParams;
+@property ACRTypeaheadZeroStateParams * _Nullable zeroStateParams;
+@property ACRTypeaheadErrorStateParams * _Nullable errorStateParams;
+@property ACRTypeaheadNoResultsStateParams * _Nullable noResultStateParams;
+@property ACRTypeaheadOfflineStateParams * _Nullable offlineStateParams;
 
-- (nonnull instancetype)initWithzeroStateParams:(nullable ACRTypeaheadZeroStateParams *)zeroStateParams
-                               errorStateParams:(nullable ACRTypeaheadErrorStateParams *)errorStateParams
-                            noResultStateParams:(nullable ACRTypeaheadNoResultsStateParams *)noResultStateParams
-                             offlineStateParams:(nullable ACRTypeaheadOfflineStateParams *)offlineStateParams;
+- (nonnull instancetype)initWithzeroStateParams:(ACRTypeaheadZeroStateParams *_Nullable)zeroStateParams
+                               errorStateParams:(ACRTypeaheadErrorStateParams *_Nullable)errorStateParams
+                            noResultStateParams:(ACRTypeaheadNoResultsStateParams *_Nullable)noResultStateParams
+                             offlineStateParams:(ACRTypeaheadOfflineStateParams *_Nullable)offlineStateParams;
 @end

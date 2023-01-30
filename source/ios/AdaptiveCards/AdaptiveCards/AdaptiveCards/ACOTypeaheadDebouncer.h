@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ACODebouncerDelegate <NSObject>
+@protocol ACOTypeaheadDebouncerDelegate <NSObject>
 - (void) debouncerDidSendOutput:(id)output;
 @end
 
@@ -22,7 +22,7 @@
  */
 @interface ACOTypeaheadDebouncer<GenericType>: NSObject
 
-@property (strong, nonatomic) id <ACODebouncerDelegate> delegate;
+@property (strong, nonatomic) id <ACOTypeaheadDebouncerDelegate> delegate;
 
 /**
  @brief Initializes a debouncer object with given delay.

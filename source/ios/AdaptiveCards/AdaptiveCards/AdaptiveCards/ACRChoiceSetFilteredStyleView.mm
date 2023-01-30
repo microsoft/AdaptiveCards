@@ -19,25 +19,27 @@
 #import "HostConfig.h"
 #import "UtiliOS.h"
 #import "ACRChoiceSetCompactStyleView.h"
-#include "ACRTypeaheadSearchParameters.h"
+#import "ACRTypeaheadSearchParameters.h"
 #import "ACRTypeaheadSearchViewController.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRChoiceSetFilteredStyleView {
     ACOFilteredDataSource *_filteredDataSource;
-    ACOFilteredListStateManager *_stateManager;
-    ACOChoiceSetCompactStyleValidator *_validator;
+    ACOChoiceSetFilteredStyleValidator *_validator;
     ACOHostConfig *_hostConfig;
     ACOBaseCardElement *_inputElem;
-    NSString *_inputLabel;
     __weak ACRView *_rootView;
     UIButton *_navigationButton;
+    NSString *_typeaheadViewTitle;
+    ACRTypeaheadStateAllParameters *_searchStateParams;
 }
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
                             hostConfig:(ACOHostConfig *)hostConfig
+                     searchStateParams:(ACRTypeaheadStateAllParameters *)searchStateParams
+                    typeaheadViewTitle:(NSString *)typeaheadViewTitle
 {
     self = [super init];
     if (self) {
@@ -46,7 +48,10 @@ using namespace AdaptiveCards;
         _rootView = rootView;
         _inputElem = acoElem;
         _hostConfig = hostConfig;
-        _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
+        _searchStateParams =searchStateParams;
+        _typeaheadViewTitle = typeaheadViewTitle;
+        _filteredDataSource = [[ACOFilteredDataSource alloc] init];
+        _validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
 
         // configure UITextField
         self.delegate = self;
@@ -68,9 +73,6 @@ using namespace AdaptiveCards;
         self.rightViewMode = UITextFieldViewModeAlways;
         self.showFilteredListControl = _navigationButton;
 
-        auto inputLabel = choiceSet->GetLabel();
-        _inputLabel = (!inputLabel.empty()) ? [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding] : @"";
-
         ACRBaseCardElementRenderer *renderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)choiceSet->GetElementType()]];
         if (renderer && [renderer respondsToSelector:@selector(configure:rootView:baseCardElement:hostConfig:)]) {
             // configure input UI
@@ -80,7 +82,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
--(void)launchFullScreenTypeaheadSearchView
+- (void)launchFullScreenTypeaheadSearchView
 {
     UIViewController *rootViewController = traverseResponderChainForUIViewController(_rootView);
     std::shared_ptr<BaseCardElement> elem = [_inputElem element];
@@ -89,19 +91,23 @@ using namespace AdaptiveCards;
 
     if (rootViewController &&
         choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
-        ACRTypeaheadZeroStateParams *zeroStateParams = [[ACRTypeaheadZeroStateParams alloc] initWithtitle:@"Search options" subtitle:nil];
-        ACRTypeaheadOfflineStateParams *offlineStateParams = [[ACRTypeaheadOfflineStateParams alloc] initWithtitle:@"the device is offline" subtitle:nil];
-        ACRTypeaheadNoResultsStateParams *noResultStateParams = [[ACRTypeaheadNoResultsStateParams alloc] initWithtitle:@"No results" subtitle:nil];
-        ACRTypeaheadErrorStateParams *errorStateParams = [[ACRTypeaheadErrorStateParams alloc] initWithtitle:@"Something went wrong" subtitle:nil];
-        ACRTypeaheadStateAllParameters *typeaheadParams = [[ACRTypeaheadStateAllParameters alloc] initWithzeroStateParams:zeroStateParams
-                                                                                                         errorStateParams:errorStateParams
-                                                                                                       noResultStateParams:noResultStateParams
-                                                                                                        offlineStateParams:offlineStateParams];
-
-        ACRTypeaheadSearchViewController *controller = [[ACRTypeaheadSearchViewController alloc] initWithInputChoiceSet:_inputElem rootView:_rootView hostConfig:nil choiceSetDelegate:self searchStateParams:typeaheadParams];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [rootViewController presentViewController:navController animated:YES completion:nil];
+        ACRTypeaheadSearchViewController *typeaheadSearchVC = [[ACRTypeaheadSearchViewController alloc] initWithInputChoiceSet:_inputElem
+                                                                                                                      rootView:_rootView
+                                                                                                                    hostConfig:_hostConfig
+                                                                                                            filteredDataSource:_filteredDataSource
+                                                                                                        filteredStyleValidator:_validator
+                                                                                                            typeaheadViewTitle:_typeaheadViewTitle
+                                                                                                             choiceSetDelegate:self
+                                                                                                             searchStateParams:_searchStateParams];
+        // check if client might want to launch the typeahead search view
+        if ([_rootView.acrActionDelegate respondsToSelector:@selector(shouldLaunchTypeaheadSearchViewController:)]) {
+            BOOL shouldPresentVC = [_rootView.acrActionDelegate shouldLaunchTypeaheadSearchViewController:typeaheadSearchVC];
+            if (shouldPresentVC) {
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:typeaheadSearchVC];
+                navController.modalPresentationStyle = UIModalPresentationFullScreen;
+                [rootViewController presentViewController:navController animated:YES completion:nil];
+            }
+        }
     }
 }
 
@@ -114,7 +120,6 @@ using namespace AdaptiveCards;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    // launch the new view controller here
     [self launchFullScreenTypeaheadSearchView];
     return NO;
 }
@@ -155,8 +160,12 @@ using namespace AdaptiveCards;
     self.text = text;
 }
 
--(NSString *)getSelectedText {
+- (NSString *)getSelectedText {
     return self.text;
+}
+
+- (NSString *)getChoiceSetId {
+    return self.id;
 }
 
 @synthesize hasValidationProperties;
