@@ -88,6 +88,7 @@ class TypeAheadSearchViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             var result: HttpRequestResult<List<ChoiceInput>>? = null
             DynamicTypeAheadService.getChoicesResolver()?.let {
+                // TODO : Send dataset and type as well
                 result = it.getDynamicChoices(queryText)
                 println("Accessing async task on ${Thread.currentThread().name}")
             }

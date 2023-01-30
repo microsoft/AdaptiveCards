@@ -3,7 +3,6 @@
 package io.adaptivecards.renderer.inputhandler
 
 import io.adaptivecards.objectmodel.BaseInputElement
-import io.adaptivecards.renderer.inputhandler.BaseInputHandler
 import android.widget.AutoCompleteTextView
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout
 import io.adaptivecards.objectmodel.ChoiceSetInput

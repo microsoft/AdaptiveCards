@@ -3,37 +3,38 @@
 package io.adaptivecards.renderer.inputhandler
 
 import io.adaptivecards.objectmodel.BaseInputElement
-import android.widget.AutoCompleteTextView
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout
 import io.adaptivecards.objectmodel.ChoiceSetInput
 import android.view.accessibility.AccessibilityEvent
 import io.adaptivecards.objectmodel.ChoiceInput
 import io.adaptivecards.objectmodel.ChoiceInputVector
 import io.adaptivecards.renderer.Util
+import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText
 
-class TypeAheadTextView(baseInputElement: BaseInputElement?) : BaseInputHandler(baseInputElement) {
+class TypeAheadTextViewHandler(baseInputElement: BaseInputElement?) : BaseInputHandler(baseInputElement) {
     // For validation visual cues we draw the spinner inside a ValidatedSpinnerLayout so we query for this
-    protected val autoCompleteTextView: AutoCompleteTextView
+    protected val editTextView: ValidatedEditText
         protected get() =// For validation visual cues we draw the spinner inside a ValidatedSpinnerLayout so we query for this
             if (m_view is ValidatedInputLayout) {
-                (m_view as ValidatedInputLayout).getChildAt(0) as AutoCompleteTextView
-            } else m_view as AutoCompleteTextView
+                (m_view as ValidatedInputLayout).getChildAt(0) as ValidatedEditText
+            } else m_view as ValidatedEditText
 
     private var inputIsEmpty = false;
 
     override fun getInput(): String {
         // To get the input, we have to transform the text inside of the AutoCompleteTextView into the value
         val choiceSetInput = m_baseInputElement as ChoiceSetInput
-        val inputText = autoCompleteTextView.editableText.toString()
+        val inputText = editTextView.text.toString()
         inputIsEmpty = inputText.isEmpty()
-        return getValueForTitle(inputText, choiceSetInput.GetChoices())
+        return inputText
+        //return getValueForTitle(inputText, choiceSetInput.GetChoices())
     }
 
     override fun setInput(value: String) {
         // To set the input, we have to transform the value received and set the according title into the AutoCompleteTextView
-        val choiceSetInput = m_baseInputElement as ChoiceSetInput
-        val title = getTitleForValue(value, choiceSetInput.GetChoices())
-        autoCompleteTextView.setText(title)
+//        val choiceSetInput = m_baseInputElement as ChoiceSetInput
+//        val title = getTitleForValue(value, choiceSetInput.GetChoices())
+        editTextView.setText(value)
     }
 
     override fun setFocusToView() {
@@ -43,13 +44,11 @@ class TypeAheadTextView(baseInputElement: BaseInputElement?) : BaseInputHandler(
 
     override fun isValidOnSpecifics(inputValue: String): Boolean {
         // Before looking for the value we verify if the input was initially empty, if so the input is valid
-        if (inputIsEmpty){
-            return true;
-        }
+        return inputIsEmpty
 
-        val choiceSetInput = m_baseInputElement as ChoiceSetInput
-        // if we can't find the title in the choice list, then the returned value is -1
-        return findValueIndex(inputValue, choiceSetInput.GetChoices()) != -1
+//        val choiceSetInput = m_baseInputElement as ChoiceSetInput
+//        // if we can't find the title in the choice list, then the returned value is -1
+//        return findValueIndex(inputValue, choiceSetInput.GetChoices()) != -1
     }
 
     private fun findIndexForChoiceInput(choiceInputVector: ChoiceInputVector, expectedValue: String, retriever: (ChoiceInput) -> String): Int {

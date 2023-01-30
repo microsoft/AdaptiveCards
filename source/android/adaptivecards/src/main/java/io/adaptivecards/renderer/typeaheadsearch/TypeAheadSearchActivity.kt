@@ -36,7 +36,6 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var errorIconParams: ErrorStateParams
     private lateinit var noResultIconParams: NoResultStateParams
 
-
     private var activityTypeAheadSearchBinding: ActivityTypeAheadSearchBinding? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,7 +133,6 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 )
             )
         }
-
 
         activityTypeAheadSearchBinding?.toolbar?.let { setSupportActionBar(it) }
 
