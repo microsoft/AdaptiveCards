@@ -19,6 +19,7 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class CustomGreenAction extends BaseActionElement
 {
@@ -71,6 +72,7 @@ public class CustomGreenAction extends BaseActionElement
                              ViewGroup viewGroup,
                              BaseActionElement baseActionElement,
                              ICardActionHandler cardActionHandler,
+                             IChoicesResolver choicesResolver,
                              HostConfig hostConfig,
                              RenderArgs renderArgs)
         {

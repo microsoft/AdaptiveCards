@@ -55,6 +55,7 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.FullscreenVideoLayout;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class MediaRenderer extends BaseCardElementRenderer
 {
@@ -166,6 +167,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             Media media,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -186,7 +188,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             // Draw poster in posterLayout
             poster.SetImageSize(ImageSize.Auto);
-            posterView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, renderArgs);
+            posterView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, choicesResolver, hostConfig, renderArgs);
 
             RelativeLayout.LayoutParams posterLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             posterLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -201,6 +203,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -217,7 +220,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             playButton.SetUrl(playButtonUrl);
             playButton.SetImageSize(ImageSize.Small);
 
-            playButtonView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, renderArgs);
+            playButtonView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, choicesResolver, hostConfig, renderArgs);
             ((TagContent) playButtonView.getTag()).GetStretchContainer().setLayoutParams(playButtonLayoutParams);
         }
         else
@@ -420,6 +423,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -430,8 +434,8 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);
-        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, hostConfig, renderArgs);
-        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, renderArgs);
+        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, choicesResolver, hostConfig, renderArgs);
         View mediaView = renderMediaPlayer(renderedCard, context, posterLayout, media, cardActionHandler, hostConfig);
 
         posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler, posterLayout));

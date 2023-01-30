@@ -33,6 +33,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Mode;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 /**
  * Responsible for rendering Overflow action layout.
@@ -61,10 +62,10 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
 
     @Override
-    public View renderActions(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final HostConfig hostConfig, final RenderArgs renderArgs) throws AdaptiveFallbackException
+    public View renderActions(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final IChoicesResolver choicesResolver, final HostConfig hostConfig, final RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
-        final List<View> menuItemList = renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, cardActionHandler, hostConfig, renderArgs);
+        final List<View> menuItemList = renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, cardActionHandler, choicesResolver, hostConfig, renderArgs);
 
         View overflowActionView = null;
         try
@@ -226,6 +227,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
                                                FragmentManager fragmentManager,
                                                ViewGroup actionButtonsLayout,
                                                ICardActionHandler cardActionHandler,
+                                               IChoicesResolver choicesResolver,
                                                HostConfig hostConfig,
                                                RenderArgs renderArgs) throws AdaptiveFallbackException
     {
@@ -248,7 +250,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
                     throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }
 
-                menuItemViewList.add(actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs));
+                menuItemViewList.add(actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs));
             }
             catch (AdaptiveFallbackException e)
             {

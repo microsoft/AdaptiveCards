@@ -10,6 +10,7 @@ import android.widget.Button;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public interface IBaseActionElementRenderer
 {
@@ -20,6 +21,7 @@ public interface IBaseActionElementRenderer
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

@@ -25,6 +25,7 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class APITest
 {
@@ -240,7 +241,7 @@ public class APITest
 
         @Override
         public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
-                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, IChoicesResolver choicesResolver,
                            HostConfig hostConfig, RenderArgs renderArgs) throws Exception
         {
             ImageView img = new ImageView(context);
@@ -260,7 +261,7 @@ public class APITest
 
         @Override
         public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
-                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, IChoicesResolver choicesResolver,
                            HostConfig hostConfig, RenderArgs renderArgs) throws Exception
         {
             ImageView img = new ImageView(context);

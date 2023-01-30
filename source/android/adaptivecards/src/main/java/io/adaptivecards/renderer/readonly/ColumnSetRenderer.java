@@ -32,6 +32,7 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
 {
@@ -57,6 +58,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ViewGroup viewGroup,
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
+        IChoicesResolver choicesResolver,
         HostConfig hostConfig,
         RenderArgs renderArgs) throws Exception
     {
@@ -103,6 +105,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    column,
                                                                                    columnSetLayout,
                                                                                    cardActionHandler,
+                                                                                   choicesResolver,
                                                                                    hostConfig,
                                                                                    columnRenderArgs,
                                                                                    featureRegistration);

@@ -20,6 +20,7 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class CustomBlueAction extends BaseActionElement
 {
@@ -58,6 +59,7 @@ public class CustomBlueAction extends BaseActionElement
                              ViewGroup viewGroup,
                              BaseActionElement baseActionElement,
                              ICardActionHandler cardActionHandler,
+                             IChoicesResolver choicesResolver,
                              HostConfig hostConfig,
                              RenderArgs renderArgs) throws AdaptiveFallbackException
         {
@@ -67,6 +69,7 @@ public class CustomBlueAction extends BaseActionElement
                                                                            viewGroup,
                                                                            baseActionElement,
                                                                            cardActionHandler,
+                                                                           choicesResolver,
                                                                            hostConfig,
                                                                            renderArgs);
 

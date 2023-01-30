@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ColumnRenderer extends BaseCardElementRenderer
 {
@@ -115,6 +116,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -149,6 +151,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                                                               columnLayout,
                                                               column.GetItems(),
                                                               cardActionHandler,
+                                                              choicesResolver,
                                                               hostConfig,
                                                               columnRenderArgs);
             }

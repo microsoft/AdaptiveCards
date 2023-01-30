@@ -14,6 +14,7 @@ import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ShowCardOverrideRenderer extends BaseActionElementRenderer
 {
@@ -30,6 +31,7 @@ public class ShowCardOverrideRenderer extends BaseActionElementRenderer
                          ViewGroup viewGroup,
                          BaseActionElement baseActionElement,
                          ICardActionHandler cardActionHandler,
+                         IChoicesResolver choicesResolver,
                          HostConfig hostConfig,
                          RenderArgs renderArgs)
     {
@@ -37,7 +39,7 @@ public class ShowCardOverrideRenderer extends BaseActionElementRenderer
         button.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.yellowActionColor), PorterDuff.Mode.SRC_ATOP);
         button.setText(baseActionElement.GetTitle() +"(ShowCard)");
         button.setAllCaps(false);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs));
         viewGroup.addView(button);
         return button;
     }

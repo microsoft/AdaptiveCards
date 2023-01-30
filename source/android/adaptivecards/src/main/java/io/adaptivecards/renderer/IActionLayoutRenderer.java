@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public interface IActionLayoutRenderer {
     public View renderActions(RenderedAdaptiveCard renderedCard,
@@ -18,6 +19,7 @@ public interface IActionLayoutRenderer {
                               ViewGroup viewGroup,
                               BaseActionElementVector baseActionElementList,
                               ICardActionHandler cardActionHandler,
+                              IChoicesResolver choicesResolver,
                               HostConfig hostConfig,
                               RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

@@ -42,6 +42,7 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
@@ -67,6 +68,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -105,6 +107,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                                                               containerView,
                                                               container.GetItems(),
                                                               cardActionHandler,
+                                                              choicesResolver,
                                                               hostConfig,
                                                               containerRenderArgs);
             }

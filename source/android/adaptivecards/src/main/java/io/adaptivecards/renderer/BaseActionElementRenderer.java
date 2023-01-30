@@ -29,6 +29,7 @@ import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
@@ -84,6 +85,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
          * @param viewGroup
          * @param baseActionElement
          * @param cardActionHandler
+         * @param choicesResolver
          * @param hostConfig
          */
         public ActionOnClickListener(RenderedAdaptiveCard renderedCard,
@@ -92,6 +94,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                                      ViewGroup viewGroup,
                                      BaseActionElement baseActionElement,
                                      ICardActionHandler cardActionHandler,
+                                     IChoicesResolver choicesResolver,
                                      HostConfig hostConfig,
                                      RenderArgs renderArgs)
         {
@@ -102,7 +105,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             // As SelectAction doesn't support ShowCard actions, then this line won't be executed
             if (m_isInlineShowCardAction)
             {
-                renderHiddenCard(context, fragmentManager, viewGroup, hostConfig, renderArgs);
+                renderHiddenCard(context, fragmentManager, viewGroup, choicesResolver, hostConfig, renderArgs);
             }
         }
 
@@ -172,12 +175,12 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
         }
 
-        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig, RenderArgs renderArgs)
+        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, IChoicesResolver choicesResolver, HostConfig hostConfig, RenderArgs renderArgs)
         {
             ShowCardAction showCardAction = Util.castTo(m_action, ShowCardAction.class);
 
             m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(),
-                                                                                m_cardActionHandler, hostConfig, true, renderArgs.getContainerCardId());
+                                                                                m_cardActionHandler, choicesResolver, hostConfig, true, renderArgs.getContainerCardId());
             m_invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.GetActions().getShowCard().getInlineTopMargin()), 0, 0);
