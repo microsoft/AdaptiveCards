@@ -3,7 +3,7 @@
 import {
     Authentication,
     AuthCardButton,
-    ExecuteAction,
+    UniversalAction,
     TokenExchangeResource
 } from "./card-elements";
 
@@ -13,10 +13,10 @@ export enum ActivityRequestTrigger {
 }
 
 export interface IActivityRequest {
-    readonly action: ExecuteAction;
+    readonly action: UniversalAction;
     readonly trigger: ActivityRequestTrigger;
     readonly attemptNumber: number;
-    readonly consecutiveRefreshes: number;
+    readonly consecutiveActions: number;
 
     authCode?: string;
     authToken?: string;

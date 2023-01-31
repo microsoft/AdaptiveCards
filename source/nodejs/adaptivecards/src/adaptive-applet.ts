@@ -21,7 +21,10 @@ import {
     Action,
     Input,
     TokenExchangeResource,
-    AuthCardButton
+    AuthCardButton,
+    UniversalAction,
+    ChoiceSetInput,
+    DataQuery
 } from "./card-elements";
 import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
@@ -50,9 +53,9 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
 
 class ActivityRequest implements IActivityRequest {
     constructor(
-        readonly action: ExecuteAction,
+        readonly action: UniversalAction,
         readonly trigger: ActivityRequestTrigger,
-        readonly consecutiveRefreshes: number
+        readonly consecutiveActions: number
     ) {}
 
     authCode?: string;
@@ -75,6 +78,7 @@ export class AdaptiveApplet {
 
     private _card?: AdaptiveCard;
     private _cardPayload: any;
+    private _choiceSet?: ChoiceSetInput;
     private _allowAutomaticCardUpdate: boolean = false;
     private _refreshButtonHostElement: HTMLElement;
     private _cardHostElement: HTMLElement;
@@ -166,12 +170,12 @@ export class AdaptiveApplet {
     }
 
     private createActivityRequest(
-        action: ExecuteAction,
+        action: UniversalAction,
         trigger: ActivityRequestTrigger,
-        consecutiveRefreshes: number
+        consecutiveActions: number
     ): ActivityRequest | undefined {
         if (this.card) {
-            const request = new ActivityRequest(action, trigger, consecutiveRefreshes);
+            const request = new ActivityRequest(action, trigger, consecutiveActions);
             request.onSend = (sender: ActivityRequest) => {
                 sender.attemptNumber++;
 
@@ -253,7 +257,7 @@ export class AdaptiveApplet {
             : new SerializationContext();
     }
 
-    private internalSetCard(payload: any, consecutiveRefreshes: number) {
+    private internalSetCard(payload: any, consecutiveActions: number) {
         if (typeof payload === "object" && payload["type"] === "AdaptiveCard") {
             this._cardPayload = payload;
         }
@@ -294,9 +298,14 @@ export class AdaptiveApplet {
 
                         this.internalExecuteAction(action, ActivityRequestTrigger.Manual, 0);
                     };
-                    this._card.onInputValueChanged = (_input: Input) => {
+                    this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
+                        if (input instanceof ChoiceSetInput && input.value && input.choicesData) {
+                            this._choiceSet = input;
+                            input.choicesData.filter = input.value;
+                            this.internalExecuteAction(input.choicesData, ActivityRequestTrigger.Manual, 0);
+                        }
                     };
 
                     this._card.render();
@@ -312,7 +321,7 @@ export class AdaptiveApplet {
                             if (
                                 GlobalSettings.applets.refresh.mode ===
                                     Enums.RefreshMode.Automatic &&
-                                consecutiveRefreshes <
+                                consecutiveActions <
                                     GlobalSettings.applets.refresh
                                         .maximumConsecutiveAutomaticRefreshes
                             ) {
@@ -323,19 +332,19 @@ export class AdaptiveApplet {
                                     logEvent(
                                         Enums.LogLevel.Info,
                                         "Triggering automatic card refresh number " +
-                                            (consecutiveRefreshes + 1)
+                                            (consecutiveActions + 1)
                                     );
 
                                     this.internalExecuteAction(
                                         this._card.refresh.action,
                                         ActivityRequestTrigger.Automatic,
-                                        consecutiveRefreshes + 1
+                                        consecutiveActions + 1
                                     );
                                 } else {
                                     logEvent(
                                         Enums.LogLevel.Info,
                                         "Scheduling automatic card refresh number " +
-                                            (consecutiveRefreshes + 1) +
+                                            (consecutiveActions + 1) +
                                             " in " +
                                             GlobalSettings.applets.refresh
                                                 .timeBetweenAutomaticRefreshes +
@@ -351,7 +360,7 @@ export class AdaptiveApplet {
                                             this.internalExecuteAction(
                                                 action,
                                                 ActivityRequestTrigger.Automatic,
-                                                consecutiveRefreshes + 1
+                                                consecutiveActions + 1
                                             );
                                         }
                                     }, GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes);
@@ -359,11 +368,11 @@ export class AdaptiveApplet {
                             } else if (
                                 GlobalSettings.applets.refresh.mode !== Enums.RefreshMode.Disabled
                             ) {
-                                if (consecutiveRefreshes > 0) {
+                                if (consecutiveActions > 0) {
                                     logEvent(
                                         Enums.LogLevel.Warning,
                                         "Stopping automatic refreshes after " +
-                                            consecutiveRefreshes +
+                                            consecutiveActions +
                                             " consecutive refreshes."
                                     );
                                 } else {
@@ -396,11 +405,11 @@ export class AdaptiveApplet {
     private internalExecuteAction(
         action: Action,
         trigger: ActivityRequestTrigger,
-        consecutiveRefreshes: number
+        consecutiveActions: number
     ) {
-        if (action instanceof ExecuteAction) {
+        if (action instanceof UniversalAction) {
             if (this.channelAdapter) {
-                const request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
+                const request = this.createActivityRequest(action, trigger, consecutiveActions);
 
                 if (request) {
                     void request.retryAsync();
@@ -522,6 +531,20 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.");
         }
+        const {action} = request;
+        if (action instanceof ExecuteAction) {
+            await this.internalSendExecuteRequestAsync(request);
+        } else if (action instanceof DataQuery) {
+            await this.internalSendDataQueryRequestAsync(request);
+        } else {
+            throw new Error("internalSendActivityRequestAsync: Unhandled Action Type");
+        }
+    }
+
+    private async internalSendExecuteRequestAsync(request: ActivityRequest) {
+        if (!this.channelAdapter) {
+            throw new Error("internalSendExecuteRequestAsync: channelAdapter is not set.");
+        }
 
         const overlay = this.createProgressOverlay(request);
 
@@ -594,7 +617,7 @@ export class AdaptiveApplet {
                                 " attempt(s)."
                         );
 
-                        this.internalSetCard(parsedContent, request.consecutiveRefreshes);
+                        this.internalSetCard(parsedContent, request.consecutiveActions);
                         this.activityRequestSucceeded(response, this.card);
                     } else {
                         throw new Error(
@@ -714,6 +737,31 @@ export class AdaptiveApplet {
         }
     }
 
+    private async internalSendDataQueryRequestAsync(request: ActivityRequest) {
+        if (!this.channelAdapter) {
+            throw new Error("internalSendDataQueryRequestAsync: channel adapter not set");
+        }
+        this._choiceSet?.applyLoadingIndicator();
+        let response = undefined;
+        try {
+            response = await this.channelAdapter.sendRequestAsync(request);
+        } catch (error) {
+            logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
+        }
+        this._choiceSet?.removeLoadingIndicator();
+        if (response) {
+            if (response instanceof SuccessResponse) {
+                // Handle UI as per Success Response
+                const fetchedChoices: string[] = ["Amar", "Amarnath", "Amey"];
+                this._choiceSet?.filterChoices(fetchedChoices);
+            } else if (response instanceof ErrorResponse) {
+                // Handle UI as per Error Response
+            } else {
+                throw new Error("Unhandled response type: " + JSON.stringify(response));
+            }
+        }
+    }
+
     readonly renderedElement: HTMLElement;
 
     hostConfig?: HostConfig;
@@ -733,7 +781,7 @@ export class AdaptiveApplet {
     onPrepareActivityRequest?: (
         sender: AdaptiveApplet,
         request: IActivityRequest,
-        action: ExecuteAction
+        action: UniversalAction
     ) => boolean;
     onActivityRequestSucceeded?: (
         sender: AdaptiveApplet,

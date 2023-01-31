@@ -279,6 +279,12 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $padding;
             background-color: $background-color;
 
+            &.ac-choiceSetInput-filtered-dropdown {
+                border-top: 0px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
@@ -298,6 +304,15 @@ $font-family: 'Segoe UI', sans-serif;
         &.ac-toggleInput, &.ac-choiceSetInput-expanded, &.ac-choiceSetInput-multiSelect {
             &.ac-input-validation-failed {
                 outline: $validation-failed-outline;
+            }
+        }
+
+        &.ac-choice {
+            background-color: $background-color;
+
+            &:hover {
+                background-color: lightgrey;
+                box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
             }
         }
     }

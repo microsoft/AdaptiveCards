@@ -3279,6 +3279,804 @@ export class Media extends CardElement {
     }
 }
 
+export const enum ActionButtonState {
+    Normal,
+    Expanded,
+    Subdued
+}
+
+export type ActionType = { new (): Action };
+
+export abstract class Action extends CardObject {
+    //#region Schema
+
+    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
+    static readonly styleProperty = new ValueSetProperty(
+        Versions.v1_2,
+        "style",
+        [
+            { value: Enums.ActionStyle.Default },
+            { value: Enums.ActionStyle.Positive },
+            { value: Enums.ActionStyle.Destructive }
+        ],
+        Enums.ActionStyle.Default
+    );
+    static readonly modeProperty = new ValueSetProperty(
+        Versions.v1_5,
+        "mode",
+        [{ value: Enums.ActionMode.Primary }, { value: Enums.ActionMode.Secondary }],
+        Enums.ActionMode.Primary
+    );
+    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
+    static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
+
+    @property(Action.titleProperty)
+    title?: string;
+
+    @property(Action.iconUrlProperty)
+    iconUrl?: string;
+
+    @property(Action.styleProperty)
+    style: string = Enums.ActionStyle.Default;
+
+    @property(Action.modeProperty)
+    mode: string = Enums.ActionMode.Primary;
+
+    @property(Action.tooltipProperty)
+    tooltip?: string;
+
+    @property(Action.isEnabledProperty)
+    isEnabled: boolean;
+
+    //#endregion
+
+    private renderButtonContent() {
+        if (this.renderedElement) {
+            // Cache hostConfig for perf
+            const hostConfig = this.hostConfig;
+
+            const titleElement = document.createElement("div");
+            titleElement.style.overflow = "hidden";
+            titleElement.style.textOverflow = "ellipsis";
+
+            if (
+                !(
+                    hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle ||
+                    hostConfig.actions.allowTitleToWrap
+                )
+            ) {
+                titleElement.style.whiteSpace = "nowrap";
+            }
+
+            if (this.title) {
+                titleElement.innerText = this.title;
+            }
+
+            if (!this.iconUrl) {
+                this.renderedElement.classList.add("noIcon");
+                this.renderedElement.appendChild(titleElement);
+            } else {
+                const iconElement = document.createElement("img");
+                iconElement.src = this.iconUrl;
+                iconElement.style.width = hostConfig.actions.iconSize + "px";
+                iconElement.style.height = hostConfig.actions.iconSize + "px";
+                iconElement.style.flex = "0 0 auto";
+
+                if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
+                    this.renderedElement.classList.add("iconAbove");
+                    this.renderedElement.style.flexDirection = "column";
+
+                    if (this.title) {
+                        iconElement.style.marginBottom = "6px";
+                    }
+                } else {
+                    this.renderedElement.classList.add("iconLeft");
+
+                    iconElement.style.maxHeight = "100%";
+
+                    if (this.title) {
+                        iconElement.style.marginRight = "6px";
+                    }
+                }
+
+                this.renderedElement.appendChild(iconElement);
+                this.renderedElement.appendChild(titleElement);
+            }
+        }
+    }
+
+    private getParentContainer(): Container | undefined {
+        if (this.parent instanceof Container) {
+            return this.parent;
+        }
+
+        return this.parent ? this.parent.getParentContainer() : undefined;
+    }
+
+    private _state: ActionButtonState = ActionButtonState.Normal;
+    private _actionCollection?: ActionCollection; // hold the reference to its action collection
+    private _isFocusable: boolean = true;
+
+    isDesignMode(): boolean {
+        const rootElement = this.getRootObject();
+
+        return rootElement instanceof CardElement && rootElement.isDesignMode();
+    }
+
+    protected updateCssClasses() {
+        if (this.parent && this.renderedElement) {
+            const hostConfig = this.parent.hostConfig;
+
+            this.renderedElement.className = hostConfig.makeCssClassName(
+                this.isEffectivelyEnabled() ? "ac-pushButton" : "ac-pushButton-disabled"
+            );
+
+            const parentContainer = this.getParentContainer();
+
+            if (parentContainer) {
+                const parentContainerStyle = parentContainer.getEffectiveStyle();
+
+                if (parentContainerStyle) {
+                    this.renderedElement.classList.add("style-" + parentContainerStyle);
+                }
+            }
+
+            this.renderedElement.tabIndex = !this.isDesignMode() && this.isFocusable ? 0 : -1;
+
+            switch (this._state) {
+                case ActionButtonState.Normal:
+                    // No additional classes needed
+                    break;
+
+                case ActionButtonState.Expanded:
+                    this.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
+                    break;
+                case ActionButtonState.Subdued:
+                    this.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
+                    break;
+            }
+
+            if (this.style && this.isEffectivelyEnabled()) {
+                if (this.style === Enums.ActionStyle.Positive) {
+                    this.renderedElement.classList.add(
+                        ...hostConfig.makeCssClassNames("primary", "style-positive")
+                    );
+                } else {
+                    this.renderedElement.classList.add(
+                        ...hostConfig.makeCssClassNames("style-" + this.style.toLowerCase())
+                    );
+                }
+            }
+        }
+    }
+
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext();
+    }
+
+    protected internalGetReferencedInputs(): Dictionary<Input> {
+        return {};
+    }
+
+    protected internalPrepareForExecution(_inputs: Dictionary<Input> | undefined) {
+        // Do nothing in base implementation
+    }
+
+    protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
+        const result: Input[] = [];
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                if (!input.validateValue()) {
+                    result.push(input);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
+    }
+
+    protected raiseExecuteActionEvent() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+
+        raiseExecuteActionEvent(this);
+    }
+
+    protected internalAfterExecute() {
+        let rootObject = this.getRootObject();
+
+        if (rootObject instanceof CardElement) {
+            rootObject.updateActionsEnabledState();
+        }
+    }
+
+    onExecute: (sender: Action) => void;
+
+    getHref(): string | undefined {
+        return "";
+    }
+
+    getAriaRole(): string {
+        return "button";
+    }
+
+    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
+        element.tabIndex = this.isEffectivelyEnabled() && !this.isDesignMode() ? 0 : -1;
+
+        element.setAttribute("role", this.getAriaRole());
+
+        if (element instanceof HTMLButtonElement) {
+            element.disabled = !this.isEffectivelyEnabled();
+        }
+
+        if (!this.isEffectivelyEnabled()) {
+            element.setAttribute("aria-disabled", "true");
+        } else {
+            element.removeAttribute("aria-disabled");
+            element.classList.add(this.hostConfig.makeCssClassName("ac-selectable"));
+        }
+
+        if (this.title) {
+            element.setAttribute("aria-label", this.title);
+            element.title = this.title;
+        } else {
+            element.removeAttribute("aria-label");
+            element.removeAttribute("title");
+        }
+
+        if (this.tooltip) {
+            const targetAriaAttribute = promoteTooltipToLabel
+                ? this.title
+                    ? "aria-description"
+                    : "aria-label"
+                : "aria-description";
+
+            element.setAttribute(targetAriaAttribute, this.tooltip);
+            element.title = this.tooltip;
+        }
+    }
+
+    parse(source: any, context?: SerializationContext) {
+        return super.parse(source, context ? context : new SerializationContext());
+    }
+
+    render() {
+        const buttonElement = document.createElement("button");
+        buttonElement.type = "button";
+        buttonElement.style.display = "flex";
+        buttonElement.style.alignItems = "center";
+        buttonElement.style.justifyContent = "center";
+        buttonElement.onclick = (e) => {
+            if (this.isEffectivelyEnabled()) {
+                e.preventDefault();
+                e.cancelBubble = true;
+
+                this.execute();
+            }
+        };
+
+        this._renderedElement = buttonElement;
+
+        this.renderButtonContent();
+        this.updateCssClasses();
+        this.setupElementForAccessibility(buttonElement);
+    }
+
+    execute() {
+        if (this._actionCollection) {
+            this._actionCollection.actionExecuted(this);
+        }
+
+        this.raiseExecuteActionEvent();
+        this.internalAfterExecute();
+    }
+
+    prepareForExecution(): boolean {
+        const referencedInputs = this.getReferencedInputs();
+        const invalidInputs = this.internalValidateInputs(referencedInputs);
+
+        if (invalidInputs.length > 0) {
+            invalidInputs[0].focus();
+
+            return false;
+        }
+
+        this.internalPrepareForExecution(referencedInputs);
+
+        return true;
+    }
+
+    remove(): boolean {
+        if (this._actionCollection) {
+            return this._actionCollection.removeAction(this);
+        }
+
+        return false;
+    }
+
+    getAllInputs(processActions: boolean = true): Input[] {
+        return [];
+    }
+
+    getAllActions(): Action[] {
+        return [this];
+    }
+
+    getResourceInformation(): IResourceInformation[] {
+        return this.iconUrl ? [{ url: this.iconUrl, mimeType: "image" }] : [];
+    }
+
+    getActionById(id: string): Action | undefined {
+        return this.id === id ? this : undefined;
+    }
+
+    getReferencedInputs(): Dictionary<Input> | undefined {
+        return this.internalGetReferencedInputs();
+    }
+
+    /**
+     * Validates the inputs associated with this action.
+     *
+     * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
+     */
+    validateInputs(): Input[] {
+        return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
+    updateEnabledState() {
+        // Do nothing in base implementation
+    }
+
+    isEffectivelyEnabled(): boolean {
+        return this.isEnabled;
+    }
+
+    get isPrimary(): boolean {
+        return this.style === Enums.ActionStyle.Positive;
+    }
+
+    set isPrimary(value: boolean) {
+        if (value) {
+            this.style = Enums.ActionStyle.Positive;
+        } else {
+            if (this.style === Enums.ActionStyle.Positive) {
+                this.style = Enums.ActionStyle.Default;
+            }
+        }
+    }
+
+    get hostConfig(): HostConfig {
+        return this.parent ? this.parent.hostConfig : defaultHostConfig;
+    }
+
+    get parent(): CardElement | undefined {
+        return <CardElement>this._parent;
+    }
+
+    get state(): ActionButtonState {
+        return this._state;
+    }
+
+    set state(value: ActionButtonState) {
+        if (this._state !== value) {
+            this._state = value;
+
+            this.updateCssClasses();
+        }
+    }
+
+    get isFocusable(): boolean {
+        return this._isFocusable;
+    }
+
+    set isFocusable(value: boolean) {
+        if (this._isFocusable !== value) {
+            this._isFocusable = value;
+
+            this.updateCssClasses();
+        }
+    }
+}
+
+export abstract class SubmitActionBase extends Action {
+    //#region Schema
+
+    static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
+    static readonly associatedInputsProperty = new CustomProperty(
+        Versions.v1_3,
+        "associatedInputs",
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            const value = source[prop.name];
+
+            if (value !== undefined && typeof value === "string") {
+                return value.toLowerCase() === "none" ? "none" : "auto";
+            }
+
+            return undefined;
+        },
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            target: PropertyBag,
+            value: string | undefined,
+            context: BaseSerializationContext
+        ) => {
+            context.serializeValue(target, prop.name, value);
+        }
+    );
+    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(
+        Versions.v1_6,
+        "disabledUnlessAssociatedInputsChange",
+        false
+    );
+
+    @property(SubmitActionBase.dataProperty)
+    private _originalData?: PropertyBag;
+
+    @property(SubmitActionBase.associatedInputsProperty)
+    associatedInputs?: "auto" | "none";
+
+    @property(SubmitActionBase.disabledUnlessAssociatedInputsChangeProperty)
+    disabledUnlessAssociatedInputsChange: boolean = false;
+
+    //#endregion
+
+    private _isPrepared: boolean = false;
+    private _processedData?: PropertyBag;
+    private _areReferencedInputsDirty: boolean = false;
+
+    protected internalGetReferencedInputs(): Dictionary<Input> {
+        const result: Dictionary<Input> = {};
+
+        if (this.associatedInputs !== "none") {
+            let current: CardElement | undefined = this.parent;
+            let inputs: Input[] = [];
+
+            while (current) {
+                inputs.push(...current.getAllInputs(false));
+
+                current = current.parent;
+            }
+
+            for (const input of inputs) {
+                if (input.id) {
+                    result[input.id] = input;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
+        if (this._originalData) {
+            this._processedData = JSON.parse(JSON.stringify(this._originalData));
+        } else {
+            this._processedData = {};
+        }
+
+        if (this._processedData && inputs) {
+            for (const key of Object.keys(inputs)) {
+                const input = inputs[key];
+
+                if (input.id && input.isSet()) {
+                    this._processedData[input.id] =
+                        typeof input.value === "string" ? input.value : input.value.toString();
+                }
+            }
+        }
+
+        this._isPrepared = true;
+    }
+
+    protected internalAfterExecute() {
+        if (GlobalSettings.resetInputsDirtyStateAfterActionExecution) {
+            this.resetReferencedInputsDirtyState();
+        }
+    }
+
+    resetReferencedInputsDirtyState() {
+        let referencedInputs = this.getReferencedInputs();
+
+        this._areReferencedInputsDirty = false;
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                input.resetDirtyState();
+            }
+        }
+    }
+
+    updateEnabledState() {
+        this._areReferencedInputsDirty = false;
+
+        let referencedInputs = this.getReferencedInputs();
+
+        if (referencedInputs) {
+            for (const key of Object.keys(referencedInputs)) {
+                const input = referencedInputs[key];
+
+                if (input.isDirty()) {
+                    this._areReferencedInputsDirty = true;
+
+                    break;
+                }
+            }
+        }
+
+        this.updateCssClasses();
+
+        if (this._renderedElement) {
+            this.setupElementForAccessibility(this._renderedElement);
+        }
+    }
+
+    isEffectivelyEnabled(): boolean {
+        let result = super.isEffectivelyEnabled();
+
+        return this.disabledUnlessAssociatedInputsChange
+            ? result && this._areReferencedInputsDirty
+            : result;
+    }
+
+    get data(): object | undefined {
+        return this._isPrepared ? this._processedData : this._originalData;
+    }
+
+    set data(value: object | undefined) {
+        this._originalData = value;
+        this._isPrepared = false;
+    }
+}
+
+export class SubmitAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
+
+    getJsonTypeName(): string {
+        return SubmitAction.JsonTypeName;
+    }
+}
+
+export abstract class UniversalAction extends SubmitActionBase {
+    // This is the base class for all actions that can be executed via the
+    // adaptiveCards/action activity
+}
+
+export class ExecuteAction extends UniversalAction {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
+
+    //#region Schema
+
+    static readonly verbProperty = new StringProperty(Versions.v1_4, "verb");
+
+    @property(ExecuteAction.verbProperty)
+    verb: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return ExecuteAction.JsonTypeName;
+    }
+}
+
+export class DataQuery extends UniversalAction {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Data.Query" = "Data.Query";
+
+    //#region Schema
+
+    static readonly datasetProperty = new StringProperty(Versions.v1_0, "dataset");
+    static readonly filterProperty = new StringProperty(Versions.v1_0, "filter");
+
+    @property(DataQuery.datasetProperty)
+    dataset: string;
+
+    @property(DataQuery.filterProperty)
+    filter?: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return DataQuery.JsonTypeName;
+    }
+
+    get isStandalone(): boolean {
+        return false;
+    }
+}
+
+export class OpenUrlAction extends Action {
+    //#region Schema
+
+    static readonly urlProperty = new StringProperty(Versions.v1_0, "url");
+
+    @property(OpenUrlAction.urlProperty)
+    url?: string;
+
+    //#endregion
+
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.OpenUrl" = "Action.OpenUrl";
+
+    getJsonTypeName(): string {
+        return OpenUrlAction.JsonTypeName;
+    }
+
+    getAriaRole(): string {
+        return "link";
+    }
+
+    internalValidateProperties(context: ValidationResults) {
+        super.internalValidateProperties(context);
+
+        if (!this.url) {
+            context.addFailure(
+                this,
+                Enums.ValidationEvent.PropertyCantBeNull,
+                Strings.errors.propertyMustBeSet("url")
+            );
+        }
+    }
+
+    getHref(): string | undefined {
+        return this.url;
+    }
+}
+
+export class ToggleVisibilityAction extends Action {
+    //#region Schema
+
+    static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
+        Versions.v1_2,
+        "targetElements",
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            const result: PropertyBag = {};
+
+            if (Array.isArray(source[prop.name])) {
+                for (const item of source[prop.name]) {
+                    if (typeof item === "string") {
+                        result[item] = undefined;
+                    } else if (typeof item === "object") {
+                        const elementId = item["elementId"];
+
+                        if (typeof elementId === "string") {
+                            result[elementId] = Utils.parseBool(item["isVisible"]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        },
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            target: PropertyBag,
+            value: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            const targetElements: any[] = [];
+
+            for (const id of Object.keys(value)) {
+                if (typeof value[id] === "boolean") {
+                    targetElements.push({
+                        elementId: id,
+                        isVisible: value[id]
+                    });
+                } else {
+                    targetElements.push(id);
+                }
+            }
+
+            context.serializeArray(target, prop.name, targetElements);
+        },
+        {},
+        (sender: SerializableObject) => {
+            return {};
+        }
+    );
+
+    @property(ToggleVisibilityAction.targetElementsProperty)
+    targetElements: { [key: string]: any } = {};
+
+    //#endregion
+
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
+
+    private updateAriaControlsAttribute() {
+        // apply aria labels to make it clear which elements this action will toggle
+        if (this.targetElements) {
+            const elementIds = Object.keys(this.targetElements);
+
+            if (this._renderedElement) {
+                if (elementIds.length > 0) {
+                    this._renderedElement.setAttribute("aria-controls", elementIds.join(" "));
+                } else {
+                    this._renderedElement.removeAttribute("aria-controls");
+                }
+            }
+        }
+    }
+
+    internalValidateProperties(context: ValidationResults) {
+        super.internalValidateProperties(context);
+
+        if (!this.targetElements) {
+            context.addFailure(
+                this,
+                Enums.ValidationEvent.PropertyCantBeNull,
+                Strings.errors.propertyMustBeSet("targetElements")
+            );
+        }
+    }
+
+    getJsonTypeName(): string {
+        return ToggleVisibilityAction.JsonTypeName;
+    }
+
+    render() {
+        super.render();
+
+        this.updateAriaControlsAttribute();
+    }
+
+    execute() {
+        super.execute();
+        if (this.parent) {
+            for (const elementId of Object.keys(this.targetElements)) {
+                const targetElement = this.parent.getRootElement().getElementById(elementId);
+
+                if (targetElement) {
+                    if (typeof this.targetElements[elementId] === "boolean") {
+                        targetElement.isVisible = this.targetElements[elementId];
+                    } else {
+                        targetElement.isVisible = !targetElement.isVisible;
+                    }
+                }
+            }
+        }
+    }
+
+    addTargetElement(elementId: string, isVisible: boolean | undefined = undefined) {
+        this.targetElements[elementId] = isVisible;
+        this.updateAriaControlsAttribute();
+    }
+
+    removeTargetElement(elementId: string) {
+        delete this.targetElements[elementId];
+        this.updateAriaControlsAttribute();
+    }
+}
+
 export abstract class Input extends CardElement implements IInput {
     
     //#region Schema
@@ -4098,6 +4896,11 @@ export class ChoiceSetInput extends Input {
         "choices",
         Choice
     );
+    static readonly choicesDataProperty = new SerializableObjectProperty(
+		Versions.v1_0,
+		"choices.data",
+		DataQuery
+	);
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
         "style",
@@ -4138,6 +4941,9 @@ export class ChoiceSetInput extends Input {
     @property(ChoiceSetInput.choicesProperty)
     choices: Choice[] = [];
 
+    @property(ChoiceSetInput.choicesDataProperty)
+	choicesData?: DataQuery; 
+
     //#endregion
 
     private static _uniqueCategoryCounter = 0;
@@ -4155,6 +4961,19 @@ export class ChoiceSetInput extends Input {
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+    private _filteredChoiceSet?: FilteredChoiceSet; 
+
+    applyLoadingIndicator() {
+        this._filteredChoiceSet?.applyLoadingIndicator();
+    }
+
+    removeLoadingIndicator() {
+        this._filteredChoiceSet?.removeLoadingIndicator();
+    }
+
+    filterChoices(fetchedChoices: string[]) {
+        this._filteredChoiceSet?.filterChoiceList(fetchedChoices);
+    }
 
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
@@ -4290,8 +5109,40 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+        if (this.choicesData) {
+            const filteredChoiceSet = new FilteredChoiceSet(this.choices, this.hostConfig);
+            filteredChoiceSet.render();
 
-        if (this.isMultiSelect) {
+            if (filteredChoiceSet.textInput) {
+                this._textInput = filteredChoiceSet.textInput;
+                if (this.defaultValue) {
+                    this._textInput.value = this.defaultValue;
+                }
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+                this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
+                this._textInput.oninput = () => {
+                    this.valueChanged();
+                    filteredChoiceSet.showDropdown();
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        } else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                };
+            }
+            this._filteredChoiceSet = filteredChoiceSet;
+            return filteredChoiceSet.renderedElement;
+        }
+        else if (this.isMultiSelect) {
             // Render as a list of toggle inputs
             return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
@@ -4524,6 +5375,236 @@ export class ChoiceSetInput extends Input {
 
             return result ? result : undefined;
         }
+    }
+}
+
+export class FilteredChoiceSet {
+    private _parent?: CardObject;
+    private _choices: Choice[];
+    private _textInput?: HTMLInputElement;
+    private _dropdown?: HTMLDivElement;
+    private _staticChoiceList: HTMLDivElement[];
+    private _dynamicChoiceList: HTMLDivElement[];
+    private _loadingIndicator?: HTMLDivElement;
+    private _renderedElement?: HTMLElement;
+    private _hostConfig: HostConfig;
+
+    constructor(choices: Choice[], hostConfig: HostConfig) {
+        this._choices = choices;
+        this._staticChoiceList = [];
+        this._dynamicChoiceList = [];
+        this._hostConfig = hostConfig;
+    }
+
+    // TODO: Apply CSS to the elements in this method.
+    render() {
+        // Create base div container that holds the input and dropdown
+        const baseContainer = document.createElement("div");
+        baseContainer.style.width = "100%";
+        
+        // Create editable input field
+        this._textInput = document.createElement("input");
+        this._textInput.className = this._hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-multichoiceInput",
+            "ac-choiceSetInput-filtered"
+        );
+        this._textInput.type = "text";
+        this._textInput.style.width = "100%";
+
+        this._textInput.onkeydown = event => {
+            if (event.key === "ArrowDown") {
+                // Think what to do
+        }};
+
+        // Create dropdown element
+        this._dropdown = document.createElement("div");
+        // this._dropdown.style.backgroundColor = "white";
+        this._dropdown.style.display = "none";
+        // this._dropdown.style.height = "0px";
+        // this._dropdown.style.position = "absolute";
+        this._dropdown.style.width = "100%";
+
+        this._dropdown.className = this._hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-multichoiceInput",
+            "ac-choiceSetInput-filtered-dropdown"
+        );
+
+        // key press events
+        // on hover highlight via css
+
+        // convert into css
+
+        this.createChoiceList();
+
+        baseContainer.append(this._textInput, this._dropdown);
+
+        document.onclick = event => {
+            if (this._dropdown) {
+                let x = !(event.target === this._textInput);
+                let child = this._dropdown.firstChild;
+                while (child) {
+                    if (event.target === child) {
+                        x = false;
+                    }
+                    child = child.nextSibling;
+                }
+                if (x) {
+                    this._dropdown.style.display = "none";
+                }
+            }
+        };
+        this._renderedElement = baseContainer;
+    }
+
+    createChoice(value: string, id: number): HTMLDivElement {
+        const choice = document.createElement("div");
+
+        // Style choice divs
+        // choice.style.backgroundColor = "white";
+        choice.style.width = "100%";
+        // choice.style.border = "1px inset black"; // Width Style Colour
+        // choice.style.borderTop = "0px";
+        // choiceDiv.style.font = this._textInput.style.font;
+        // Insert padding as well.
+        // choice.style.padding = "1px 2px";
+
+        choice.className = this._hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choice"
+        );
+
+        choice.id = `ac-choiceSetInput-choice-${id}`;
+
+        // Set required event handlers
+        choice.onclick = () => {
+            if (this._textInput) {
+                this._textInput.value = choice.innerText;
+            }
+            if (this._dropdown) {
+                this._dropdown.style.display = "none";
+            }
+        };
+        choice.onkeydown = event => {
+            if (event.key === "ArrowDown") {
+                const nextChoice = document.getElementById(`ac-choiceSetInput-choice-${(id+1)}`);
+                if (nextChoice) {
+                    nextChoice.focus();
+                }
+            } else if (event.key === "ArrowUp") {
+                const prevChoice = document.getElementById(`ac-choiceSetInput-choice-${(id-1)}`);
+                if (prevChoice) {
+                    prevChoice.focus();
+                }
+            } else if (event.key === "Enter") {
+                if (this._textInput) {
+                    this._textInput.value = choice.innerText;
+                }
+                if (this._dropdown) {
+                    this._dropdown.style.display = "none";
+                }
+            }
+        };
+        choice.innerText = value;
+
+        choice.setAttribute("contenteditable", "true");
+
+        // this._staticChoiceList.push(choice);
+        return choice;
+    }
+
+    createChoiceList() {
+        let id = 0;
+        for (const choice of this._choices) {
+            if (choice.title) {
+                const choiceContainer = this.createChoice(choice.title, id++);
+                this._staticChoiceList.push(choiceContainer);
+                this._dropdown?.appendChild(choiceContainer);
+            }
+        }
+    }
+
+    filterChoiceList(fetchedChoices: string[]) {
+        const filter = this._textInput?.value.toLowerCase() || "";
+        for (const choice of this._staticChoiceList) {
+            choice.style.display = choice.innerText.toLowerCase().includes(filter)? "block" : "none";
+        }
+
+        this._dynamicChoiceList.forEach((choice: HTMLDivElement) => {
+            this._dropdown?.removeChild(choice);
+        });
+        this._dynamicChoiceList = [];
+
+        let dId = this._choices.length;
+        for (const choice of fetchedChoices) {
+            if (choice.toLowerCase().includes(filter)) {
+                const choiceContainer = this.createChoice(choice, dId++);
+                this._dynamicChoiceList.push(choiceContainer);
+                this._dropdown?.appendChild(choiceContainer);
+            }
+        }
+    }
+
+    getLoadingIndicator(): HTMLDivElement {
+        if (!this._loadingIndicator) {
+            const loadingIndicator = document.createElement("div");
+            // Style choice divs
+            loadingIndicator.style.backgroundColor = "white";
+            loadingIndicator.style.width = "auto";
+            loadingIndicator.style.border = "1px inset black"; // Width Style Colour
+            loadingIndicator.style.borderTop = "0px";
+            // choiceDiv.style.font = this._textInput.style.font;
+            // Insert padding as well.
+            loadingIndicator.style.padding = "1px 2px";
+            loadingIndicator.innerText = "Loading...";
+    
+            this._loadingIndicator = loadingIndicator;
+        }
+        return this._loadingIndicator;
+    }
+
+    applyLoadingIndicator() {
+        // static choices get filtered first.
+        const loadingIndicator = this.getLoadingIndicator();
+        this._dropdown?.appendChild(loadingIndicator);           
+    }
+
+    removeLoadingIndicator() {
+        // Remove loading indicator on the white field
+        if (this._loadingIndicator) {
+            this._dropdown?.removeChild(this._loadingIndicator);
+        }
+    }
+
+    showDropdown() {
+        if (this._dropdown) {
+            this._dropdown.style.display = "block";
+        }
+    }
+
+    selectChoice() {
+        // if needed in many locations
+    }
+
+    applyCSS() {
+        // Apply custom styling to the components
+    }
+
+    set parent(value: CardObject | undefined) {
+        this._parent = value;
+    }
+
+    get parent() {
+        return this._parent;
+    }
+
+    get renderedElement() {
+        return this._renderedElement;
+    }
+
+    get textInput() {
+        return this._textInput;
     }
 }
 
@@ -4850,772 +5931,6 @@ export class TimeInput extends Input {
 
     get value(): string | undefined {
         return this._timeInputElement ? this._timeInputElement.value : undefined;
-    }
-}
-
-export const enum ActionButtonState {
-    Normal,
-    Expanded,
-    Subdued
-}
-
-export type ActionType = { new (): Action };
-
-export abstract class Action extends CardObject {
-    //#region Schema
-
-    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
-    static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
-    static readonly styleProperty = new ValueSetProperty(
-        Versions.v1_2,
-        "style",
-        [
-            { value: Enums.ActionStyle.Default },
-            { value: Enums.ActionStyle.Positive },
-            { value: Enums.ActionStyle.Destructive }
-        ],
-        Enums.ActionStyle.Default
-    );
-    static readonly modeProperty = new ValueSetProperty(
-        Versions.v1_5,
-        "mode",
-        [{ value: Enums.ActionMode.Primary }, { value: Enums.ActionMode.Secondary }],
-        Enums.ActionMode.Primary
-    );
-    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
-    static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
-
-    @property(Action.titleProperty)
-    title?: string;
-
-    @property(Action.iconUrlProperty)
-    iconUrl?: string;
-
-    @property(Action.styleProperty)
-    style: string = Enums.ActionStyle.Default;
-
-    @property(Action.modeProperty)
-    mode: string = Enums.ActionMode.Primary;
-
-    @property(Action.tooltipProperty)
-    tooltip?: string;
-
-    @property(Action.isEnabledProperty)
-    isEnabled: boolean;
-
-    //#endregion
-
-    private renderButtonContent() {
-        if (this.renderedElement) {
-            // Cache hostConfig for perf
-            const hostConfig = this.hostConfig;
-
-            const titleElement = document.createElement("div");
-            titleElement.style.overflow = "hidden";
-            titleElement.style.textOverflow = "ellipsis";
-
-            if (
-                !(
-                    hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle ||
-                    hostConfig.actions.allowTitleToWrap
-                )
-            ) {
-                titleElement.style.whiteSpace = "nowrap";
-            }
-
-            if (this.title) {
-                titleElement.innerText = this.title;
-            }
-
-            if (!this.iconUrl) {
-                this.renderedElement.classList.add("noIcon");
-                this.renderedElement.appendChild(titleElement);
-            } else {
-                const iconElement = document.createElement("img");
-                iconElement.src = this.iconUrl;
-                iconElement.style.width = hostConfig.actions.iconSize + "px";
-                iconElement.style.height = hostConfig.actions.iconSize + "px";
-                iconElement.style.flex = "0 0 auto";
-
-                if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
-                    this.renderedElement.classList.add("iconAbove");
-                    this.renderedElement.style.flexDirection = "column";
-
-                    if (this.title) {
-                        iconElement.style.marginBottom = "6px";
-                    }
-                } else {
-                    this.renderedElement.classList.add("iconLeft");
-
-                    iconElement.style.maxHeight = "100%";
-
-                    if (this.title) {
-                        iconElement.style.marginRight = "6px";
-                    }
-                }
-
-                this.renderedElement.appendChild(iconElement);
-                this.renderedElement.appendChild(titleElement);
-            }
-        }
-    }
-
-    private getParentContainer(): Container | undefined {
-        if (this.parent instanceof Container) {
-            return this.parent;
-        }
-
-        return this.parent ? this.parent.getParentContainer() : undefined;
-    }
-
-    private _state: ActionButtonState = ActionButtonState.Normal;
-    private _actionCollection?: ActionCollection; // hold the reference to its action collection
-    private _isFocusable: boolean = true;
-
-    isDesignMode(): boolean {
-        const rootElement = this.getRootObject();
-
-        return rootElement instanceof CardElement && rootElement.isDesignMode();
-    }
-
-    protected updateCssClasses() {
-        if (this.parent && this.renderedElement) {
-            const hostConfig = this.parent.hostConfig;
-
-            this.renderedElement.className = hostConfig.makeCssClassName(
-                this.isEffectivelyEnabled() ? "ac-pushButton" : "ac-pushButton-disabled"
-            );
-
-            const parentContainer = this.getParentContainer();
-
-            if (parentContainer) {
-                const parentContainerStyle = parentContainer.getEffectiveStyle();
-
-                if (parentContainerStyle) {
-                    this.renderedElement.classList.add("style-" + parentContainerStyle);
-                }
-            }
-
-            this.renderedElement.tabIndex = !this.isDesignMode() && this.isFocusable ? 0 : -1;
-
-            switch (this._state) {
-                case ActionButtonState.Normal:
-                    // No additional classes needed
-                    break;
-
-                case ActionButtonState.Expanded:
-                    this.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
-                    break;
-                case ActionButtonState.Subdued:
-                    this.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
-                    break;
-            }
-
-            if (this.style && this.isEffectivelyEnabled()) {
-                if (this.style === Enums.ActionStyle.Positive) {
-                    this.renderedElement.classList.add(
-                        ...hostConfig.makeCssClassNames("primary", "style-positive")
-                    );
-                } else {
-                    this.renderedElement.classList.add(
-                        ...hostConfig.makeCssClassNames("style-" + this.style.toLowerCase())
-                    );
-                }
-            }
-        }
-    }
-
-    protected getDefaultSerializationContext(): BaseSerializationContext {
-        return new SerializationContext();
-    }
-
-    protected internalGetReferencedInputs(): Dictionary<Input> {
-        return {};
-    }
-
-    protected internalPrepareForExecution(_inputs: Dictionary<Input> | undefined) {
-        // Do nothing in base implementation
-    }
-
-    protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
-        const result: Input[] = [];
-
-        if (referencedInputs) {
-            for (const key of Object.keys(referencedInputs)) {
-                const input = referencedInputs[key];
-
-                if (!input.validateValue()) {
-                    result.push(input);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    protected shouldSerialize(context: SerializationContext): boolean {
-        return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
-    }
-
-    protected raiseExecuteActionEvent() {
-        if (this.onExecute) {
-            this.onExecute(this);
-        }
-
-        raiseExecuteActionEvent(this);
-    }
-
-    protected internalAfterExecute() {
-        let rootObject = this.getRootObject();
-
-        if (rootObject instanceof CardElement) {
-            rootObject.updateActionsEnabledState();
-        }
-    }
-
-    onExecute: (sender: Action) => void;
-
-    getHref(): string | undefined {
-        return "";
-    }
-
-    getAriaRole(): string {
-        return "button";
-    }
-
-    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = this.isEffectivelyEnabled() && !this.isDesignMode() ? 0 : -1;
-
-        element.setAttribute("role", this.getAriaRole());
-
-        if (element instanceof HTMLButtonElement) {
-            element.disabled = !this.isEffectivelyEnabled();
-        }
-
-        if (!this.isEffectivelyEnabled()) {
-            element.setAttribute("aria-disabled", "true");
-        } else {
-            element.removeAttribute("aria-disabled");
-            element.classList.add(this.hostConfig.makeCssClassName("ac-selectable"));
-        }
-
-        if (this.title) {
-            element.setAttribute("aria-label", this.title);
-            element.title = this.title;
-        } else {
-            element.removeAttribute("aria-label");
-            element.removeAttribute("title");
-        }
-
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
-            element.title = this.tooltip;
-        }
-    }
-
-    parse(source: any, context?: SerializationContext) {
-        return super.parse(source, context ? context : new SerializationContext());
-    }
-
-    render() {
-        const buttonElement = document.createElement("button");
-        buttonElement.type = "button";
-        buttonElement.style.display = "flex";
-        buttonElement.style.alignItems = "center";
-        buttonElement.style.justifyContent = "center";
-        buttonElement.onclick = (e) => {
-            if (this.isEffectivelyEnabled()) {
-                e.preventDefault();
-                e.cancelBubble = true;
-
-                this.execute();
-            }
-        };
-
-        this._renderedElement = buttonElement;
-
-        this.renderButtonContent();
-        this.updateCssClasses();
-        this.setupElementForAccessibility(buttonElement);
-    }
-
-    execute() {
-        if (this._actionCollection) {
-            this._actionCollection.actionExecuted(this);
-        }
-
-        this.raiseExecuteActionEvent();
-        this.internalAfterExecute();
-    }
-
-    prepareForExecution(): boolean {
-        const referencedInputs = this.getReferencedInputs();
-        const invalidInputs = this.internalValidateInputs(referencedInputs);
-
-        if (invalidInputs.length > 0) {
-            invalidInputs[0].focus();
-
-            return false;
-        }
-
-        this.internalPrepareForExecution(referencedInputs);
-
-        return true;
-    }
-
-    remove(): boolean {
-        if (this._actionCollection) {
-            return this._actionCollection.removeAction(this);
-        }
-
-        return false;
-    }
-
-    getAllInputs(processActions: boolean = true): Input[] {
-        return [];
-    }
-
-    getAllActions(): Action[] {
-        return [this];
-    }
-
-    getResourceInformation(): IResourceInformation[] {
-        return this.iconUrl ? [{ url: this.iconUrl, mimeType: "image" }] : [];
-    }
-
-    getActionById(id: string): Action | undefined {
-        return this.id === id ? this : undefined;
-    }
-
-    getReferencedInputs(): Dictionary<Input> | undefined {
-        return this.internalGetReferencedInputs();
-    }
-
-    /**
-     * Validates the inputs associated with this action.
-     *
-     * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
-     */
-    validateInputs(): Input[] {
-        return this.internalValidateInputs(this.getReferencedInputs());
-    }
-
-    updateEnabledState() {
-        // Do nothing in base implementation
-    }
-
-    isEffectivelyEnabled(): boolean {
-        return this.isEnabled;
-    }
-
-    get isPrimary(): boolean {
-        return this.style === Enums.ActionStyle.Positive;
-    }
-
-    set isPrimary(value: boolean) {
-        if (value) {
-            this.style = Enums.ActionStyle.Positive;
-        } else {
-            if (this.style === Enums.ActionStyle.Positive) {
-                this.style = Enums.ActionStyle.Default;
-            }
-        }
-    }
-
-    get hostConfig(): HostConfig {
-        return this.parent ? this.parent.hostConfig : defaultHostConfig;
-    }
-
-    get parent(): CardElement | undefined {
-        return <CardElement>this._parent;
-    }
-
-    get state(): ActionButtonState {
-        return this._state;
-    }
-
-    set state(value: ActionButtonState) {
-        if (this._state !== value) {
-            this._state = value;
-
-            this.updateCssClasses();
-        }
-    }
-
-    get isFocusable(): boolean {
-        return this._isFocusable;
-    }
-
-    set isFocusable(value: boolean) {
-        if (this._isFocusable !== value) {
-            this._isFocusable = value;
-
-            this.updateCssClasses();
-        }
-    }
-}
-
-export abstract class SubmitActionBase extends Action {
-    //#region Schema
-
-    static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
-    static readonly associatedInputsProperty = new CustomProperty(
-        Versions.v1_3,
-        "associatedInputs",
-        (
-            sender: SerializableObject,
-            prop: PropertyDefinition,
-            source: PropertyBag,
-            context: BaseSerializationContext
-        ) => {
-            const value = source[prop.name];
-
-            if (value !== undefined && typeof value === "string") {
-                return value.toLowerCase() === "none" ? "none" : "auto";
-            }
-
-            return undefined;
-        },
-        (
-            sender: SerializableObject,
-            prop: PropertyDefinition,
-            target: PropertyBag,
-            value: string | undefined,
-            context: BaseSerializationContext
-        ) => {
-            context.serializeValue(target, prop.name, value);
-        }
-    );
-    static readonly disabledUnlessAssociatedInputsChangeProperty = new BoolProperty(
-        Versions.v1_6,
-        "disabledUnlessAssociatedInputsChange",
-        false
-    );
-
-    @property(SubmitActionBase.dataProperty)
-    private _originalData?: PropertyBag;
-
-    @property(SubmitActionBase.associatedInputsProperty)
-    associatedInputs?: "auto" | "none";
-
-    @property(SubmitActionBase.disabledUnlessAssociatedInputsChangeProperty)
-    disabledUnlessAssociatedInputsChange: boolean = false;
-
-    //#endregion
-
-    private _isPrepared: boolean = false;
-    private _processedData?: PropertyBag;
-    private _areReferencedInputsDirty: boolean = false;
-
-    protected internalGetReferencedInputs(): Dictionary<Input> {
-        const result: Dictionary<Input> = {};
-
-        if (this.associatedInputs !== "none") {
-            let current: CardElement | undefined = this.parent;
-            let inputs: Input[] = [];
-
-            while (current) {
-                inputs.push(...current.getAllInputs(false));
-
-                current = current.parent;
-            }
-
-            for (const input of inputs) {
-                if (input.id) {
-                    result[input.id] = input;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
-        if (this._originalData) {
-            this._processedData = JSON.parse(JSON.stringify(this._originalData));
-        } else {
-            this._processedData = {};
-        }
-
-        if (this._processedData && inputs) {
-            for (const key of Object.keys(inputs)) {
-                const input = inputs[key];
-
-                if (input.id && input.isSet()) {
-                    this._processedData[input.id] =
-                        typeof input.value === "string" ? input.value : input.value.toString();
-                }
-            }
-        }
-
-        this._isPrepared = true;
-    }
-
-    protected internalAfterExecute() {
-        if (GlobalSettings.resetInputsDirtyStateAfterActionExecution) {
-            this.resetReferencedInputsDirtyState();
-        }
-    }
-
-    resetReferencedInputsDirtyState() {
-        let referencedInputs = this.getReferencedInputs();
-
-        this._areReferencedInputsDirty = false;
-
-        if (referencedInputs) {
-            for (const key of Object.keys(referencedInputs)) {
-                const input = referencedInputs[key];
-
-                input.resetDirtyState();
-            }
-        }
-    }
-
-    updateEnabledState() {
-        this._areReferencedInputsDirty = false;
-
-        let referencedInputs = this.getReferencedInputs();
-
-        if (referencedInputs) {
-            for (const key of Object.keys(referencedInputs)) {
-                const input = referencedInputs[key];
-
-                if (input.isDirty()) {
-                    this._areReferencedInputsDirty = true;
-
-                    break;
-                }
-            }
-        }
-
-        this.updateCssClasses();
-
-        if (this._renderedElement) {
-            this.setupElementForAccessibility(this._renderedElement);
-        }
-    }
-
-    isEffectivelyEnabled(): boolean {
-        let result = super.isEffectivelyEnabled();
-
-        return this.disabledUnlessAssociatedInputsChange
-            ? result && this._areReferencedInputsDirty
-            : result;
-    }
-
-    get data(): object | undefined {
-        return this._isPrepared ? this._processedData : this._originalData;
-    }
-
-    set data(value: object | undefined) {
-        this._originalData = value;
-        this._isPrepared = false;
-    }
-}
-
-export class SubmitAction extends SubmitActionBase {
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
-
-    getJsonTypeName(): string {
-        return SubmitAction.JsonTypeName;
-    }
-}
-
-export class ExecuteAction extends SubmitActionBase {
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
-
-    //#region Schema
-
-    static readonly verbProperty = new StringProperty(Versions.v1_4, "verb");
-
-    @property(ExecuteAction.verbProperty)
-    verb: string;
-
-    //#endregion
-
-    getJsonTypeName(): string {
-        return ExecuteAction.JsonTypeName;
-    }
-}
-
-export class OpenUrlAction extends Action {
-    //#region Schema
-
-    static readonly urlProperty = new StringProperty(Versions.v1_0, "url");
-
-    @property(OpenUrlAction.urlProperty)
-    url?: string;
-
-    //#endregion
-
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.OpenUrl" = "Action.OpenUrl";
-
-    getJsonTypeName(): string {
-        return OpenUrlAction.JsonTypeName;
-    }
-
-    getAriaRole(): string {
-        return "link";
-    }
-
-    internalValidateProperties(context: ValidationResults) {
-        super.internalValidateProperties(context);
-
-        if (!this.url) {
-            context.addFailure(
-                this,
-                Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.propertyMustBeSet("url")
-            );
-        }
-    }
-
-    getHref(): string | undefined {
-        return this.url;
-    }
-}
-
-export class ToggleVisibilityAction extends Action {
-    //#region Schema
-
-    static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
-        Versions.v1_2,
-        "targetElements",
-        (
-            sender: SerializableObject,
-            prop: PropertyDefinition,
-            source: PropertyBag,
-            context: BaseSerializationContext
-        ) => {
-            const result: PropertyBag = {};
-
-            if (Array.isArray(source[prop.name])) {
-                for (const item of source[prop.name]) {
-                    if (typeof item === "string") {
-                        result[item] = undefined;
-                    } else if (typeof item === "object") {
-                        const elementId = item["elementId"];
-
-                        if (typeof elementId === "string") {
-                            result[elementId] = Utils.parseBool(item["isVisible"]);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        },
-        (
-            sender: SerializableObject,
-            prop: PropertyDefinition,
-            target: PropertyBag,
-            value: PropertyBag,
-            context: BaseSerializationContext
-        ) => {
-            const targetElements: any[] = [];
-
-            for (const id of Object.keys(value)) {
-                if (typeof value[id] === "boolean") {
-                    targetElements.push({
-                        elementId: id,
-                        isVisible: value[id]
-                    });
-                } else {
-                    targetElements.push(id);
-                }
-            }
-
-            context.serializeArray(target, prop.name, targetElements);
-        },
-        {},
-        (sender: SerializableObject) => {
-            return {};
-        }
-    );
-
-    @property(ToggleVisibilityAction.targetElementsProperty)
-    targetElements: { [key: string]: any } = {};
-
-    //#endregion
-
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
-
-    private updateAriaControlsAttribute() {
-        // apply aria labels to make it clear which elements this action will toggle
-        if (this.targetElements) {
-            const elementIds = Object.keys(this.targetElements);
-
-            if (this._renderedElement) {
-                if (elementIds.length > 0) {
-                    this._renderedElement.setAttribute("aria-controls", elementIds.join(" "));
-                } else {
-                    this._renderedElement.removeAttribute("aria-controls");
-                }
-            }
-        }
-    }
-
-    internalValidateProperties(context: ValidationResults) {
-        super.internalValidateProperties(context);
-
-        if (!this.targetElements) {
-            context.addFailure(
-                this,
-                Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.propertyMustBeSet("targetElements")
-            );
-        }
-    }
-
-    getJsonTypeName(): string {
-        return ToggleVisibilityAction.JsonTypeName;
-    }
-
-    render() {
-        super.render();
-
-        this.updateAriaControlsAttribute();
-    }
-
-    execute() {
-        super.execute();
-        if (this.parent) {
-            for (const elementId of Object.keys(this.targetElements)) {
-                const targetElement = this.parent.getRootElement().getElementById(elementId);
-
-                if (targetElement) {
-                    if (typeof this.targetElements[elementId] === "boolean") {
-                        targetElement.isVisible = this.targetElements[elementId];
-                    } else {
-                        targetElement.isVisible = !targetElement.isVisible;
-                    }
-                }
-            }
-        }
-    }
-
-    addTargetElement(elementId: string, isVisible: boolean | undefined = undefined) {
-        this.targetElements[elementId] = isVisible;
-        this.updateAriaControlsAttribute();
-    }
-
-    removeTargetElement(elementId: string) {
-        delete this.targetElements[elementId];
-        this.updateAriaControlsAttribute();
     }
 }
 
