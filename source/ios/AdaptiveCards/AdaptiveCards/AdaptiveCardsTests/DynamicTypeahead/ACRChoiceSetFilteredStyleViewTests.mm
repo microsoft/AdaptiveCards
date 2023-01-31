@@ -32,7 +32,7 @@
 
 - (void)testFilteredStyleViewInit
 {
-    ACRChoiceSetFilteredStyleView *filteredView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:_acoElem rootView:_rootView hostConfig:nil];
+    ACRChoiceSetFilteredStyleView *filteredView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:_acoElem rootView:_rootView hostConfig:nil searchStateParams:nil typeaheadViewTitle:@"typeahead"];
     XCTAssertNotNil(filteredView.showFilteredListControl);
     NSString *selectedText = [filteredView getSelectedText];
     XCTAssertEqual(selectedText.length, 0);
