@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -53,11 +52,11 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedAutoCompleteTextView;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedRadioGroup;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedTextView;
 import io.adaptivecards.renderer.inputhandler.AutoCompleteTextViewHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -679,10 +678,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         boolean usingCustomInputs = isUsingCustomInputs(context);
 
+        ValidatedTextView autoCompleteTextView = new ValidatedTextView(context, usingCustomInputs);
 
-        EditText autoCompleteTextView = new ValidatedEditText(context, getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
-
-        Drawable mDrawable = getDrawable(context, android.R.drawable.arrow_down_float);
+        Drawable mDrawable = getDrawable(context, R.drawable.adaptive_card_ic_chevron_right);
         autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, mDrawable, null);
         autoCompleteTextView.setPaddingRelative(0, 10, 20, 10);
 
@@ -691,7 +689,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         //autoCompleteTextView.setFocusable(true);
         autoCompleteTextView.setEllipsize(TextUtils.TruncateAt.END);
 
-        autoCompleteTextView.setBackgroundResource(R.drawable.adaptive_choiceset_type_ahead_background);
+        //autoCompleteTextView.setBackgroundResource(R.drawable.adaptive_choiceset_type_ahead_background);
 
         //        TextView autoCompleteTextView = new TextView(context);
         //        autoCompleteTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

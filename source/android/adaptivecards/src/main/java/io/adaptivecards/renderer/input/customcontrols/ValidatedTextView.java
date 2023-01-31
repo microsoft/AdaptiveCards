@@ -1,16 +1,17 @@
 package io.adaptivecards.renderer.input.customcontrols;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import io.adaptivecards.R;
 
+@SuppressLint("AppCompatCustomView")
 public class ValidatedTextView extends AppCompatTextView implements IValidatedInputView {
 
     /**

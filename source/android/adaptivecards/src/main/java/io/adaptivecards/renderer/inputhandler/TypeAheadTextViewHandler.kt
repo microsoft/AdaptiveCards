@@ -9,17 +9,17 @@ import android.view.accessibility.AccessibilityEvent
 import io.adaptivecards.objectmodel.ChoiceInput
 import io.adaptivecards.objectmodel.ChoiceInputVector
 import io.adaptivecards.renderer.Util
-import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText
+import io.adaptivecards.renderer.input.customcontrols.ValidatedTextView
 
 class TypeAheadTextViewHandler(baseInputElement: BaseInputElement?) : BaseInputHandler(baseInputElement) {
     // For validation visual cues we draw the spinner inside a ValidatedSpinnerLayout so we query for this
-    protected val editTextView: ValidatedEditText
+    protected val editTextView: ValidatedTextView
         protected get() =// For validation visual cues we draw the spinner inside a ValidatedSpinnerLayout so we query for this
             if (m_view is ValidatedInputLayout) {
-                (m_view as ValidatedInputLayout).getChildAt(0) as ValidatedEditText
-            } else m_view as ValidatedEditText
+                (m_view as ValidatedInputLayout).getChildAt(0) as ValidatedTextView
+            } else m_view as ValidatedTextView
 
-    private var inputIsEmpty = false;
+    private var inputIsEmpty = false
 
     override fun getInput(): String {
         // To get the input, we have to transform the text inside of the AutoCompleteTextView into the value
@@ -34,7 +34,7 @@ class TypeAheadTextViewHandler(baseInputElement: BaseInputElement?) : BaseInputH
         // To set the input, we have to transform the value received and set the according title into the AutoCompleteTextView
 //        val choiceSetInput = m_baseInputElement as ChoiceSetInput
 //        val title = getTitleForValue(value, choiceSetInput.GetChoices())
-        editTextView.setText(value)
+        editTextView.text = value
     }
 
     override fun setFocusToView() {
@@ -44,7 +44,7 @@ class TypeAheadTextViewHandler(baseInputElement: BaseInputElement?) : BaseInputH
 
     override fun isValidOnSpecifics(inputValue: String): Boolean {
         // Before looking for the value we verify if the input was initially empty, if so the input is valid
-        return inputIsEmpty
+        return !inputIsEmpty
 
 //        val choiceSetInput = m_baseInputElement as ChoiceSetInput
 //        // if we can't find the title in the choice list, then the returned value is -1
