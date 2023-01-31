@@ -58,9 +58,10 @@ public class AdaptiveCardRenderer
                                        ICardActionHandler cardActionHandler,
                                        @Nullable IOverflowActionRenderer overflowActionRenderer,
                                        @Nullable IChoicesResolver choicesResolver,
+                                       @Nullable ITypeAheadCustomParams typeAheadCustomParams,
                                        @Nullable ActivityResultRegistry activityResultRegistry)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, choicesResolver, activityResultRegistry, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, choicesResolver, typeAheadCustomParams, activityResultRegistry, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -82,7 +83,7 @@ public class AdaptiveCardRenderer
         @Nullable IOverflowActionRenderer overflowActionRenderer,
         HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, null, null, hostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, null, null, null, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
@@ -92,10 +93,12 @@ public class AdaptiveCardRenderer
         ICardActionHandler cardActionHandler,
         @Nullable IOverflowActionRenderer overflowActionRenderer,
         @Nullable IChoicesResolver choicesResolver,
+        @Nullable ITypeAheadCustomParams typeAheadCustomParams,
         @Nullable ActivityResultRegistry activityResultRegistry,
         HostConfig hostConfig) {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
         CardRendererRegistration.getInstance().registerOverflowActionRenderer(overflowActionRenderer);
+        CardRendererRegistration.getInstance().registerTypeAheadParams(typeAheadCustomParams);
         CardRendererRegistration.getInstance().registerActivityResultRegistry(activityResultRegistry);
         View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, choicesResolver, hostConfig, false, View.NO_ID);
         result.setView(cardView);

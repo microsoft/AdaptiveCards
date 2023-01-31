@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.R
 import io.adaptivecards.databinding.ActivityTypeAheadSearchBinding
+import io.adaptivecards.renderer.ITypeAheadCustomParams
+import io.adaptivecards.renderer.registration.CardRendererRegistration
 
 class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var viewModel: TypeAheadSearchViewModel
@@ -55,9 +57,6 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             submitButton.setOnClickListener {
                 onOptionsItemSelected(menuItem)
             }
-            // TODO: Add padding in resource file and use from there
-            //val padding = resources.getDimensionPixelSize(12dp) / 2
-            //submitButton.setPadding(6, 6, 6, 6)
             submitButton.contentDescription = menuItem.title
             submitButton.isEnabled = true
             submitButton.imageAlpha = 255
@@ -90,18 +89,34 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             selectedTitle = launchParams.selectedTitle
             titleList = launchParams.titleList
             valueList = launchParams.valueList
-            crossIconParams = launchParams.crossIconParams
-            searchIconParams = launchParams.searchIconParams
-            startSearchingIconParams = launchParams.startSearchingIconParams
-            errorIconParams = launchParams.errorIconParams
-            noResultIconParams = launchParams.noResultIconParams
-            tickIconParams = launchParams.tickIconParams
-            backIconParams = launchParams.backIconParams
-            screenTitle = launchParams.screeTitle
             dataset = launchParams.dataset
             dataType = launchParams.choicesDataType
-            // TODO: Get screen title from launch params or from type ahead rendering interface
         }
+
+        val typeAheadParams: ITypeAheadCustomParams? = CardRendererRegistration.getInstance().typeAheadCustomParams
+        if (typeAheadParams != null) {
+            crossIconParams = typeAheadParams.crossIconParams
+            searchIconParams = typeAheadParams.searchIconParams
+            tickIconParams = typeAheadParams.tickIconParams
+            backIconParams = typeAheadParams.backIconParams
+            screenTitle = typeAheadParams.screenTitle
+
+            startSearchingIconParams = typeAheadParams.startSearchingStateParams
+            errorIconParams = typeAheadParams.errorStateParams
+            noResultIconParams = typeAheadParams.noResultStateParams
+        }
+        else {
+            crossIconParams = CrossIconParams()
+            searchIconParams = SearchIconParams()
+            tickIconParams = TickIconParams()
+            backIconParams = BackIconParams()
+            screenTitle = "Search"
+
+            startSearchingIconParams = StartSearchingStateParams()
+            errorIconParams = ErrorStateParams()
+            noResultIconParams = NoResultStateParams()
+        }
+
         // pass choices data, host communication interface
         viewModel.init(titleList, valueList, dataType, dataset)
 

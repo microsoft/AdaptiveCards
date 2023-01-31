@@ -30,6 +30,7 @@ import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.ITypeAheadCustomParams;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -418,6 +419,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 this,
                 null,
                 this,
+                null,
                 getActivityResultRegistry(),
                 hostConfig);
             layout.addView(renderedCard.getView());

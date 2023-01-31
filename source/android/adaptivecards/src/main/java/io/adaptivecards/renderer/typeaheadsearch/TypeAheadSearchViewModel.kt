@@ -20,22 +20,16 @@ import kotlinx.coroutines.withContext
 class TypeAheadSearchViewModel : ViewModel() {
 
     private var staticChoicesCount: Int
-
     private var titleList: List<String>
     private var valueList: List<String>
 
     private lateinit var dataset: String
-
     private lateinit var dataType: String
-
-    lateinit var adapter : FilteredAdapter
+    private lateinit var adapter : FilteredAdapter
 
     fun getAdaptor(): FilteredAdapter {
         return adapter
     }
-
-    //    @Bindable
-    //    fun getEditorTheme() = R.style.adaptiveCardEditBoxStyling
 
     private val _queryText: SingleLiveEvent<String> by lazy {
         SingleLiveEvent()
@@ -95,16 +89,14 @@ class TypeAheadSearchViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             var result: HttpRequestResult<List<ChoiceInput>>? = null
             DynamicTypeAheadService.getChoicesResolver()?.let {
-                // TODO : Get count from
+                // TODO : Get count from host config
                 result = it.getDynamicChoices(dataType, dataset, queryText, 10, 0)
-                println("Accessing async task on ${Thread.currentThread().name}")
             }
 
-            // TODO : do this inside the DynamicTypeAheadService ?
             withContext(Dispatchers.Main) {
                 if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
                     var choices: List<ChoiceInput> = result!!.result
-                    // TODO : Get count from
+                    // TODO : Get count from host config
                     if (choices.size > 10)
                         choices = choices.subList(0, 9)
 
@@ -127,11 +119,8 @@ class TypeAheadSearchViewModel : ViewModel() {
                     adapter.setChoices(ArrayList(), ArrayList())
                     _uiState.postValue(DynamicTypeAheadUiState.Error)
                 }
-                println("Accessing UI on ${Thread.currentThread().name}")
             }
         }
-
-        println("Accessing main on ${Thread.currentThread().name}")
     }
 
     class FilteredAdapter (private var m_choices: List<String>, private var m_values: List<String>) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {

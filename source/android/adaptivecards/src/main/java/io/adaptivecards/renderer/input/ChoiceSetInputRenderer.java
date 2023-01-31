@@ -702,7 +702,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         validatedTypeAheadTextView.setOnClickListener(view -> {
             ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
             if (registry != null) {
-                // TODO : name can come from host config
                 ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
@@ -728,15 +727,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     choiceSetInput.GetChoicesData().GetChoicesDataType(),
                     choiceSetInput.GetChoicesData().GetDataset(),
                     titleList,
-                    valueList,
-                    "Search", // TODO: Get Screen Title from host config
-                    new SearchIconParams(),
-                    new CrossIconParams(),
-                    new TickIconParams(),
-                    new BackIconParams(),
-                    new StartSearchingStateParams(R.drawable.adaptive_card_ic_start_search, ImageView.ScaleType.FIT_CENTER, "Search Options", "Search Options"),
-                    new NoResultStateParams(R.drawable.adaptive_card_ic_start_search, ImageView.ScaleType.FIT_CENTER, "No Results Found!", "No Results Found!"),
-                    new ErrorStateParams(R.drawable.adaptive_card_search_result_error, ImageView.ScaleType.FIT_CENTER, "Something went wrong", "Something went wrong"));
+                    valueList);
                 intent.putExtra("launchParams", launchParams);
 
                 DynamicTypeAheadService.INSTANCE.setIChoicesResolver(choicesResolver);
