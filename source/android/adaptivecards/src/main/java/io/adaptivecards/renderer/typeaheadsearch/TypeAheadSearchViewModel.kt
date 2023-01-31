@@ -19,11 +19,14 @@ import kotlinx.coroutines.withContext
 
 class TypeAheadSearchViewModel : ViewModel() {
 
-    private var totalResults: Int = 0
+    private var staticChoicesCount: Int
 
-    private var staticChoices : MutableList<String>
+    private var titleList: List<String>
+    private var valueList: List<String>
 
-    private val dataSet: String = ""
+    private lateinit var dataset: String
+
+    private lateinit var dataType: String
 
     lateinit var adapter : FilteredAdapter
 
@@ -47,26 +50,30 @@ class TypeAheadSearchViewModel : ViewModel() {
     val uiState: SingleLiveEvent<DynamicTypeAheadUiState> get() = _uiState
 
     init {
-        staticChoices = ArrayList()
-        totalResults = 0
+        titleList = ArrayList()
+        valueList = ArrayList()
+        staticChoicesCount = 0
         _queryText.value = ""
 
         // Show start searching view by default
         _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
     }
 
-    // Initialize view model, adaptor in constructor or init block
-
-    fun init(choices : MutableList<String>) {
+    fun init(titles: List<String>, values: List<String>, type: String, set: String) {
         // get navigation params and initiate choices.data, static choices etc.
-        staticChoices = choices
-        totalResults = choices.size
-        adapter = FilteredAdapter(choices)
+        titleList = titles
+        valueList = values
+        staticChoicesCount = titleList.size
+
+        dataType = type
+        dataset = set
+
+        adapter = FilteredAdapter(titleList, valueList)
         showDefaultView()
     }
 
     private fun showDefaultView() {
-        if (staticChoices.size == 0) {
+        if (staticChoicesCount == 0) {
             _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
         }
         else {
@@ -88,28 +95,36 @@ class TypeAheadSearchViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             var result: HttpRequestResult<List<ChoiceInput>>? = null
             DynamicTypeAheadService.getChoicesResolver()?.let {
-                // TODO : Send dataset and type as well
-                result = it.getDynamicChoices(queryText)
+                // TODO : Get count from
+                result = it.getDynamicChoices(dataType, dataset, queryText, 10, 0)
                 println("Accessing async task on ${Thread.currentThread().name}")
             }
 
+            // TODO : do this inside the DynamicTypeAheadService ?
             withContext(Dispatchers.Main) {
                 if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
-                    val choices: List<ChoiceInput> = result!!.result
+                    var choices: List<ChoiceInput> = result!!.result
+                    // TODO : Get count from
+                    if (choices.size > 10)
+                        choices = choices.subList(0, 9)
+
+                    val titles: MutableList<String> = ArrayList()
                     val values: MutableList<String> = ArrayList()
                     // save the dynamic choices as well
                     for (choice in choices) {
+                        titles.add(choice.GetTitle())
                         values.add(choice.GetValue())
                     }
-                    // TODO: Put a check to only take 10-15 choices
                     if (values.isNotEmpty())
                         _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
                     else
                         _uiState.postValue(DynamicTypeAheadUiState.NoResults)
-                    adapter.setChoices(values)
+
+
+                    adapter.setChoices(titles, values)
                 }
                 else if (_queryText.value.equals(queryText)) {
-                    adapter.setChoices(ArrayList())
+                    adapter.setChoices(ArrayList(), ArrayList())
                     _uiState.postValue(DynamicTypeAheadUiState.Error)
                 }
                 println("Accessing UI on ${Thread.currentThread().name}")
@@ -119,11 +134,12 @@ class TypeAheadSearchViewModel : ViewModel() {
         println("Accessing main on ${Thread.currentThread().name}")
     }
 
-    class FilteredAdapter (private var mChoices: List<String> = ArrayList()) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
+    class FilteredAdapter (private var m_choices: List<String>, private var m_values: List<String>) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
 
         @SuppressLint("NotifyDataSetChanged")
-        fun setChoices(choices: List<String>) {
-            mChoices = choices
+        fun setChoices(choices: List<String>, values: List<String>) {
+            m_choices = choices
+            m_values = values
             notifyDataSetChanged()
         }
         // Provide a direct reference to each of the views within a data item
@@ -140,11 +156,7 @@ class TypeAheadSearchViewModel : ViewModel() {
             val context = parent.context
             val inflater = LayoutInflater.from(context)
             // Inflate the custom layout
-            android.R.layout.select_dialog_item
             val choicesView = inflater.inflate(R.layout.adaptive_card_select_item, parent, false)
-            //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //                textView.setTextAppearance(android.R.attr.textAppearanceSmall)
-            //            }
             // Return a new holder instance
             return ViewHolder(choicesView)
         }
@@ -152,16 +164,18 @@ class TypeAheadSearchViewModel : ViewModel() {
         // Involves populating data into the item through holder
         override fun onBindViewHolder(viewHolder: FilteredAdapter.ViewHolder, position: Int) {
             // Get the data model based on position
-            val choice: String = mChoices[position]
+            val title: String = m_choices[position]
+            val value: String = m_values[position]
             // Set item views based on your views and data model
             val textView = viewHolder.textView
-            textView.text = choice
+            textView.text = title
             textView.setOnClickListener {
                 if (it.context is Activity) {
                     it.postDelayed({
                         val activity: Activity = it.context as Activity
                         val intent = activity.intent
-                        intent.putExtra("typeAheadSearchSelectedKey", choice)
+                        intent.putExtra("typeAheadSearchSelectedKey", title)
+                        intent.putExtra("typeAheadSearchSelectedValue", value)
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
                     }, 100)
@@ -171,7 +185,7 @@ class TypeAheadSearchViewModel : ViewModel() {
 
         // Returns the total count of items in the list
         override fun getItemCount(): Int {
-            return mChoices.size
+            return m_choices.size
         }
     }
 
@@ -181,7 +195,7 @@ class TypeAheadSearchViewModel : ViewModel() {
     fun clearText() {
         queryText.postValue("")
         //notify the property listeners
-        adapter.setChoices(staticChoices)
+        adapter.setChoices(titleList, valueList)
         showDefaultView()
     }
 }

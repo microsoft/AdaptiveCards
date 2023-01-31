@@ -645,17 +645,17 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         HostConfig hostConfig,
         RenderArgs renderArgs)
     {
-        final Vector<String> titleList = new Vector<>();
+        final List<String> titleList = new ArrayList();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         int valueIndex = -1;
         String value = choiceSetInput.GetValue();
-        List<String> staticChoices = new ArrayList();
+        final List<String> valueList = new ArrayList();
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
-            titleList.addElement(choiceInput.GetTitle());
-            staticChoices.add(choiceInput.GetTitle());
+            titleList.add(choiceInput.GetTitle());
+            valueList.add(choiceInput.GetTitle());
 
             if (choiceInput.GetValue().equals(value))
             {
@@ -663,43 +663,17 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        Context currContext = context;
-        Activity activity = null;
-
-        while (currContext instanceof ContextWrapper) {
-            if (currContext instanceof Activity) {
-                activity =  (Activity) currContext;
-                break;
-            }
-            currContext = ((ContextWrapper) currContext).getBaseContext();
-        }
-
-        WeakReference<Activity> mActivityRef = new WeakReference<>(activity instanceof Activity ? (Activity) currContext : null);
-
         boolean usingCustomInputs = isUsingCustomInputs(context);
 
-        ValidatedTextView autoCompleteTextView = new ValidatedTextView(context, usingCustomInputs);
+        ValidatedTextView validatedTypeAheadTextView = new ValidatedTextView(context, usingCustomInputs);
 
         Drawable mDrawable = getDrawable(context, R.drawable.adaptive_card_ic_chevron_right);
-        autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, mDrawable, null);
-        autoCompleteTextView.setPaddingRelative(0, 10, 20, 10);
+        validatedTypeAheadTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, mDrawable, null);
+        validatedTypeAheadTextView.setPaddingRelative(0, 10, 20, 10);
+        validatedTypeAheadTextView.setEllipsize(TextUtils.TruncateAt.END);
 
-        //EditText autoCompleteTextView = new EditText(context);
-        //autoCompleteTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        //autoCompleteTextView.setFocusable(true);
-        autoCompleteTextView.setEllipsize(TextUtils.TruncateAt.END);
+        final TypeAheadTextViewHandler typeAheadTextInputHandler = new TypeAheadTextViewHandler(choiceSetInput);
 
-        //autoCompleteTextView.setBackgroundResource(R.drawable.adaptive_choiceset_type_ahead_background);
-
-        //        TextView autoCompleteTextView = new TextView(context);
-        //        autoCompleteTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        //        final AutoCompleteTextView autoCompleteTextView = new ValidatedAutoCompleteTextView(context, usingCustomInputs);
-        //        autoCompleteTextView.setThreshold(0);
-
-        final TypeAheadTextViewHandler autoCompleteTextInputHandler = new TypeAheadTextViewHandler(choiceSetInput);
-
-        boolean isRequired = choiceSetInput.GetIsRequired();
         ValidatedInputLayout inputLayout = null;
 
         // if using custom inputs, we don't have to create the surrounding linear layout
@@ -708,55 +682,53 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             inputLayout = new ValidatedSpinnerLayout(context,
                 getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
-            inputLayout.setTag(new TagContent(choiceSetInput, autoCompleteTextInputHandler));
-            autoCompleteTextInputHandler.setView(inputLayout);
+            inputLayout.setTag(new TagContent(choiceSetInput, typeAheadTextInputHandler));
+            typeAheadTextInputHandler.setView(inputLayout);
         }
         else
         {
-            autoCompleteTextView.setTag(new TagContent(choiceSetInput, autoCompleteTextInputHandler));
-            autoCompleteTextInputHandler.setView(autoCompleteTextView);
+            validatedTypeAheadTextView.setTag(new TagContent(choiceSetInput, typeAheadTextInputHandler));
+            typeAheadTextInputHandler.setView(validatedTypeAheadTextView);
         }
-        renderedCard.registerInputHandler(autoCompleteTextInputHandler, renderArgs.getContainerCardId());
+        renderedCard.registerInputHandler(typeAheadTextInputHandler, renderArgs.getContainerCardId());
 
-        autoCompleteTextView.setFocusable(true);
+        validatedTypeAheadTextView.setFocusable(true);
         if (valueIndex != -1)
         {
-            autoCompleteTextView.setText(titleList.get(valueIndex));
+            validatedTypeAheadTextView.setText(titleList.get(valueIndex));
+            typeAheadTextInputHandler.setInput(titleList.get(valueIndex), valueList.get(valueIndex));
         }
 
-        autoCompleteTextView.setOnClickListener(view -> {
+        validatedTypeAheadTextView.setOnClickListener(view -> {
             ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
             if (registry != null) {
-                // name can come from host config
+                // TODO : name can come from host config
                 ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            if (result.getData() != null && result.getData().getExtras() != null) {
-                                String selectedChoice = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
-                                if (selectedChoice != null) {
-                                    autoCompleteTextView.setText(selectedChoice);
-                                    // TODO : Notify input change
-                                    //CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
-                                    Log.d("SelectedChoice", selectedChoice);
-                                }
-                            }
+                        if (result.getResultCode() == Activity.RESULT_OK
+                            && result.getData() != null
+                            && result.getData().getExtras() != null
+                            && result.getData().getExtras().getString("typeAheadSearchSelectedKey") != null) {
+                            String selectedTitle = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
+                            String selectedValue = result.getData().getExtras().getString("typeAheadSearchSelectedValue");
 
-                            //launcher.unregister();
+                            validatedTypeAheadTextView.setText(selectedTitle);
+                            typeAheadTextInputHandler.setInput(selectedTitle, selectedValue);
+                            CardRendererRegistration.getInstance().notifyInputChange(typeAheadTextInputHandler.getId(), typeAheadTextInputHandler.getInput());
+                            Log.d("SelectedChoice", selectedTitle);
                         }
                         DynamicTypeAheadService.INSTANCE.removeIChoicesResolver();
-                    });
+                    }
+                );
 
-                if (context instanceof ContextThemeWrapper) {
-                    ContextThemeWrapper contextThemeWrapper = (ContextThemeWrapper) context;
-                    contextThemeWrapper.getTheme();
-                }
                 Intent intent = new Intent(context, TypeAheadSearchActivity.class);
                 TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
+                    typeAheadTextInputHandler.getInputTitle(),
                     choiceSetInput.GetChoicesData().GetChoicesDataType(),
                     choiceSetInput.GetChoicesData().GetDataset(),
-                    staticChoices,
+                    titleList,
+                    valueList,
                     "Search", // TODO: Get Screen Title from host config
                     new SearchIconParams(),
                     new CrossIconParams(),
@@ -777,12 +749,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         if (needsOuterLayout)
         {
-            inputLayout.addView(autoCompleteTextView);
+            inputLayout.addView(validatedTypeAheadTextView);
             return inputLayout;
         }
         else
         {
-            return autoCompleteTextView;
+            return validatedTypeAheadTextView;
         }
     }
 
@@ -807,9 +779,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ChoiceSetInput choiceSetInput = Util.castTo(baseCardElement, ChoiceSetInput.class);
 
         View inputView = null;
-        String dataType = choiceSetInput.GetChoicesData().GetChoicesDataType();
-        String dataset = choiceSetInput.GetChoicesData().GetDataset();
         if (choiceSetInput.GetChoicesData() != null && !choiceSetInput.GetChoicesData().GetChoicesDataType().isEmpty()) {
+            // Create dynamic type ahead control
             inputView = renderTypeAheadControl(renderedCard, context, choiceSetInput, choicesResolver, hostConfig, renderArgs);
         }
         else if (choiceSetInput.GetIsMultiSelect())

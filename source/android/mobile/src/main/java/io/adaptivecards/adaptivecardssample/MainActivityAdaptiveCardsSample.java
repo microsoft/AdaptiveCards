@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentActivity;
 import android.content.Context;
@@ -132,15 +133,24 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     @NonNull
     @Override
-    public HttpRequestResult<List<ChoiceInput>> getDynamicChoices(@NonNull String queryText) {
+    public HttpRequestResult<List<ChoiceInput>> getDynamicChoices(@NonNull String type, @NonNull String dataset, @NonNull String value, @Nullable Integer count, @Nullable Integer skip) {
         List<ChoiceInput> dynamicChoices = new ArrayList();
         synchronized (returnChoices) {
             if (returnChoices) {
                 ChoiceInput choiceInput = new ChoiceInput();
                 choiceInput.SetTitle("a");
-                choiceInput.SetValue("a");
-
+                choiceInput.SetValue("1");
                 dynamicChoices.add(choiceInput);
+
+                ChoiceInput choiceInput2 = new ChoiceInput();
+                choiceInput2.SetTitle("a");
+                choiceInput2.SetValue("2");
+                dynamicChoices.add(choiceInput2);
+
+                ChoiceInput choiceInput3 = new ChoiceInput();
+                choiceInput3.SetTitle("a");
+                choiceInput3.SetValue("3");
+                dynamicChoices.add(choiceInput3);
                 //                dynamicChoices.add("aa");
                 //                dynamicChoices.add("aaa");
                 //                dynamicChoices.add("aaaa");
@@ -152,7 +162,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     e.printStackTrace();
                 }
             }
-            returnChoices = !returnChoices;
+            returnChoices = true; //!returnChoices;
         }
         return new HttpRequestResult<>(dynamicChoices);
     }

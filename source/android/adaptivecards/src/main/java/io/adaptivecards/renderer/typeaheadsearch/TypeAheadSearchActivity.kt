@@ -1,5 +1,7 @@
 package io.adaptivecards.renderer.typeaheadsearch
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -26,8 +28,12 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var descriptiveImageView: AppCompatImageView
     private lateinit var descriptiveTextView: TextView
 
+    private lateinit var selectedTitle: String
+    private lateinit var titleList: List<String>
+    private lateinit var valueList: List<String>
     private lateinit var screenTitle: String
-
+    private lateinit var dataset: String
+    private lateinit var dataType: String
     private lateinit var crossIconParams: CrossIconParams
     private lateinit var searchIconParams: SearchIconParams
     private lateinit var backIconParams: BackIconParams
@@ -65,8 +71,11 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             onBackPressed()
             return true
         } else if (item.itemId == R.id.action_submit) {
-            // TODO: onSubmitClicked()
-            onBackPressed()
+            val intent = Intent()
+            intent.putExtra("typeAheadSearchSelectedKey", "")
+            intent.putExtra("typeAheadSearchSelectedValue", "")
+            setResult(Activity.RESULT_OK, intent)
+            finish()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -77,9 +86,10 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         val intent = intent
         val launchParams = intent.getSerializableExtra("launchParams")
         viewModel = ViewModelProvider(this)[TypeAheadSearchViewModel::class.java]
-        val choices : MutableList<String> = ArrayList()
         if (launchParams is TypeAheadSearchLaunchParams) {
-            launchParams.staticChoices?.let { staticChoices -> staticChoices.forEach { choices.add(it) } }
+            selectedTitle = launchParams.selectedTitle
+            titleList = launchParams.titleList
+            valueList = launchParams.valueList
             crossIconParams = launchParams.crossIconParams
             searchIconParams = launchParams.searchIconParams
             startSearchingIconParams = launchParams.startSearchingIconParams
@@ -87,11 +97,13 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             noResultIconParams = launchParams.noResultIconParams
             tickIconParams = launchParams.tickIconParams
             backIconParams = launchParams.backIconParams
-            screenTitle = "Search"
+            screenTitle = launchParams.screeTitle
+            dataset = launchParams.dataset
+            dataType = launchParams.choicesDataType
             // TODO: Get screen title from launch params or from type ahead rendering interface
         }
         // pass choices data, host communication interface
-        viewModel.init(choices)
+        viewModel.init(titleList, valueList, dataType, dataset)
 
         // set theme
         layoutInflater.context.setTheme(R.style.adaptiveCardStyling)
@@ -122,7 +134,6 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             // request focus to the SearchBarView for accessibility once the activity is open.
             isFocusable = true
             sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED)
-            showKeyboard(this)
             addTextChangedListener(
                 DebouncingTextWatcher(
                     lifecycleScope,
@@ -132,6 +143,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     250 // TODO: pass host config / launch params value here
                 )
             )
+            setText(selectedTitle)
+            showKeyboard(this)
         }
 
         activityTypeAheadSearchBinding?.toolbar?.let { setSupportActionBar(it) }
