@@ -53,6 +53,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -620,6 +621,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {

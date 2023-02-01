@@ -22,6 +22,7 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 import io.adaptivecards.renderer.readonly.RendererUtil;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 import static android.text.InputType.TYPE_NULL;
 
@@ -49,6 +50,7 @@ public class DateInputRenderer extends TextInputRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {

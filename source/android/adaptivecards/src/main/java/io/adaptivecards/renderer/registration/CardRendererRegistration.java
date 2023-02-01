@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultRegistry;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -74,6 +75,7 @@ import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 import io.adaptivecards.renderer.readonly.TableRenderer;
 import io.adaptivecards.renderer.readonly.TableCellRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class CardRendererRegistration
 {
@@ -254,6 +256,15 @@ public class CardRendererRegistration
         return m_overflowActionLayoutRenderer;
     }
 
+    public void registerActivityResultRegistry(ActivityResultRegistry activityResultRegistry)
+    {
+        m_activityResultRegistry = activityResultRegistry;
+    }
+
+    public ActivityResultRegistry getActivityResultRegistry()
+    {
+        return m_activityResultRegistry;
+    }
 
     public View renderElements(RenderedAdaptiveCard renderedCard,
                                Context context,
@@ -261,6 +272,7 @@ public class CardRendererRegistration
                                ViewGroup viewGroup,
                                BaseCardElementVector baseCardElementList,
                                ICardActionHandler cardActionHandler,
+                               IChoicesResolver choicesResolver,
                                HostConfig hostConfig,
                                RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
@@ -275,7 +287,7 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, hostConfig, renderArgs, featureRegistration);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, choicesResolver, hostConfig, renderArgs, featureRegistration);
         }
 
         return viewGroup;
@@ -288,6 +300,7 @@ public class CardRendererRegistration
             BaseCardElement cardElement,
             ViewGroup viewGroup,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs,
             FeatureRegistration featureRegistration) throws AdaptiveFallbackException, Exception
@@ -334,7 +347,7 @@ public class CardRendererRegistration
                 renderArgs.setRootLevelActions(false);
             }
 
-            renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
+            renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, choicesResolver, hostConfig, childRenderArgs);
             renderedElement = cardElement;
         }
         catch (AdaptiveFallbackException e)
@@ -369,7 +382,7 @@ public class CardRendererRegistration
                             // before rendering, check if the element to render is an input, if it is, then create an stretchable input layout, and add the label
                             // pass that as the viewgroup and
 
-                            renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
+                            renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, choicesResolver, hostConfig, childRenderArgs);
                             renderedElement = fallbackCardElement;
                             break;
                         }
@@ -624,4 +637,5 @@ public class CardRendererRegistration
     private FeatureRegistration m_featureRegistration = null;
     private IOverflowActionRenderer m_overflowActionRenderer =null;
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
+    private ActivityResultRegistry m_activityResultRegistry = null;
 }

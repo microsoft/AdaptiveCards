@@ -15,12 +15,23 @@ import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.*
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler
 import io.adaptivecards.renderer.registration.CardRendererRegistration
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver
 import android.widget.TableRow as TableRowLayout
 
 open class TableCellRenderArgs(renderArgs: RenderArgs, val table: Table, val tableLayout: TableLayout, val rowIndex: Int, val colIndex: Int, val gridStyle: ContainerStyle) : RenderArgs(renderArgs)
 
 object TableCellRenderer : BaseCardElementRenderer() {
-    override fun render(renderedCard: RenderedAdaptiveCard, context: Context, fragmentManager: FragmentManager, viewGroup: ViewGroup, baseCardElement: BaseCardElement, cardActionHandler: ICardActionHandler?, hostConfig: HostConfig, renderArgs: RenderArgs): View {
+    override fun render(
+        renderedCard: RenderedAdaptiveCard,
+        context: Context,
+        fragmentManager: FragmentManager,
+        viewGroup: ViewGroup,
+        baseCardElement: BaseCardElement,
+        cardActionHandler: ICardActionHandler?,
+        choicesResolver: IChoicesResolver?,
+        hostConfig: HostConfig,
+        renderArgs: RenderArgs
+    ): View {
         if (renderArgs !is TableCellRenderArgs) throw IllegalArgumentException("renderArgs must be instance of TableCellRenderArgs")
 
         val row = renderArgs.table.GetRows()[renderArgs.rowIndex]
@@ -65,6 +76,7 @@ object TableCellRenderer : BaseCardElementRenderer() {
                 cellLayout,
                 cell.GetItems(),
                 cardActionHandler,
+                choicesResolver,
                 hostConfig,
                 RenderArgs(renderArgs).apply {
                     containerStyle = computedStyle

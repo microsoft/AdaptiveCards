@@ -25,6 +25,7 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ActionSetRenderer extends BaseCardElementRenderer
 {
@@ -46,6 +47,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws ClassCastException
     {
@@ -84,13 +86,13 @@ public class ActionSetRenderer extends BaseCardElementRenderer
 
         try
         {
-            View actionButtonsLayout = ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, primaryElementVector, cardActionHandler, hostConfig, renderArgs);
+            View actionButtonsLayout = ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, primaryElementVector, cardActionHandler, choicesResolver, hostConfig, renderArgs);
             if (!secondaryElementVector.isEmpty())
             {
                 IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                 //if the actionButtonsLayout is not a viewGroup, then use actionsLayout as a root.
                 ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : actionsLayout;
-                secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, choicesResolver, hostConfig, renderArgs);
             }
         }
         catch (Exception e) {}

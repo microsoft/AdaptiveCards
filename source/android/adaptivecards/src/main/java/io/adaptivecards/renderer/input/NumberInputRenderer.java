@@ -19,6 +19,7 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class NumberInputRenderer extends TextInputRenderer
 {
@@ -44,6 +45,7 @@ public class NumberInputRenderer extends TextInputRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {

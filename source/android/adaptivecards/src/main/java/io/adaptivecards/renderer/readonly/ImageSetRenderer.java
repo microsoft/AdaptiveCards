@@ -27,6 +27,7 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageVector;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ImageSetRenderer extends BaseCardElementRenderer
 {
@@ -52,6 +53,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -83,7 +85,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             try
             {
-                View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, hostConfig, renderArgs);
+                View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, choicesResolver, hostConfig, renderArgs);
                 ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
             }
             catch (AdaptiveFallbackException e)

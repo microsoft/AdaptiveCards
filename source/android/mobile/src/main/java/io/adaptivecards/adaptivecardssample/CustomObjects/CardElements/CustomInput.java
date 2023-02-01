@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 /**
  * CustomInput is a class used to demonstrate and test the user experience for creating a custom
@@ -89,6 +90,7 @@ public class CustomInput extends BaseInputElement
                            ViewGroup viewGroup,
                            BaseCardElement baseCardElement,
                            ICardActionHandler cardActionHandler,
+                           IChoicesResolver choicesResolver,
                            HostConfig hostConfig,
                            RenderArgs renderArgs) throws Exception
         {

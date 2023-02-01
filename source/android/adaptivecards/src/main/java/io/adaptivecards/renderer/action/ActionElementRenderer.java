@@ -31,6 +31,7 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ActionElementRenderer extends BaseActionElementRenderer
 {
@@ -168,6 +169,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) {
         if (cardActionHandler == null)
@@ -176,7 +178,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs));
 
         return button;
     }

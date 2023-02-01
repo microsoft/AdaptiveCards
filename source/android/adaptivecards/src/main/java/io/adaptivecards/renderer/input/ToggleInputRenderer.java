@@ -27,6 +27,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBox;
 import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ToggleInputRenderer extends BaseCardElementRenderer
 {
@@ -52,6 +53,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
+            IChoicesResolver choicesResolver,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {

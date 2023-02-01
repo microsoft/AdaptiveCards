@@ -12,6 +12,7 @@ import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class CustomActionListener extends BaseActionElementRenderer.ActionOnClickListener
 {
@@ -21,10 +22,11 @@ public class CustomActionListener extends BaseActionElementRenderer.ActionOnClic
                                 ViewGroup viewGroup,
                                 BaseActionElement baseActionElement,
                                 ICardActionHandler cardActionHandler,
+                                IChoicesResolver choicesResolver,
                                 HostConfig hostConfig,
                                 RenderArgs renderArgs)
     {
-        super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
+        super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs);
     }
 
     public CustomActionListener(RenderedAdaptiveCard renderedCard,
