@@ -5521,13 +5521,11 @@ export class FilteredChoiceSet {
         this._hostConfig = hostConfig;
     }
 
-    // TODO: Apply CSS to the elements in this method.
     render() {
-        // Create base div container that holds the input and dropdown
         const baseContainer = document.createElement("div");
+        baseContainer.style.position = "relative";
         baseContainer.style.width = "100%";
         
-        // Create editable input field
         this._textInput = document.createElement("input");
         this._textInput.className = this._hostConfig.makeCssClassName(
             "ac-input",
@@ -5542,24 +5540,12 @@ export class FilteredChoiceSet {
                 // Think what to do
         }};
 
-        // Create dropdown element
         this._dropdown = document.createElement("div");
-        // this._dropdown.style.backgroundColor = "white";
-        this._dropdown.style.display = "none";
-        // this._dropdown.style.height = "0px";
-        // this._dropdown.style.position = "absolute";
-        this._dropdown.style.width = "100%";
-
         this._dropdown.className = this._hostConfig.makeCssClassName(
             "ac-input",
             "ac-multichoiceInput",
             "ac-choiceSetInput-filtered-dropdown"
         );
-
-        // key press events
-        // on hover highlight via css
-
-        // convert into css
 
         this.createChoiceList();
 
@@ -5586,21 +5572,13 @@ export class FilteredChoiceSet {
     createChoice(value: string, id: number): HTMLDivElement {
         const choice = document.createElement("div");
 
-        // Style choice divs
-        // choice.style.backgroundColor = "white";
-        choice.style.width = "100%";
-        // choice.style.border = "1px inset black"; // Width Style Colour
-        // choice.style.borderTop = "0px";
-        // choiceDiv.style.font = this._textInput.style.font;
-        // Insert padding as well.
-        // choice.style.padding = "1px 2px";
-
+        choice.id = `ac-choiceSetInput-choice-${id}`;
         choice.className = this._hostConfig.makeCssClassName(
             "ac-input",
             "ac-choice"
         );
-
-        choice.id = `ac-choiceSetInput-choice-${id}`;
+        
+        choice.innerText = value;
 
         // Set required event handlers
         choice.onclick = () => {
@@ -5631,11 +5609,7 @@ export class FilteredChoiceSet {
                 }
             }
         };
-        choice.innerText = value;
-
-        choice.setAttribute("contenteditable", "true");
-
-        // this._staticChoiceList.push(choice);
+        
         return choice;
     }
 
@@ -5661,10 +5635,10 @@ export class FilteredChoiceSet {
         });
         this._dynamicChoiceList = [];
 
-        let dId = this._choices.length;
+        let id = this._choices.length;
         for (const choice of fetchedChoices) {
             if (choice.toLowerCase().includes(filter)) {
-                const choiceContainer = this.createChoice(choice, dId++);
+                const choiceContainer = this.createChoice(choice, id++);
                 this._dynamicChoiceList.push(choiceContainer);
                 this._dropdown?.appendChild(choiceContainer);
             }
@@ -5674,14 +5648,10 @@ export class FilteredChoiceSet {
     getLoadingIndicator(): HTMLDivElement {
         if (!this._loadingIndicator) {
             const loadingIndicator = document.createElement("div");
-            // Style choice divs
-            loadingIndicator.style.backgroundColor = "white";
-            loadingIndicator.style.width = "auto";
-            loadingIndicator.style.border = "1px inset black"; // Width Style Colour
-            loadingIndicator.style.borderTop = "0px";
-            // choiceDiv.style.font = this._textInput.style.font;
-            // Insert padding as well.
-            loadingIndicator.style.padding = "1px 2px";
+            loadingIndicator.className = this._hostConfig.makeCssClassName(
+                "ac-input",
+                "ac-choiceSetInput-loadingIndicator"
+            );
             loadingIndicator.innerText = "Loading...";
     
             this._loadingIndicator = loadingIndicator;
@@ -5691,6 +5661,8 @@ export class FilteredChoiceSet {
 
     applyLoadingIndicator() {
         // static choices get filtered first.
+        this.filterChoiceList([]);
+
         const loadingIndicator = this.getLoadingIndicator();
         this._dropdown?.appendChild(loadingIndicator);           
     }

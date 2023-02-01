@@ -284,9 +284,14 @@ $font-family: 'Segoe UI', sans-serif;
             background-color: $background-color;
 
             &.ac-choiceSetInput-filtered-dropdown {
+                background-color: whitesmoke;
                 border-top: 0px;
+                display: none;
                 padding-top: 0px;
                 padding-bottom: 0px;
+                position: absolute;
+                width: 100%;
+                z-index: 1;
             }
 
             &:hover {
@@ -313,11 +318,18 @@ $font-family: 'Segoe UI', sans-serif;
 
         &.ac-choice {
             background-color: $background-color;
+            width: 100%;
 
             &:hover {
                 background-color: lightgrey;
                 box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
             }
+        }
+
+        &.ac-choiceSetInput-loadingIndicator {
+            background-color: $background-color;
+            color: grey;
+            width: 100%;
         }
         
         &.ac-inputStyle-revealOnHover-onrender {
