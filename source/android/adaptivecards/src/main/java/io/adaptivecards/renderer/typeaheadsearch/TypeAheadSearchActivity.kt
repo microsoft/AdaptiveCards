@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.typeaheadsearch
 
 import android.app.Activity
@@ -155,7 +157,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     { s: String ->
                         viewModel.fetchDynamicOptions(s)
                     },
-                    250 // TODO: pass host config / launch params value here
+                    250 // TODO: pass value from host config here
                 )
             )
             setText(selectedTitle)

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.typeaheadsearch
 
 import android.annotation.SuppressLint
@@ -90,15 +92,15 @@ class TypeAheadSearchViewModel : ViewModel() {
             var result: HttpRequestResult<List<ChoiceInput>>? = null
             DynamicTypeAheadService.getChoicesResolver()?.let {
                 // TODO : Get count from host config
-                result = it.getDynamicChoices(dataType, dataset, queryText, 10, 0)
+                result = it.getDynamicChoices(dataType, dataset, queryText, 15, 0)
             }
 
             withContext(Dispatchers.Main) {
                 if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
                     var choices: List<ChoiceInput> = result!!.result
                     // TODO : Get count from host config
-                    if (choices.size > 10)
-                        choices = choices.subList(0, 9)
+                    if (choices.size > 15)
+                        choices = choices.subList(0, 14)
 
                     val titles: MutableList<String> = ArrayList()
                     val values: MutableList<String> = ArrayList()

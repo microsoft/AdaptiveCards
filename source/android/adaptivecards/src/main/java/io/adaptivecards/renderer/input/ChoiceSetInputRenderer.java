@@ -4,7 +4,6 @@ package io.adaptivecards.renderer.input;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Resources;
 
@@ -13,7 +12,6 @@ import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.FragmentManager;
 
 import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
@@ -32,7 +30,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -67,19 +64,12 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.inputhandler.TypeAheadTextViewHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.BackIconParams;
 import io.adaptivecards.renderer.typeaheadsearch.CrossIconParams;
 import io.adaptivecards.renderer.typeaheadsearch.DynamicTypeAheadService;
-import io.adaptivecards.renderer.typeaheadsearch.ErrorStateParams;
 import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
-import io.adaptivecards.renderer.typeaheadsearch.NoResultStateParams;
-import io.adaptivecards.renderer.typeaheadsearch.SearchIconParams;
-import io.adaptivecards.renderer.typeaheadsearch.StartSearchingStateParams;
-import io.adaptivecards.renderer.typeaheadsearch.TickIconParams;
 import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchActivity;
 import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchLaunchParams;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

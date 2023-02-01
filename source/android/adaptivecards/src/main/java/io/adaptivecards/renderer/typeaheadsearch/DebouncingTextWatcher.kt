@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.typeaheadsearch
 
 import android.text.Editable
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
 class DebouncingTextWatcher(
     private val coroutineScope: LifecycleCoroutineScope,
     private val onDebouncingSearchTextChange: (String) -> Unit,
-    private val delayTime: Long = 250 // get host config value
+    private val delayTime: Long
 ) : TextWatcher {
     private var debouncingSearchJob: Job? = null
 
