@@ -741,7 +741,7 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendDataQueryRequestAsync: channel adapter not set");
         }
-        this._choiceSet?.applyLoadingIndicator();
+        this._choiceSet?.showLoadingIndicator();
         let response = undefined;
         try {
             response = await this.channelAdapter.sendRequestAsync(request);
@@ -751,11 +751,20 @@ export class AdaptiveApplet {
         this._choiceSet?.removeLoadingIndicator();
         if (response) {
             if (response instanceof SuccessResponse) {
-                // Handle UI as per Success Response
-                const fetchedChoices: string[] = ["Amar", "Amarnath", "Amey"];
-                this._choiceSet?.filterChoices(fetchedChoices);
+                const rawResponse = response.rawContent;
+                if (rawResponse) {
+                    let parsedResponse = rawResponse;
+                    try {
+                        parsedResponse = JSON.parse(parsedResponse);
+                    } catch(error) {
+                        throw new Error("Cannot parse response object: " + rawResponse);
+                    }
+                    if (typeof parsedResponse === "object") {
+                        this._choiceSet?.showChoices(parsedResponse);
+                    } 
+                }
             } else if (response instanceof ErrorResponse) {
-                // Handle UI as per Error Response
+                this._choiceSet?.showErrorIndicator("Error loading results.");
             } else {
                 throw new Error("Unhandled response type: " + JSON.stringify(response));
             }

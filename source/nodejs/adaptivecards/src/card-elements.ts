@@ -4994,6 +4994,11 @@ export class Choice extends SerializableObject {
     }
 }
 
+export type FetchedChoice = {
+    title: string;
+    value: string;
+};
+
 export class ChoiceSetInput extends Input {
     //#region Schema
 
@@ -5068,18 +5073,22 @@ export class ChoiceSetInput extends Input {
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
-    private _filteredChoiceSet?: FilteredChoiceSet; 
+    private _filteredChoiceSet?: FilteredChoiceSet;
 
-    applyLoadingIndicator() {
-        this._filteredChoiceSet?.applyLoadingIndicator();
+    showLoadingIndicator() {
+        this._filteredChoiceSet?.showLoadingIndicator();
+    }
+
+    showErrorIndicator(error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(error);
     }
 
     removeLoadingIndicator() {
         this._filteredChoiceSet?.removeLoadingIndicator();
     }
 
-    filterChoices(fetchedChoices: string[]) {
-        this._filteredChoiceSet?.filterChoiceList(fetchedChoices);
+    showChoices(fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.showChoices(fetchedChoices);
     }
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -5216,7 +5225,7 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
-        if (this.choicesData) {
+        if (this.choicesData?.dataset) {
             const filteredChoiceSet = new FilteredChoiceSet(this.choices, this.hostConfig);
             filteredChoiceSet.render();
 
@@ -5230,7 +5239,7 @@ export class ChoiceSetInput extends Input {
                     this._textInput.setAttribute("aria-label", this.placeholder);
                 }
                 this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
-                this._textInput.oninput = () => {
+                this._textInput.oninput = Utils.debounce(() => {
                     this.valueChanged();
                     filteredChoiceSet.showDropdown();
                     if (this._textInput) {
@@ -5244,7 +5253,7 @@ export class ChoiceSetInput extends Input {
                             this._textInput.setAttribute("aria-label", this.placeholder);
                         }
                     }
-                };
+                }, 250);;
             }
             this._filteredChoiceSet = filteredChoiceSet;
             return filteredChoiceSet.renderedElement;
@@ -5452,7 +5461,13 @@ export class ChoiceSetInput extends Input {
                     return true;
                 }
             }
-
+            if (this.dynamicChoices) {
+                for (const choice of this.dynamicChoices) {
+                    if (this.value === choice) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -5501,6 +5516,10 @@ export class ChoiceSetInput extends Input {
             return result ? result : undefined;
         }
     }
+
+    get dynamicChoices() {
+        return this._filteredChoiceSet?.dynamicChoices;
+    }
 }
 
 export class FilteredChoiceSet {
@@ -5511,13 +5530,16 @@ export class FilteredChoiceSet {
     private _staticChoiceList: HTMLDivElement[];
     private _dynamicChoiceList: HTMLDivElement[];
     private _loadingIndicator?: HTMLDivElement;
+    private _errorIndicator?: HTMLDivElement;
     private _renderedElement?: HTMLElement;
+    private _visibleChoiceCount: number;
     private _hostConfig: HostConfig;
 
     constructor(choices: Choice[], hostConfig: HostConfig) {
         this._choices = choices;
         this._staticChoiceList = [];
         this._dynamicChoiceList = [];
+        this._visibleChoiceCount = 0;
         this._hostConfig = hostConfig;
     }
 
@@ -5551,6 +5573,7 @@ export class FilteredChoiceSet {
 
         baseContainer.append(this._textInput, this._dropdown);
 
+        // where to place it and how to handle it better?
         document.onclick = event => {
             if (this._dropdown) {
                 let x = !(event.target === this._textInput);
@@ -5601,12 +5624,7 @@ export class FilteredChoiceSet {
                     prevChoice.focus();
                 }
             } else if (event.key === "Enter") {
-                if (this._textInput) {
-                    this._textInput.value = choice.innerText;
-                }
-                if (this._dropdown) {
-                    this._dropdown.style.display = "none";
-                }
+                choice.click();
             }
         };
         
@@ -5624,53 +5642,91 @@ export class FilteredChoiceSet {
         }
     }
 
-    filterChoiceList(fetchedChoices: string[]) {
-        const filter = this._textInput?.value.toLowerCase() || "";
-        for (const choice of this._staticChoiceList) {
-            choice.style.display = choice.innerText.toLowerCase().includes(filter)? "block" : "none";
-        }
-
+    filterStaticChoices() {
         this._dynamicChoiceList.forEach((choice: HTMLDivElement) => {
             this._dropdown?.removeChild(choice);
         });
         this._dynamicChoiceList = [];
+        this._visibleChoiceCount = 0;
 
-        let id = this._choices.length;
-        for (const choice of fetchedChoices) {
-            if (choice.toLowerCase().includes(filter)) {
-                const choiceContainer = this.createChoice(choice, id++);
-                this._dynamicChoiceList.push(choiceContainer);
-                this._dropdown?.appendChild(choiceContainer);
+        const filter = this._textInput?.value.toLowerCase() || "";
+        for (const choice of this._staticChoiceList) {
+            const matchesFilter = choice.innerText.toLowerCase().includes(filter);
+            if (matchesFilter) {
+                choice.style.display = "block";
+                this._visibleChoiceCount++;
+            } else {
+                choice.style.display = "none";
             }
         }
     }
 
-    getLoadingIndicator(): HTMLDivElement {
-        if (!this._loadingIndicator) {
-            const loadingIndicator = document.createElement("div");
-            loadingIndicator.className = this._hostConfig.makeCssClassName(
-                "ac-input",
-                "ac-choiceSetInput-loadingIndicator"
-            );
-            loadingIndicator.innerText = "Loading...";
-    
-            this._loadingIndicator = loadingIndicator;
+    showChoices(fetchedChoices: FetchedChoice[]) {
+        let id = this._choices.length;
+        const filter = this._textInput?.value.toLowerCase() || "";
+        for (const choice of fetchedChoices) {
+            if (choice.title.toLowerCase().includes(filter)) {
+                const choiceContainer = this.createChoice(choice.title, id++);
+                this._dynamicChoiceList.push(choiceContainer);
+                this._dropdown?.appendChild(choiceContainer);
+                this._visibleChoiceCount++;
+            }
         }
-        return this._loadingIndicator;
+        if (this._visibleChoiceCount === 0) {
+            this.showErrorIndicator("No results found.");
+            return;
+        }
     }
 
-    applyLoadingIndicator() {
-        // static choices get filtered first.
-        this.filterChoiceList([]);
+    getStatusIndicator(error?: string): HTMLDivElement {
+        if (error) {
+            if (!this._errorIndicator) {
+                const errorIndicator = document.createElement("div");
+                errorIndicator.className = this._hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator",
+                    "ac-choiceSetInput-errorIndicator"
+                );
+                this._errorIndicator = errorIndicator;
+            } 
+            this._errorIndicator.innerText = error;
+            return this._errorIndicator;
+        } else {
+            if (!this._loadingIndicator) {
+                const loadingIndicator = document.createElement("div");
+                loadingIndicator.className = this._hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator"
+                );        
+                this._loadingIndicator = loadingIndicator;
+            }
+            this._loadingIndicator.innerText = (this._visibleChoiceCount === 0)? "Loading..." : "Loading more...";
+            return this._loadingIndicator;
+        }
+    }
 
-        const loadingIndicator = this.getLoadingIndicator();
+    showLoadingIndicator() {
+        this.removeErrorIndicator();
+        this.filterStaticChoices();
+
+        const loadingIndicator = this.getStatusIndicator();
         this._dropdown?.appendChild(loadingIndicator);           
     }
 
     removeLoadingIndicator() {
-        // Remove loading indicator on the white field
-        if (this._loadingIndicator) {
+        if (this._loadingIndicator && this._dropdown?.contains(this._loadingIndicator)) {
             this._dropdown?.removeChild(this._loadingIndicator);
+          }          
+    }
+
+    showErrorIndicator(error: string) {
+        const errorIndicator = this.getStatusIndicator(error);
+        this._dropdown?.appendChild(errorIndicator);
+    }
+
+    removeErrorIndicator() {
+        if (this._errorIndicator && this._dropdown?.contains(this._errorIndicator)) {
+            this._dropdown?.removeChild(this._errorIndicator);
         }
     }
 
@@ -5686,6 +5742,10 @@ export class FilteredChoiceSet {
 
     applyCSS() {
         // Apply custom styling to the components
+    }
+
+    get dynamicChoices() {
+        return this._dynamicChoiceList.map(choice => choice.innerText);
     }
 
     set parent(value: CardObject | undefined) {

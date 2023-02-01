@@ -109,11 +109,38 @@ export const sampleCard = {
                     "value": "Choice 5"
                 }
             ],
+            "style": "compact",
+            "placeholder": "Filtered ChoiceSet"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "Aditya",
+                    "value": "Choice 1"
+                },
+                {
+                    "title": "Adith",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Adinarayan",
+                    "value": "Choice 3"
+                },
+                {
+                    "title": "Amit",
+                    "value": "Choice 4"
+                },
+                {
+                    "title": "Amitabh",
+                    "value": "Choice 5"
+                }
+            ],
             "choices.data": {
                 "type": "Data.Query",
                 "dataset": "random"
             },
-            "placeholder": "Placeholder text"
+            "placeholder": "Dynamically Filtered Choiceset"
         }
     ],
     actions: [

@@ -326,10 +326,14 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-choiceSetInput-loadingIndicator {
+        &.ac-choiceSetInput-statusIndicator {
             background-color: $background-color;
             color: grey;
             width: 100%;
+
+            &.ac-choiceSetInput-errorIndicator {
+                text-align: center;
+            }
         }
         
         &.ac-inputStyle-revealOnHover-onrender {
