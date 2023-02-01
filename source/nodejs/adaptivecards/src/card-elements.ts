@@ -4130,6 +4130,8 @@ export class ToggleVisibilityAction extends Action {
         delete this.targetElements[elementId];
         this.updateAriaControlsAttribute();
     }
+}
+
 enum InputEventType {
     InitialRender,
     MouseEnterOnCard,
