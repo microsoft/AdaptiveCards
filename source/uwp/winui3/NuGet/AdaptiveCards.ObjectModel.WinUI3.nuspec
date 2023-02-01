@@ -19,28 +19,23 @@
 
         <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x86\native"/>
         <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pri" target="runtimes\win10-x86\native"/>
         <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x86\native"/>
 
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x64\native"/>
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pri" target="runtimes\win10-x64\native"/>
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x64\native"/>
 
         <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-arm\native"/>
         <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pri" target="runtimes\win10-arm\native"/>
         <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-arm\native"/>
 
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-arm64\native"/>
-        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pri" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
 
         <file src="..\AnyCPU\ObjectModelCsProjection\$Configuration$\$TargetFramework$\ObjectModelCsProjection.dll" target="lib\$TargetFramework$\ObjectModelCsProjection.dll"/>
 
         <file src="EULA-Windows.txt" target="\"/>
-        <file src="AdaptiveCards.ObjectModel.WinUI3.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.ObjectModel.WinUI3.native.targets" target="build\native\AdaptiveCards.ObjectModel.WinUI3.targets"/>
     </files>
 </package>
