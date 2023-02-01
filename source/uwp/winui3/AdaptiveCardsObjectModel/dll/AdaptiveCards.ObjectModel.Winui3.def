@@ -1,6 +1,0 @@
-LIBRARY "AdaptiveCards.ObjectModel.Winui3.dll"
-
-EXPORTS
-    DllGetClassObject           PRIVATE
-    DllCanUnloadNow             PRIVATE
-    DllGetActivationFactory     PRIVATE

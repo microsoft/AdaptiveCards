@@ -4,8 +4,8 @@
 #pragma once
 
 #ifdef USE_WINUI3
-#define Xaml_OM Winui3
-#define Xaml_Rendering Winui3
+#define Xaml_OM WinUI3
+#define Xaml_Rendering WinUI3
 #else
 #define Xaml_OM Uwp
 #define Xaml_Rendering Uwp
@@ -26,23 +26,27 @@
 #include <winrt/Windows.Web.Http.h>
 #include <winrt/Windows.Web.Http.Filters.h>
 
-#include <winrt/Windows.UI.Xaml.Automation.h>
-#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
-#include <winrt/Windows.UI.Xaml.Controls.h>
-#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
-#include <winrt/Windows.UI.Xaml.Documents.h>
-#include <winrt/Windows.UI.Xaml.Input.h>
-#include <winrt/Windows.UI.Xaml.Markup.h>
-#include <winrt/Windows.UI.Xaml.Media.h>
-#include <winrt/Windows.UI.Xaml.Media.Imaging.h>
-#include <winrt/Windows.UI.Xaml.Shapes.h>
+// XamlStraddle
+#include <CppWinRTIncludes.h>
+#include <UI.Xaml.Automation.h>
+#include <UI.Xaml.Automation.Peers.h>
+#include <UI.Xaml.Controls.h>
+#include <UI.Xaml.Controls.Primitives.h>
+#include <UI.Xaml.Documents.h>
+#include <UI.Xaml.Input.h>
+#include <UI.Xaml.Markup.h>
+#include <UI.Xaml.Media.h>
+#include <UI.Xaml.Media.Imaging.h>
+#include <UI.Xaml.Shapes.h>
 
+#ifdef USE_WINUI3
+#include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
+#else
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#endif
 
 namespace winrt
 {
-    using namespace ::winrt::Windows::Foundation;
-    using namespace ::winrt::Windows::Foundation::Collections;
     using namespace ::winrt::Windows::Foundation::Numerics;
     using namespace ::winrt::Windows::Media::Core;
     using namespace ::winrt::Windows::Media::Playback;
@@ -50,7 +54,6 @@ namespace winrt
     using namespace ::winrt::Windows::System;
     using namespace ::winrt::Windows::UI;
 
-    namespace xaml = ::winrt::Windows::UI::Xaml;
     using namespace xaml;
     using namespace xaml::Controls;
     using namespace xaml::Controls::Primitives;
@@ -73,6 +76,10 @@ namespace winrt
         using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation;
     }
 
+#ifdef USE_WINUI3
+    using MediaElement = xaml::Controls::MediaPlayerElement;
+#endif
+
     using XamlReader = xaml::Markup::XamlReader;
 
     using AlignmentX = xaml::Media::AlignmentX;
@@ -94,10 +101,6 @@ namespace winrt
 
     // using namespace winrt::Windows::Globalization::DateTimeFormatting;
     using DateTimeFormatter = ::winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter;
-
-    // using namespace winrt::Windows::UI::Core;
-    using CoreWindow = ::winrt::Windows::UI::Core::CoreWindow;
-    using CoreVirtualKeyStates = ::winrt::Windows::UI::Core::CoreVirtualKeyStates;
 
     // using namespace winrt::Windows::Web::Http
     using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;

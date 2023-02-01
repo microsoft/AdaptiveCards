@@ -254,7 +254,11 @@ $font-family: 'Segoe UI', sans-serif;
     $background-color: null,
     $hover-background-color: null,
     $validation-failed-border: 1px solid red !important,
-    $validation-failed-outline: 1px solid red
+    $validation-failed-outline: 1px solid red,
+    $transparent-border: 1px solid transparent,
+    $transparent-background: white,
+    $revealOnHover-subdued-border: 1px solid #DDDDDD,
+    $revealOnHover-active-border: 1px solid #686868 !important
     ) {
 
     .ac-input {
@@ -315,6 +319,21 @@ $font-family: 'Segoe UI', sans-serif;
                 box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
             }
         }
+        
+        &.ac-inputStyle-revealOnHover-onrender {
+            border: $transparent-border;
+            background-color: $transparent-background;
+            &:hover {
+                border: $revealOnHover-active-border;
+            }
+        }
+
+        &.ac-inputStyle-revealOnHover-onhover {
+            border: $revealOnHover-subdued-border;
+        }
+
+        &.ac-inputStyle-revealOnHover-onfocus {
+            border: $revealOnHover-subdued-border;
+        }
     }
 }
-

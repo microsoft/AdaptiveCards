@@ -1187,6 +1187,23 @@ a.default-ac-anchor:visited:active {
     padding: 4px 8px 4px 8px;
 }
 
+.default.ac-inputStyle-revealOnHover-onrender {
+    border: 1px solid transparent;
+    background-color: white;
+}
+
+.default.ac-inputStyle-revealOnHover-onrender:hover {
+    border: 1px solid #686868 !important;
+}
+
+.default.ac-inputStyle-revealOnHover-onhover {
+    border: 1px solid #DDDDDD;
+}
+
+.default.ac-inputStyle-revealOnHover-onfocus {
+    border: 1px solid #DDDDDD;
+}
+
 .default-ac-textBlock {
     cursor: default;
 }
