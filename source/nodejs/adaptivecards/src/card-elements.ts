@@ -5075,20 +5075,20 @@ export class ChoiceSetInput extends Input {
     private _labels: Array<HTMLElement | undefined>;
     private _filteredChoiceSet?: FilteredChoiceSet;
 
-    showLoadingIndicator() {
-        this._filteredChoiceSet?.showLoadingIndicator();
-    }
-
     showErrorIndicator(error: string) {
         this._filteredChoiceSet?.showErrorIndicator(error);
+    }
+
+    showLoadingIndicator() {
+        this._filteredChoiceSet?.showLoadingIndicator();
     }
 
     removeLoadingIndicator() {
         this._filteredChoiceSet?.removeLoadingIndicator();
     }
 
-    showChoices(fetchedChoices: FetchedChoice[]) {
-        this._filteredChoiceSet?.showChoices(fetchedChoices);
+    filterDynamicChoices(fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.filterDynamicChoices(fetchedChoices);
     }
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -5525,10 +5525,9 @@ export class ChoiceSetInput extends Input {
 export class FilteredChoiceSet {
     private _parent?: CardObject;
     private _choices: Choice[];
+    private _dynamicChoices?: FetchedChoice[];
     private _textInput?: HTMLInputElement;
     private _dropdown?: HTMLDivElement;
-    private _staticChoiceList: HTMLDivElement[];
-    private _dynamicChoiceList: HTMLDivElement[];
     private _loadingIndicator?: HTMLDivElement;
     private _errorIndicator?: HTMLDivElement;
     private _renderedElement?: HTMLElement;
@@ -5537,8 +5536,6 @@ export class FilteredChoiceSet {
 
     constructor(choices: Choice[], hostConfig: HostConfig) {
         this._choices = choices;
-        this._staticChoiceList = [];
-        this._dynamicChoiceList = [];
         this._visibleChoiceCount = 0;
         this._hostConfig = hostConfig;
     }
@@ -5559,7 +5556,10 @@ export class FilteredChoiceSet {
 
         this._textInput.onkeydown = event => {
             if (event.key === "ArrowDown") {
-                // Get the first visible choice element in the dropdown
+                const firstChoice = document.getElementById("ac-choiceSetInput-choice-0");
+                if (firstChoice) {
+                    firstChoice.focus();
+                }
             }
         };
 
@@ -5569,8 +5569,6 @@ export class FilteredChoiceSet {
             "ac-multichoiceInput",
             "ac-choiceSetInput-filtered-dropdown"
         );
-
-        this.createChoiceList();
 
         baseContainer.append(this._textInput, this._dropdown);
 
@@ -5606,7 +5604,6 @@ export class FilteredChoiceSet {
         choice.innerText = value;
         choice.tabIndex = -1;
 
-        // Set required event handlers
         choice.onclick = () => {
             if (this._textInput) {
                 this._textInput.value = choice.innerText;
@@ -5634,48 +5631,24 @@ export class FilteredChoiceSet {
         choiceContainer.appendChild(choice);
         return choiceContainer;
     }
-
-    createChoiceList() {
-        let id = 0;
-        for (const choice of this._choices) {
-            if (choice.title) {
-                const choiceContainer = this.createChoice(choice.title, id++);
-                this._staticChoiceList.push(choiceContainer);
+    
+    addChoices(choices: Choice[] | FetchedChoice[]) {
+        const filter = this._textInput?.value.toLowerCase() || "";
+        for (const choice of choices) {
+            if (choice.title?.toLowerCase().includes(filter)) {
+                const choiceContainer = this.createChoice(choice.title, this._visibleChoiceCount++);
                 this._dropdown?.appendChild(choiceContainer);
             }
         }
     }
 
     filterStaticChoices() {
-        this._dynamicChoiceList.forEach((choice: HTMLDivElement) => {
-            this._dropdown?.removeChild(choice);
-        });
-        this._dynamicChoiceList = [];
-        this._visibleChoiceCount = 0;
-
-        const filter = this._textInput?.value.toLowerCase() || "";
-        for (const choice of this._staticChoiceList) {
-            const matchesFilter = choice.innerText.toLowerCase().includes(filter);
-            if (matchesFilter) {
-                choice.style.display = "flex";
-                this._visibleChoiceCount++;
-            } else {
-                choice.style.display = "none";
-            }
-        }
+        this.addChoices(this._choices);
     }
 
-    showChoices(fetchedChoices: FetchedChoice[]) {
-        let id = this._choices.length;
-        const filter = this._textInput?.value.toLowerCase() || "";
-        for (const choice of fetchedChoices) {
-            if (choice.title.toLowerCase().includes(filter)) {
-                const choiceContainer = this.createChoice(choice.title, id++);
-                this._dynamicChoiceList.push(choiceContainer);
-                this._dropdown?.appendChild(choiceContainer);
-                this._visibleChoiceCount++;
-            }
-        }
+    filterDynamicChoices(fetchedChoices: FetchedChoice[]) {
+        this._dynamicChoices = fetchedChoices;
+        this.addChoices(fetchedChoices);
         if (this._visibleChoiceCount === 0) {
             this.showErrorIndicator("No results found.");
             return;
@@ -5709,8 +5682,13 @@ export class FilteredChoiceSet {
         }
     }
 
+    showErrorIndicator(error: string) {
+        const errorIndicator = this.getStatusIndicator(error);
+        this._dropdown?.appendChild(errorIndicator);
+    }
+
     showLoadingIndicator() {
-        this.removeErrorIndicator();
+        this.resetDropdown();
         this.filterStaticChoices();
 
         const loadingIndicator = this.getStatusIndicator();
@@ -5723,14 +5701,10 @@ export class FilteredChoiceSet {
           }          
     }
 
-    showErrorIndicator(error: string) {
-        const errorIndicator = this.getStatusIndicator(error);
-        this._dropdown?.appendChild(errorIndicator);
-    }
-
-    removeErrorIndicator() {
-        if (this._errorIndicator && this._dropdown?.contains(this._errorIndicator)) {
-            this._dropdown?.removeChild(this._errorIndicator);
+    resetDropdown() {
+        if (this._dropdown) {
+            Utils.clearElementChildren(this._dropdown);
+            this._visibleChoiceCount = 0;
         }
     }
 
@@ -5741,7 +5715,7 @@ export class FilteredChoiceSet {
     }
 
     get dynamicChoices() {
-        return this._dynamicChoiceList.map(choice => choice.innerText);
+        return this._dynamicChoices?.map(choice => choice.title);
     }
 
     set parent(value: CardObject | undefined) {
