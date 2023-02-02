@@ -5087,8 +5087,8 @@ export class ChoiceSetInput extends Input {
         this._filteredChoiceSet?.removeLoadingIndicator();
     }
 
-    filterDynamicChoices(fetchedChoices: FetchedChoice[]) {
-        this._filteredChoiceSet?.filterDynamicChoices(fetchedChoices);
+    renderChoices(fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(fetchedChoices);
     }
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -5227,6 +5227,7 @@ export class ChoiceSetInput extends Input {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
         if (this.choicesData?.dataset) {
             const filteredChoiceSet = new FilteredChoiceSet(this.choices, this.hostConfig);
+            filteredChoiceSet.parent = this;
             filteredChoiceSet.render();
 
             if (filteredChoiceSet.textInput) {
@@ -5253,7 +5254,7 @@ export class ChoiceSetInput extends Input {
                             this._textInput.setAttribute("aria-label", this.placeholder);
                         }
                     }
-                }, 250);;
+                }, this.hostConfig.inputs.debounceTime);
             }
             this._filteredChoiceSet = filteredChoiceSet;
             return filteredChoiceSet.renderedElement;
@@ -5525,28 +5526,30 @@ export class ChoiceSetInput extends Input {
 export class FilteredChoiceSet {
     private _parent?: CardObject;
     private _choices: Choice[];
-    private _dynamicChoices?: FetchedChoice[];
+    private _dynamicChoices: FetchedChoice[];
+    private _visibleChoiceCount: number;
     private _textInput?: HTMLInputElement;
     private _dropdown?: HTMLDivElement;
     private _loadingIndicator?: HTMLDivElement;
     private _errorIndicator?: HTMLDivElement;
     private _renderedElement?: HTMLElement;
-    private _visibleChoiceCount: number;
-    private _hostConfig: HostConfig;
+    private _hostConfig?: HostConfig;
 
-    constructor(choices: Choice[], hostConfig: HostConfig) {
+
+    constructor(choices: Choice[], hostConfig?: HostConfig) {
         this._choices = choices;
+        this._dynamicChoices = [];
         this._visibleChoiceCount = 0;
         this._hostConfig = hostConfig;
     }
 
     render() {
-        const baseContainer = document.createElement("div");
-        baseContainer.style.position = "relative";
-        baseContainer.style.width = "100%";
+        const choiceSetContainer = document.createElement("div");
+        choiceSetContainer.style.position = "relative";
+        choiceSetContainer.style.width = "100%";
         
         this._textInput = document.createElement("input");
-        this._textInput.className = this._hostConfig.makeCssClassName(
+        this._textInput.className = this.hostConfig.makeCssClassName(
             "ac-input",
             "ac-multichoiceInput",
             "ac-choiceSetInput-filtered"
@@ -5564,43 +5567,32 @@ export class FilteredChoiceSet {
         };
 
         this._dropdown = document.createElement("div");
-        this._dropdown.className = this._hostConfig.makeCssClassName(
+        this._dropdown.className = this.hostConfig.makeCssClassName(
             "ac-input",
             "ac-multichoiceInput",
             "ac-choiceSetInput-filtered-dropdown"
         );
 
-        baseContainer.append(this._textInput, this._dropdown);
+        choiceSetContainer.append(this._textInput, this._dropdown);
 
-        // where to place it and how to handle it better?
         document.onclick = event => {
             if (this._dropdown) {
-                let x = !(event.target === this._textInput);
                 let child = this._dropdown.firstChild;
-                while (child) {
-                    if (event.target === child) {
-                        x = false;
-                    }
+                while (child && event.target !== child) {
                     child = child.nextSibling;
                 }
-                if (x) {
+                // Dropdown closes if user clicks outside the choiceset.
+                if (child || !(event.target === this._textInput)) {
                     this._dropdown.style.display = "none";
                 }
             }
         };
-        this._renderedElement = baseContainer;
+        this._renderedElement = choiceSetContainer;
     }
 
-    createChoice(value: string, id: number): HTMLDivElement {
-        const choiceContainer = document.createElement("div");
-        choiceContainer.className = this._hostConfig.makeCssClassName(
-            "ac-input",
-            "ac-choiceSetInput-choiceContainer"
-        );
-        choiceContainer.tabIndex = -1;
-
+    createChoice(value: string, id: number): HTMLSpanElement {
         const choice = document.createElement("span");
-        choice.className = this._hostConfig.makeCssClassName(
+        choice.className = this.hostConfig.makeCssClassName(
             "ac-input",
             "ac-choiceSetInput-choice"
         );
@@ -5631,13 +5623,12 @@ export class FilteredChoiceSet {
                 choice.click();
             }
         };
-        
-        choiceContainer.appendChild(choice);
-        return choiceContainer;
+        return choice;
     }
     
-    addChoices(choices: Choice[] | FetchedChoice[]) {
+    filterChoices(isDynamic?: boolean) {
         const filter = this._textInput?.value.toLowerCase() || "";
+        const choices = isDynamic? this._dynamicChoices : this._choices;
         for (const choice of choices) {
             if (choice.title?.toLowerCase().includes(filter)) {
                 const choiceContainer = this.createChoice(choice.title, this._visibleChoiceCount++);
@@ -5646,16 +5637,11 @@ export class FilteredChoiceSet {
         }
     }
 
-    filterStaticChoices() {
-        this.addChoices(this._choices);
-    }
-
-    filterDynamicChoices(fetchedChoices: FetchedChoice[]) {
+    processResponse(fetchedChoices: FetchedChoice[]) {
         this._dynamicChoices = fetchedChoices;
-        this.addChoices(fetchedChoices);
+        this.filterChoices(true);
         if (this._visibleChoiceCount === 0) {
             this.showErrorIndicator("No results found.");
-            return;
         }
     }
 
@@ -5663,7 +5649,7 @@ export class FilteredChoiceSet {
         if (error) {
             if (!this._errorIndicator) {
                 const errorIndicator = document.createElement("div");
-                errorIndicator.className = this._hostConfig.makeCssClassName(
+                errorIndicator.className = this.hostConfig.makeCssClassName(
                     "ac-input",
                     "ac-choiceSetInput-statusIndicator",
                     "ac-choiceSetInput-errorIndicator"
@@ -5675,7 +5661,7 @@ export class FilteredChoiceSet {
         } else {
             if (!this._loadingIndicator) {
                 const loadingIndicator = document.createElement("div");
-                loadingIndicator.className = this._hostConfig.makeCssClassName(
+                loadingIndicator.className = this.hostConfig.makeCssClassName(
                     "ac-input",
                     "ac-choiceSetInput-statusIndicator"
                 );        
@@ -5693,7 +5679,7 @@ export class FilteredChoiceSet {
 
     showLoadingIndicator() {
         this.resetDropdown();
-        this.filterStaticChoices();
+        this.filterChoices();
 
         const loadingIndicator = this.getStatusIndicator();
         this._dropdown?.appendChild(loadingIndicator);           
@@ -5720,6 +5706,18 @@ export class FilteredChoiceSet {
 
     get dynamicChoices() {
         return this._dynamicChoices?.map(choice => choice.title);
+    }
+
+    get hostConfig(): HostConfig {
+        if (this._hostConfig) {
+            return this._hostConfig;
+        } else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            } else {
+                return defaultHostConfig;
+            }
+        }
     }
 
     set parent(value: CardObject | undefined) {

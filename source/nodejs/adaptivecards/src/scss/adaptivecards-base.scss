@@ -284,7 +284,7 @@ $font-family: 'Segoe UI', sans-serif;
             background-color: $background-color;
 
             &.ac-choiceSetInput-filtered-dropdown {
-                background-color: whitesmoke;
+                background-color: white;
                 border-top: 0px;
                 display: none;
                 padding-top: 0px;
@@ -316,33 +316,30 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-choiceSetInput-choiceContainer {
-            background-color: $background-color;
+        &.ac-choiceSetInput-choice {
+            padding: $padding;
+            padding-left: 0px;
+            padding-right: 0px;
             display: flex;
             width: 100%;
 
-            &:hover {
-                background-color: lightgrey;
-                box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
-            }
-        }
-
-        &.ac-choiceSetInput-choice {
-            width: 100%;
-
-            &:focus-visible {
-                background-color: lightgrey;
-                box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
-                outline: none;
+            &:focus-visible, &:hover {
+                background-color: #DEECF9;
+                box-shadow: #DEECF9 8px 0px 0px, #DEECF9 -8px 0px 0px;
+                outline: none
             }
         }
 
         &.ac-choiceSetInput-statusIndicator {
-            background-color: $background-color;
-            color: grey;
+            background-color: white;
+            color: #A19F9D;
+            padding: $padding;
+            padding-left: 0px;
+            padding-right: 0px;
             width: 100%;
 
             &.ac-choiceSetInput-errorIndicator {
+                color: #605E5C;
                 text-align: center;
             }
         }

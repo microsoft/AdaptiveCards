@@ -760,7 +760,7 @@ export class AdaptiveApplet {
                         throw new Error("Cannot parse response object: " + rawResponse);
                     }
                     if (typeof parsedResponse === "object") {
-                        this._choiceSet?.filterDynamicChoices(parsedResponse);
+                        this._choiceSet?.renderChoices(parsedResponse);
                     } 
                 }
             } else if (response instanceof ErrorResponse) {
