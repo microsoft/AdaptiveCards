@@ -2124,7 +2124,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.setupElementForAccessibility(imageElement);
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2155,12 +2155,6 @@ export class Image extends CardElement {
         }
 
         return element;
-    }
-
-    protected setupElementForAccessibility(element: HTMLImageElement) {
-        this.selectAction?.setupElementForAccessibility(element);
-        // Image elements cannot have aria-description
-        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -5250,14 +5244,10 @@ export abstract class Action extends CardObject {
             element.removeAttribute("title");
         }
 
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
+        if (this.tooltip) {			
+			if (promoteTooltipToLabel && !this.title) {
+				element.setAttribute("aria-label", this.tooltip);
+			}
             element.title = this.tooltip;
         }
     }
