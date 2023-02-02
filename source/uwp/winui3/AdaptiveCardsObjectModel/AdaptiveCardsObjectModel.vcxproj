@@ -95,6 +95,7 @@
       <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
+        OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
     </Link>

@@ -5,7 +5,6 @@
   <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
-    <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{40c8962d-3e19-4142-a0b4-1614548aa3d1}</ProjectGuid>
     <Keyword>AdaptiveCards</Keyword>
@@ -107,6 +106,8 @@
       <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
+        Ole32.lib;
+        OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
       <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
