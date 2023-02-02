@@ -5559,8 +5559,9 @@ export class FilteredChoiceSet {
 
         this._textInput.onkeydown = event => {
             if (event.key === "ArrowDown") {
-                // Think what to do
-        }};
+                // Get the first visible choice element in the dropdown
+            }
+        };
 
         this._dropdown = document.createElement("div");
         this._dropdown.className = this._hostConfig.makeCssClassName(
@@ -5593,15 +5594,17 @@ export class FilteredChoiceSet {
     }
 
     createChoice(value: string, id: number): HTMLDivElement {
-        const choice = document.createElement("div");
-
-        choice.id = `ac-choiceSetInput-choice-${id}`;
-        choice.className = this._hostConfig.makeCssClassName(
+        const choiceContainer = document.createElement("div");
+        choiceContainer.className = this._hostConfig.makeCssClassName(
             "ac-input",
             "ac-choice"
         );
-        
+        choiceContainer.tabIndex = -1;
+
+        const choice = document.createElement("span");
+        choice.id = `ac-choiceSetInput-choice-${id}`;
         choice.innerText = value;
+        choice.tabIndex = -1;
 
         // Set required event handlers
         choice.onclick = () => {
@@ -5628,7 +5631,8 @@ export class FilteredChoiceSet {
             }
         };
         
-        return choice;
+        choiceContainer.appendChild(choice);
+        return choiceContainer;
     }
 
     createChoiceList() {
@@ -5653,7 +5657,7 @@ export class FilteredChoiceSet {
         for (const choice of this._staticChoiceList) {
             const matchesFilter = choice.innerText.toLowerCase().includes(filter);
             if (matchesFilter) {
-                choice.style.display = "block";
+                choice.style.display = "flex";
                 this._visibleChoiceCount++;
             } else {
                 choice.style.display = "none";
@@ -5734,14 +5738,6 @@ export class FilteredChoiceSet {
         if (this._dropdown) {
             this._dropdown.style.display = "block";
         }
-    }
-
-    selectChoice() {
-        // if needed in many locations
-    }
-
-    applyCSS() {
-        // Apply custom styling to the components
     }
 
     get dynamicChoices() {

@@ -318,6 +318,7 @@ $font-family: 'Segoe UI', sans-serif;
 
         &.ac-choice {
             background-color: $background-color;
+            display: flex;
             width: 100%;
 
             &:hover {
