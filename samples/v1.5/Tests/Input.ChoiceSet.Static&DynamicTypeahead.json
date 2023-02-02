@@ -5,11 +5,12 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+            "text": "Select package"
         },
         {
             "type": "Input.ChoiceSet",
-            "id": "myColor",
+            "id": "choiceset1",
+            "value": "4",
             "choices": [
                 {
                     "title": "Microsoft.IdentityModel.Tokens.static",

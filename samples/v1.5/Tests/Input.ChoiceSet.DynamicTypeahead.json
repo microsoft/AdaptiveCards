@@ -5,13 +5,12 @@
     "body": [
         {
             "type": "Input.ChoiceSet",
-            "value": "Alligator gar",
             "isMultiSelect": false,
-            "label": "Please choose an animal:",
+            "label": "Please select a package",
             "style": "filtered",
-            "id": "chosenAnimal",
+            "id": "chosenPackage",
             "isRequired": true,
-            "errorMessage": "Please choose an animal",
+            "errorMessage": "Please select a package",
             "choices.data":
             {
                 "type": "Data.Query",

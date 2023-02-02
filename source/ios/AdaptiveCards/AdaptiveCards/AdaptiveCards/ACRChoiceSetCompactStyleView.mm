@@ -565,7 +565,7 @@ using namespace AdaptiveCards;
 
 @implementation ACOChoiceSetFilteredStyleValidator {
     NSMutableDictionary<NSString *, NSString *> *_staticListTitlesMap;
-    NSDictionary<NSString *, NSString *> *_dynamicListTitlesMap;
+    NSMutableDictionary<NSString *, NSString *> *_dynamicListTitlesMap;
 }
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem dataSource:(ACOFilteredDataSource *)dataSource
@@ -598,8 +598,8 @@ using namespace AdaptiveCards;
 {
     BOOL isValid = YES;
     if (self.isRequired) {
-        isValid = !(!input || !input.length ||
-                    ![_staticListTitlesMap objectForKey:input] || ![_dynamicListTitlesMap objectForKey:input]);
+        isValid = input != nil && input.length;
+        isValid = isValid ? [_staticListTitlesMap objectForKey:input] != nil || [_dynamicListTitlesMap objectForKey:input] != nil : NO;
     } else if (input && input.length) {
         isValid = ([_staticListTitlesMap objectForKey:input] != nil || [_dynamicListTitlesMap objectForKey:input] != nil);
     }
@@ -617,7 +617,10 @@ using namespace AdaptiveCards;
 
 - (void)updateDynamicTitleMap:(NSDictionary *)titleMap
 {
-    _dynamicListTitlesMap = titleMap;
+    [_dynamicListTitlesMap removeAllObjects];
+    for (id key in titleMap) {
+        _dynamicListTitlesMap[key] = [titleMap objectForKey:key];
+    }
 }
 
 @end
