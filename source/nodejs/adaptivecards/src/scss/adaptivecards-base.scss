@@ -316,7 +316,7 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-choice {
+        &.ac-choiceSetInput-choiceContainer {
             background-color: $background-color;
             display: flex;
             width: 100%;
@@ -324,6 +324,16 @@ $font-family: 'Segoe UI', sans-serif;
             &:hover {
                 background-color: lightgrey;
                 box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
+            }
+        }
+
+        &.ac-choiceSetInput-choice {
+            width: 100%;
+
+            &:focus-visible {
+                background-color: lightgrey;
+                box-shadow: lightgrey 8px 0px 0px, lightgrey -8px 0px 0px;
+                outline: none;
             }
         }
 

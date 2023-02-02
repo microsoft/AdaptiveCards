@@ -5595,11 +5595,15 @@ export class FilteredChoiceSet {
         const choiceContainer = document.createElement("div");
         choiceContainer.className = this._hostConfig.makeCssClassName(
             "ac-input",
-            "ac-choice"
+            "ac-choiceSetInput-choiceContainer"
         );
         choiceContainer.tabIndex = -1;
 
         const choice = document.createElement("span");
+        choice.className = this._hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-choice"
+        );
         choice.id = `ac-choiceSetInput-choice-${id}`;
         choice.innerText = value;
         choice.tabIndex = -1;
