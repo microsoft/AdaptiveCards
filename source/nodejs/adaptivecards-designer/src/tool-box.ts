@@ -112,9 +112,6 @@ export class Toolbox {
             
             this._isExpanded = false;
             this.toggled(saveState);
-
-            // Now that we've updated the visual state, move focus
-            this._collapsedStateButtonElement.focus();
         }
     }
 
@@ -124,9 +121,6 @@ export class Toolbox {
 
             this._isExpanded = true;
             this.toggled();
-            
-            // Now that we've updated the visual state, move focus
-            this._expandedStateButtonElement.focus();
         }
     }
 
@@ -218,11 +212,19 @@ export class Toolbox {
         this._expandedStateButtonElement.onkeydown = (e) => {
             if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 this.collapse();
+
+                // Now that we've updated the visual state, move focus 
+                this._collapsedStateButtonElement.focus();
+                
                 e.preventDefault();
             }
 
             if (e.key === Constants.keys.escape) {
                 this.collapse();
+
+                // Now that we've updated the visual state, move focus 
+                this._collapsedStateButtonElement.focus();
+                
                 e.preventDefault();
             }
         }
@@ -265,12 +267,20 @@ export class Toolbox {
         this._collapsedStateButtonElement.onkeydown = (e) => {
             if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 this.expand();
+
+                // Now that we've updated the visual state, move focus
+                this._expandedStateButtonElement.focus();
+                
                 e.preventDefault();
             }
         }
 
         this._collapsedStateButtonElement.onclick = (e) => {
             this.expand();
+
+            // Now that we've updated the visual state, move focus
+            this._expandedStateButtonElement.focus();
+
             e.preventDefault();
             return true;
         }
