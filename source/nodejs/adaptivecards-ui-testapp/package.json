@@ -29,7 +29,7 @@
 		"release": "npm run clean && webpack --mode=production"
 	},
 	"dependencies": {
-		"adaptivecards-controls": "^0.11.0-alpha.0",
+		"adaptivecards-controls": "^0.10.1",
 		"remarkable": "^2.0.1"
 	},
 	"devDependencies": {
