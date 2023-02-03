@@ -3399,6 +3399,9 @@ export class CarouselPeer extends ContainerPeer {
     // Question: What do we want the default value to be here?
     static readonly timerProperty = new CarouselTimerPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
     static readonly initialPageProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "initialPageIndex", "Initial page", 0);
+    static readonly orientationProperty = new EnumPropertyEditor(Adaptive.Versions.v1_6, "carouselOrientation", "Orientation", Adaptive.Orientation);
+    static readonly heightInPixelsProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "carouselHeight", "Height in pixels");
+    static readonly loopProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_6, "carouselLoop", "Loop");
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3436,7 +3439,10 @@ export class CarouselPeer extends ContainerPeer {
         propertySheet.add(
             defaultCategory,
             CarouselPeer.timerProperty,
-            CarouselPeer.initialPageProperty);
+            CarouselPeer.initialPageProperty,
+            CarouselPeer.orientationProperty,
+            CarouselPeer.heightInPixelsProperty,
+            CarouselPeer.loopProperty);
     }
 
     canDrop(peer: DesignerPeer) {

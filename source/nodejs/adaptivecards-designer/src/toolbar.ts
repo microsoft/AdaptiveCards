@@ -59,6 +59,7 @@ export class ToolbarButton extends ToolbarElement {
     private _isEnabled: boolean = true;
     private _allowToggle: boolean = false;
     private _isToggled: boolean = false;
+    private _isLink: boolean = false;
 
     protected clicked() {
         if (this.isEnabled && this.onClick) {
@@ -105,6 +106,10 @@ export class ToolbarButton extends ToolbarElement {
         }
 
         this.renderedElement.title = this.toolTip ? this.toolTip : "";
+        
+        if (this._isLink) {
+            this.renderedElement.setAttribute("role", "link");
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -128,12 +133,14 @@ export class ToolbarButton extends ToolbarElement {
         id: string,
         caption: string,
         iconClass: string,
-        onClick: (sender: ToolbarButton) => void = null) {
+        onClick: (sender: ToolbarButton) => void = null,
+        isLink: boolean = false) {
         super(id);
 
         this.caption = caption;
         this.iconClass = iconClass;
         this.onClick = onClick;
+        this._isLink = isLink;
     }
 
     get allowToggle(): boolean {
