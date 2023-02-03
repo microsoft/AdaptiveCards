@@ -369,6 +369,10 @@ a.ac-anchor:hover {
     border-radius:3px;
     height:38px;
     width:16px;
+    /* The arrows already have 'top: 50%' set
+    We need to subtract half of the bottom margin and half of the arrow height to center the arrows
+   (16/2) + (38/2) = 27 */
+    margin-top: -27px !important;
 }
 
 .swiper-button-prev.ac-carousel-up,
