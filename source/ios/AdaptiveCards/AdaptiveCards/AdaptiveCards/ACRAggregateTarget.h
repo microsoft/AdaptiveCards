@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACOInputResults.h"
+#import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
-#import <AdaptiveCards/ACOInputResults.h>
-#import <AdaptiveCards/ACRBaseTarget.h>
 #import <UIKit/UIKit.h>
 
 // keys used in retrieving values from properties that are dispatced by

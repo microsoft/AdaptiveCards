@@ -135,7 +135,7 @@
 
 - (void)testSmokeTestActivityUpdateDate
 {
-    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    [self openCardForVersion:@"v1.5" forCardType:@"Scenarios" withCardName:@"ActivityUpdate.json"];
 
     [self tapOnButtonWithText:@"Set due date"];
 
@@ -145,7 +145,7 @@
                              month:@"July"
                                day:@"15"];
 
-    [self tapOnButtonWithText:@"OK"];
+    [self tapOnButtonWithText:@"Send"];
 
     NSString *resultsString = [self getInputsString];
     NSDictionary *resultsDictionary = [self parseJsonToDictionary:resultsString];
@@ -156,7 +156,7 @@
 
 - (void)testSmokeTestActivityUpdateComment
 {
-    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    [self openCardForVersion:@"v1.5" forCardType:@"Scenarios" withCardName:@"ActivityUpdate.json"];
 
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"Comment"] tap];
@@ -196,9 +196,9 @@
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
 
-    XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:3];
+    XCUIElementQuery *container1Query = [chatWindow.buttons matchingIdentifier:@"OneNote,Dolor Sit Amet,Projects > LoremIpsum"];
 
-    XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeButton] elementBoundByIndex:1];
+    XCUIElementQuery *container2Query = [chatWindow.buttons matchingIdentifier:@"OneNote,OneNote File 2,Documents > Test"];
 
     // For some unknown reason this test succeeds on a mackbook but not in
     // a mac mini (xcode and emulator versions match), so we have to add a
@@ -206,8 +206,7 @@
     [NSThread sleepForTimeInterval:1];
 
     // Execute a drag from the 4th element to the 2nd element
-    [container1 pressForDuration:1 thenDragToElement:container2];
-
+    [container1Query.element pressForDuration:1 thenDragToElement:container2Query.element];
     // assert the submit textview has a blank space, thus the submit event was not raised
     XCTAssert([self verifyInputsAreEmpty]);
 }

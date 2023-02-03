@@ -6,14 +6,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity Name="db5e67f8-09be-4a82-a64b-a02a684b01b7"
-            Publisher="CN=rebecch"
+            Publisher="CN=Microsoft Corporation"
             Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="db5e67f8-09be-4a82-a64b-a02a684b01b7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>UWPObjectModelTest</DisplayName>
-    <PublisherDisplayName>rebecch</PublisherDisplayName>
+    <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

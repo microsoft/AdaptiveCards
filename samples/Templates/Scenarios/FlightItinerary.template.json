@@ -1,13 +1,19 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.0",
+	"version": "1.5",
 	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
 		{
 			"type": "TextBlock",
+			"text": "Your Flight Itinerary",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "TextBlock",
 			"text": "Passengers",
-			"weight": "Bolder",
+			"weight": "bolder",
 			"wrap": true
 		},
 		{
@@ -19,27 +25,27 @@
 		{
 			"type": "TextBlock",
 			"text": "Jeremy Goldberg",
-			"spacing": "None",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Evan Litvak",
-			"spacing": "None",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "2 Stops",
-			"weight": "Bolder",
-			"spacing": "Medium",
+			"weight": "bolder",
+			"spacing": "medium",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "{{DATE(${string(Segments[0].DepartureDateTime)}, SHORT)}} {{TIME(${string(Segments[0].DepartureDateTime)})}}",
-			"weight": "Bolder",
-			"spacing": "None",
+			"weight": "bolder",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
@@ -52,68 +58,44 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[0].OriginStation == 11235}",
 							"text": "${Places[0].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${Segments[0].OriginStation == 13554}",
 							"text": "${Places[1].Name}",
 							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
-						{
-							"type": "TextBlock",
-							"$when": "${Segments[0].DestinationStation == 11235}",
-							"text": "${Places[0].Name}",
-							"horizontalAlignment": "Right",
-							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
-							"$when": "${Segments[0].DestinationStation == 13554}",
-							"text": "${Places[1].Name}",
-							"horizontalAlignment": "Right",
-							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"spacing": "none",
-			"columns": [
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
-						{
-							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[0].OriginStation == 11235}",
 							"text": "${Places[0].Code}",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[0].OriginStation == 13554}",
 							"text": "${Places[1].Code}",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -121,13 +103,14 @@
 				{
 					"type": "Column",
 					"width": "auto",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"altText": "Airplane",
-							"size": "Small",
-							"spacing": "None"
+							"altText": "Flight to",
+							"size": "small",
+							"spacing": "none"
 						}
 					]
 				},
@@ -137,22 +120,49 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"$when": "${Segments[0].DestinationStation == 11235}",
+							"text": "${Places[0].Name}",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"$when": "${Segments[0].DestinationStation == 13554}",
+							"text": "${Places[1].Name}",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[0].DestinationStation == 11235}",
 							"text": "${Places[0].Code}",
-							"horizontalAlignment": "Right",
-							"spacing": "None",
+							"horizontalAlignment": "right",
+							"spacing": "none",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[0].DestinationStation == 13554}",
 							"text": "${Places[1].Code}",
-							"horizontalAlignment": "Right",
-							"spacing": "None",
+							"horizontalAlignment": "right",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -162,15 +172,15 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"weight": "Bolder",
-			"spacing": "Medium",
+			"weight": "bolder",
+			"spacing": "medium",
 			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "{{DATE(${string(Segments[1].ArrivalDateTime)}, SHORT)}} {{TIME(${string(Segments[1].ArrivalDateTime)})}}",
-			"weight": "Bolder",
-			"spacing": "None",
+			"weight": "bolder",
+			"spacing": "none",
 			"wrap": true
 		},
 		{
@@ -183,68 +193,44 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
 							"$when": "${Segments[1].OriginStation == 11235}",
 							"text": "${Places[0].Name}",
 							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${Segments[1].OriginStation == 13554}",
 							"text": "${Places[1].Name}",
 							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
-						{
-							"type": "TextBlock",
-							"$when": "${Segments[1].DestinationStation == 11235}",
-							"text": "${Places[0].Name}",
-							"horizontalAlignment": "Right",
-							"isSubtle": true,
-							"wrap": true
+							"wrap": true,
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
-							"$when": "${Segments[1].DestinationStation == 13554}",
-							"text": "${Places[1].Name}",
-							"horizontalAlignment": "Right",
-							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"spacing": "none",
-			"columns": [
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
-						{
-							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[1].OriginStation == 11235}",
 							"text": "${Places[0].Code}",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[1].OriginStation == 13554}",
 							"text": "${Places[1].Code}",
-							"spacing": "None",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -252,13 +238,14 @@
 				{
 					"type": "Column",
 					"width": "auto",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
-							"altText": "Airplane",
-							"size": "Small",
-							"spacing": "None"
+							"altText": "Flight to",
+							"size": "small",
+							"spacing": "none"
 						}
 					]
 				},
@@ -268,22 +255,49 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"$when": "${Segments[1].DestinationStation == 11235}",
+							"text": "${Places[0].Name}",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"$when": "${Segments[1].DestinationStation == 13554}",
+							"text": "${Places[1].Name}",
+							"horizontalAlignment": "right",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[1].DestinationStation == 11235}",
 							"text": "${Places[0].Code}",
-							"horizontalAlignment": "Right",
-							"spacing": "None",
+							"horizontalAlignment": "right",
+							"spacing": "none",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"size": "ExtraLarge",
-							"color": "Accent",
+							"size": "extraLarge",
+							"color": "accent",
 							"$when": "${Segments[1].DestinationStation == 13554}",
 							"text": "${Places[1].Code}",
-							"horizontalAlignment": "Right",
-							"spacing": "None",
+							"horizontalAlignment": "right",
+							"spacing": "none",
 							"wrap": true
 						}
 					]
@@ -292,7 +306,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Medium",
+			"spacing": "medium",
 			"columns": [
 				{
 					"type": "Column",
@@ -301,7 +315,7 @@
 						{
 							"type": "TextBlock",
 							"text": "Total",
-							"size": "Medium",
+							"size": "medium",
 							"isSubtle": true,
 							"wrap": true
 						}
@@ -313,10 +327,10 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "$${formatNumber(BookingOptions[0].BookingItems[0].Price, 2)}",
-							"size": "Medium",
-							"weight": "Bolder",
+							"size": "medium",
+							"weight": "bolder",
 							"wrap": true
 						}
 					]

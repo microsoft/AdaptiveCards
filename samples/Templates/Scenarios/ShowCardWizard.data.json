@@ -26,8 +26,8 @@
 		"idPrefix": "address",
 		"textInputFields": [
 			{
-			"label": "Address line 1",
-			"id": "addressLine1",
+				"label": "Address line 1",
+				"id": "addressLine1",
 				"required": true
 			},
 			{

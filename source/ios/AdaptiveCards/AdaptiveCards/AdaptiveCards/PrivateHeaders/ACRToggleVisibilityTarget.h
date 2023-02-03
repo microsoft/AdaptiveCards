@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACRBaseTarget.h>
-#import <AdaptiveCards/ACRIContentHoldingView.h>
-#import <AdaptiveCards/ACRView.h>
-#import <AdaptiveCards/ToggleVisibilityAction.h>
+#import "ACRBaseTarget.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRView.h"
+#import "ToggleVisibilityAction.h"
 
 #import <UIKit/UIKit.h>
 

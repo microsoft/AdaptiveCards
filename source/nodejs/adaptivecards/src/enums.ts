@@ -54,6 +54,11 @@ export enum ImageSize {
     Large
 }
 
+export enum ImageSetPresentationStyle {
+    Default,
+    Stacked
+}
+
 export enum SizeUnit {
     Weight,
     Pixel
@@ -65,6 +70,11 @@ export enum TextSize {
     Medium,
     Large,
     ExtraLarge
+}
+
+export enum InputStyle {
+    RevealOnHover,
+    Default
 }
 
 export enum TextWeight {
@@ -150,6 +160,11 @@ export enum InputTextStyle {
     Url,
     Email,
     Password
+}
+
+export enum InputLabelPosition {
+    Inline,
+    Above
 }
 
 export enum ValidationPhase {

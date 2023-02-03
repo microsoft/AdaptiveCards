@@ -8,7 +8,7 @@
 @class ACRView;
 @class ACRRenderer;
 
-#import <AdaptiveCards/ACRViewController.h>
+#import "ACRViewController.h"
 #import <Foundation/Foundation.h>
 
 @interface ACRRenderResult : NSObject

@@ -1,9 +1,10 @@
 {
-    "title": "Please confirm your order:",
-    "customer": [{
-        "firstName": "John",
-        "lastName": "Smith",
-        "phone": "(555) 555-5555"
-    }
-    ]
+	"title": "Please confirm your order:",
+	"customer": [
+		{
+			"firstName": "John",
+			"lastName": "Smith",
+			"phone": "(555) 555-5555"
+		}
+	]
 }

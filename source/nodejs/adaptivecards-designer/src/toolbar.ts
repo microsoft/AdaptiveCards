@@ -59,6 +59,7 @@ export class ToolbarButton extends ToolbarElement {
     private _isEnabled: boolean = true;
     private _allowToggle: boolean = false;
     private _isToggled: boolean = false;
+    private _isLink: boolean = false;
 
     protected clicked() {
         if (this.isEnabled && this.onClick) {
@@ -105,6 +106,10 @@ export class ToolbarButton extends ToolbarElement {
         }
 
         this.renderedElement.title = this.toolTip ? this.toolTip : "";
+        
+        if (this._isLink) {
+            this.renderedElement.setAttribute("role", "link");
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -128,12 +133,14 @@ export class ToolbarButton extends ToolbarElement {
         id: string,
         caption: string,
         iconClass: string,
-        onClick: (sender: ToolbarButton) => void = null) {
+        onClick: (sender: ToolbarButton) => void = null,
+        isLink: boolean = false) {
         super(id);
 
         this.caption = caption;
         this.iconClass = iconClass;
         this.onClick = onClick;
+        this._isLink = isLink;
     }
 
     get allowToggle(): boolean {
@@ -271,12 +278,10 @@ export class ToolbarChoicePicker extends ToolbarElement {
         if (!this.isEnabled) {
             this.renderedElement.classList.add("acd-toolbar-picker-disabled");
             this.renderedElement.setAttribute("aria-disabled", "true");
-            this.renderedElement.tabIndex = -1;
             this._dropDown.isEnabled = false;
         } else {
             this.renderedElement.classList.remove("acd-toolbar-picker-disabled");
             this.renderedElement.removeAttribute("aria-disabled");
-            this.renderedElement.tabIndex = 0;
             this._dropDown.isEnabled = true;
         }
 

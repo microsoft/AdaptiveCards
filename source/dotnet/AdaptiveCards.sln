@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C443BF0A-C616-4E98-8994-C5BAE76AE556}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", "Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{F36E1451-6A16-4E83-B7B3-90024BF36B4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating.Test", "Test\AdaptiveCards.Templating.Test\AdaptiveCards.Templating.Test.csproj", "{9E7E5953-A5B4-4867-9A06-046A754AFAC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A751CC8F-EF13-4EA1-B9FD-611135AD7C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

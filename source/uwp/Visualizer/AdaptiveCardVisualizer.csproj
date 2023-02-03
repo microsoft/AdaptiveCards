@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -42,51 +42,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ErrorViewModelConverters.cs" />
-    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
-    <Compile Include="CustomElements\CustomInput.cs" />
-    <Compile Include="DocumentView.xaml.cs">
-      <DependentUpon>DocumentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ErrorTabView.xaml.cs">
-      <DependentUpon>ErrorTabView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GenericDocumentView.xaml.cs">
-      <DependentUpon>GenericDocumentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\BindableBase.cs" />
-    <Compile Include="Helpers\IListExtensions.cs" />
-    <Compile Include="Helpers\PayloadValidator.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceResolvers\MySymbolResourceResolver.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="TabView.xaml.cs">
-      <DependentUpon>TabView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\ErrorViewModel.cs" />
-    <Compile Include="ViewModel\GenericDocumentViewModel.cs" />
-    <Compile Include="ViewModel\HostConfigEditorViewModel.cs" />
-    <Compile Include="ViewModel\KeyboardPressTimeCounter.cs" />
-    <Compile Include="ViewModel\MainPageViewModel.cs" />
-    <Compile Include="ViewModel\DocumentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.2\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.3\Scenarios\*.json">
+    <Content Include="..\..\..\samples\v1.5\Scenarios\*.json">
       <Link>Samples\%(Filename).json</Link>
     </Content>
     <Content Include="..\..\..\schemas\**\adaptive-card.json">
@@ -95,64 +57,16 @@
     <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
-    <Content Include="Assets\SmallTile.scale-100.png" />
-    <Content Include="Assets\SmallTile.scale-200.png" />
-    <Content Include="Assets\SmallTile.scale-400.png" />
-    <Content Include="Assets\SplashScreen.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-400.png" />
-    <Content Include="Assets\Square150x150Logo.scale-100.png" />
-    <Content Include="Assets\Square150x150Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
-    <Content Include="Assets\Square44x44Logo.scale-100.png" />
-    <Content Include="Assets\Square44x44Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
-    <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Assets\StoreLogo.scale-200.png" />
-    <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Symbols\down.png" />
-    <Content Include="Assets\Symbols\up.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="DocumentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ErrorTabView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GenericDocumentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TabView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
@@ -189,6 +103,7 @@
       <Name>AdaptiveCardRenderer</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\SharedVisualizer\SharedVisualizer.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

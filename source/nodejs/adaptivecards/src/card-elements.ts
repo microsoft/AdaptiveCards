@@ -349,6 +349,18 @@ export abstract class CardElement extends CardObject {
         }
     }
 
+    /*
+     * Called when mouse enters or leaves the card.
+     * Inputs elements need to update their visual state in such events like showing or hiding borders etc.
+     * It calls Input.updateVisualState(eventType) for all inputs.
+     * This method on input (updateVisualState) is supposed to be called from card level on mouse events.
+     */
+    protected updateInputsVisualState(hover: boolean) {
+        const allInputs: Input[] = this.getAllInputs();
+        const inputEventType = !!hover ? InputEventType.MouseEnterOnCard : InputEventType.MouseLeaveOnCard;
+        allInputs.forEach((input) => input.updateVisualState(inputEventType));
+    }
+
     protected isDisplayed(): boolean {
         return (
             this._renderedElement !== undefined &&
@@ -715,6 +727,22 @@ export abstract class CardElement extends CardObject {
 
     getActionById(_id: string): Action | undefined {
         return undefined;
+    }
+    
+    getElementByIdFromAction(id: string): CardElement | undefined {
+        let result = undefined;
+        for (let i = 0; i < this.getActionCount(); i++) {
+            const action = this.getActionAt(i);
+
+            if (action instanceof ShowCardAction) {
+                result = action.card.getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     getEffectivePadding(): PaddingDefinition {
@@ -1920,12 +1948,15 @@ export class Image extends CardElement {
     static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [
         "Action.ShowCard"
     ]);
+    static readonly shouldForceLoadProperty = new BoolProperty(Versions.v1_6, "forceLoad", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.remove(CardElement.heightProperty);
     }
+
+    public renderedImageElement?: HTMLElement;
 
     @property(Image.urlProperty)
     url?: string;
@@ -1950,6 +1981,9 @@ export class Image extends CardElement {
 
     @property(Image.selectActionProperty)
     selectAction?: Action;
+
+    @property(Image.shouldForceLoadProperty)
+    forceLoad: boolean;
 
     //#endregion
 
@@ -2033,6 +2067,9 @@ export class Image extends CardElement {
             }
 
             const imageElement = document.createElement("img");
+
+            this.renderedImageElement = imageElement;
+
             imageElement.onload = (_e: Event) => {
                 raiseImageLoadedEvent(this);
             };
@@ -2040,7 +2077,7 @@ export class Image extends CardElement {
                 if (this.renderedElement) {
                     const card = this.getRootElement() as AdaptiveCard;
 
-                    this.renderedElement;
+                    clearElement(this.renderedElement);
 
                     if (card && card.designMode) {
                         const errorElement = document.createElement("div");
@@ -2087,7 +2124,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.selectAction.setupElementForAccessibility(imageElement);
+                this.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2107,7 +2144,7 @@ export class Image extends CardElement {
                 imageElement.style.backgroundColor = backgroundColor;
             }
 
-            imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+            this.setImageSource(imageElement);    
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
             if (altTextProperty) {
@@ -2118,6 +2155,12 @@ export class Image extends CardElement {
         }
 
         return element;
+    }
+
+    protected setupElementForAccessibility(element: HTMLImageElement) {
+        this.selectAction?.setupElementForAccessibility(element);
+        // Image elements cannot have aria-description
+        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -2148,6 +2191,45 @@ export class Image extends CardElement {
 
     getResourceInformation(): IResourceInformation[] {
         return this.url ? [{ url: this.url, mimeType: "image" }] : [];
+    }
+
+    private setImageSource(imageElement: HTMLImageElement): void {
+        const imageForceLoader: ImageForceLoader = new ImageForceLoader(this.forceLoad, this.url);
+        imageForceLoader.configureImage(this);
+        imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+        imageForceLoader.resetImage(this);
+    } 
+}
+
+// configures Image element to fetch a new image data from url source instead of relying on cache
+// currently rudimentary refreshing scheme is used
+// by attaching unique query string to url, we bypass the cache usage
+class ImageForceLoader{
+    private uniqueHash : string;
+    public readonly urlWithForceLoadOption : string;
+    constructor(
+        readonly doForceLoad: boolean,
+        readonly url : string | undefined,
+    )
+    {
+        if (url && url.length && doForceLoad) {
+            // we can do better by appending unique key such as uuid instead of epoch
+            // however the current usage is for front-end ui and networking,  
+            // since ui is running in single main thread, this is sufficient mechanism
+            // without needing to depend on external library for our small use cases.
+            this.uniqueHash = '?' + Date.now();
+            this.urlWithForceLoadOption = url + this.uniqueHash;
+        }
+    }
+
+    public configureImage(image: Image): void {
+        if (this.urlWithForceLoadOption && this.urlWithForceLoadOption.length) {
+            image.url = this.urlWithForceLoadOption;
+        }
+    }
+
+    public resetImage(image: Image): void {
+        image.url = this.url;
     }
 }
 
@@ -2404,6 +2486,7 @@ export class ImageSet extends CardElementContainer {
             item.setParent(<CardElement>sender);
         }
     );
+
     static readonly imageSizeProperty = new EnumProperty(
         Versions.v1_0,
         "imageSize",
@@ -2411,11 +2494,31 @@ export class ImageSet extends CardElementContainer {
         Enums.ImageSize.Medium
     );
 
+    static readonly imagePresentationStyle = new EnumProperty(
+        Versions.v1_6,
+        "style",
+        Enums.ImageSetPresentationStyle,
+        Enums.ImageSetPresentationStyle.Default
+    );
+
+    static readonly pixelOffset = new NumProperty(
+        Versions.v1_6,
+        "offset",
+        0,
+        undefined
+    );
+
     @property(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
     @property(ImageSet.imageSizeProperty)
     imageSize: Enums.ImageSize = Enums.ImageSize.Medium;
+
+    @property(ImageSet.imagePresentationStyle)
+    presentationStyle: Enums.ImageSetPresentationStyle = Enums.ImageSetPresentationStyle.Default;
+
+    @property(ImageSet.pixelOffset)
+    pixelOffset: number = 0;
 
     //#endregion
 
@@ -2447,14 +2550,44 @@ export class ImageSet extends CardElementContainer {
                 if (renderedImage) {
                     renderedImage.style.display = "inline-flex";
                     renderedImage.style.margin = "0px";
-                    renderedImage.style.marginRight = "10px";
+                    if (this.presentationStyle == Enums.ImageSetPresentationStyle.Default) {
+                        renderedImage.style.marginRight = "10px";
+                    }
 
                     Utils.appendChild(element, renderedImage);
                 }
             }
+            if (this.presentationStyle == Enums.ImageSetPresentationStyle.Stacked) {
+                this.applyStackedPresentationStyle();
+            }
         }
+        
 
         return element;
+    }
+
+    applyStackedPresentationStyle() {
+        if (this._images[0].renderedImageElement) {
+            let dimension = StackedImageConfigurator.parseNumericPixelDimension(this._images[0].renderedImageElement.style.height);
+            let bgColor = this.getEffectiveBackgroundColor();
+            if (dimension) {
+                let stackedImageConfigurator = new StackedImageConfigurator(this.pixelOffset, 
+                    dimension, bgColor);
+                stackedImageConfigurator.configureImagesArrayAsStackedLayout(this._images);
+            }
+        }
+    }
+
+    getEffectiveBackgroundColor() : string | undefined {
+        let parentContainer = this.getParentContainer();
+        let style = parentContainer?.getEffectiveStyle();
+
+        const styleDefinition = this.hostConfig.containerStyles.getStyleByName(
+            style,
+            this.hostConfig.containerStyles.getStyleByName(this.defaultStyle)
+        );
+
+        return Utils.stringToCssColor(styleDefinition.backgroundColor);
     }
 
     getItemCount(): number {
@@ -2509,6 +2642,92 @@ export class ImageSet extends CardElementContainer {
 
     indexOf(cardElement: CardElement): number {
         return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
+    }
+}
+
+class StackedImageConfigurator {
+    private sign45 = 0.7071;
+    private maxImageCounts: number = 2;
+    private offset: number = 0;
+    private normalizationConstant: number = 0;
+    private border: number = 5;
+    private dimension: number = 0;
+    private style: string;
+
+    constructor(offset: number, dimension: number, style: string | undefined) {
+        this.dimension = dimension;
+        this.normalizationConstant = (dimension * this.sign45 - 0.5 * dimension) * 2;
+        // offset determines how far images are placed from each other
+        // at zero, images are separated only by the border
+        // there is no restriction on how far they are apart in positive values, their actual
+        // positioning is limited by maximum size imposed by Image renderer
+        // a negative value can decrease upto the diameter of the image since a value less than the diameter
+        // put the images past each other, and the use of such value is not reasonable request
+        // users should change image positions in such case.
+        this.offset = this.sign45 * (Math.max(offset, -dimension) - this.normalizationConstant);
+        this.style = style ? style : "";
+    }
+
+    private moveImageRight(element: HTMLElement) {
+        element.style.marginLeft = this.offset + "px";
+    }
+
+    private moveImageUp(element: HTMLElement) {
+        element.style.marginBottom = this.offset + this.dimension+ "px";
+    }
+
+    private moveImageDown(element: HTMLElement) {
+        element.style.marginTop = this.offset + this.dimension + "px";
+    }
+
+    private makeImageRound(element: HTMLElement) {
+        element.style.borderRadius = "50%";
+        element.style.backgroundPosition = "50% 50%";
+        element.style.backgroundRepeat = "no-repeat";
+    }
+
+    private applyBorder(element: HTMLElement) {
+        element.style.height = (this.dimension + this.border * 2) + "px";
+        element.style.border = this.border + "px" + " solid " + this.style;
+    }
+
+    private configureImageForBottomLeft(element: HTMLElement) {
+        this.moveImageDown(element);
+        this.makeImageRound(element); 
+        this.applyBorder(element);
+        element.style.zIndex = "2";
+    }
+
+    private configureImageForTopRight(element: HTMLElement) {
+        this.moveImageUp(element);
+        this.moveImageRight(element);
+        this.makeImageRound(element); 
+        element.style.zIndex = "1";
+    }
+
+    // stacked layout is applied when there are two images in ImageSet,
+    // first image in the ImageSet is put bottom left of ImageSet,
+    // second image is placed top right diagonally to the first image at 45 angle
+    // first image is placed over the second image should the overlap to occur.
+    public configureImagesArrayAsStackedLayout(elements: Array<Image>) {
+        if (elements.length == 1) {
+            if (elements[0].renderedImageElement) {
+                this.makeImageRound(elements[0].renderedImageElement); 
+            }
+        }
+        else if (elements.length <= this.maxImageCounts) {
+            if (elements[0].renderedImageElement && elements[1].renderedImageElement) {
+                this.configureImageForBottomLeft(elements[0].renderedImageElement);
+                this.configureImageForTopRight(elements[1].renderedImageElement);
+            }
+        }
+    }
+
+    public static parseNumericPixelDimension(dimension: string): number | undefined  {
+        if (dimension?.substring(dimension.length - 2) == 'px') {
+            return parseInt(dimension.substring(0, dimension.length - 2));
+        }
+        return undefined;
     }
 }
 
@@ -3115,12 +3334,97 @@ export class Media extends CardElement {
     }
 }
 
-export abstract class Input extends CardElement implements IInput {
-    //#region Schema
+enum InputEventType {
+    InitialRender,
+    MouseEnterOnCard,
+    MouseLeaveOnCard,
+    FocusLeave
+}
 
+export abstract class Input extends CardElement implements IInput {
+    
+    //#region Schema
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
+    static readonly inputStyleProperty = new EnumProperty(
+        Versions.v1_6,
+        "inputStyle",
+        Enums.InputStyle,
+        Enums.InputStyle.Default,
+        [
+            { value: Enums.InputStyle.RevealOnHover },
+            { value: Enums.InputStyle.Default }
+        ]
+    );
+    static readonly labelWidthProperty = new CustomProperty<SizeAndUnit | undefined>(
+        Versions.v1_6,
+        "labelWidth",
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            let result: SizeAndUnit | undefined = prop.defaultValue;
+            const value = source[prop.name];
+            let invalidLabelWidth = false;
+            
+            if (typeof value === "number" && !isNaN(value)) {
+                result = new SizeAndUnit(value, Enums.SizeUnit.Weight);
+                if (result.physicalSize < 0 || result.physicalSize > 100) {
+                    invalidLabelWidth = true;
+                }
+            }
+            else if (typeof value === "string") {
+                try {
+                    result = SizeAndUnit.parse(value);
+                } catch (e) {
+                    invalidLabelWidth = true;
+                }
+            } else {
+                invalidLabelWidth = true;
+            }
+
+            if (invalidLabelWidth) {
+                context.logParseEvent(
+                    sender,
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    Strings.errors.invalidInputLabelWidth()
+                );
+                result = undefined;
+            }
+
+            return result;
+        },
+        (
+            sender: SerializableObject,
+            property: PropertyDefinition,
+            target: PropertyBag,
+            value: SizeAndUnit | undefined,
+            context: BaseSerializationContext
+        ) => {
+            if (value instanceof SizeAndUnit) {
+                if (value.unit === Enums.SizeUnit.Pixel) {
+                    context.serializeValue(target, "labelWidth", value.physicalSize + "px");
+                } else {
+                    context.serializeNumber(target, "labelWidth", value.physicalSize);
+                }
+            }
+        },
+        undefined
+    );
+
+    static readonly labelPositionProperty = new EnumProperty(
+        Versions.v1_6,
+        "labelPosition",
+        Enums.InputLabelPosition,
+        Enums.InputLabelPosition.Above,
+        [
+            { value: Enums.InputLabelPosition.Inline },
+            { value: Enums.InputLabelPosition.Above }
+        ]
+    );
 
     @property(Input.labelProperty)
     label?: string;
@@ -3130,6 +3434,15 @@ export abstract class Input extends CardElement implements IInput {
 
     @property(Input.errorMessageProperty)
     errorMessage?: string;
+
+    @property(Input.inputStyleProperty)
+    inputStyle: Enums.InputStyle = Enums.InputStyle.Default;
+    
+    @property(Input.labelWidthProperty)
+    labelWidth?: SizeAndUnit;
+
+    @property(Input.labelPositionProperty)
+    labelPosition?: Enums.InputLabelPosition;
 
     //#endregion
 
@@ -3190,7 +3503,11 @@ export abstract class Input extends CardElement implements IInput {
 
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
+        if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+            this._outerContainerElement.style.flexDirection = "row";
+        } else {
+            this._outerContainerElement.style.flexDirection = "column";
+        }
 
         const renderedInputControlId = Utils.generateUniqueId();
 
@@ -3220,9 +3537,13 @@ export abstract class Input extends CardElement implements IInput {
 
             if (this._renderedLabelElement) {
                 this._renderedLabelElement.id = Utils.generateUniqueId();
-                this._renderedLabelElement.style.marginBottom =
-                    hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
-
+                if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+                    // For inline label position: label should be in center of the div and no extra spacing needed
+                    this._renderedLabelElement.style.alignSelf = "center";
+                } else {
+                    this._renderedLabelElement.style.marginBottom =
+                        hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+                }
                 this._outerContainerElement.appendChild(this._renderedLabelElement);
             }
         }
@@ -3253,6 +3574,29 @@ export abstract class Input extends CardElement implements IInput {
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
             this._outerContainerElement.appendChild(this._inputControlContainerElement);
 
+            if (this._renderedLabelElement && this.labelPosition === Enums.InputLabelPosition.Inline) {
+                if (!this.labelWidth) {
+                    const defaultLabelWidth = hostConfig.inputs.label.width;
+                    this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
+                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
+                    const labelWidthInPercent = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
+                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
+                    const labelWidthInPixel = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPixel.toString() + "px";
+                }
+            }
+
+            this.updateVisualState(InputEventType.InitialRender);
+            if (this._renderedInputControlElement) {
+                this._renderedInputControlElement.onblur = (ev: MouseEvent) => {
+                    this.updateVisualState(InputEventType.FocusLeave);
+                };
+            }
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
@@ -3313,6 +3657,23 @@ export abstract class Input extends CardElement implements IInput {
 
                 this.updateInputControlAriaLabelledBy();
             }
+        }
+    }
+
+    updateVisualState(eventType: InputEventType): void {
+        if (!this._renderedInputControlElement || this.inputStyle !== Enums.InputStyle.RevealOnHover) {
+            return;
+        }
+        if (eventType === InputEventType.InitialRender) {
+            // on initial render, we will show input fields as read only view
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onrender"));
+        }
+        else if (eventType === InputEventType.MouseEnterOnCard) {
+            // on hover on the card, we will reveal the inputs by showing borders etc
+            // ac-inputStyle-revealOnHover-onhover class is also used to identify if mouse is hovering on the card
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
+        } else if (eventType === InputEventType.MouseLeaveOnCard) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
         }
     }
 
@@ -3580,6 +3941,12 @@ export class TextInput extends Input {
         return renderedInputControl;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        if (!(this.inlineAction || this.isMultiline)) {
+            super.updateVisualState(eventType);
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.Text";
     }
@@ -3765,6 +4132,9 @@ export class ToggleInput extends Input {
 
     protected get isNullable(): boolean {
         return false;
+    }
+
+    updateVisualState(eventType: InputEventType): void {
     }
 
     getJsonTypeName(): string {
@@ -4161,6 +4531,24 @@ export class ChoiceSetInput extends Input {
         }
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.isMultiSelect && this.isCompact) {
+            super.updateVisualState(eventType);
+
+            if (this._selectElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+                const hideDropDownPicker = shouldHideInputAdornersForRevealOnHover(this._selectElement, eventType);
+                
+                if (hideDropDownPicker) {
+                    this._selectElement.style.appearance = "none";
+                    this._selectElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+                } else {
+                    this._selectElement.style.appearance = "auto";
+                    this._selectElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+                }
+            }
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
     }
@@ -4421,6 +4809,15 @@ export class DateInput extends Input {
         return this._dateInputElement;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        super.updateVisualState(eventType);
+
+        if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            const hideDatePicker = shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
+            updateInputAdornersVisibility(this._dateInputElement, hideDatePicker  /*hide*/);
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.Date";
     }
@@ -4551,6 +4948,15 @@ export class TimeInput extends Input {
         }
 
         return this._timeInputElement;
+    }
+
+    updateVisualState(eventType: InputEventType): void {
+        super.updateVisualState(eventType);
+
+        if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            const hideTimePicker = shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
+            updateInputAdornersVisibility(this._timeInputElement, hideTimePicker /*hide*/);
+        }
     }
 
     getJsonTypeName(): string {
@@ -6395,6 +6801,16 @@ export class ActionSet extends CardElement {
         return super.findDOMNodeOwner(node);
     }
 
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
+    }
+
     get isInteractive(): boolean {
         return true;
     }
@@ -7739,6 +8155,40 @@ function raiseElementVisibilityChangedEvent(
     }
 }
 
+function updateInputAdornersVisibility(input: HTMLInputElement, hide: boolean) {
+    if (!!hide) {
+        // hides the time/date picker icon
+        input.readOnly = true;
+        // hides the cross button icon
+        input.required = true;
+    } else {
+         // shows the time/date picker icon
+         input.readOnly = false;
+         // shows the cross button icon
+         input.required = false;
+    }
+    
+}
+
+function shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
+    // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
+    // 1. intial render of card: hide input adorners
+    // 2. mouse hover on the card: show input adorners
+    // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
+    // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
+
+    // check if input still has the focus
+    const isInputInFocus = input === document.activeElement;
+
+    // check if mouse is still on the card
+    const isMouseOverCard = input.classList.contains("ac-inputStyle-revealOnHover-onhover");
+
+    const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
+                              (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
+                              (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
+    return hideInputAdorners;
+}
+
 /**
  * @returns return false to continue with default context menu; return true to skip SDK default context menu
  */
@@ -7936,6 +8386,16 @@ export abstract class ContainerWithActions extends Container {
 
     getForbiddenActionNames(): string[] {
         return [];
+    }
+    
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
     }
 
     get isStandalone(): boolean {
@@ -8440,6 +8900,14 @@ export class AdaptiveCard extends ContainerWithActions {
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
+
+                renderedCard.onmouseenter = (ev: MouseEvent) => {
+                    this.updateInputsVisualState(true /* hover */);
+                };
+
+                renderedCard.onmouseleave = (ev: MouseEvent) => {
+                    this.updateInputsVisualState(false /* hover */);
+                };
             }
         }
 

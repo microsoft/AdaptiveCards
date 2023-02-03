@@ -5,9 +5,9 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACRTargetBuilder.h>
-#import <AdaptiveCards/ACRView.h>
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRTargetBuilder.h"
+#import "ACRView.h"
 #import <Foundation/Foundation.h>
 
 // protocol all TargetBuild should implement

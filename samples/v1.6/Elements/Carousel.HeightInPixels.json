@@ -1,0 +1,67 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Carousel",
+			"timer": 5000,
+			"heightInPixels": "100px",
+			"pages": [
+				{
+					"type": "CarouselPage",
+					"id": "firstCarouselPage",
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"title": "Click for more information about the first carousel page!",
+						"url": "https://adaptivecards.io/"
+					},
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/cats/1.png",
+							"altText": "Cat",
+							"size": "medium"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "theSecondCarouselPage",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/cats/2.png",
+							"altText": "Cat with bandana",
+							"size": "medium"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "last-carousel-page",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/cats/3.png",
+							"altText": "That's a cool cat!",
+							"size": "medium"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "See more",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "Another action",
+			"url": "https://adaptivecards.io"
+		}
+	]
+}

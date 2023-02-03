@@ -37,7 +37,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     TEST_CLASS(EnumTests)
     {
     public:
-        ENUM_TEST(ActionAlignment, ActionAlignment::Center, "Center"s);  
+        ENUM_TEST(ActionAlignment, ActionAlignment::Center, "Center"s);
         ENUM_TEST(ActionMode, ActionMode::Popup, "Popup"s);
         ENUM_TEST(ActionsOrientation, ActionsOrientation::Vertical, "Vertical"s);
         ENUM_TEST(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s);

@@ -1,0 +1,784 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "large",
+									"weight": "bolder",
+									"text": "**EXPENSE APPROVAL**",
+									"wrap": true,
+									"style": "heading"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/pending.png",
+									"height": "30px",
+									"altText": "Pending"
+								}
+							],
+							"width": "auto"
+						}
+					]
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "extraLarge",
+									"text": "Trip to UAE",
+									"wrap": true,
+									"style": "heading"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "ActionSet",
+									"actions": [
+										{
+											"type": "Action.OpenUrl",
+											"title": "EXPORT AS PDF",
+											"url": "https://adaptivecards.io"
+										}
+									]
+								}
+							],
+							"width": "auto"
+						}
+					]
+				},
+				{
+					"type": "TextBlock",
+					"spacing": "small",
+					"size": "small",
+					"weight": "bolder",
+					"text": "[ER-13052](https://adaptivecards.io)",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"spacing": "large",
+					"facts": [
+						{
+							"title": "Submitted By",
+							"value": "**Matt Hidinger**  matt@contoso.com"
+						},
+						{
+							"title": "Duration",
+							"value": "2019/06/19 - 2019/06/25"
+						},
+						{
+							"title": "Submitted On",
+							"value": "2019/04/14"
+						},
+						{
+							"title": "Reimbursable Amount",
+							"value": "$ 404.30"
+						},
+						{
+							"title": "Awaiting approval from",
+							"value": "**Thomas**  thomas@contoso.com"
+						},
+						{
+							"title": "Submitted to",
+							"value": "**David**  david@contoso.com"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "large",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"weight": "bolder",
+									"text": "DATE",
+									"wrap": true
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"spacing": "large",
+							"items": [
+								{
+									"type": "TextBlock",
+									"weight": "bolder",
+									"text": "CATEGORY",
+									"wrap": true
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"weight": "bolder",
+									"text": "AMOUNT",
+									"wrap": true
+								}
+							],
+							"width": "auto"
+						}
+					]
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "06/19",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "medium",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Air Travel Expense",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "$ 300",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown1",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Air Travel Expense $300 collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp1",
+							"isVisible": false,
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Air Travel Expense $300 expanded"
+						}
+					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": ["cardContent1", "chevronUp1", "chevronDown1"]
+					},
+					"width": "auto"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "cardContent1",
+			"isVisible": false,
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "* Leg 1 on Tue, Jun 19th, 2019 at 6:00 AM.",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "* Leg 2 on Tue,Jun 19th, 2019 at 7:15 PM.",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"items": [
+								{
+									"type": "Input.Text",
+									"id": "comment1",
+									"label": "Add your comment here"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "ActionSet",
+											"actions": [
+												{
+													"type": "Action.Submit",
+													"title": "Send",
+													"data": {
+														"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+														"action": "comment",
+														"lineItem": 1
+													}
+												}
+											]
+										}
+									],
+									"width": "auto"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "06/19",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "medium",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Auto Mobile Expense",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "$ 100",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown2",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Auto Mobile Expense $100 collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp2",
+							"isVisible": false,
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Auto Mobile Expense $100 expanded"
+						}
+					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": ["cardContent2", "chevronUp2", "chevronDown2"]
+					},
+					"width": "auto"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "cardContent2",
+			"isVisible": false,
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "* Contoso Car Rentrals, Tues 6/19 at 7:00 AM",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"items": [
+								{
+									"type": "Input.Text",
+									"id": "comment2",
+									"label": "Add your comment here"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "ActionSet",
+											"actions": [
+												{
+													"type": "Action.Submit",
+													"title": "Send",
+													"data": {
+														"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+														"action": "comment",
+														"lineItem": 2
+													}
+												}
+											]
+										}
+									],
+									"width": "auto"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "06/25",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "medium",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Excess Baggage Cost",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "$ 4.30",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown3",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Excess Baggage Cost $50.38 collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp3",
+							"isVisible": false,
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Excess Baggage Cost $50.38 expanded"
+						}
+					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": ["cardContent3", "chevronUp3", "chevronDown3"]
+					},
+					"width": "auto"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "cardContent3",
+			"isVisible": false,
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "Input.Text",
+							"id": "comment3",
+							"label": "Add your comment here"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "ActionSet",
+											"actions": [
+												{
+													"type": "Action.Submit",
+													"title": "Send",
+													"data": {
+														"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+														"action": "comment",
+														"lineItem": 3
+													}
+												}
+											]
+										}
+									],
+									"width": "auto"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Table",
+			"spacing": "large",
+			"separator": true,
+			"firstRowAsHeaders": false,
+			"showGridLines": false,
+			"columns": [
+				{
+					"width": 3
+				},
+				{
+					"width": 1
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Total Expense Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "404.30",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Non-reimbursable Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "(-) 0.00",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Advance Amount",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "(-) 0.00",
+									"horizontalAlignment": "right",
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "right",
+									"text": "Amount to be Reimbursed",
+									"wrap": true
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"weight": "bolder",
+									"text": "$ 404.30",
+									"wrap": true
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"width": "auto"
+						}
+					]
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
+					},
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"id": "showHistory",
+							"horizontalAlignment": "right",
+							"color": "accent",
+							"text": "Show history",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"id": "hideHistory",
+							"isVisible": false,
+							"horizontalAlignment": "right",
+							"color": "accent",
+							"text": "Hide history",
+							"wrap": true
+						}
+					],
+					"width": 1
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "cardContent4",
+			"isVisible": false,
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "* Expense submitted by **Matt** on Wed, Apr 14th, 2019",
+							"isSubtle": true,
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "* Expense approved by **Thomas** on Thu, Apr 15th, 2019",
+							"isSubtle": true,
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ActionSet",
+					"actions": [
+						{
+							"type": "Action.Submit",
+							"title": "Approve",
+							"style": "positive",
+							"data": {
+								"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+								"action": "approve"
+							}
+						},
+						{
+							"type": "Action.ShowCard",
+							"title": "Reject",
+							"style": "destructive",
+							"card": {
+								"type": "AdaptiveCard",
+								"body": [
+									{
+										"type": "Input.Text",
+										"id": "RejectCommentID",
+										"label": "Please specify an appropriate reason for rejection",
+										"isRequired": true,
+										"isMultiline": true,
+										"errorMessage": "A reason for rejection is necessary"
+									}
+								],
+								"actions": [
+									{
+										"type": "Action.Submit",
+										"title": "Send",
+										"data": {
+											"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+											"action": "reject"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"fallbackText": "This card requires Adaptive Cards v1.5 support to be rendered properly."
+}
