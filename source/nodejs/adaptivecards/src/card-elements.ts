@@ -5245,9 +5245,9 @@ export abstract class Action extends CardObject {
         }
 
         if (this.tooltip) {			
-			if (promoteTooltipToLabel && !this.title) {
-				element.setAttribute("aria-label", this.tooltip);
-			}
+            if (promoteTooltipToLabel && !this.title) {
+                element.setAttribute("aria-label", this.tooltip);
+            }
             element.title = this.tooltip;
         }
     }
