@@ -19,7 +19,7 @@ The following topics are covered in this month’s community call. Overview on U
 - Q&A - J.P. Roca (Microsoft) \| @jpthepm & [Karan Thapar](https://www.linkedin.com/in/karanthapar91/) (Microsoft) –[22:04](https://youtu.be/6Z8U4bSicgk?t=1324)
 
 ### Demo:
-**Elevate user experiences with Universal Actions and Messaging Extensions on Teams and Outlook** – Adaptive Cards enable you to take quick actions right from within Teams and Outlook. Hear the latest on Universal Actions, vacation approval scenarios with value propositins, contextual or role-based views on Teams, sequential workflows on Teams, messaging extensions, search (read-only) messaging extensions, action messaging extensions, link unfurling, success stories, and value, how to onboard and build resources and Q&A at the end.
+**Elevate user experiences with Universal Actions and Messaging Extensions on Teams and Outlook** – Adaptive Cards enable you to take quick actions right from within Teams and Outlook. Hear the latest on Universal Actions, vacation approval scenarios with value propositions, contextual or role-based views on Teams, sequential workflows on Teams, messaging extensions, search (read-only) messaging extensions, action messaging extensions, link unfurling, success stories, and value, how to onboard and build resources and Q&A at the end.
 
 ### Referenced in this call:
 * Documentation – [Universal Actions for Adaptive Cards](https://docs.microsoft.com/microsoftteams/platform/task-modules-and-cards/cards/universal-actions-for-adaptive-cards/overview?tabs=mobile)
