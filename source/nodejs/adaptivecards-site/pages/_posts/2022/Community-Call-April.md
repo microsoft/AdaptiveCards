@@ -7,7 +7,7 @@ github_username: JeanRoca
 twitter: jpthepm
 ---
 
-The following topics are covered in this month’s community call. Overview on Universal Actions + Messaging Extensions (elevating user experiences with Universal Actions and Messaging Extensions on Teams and Outlook – walkthrough capabilities and value propositions) - Karan Thapar (Microsoft), Accessibility Updates (Accessibility work and SDK v1.6 release) – [J.P. Roca](http://twitter.com/jpthepm) (Microsoft), and 15 minute live Q&A primarily focused on Universal Actions + Messaging Extensions. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on April 14, 2022.
+The following topics are covered in this month’s community call. Overview on Universal Actions + Messaging Extensions (elevating user experiences with Universal Actions and Messaging Extensions on Teams and Outlook – walkthrough capabilities and value propositions) - Karan Thapar (Microsoft), Accessibility Updates (Accessibility work and SDK v1.6 release) – [J.P. Roca](http://twitter.com/jpthepm) (Microsoft), and 15 minutes live Q&A primarily focused on Universal Actions + Messaging Extensions. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on April 14, 2022.
 
 ### Watch the call here
 
