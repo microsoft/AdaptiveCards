@@ -7,7 +7,7 @@ github_username: JeanRoca
 twitter: jpthepm
 ---
 
-In this month’s community call, get an overview of the React Native Adaptive Cards Renderer and on usage of the React Native Adaptive Cards SDK in a Microsoft Viva Connections mobile app and in a LUIS chatbot app delivered by CEO & Founder – [Vasanthakumar Sarpasayanam](https://in.linkedin.com/in/vasanthakumar-sarpasayanam) and his team at BigThinkCode. The community-supported React Native renderer for Adaptive Cards is maintained by BigThinkCode. There was a 10-minute Q&A covering a host of topics. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on August 11, 2022.
+In this month’s community call, get an overview of the React Native Adaptive Cards Renderer and on the usage of the React Native Adaptive Cards SDK in a Microsoft Viva Connections mobile app and in a LUIS chatbot app delivered by CEO & Founder – [Vasanthakumar Sarpasayanam](https://in.linkedin.com/in/vasanthakumar-sarpasayanam) and his team at BigThinkCode. The community-supported React Native renderer for Adaptive Cards is maintained by BigThinkCode. There was a 10-minute Q&A covering a host of topics. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on August 11, 2022.
 
 ### Watch the call here
 
