@@ -7,7 +7,7 @@ github_username: JeanRoca
 twitter: jpthepm
 ---
 
-In this month’s community call the following topics were presented - Action.ToggleVisibility Deprecation (a non-breaking change for a control that needs to support accessibility requirements for all users), GA release for Adaptive Cards Handle Responses Connector, teaser on the React Native Adaptive Cards Renderer capability used in Microsoft Viva Connections mobile app to be demoed next month, and a 10-minute Q&A covering a host of topics - release schedule, integration, challenges and demo requests. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on July 14, 2022.
+In this month’s community call the following topics were presented - Action.ToggleVisibility Deprecation (a non-breaking change for a control that needs to support accessibility requirements for all users), GA release for Adaptive Cards Handle Responses Connector, teaser on the React Native Adaptive Cards Renderer capability used in Microsoft Viva Connections mobile app to be demoed next month, and a 10-minute Q&A covering a host of topics - release schedule, integration, challenges, and demo requests. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on July 14, 2022.
 
 ### Watch the call here
 

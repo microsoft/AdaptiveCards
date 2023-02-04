@@ -38,7 +38,7 @@ In the post demo Q&A with Josh, he gave viewers a first look at 2 more features 
 - Designer - https://adaptivecards.io/designer/ 
 - Get started with Templating - https://aka.ms/ACTemplating
 - Browse the Adaptive Cards Code - https://aka.ms/ACRepo
-- Find tools, sample cards and more - https://www.madewithcards.io
+- Find tools, sample cards, and more - https://www.madewithcards.io
 - Contribution Guidelines – https://aka.ms/ACRepo 
 
 ### Adaptive Cards feedback channels

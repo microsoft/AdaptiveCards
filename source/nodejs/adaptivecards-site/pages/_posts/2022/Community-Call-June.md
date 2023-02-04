@@ -7,7 +7,7 @@ github_username: JeanRoca
 twitter: jpthepm
 ---
 
-In this month’s community call the focus is on the newly released Teams Toolkit v4.0. This latest Teams VS Code extension enables developers/non-developers to create Teams apps with minimal work. v4 capabilities called out include scenario-based app creation, run your Teams apps on Office and Outlook, create an app from sample, select to uncomment/activate commented out capabilities and seeing your new app in Run and Debug mode. With the Adaptive Cards VS Code extension installed, see side-by-site edit-render experience similar to Adaptive Card Designer. The 20-minute Q&A covers a host of topics. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on June 9, 2022.
+In this month’s community call the focus is on the newly released Teams Toolkit v4.0. This latest Teams VS Code extension enables developers/non-developers to create Teams apps with minimal work. v4 capabilities called out include scenario-based app creation, run your Teams apps on Office and Outlook, create an app from sample, select to uncomment/activate commented out capabilities, and see your new app in Run and Debug mode. With the Adaptive Cards VS Code extension installed, see side-by-site edit-render experience similar to Adaptive Card Designer. The 20-minute Q&A covers a host of topics. This call was hosted by [J.P. Roca](http://twitter.com/jpthepm) (Microsoft) \| @jpthepm. Recorded on June 9, 2022.
 
 ### Watch the call here
 
@@ -35,7 +35,7 @@ In this month’s community call the focus is on the newly released Teams Toolki
 - Designer - https://adaptivecards.io/designer/ 
 - Get started with Templating - https://aka.ms/ACTemplating
 - Browse the Adaptive Cards Code - https://aka.ms/ACRepo
-- Find tools, sample cards and more - https://www.madewithcards.io
+- Find tools, sample cards, and more - https://www.madewithcards.io
 - Contribution Guidelines – https://aka.ms/ACRepo 
 
 ### Adaptive Cards feedback channels
@@ -43,4 +43,4 @@ In this month’s community call the focus is on the newly released Teams Toolki
 -   [Issues and feature requests](https://github.com/Microsoft/AdaptiveCards/issues)
 -   [Technical questions](https://stackoverflow.com/questions/tagged/adaptive-cards)
 
-The Adaptive Cards developer community call is on the 2nd Thursday of each month. We will provide you with the opportunity to learn about Adaptive Cards in general, how they could be a great tool in your applications and contribute to the evolution of the format and SDKs. Each month, we'll discuss new features we are bringing to the platform, our roadmap, and listen to your feedback and suggestions.
+The Adaptive Cards developer community call is on the 2nd Thursday of each month. We will provide you with the opportunity to learn about Adaptive Cards in general and show how they could be a great tool in your applications and contribute to the evolution of the format and SDKs. Each month, we'll discuss new features we are bringing to the platform, our roadmap, and listen to your feedback and suggestions.
