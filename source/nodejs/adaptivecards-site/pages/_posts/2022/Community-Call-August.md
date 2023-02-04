@@ -55,7 +55,7 @@ Showcasing the use of the React Native Adaptive Cards SDK in a Microsoft Viva Co
 - Designer - https://adaptivecards.io/designer/ 
 - Get started with Templating - https://aka.ms/ACTemplating
 - Browse the Adaptive Cards Code - https://aka.ms/ACRepo
-- Find tools, sample cards and more - https://www.madewithcards.io
+- Find tools, sample cards, and more - https://www.madewithcards.io
 - Contribution Guidelines – https://aka.ms/ACRepo 
 
 ### Adaptive Cards feedback channels
