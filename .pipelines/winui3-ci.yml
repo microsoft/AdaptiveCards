@@ -16,7 +16,7 @@ trigger:
   batch: True
 
 variables:
-  solution: source/uwp/AdaptiveCards.sln
+  solution: source/uwp/winui3/AdaptiveCards.sln
   buildConfiguration: Release
   buildPlatform: x64
 
@@ -27,9 +27,9 @@ pool:
 steps:
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
-  displayName: Use NuGet 5.x
+  displayName: Use NuGet 6.x
   inputs:
-    versionSpec: 5.x
+    versionSpec: 6.x
 
 - task: NuGetRestore@1
   name: NuGetCommand2
@@ -50,37 +50,4 @@ steps:
     maximumCpuCount: true
     createLogFile: true
     logFileVerbosity: detailed
-
-- task: VSTest@2
-  displayName: 'VsTest - Unit Tests'
-  inputs:
-    testRunTitle: 'UWP Unit Tests'
-    searchFolder: '$(System.DefaultWorkingDirectory)\source\uwp'
-    testAssemblyVer2: |
-     **\Release\UWPUnitTests.build.appxrecipe
-     !**\obj\**
-    otherConsoleOptions: '/Framework:FrameworkUap10'
-    runInParallel: true
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    diagnosticsEnabled: True
-    collectDumpOn: always
-
-- task: VSTest@2
-  displayName: 'VsTest - UI Tests'
-  inputs:
-    testRunTitle: 'UWP UI Tests'
-    searchFolder: '$(System.DefaultWorkingDirectory)\source\uwp'
-    testAssemblyVer2: |
-     **\Release\netcoreapp2.1\UWPUITests.dll
-     !**\obj\**
-    uiTests: true
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    diagnosticsEnabled: True
-    collectDumpOn: always
 
