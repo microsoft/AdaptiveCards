@@ -117,7 +117,7 @@ export class TestUtils {
     }    
 
     async tryGetContainerWithAction(tooltip: string, container?: ACContainer): Promise<WebElement | undefined> {
-        const containerList: WebElement[] = await this.getRoot(container).findElements(ByExtended.ariaDescription(tooltip));
+        const containerList: WebElement[] = await this.getRoot(container).findElements(ByExtended.ariaLabel(tooltip));
         return (containerList.length > 0) ? containerList[0] : undefined;
     }
 
