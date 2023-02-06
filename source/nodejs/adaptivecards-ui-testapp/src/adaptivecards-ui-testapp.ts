@@ -51,7 +51,7 @@ window.onload = () => {
         ]
     };
 
-    renderCard(card, cardRenderedCallback);
+    renderCard(card, card, cardRenderedCallback);
 
     const hideInputsButton = document.getElementById("hideInputsBtn");
     hideInputsButton.addEventListener("click", (e: Event) => { hideInputsDiv() });
