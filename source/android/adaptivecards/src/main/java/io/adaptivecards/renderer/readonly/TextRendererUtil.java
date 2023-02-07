@@ -216,7 +216,7 @@ public class TextRendererUtil
         return FontType.Default;
     }
 
-    static long getTextSize(FontType type, TextSize textSize, HostConfig hostConfig)
+    public static long getTextSize(FontType type, TextSize textSize, HostConfig hostConfig)
     {
         return hostConfig.GetFontSize(type, textSize);
     }

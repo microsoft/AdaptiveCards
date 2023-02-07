@@ -9,5 +9,9 @@ data class TypeAheadSearchLaunchParams(
     val choicesDataType: String,
     val dataset: String,
     val valueList: List<String>,
-    val titleList: List<String>
+    val titleList: List<String>,
+    val backgroundColor: Int,
+    val foregroundColor: Int,
+    val headingTextSize: Float,
+    val defaultTextSize: Float
 ) : Serializable

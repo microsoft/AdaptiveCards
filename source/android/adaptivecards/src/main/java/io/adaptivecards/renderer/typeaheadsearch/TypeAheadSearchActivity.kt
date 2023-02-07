@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.typeaheadsearch
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +15,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,7 @@ import io.adaptivecards.renderer.ITypeAheadCustomParams
 import io.adaptivecards.renderer.registration.CardRendererRegistration
 
 class TypeAheadSearchActivity : AppCompatActivity() {
+    private lateinit var constraintLayout: ConstraintLayout
     private lateinit var viewModel: TypeAheadSearchViewModel
     private lateinit var searchTextView: EditText
     private lateinit var recyclerView: RecyclerView
@@ -32,6 +35,10 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var descriptiveImageView: AppCompatImageView
     private lateinit var descriptiveTextView: TextView
 
+    private var backgroundColor: Int = getColor("#FFFFFF")
+    private var foregroundColor: Int = getColor("#141414")
+    private var headingTextSize: Float = 0F
+    private var defaultTextSize: Float = 0F
     private lateinit var selectedTitle: String
     private lateinit var titleList: List<String>
     private lateinit var valueList: List<String>
@@ -93,6 +100,10 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             valueList = launchParams.valueList
             dataset = launchParams.dataset
             dataType = launchParams.choicesDataType
+            backgroundColor = launchParams.backgroundColor
+            foregroundColor = launchParams.foregroundColor
+            headingTextSize = launchParams.headingTextSize
+            defaultTextSize = launchParams.defaultTextSize
         }
 
         val typeAheadParams: ITypeAheadCustomParams? = CardRendererRegistration.getInstance().typeAheadCustomParams
@@ -127,13 +138,19 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
         activityTypeAheadSearchBinding = ActivityTypeAheadSearchBinding.inflate(layoutInflater)
         activityTypeAheadSearchBinding?.let { activityTypeAheadSearchBinding ->
+            constraintLayout = activityTypeAheadSearchBinding.parent
             searchTextView = activityTypeAheadSearchBinding.typeAheadSearchQuery
             recyclerView = activityTypeAheadSearchBinding.searchResultsList
             progressBarView = activityTypeAheadSearchBinding.customOverlayView
             clearTextIconView = activityTypeAheadSearchBinding.clearTextIcon
             descriptiveImageView = activityTypeAheadSearchBinding.errorImage
             descriptiveTextView = activityTypeAheadSearchBinding.errorMsgText
+
+            descriptiveTextView.textSize = defaultTextSize
+            // TODO : Set text size from host config
+
             activityTypeAheadSearchBinding.viewModel = viewModel
+            // TODO :  Set Toolbar height suing -> resources.getDimension(R.dimen.toolbar_height)
         }
 
         val processClearTextIconVisibility = Observer<String?> { queryText ->
@@ -142,6 +159,13 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
         viewModel.uiState.observe(this, ::processState)
         viewModel.queryText.observe(this, processClearTextIconVisibility)
+
+
+        constraintLayout.setBackgroundColor(backgroundColor)
+        clearTextIconView.setBackgroundColor(backgroundColor)
+        activityTypeAheadSearchBinding?.searchIcon?.setBackgroundColor(backgroundColor)
+        activityTypeAheadSearchBinding?.appbar?.setBackgroundColor(foregroundColor)
+        recyclerView.setBackgroundColor(backgroundColor)
 
         clearTextIconView.setBackgroundResource(crossIconParams.drawableResourceId)
         clearTextIconView.setOnClickListener { viewModel.clearText().also { searchTextView.text.clear() } }
@@ -164,7 +188,12 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             showKeyboard(this)
         }
 
-        activityTypeAheadSearchBinding?.toolbar?.let { setSupportActionBar(it) }
+        activityTypeAheadSearchBinding?.toolbar?.let {
+            setSupportActionBar(it)
+            // TODO - set toolbar background color -> it.setBackgroundColor()
+           // it.setBackgroundColor(foregroundColor)
+            it.setTitleTextColor(backgroundColor)
+        }
 
         supportActionBar?.let { actionBar ->
             actionBar.setDisplayHomeAsUpEnabled(true)
@@ -174,6 +203,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
         setContentView(activityTypeAheadSearchBinding?.root)
     }
+
+    private fun getColor(colorCode: String?): Int = Color.parseColor(colorCode)
 
     private fun showKeyboard(view: View): Boolean {
         view.requestFocus()

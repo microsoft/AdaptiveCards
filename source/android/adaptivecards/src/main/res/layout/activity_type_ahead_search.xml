@@ -11,29 +11,33 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:layout_height="wrap_content">
+
+<!--        android:background="#FFFFFF"-->
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            android:background="#0F6CBD"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+<!--            android:background="#0F6CBD"-->
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="@dimen/toolbar_height"
                 android:textAlignment="center"
                 android:textSize="16sp"
-                app:titleTextColor="#FFFFFF"
-                android:background="#0F6CBD"
                 app:title="title" />
+
+<!--            android:background="#0F6CBD"-->
+<!--            app:titleTextColor="#FFFFFF"-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,8 +56,9 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
                     tools:src="@android:drawable/ic_menu_search"
-                    android:visibility="visible"
-                    android:backgroundTint="#FFFFFF"/>
+                    android:visibility="visible" />
+
+<!--                android:backgroundTint="#FFFFFF"-->
 
                 <EditText
                     android:id="@+id/type_ahead_search_query"
@@ -82,9 +87,12 @@
                     android:clickable="true"
                     android:contentDescription="Cancel"
                     android:focusable="true"
-                    android:backgroundTint="#FFFFFF"
                     tools:src="@android:drawable/ic_menu_close_clear_cancel"
                     tools:visibility="visible" />
+
+<!--                android:backgroundTint="#FFFFFF"-->
+
+
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>

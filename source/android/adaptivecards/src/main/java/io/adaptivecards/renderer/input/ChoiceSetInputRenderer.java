@@ -41,7 +41,9 @@ import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -64,6 +66,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.inputhandler.TypeAheadTextViewHandler;
+import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.typeaheadsearch.DynamicTypeAheadService;
 import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
@@ -711,13 +714,41 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     }
                 );
 
+                ContainerStyle style = renderArgs.getContainerStyle();
+
+                TextRendererUtil.getTextSize(
+                    hostConfig.GetTextStyles().getHeading().getFontType(),
+                    hostConfig.GetTextStyles().getHeading().getSize(),
+                    hostConfig);
+                TextRendererUtil.getTextSize(
+                    FontType.Default,
+                    TextSize.Default,
+                    hostConfig);
+
                 Intent intent = new Intent(context, TypeAheadSearchActivity.class);
                 TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
                     typeAheadTextInputHandler.getInputTitle(),
                     choiceSetInput.GetChoicesData().GetChoicesDataType(),
                     choiceSetInput.GetChoicesData().GetDataset(),
                     titleList,
-                    valueList);
+                    valueList,
+                    getColor(hostConfig.GetBackgroundColor(style)),
+                    getColor(hostConfig.GetForegroundColor(style, ForegroundColor.Default, false)),
+                    TextRendererUtil.getTextSize(
+                        hostConfig.GetTextStyles().getHeading().getFontType(),
+                        hostConfig.GetTextStyles().getHeading().getSize(),
+                        hostConfig),
+                    TextRendererUtil.getTextSize(
+                        FontType.Default,
+                        TextSize.Default,
+                        hostConfig));
+
+//                getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false));
+//                ContainerStyle style = ContainerStyle.Default;
+//                style = renderArgs.getContainerStyle();
+//                hostConfig.GetBackgroundColor(style);
+//                getColor(hostConfig.GetBackgroundColor(style));
+
                 intent.putExtra("launchParams", launchParams);
 
                 DynamicTypeAheadService.INSTANCE.setIChoicesResolver(choicesResolver);
