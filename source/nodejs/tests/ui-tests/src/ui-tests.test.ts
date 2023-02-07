@@ -199,7 +199,7 @@ describe("Mock function", function() {
     }));
 
     test("Image: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Image.SelectAction");
+        await utils.goToTestCase("v1.5/Image.SelectAction");
 
         let image = await ACImage.getImage("cool link");
 

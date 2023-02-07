@@ -21,6 +21,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ImageSet> _imgSet;
     ImageSize _imageSize;
     ACRView *_rootView;
+    __weak UIView<ACRIContentHoldingView> *_viewGroup;
     CGSize _size;
 }
 
@@ -49,6 +50,7 @@ using namespace AdaptiveCards;
         ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = itemSize;
         self.scrollEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        _viewGroup = (UIView<ACRIContentHoldingView> *)view;
     }
     return self;
 }
@@ -75,7 +77,7 @@ using namespace AdaptiveCards;
 
     ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
 
-    UIView *content = [imageRenderer render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    UIView *content = [imageRenderer render:_viewGroup rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
