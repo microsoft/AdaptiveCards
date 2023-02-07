@@ -408,7 +408,10 @@ CGFloat kFileBrowserWidth = 0;
     NSString *queryString = [searchRequest valueForKey:@"value"];
     NSMutableDictionary *responseDict = [NSMutableDictionary new];
     NSMutableDictionary *resultsArray = [[NSMutableDictionary alloc] init];
-    [responseDict setDictionary:@{ @"value" : resultsArray, @"type" : @"application/vnd.microsoft.search.searchResponse"} ];
+    [responseDict setDictionary: @{
+        @"value": resultsArray,
+        @"type": @"application/vnd.microsoft.search.searchResponse"
+    }];
     
     if ([queryString length]) {
         NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
