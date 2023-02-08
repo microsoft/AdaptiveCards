@@ -4263,6 +4263,22 @@ export class ChoiceSetInput extends Input {
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
 
+    private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
+        if (!this.value) {
+            const placeholderOption = document.createElement("option");
+            placeholderOption.selected = true;
+            placeholderOption.disabled = true;
+            placeholderOption.hidden = true;
+            placeholderOption.value = "";
+
+            if (this.placeholder) {
+                placeholderOption.text = this.placeholder;
+            }
+            return placeholderOption;
+        }
+        return undefined;
+    }
+
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
         if (this._selectElement) {
@@ -4489,15 +4505,7 @@ export class ChoiceSetInput extends Input {
 
                 this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
-                const placeholderOption = document.createElement("option");
-                placeholderOption.selected = true;
-                placeholderOption.disabled = true;
-                placeholderOption.hidden = true;
-                placeholderOption.value = "";
-
-                if (this.placeholder) {
-                    placeholderOption.text = this.placeholder;
-                }
+                const placeholderOption = this.createPlaceholderOptionWhenValueDoesNotExist();
 
                 Utils.appendChild(this._selectElement, placeholderOption);
 
