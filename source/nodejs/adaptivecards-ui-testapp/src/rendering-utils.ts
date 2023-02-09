@@ -43,27 +43,30 @@ export async function readAndRenderCard(fileName: string, callbackFunction: Func
     const response = await fetch(`samples/${fileName}`);
 
     let jsonToRender: any;
-    let jsonToRender1: any;
     if (response.ok) {
         jsonToRender = JSON.parse(await response.text());
-        const response1 = await fetch("samples/v1.6/Elements/Carousel.json");
-        if (response1.ok) {
-            jsonToRender1 = JSON.parse(await response1.text());
-            renderCard(jsonToRender, jsonToRender1, callbackFunction);
-        }
     }
+    else {
+        jsonToRender = {
+            type: "AdaptiveCard",
+            body: [
+                {
+                    type: "TextBlock",
+                    wrap: true,
+                    weight: "bolder",
+                    size: "large",
+                    color: "attention",
+                    text: `Error retrieving 'samples/${fileName}'. Reponse was '${response.status} - ${response.statusText}'`
+                }
+            ]
+        };
+    }
+
+    renderCard(jsonToRender, callbackFunction);
 }
 
-export function renderCard(cardJson: any, cardJson1: any, callbackFunction: Function): void {
+export function renderCard(cardJson: any, callbackFunction: Function): void {
     // Create an AdaptiveCard instance
-    const adaptiveCard: AdaptiveCard = createAdaptiveCard(cardJson);
-    const adaptiveCard1: AdaptiveCard = createAdaptiveCard(cardJson1);
-
-    // Render the card to an HTML element:
-    callbackFunction(adaptiveCard.render(), adaptiveCard1.render());
-}
-
-function createAdaptiveCard(cardJson: any) {
     const adaptiveCard: AdaptiveCard = new AdaptiveCard();
 
     // Set its hostConfig property unless you want to use the default Host Config
@@ -88,10 +91,12 @@ function createAdaptiveCard(cardJson: any) {
                 inputsMap[input.id] = input.value;
             });
 
-            if (actionType === SubmitAction.JsonTypeName) {
+            if (actionType === SubmitAction.JsonTypeName)
+            {
                 const submitAction = action as SubmitAction;
 
-                for (const [key, value] of Object.entries(submitAction.data)) {
+                for (const [key, value] of Object.entries(submitAction.data))
+                {
                     inputsMap[key] = value;
                 }
             }
@@ -112,7 +117,8 @@ function createAdaptiveCard(cardJson: any) {
 
     // For markdown support you need a third-party library
     // E.g., to use markdown-it, include in your HTML page:
-    AdaptiveCard.onProcessMarkdown = function (text: string, result: IMarkdownProcessingResult) {
+
+    AdaptiveCard.onProcessMarkdown = function(text: string, result: IMarkdownProcessingResult) {
         result.outputHtml = new Remarkable.Remarkable().render(text);
         result.didProcess = true;
     };
@@ -122,19 +128,15 @@ function createAdaptiveCard(cardJson: any) {
     context.targetVersion = Versions.v1_6;
 
     adaptiveCard.parse(cardJson, context);
-    return adaptiveCard;
+
+    // Render the card to an HTML element:
+    callbackFunction(adaptiveCard.render());
 }
 
-export function cardRenderedCallback(renderedCard: HTMLElement, renderedCard1: HTMLElement) {
+export function cardRenderedCallback(renderedCard: HTMLElement) {
     const renderedCardDiv = document.getElementById("renderedCardSpace");
     const trustedHtml = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
     renderedCardDiv.innerHTML = trustedHtml as string;
     renderedCardDiv.appendChild(renderedCard);
     renderedCardDiv.style.visibility = "visible";
-
-    const renderedCardDiv1 = document.getElementById("renderedCardSpace1");
-    const trustedHtml1 = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
-    renderedCardDiv1.innerHTML = trustedHtml1 as string;
-    renderedCardDiv1.appendChild(renderedCard1);
-    renderedCardDiv1.style.visibility = "visible";
 }

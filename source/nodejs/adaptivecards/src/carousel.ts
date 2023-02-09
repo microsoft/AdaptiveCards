@@ -605,12 +605,14 @@ export class Carousel extends Container {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
-        carousel.on('paginationRender', (swiper, pagination) => {
-            pagination.addEventListener("keypress", function(event) {
-                if (event.key == "Enter") {
-                    event.preventDefault();
-                    swiper?.slideTo(1);
-                }
+        carousel.on('paginationRender', (swiper, paginationEl) => {
+            swiper.pagination.bullets.forEach((bullet, index) => {
+                bullet.addEventListener("keypress", function(event : KeyboardEvent) {
+                    if (event.key == "Enter") {
+                        event.preventDefault();
+                        swiper.slideTo(index + 1);
+                    }
+                });
             });
         });
 
@@ -706,6 +708,7 @@ export class Carousel extends Container {
             if (target && target !== this._carousel?.el) {
                 return;
             }
+
             newWidth = contentRect
                 ? contentRect.width
                 : (contentBoxSize[0] || contentBoxSize).inlineSize;
