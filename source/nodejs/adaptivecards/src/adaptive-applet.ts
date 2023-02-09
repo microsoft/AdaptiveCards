@@ -302,9 +302,11 @@ export class AdaptiveApplet {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
                         if (input instanceof ChoiceSetInput && input.value && input.choicesData) {
+                            const dataQueryAction = new DataQuery();
+                            dataQueryAction.filter = input.value;
+                            dataQueryAction.dataset = input.choicesData.dataset;
                             this._choiceSet = input;
-                            input.choicesData.filter = input.value;
-                            this.internalExecuteAction(input.choicesData, ActivityRequestTrigger.Manual, 0);
+                            this.internalExecuteAction(dataQueryAction, ActivityRequestTrigger.Manual, 0);
                         }
                     };
 
