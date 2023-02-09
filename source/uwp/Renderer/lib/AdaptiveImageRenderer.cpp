@@ -393,14 +393,15 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isImageSvg)
             {
+                auto temp = winrt::make_weak(image.as<winrt::SvgImageSource>());
                 // If we have an SVG, we need to try to parse for the image size before setting the image source
                 auto svgDocumentLoadOperation = winrt::XmlDocument::LoadFromUriAsync(imageUrl);
 
                 svgDocumentLoadOperation.Completed(
-                    [weakThis = this->get_weak(), imageSourceRef = winrt::make_weak(image.as<winrt::SvgImageSource>()), imageUrl](auto const& operation, auto status) -> void
+                    [weakThis = this->get_weak(), temp, imageUrl](auto const& operation, auto status) -> void
                     {
                         auto strongThis = weakThis.get();
-                        auto strongImageSource = imageSourceRef.get();
+                        auto strongImageSource = temp.get();
 
                         if (strongThis && strongImageSource)
                         {
@@ -532,14 +533,16 @@ namespace AdaptiveCards::Rendering::Uwp
             auto streamDataReader = winrt::DataReader(inputStream);
             auto loadDataReaderOperation = streamDataReader.LoadAsync((uint32_t)streamSize);
 
+            auto temp = winrt::weak_ref(imageSource.as<winrt::SvgImageSource>());
+
             loadDataReaderOperation.Completed(
                 [weakThis = this->get_weak(), streamDataReader, uiElementRef = winrt::make_weak(uiElement), isAutoSize, parentElementRef = winrt::make_weak(parentElement),
                 imageContainerRef = winrt::make_weak(imageContainer), isVisible, streamRef = winrt::make_weak(stream),
-                imageSourceRef = winrt::make_weak(imageSource.as<winrt::SvgImageSource>())](
+                temp](
                     auto const& result, auto status) -> void
                 {
                     auto strongThis = weakThis.get();
-                    auto strongImageSource = imageSourceRef.get();
+                    auto strongImageSource = temp.get();
                     auto strongStream = streamRef.get();
                     auto strongUiElement = uiElementRef.get();
                     auto strongParentElement = parentElementRef.get();
@@ -560,7 +563,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                         // Now that we've parsed the height, we can set the image source
                         strongThis->SetSvgImageSourceAsync(
-                            strongImageSource, strongStream, strongUiElement, isAutoSize, strongParentElement, strongImageContainer, isVisible);
+                            strongImageSource, strongStream, strongUiElement, isAutoSize, strongParentElement, strongImageContainer, isVisible).get();
                     }
                 });
         }
@@ -784,18 +787,18 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                            double imageSize,
                                                                            bool dropIfUnset)
     {
-        auto test = imageSource;
+        //auto test = imageSource;
         //if (auto image = imageSourceRef.get())
         //{
             co_await winrt::resume_foreground(imageSource.Dispatcher());
-            auto currentSize = test.RasterizePixelHeight();
+            auto currentSize = imageSource.RasterizePixelHeight();
             bool sizeIsUnset = isinf(currentSize);
 
             bool dropHeight = sizeIsUnset && dropIfUnset;
 
             if (!dropHeight)
             {
-                test.RasterizePixelHeight(imageSize);
+                imageSource.RasterizePixelHeight(imageSize);
             }
         //}
     }
@@ -804,18 +807,18 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                           double imageSize,
                                                                           bool dropIfUnset)
     {
-        auto test = imageSource;
+        //auto test = imageSource;
         //if (auto image = imageSourceRef.get())
         //{
             co_await winrt::resume_foreground(imageSource.Dispatcher());
-            auto currentSize = test.RasterizePixelWidth();
+            auto currentSize = imageSource.RasterizePixelWidth();
             bool sizeIsUnset = isinf(currentSize);
 
             bool dropWidth = sizeIsUnset && dropIfUnset;
 
             if (!dropWidth)
             {
-                test.RasterizePixelWidth(imageSize);
+                imageSource.RasterizePixelWidth(imageSize);
             }
         //}
     }
