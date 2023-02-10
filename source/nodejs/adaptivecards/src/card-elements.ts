@@ -4212,17 +4212,17 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
     );
     static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
 
-	@property(ChoiceSetInputDataQuery.typeProperty)
+    @property(ChoiceSetInputDataQuery.typeProperty)
     type: string;
 
-	@property(ChoiceSetInputDataQuery.datasetProperty)
-	dataset: string;
+    @property(ChoiceSetInputDataQuery.datasetProperty)
+    dataset: string;
 
     //#endregion
 
-	protected getSchemaKey(): string {
+    protected getSchemaKey(): string {
         return "choices.data";
-    }    
+    }
 }
 
 export type FetchedChoice = {
@@ -4240,10 +4240,10 @@ export class ChoiceSetInput extends Input {
         Choice
     );
     static readonly choicesDataProperty = new SerializableObjectProperty(
-		Versions.v1_6,
-		"choices.data",
-		ChoiceSetInputDataQuery
-	);
+        Versions.v1_6,
+        "choices.data",
+        ChoiceSetInputDataQuery
+    );
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
         "style",
@@ -4493,8 +4493,7 @@ export class ChoiceSetInput extends Input {
             filteredChoiceSet.parent = this;
             this._filteredChoiceSet = filteredChoiceSet;
             return filteredChoiceSet.renderedElement;
-        }
-        else if (this.isMultiSelect) {
+        } else if (this.isMultiSelect) {
             // Render as a list of toggle inputs
             return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
@@ -4770,7 +4769,6 @@ export class FilteredChoiceSet {
     private _renderedElement?: HTMLElement;
     private _hostConfig?: HostConfig;
 
-
     constructor(choices: Choice[], hostConfig?: HostConfig) {
         this._choices = choices;
         this._dynamicChoices = [];
@@ -4782,7 +4780,7 @@ export class FilteredChoiceSet {
         const choiceSetContainer = document.createElement("div");
         choiceSetContainer.style.position = "relative";
         choiceSetContainer.style.width = "100%";
-        
+
         this._textInput = document.createElement("input");
         this._textInput.className = this.hostConfig.makeCssClassName(
             "ac-input",
@@ -4792,7 +4790,7 @@ export class FilteredChoiceSet {
         this._textInput.type = "text";
         this._textInput.style.width = "100%";
 
-        this._textInput.onkeydown = event => {
+        this._textInput.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
                 const firstChoice = document.getElementById("ac-choiceSetInput-choice-0");
                 if (firstChoice) {
@@ -4810,7 +4808,7 @@ export class FilteredChoiceSet {
 
         choiceSetContainer.append(this._textInput, this._dropdown);
 
-        document.onclick = event => {
+        document.onclick = (event) => {
             if (this._dropdown) {
                 let child = this._dropdown.firstChild;
                 while (child && event.target !== child) {
@@ -4827,10 +4825,7 @@ export class FilteredChoiceSet {
 
     createChoice(value: string, id: number): HTMLSpanElement {
         const choice = document.createElement("span");
-        choice.className = this.hostConfig.makeCssClassName(
-            "ac-input",
-            "ac-choiceSetInput-choice"
-        );
+        choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
         choice.id = `ac-choiceSetInput-choice-${id}`;
         choice.innerText = value;
         choice.tabIndex = -1;
@@ -4843,14 +4838,14 @@ export class FilteredChoiceSet {
                 this._dropdown.style.display = "none";
             }
         };
-        choice.onkeydown = event => {
+        choice.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
-                const nextChoice = document.getElementById(`ac-choiceSetInput-choice-${(id+1)}`);
+                const nextChoice = document.getElementById(`ac-choiceSetInput-choice-${id + 1}`);
                 if (nextChoice) {
                     nextChoice.focus();
                 }
             } else if (event.key === "ArrowUp") {
-                const prevChoice = document.getElementById(`ac-choiceSetInput-choice-${(id-1)}`);
+                const prevChoice = document.getElementById(`ac-choiceSetInput-choice-${id - 1}`);
                 if (prevChoice) {
                     prevChoice.focus();
                 }
@@ -4860,10 +4855,10 @@ export class FilteredChoiceSet {
         };
         return choice;
     }
-    
+
     filterChoices(isDynamic?: boolean) {
         const filter = this._textInput?.value.toLowerCase() || "";
-        const choices = isDynamic? this._dynamicChoices : this._choices;
+        const choices = isDynamic ? this._dynamicChoices : this._choices;
         for (const choice of choices) {
             if (choice.title?.toLowerCase().includes(filter)) {
                 const choiceContainer = this.createChoice(choice.title, this._visibleChoiceCount++);
@@ -4899,10 +4894,11 @@ export class FilteredChoiceSet {
                 loadingIndicator.className = this.hostConfig.makeCssClassName(
                     "ac-input",
                     "ac-choiceSetInput-statusIndicator"
-                );        
+                );
                 this._loadingIndicator = loadingIndicator;
             }
-            this._loadingIndicator.innerText = (this._visibleChoiceCount === 0)? "Loading..." : "Loading more...";
+            this._loadingIndicator.innerText =
+                this._visibleChoiceCount === 0 ? "Loading..." : "Loading more...";
             return this._loadingIndicator;
         }
     }
@@ -4917,13 +4913,13 @@ export class FilteredChoiceSet {
         this.filterChoices();
 
         const loadingIndicator = this.getStatusIndicator();
-        this._dropdown?.appendChild(loadingIndicator);           
+        this._dropdown?.appendChild(loadingIndicator);
     }
 
     removeLoadingIndicator() {
         if (this._loadingIndicator && this._dropdown?.contains(this._loadingIndicator)) {
             this._dropdown?.removeChild(this._loadingIndicator);
-          }          
+        }
     }
 
     resetDropdown() {
@@ -4940,7 +4936,7 @@ export class FilteredChoiceSet {
     }
 
     get dynamicChoices() {
-        return this._dynamicChoices?.map(choice => choice.title);
+        return this._dynamicChoices?.map((choice) => choice.title);
     }
 
     get hostConfig(): HostConfig {
