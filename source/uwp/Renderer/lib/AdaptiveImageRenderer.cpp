@@ -534,16 +534,14 @@ namespace AdaptiveCards::Rendering::Uwp
             auto streamDataReader = winrt::DataReader(inputStream);
             auto loadDataReaderOperation = streamDataReader.LoadAsync((uint32_t)streamSize);
 
-            auto temp = winrt::weak_ref(imageSource.as<winrt::SvgImageSource>());
-
             loadDataReaderOperation.Completed(
                 [weakThis = this->get_weak(), streamDataReader, uiElementRef = winrt::make_weak(uiElement), isAutoSize, parentElementRef = winrt::make_weak(parentElement),
-                imageContainerRef = winrt::make_weak(imageContainer), isVisible, streamRef = winrt::make_weak(stream),
-                temp](
+                 imageContainerRef = winrt::make_weak(imageContainer), isVisible, streamRef = winrt::make_weak(stream),
+                 imageSourceRef = winrt::weak_ref(imageSource.as<winrt::SvgImageSource>())](
                     auto const& result, auto status) -> void
                 {
                     auto strongThis = weakThis.get();
-                    auto strongImageSource = temp.get();
+                    auto strongImageSource = imageSourceRef.get();
                     auto strongStream = streamRef.get();
                     auto strongUiElement = uiElementRef.get();
                     auto strongParentElement = parentElementRef.get();
