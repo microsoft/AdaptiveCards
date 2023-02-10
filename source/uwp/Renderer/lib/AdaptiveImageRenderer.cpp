@@ -393,15 +393,16 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (isImageSvg)
             {
-                auto temp = winrt::make_weak(image.as<winrt::SvgImageSource>());
                 // If we have an SVG, we need to try to parse for the image size before setting the image source
                 auto svgDocumentLoadOperation = winrt::XmlDocument::LoadFromUriAsync(imageUrl);
 
                 svgDocumentLoadOperation.Completed(
-                    [weakThis = this->get_weak(), temp, imageUrl](auto const& operation, auto status) -> void
+                    [weakThis = this->get_weak(),
+                     weakImageSource = winrt::make_weak(image.as<winrt::SvgImageSource>()),
+                     imageUrl](auto const& operation, auto status) -> void
                     {
                         auto strongThis = weakThis.get();
-                        auto strongImageSource = temp.get();
+                        auto strongImageSource = weakImageSource.get();
 
                         if (strongThis && strongImageSource)
                         {
@@ -410,7 +411,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                 strongThis->ParseXmlForHeightAndWidth(operation.GetResults(), strongImageSource);
                             }
                             // Now that we've parsed the height, we can set the image source
-                            strongThis->SetSvgUriSource(strongImageSource, winrt::make_weak(imageUrl));
+                            strongThis->SetSvgUriSource(strongImageSource, imageUrl);
                         }
                     });
             }
@@ -563,7 +564,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                         // Now that we've parsed the height, we can set the image source
                         strongThis->SetSvgImageSourceAsync(
-                            strongImageSource, strongStream, strongUiElement, isAutoSize, strongParentElement, strongImageContainer, isVisible).get();
+                            strongImageSource, strongStream, strongUiElement, isAutoSize, strongParentElement, strongImageContainer, isVisible);
                     }
                 });
         }
@@ -585,12 +586,9 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgUriSource(winrt::weak_ref<winrt::SvgImageSource> const& imageSourceRef,
-                                                                  winrt::weak_ref<winrt::Uri> const& uriRef)
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
+                                                                  winrt::Uri const uri)
     {
-        auto imageSource = imageSourceRef.get();
-        auto uri = uriRef.get();
-
         if (imageSource && uri)
         {
             co_await winrt::resume_foreground(imageSource.Dispatcher());
@@ -599,12 +597,12 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     template<typename T, typename S>
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgImageSourceAsync(winrt::SvgImageSource const& imageSource,
-                                                                         S const& stream,
-                                                                         T const& uiElement,
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgImageSourceAsync(winrt::SvgImageSource const imageSource,
+                                                                         S const stream,
+                                                                         T const uiElement,
                                                                          bool isAutoSize,
-                                                                         winrt::IInspectable const& parentElement,
-                                                                         winrt::IInspectable const& imageContainer,
+                                                                         winrt::IInspectable const parentElement,
+                                                                         winrt::IInspectable const imageContainer,
                                                                          bool isVisible)
     {
             co_await winrt::resume_foreground(imageSource.Dispatcher());
@@ -783,44 +781,36 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::SvgImageSource const& imageSource,
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::SvgImageSource const imageSource,
                                                                            double imageSize,
                                                                            bool dropIfUnset)
     {
-        //auto test = imageSource;
-        //if (auto image = imageSourceRef.get())
-        //{
-            co_await winrt::resume_foreground(imageSource.Dispatcher());
-            auto currentSize = imageSource.RasterizePixelHeight();
-            bool sizeIsUnset = isinf(currentSize);
+        co_await winrt::resume_foreground(imageSource.Dispatcher());
+        auto currentSize = imageSource.RasterizePixelHeight();
+        bool sizeIsUnset = isinf(currentSize);
 
-            bool dropHeight = sizeIsUnset && dropIfUnset;
+        bool dropHeight = sizeIsUnset && dropIfUnset;
 
-            if (!dropHeight)
-            {
-                imageSource.RasterizePixelHeight(imageSize);
-            }
-        //}
+        if (!dropHeight)
+        {
+            imageSource.RasterizePixelHeight(imageSize);
+        }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::SvgImageSource const& imageSource,
+    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::SvgImageSource const imageSource,
                                                                           double imageSize,
                                                                           bool dropIfUnset)
     {
-        //auto test = imageSource;
-        //if (auto image = imageSourceRef.get())
-        //{
-            co_await winrt::resume_foreground(imageSource.Dispatcher());
-            auto currentSize = imageSource.RasterizePixelWidth();
-            bool sizeIsUnset = isinf(currentSize);
+        co_await winrt::resume_foreground(imageSource.Dispatcher());
+        auto currentSize = imageSource.RasterizePixelWidth();
+        bool sizeIsUnset = isinf(currentSize);
 
-            bool dropWidth = sizeIsUnset && dropIfUnset;
+        bool dropWidth = sizeIsUnset && dropIfUnset;
 
-            if (!dropWidth)
-            {
-                imageSource.RasterizePixelWidth(imageSize);
-            }
-        //}
+        if (!dropWidth)
+        {
+            imageSource.RasterizePixelWidth(imageSize);
+        }
     }
 
     void render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize) {
