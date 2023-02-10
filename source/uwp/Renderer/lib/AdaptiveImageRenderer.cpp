@@ -587,11 +587,8 @@ namespace AdaptiveCards::Rendering::Uwp
     winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
                                                                   winrt::Uri const uri)
     {
-        if (imageSource && uri)
-        {
-            co_await winrt::resume_foreground(imageSource.Dispatcher());
-            imageSource.UriSource(uri);
-        }
+        co_await winrt::resume_foreground(imageSource.Dispatcher());
+        imageSource.UriSource(uri);
     }
 
     template<typename T, typename S>
@@ -603,25 +600,25 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                          winrt::IInspectable const imageContainer,
                                                                          bool isVisible)
     {
-            co_await winrt::resume_foreground(imageSource.Dispatcher());
-            auto setSourceOperation = imageSource.SetSourceAsync(stream);
+        co_await winrt::resume_foreground(imageSource.Dispatcher());
+        auto setSourceOperation = imageSource.SetSourceAsync(stream);
 
-            setSourceOperation.Completed(
-                [weakThis = this->get_weak(), uiElement, isAutoSize, parentElement, imageContainer, isVisible](
-                    auto const& operation, auto status)
+        setSourceOperation.Completed(
+            [weakThis = this->get_weak(), uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+                auto const& operation, auto status)
+            {
+                auto loadStatus = operation.GetResults();
+                if (status == winrt::AsyncStatus::Completed && loadStatus == winrt::SvgImageSourceLoadStatus::Success)
                 {
-                    auto loadStatus = operation.GetResults();
-                    if (status == winrt::AsyncStatus::Completed && loadStatus == winrt::SvgImageSourceLoadStatus::Success)
+                    if (auto strongThis = weakThis.get())
                     {
-                        if (auto strongThis = weakThis.get())
+                        if (isAutoSize)
                         {
-                            if (isAutoSize)
-                            {
-                                strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                            }
+                            strongThis->SetAutoSize(uiElement, parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                         }
                     }
-                });
+                }
+            });
     }
 
     template<typename T>
