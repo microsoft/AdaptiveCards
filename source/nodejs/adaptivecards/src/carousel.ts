@@ -562,7 +562,7 @@ export class Carousel extends Container {
                 enabled: true
             },
             keyboard: {
-                enabled: true,
+                enabled: false,
                 onlyInViewport: true
             },
             direction: this.carouselOrientation === Enums.Orientation.Horizontal ? "horizontal" : "vertical",
@@ -603,6 +603,17 @@ export class Carousel extends Container {
 
         carousel.on('autoplay',  () => {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
+        });
+
+        carousel.on('paginationRender', (swiper, paginationEl) => {
+            swiper.pagination.bullets.forEach((bullet, index) => {
+                bullet.addEventListener("keypress", function(event : KeyboardEvent) {
+                    if (event.key == "Enter") {
+                        event.preventDefault();
+                        swiper.slideTo(index + 1);
+                    }
+                });
+            });
         });
 
         carousel.on('destroy', () => {
