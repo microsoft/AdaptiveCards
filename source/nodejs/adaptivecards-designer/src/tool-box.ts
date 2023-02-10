@@ -55,6 +55,7 @@ export class Toolbox {
                 this._collapsedTabContainer.appendChild(this._headerRootElement);
                 this.restoreState();
             }
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", this._isExpanded.toString());
         }
     }
 
@@ -143,6 +144,9 @@ export class Toolbox {
 
                 e.preventDefault();
                 this._expandCollapseButtonElement.focus();
+                
+                // Add a delay so the focus event has completed
+                setTimeout(() => { this._expandCollapseButtonElement.setAttribute("aria-expanded", this._isExpanded.toString()); }, 1);
             }
 
             if (e.key === Constants.keys.escape) {
@@ -150,14 +154,17 @@ export class Toolbox {
 
                 e.preventDefault();
                 this._expandCollapseButtonElement.focus();
+                
+                // Add a delay so the focus event has completed
+                setTimeout(() => { this._expandCollapseButtonElement.setAttribute("aria-expanded", this._isExpanded.toString()); }, 1);
             }
         }
 
         this._expandCollapseButtonElement.onclick = (e) => {
             this.toggle();
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", this._isExpanded.toString());
 
             e.preventDefault();
-
             return true;
         }
 
@@ -192,8 +199,6 @@ export class Toolbox {
             }
 
             this._expandCollapseButtonElement.title = "Show " + this.title;
-            this._expandCollapseButtonElement.setAttribute("aria-expanded", "false");
-
             this._isExpanded = false;
 
             this.toggled(saveState);
@@ -212,8 +217,6 @@ export class Toolbox {
             }
 
             this._expandCollapseButtonElement.title = "Hide " + this.title;
-            this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
-
             this._isExpanded = true;
 
             this.toggled();
@@ -268,6 +271,7 @@ export class Toolbox {
                     else {
                         this.collapse();
                     }
+                    this._expandCollapseButtonElement.setAttribute("aria-expanded", this._isExpanded.toString());
                 }
             }
             finally {
