@@ -4196,6 +4196,11 @@ export class Choice extends SerializableObject {
     }
 }
 
+/**
+ * DataQuery class is declared later in the file and derives from subsequent base classes
+ * Hence, it cannot be used in ChoiceSetInput.
+ * Refactor is needed to separate elements and actions in separate files.
+ */
 export class ChoiceSetInputDataQuery extends SerializableObject {
     //#region Schema
 
@@ -4204,7 +4209,7 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
         "type",
         true,
         new RegExp("/^Data.Query$/")
-      );      
+    );
     static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
 
 	@property(ChoiceSetInputDataQuery.typeProperty)
@@ -4213,11 +4218,11 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
 	@property(ChoiceSetInputDataQuery.datasetProperty)
 	dataset: string;
 
+    //#endregion
+
 	protected getSchemaKey(): string {
         return "choices.data";
-    }
-    
-    //#endregion
+    }    
 }
 
 export type FetchedChoice = {
@@ -4280,7 +4285,7 @@ export class ChoiceSetInput extends Input {
     choices: Choice[] = [];
 
     @property(ChoiceSetInput.choicesDataProperty)
-	choicesData?: ChoiceSetInputDataQuery; 
+    choicesData?: ChoiceSetInputDataQuery;
 
     //#endregion
 
@@ -4451,9 +4456,12 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
-        if (this.choicesData?.dataset) {
+        if (
+            this.choicesData &&
+            this.choicesData.type === "Data.Query" &&
+            this.choicesData.dataset
+        ) {
             const filteredChoiceSet = new FilteredChoiceSet(this.choices, this.hostConfig);
-            filteredChoiceSet.parent = this;
             filteredChoiceSet.render();
 
             if (filteredChoiceSet.textInput) {
@@ -4482,6 +4490,7 @@ export class ChoiceSetInput extends Input {
                     }
                 }, this.hostConfig.inputs.debounceTime);
             }
+            filteredChoiceSet.parent = this;
             this._filteredChoiceSet = filteredChoiceSet;
             return filteredChoiceSet.renderedElement;
         }
@@ -4881,7 +4890,7 @@ export class FilteredChoiceSet {
                     "ac-choiceSetInput-errorIndicator"
                 );
                 this._errorIndicator = errorIndicator;
-            } 
+            }
             this._errorIndicator.innerText = error;
             return this._errorIndicator;
         } else {
@@ -4925,7 +4934,7 @@ export class FilteredChoiceSet {
     }
 
     showDropdown() {
-        if (this._dropdown) {
+        if (this._dropdown?.hasChildNodes) {
             this._dropdown.style.display = "block";
         }
     }
@@ -5914,8 +5923,8 @@ export class DataQuery extends UniversalAction {
 
     //#region Schema
 
-    static readonly datasetProperty = new StringProperty(Versions.v1_0, "dataset");
-    static readonly filterProperty = new StringProperty(Versions.v1_0, "filter");
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly filterProperty = new StringProperty(Versions.v1_6, "filter");
 
     @property(DataQuery.datasetProperty)
     dataset: string;

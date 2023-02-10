@@ -10,7 +10,7 @@
 export const sampleCard = {
     type: "AdaptiveCard",
     $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-    version: "1.4",
+    version: "1.6",
     authentication: {
         text: "Let's authenticate",
         connectionName: "myConnection",
@@ -89,24 +89,20 @@ export const sampleCard = {
             "type": "Input.ChoiceSet",
             "choices": [
                 {
-                    "title": "Aditya",
+                    "title": "Surya",
                     "value": "Choice 1"
                 },
                 {
-                    "title": "Adith",
+                    "title": "Suryansh",
                     "value": "Choice 2"
                 },
                 {
-                    "title": "Adinarayan",
+                    "title": "Suryanarayan",
                     "value": "Choice 3"
                 },
                 {
-                    "title": "Amit",
+                    "title": "Suryavanshi",
                     "value": "Choice 4"
-                },
-                {
-                    "title": "Amitabh",
-                    "value": "Choice 5"
                 }
             ],
             "style": "compact",
@@ -116,24 +112,20 @@ export const sampleCard = {
             "type": "Input.ChoiceSet",
             "choices": [
                 {
-                    "title": "Aditya",
+                    "title": "Surya",
                     "value": "Choice 1"
                 },
                 {
-                    "title": "Adith",
+                    "title": "Suryansh",
                     "value": "Choice 2"
                 },
                 {
-                    "title": "Adinarayan",
+                    "title": "Suryanarayan",
                     "value": "Choice 3"
                 },
                 {
-                    "title": "Amit",
+                    "title": "Suryavanshi",
                     "value": "Choice 4"
-                },
-                {
-                    "title": "Amitabh",
-                    "value": "Choice 5"
                 }
             ],
             "choices.data": {
