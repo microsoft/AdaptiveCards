@@ -1,0 +1,52 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Cool link"
+				}
+			],
+			"selectAction": {
+				"type": "Action.OpenUrl",
+				"tooltip": "Go to a url",
+				"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+			}
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Emphasis link"
+				}
+			],
+			"selectAction": {
+				"type": "Action.OpenUrl",
+				"tooltip": "Go to a different url",
+				"url": "https://msn.com"
+			}
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Submit action"
+				}
+			],
+			"selectAction": {
+				"type": "Action.Submit",
+				"tooltip": "Submit action",
+				"data": {
+					"info": "My submit action data"
+				}
+			}
+		}
+	]
+}
