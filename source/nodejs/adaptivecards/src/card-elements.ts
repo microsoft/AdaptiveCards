@@ -590,8 +590,6 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
-        this.getRootElement().updateActionsEnabledState();
-
         return this._renderedElement;
     }
 
@@ -8906,6 +8904,8 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
                     this.updateInputsVisualState(false /* hover */);
                 };
+
+                this.getRootElement().updateActionsEnabledState();
             }
         }
 
