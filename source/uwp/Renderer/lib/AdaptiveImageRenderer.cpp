@@ -537,7 +537,7 @@ namespace AdaptiveCards::Rendering::Uwp
             loadDataReaderOperation.Completed(
                 [weakThis = this->get_weak(), streamDataReader, uiElementRef = winrt::make_weak(uiElement), isAutoSize, parentElementRef = winrt::make_weak(parentElement),
                  imageContainerRef = winrt::make_weak(imageContainer), isVisible, streamRef = winrt::make_weak(stream),
-                 imageSourceRef = winrt::weak_ref(imageSource.as<winrt::SvgImageSource>())](
+                 imageSourceRef = winrt::make_weak(imageSource.as<winrt::SvgImageSource>())](
                     auto const& result, auto status) -> void
                 {
                     auto strongThis = weakThis.get();
