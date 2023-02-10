@@ -21,7 +21,7 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"build": "cd ../adaptivecards && npm run build && cd ../adaptivecards-ui-testapp && webpack",
+		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
 		"lint": "eslint src/**/*.ts",
