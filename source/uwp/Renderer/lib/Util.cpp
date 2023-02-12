@@ -92,10 +92,17 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(in);
 }
 
-double HStringToDouble(winrt::hstring const& in)
+std::optional<double> TryHStringToDouble(winrt::hstring const& in)
 {
-    std::string inAsUTF8 = HStringToUTF8(in);
-    return std::atof(inAsUTF8.c_str());
+    try
+    {
+        return std::stod(winrt::to_string(in));
+    }
+    catch (std::invalid_argument)
+    {
+        // in was not a valid double
+        return {};
+    }
 }
 
 // Get a Color object from color string

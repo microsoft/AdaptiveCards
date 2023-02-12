@@ -273,9 +273,9 @@ namespace AdaptiveCards::Rendering::Uwp
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    template<typename T>
+    template<typename TElement>
     winrt::ImageSource render_xaml::XamlBuilder::SetImageOnUIElement(winrt::Uri const& imageUrl,
-                                                                     T const& uiElement,
+                                                                     TElement const& uiElement,
                                                                      winrt::AdaptiveCardResourceResolvers const& resolvers,
                                                                      bool isAutoSize,
                                                                      winrt::IInspectable const& parentElement,
@@ -451,9 +451,9 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     // Issue #8127
-    template<typename T>
+    template<typename TElement>
     winrt::ImageSource render_xaml::XamlBuilder::PopulateImageFromUrlAsync(winrt::Uri const& imageUrl,
-                                                                           T const& uiElement,
+                                                                           TElement const& uiElement,
                                                                            bool isAutoSize,
                                                                            winrt::IInspectable const& parentElement,
                                                                            winrt::IInspectable const& imageContainer,
@@ -513,14 +513,14 @@ namespace AdaptiveCards::Rendering::Uwp
         return image;
     }
 
-    template<typename T, typename S>
-    void render_xaml::XamlBuilder::HandleAccessStreamForImageSource(T const& uiElement,
+    template<typename TElement, typename TStream>
+    void render_xaml::XamlBuilder::HandleAccessStreamForImageSource(TElement const& uiElement,
                                                                     bool isAutoSize,
                                                                     winrt::IInspectable const& parentElement,
                                                                     winrt::IInspectable const& imageContainer,
                                                                     bool isVisible,
                                                                     bool isImageSvg,
-                                                                    S const& stream,
+                                                                    TStream const& stream,
                                                                     winrt::ImageSource const& imageSource,
                                                                     winrt::Stretch stretch)
     {
@@ -584,27 +584,29 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
+    winrt::fire_and_forget render_xaml::XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
                                                                   winrt::Uri const uri)
     {
         co_await winrt::resume_foreground(imageSource.Dispatcher());
         imageSource.UriSource(uri);
     }
 
-    template<typename T, typename S>
+    template<typename TElement, typename TStream>
     winrt::IAsyncAction render_xaml::XamlBuilder::SetSvgImageSourceAsync(winrt::SvgImageSource const imageSource,
-                                                                         S const stream,
-                                                                         T const uiElement,
+                                                                         TStream const stream,
+                                                                         TElement const uiElement,
                                                                          bool isAutoSize,
                                                                          winrt::IInspectable const parentElement,
                                                                          winrt::IInspectable const imageContainer,
                                                                          bool isVisible)
     {
+        auto weakThis = this->get_weak();
+
         co_await winrt::resume_foreground(imageSource.Dispatcher());
         auto setSourceOperation = imageSource.SetSourceAsync(stream);
 
         setSourceOperation.Completed(
-            [weakThis = this->get_weak(), uiElement, isAutoSize, parentElement, imageContainer, isVisible](
+            [weakThis, uiElement, isAutoSize, parentElement, imageContainer, isVisible](
                 auto const& operation, auto status)
             {
                 auto loadStatus = operation.GetResults();
@@ -621,8 +623,8 @@ namespace AdaptiveCards::Rendering::Uwp
             });
     }
 
-    template<typename T>
-    void render_xaml::XamlBuilder::SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
+    template<typename TDest>
+    void render_xaml::XamlBuilder::SetImageSource(TDest const& destination, winrt::ImageSource const& imageSource, winrt::Stretch /*stretch*/)
     {
         destination.Source(imageSource);
     };
@@ -694,8 +696,8 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    template<typename T>
-    void render_xaml::XamlBuilder::SetAutoSize(T const& destination,
+    template<typename TDest>
+    void render_xaml::XamlBuilder::SetAutoSize(TDest const& destination,
                                                winrt::IInspectable const& parentElement,
                                                winrt::IInspectable const&, /* imageContainer */
                                                bool isVisible,
@@ -759,26 +761,26 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (!height.empty())
             {
-                if (auto heightAsDouble = HStringToDouble(height))
+                if (auto heightAsDouble = TryHStringToDouble(height))
                 {
-                    SetRasterizedPixelHeight(imageSource, heightAsDouble);
+                    SetRasterizedPixelHeightAsync(imageSource, heightAsDouble.value());
                     isHeightSet = true;
                 }
             }
 
             if (!width.empty())
             {
-                if (auto widthAsDouble = HStringToDouble(width))
+                if (auto widthAsDouble = TryHStringToDouble(width))
                 {
-                    SetRasterizedPixelWidth(imageSource, widthAsDouble, isHeightSet);
+                    SetRasterizedPixelWidthAsync(imageSource, widthAsDouble.value(), isHeightSet);
                 }
             }
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::SvgImageSource const imageSource,
-                                                                           double imageSize,
-                                                                           bool dropIfUnset)
+    winrt::fire_and_forget render_xaml::XamlBuilder::SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSource,
+                                                                           double const imageSize,
+                                                                           bool const dropIfUnset)
     {
         co_await winrt::resume_foreground(imageSource.Dispatcher());
         auto currentSize = imageSource.RasterizePixelHeight();
@@ -792,9 +794,9 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    winrt::IAsyncAction render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::SvgImageSource const imageSource,
-                                                                          double imageSize,
-                                                                          bool dropIfUnset)
+    winrt::fire_and_forget render_xaml::XamlBuilder::SetRasterizedPixelWidthAsync(winrt::SvgImageSource const imageSource,
+                                                                          double const imageSize,
+                                                                          bool const dropIfUnset)
     {
         co_await winrt::resume_foreground(imageSource.Dispatcher());
         auto currentSize = imageSource.RasterizePixelWidth();
@@ -808,7 +810,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize) {
+    void render_xaml::XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize) {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {
             auto currentSize = image.RasterizePixelHeight();
@@ -821,7 +823,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
     }
 
-    void render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize) {
+    void render_xaml::XamlBuilder::SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize) {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {
             auto currentSize = image.RasterizePixelWidth();

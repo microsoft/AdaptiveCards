@@ -54,19 +54,19 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                                winrt::AdaptiveRenderArgs const& renderArgs,
                                                                                XamlBuilder* xamlBuilder);
 
-        template<typename T>
-        void SetAutoSize(T const& destination,
+        template<typename TDest>
+        void SetAutoSize(TDest const& destination,
                          winrt::IInspectable const& parentElement,
                          winrt::IInspectable const& imageContainer,
                          bool isVisible,
                          bool imageFiresOpenEvent);
 
-        template<typename T>
-        void SetImageSource(T const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+        template<typename TDest>
+        void SetImageSource(TDest const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
-        template<typename T>
+        template<typename TElement>
         winrt::ImageSource SetImageOnUIElement(winrt::Uri const& imageUrl,
-                                               T const& uiElement,
+                                               TElement const& uiElement,
                                                winrt::AdaptiveCardResourceResolvers const& resolvers,
                                                bool isAutoSize,
                                                winrt::IInspectable const& parentElement,
@@ -77,9 +77,9 @@ namespace AdaptiveCards::Rendering::Uwp
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-        template<typename T>
+        template<typename TElement>
         winrt::ImageSource PopulateImageFromUrlAsync(winrt::Uri const& imageUrl,
-                                                     T const& uiElement,
+                                                     TElement const& uiElement,
                                                      bool isAutoSize,
                                                      winrt::IInspectable const& parentElement,
                                                      winrt::IInspectable const& imageContainer,
@@ -87,28 +87,28 @@ namespace AdaptiveCards::Rendering::Uwp
                                                      bool isImageSvg,
                                                      winrt::Stretch stretch);
 
-        template<typename T, typename S>
-        void HandleAccessStreamForImageSource(T const& uiElement,
+        template<typename TElement, typename TStream>
+        void HandleAccessStreamForImageSource(TElement const& uiElement,
                                               bool isAutoSize,
                                               winrt::IInspectable const& parentElement,
                                               winrt::IInspectable const& imageContainer,
                                               bool isVisible,
                                               bool isImageSvg,
-                                              S const& stream,
+                                              TStream const& stream,
                                               winrt::ImageSource const& imageSource,
                                               winrt::Stretch stretch);
 
-        winrt::IAsyncAction SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
+        winrt::fire_and_forget SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
                                             winrt::Uri const uriRef);
 
-        template<typename T, typename S>
+        template<typename TElement, typename TStream>
         winrt::IAsyncAction SetSvgImageSourceAsync(winrt::SvgImageSource const imageSourceRef,
-                                                   S const streamRef,
-                                                   T const uiElementRef,
-                                                   bool isAutoSize,
+                                                   TStream const streamRef,
+                                                   TElement const uiElementRef,
+                                                   bool const isAutoSize,
                                                    winrt::IInspectable const parentElementRef,
                                                    winrt::IInspectable const imageContainerRef,
-                                                   bool isVisible);
+                                                   bool const isVisible);
 
         boolean IsSvgImage(std::string url);
 
@@ -118,14 +118,14 @@ namespace AdaptiveCards::Rendering::Uwp
         void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
                                        winrt::SvgImageSource const& imageSourceRef);
         
-        winrt::IAsyncAction SetRasterizedPixelHeight(winrt::SvgImageSource const imageSourceRef,
-                                                     double imageSize,
-                                                     bool dropIfUnset = false);
-        winrt::IAsyncAction SetRasterizedPixelWidth(winrt::SvgImageSource const imageSourceRef,
-                                                    double imageSize,
-                                                    bool dropIfUnset = false);
+        winrt::fire_and_forget SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSourceRef,
+                                                     double const imageSize,
+                                                     bool const dropIfUnset = false);
+        winrt::fire_and_forget SetRasterizedPixelWidthAsync(winrt::SvgImageSource const imageSourceRef,
+                                                    double const imageSize,
+                                                    bool const dropIfUnset = false);
 
-        void SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double imageSize);
-        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double imageSize);
+        void SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize);
+        void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize);
     };
 }
