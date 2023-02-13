@@ -91,7 +91,7 @@ export class TestChannelAdapter extends Adaptive.ChannelAdapter {
             else {
                 return new ErrorResponse(request, new ActivityRequestError(undefined, response.statusText));
             }
-        } else if (request.action instanceof DataQuery){
+        } else if (request.action instanceof DataQuery) {
             const response = [
                 { title: "Matt", value: "1" },
                 { title: "Mark", value: "2" },

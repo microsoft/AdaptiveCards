@@ -4208,7 +4208,7 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
         Versions.v1_6,
         "type",
         true,
-        new RegExp("/^Data.Query$/")
+        new RegExp("^Data.Query$")
     );
     static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
 
@@ -4476,7 +4476,6 @@ export class ChoiceSetInput extends Input {
                 this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
                 this._textInput.oninput = Utils.debounce(() => {
                     this.valueChanged();
-                    filteredChoiceSet.showDropdown();
                     if (this._textInput) {
                         // Remove aria-label when value is not empty so narration software doesn't
                         // read the placeholder
@@ -4823,7 +4822,7 @@ export class FilteredChoiceSet {
         this._renderedElement = choiceSetContainer;
     }
 
-    createChoice(value: string, id: number): HTMLSpanElement {
+    private createChoice(value: string, id: number): HTMLSpanElement {
         const choice = document.createElement("span");
         choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
         choice.id = `ac-choiceSetInput-choice-${id}`;
@@ -4840,15 +4839,9 @@ export class FilteredChoiceSet {
         };
         choice.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
-                const nextChoice = document.getElementById(`ac-choiceSetInput-choice-${id + 1}`);
-                if (nextChoice) {
-                    nextChoice.focus();
-                }
+                this.focusChoice(id + 1);
             } else if (event.key === "ArrowUp") {
-                const prevChoice = document.getElementById(`ac-choiceSetInput-choice-${id - 1}`);
-                if (prevChoice) {
-                    prevChoice.focus();
-                }
+                this.focusChoice(id - 1);
             } else if (event.key === "Enter") {
                 choice.click();
             }
@@ -4856,7 +4849,18 @@ export class FilteredChoiceSet {
         return choice;
     }
 
-    filterChoices(isDynamic?: boolean) {
+    private focusChoice(id: number) {
+        const choice = document.getElementById(`ac-choiceSetInput-choice-${id}`);
+        if (choice) {
+            choice.focus();
+        } else if (this._textInput) {
+            this._textInput.focus();
+            const textLength = this._textInput.value.length;
+            this._textInput.setSelectionRange(textLength, textLength);
+        }
+    }
+
+    private filterChoices(isDynamic?: boolean) {
         const filter = this._textInput?.value.toLowerCase() || "";
         const choices = isDynamic ? this._dynamicChoices : this._choices;
         for (const choice of choices) {
@@ -4867,15 +4871,7 @@ export class FilteredChoiceSet {
         }
     }
 
-    processResponse(fetchedChoices: FetchedChoice[]) {
-        this._dynamicChoices = fetchedChoices;
-        this.filterChoices(true);
-        if (this._visibleChoiceCount === 0) {
-            this.showErrorIndicator("No results found.");
-        }
-    }
-
-    getStatusIndicator(error?: string): HTMLDivElement {
+    private getStatusIndicator(error?: string): HTMLDivElement {
         if (error) {
             if (!this._errorIndicator) {
                 const errorIndicator = document.createElement("div");
@@ -4903,9 +4899,25 @@ export class FilteredChoiceSet {
         }
     }
 
-    showErrorIndicator(error: string) {
-        const errorIndicator = this.getStatusIndicator(error);
-        this._dropdown?.appendChild(errorIndicator);
+    private resetDropdown() {
+        if (this._dropdown) {
+            Utils.clearElementChildren(this._dropdown);
+            this._visibleChoiceCount = 0;
+        }
+    }
+
+    private showDropdown() {
+        if (this._dropdown?.hasChildNodes) {
+            this._dropdown.style.display = "block";
+        }
+    }
+
+    processResponse(fetchedChoices: FetchedChoice[]) {
+        this._dynamicChoices = fetchedChoices;
+        this.filterChoices(true);
+        if (this._visibleChoiceCount === 0) {
+            this.showErrorIndicator("No results found.");
+        }
     }
 
     showLoadingIndicator() {
@@ -4914,6 +4926,7 @@ export class FilteredChoiceSet {
 
         const loadingIndicator = this.getStatusIndicator();
         this._dropdown?.appendChild(loadingIndicator);
+        this.showDropdown();
     }
 
     removeLoadingIndicator() {
@@ -4922,17 +4935,9 @@ export class FilteredChoiceSet {
         }
     }
 
-    resetDropdown() {
-        if (this._dropdown) {
-            Utils.clearElementChildren(this._dropdown);
-            this._visibleChoiceCount = 0;
-        }
-    }
-
-    showDropdown() {
-        if (this._dropdown?.hasChildNodes) {
-            this._dropdown.style.display = "block";
-        }
+    showErrorIndicator(error: string) {
+        const errorIndicator = this.getStatusIndicator(error);
+        this._dropdown?.appendChild(errorIndicator);
     }
 
     get dynamicChoices() {

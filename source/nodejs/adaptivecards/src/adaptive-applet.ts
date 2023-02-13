@@ -763,10 +763,22 @@ export class AdaptiveApplet {
                     }
                     if (typeof parsedResponse === "object") {
                         this._choiceSet?.renderChoices(parsedResponse);
-                    } 
+                        this.activityRequestSucceeded(response, parsedResponse);
+                    } else {
+                        throw new Error(
+                            "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
+                                typeof rawResponse +
+                                ")"
+                        );
+                    }
                 }
             } else if (response instanceof ErrorResponse) {
                 this._choiceSet?.showErrorIndicator("Error loading results.");
+                logEvent(
+                    Enums.LogLevel.Error,
+                    `Activity request failed: ${response.error.message}.`
+                );
+                this.activityRequestFailed(response);
             } else {
                 throw new Error("Unhandled response type: " + JSON.stringify(response));
             }
