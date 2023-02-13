@@ -13,6 +13,18 @@ namespace AdaptiveCards::Rendering::Uwp
     public:
         XamlBuilder();
 
+        template<typename TElement>
+        struct ImageProperties
+        {
+            TElement uiElement;
+            bool isAutoSize;
+            winrt::IInspectable parentElement;
+            winrt::IInspectable imageContainer;
+            bool isVisible;
+            boolean isImageSvg;
+            winrt::Stretch stretch = winrt::Stretch::UniformToFill;
+        };
+
         // IImageLoadTrackerListener
         void AllImagesLoaded() override;
         void ImagesLoadingHadError() override;
@@ -66,37 +78,19 @@ namespace AdaptiveCards::Rendering::Uwp
 
         template<typename TElement>
         winrt::ImageSource SetImageOnUIElement(winrt::Uri const& imageUrl,
-                                               TElement const& uiElement,
                                                winrt::AdaptiveCardResourceResolvers const& resolvers,
-                                               bool isAutoSize,
-                                               winrt::IInspectable const& parentElement,
-                                               winrt::IInspectable const& imageContainer,
-                                               bool isVisible,
-                                               bool isImageSvg = false,
-                                               winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+                                               ImageProperties<TElement> const& imgProperties);
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
         template<typename TElement>
         winrt::ImageSource PopulateImageFromUrlAsync(winrt::Uri const& imageUrl,
-                                                     TElement const& uiElement,
-                                                     bool isAutoSize,
-                                                     winrt::IInspectable const& parentElement,
-                                                     winrt::IInspectable const& imageContainer,
-                                                     bool isVisible,
-                                                     bool isImageSvg,
-                                                     winrt::Stretch stretch);
+                                                     ImageProperties<TElement> const& imgProperties);
 
         template<typename TElement, typename TStream>
-        void HandleAccessStreamForImageSource(TElement const& uiElement,
-                                              bool isAutoSize,
-                                              winrt::IInspectable const& parentElement,
-                                              winrt::IInspectable const& imageContainer,
-                                              bool isVisible,
-                                              bool isImageSvg,
+        void HandleAccessStreamForImageSource(ImageProperties<TElement> const& imgProperties,
                                               TStream const& stream,
-                                              winrt::ImageSource const& imageSource,
-                                              winrt::Stretch stretch);
+                                              winrt::ImageSource const& imageSource);
 
         winrt::fire_and_forget SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
                                             winrt::Uri const uriRef);
@@ -104,11 +98,7 @@ namespace AdaptiveCards::Rendering::Uwp
         template<typename TElement, typename TStream>
         winrt::IAsyncAction SetSvgImageSourceAsync(winrt::SvgImageSource const imageSourceRef,
                                                    TStream const streamRef,
-                                                   TElement const uiElementRef,
-                                                   bool const isAutoSize,
-                                                   winrt::IInspectable const parentElementRef,
-                                                   winrt::IInspectable const imageContainerRef,
-                                                   bool const isVisible);
+                                                   ImageProperties<TElement> const imgProperties);
 
         boolean IsSvgImage(std::string url);
 
