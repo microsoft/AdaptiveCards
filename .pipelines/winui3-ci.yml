@@ -33,6 +33,8 @@ steps:
 
 - task: NuGetAuthenticate@1
   name: NuGetAuthenticate2
+  inputs:
+    forceReinstallCredentialProvider: true
 
 - task: NuGetRestore@1
   name: NuGetCommand3
