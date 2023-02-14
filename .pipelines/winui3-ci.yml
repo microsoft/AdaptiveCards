@@ -41,7 +41,8 @@ steps:
   displayName: NuGet restore
   inputs:
     solution: $(solution)
-    selectOrConfig: config
+    selectOrConfig: select
+    feed: https://api.nuget.org/v3/index.json
     verbosity: '-'
 
 - task: VSBuild@1
