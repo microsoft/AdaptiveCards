@@ -3570,12 +3570,12 @@ export abstract class Input extends CardElement implements IInput {
                 if (!this.labelWidth) {
                     const defaultLabelWidth = hostConfig.inputs.label.width;
                     this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                    this._inputControlContainerElement.style.width = (100 - defaultLabelWidth) + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
                     const labelWidthInPercent = this.labelWidth.physicalSize;
                     this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - labelWidthInPercent).toString() + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
                     const labelWidthInPixel = this.labelWidth.physicalSize;
