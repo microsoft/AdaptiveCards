@@ -41,8 +41,8 @@ steps:
   displayName: NuGet restore
   inputs:
     solution: $(solution)
-    selectOrConfig: select
-    feed: https://api.nuget.org/v3/index.json
+    selectOrConfig: config
+    nugetConfigPath: source/uwp/winui3/nuget.config
     verbosity: '-'
 
 - task: VSBuild@1
