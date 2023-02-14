@@ -12,6 +12,6 @@
 		"release": "npm run build"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.7.2"
+		"adaptivecards": "^2.11.2"
 	}
 }

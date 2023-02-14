@@ -28,6 +28,6 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.7.2"
+		"adaptivecards": "^2.11.2"
 	}
 }
