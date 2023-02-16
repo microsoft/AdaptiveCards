@@ -590,8 +590,6 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
-        this.getRootElement().updateActionsEnabledState();
-
         return this._renderedElement;
     }
 
@@ -2124,7 +2122,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.setupElementForAccessibility(imageElement);
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2155,12 +2153,6 @@ export class Image extends CardElement {
         }
 
         return element;
-    }
-
-    protected setupElementForAccessibility(element: HTMLImageElement) {
-        this.selectAction?.setupElementForAccessibility(element);
-        // Image elements cannot have aria-description
-        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -3578,12 +3570,12 @@ export abstract class Input extends CardElement implements IInput {
                 if (!this.labelWidth) {
                     const defaultLabelWidth = hostConfig.inputs.label.width;
                     this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                    this._inputControlContainerElement.style.width = (100 - defaultLabelWidth) + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
                     const labelWidthInPercent = this.labelWidth.physicalSize;
                     this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - labelWidthInPercent).toString() + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
                     const labelWidthInPixel = this.labelWidth.physicalSize;
@@ -4322,6 +4314,22 @@ export class ChoiceSetInput extends Input {
         this._filteredChoiceSet?.processResponse(fetchedChoices);
     }
 
+    private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
+        if (!this.value) {
+            const placeholderOption = document.createElement("option");
+            placeholderOption.selected = true;
+            placeholderOption.disabled = true;
+            placeholderOption.hidden = true;
+            placeholderOption.value = "";
+
+            if (this.placeholder) {
+                placeholderOption.text = this.placeholder;
+            }
+            return placeholderOption;
+        }
+        return undefined;
+    }
+
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
         if (this._selectElement) {
@@ -4583,15 +4591,7 @@ export class ChoiceSetInput extends Input {
 
                 this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
-                const placeholderOption = document.createElement("option");
-                placeholderOption.selected = true;
-                placeholderOption.disabled = true;
-                placeholderOption.hidden = true;
-                placeholderOption.value = "";
-
-                if (this.placeholder) {
-                    placeholderOption.text = this.placeholder;
-                }
+                const placeholderOption = this.createPlaceholderOptionWhenValueDoesNotExist();
 
                 Utils.appendChild(this._selectElement, placeholderOption);
 
@@ -5571,14 +5571,10 @@ export abstract class Action extends CardObject {
             element.removeAttribute("title");
         }
 
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
+        if (this.tooltip) {			
+            if (promoteTooltipToLabel && !this.title) {
+                element.setAttribute("aria-label", this.tooltip);
+            }
             element.title = this.tooltip;
         }
     }
@@ -9261,6 +9257,8 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
                     this.updateInputsVisualState(false /* hover */);
                 };
+
+                this.getRootElement().updateActionsEnabledState();
             }
         }
 

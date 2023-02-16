@@ -5,7 +5,6 @@
   <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
-    <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{40c8962d-3e19-4142-a0b4-1614548aa3d1}</ProjectGuid>
     <Keyword>AdaptiveCards</Keyword>
@@ -16,7 +15,7 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <TargetName>AdaptiveCards.Rendering.WinUI3</TargetName>
     <DesktopCompatible>true</DesktopCompatible>
@@ -107,6 +106,8 @@
       <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
+        Ole32.lib;
+        OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
       <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
