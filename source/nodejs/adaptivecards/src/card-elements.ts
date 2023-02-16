@@ -4298,8 +4298,16 @@ export class ChoiceSetInput extends Input {
     private _labels: Array<HTMLElement | undefined>;
     private _filteredChoiceSet?: FilteredChoiceSet;
 
-    showErrorIndicator(error: string) {
-        this._filteredChoiceSet?.showErrorIndicator(error);
+    isDynamicTypeahead(): boolean {
+        return (
+            !!this.choicesData &&
+            !!this.choicesData.dataset &&
+            this.choicesData.type === "Data.Query"
+        );
+    }
+
+    renderChoices(fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(fetchedChoices);
     }
 
     showLoadingIndicator() {
@@ -4310,8 +4318,8 @@ export class ChoiceSetInput extends Input {
         this._filteredChoiceSet?.removeLoadingIndicator();
     }
 
-    renderChoices(fetchedChoices: FetchedChoice[]) {
-        this._filteredChoiceSet?.processResponse(fetchedChoices);
+    showErrorIndicator(error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(error);
     }
 
     private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
@@ -4464,12 +4472,12 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
-        if (
-            this.choicesData &&
-            this.choicesData.type === "Data.Query" &&
-            this.choicesData.dataset
-        ) {
-            const filteredChoiceSet = new FilteredChoiceSet(this.choices, this.hostConfig);
+        if (this.isDynamicTypeahead()) {
+            const filteredChoiceSet = new FilteredChoiceSet(
+                ChoiceSetInput._uniqueCategoryCounter,
+                this.choices,
+                this.hostConfig
+            );
             filteredChoiceSet.render();
 
             if (filteredChoiceSet.textInput) {
@@ -4483,6 +4491,7 @@ export class ChoiceSetInput extends Input {
                 }
                 this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
                 this._textInput.oninput = Utils.debounce(() => {
+                    filteredChoiceSet.processStaticChoices();
                     this.valueChanged();
                     if (this._textInput) {
                         // Remove aria-label when value is not empty so narration software doesn't
@@ -4758,6 +4767,7 @@ export class ChoiceSetInput extends Input {
 
 export class FilteredChoiceSet {
     private _parent?: CardObject;
+    private _choiceSetId: number;
     private _choices: Choice[];
     private _dynamicChoices: FetchedChoice[];
     private _visibleChoiceCount: number;
@@ -4768,7 +4778,8 @@ export class FilteredChoiceSet {
     private _renderedElement?: HTMLElement;
     private _hostConfig?: HostConfig;
 
-    constructor(choices: Choice[], hostConfig?: HostConfig) {
+    constructor(choiceSetId: number, choices: Choice[], hostConfig?: HostConfig) {
+        this._choiceSetId = choiceSetId;
         this._choices = choices;
         this._dynamicChoices = [];
         this._visibleChoiceCount = 0;
@@ -4791,7 +4802,9 @@ export class FilteredChoiceSet {
 
         this._textInput.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
-                const firstChoice = document.getElementById("ac-choiceSetInput-choice-0");
+                const firstChoice = document.getElementById(
+                    `ac-choiceSetInput-${this._choiceSetId}-choice-0`
+                );
                 if (firstChoice) {
                     firstChoice.focus();
                 }
@@ -4825,7 +4838,7 @@ export class FilteredChoiceSet {
     private createChoice(value: string, id: number): HTMLSpanElement {
         const choice = document.createElement("span");
         choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
-        choice.id = `ac-choiceSetInput-choice-${id}`;
+        choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
         choice.innerText = value;
         choice.tabIndex = -1;
 
@@ -4850,7 +4863,9 @@ export class FilteredChoiceSet {
     }
 
     private focusChoice(id: number) {
-        const choice = document.getElementById(`ac-choiceSetInput-choice-${id}`);
+        const choice = document.getElementById(
+            `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
+        );
         if (choice) {
             choice.focus();
         } else if (this._textInput) {
@@ -4900,6 +4915,7 @@ export class FilteredChoiceSet {
     }
 
     private resetDropdown() {
+        this._dynamicChoices = [];
         if (this._dropdown) {
             Utils.clearElementChildren(this._dropdown);
             this._visibleChoiceCount = 0;
@@ -4912,6 +4928,12 @@ export class FilteredChoiceSet {
         }
     }
 
+    processStaticChoices() {
+        this.resetDropdown();
+        this.filterChoices();
+        this.showDropdown();
+    }
+
     processResponse(fetchedChoices: FetchedChoice[]) {
         this._dynamicChoices = fetchedChoices;
         this.filterChoices(true);
@@ -4921,9 +4943,6 @@ export class FilteredChoiceSet {
     }
 
     showLoadingIndicator() {
-        this.resetDropdown();
-        this.filterChoices();
-
         const loadingIndicator = this.getStatusIndicator();
         this._dropdown?.appendChild(loadingIndicator);
         this.showDropdown();

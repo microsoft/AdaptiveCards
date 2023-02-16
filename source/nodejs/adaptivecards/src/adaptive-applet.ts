@@ -301,12 +301,21 @@ export class AdaptiveApplet {
                     this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
-                        if (input instanceof ChoiceSetInput && input.value && input.choicesData) {
+                        if (
+                            input instanceof ChoiceSetInput &&
+                            input.isDynamicTypeahead() &&
+                            input.value
+                        ) {
                             const dataQueryAction = new DataQuery();
                             dataQueryAction.filter = input.value;
-                            dataQueryAction.dataset = input.choicesData.dataset;
+                            dataQueryAction.dataset = input.choicesData?.dataset || "";
+
                             this._choiceSet = input;
-                            this.internalExecuteAction(dataQueryAction, ActivityRequestTrigger.Manual, 0);
+                            this.internalExecuteAction(
+                                dataQueryAction,
+                                ActivityRequestTrigger.Manual,
+                                0
+                            );
                         }
                     };
 
