@@ -368,14 +368,17 @@ namespace AdaptiveCards::Rendering::Uwp
 
             streamWriteOperation.Completed(
                 [weakThis = this->get_weak(), dataWriter, image, imgProperties](
-                    auto const& /*operation*/, auto /*status*/) -> void
+                    auto const& /*operation*/, auto status) -> void
                 {
-                    if (auto strongThis = weakThis.get())
+                    if (status == winrt::AsyncStatus::Completed)
                     {
-                        if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                        if (auto strongThis = weakThis.get())
                         {
-                            stream.Seek(0);
-                            strongThis->HandleAccessStreamForImageSource(imgProperties, stream, image);
+                            if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                            {
+                                stream.Seek(0);
+                                strongThis->HandleAccessStreamForImageSource(imgProperties, stream, image);
+                            }
                         }
                     }
                 });
@@ -408,10 +411,14 @@ namespace AdaptiveCards::Rendering::Uwp
                         {
                             if (status == winrt::AsyncStatus::Completed)
                             {
-                                strongThis->ParseXmlForHeightAndWidth(operation.GetResults(), strongImageSource);
+                                auto success = strongThis->ParseXmlForHeightAndWidth(operation.GetResults(), strongImageSource);
+
+                                if (success)
+                                {
+                                    // Now that we've parsed the height and width successfully, we can set the image source
+                                    strongThis->SetSvgUriSource(strongImageSource, imageUrl);
+                                }
                             }
-                            // Now that we've parsed the height, we can set the image source
-                            strongThis->SetSvgUriSource(strongImageSource, imageUrl);
                         }
                     });
             }
@@ -540,17 +547,30 @@ namespace AdaptiveCards::Rendering::Uwp
                         if (status == winrt::AsyncStatus::Completed)
                         {
                             auto bytes = result.GetResults();
-                            auto svgText = streamDataReader.ReadString(bytes);
 
-                            auto svgDocument = winrt::XmlDocument();
-                            svgDocument.LoadXml(svgText);
+                            try
+                            {
+                                auto svgText = streamDataReader.ReadString(bytes);
 
-                            strongThis->ParseXmlForHeightAndWidth(svgDocument, strongImageSource);
+                                if (!svgText.empty())
+                                {
+                                    auto svgDocument = winrt::XmlDocument();
+                                    svgDocument.LoadXml(svgText);
+
+                                    auto success = strongThis->ParseXmlForHeightAndWidth(svgDocument, strongImageSource);
+
+                                    if (success)
+                                    {
+                                        // Now that we've parsed the size, we can set the image source
+                                        strongThis->SetSvgImageSourceAsync(strongImageSource, strongStream, imgProperties);
+                                    }
+                                }
+                            }
+                            catch (winrt::hresult_error)
+                            {
+                                // There was an error reading the streamDataReader or loading the xml
+                            }
                         }
-
-                        // Now that we've parsed the height, we can set the image source
-                        strongThis->SetSvgImageSourceAsync(
-                            strongImageSource, strongStream, imgProperties);
                     }
                 });
         }
@@ -739,35 +759,43 @@ namespace AdaptiveCards::Rendering::Uwp
         return !(foundSvg == std::string::npos);
     }
 
-    void render_xaml::XamlBuilder::ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
+    bool render_xaml::XamlBuilder::ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
                                                              winrt::SvgImageSource const& imageSource)
     {
         if (xmlDoc)
         {
             auto rootElement = xmlDoc.DocumentElement();
-            auto height = rootElement.GetAttribute(L"height");
-            auto width = rootElement.GetAttribute(L"width");
 
-            // We only need to set height or width, not both (fixes aspect ratio for person style)
-            bool isHeightSet = false;
-
-            if (!height.empty())
+            // Root element must be an SVG
+            if (winrt::operator==(rootElement.NodeName(), L"svg"))
             {
-                if (auto heightAsDouble = TryHStringToDouble(height))
-                {
-                    SetRasterizedPixelHeightAsync(imageSource, heightAsDouble.value());
-                    isHeightSet = true;
-                }
-            }
+                auto height = rootElement.GetAttribute(L"height");
+                auto width = rootElement.GetAttribute(L"width");
 
-            if (!width.empty())
-            {
-                if (auto widthAsDouble = TryHStringToDouble(width))
+                // We only need to set height or width, not both (fixes aspect ratio for person style)
+                bool isHeightSet = false;
+
+                if (!height.empty())
                 {
-                    SetRasterizedPixelWidthAsync(imageSource, widthAsDouble.value(), isHeightSet);
+                    if (auto heightAsDouble = TryHStringToDouble(height))
+                    {
+                        SetRasterizedPixelHeightAsync(imageSource, heightAsDouble.value());
+                        isHeightSet = true;
+                    }
                 }
+
+                if (!width.empty())
+                {
+                    if (auto widthAsDouble = TryHStringToDouble(width))
+                    {
+                        SetRasterizedPixelWidthAsync(imageSource, widthAsDouble.value(), isHeightSet);
+                    }
+                }
+
+                return true;
             }
         }
+        return false;
     }
 
     winrt::fire_and_forget render_xaml::XamlBuilder::SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSource,
@@ -778,6 +806,9 @@ namespace AdaptiveCards::Rendering::Uwp
         auto currentSize = imageSource.RasterizePixelHeight();
         bool sizeIsUnset = isinf(currentSize);
 
+        // If the size has already been set explicitly, we need to update it with the correct value
+        // Ex: If `size: small`, the rasterize pixel size will be 40x40 at this point.
+        // If the actual image is 100x100, we cannot leave it as 100x40 and must set both height and width
         bool dropHeight = sizeIsUnset && dropIfUnset;
 
         if (!dropHeight)
@@ -794,6 +825,9 @@ namespace AdaptiveCards::Rendering::Uwp
         auto currentSize = imageSource.RasterizePixelWidth();
         bool sizeIsUnset = isinf(currentSize);
 
+        // If the size has already been set explicitly, we need to update it with the correct value
+        // Ex: If `size: small`, the rasterize pixel size will be 40x40 at this point.
+        // If the actual image is 100x100, we cannot leave it as 100x40 and must set both height and width
         bool dropWidth = sizeIsUnset && dropIfUnset;
 
         if (!dropWidth)

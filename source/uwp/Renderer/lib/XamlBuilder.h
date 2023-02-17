@@ -105,7 +105,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
 
-        void ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
+        bool ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
                                        winrt::SvgImageSource const& imageSourceRef);
         
         winrt::fire_and_forget SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSourceRef,
