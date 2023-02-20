@@ -22,4 +22,4 @@ class ChannelAdaptor private constructor(builder: Builder) {
         fun choicesResolver(choicesResolver: IChoicesResolver) = apply { this.choicesResolver = choicesResolver }
         fun build() = ChannelAdaptor(this)
     }
-}AdaptiveCardRenderer.java
+}
