@@ -36,6 +36,7 @@ import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
@@ -52,7 +53,6 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.action.ActionSetRenderer;
 import io.adaptivecards.renderer.action.DropdownElementRenderer;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.ChoiceSetInputRenderer;
 import io.adaptivecards.renderer.input.DateInputRenderer;
 import io.adaptivecards.renderer.input.InputUtil;
@@ -76,7 +76,6 @@ import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 import io.adaptivecards.renderer.readonly.TableRenderer;
 import io.adaptivecards.renderer.readonly.TableCellRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class CardRendererRegistration
 {
@@ -280,8 +279,7 @@ public class CardRendererRegistration
                                FragmentManager fragmentManager,
                                ViewGroup viewGroup,
                                BaseCardElementVector baseCardElementList,
-                               ICardActionHandler cardActionHandler,
-                               IChoicesResolver choicesResolver,
+                               ChannelAdaptor channelAdaptor,
                                HostConfig hostConfig,
                                RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
@@ -296,7 +294,7 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, choicesResolver, hostConfig, renderArgs, featureRegistration);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, channelAdaptor, hostConfig, renderArgs, featureRegistration);
         }
 
         return viewGroup;
@@ -308,8 +306,7 @@ public class CardRendererRegistration
             FragmentManager fragmentManager,
             BaseCardElement cardElement,
             ViewGroup viewGroup,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs,
             FeatureRegistration featureRegistration) throws AdaptiveFallbackException, Exception
@@ -356,7 +353,7 @@ public class CardRendererRegistration
                 renderArgs.setRootLevelActions(false);
             }
 
-            renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, choicesResolver, hostConfig, childRenderArgs);
+            renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, channelAdaptor, hostConfig, childRenderArgs);
             renderedElement = cardElement;
         }
         catch (AdaptiveFallbackException e)
@@ -391,7 +388,7 @@ public class CardRendererRegistration
                             // before rendering, check if the element to render is an input, if it is, then create an stretchable input layout, and add the label
                             // pass that as the viewgroup and
 
-                            renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, choicesResolver, hostConfig, childRenderArgs);
+                            renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, channelAdaptor, hostConfig, childRenderArgs);
                             renderedElement = fallbackCardElement;
                             break;
                         }

@@ -20,9 +20,7 @@ import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ActionLayoutRenderer implements IActionLayoutRenderer {
 
@@ -46,8 +44,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         FragmentManager fragmentManager,
         ViewGroup viewGroup,
         BaseActionElementVector baseActionElementList,
-        ICardActionHandler cardActionHandler,
-        IChoicesResolver choicesResolver,
+        ChannelAdaptor channelAdaptor,
         HostConfig hostConfig,
         RenderArgs renderArgs) throws AdaptiveFallbackException
     {
@@ -140,7 +137,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                     throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }
 
-                actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+                actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, channelAdaptor, hostConfig, renderArgs);
             }
             catch (AdaptiveFallbackException e)
             {
@@ -169,7 +166,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                                     throw new AdaptiveFallbackException(fallbackElement, featureRegistration);
                                 }
 
-                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, channelAdaptor, hostConfig, renderArgs);
                                 break;
                             }
                             catch (AdaptiveFallbackException e2)

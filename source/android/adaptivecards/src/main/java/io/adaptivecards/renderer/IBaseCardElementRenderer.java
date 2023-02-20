@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public interface IBaseCardElementRenderer
 {
@@ -22,8 +20,7 @@ public interface IBaseCardElementRenderer
             @NonNull FragmentManager fragmentManager,
             @NonNull ViewGroup viewGroup,
             @NonNull BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             @NonNull HostConfig hostConfig,
             @NonNull RenderArgs renderArgs) throws Exception;
 }
