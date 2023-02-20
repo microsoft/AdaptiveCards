@@ -13,7 +13,7 @@ public class HttpRequestResult<RESULT>
     public HttpRequestResult(Exception exception, String errorMessage)
     {
         this(exception);
-        error_message = errorMessage;
+        m_errorMessage = errorMessage;
     }
 
     public HttpRequestResult(RESULT result)
@@ -40,8 +40,12 @@ public class HttpRequestResult<RESULT>
         return m_success;
     }
 
+    public String getErrorMessage() {
+        return m_errorMessage;
+    }
+
     private Exception m_exception = null;
     private RESULT m_result = null;
     private boolean m_success = true;
-    private String error_message = null;
+    private String m_errorMessage = null;
 }
