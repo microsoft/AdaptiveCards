@@ -34,6 +34,7 @@ import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -42,7 +43,6 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
@@ -67,8 +67,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -106,8 +105,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                                                               fragmentManager,
                                                               containerView,
                                                               container.GetItems(),
-                                                              cardActionHandler,
-                                                              choicesResolver,
+                                                              channelAdaptor,
                                                               hostConfig,
                                                               containerRenderArgs);
             }
@@ -118,7 +116,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, container.GetBackgroundImage(), hostConfig, containerView);
-        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler, renderArgs);
+        setSelectAction(renderedCard, container.GetSelectAction(), containerView, channelAdaptor.getCardActionHandler(), renderArgs);
 
         viewGroup.addView(containerView);
         return containerView;

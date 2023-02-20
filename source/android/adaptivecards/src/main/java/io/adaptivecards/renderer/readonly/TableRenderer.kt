@@ -10,9 +10,7 @@ import android.widget.TableRow
 import androidx.fragment.app.FragmentManager
 import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.*
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler
 import io.adaptivecards.renderer.registration.CardRendererRegistration
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver
 
 object TableRenderer : BaseCardElementRenderer() {
 
@@ -22,8 +20,7 @@ object TableRenderer : BaseCardElementRenderer() {
         fragmentManager: FragmentManager,
         viewGroup: ViewGroup,
         baseCardElement: BaseCardElement,
-        cardActionHandler: ICardActionHandler?,
-        choicesResolver: IChoicesResolver?,
+        channelAdaptor: ChannelAdaptor,
         hostConfig: HostConfig,
         renderArgs: RenderArgs
     ): View {
@@ -59,7 +56,7 @@ object TableRenderer : BaseCardElementRenderer() {
                     containerStyle = rowStyle
                     isColumnHeader = (i == 0) && isFirstRowHeader
                 }
-                tableCellRenderer.render(renderedCard, context, fragmentManager, rowLayout, cell, cardActionHandler, choicesResolver, hostConfig, cellArgs)
+                tableCellRenderer.render(renderedCard, context, fragmentManager, rowLayout, cell, channelAdaptor, hostConfig, cellArgs)
             }
             tableLayout.addView(rowLayout)
         }

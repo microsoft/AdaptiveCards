@@ -31,9 +31,6 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CaptionSource;
 import io.adaptivecards.objectmodel.CaptionSourceVector;
@@ -44,6 +41,7 @@ import io.adaptivecards.objectmodel.Media;
 import io.adaptivecards.objectmodel.MediaSource;
 import io.adaptivecards.objectmodel.MediaSourceVector;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.MediaLoaderAsync;
@@ -55,7 +53,6 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.FullscreenVideoLayout;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class MediaRenderer extends BaseCardElementRenderer
 {
@@ -166,8 +163,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             Media media,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -188,7 +184,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             // Draw poster in posterLayout
             poster.SetImageSize(ImageSize.Auto);
-            posterView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+            posterView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, channelAdaptor, hostConfig, renderArgs);
 
             RelativeLayout.LayoutParams posterLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             posterLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -202,8 +198,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -220,7 +215,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             playButton.SetUrl(playButtonUrl);
             playButton.SetImageSize(ImageSize.Small);
 
-            playButtonView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+            playButtonView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, channelAdaptor, hostConfig, renderArgs);
             ((TagContent) playButtonView.getTag()).GetStretchContainer().setLayoutParams(playButtonLayoutParams);
         }
         else
@@ -422,8 +417,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -434,11 +428,11 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);
-        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, choicesResolver, hostConfig, renderArgs);
-        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, choicesResolver, hostConfig, renderArgs);
-        View mediaView = renderMediaPlayer(renderedCard, context, posterLayout, media, cardActionHandler, hostConfig);
+        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, channelAdaptor, hostConfig, renderArgs);
+        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, channelAdaptor, hostConfig, renderArgs);
+        View mediaView = renderMediaPlayer(renderedCard, context, posterLayout, media, channelAdaptor.getCardActionHandler(), hostConfig);
 
-        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler, posterLayout));
+        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, channelAdaptor.getCardActionHandler(), posterLayout));
 
         mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);

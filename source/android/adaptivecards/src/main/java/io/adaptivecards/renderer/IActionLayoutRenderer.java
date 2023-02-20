@@ -18,8 +18,7 @@ public interface IActionLayoutRenderer {
                               FragmentManager fragmentManager,
                               ViewGroup viewGroup,
                               BaseActionElementVector baseActionElementList,
-                              ICardActionHandler cardActionHandler,
-                              IChoicesResolver choicesResolver,
+                              ChannelAdaptor channelAdaptor,
                               HostConfig hostConfig,
                               RenderArgs renderArgs) throws AdaptiveFallbackException;
 }
