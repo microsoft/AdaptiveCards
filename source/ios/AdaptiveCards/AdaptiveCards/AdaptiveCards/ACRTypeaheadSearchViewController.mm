@@ -291,27 +291,31 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 
 - (void)updateTypeaheadUIWithSearchText:(NSString *)searchText dynamicChoices:(NSDictionary *)choices withError:(NSError *)error
 {
-    if (!error) {
-        [_loader stopAnimating];
-        [_filteredDataSource updateFilteredListForStaticAndDynamicTypeahead:searchText dynamicChoices:choices];
-        [_validator updateDynamicTitleMap:choices];
-        if (_filteredDataSource.count) {
-            [self configureSearchStateUI:displayingResults];
-        } else if (![searchText length]) {
-            [self configureSearchStateUI:zeroState];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!error) {
+            [strongSelf->_loader stopAnimating];
+            [strongSelf->_filteredDataSource updateFilteredListForStaticAndDynamicTypeahead:searchText dynamicChoices:choices];
+            [strongSelf->_validator updateDynamicTitleMap:choices];
+            if (strongSelf->_filteredDataSource.count) {
+                [strongSelf configureSearchStateUI:displayingResults];
+            } else if (![searchText length]) {
+                [strongSelf configureSearchStateUI:zeroState];
+            } else {
+                [strongSelf configureSearchStateUI:displayingInvalidSearchError];
+            }
         } else {
-            [self configureSearchStateUI:displayingInvalidSearchError];
+            [strongSelf configureSearchStateUI:displayingGenericError];
         }
-    } else {
-        [self configureSearchStateUI:displayingGenericError];
-    }
-
-    if (@available(iOS 16.0, *)) {
-        self.navigationItem.rightBarButtonItem.hidden = YES;
-        if ([_filteredDataSource findMatch:searchText]) {
-            self.navigationItem.rightBarButtonItem.hidden = NO;
+        
+        if (@available(iOS 16.0, *)) {
+            strongSelf.navigationItem.rightBarButtonItem.hidden = YES;
+            if ([strongSelf->_filteredDataSource findMatch:searchText]) {
+                strongSelf.navigationItem.rightBarButtonItem.hidden = NO;
+            }
         }
-    }
+    });
 }
 
 - (void)configureSearchStateUI:(TSTypeaehadSearchViewState)searchViewState

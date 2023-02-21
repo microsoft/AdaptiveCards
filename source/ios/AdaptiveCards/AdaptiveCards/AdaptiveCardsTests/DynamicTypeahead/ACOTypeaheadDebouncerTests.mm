@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface ACOTypeaheadDebouncerTests : XCTestCase<ACOTypeaheadDebouncerDelegate>
+@interface ACOTypeaheadDebouncerTests : XCTestCase <ACOTypeaheadDebouncerDelegate>
 
 @end
 
@@ -36,11 +36,10 @@
     XCTAssertEqual(searchText, @"microsoft");
 }
 
-- (void) debouncerDidSendOutput:(id)output
+- (void)debouncerDidSendOutput:(id)output
 {
     searchText = @"microsoft";
     [expectation fulfill];
 }
 
 @end
-

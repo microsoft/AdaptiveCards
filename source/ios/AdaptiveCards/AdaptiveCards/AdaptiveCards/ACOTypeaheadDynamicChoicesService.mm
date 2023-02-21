@@ -60,10 +60,10 @@ static NSString *const AdaptiveCardChoices = @"action";
     NSString *choicesDataType = [NSString stringWithCString:AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ChoicesDataType).c_str() encoding:NSUTF8StringEncoding];
     NSString *datasetKey = [NSString stringWithCString:AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Dataset).c_str() encoding:NSUTF8StringEncoding];
     NSString *value = [NSString stringWithCString:AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value).c_str() encoding:NSUTF8StringEncoding];
-    NSString *dataset = [NSString stringWithCString:choicesData->GetDataset().c_str()
-                                           encoding:NSUTF8StringEncoding];
-    NSString *dataQuery = [NSString stringWithCString:choicesData->GetChoicesDataType().c_str()
-                                             encoding:NSUTF8StringEncoding];
+    NSString *dataset = (choicesData == nil) ? @"" : [NSString stringWithCString:choicesData->GetDataset().c_str()
+                                                                        encoding:NSUTF8StringEncoding];
+    NSString *dataQuery = (choicesData == nil) ? @"" : [NSString stringWithCString:choicesData->GetChoicesDataType().c_str()
+                                                                          encoding:NSUTF8StringEncoding];
 
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
     [requestPayload setDictionary:@{
@@ -89,17 +89,11 @@ static NSString *const AdaptiveCardChoices = @"action";
                 [strongSelf->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload
                                                                         acoElem:strongSelf->_inputElem
                                                                      completion:^(NSDictionary *response, NSError *error) {
-                                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                                             NSDictionary *choices = [response objectForKey:@"value"];
-                                                                             if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
-                                                                                 [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
-                                                                             }
-                                                                         });
-                                                                     }];
-            } else {
-                if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
-                    [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:nil withError:nil];
-                }
+                    NSDictionary *choices = [response objectForKey:@"value"];
+                    if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
+                        [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
+                    }
+                }];
             }
         });
     }

@@ -357,24 +357,24 @@
     XCUIElement *chosenpackageButton = testApp.tables[@"ChatWindow"].buttons[@"chosenPackage"];
     [chosenpackageButton tap];
 
-    //back button test
+    // back button test
     XCUIElement *backButton = testApp.buttons[@"Back"];
     [backButton tap];
-    
+
     [chosenpackageButton tap];
-    
+
     XCUIElement *searchBarChosenpackageTable = testApp.otherElements[@"searchBar, chosenPackage"];
     [searchBarChosenpackageTable typeText:@"teststring"];
-    [testApp/*@START_MENU_TOKEN@*/.searchFields/*[[".otherElements[@\"searchBar, chosenPackage\"].searchFields",".searchFields"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.buttons[@"Clear text"] tap];
-    
+    [testApp /*@START_MENU_TOKEN@*/.searchFields /*[[".otherElements[@\"searchBar, chosenPackage\"].searchFields",".searchFields"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.buttons[@"Clear text"] tap];
+
     [searchBarChosenpackageTable typeText:@"microsoft"];
     XCUIElement *listviewChosenpackageTable = testApp.tables[@"listView, chosenPackage"];
     [listviewChosenpackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
     // Execute a drag from the 4th element to the 2nd element
-    
+
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"OK"] tap];
-    
+
     NSString *resultsString = [self getInputsString];
     NSDictionary *resultsDictionary = [self parseJsonToDictionary:resultsString];
     NSDictionary *inputs = [self getInputsFromResultsDictionary:resultsDictionary];
@@ -387,25 +387,25 @@
     XCUIElement *choicesetPackageButton = testApp.tables[@"ChatWindow"].buttons[@"choiceset1"];
     [choicesetPackageButton tap];
 
-    //back button test
+    // back button test
     XCUIElement *backButton = testApp.buttons[@"Back"];
     [backButton tap];
-    
+
     [choicesetPackageButton tap];
-    
+
     // select static choice
     XCUIElement *listviewChoicesetPackageTable = testApp.tables[@"listView, choiceset1"];
     [listviewChoicesetPackageTable.staticTexts[@"Ms.IdentityModel.static"] tap];
-    
+
     // press OK button
     XCUIElementQuery *buttons = testApp.buttons;
     [buttons[@"Submit"] tap];
-    
+
     NSString *resultsString = [self getInputsString];
     NSDictionary *resultsDictionary = [self parseJsonToDictionary:resultsString];
     NSDictionary *inputs = [self getInputsFromResultsDictionary:resultsDictionary];
     [self verifyInput:@"choiceset1" matchesExpectedValue:@"4" inInputSet:inputs];
-    
+
     // select dynamic choice
     choicesetPackageButton = testApp.tables[@"ChatWindow"].buttons[@"choiceset1"];
     [choicesetPackageButton tap];
@@ -413,10 +413,10 @@
     [searchBarChoicesetPackageTable typeText:@"Microsoft.Extensions.Hosting.Abstractions"];
     listviewChoicesetPackageTable = testApp.tables[@"listView, choiceset1"];
     [listviewChoicesetPackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
-    
+
     buttons = testApp.buttons;
     [buttons[@"Submit"] tap];
-    
+
     resultsString = [self getInputsString];
     resultsDictionary = [self parseJsonToDictionary:resultsString];
     inputs = [self getInputsFromResultsDictionary:resultsDictionary];

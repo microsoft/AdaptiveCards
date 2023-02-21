@@ -279,7 +279,7 @@
 		CFF95C072982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */; };
 		CFF95C092982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */; };
 		CFF95C0B2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */; };
-		CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.cpp */; };
+		CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */; };
 		CFF95C0F2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */; };
 		DD278A02932F65F8BDD1EA5D /* Pods_AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255F5D3143215497D4067E21 /* Pods_AdaptiveCards.framework */; };
 		EC367F912F6036B68C5BBFDB /* Pods_AdaptiveCards_AdaptiveCardsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */; };
@@ -773,7 +773,7 @@
 		CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTypeaheadSearchParametersTests.mm; sourceTree = "<group>"; };
 		CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetFilteredStyleViewTests.mm; sourceTree = "<group>"; };
 		CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetCompactStyleViewTests.mm; sourceTree = "<group>"; };
-		CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesServiceTests.cpp; sourceTree = "<group>"; };
+		CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesServiceTests.mm; sourceTree = "<group>"; };
 		CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDebouncerTests.mm; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; sourceTree = "<group>"; };
@@ -1311,7 +1311,7 @@
 				CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */,
 				CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */,
 				CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */,
-				CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.cpp */,
+				CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */,
 				CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */,
 			);
 			path = DynamicTypeahead;
@@ -2334,7 +2334,7 @@
 				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 				CFF95C072982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm in Sources */,
-				CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.cpp in Sources */,
+				CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm in Sources */,
 				6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */,
 				CFF95C0F2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm in Sources */,
 				6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */,
