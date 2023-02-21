@@ -590,8 +590,6 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
-        this.getRootElement().updateActionsEnabledState();
-
         return this._renderedElement;
     }
 
@@ -1948,6 +1946,7 @@ export class Image extends CardElement {
     static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [
         "Action.ShowCard"
     ]);
+    static readonly shouldForceLoadProperty = new BoolProperty(Versions.v1_6, "forceLoad", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1980,6 +1979,9 @@ export class Image extends CardElement {
 
     @property(Image.selectActionProperty)
     selectAction?: Action;
+
+    @property(Image.shouldForceLoadProperty)
+    forceLoad: boolean;
 
     //#endregion
 
@@ -2120,7 +2122,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.setupElementForAccessibility(imageElement);
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2140,7 +2142,7 @@ export class Image extends CardElement {
                 imageElement.style.backgroundColor = backgroundColor;
             }
 
-            imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+            this.setImageSource(imageElement);    
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
             if (altTextProperty) {
@@ -2151,12 +2153,6 @@ export class Image extends CardElement {
         }
 
         return element;
-    }
-
-    protected setupElementForAccessibility(element: HTMLImageElement) {
-        this.selectAction?.setupElementForAccessibility(element);
-        // Image elements cannot have aria-description
-        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -2187,6 +2183,45 @@ export class Image extends CardElement {
 
     getResourceInformation(): IResourceInformation[] {
         return this.url ? [{ url: this.url, mimeType: "image" }] : [];
+    }
+
+    private setImageSource(imageElement: HTMLImageElement): void {
+        const imageForceLoader: ImageForceLoader = new ImageForceLoader(this.forceLoad, this.url);
+        imageForceLoader.configureImage(this);
+        imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+        imageForceLoader.resetImage(this);
+    } 
+}
+
+// configures Image element to fetch a new image data from url source instead of relying on cache
+// currently rudimentary refreshing scheme is used
+// by attaching unique query string to url, we bypass the cache usage
+class ImageForceLoader{
+    private uniqueHash : string;
+    public readonly urlWithForceLoadOption : string;
+    constructor(
+        readonly doForceLoad: boolean,
+        readonly url : string | undefined,
+    )
+    {
+        if (url && url.length && doForceLoad) {
+            // we can do better by appending unique key such as uuid instead of epoch
+            // however the current usage is for front-end ui and networking,  
+            // since ui is running in single main thread, this is sufficient mechanism
+            // without needing to depend on external library for our small use cases.
+            this.uniqueHash = '?' + Date.now();
+            this.urlWithForceLoadOption = url + this.uniqueHash;
+        }
+    }
+
+    public configureImage(image: Image): void {
+        if (this.urlWithForceLoadOption && this.urlWithForceLoadOption.length) {
+            image.url = this.urlWithForceLoadOption;
+        }
+    }
+
+    public resetImage(image: Image): void {
+        image.url = this.url;
     }
 }
 
@@ -3535,12 +3570,12 @@ export abstract class Input extends CardElement implements IInput {
                 if (!this.labelWidth) {
                     const defaultLabelWidth = hostConfig.inputs.label.width;
                     this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                    this._inputControlContainerElement.style.width = (100 - defaultLabelWidth) + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
                     const labelWidthInPercent = this.labelWidth.physicalSize;
                     this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - labelWidthInPercent).toString() + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
                     const labelWidthInPixel = this.labelWidth.physicalSize;
@@ -4220,6 +4255,22 @@ export class ChoiceSetInput extends Input {
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
 
+    private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
+        if (!this.value) {
+            const placeholderOption = document.createElement("option");
+            placeholderOption.selected = true;
+            placeholderOption.disabled = true;
+            placeholderOption.hidden = true;
+            placeholderOption.value = "";
+
+            if (this.placeholder) {
+                placeholderOption.text = this.placeholder;
+            }
+            return placeholderOption;
+        }
+        return undefined;
+    }
+
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
         if (this._selectElement) {
@@ -4446,15 +4497,7 @@ export class ChoiceSetInput extends Input {
 
                 this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
-                const placeholderOption = document.createElement("option");
-                placeholderOption.selected = true;
-                placeholderOption.disabled = true;
-                placeholderOption.hidden = true;
-                placeholderOption.value = "";
-
-                if (this.placeholder) {
-                    placeholderOption.text = this.placeholder;
-                }
+                const placeholderOption = this.createPlaceholderOptionWhenValueDoesNotExist();
 
                 Utils.appendChild(this._selectElement, placeholderOption);
 
@@ -5207,14 +5250,10 @@ export abstract class Action extends CardObject {
             element.removeAttribute("title");
         }
 
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
+        if (this.tooltip) {			
+            if (promoteTooltipToLabel && !this.title) {
+                element.setAttribute("aria-label", this.tooltip);
+            }
             element.title = this.tooltip;
         }
     }
@@ -8865,6 +8904,8 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
                     this.updateInputsVisualState(false /* hover */);
                 };
+
+                this.getRootElement().updateActionsEnabledState();
             }
         }
 

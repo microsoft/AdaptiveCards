@@ -5,20 +5,19 @@
   <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
-    <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{40c8962d-3e19-4142-a0b4-1614548aa3d1}</ProjectGuid>
     <Keyword>AdaptiveCards</Keyword>
     <ProjectName>AdaptiveCardRenderer</ProjectName>
-    <RootNamespace>AdaptiveCards.Rendering.Winui3</RootNamespace>
+    <RootNamespace>AdaptiveCards.Rendering.WinUI3</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
-    <TargetName>AdaptiveCards.Rendering.Winui3</TargetName>
+    <TargetName>AdaptiveCards.Rendering.WinUI3</TargetName>
     <DesktopCompatible>true</DesktopCompatible>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
@@ -104,9 +103,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.Winui3.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
+        Ole32.lib;
+        OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
       <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
@@ -135,7 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.Winui3.idl">
+    <Midl Include="idl\AdaptiveCards.Rendering.WinUI3.idl">
       <AdditionalIncludeDirectories>..\AdaptiveCardsObjectModel\idl;</AdditionalIncludeDirectories>
     </Midl>
   </ItemGroup>

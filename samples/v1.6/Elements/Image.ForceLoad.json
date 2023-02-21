@@ -1,0 +1,20 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "Image",
+            "size": "Medium",
+            "url": "https://media.giphy.com/media/83eQIMgNvkiY/giphy.gif",
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "Image",
+            "size": "Medium",
+            "url": "https://media.giphy.com/media/83eQIMgNvkiY/giphy.gif",
+            "forceLoad": true,
+            "horizontalAlignment": "Center"
+        }
+    ]
+}

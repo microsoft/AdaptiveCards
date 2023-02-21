@@ -8,15 +8,15 @@
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{8e2f84c6-5215-4c81-93fc-a35883762e10}</ProjectGuid>
     <ProjectName>AdaptiveCardsObjectModel</ProjectName>
-    <RootNamespace>AdaptiveCards.ObjectModel.Winui3</RootNamespace>
+    <RootNamespace>AdaptiveCards.ObjectModel.WinUI3</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
-    <TargetName>AdaptiveCards.ObjectModel.Winui3</TargetName>
+    <TargetName>AdaptiveCards.ObjectModel.WinUI3</TargetName>
     <DesktopCompatible>true</DesktopCompatible>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
@@ -92,9 +92,10 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
-      <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.Winui3.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
+        OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
     </Link>
@@ -129,7 +130,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.Winui3.idl">
+    <Midl Include="idl\AdaptiveCards.ObjectModel.WinUI3.idl">
     </Midl>
   </ItemGroup>
   <ItemGroup>
