@@ -59,35 +59,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "San Francisco",
-							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "right",
-							"text": "Amsterdam",
+							"text": "San Francisco",
 							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"spacing": "none",
-			"columns": [
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
+							"wrap": true,
+							"spacing": "none"
+						},
 						{
 							"type": "TextBlock",
 							"size": "extraLarge",
@@ -101,6 +85,7 @@
 				{
 					"type": "Column",
 					"width": "auto",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -115,6 +100,23 @@
 					"type": "Column",
 					"width": 1,
 					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "Amsterdam",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "right",
@@ -152,35 +154,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Amsterdam",
-							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "right",
-							"text": "San Francisco",
+							"text": "Amsterdam",
 							"isSubtle": true,
-							"wrap": true
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"spacing": "none",
-			"columns": [
-				{
-					"type": "Column",
-					"width": 1,
-					"items": [
+							"wrap": true,
+							"spacing": "none"
+						},
 						{
 							"type": "TextBlock",
 							"size": "extraLarge",
@@ -194,6 +180,7 @@
 				{
 					"type": "Column",
 					"width": "auto",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -208,6 +195,23 @@
 					"type": "Column",
 					"width": 1,
 					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "San Francisco",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "right",

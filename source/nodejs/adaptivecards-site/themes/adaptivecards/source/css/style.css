@@ -345,9 +345,17 @@ s {
 }
 
 @media (forced-colors: active) {
-    .toc-todo .selectedHolder {
-        background-color: highlight;
+    .w3-button.w3-round-xxlarge.ac-blue {
+        border: 1px solid buttonBorder
+    }
+
+    .toc-todo .selectedHolder,
+    .toc-todo .selectedHolder > a,
+    .toc-todo .selectedHolder > a:hover,
+    .toc-todo a.selectedHolder:hover
+    {
         color: highlightText;
+        background-color: highlight;
         forced-color-adjust: none;
     }
 }

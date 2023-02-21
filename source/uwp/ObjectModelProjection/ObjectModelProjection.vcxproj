@@ -62,6 +62,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoicesData.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
@@ -194,7 +196,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <ProjectName>ObjectModelProjection</ProjectName>

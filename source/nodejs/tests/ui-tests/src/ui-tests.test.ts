@@ -199,7 +199,7 @@ describe("Mock function", function() {
     }));
 
     test("Image: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Image.SelectAction");
+        await utils.goToTestCase("v1.5/Image.SelectAction");
 
         let image = await ACImage.getImage("cool link");
 
@@ -210,7 +210,7 @@ describe("Mock function", function() {
     }));
 
     test("Column: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Column.SelectAction");
+        await utils.goToTestCase("v1.1/Column.SelectAction");
 
         let firstColumn = await ACColumn.getContainerWithAction("cool link");
         await firstColumn.click();
@@ -219,7 +219,7 @@ describe("Mock function", function() {
     }));
 
     test("ColumnSet: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/ColumnSet.SelectAction");
+        await utils.goToTestCase("v1.1/ColumnSet.SelectAction");
 
         let secondColumnSet = await ACColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
         await secondColumnSet.click();
@@ -228,7 +228,7 @@ describe("Mock function", function() {
     }));
 
     test("Container: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Container.SelectAction");
+        await utils.goToTestCase("v1.1/Container.SelectAction");
 
         let submitContainer = await ACContainer.getContainerWithAction("Submit action");
         await submitContainer.click();

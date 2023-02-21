@@ -1,0 +1,22 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Click the cat!",
+			"weight": "bolder"
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"altText": "Cat",
+			"selectAction": {
+				"type": "Action.OpenUrl",
+				"tooltip": "cool link",
+				"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+			}
+		}
+	]
+}

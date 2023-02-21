@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29230.54
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdaptiveCardRenderer", "Renderer\AdaptiveCardRenderer.vcxproj", "{CF169157-F487-420C-8B9B-CA3ABE2BB209}"
 EndProject
@@ -33,6 +33,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPObjectModelTest", "UWPOb
 	ProjectSection(ProjectDependencies) = postProject
 		{29129512-A203-4718-BBED-EDAF7F4A02CD} = {29129512-A203-4718-BBED-EDAF7F4A02CD}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedObjectModel", "SharedObjectModel\SharedObjectModel.vcxitems", "{BB89BDE2-FA11-4F6E-A27D-7025063B8B21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedRenderer", "SharedRenderer\SharedRenderer.vcxitems", "{DCF1BDA8-E94A-4D57-8ED6-5D30E29B69ED}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedVisualizer", "SharedVisualizer\SharedVisualizer.shproj", "{85425680-C8BF-43F3-84C4-773D0ADE45EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -242,26 +248,6 @@ Global
 		{6958ADC8-DFF1-4446-9F15-E51F26782470}.Release|x64.Build.0 = Release|Any CPU
 		{6958ADC8-DFF1-4446-9F15-E51F26782470}.Release|x86.ActiveCfg = Release|Any CPU
 		{6958ADC8-DFF1-4446-9F15-E51F26782470}.Release|x86.Build.0 = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|ARM.Build.0 = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|x64.Build.0 = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Debug|x86.Build.0 = Debug|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|ARM.ActiveCfg = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|ARM.Build.0 = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|ARM64.Build.0 = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|x64.ActiveCfg = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|x64.Build.0 = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|x86.ActiveCfg = Release|Any CPU
-		{C65B7488-ED39-4E9E-8A66-C53D72262660}.Release|x86.Build.0 = Release|Any CPU
 		{29129512-A203-4718-BBED-EDAF7F4A02CD}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{29129512-A203-4718-BBED-EDAF7F4A02CD}.Debug|ARM.ActiveCfg = Debug|ARM
 		{29129512-A203-4718-BBED-EDAF7F4A02CD}.Debug|ARM.Build.0 = Debug|ARM
@@ -312,5 +298,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {447B3E9D-C020-41BF-BB03-CFFBB4957DEA}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedObjectModel\SharedObjectModel.vcxitems*{29129512-a203-4718-bbed-edaf7f4a02cd}*SharedItemsImports = 4
+		SharedVisualizer\SharedVisualizer.projitems*{85425680-c8bf-43f3-84c4-773d0ade45ef}*SharedItemsImports = 13
+		SharedVisualizer\SharedVisualizer.projitems*{b5deca6e-d9ea-476d-9b7e-34d3b3044cd8}*SharedItemsImports = 4
+		SharedObjectModel\SharedObjectModel.vcxitems*{bb89bde2-fa11-4f6e-a27d-7025063b8b21}*SharedItemsImports = 9
+		SharedRenderer\SharedRenderer.vcxitems*{cf169157-f487-420c-8b9b-ca3abe2bb209}*SharedItemsImports = 4
+		SharedRenderer\SharedRenderer.vcxitems*{dcf1bda8-e94a-4d57-8ed6-5d30e29b69ed}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
