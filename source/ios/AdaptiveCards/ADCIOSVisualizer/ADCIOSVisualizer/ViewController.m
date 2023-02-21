@@ -406,12 +406,12 @@ CGFloat kFileBrowserWidth = 0;
 - (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion
 {
     NSString *queryString = [searchRequest valueForKey:@"value"];
-    NSMutableDictionary *responseDict = [NSMutableDictionary new];
+    NSMutableDictionary *responseDict = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *resultsArray = [[NSMutableDictionary alloc] init];
     [responseDict setValue:resultsArray forKey:@"value"];
     [responseDict setValue:@"application/vnd.microsoft.search.searchResponse" forKey:@"type"];
-    
-    if ([queryString length]) {
+
+    if (queryString != nil && [queryString length]) {
         NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
         NSURL *url = [NSURL URLWithString:urlString];
         NSData *data = [NSData dataWithContentsOfURL:url];
