@@ -9,12 +9,12 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
-#import "ACRChoiceSetViewDataSource.h"
 #import "ACRChoiceSetFilteredStyleView.h"
-#import "ACRTypeaheadSearchViewController.h"
-#import "ACRTypeaheadSearchParameters.h"
+#import "ACRChoiceSetViewDataSource.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
+#import "ACRTypeaheadSearchParameters.h"
+#import "ACRTypeaheadSearchViewController.h"
 #import "ChoiceSetInput.h"
 #import "ChoicesData.h"
 #import "UtiliOS.h"
@@ -53,12 +53,11 @@
         ACRTypeaheadErrorStateParams *errorStateParams = [[ACRTypeaheadErrorStateParams alloc] initWithtitle:@"Something went wrong" subtitle:nil];
         ACRTypeaheadStateAllParameters *typeaheadParams = [[ACRTypeaheadStateAllParameters alloc] initWithzeroStateParams:zeroStateParams
                                                                                                          errorStateParams:errorStateParams
-                                                                                                       noResultStateParams:noResultStateParams
-                                                                                                        offlineStateParams:offlineStateParams];
+                                                                                                      noResultStateParams:noResultStateParams
+                                                                                                       offlineStateParams:offlineStateParams];
         ACRChoiceSetFilteredStyleView *typeaheadStyleView = [[ACRChoiceSetFilteredStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig searchStateParams:typeaheadParams typeaheadViewTitle:typeaheadViewTitle];
         inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:typeaheadStyleView accessibilityItem:typeaheadStyleView viewGroup:viewGroup dataSource:nil];
-    }
-    else if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
+    } else if (!choiceSet->GetIsMultiSelect() && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *compactStyleView = [[ACRChoiceSetCompactStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
         inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adaptiveInputElement:choiceSet inputView:compactStyleView accessibilityItem:compactStyleView viewGroup:viewGroup dataSource:nil];
     } else {
@@ -109,8 +108,7 @@
         choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
         UIButton *button = (UIButton *)choiceSetView.showFilteredListControl;
         [button setImage:[UIImage systemImageNamed:@"chevron.right"] forState:UIControlStateNormal];
-    }
-    else if ([view isKindOfClass:ACRChoiceSetCompactStyleView.class] && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
+    } else if ([view isKindOfClass:ACRChoiceSetCompactStyleView.class] && (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered)) {
         ACRChoiceSetCompactStyleView *choiceSetView = (ACRChoiceSetCompactStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
         choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
@@ -151,7 +149,7 @@
         return;
     }
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
-    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
+    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
         ACRTypeaheadSearchViewController *typeaheadSearchView = (ACRTypeaheadSearchViewController *)view;
 
         UISearchBar *_customSearchBar = (UISearchBar *)typeaheadSearchView.searchBar;
