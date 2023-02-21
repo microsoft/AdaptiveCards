@@ -89,11 +89,11 @@ static NSString *const AdaptiveCardChoices = @"action";
                 [strongSelf->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload
                                                                         acoElem:strongSelf->_inputElem
                                                                      completion:^(NSDictionary *response, NSError *error) {
-                    NSDictionary *choices = [response objectForKey:@"value"];
-                    if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
-                        [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
-                    }
-                }];
+                                                                         NSDictionary *choices = [response objectForKey:@"value"];
+                                                                         if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
+                                                                             [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
+                                                                         }
+                                                                     }];
             }
         });
     }
