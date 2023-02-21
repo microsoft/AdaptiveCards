@@ -49,7 +49,7 @@ export function buildModel(options: BuildModelOptions) {
                 type: objSchema
             };
             definition.name = name;
-            definition.accessibleName = generateAccessibleName(name);
+            definition.accessibleName = root.title + " " + generateAccessibleName(name);
             definition.version = defaultValue(objSchema.original.version, "1.0");
             definition.examples = [];
 

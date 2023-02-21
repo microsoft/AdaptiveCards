@@ -1,0 +1,51 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Carousel",
+			"loop": false,
+			"pages": [
+				{
+					"type": "CarouselPage",
+					"id": "firstPage",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/100/300/300",
+							"altText": "beach"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "secondPage",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/110/300/300",
+							"altText": "sunset"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "thirdPage",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/120/300/300",
+							"altText": "sunset"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "You can disable carousel looping by setting the value of *loop* property",
+			"wrap": true
+		}
+	]
+}
