@@ -33,8 +33,7 @@
 {
     self = [super init];
     if (self) {
-        if(!title)
-        {
+        if (!title) {
             title = @"No Internet";
         }
         self = [super initWithtitle:title subtitle:subtitle];
@@ -51,8 +50,7 @@
 {
     self = [super init];
     if (self) {
-        if(!title)
-        {
+        if (!title) {
             title = @"No results found";
         }
         self = [super initWithtitle:title subtitle:subtitle];
@@ -69,8 +67,7 @@
 {
     self = [super init];
     if (self) {
-        if(!title)
-        {
+        if (!title) {
             title = @"Something went wrong";
         }
         self = [super initWithtitle:title subtitle:subtitle];
@@ -86,8 +83,7 @@
 {
     self = [super init];
     if (self) {
-        if(!title)
-        {
+        if (!title) {
             title = @"Search options";
         }
         self = [super initWithtitle:title subtitle:subtitle];

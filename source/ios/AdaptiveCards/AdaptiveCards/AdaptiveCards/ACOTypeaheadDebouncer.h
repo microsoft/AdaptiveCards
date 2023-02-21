@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol ACOTypeaheadDebouncerDelegate <NSObject>
-- (void) debouncerDidSendOutput:(id)output;
+- (void)debouncerDidSendOutput:(id)output;
 @end
 
 
@@ -20,9 +20,9 @@
              only perform the callback when a certain minimum time has been elapsed
              since last keystroke by the user.
  */
-@interface ACOTypeaheadDebouncer<GenericType>: NSObject
+@interface ACOTypeaheadDebouncer<GenericType> : NSObject
 
-@property (strong, nonatomic) id <ACOTypeaheadDebouncerDelegate> delegate;
+@property (strong, nonatomic) id<ACOTypeaheadDebouncerDelegate> delegate;
 
 /**
  @brief Initializes a debouncer object with given delay.

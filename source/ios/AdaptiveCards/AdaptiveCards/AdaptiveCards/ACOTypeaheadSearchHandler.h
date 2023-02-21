@@ -2,7 +2,6 @@
 //  ACOTypeaheadSearchHandler.h
 //  AdaptiveCards
 //
-//  Created by Jyoti Kukreja on 25/01/23.
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
@@ -17,5 +16,5 @@ typedef enum {
 } TSTypeaehadSearchViewState;
 
 @protocol ACRTypeaheadSearchProtocol <NSObject>
-- (void)updateTypeaheadUIWithSearchText:(NSString*)searchText dynamicChoices:(NSDictionary *)response withError:(NSError *)error;
+- (void)updateTypeaheadUIWithSearchText:(NSString *)searchText dynamicChoices:(NSDictionary *)response withError:(NSError *)error;
 @end

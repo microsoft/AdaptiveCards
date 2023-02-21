@@ -2,7 +2,6 @@
 //  ACRChoiceSetFilteredStyleView.mm
 //  AdaptiveCards
 //
-//  Created by Jyoti Kukreja on 26/01/23.
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
@@ -11,16 +10,16 @@
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"
 #import "ACRBaseCardElementRenderer.h"
-#import "ChoicesData.h"
+#import "ACRChoiceSetCompactStyleView.h"
 #import "ACRInputLabelView.h"
+#import "ACRTypeaheadSearchParameters.h"
+#import "ACRTypeaheadSearchViewController.h"
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
+#import "ChoicesData.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
-#import "ACRChoiceSetCompactStyleView.h"
-#import "ACRTypeaheadSearchParameters.h"
-#import "ACRTypeaheadSearchViewController.h"
 
 using namespace AdaptiveCards;
 
@@ -48,7 +47,7 @@ using namespace AdaptiveCards;
         _rootView = rootView;
         _inputElem = acoElem;
         _hostConfig = hostConfig;
-        _searchStateParams =searchStateParams;
+        _searchStateParams = searchStateParams;
         _typeaheadViewTitle = typeaheadViewTitle;
         _filteredDataSource = [[ACOFilteredDataSource alloc] init];
         _validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
@@ -90,7 +89,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
 
     if (rootViewController &&
-        choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
+        choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
         ACRTypeaheadSearchViewController *typeaheadSearchVC = [[ACRTypeaheadSearchViewController alloc] initWithInputChoiceSet:_inputElem
                                                                                                                       rootView:_rootView
                                                                                                                     hostConfig:_hostConfig
@@ -156,15 +155,18 @@ using namespace AdaptiveCards;
 
 #pragma mark - ACRChoiceSetTypeaheadSearchDelegate Methods
 
-- (void)updateSelectedChoiceInTextField:(NSString *)text {
+- (void)updateSelectedChoiceInTextField:(NSString *)text
+{
     self.text = text;
 }
 
-- (NSString *)getSelectedText {
+- (NSString *)getSelectedText
+{
     return self.text;
 }
 
-- (NSString *)getChoiceSetId {
+- (NSString *)getChoiceSetId
+{
     return self.id;
 }
 

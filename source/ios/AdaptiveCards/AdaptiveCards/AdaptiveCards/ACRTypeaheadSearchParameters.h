@@ -11,34 +11,34 @@
 
 @protocol ACRITypeaheadSearchStateDelegate <NSObject>
 
-@property NSString * _Nullable title;
-@property NSString * _Nullable subtitle;
+@property NSString *_Nullable title;
+@property NSString *_Nullable subtitle;
 
 @end
 
 @interface ACRTypeaheadStateParameters : NSObject <ACRITypeaheadSearchStateDelegate>
-- (instancetype _Nullable )initWithtitle:(NSString *_Nullable)title
-                                subtitle:(NSString *_Nullable)subtitle;
+- (instancetype _Nullable)initWithtitle:(NSString *_Nullable)title
+                               subtitle:(NSString *_Nullable)subtitle;
 
 @end
 
-@interface ACRTypeaheadOfflineStateParams: ACRTypeaheadStateParameters
+@interface ACRTypeaheadOfflineStateParams : ACRTypeaheadStateParameters
 @end
 
-@interface ACRTypeaheadNoResultsStateParams: ACRTypeaheadStateParameters
+@interface ACRTypeaheadNoResultsStateParams : ACRTypeaheadStateParameters
 @end
 
-@interface ACRTypeaheadErrorStateParams: ACRTypeaheadStateParameters
+@interface ACRTypeaheadErrorStateParams : ACRTypeaheadStateParameters
 @end
 
-@interface ACRTypeaheadZeroStateParams: ACRTypeaheadStateParameters
+@interface ACRTypeaheadZeroStateParams : ACRTypeaheadStateParameters
 @end
 
 @interface ACRTypeaheadStateAllParameters : NSObject
-@property ACRTypeaheadZeroStateParams * _Nullable zeroStateParams;
-@property ACRTypeaheadErrorStateParams * _Nullable errorStateParams;
-@property ACRTypeaheadNoResultsStateParams * _Nullable noResultStateParams;
-@property ACRTypeaheadOfflineStateParams * _Nullable offlineStateParams;
+@property ACRTypeaheadZeroStateParams *_Nullable zeroStateParams;
+@property ACRTypeaheadErrorStateParams *_Nullable errorStateParams;
+@property ACRTypeaheadNoResultsStateParams *_Nullable noResultStateParams;
+@property ACRTypeaheadOfflineStateParams *_Nullable offlineStateParams;
 
 - (nonnull instancetype)initWithzeroStateParams:(ACRTypeaheadZeroStateParams *_Nullable)zeroStateParams
                                errorStateParams:(ACRTypeaheadErrorStateParams *_Nullable)errorStateParams

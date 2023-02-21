@@ -40,9 +40,9 @@
 
 - (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText;
 
-- (void)updatefilteredListForStaticTypeahead:(NSString *) choices;
+- (void)updateFilteredListForStaticTypeahead:(NSString *)choices;
 
-- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices;
+- (void)updateFilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices;
 
 - (void)resetFilter;
 
@@ -72,7 +72,7 @@
 
 - (NSString *)getValue:(NSString *)input;
 
--(void)updateDynamicTitleMap:(NSDictionary *)titleMap;
+- (void)updateDynamicTitleMap:(NSDictionary *)titleMap;
 
 @end
 

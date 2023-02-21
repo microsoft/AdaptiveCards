@@ -101,7 +101,7 @@
         [filteredDataSource addToSource:key];
     }
 
-    [filteredDataSource updatefilteredListForStaticTypeahead:@"7"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"7"];
     XCTAssertTrue([[filteredDataSource getItemAt:0] isEqualToString:@"7"]);
 }
 
@@ -110,11 +110,11 @@
     ACOFilteredDataSource *filteredDataSource = [[ACOFilteredDataSource alloc] init];
     addDataToFilteredSource(filteredDataSource, _testStrings1);
 
-    [filteredDataSource updatefilteredListForStaticTypeahead:@"a"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"a"];
     XCTAssertEqual(filteredDataSource.count, 4);
-    [filteredDataSource updatefilteredListForStaticTypeahead:@"an"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"an"];
     XCTAssertEqual(filteredDataSource.count, 2);
-    [filteredDataSource updatefilteredListForStaticTypeahead:@"ang"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"ang"];
     XCTAssertEqual(filteredDataSource.count, 1);
 }
 

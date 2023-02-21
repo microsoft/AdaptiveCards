@@ -5,15 +5,15 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "ACRView.h"
-#import "ACOTypeaheadDebouncer.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOTypeaheadDebouncer.h"
+#import "ACRView.h"
 #import "ChoiceSetInput.h"
 #import "ChoicesData.h"
+#import <Foundation/Foundation.h>
 
-static NSString * const AdaptiveCardChoices = @"action";
+static NSString *const AdaptiveCardChoices = @"action";
 
 @implementation ACOTypeaheadDynamicChoicesService {
     __weak ACRView *_rootView;
@@ -51,8 +51,8 @@ static NSString * const AdaptiveCardChoices = @"action";
 }
 
 - (NSDictionary *)getRequestPayloadForTypeaheadSearchWithQueryText:(NSString *)queryText
-                                                     withSkipValue:(NSNumber *)skipVal
-                                                       AndTopValue:(NSNumber *)topVal
+                                                     withSkipValue:(int)skipVal
+                                                       AndTopValue:(int)topVal
 {
     std::shared_ptr<BaseCardElement> elem = [_inputElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
@@ -61,17 +61,17 @@ static NSString * const AdaptiveCardChoices = @"action";
     NSString *datasetKey = [NSString stringWithCString:AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Dataset).c_str() encoding:NSUTF8StringEncoding];
     NSString *value = [NSString stringWithCString:AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value).c_str() encoding:NSUTF8StringEncoding];
     NSString *dataset = [NSString stringWithCString:choicesData->GetDataset().c_str()
-                                 encoding:NSUTF8StringEncoding];
+                                           encoding:NSUTF8StringEncoding];
     NSString *dataQuery = [NSString stringWithCString:choicesData->GetChoicesDataType().c_str()
-                                 encoding:NSUTF8StringEncoding];
+                                             encoding:NSUTF8StringEncoding];
 
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
-    [requestPayload setDictionary: @{
-        choicesDataType   : dataQuery,
-        datasetKey        : dataset,
-        value             : queryText ?: @"",
-        @"skip"           : skipVal, //used for pagination.Usage - retrieve top n records by skipping first x records.
-        @"top"            : topVal
+    [requestPayload setDictionary:@{
+        choicesDataType : dataQuery,
+        datasetKey : dataset,
+        value : queryText ?: @"",
+        @"skip" : [NSNumber numberWithInt:skipVal], // used for pagination.Usage - retrieve top n records by skipping first x records.
+        @"top" : [NSNumber numberWithInt:topVal]
     }];
     return requestPayload;
 }
@@ -80,21 +80,22 @@ static NSString * const AdaptiveCardChoices = @"action";
 
 - (void)debouncerDidSendOutput:(id)key
 {
-    if ([key isKindOfClass:NSString.class])
-    {
+    if ([key isKindOfClass:NSString.class]) {
         __weak typeof(self) weakSelf = self;
         dispatch_async(_global_queue, ^{
             __strong typeof(self) strongSelf = weakSelf;
             if ([strongSelf->_rootView.acrActionDelegate respondsToSelector:@selector(onChoiceSetQueryChange:acoElem:completion:)]) {
-                NSDictionary *requestPayload = [strongSelf getRequestPayloadForTypeaheadSearchWithQueryText:key withSkipValue:[NSNumber numberWithInt:0] AndTopValue:[NSNumber numberWithInt:15]];
-                [strongSelf->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload acoElem:strongSelf->_inputElem completion:^(NSDictionary * response, NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSDictionary *choices = [response objectForKey:@"value"];
-                        if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
-                            [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
-                        }
-                    });
-                }];
+                NSDictionary *requestPayload = [strongSelf getRequestPayloadForTypeaheadSearchWithQueryText:key withSkipValue:0 AndTopValue:15];
+                [strongSelf->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload
+                                                                        acoElem:strongSelf->_inputElem
+                                                                     completion:^(NSDictionary *response, NSError *error) {
+                                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                                             NSDictionary *choices = [response objectForKey:@"value"];
+                                                                             if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
+                                                                                 [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:choices withError:error];
+                                                                             }
+                                                                         });
+                                                                     }];
             } else {
                 if ([strongSelf->_typeaheadSearchDelegate respondsToSelector:@selector(updateTypeaheadUIWithSearchText:dynamicChoices:withError:)]) {
                     [strongSelf->_typeaheadSearchDelegate updateTypeaheadUIWithSearchText:key dynamicChoices:nil withError:nil];

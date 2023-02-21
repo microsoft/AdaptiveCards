@@ -5,18 +5,18 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACOTypeaheadDebouncer.h"
-#import "BaseCardElement.h"
-#import "ACRView.h"
-#import "HostConfig.h"
-#import "ACRChoiceSetCompactStyleView.h"
-#import "ACRTypeaheadSearchParameters.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
-#import "ACRChoiceSetFilteredStyleView.h"
 #import "ACOTypeaheadSearchHandler.h"
+#import "ACRChoiceSetCompactStyleView.h"
+#import "ACRChoiceSetFilteredStyleView.h"
+#import "ACRTypeaheadSearchParameters.h"
+#import "ACRView.h"
+#import "BaseCardElement.h"
+#import "HostConfig.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRTypeaheadSearchViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate,UITableViewDataSource,ACRTypeaheadSearchProtocol>
+@interface ACRTypeaheadSearchViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, ACRTypeaheadSearchProtocol>
 
 @property NSString *id;
 @property (weak) UIView *filteredListView;

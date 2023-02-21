@@ -98,7 +98,7 @@ using namespace AdaptiveCards;
         _filteredListLayout = [[ACOFilteredListLayout alloc] initWithTopMargin:self.spacingTop bottomMargin:self.spacingBottom];
         _wrapLines = choiceSet->GetWrap() ? 0 : 1;
 
-        [_filteredDataSource updatefilteredListForStaticTypeahead:self.text];
+        [_filteredDataSource updateFilteredListForStaticTypeahead:self.text];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -170,7 +170,7 @@ using namespace AdaptiveCards;
     // implemented fluentUI north star behavior of removing the
     // filtered list when input field is empty
     if ([newString length]) {
-        [_filteredDataSource updatefilteredListForStaticTypeahead:newString];
+        [_filteredDataSource updateFilteredListForStaticTypeahead:newString];
         [_stateManager expanded];
         if (!_stateManager.shouldUpdateFilteredList) {
             [_listView reloadData];
@@ -202,7 +202,7 @@ using namespace AdaptiveCards;
 
 - (void)filterList:(NSString *)text
 {
-    [_filteredDataSource updatefilteredListForStaticTypeahead:text];
+    [_filteredDataSource updateFilteredListForStaticTypeahead:text];
 }
 
 - (void)toggleStateListView:(UIButton *)button
@@ -421,7 +421,7 @@ using namespace AdaptiveCards;
     return (index < 0 or index >= self.count) ? @"" : _filteredList[index];
 }
 
-- (void)updatefilteredListForStaticTypeahead:(NSString *)key
+- (void)updateFilteredListForStaticTypeahead:(NSString *)key
 {
     if (!self.isEnabled) {
         return;
@@ -437,7 +437,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void)updatefilteredListForDynamicTypeahead:(NSDictionary *)choices
+- (void)updateFilteredListForDynamicTypeahead:(NSDictionary *)choices
 {
     if (!self.isEnabled) {
         return;
@@ -447,7 +447,7 @@ using namespace AdaptiveCards;
         _dynamicFilteredList = @[];
     } else {
         NSMutableArray *dynamicList = [[NSMutableArray alloc] init];
-        for(id item in choices) {
+        for (id item in choices) {
             [dynamicList addObject:item];
         }
         _dynamicFilteredList = dynamicList;
@@ -458,21 +458,19 @@ using namespace AdaptiveCards;
 - (void)mergeStaticAndDynamicFilteredList
 {
     NSMutableArray *mergedList = [[NSMutableArray alloc] init];
-    for(id item in _dynamicFilteredList)
-    {
+    for (id item in _dynamicFilteredList) {
         [mergedList addObject:item];
     }
-    for(id item in _staticFilteredList)
-    {
+    for (id item in _staticFilteredList) {
         [mergedList addObject:item];
     }
     _filteredList = mergedList;
 }
 
-- (void)updatefilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices
+- (void)updateFilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices
 {
-    [self updatefilteredListForStaticTypeahead:key];
-    [self updatefilteredListForDynamicTypeahead:choices];
+    [self updateFilteredListForStaticTypeahead:key];
+    [self updateFilteredListForDynamicTypeahead:choices];
     [self mergeStaticAndDynamicFilteredList];
 }
 

@@ -6,8 +6,8 @@
 //
 
 #import "ACOHostConfig.h"
-#import "ACRIBaseInputHandler.h"
 #import "ACOTypeaheadDynamicChoicesService.h"
+#import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
 #import <UIKit/UIKit.h>
 

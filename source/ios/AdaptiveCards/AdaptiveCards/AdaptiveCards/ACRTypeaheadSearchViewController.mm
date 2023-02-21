@@ -6,23 +6,23 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRTypeaheadSearchViewController.h"
-#import "ACRChoiceSetCompactStyleView.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOBundle.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOTypeaheadDynamicChoicesService.h"
 #import "ACRActionDelegate.h"
 #import "ACRBaseCardElementRenderer.h"
-#import "ChoicesData.h"
+#import "ACRChoiceSetCompactStyleView.h"
+#import "ACRChoiceSetFilteredStyleView.h"
 #import "ACRInputLabelView.h"
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
+#import "ChoicesData.h"
 #import "HostConfig.h"
 #import "UtiliOS.h"
-#import "ACOTypeaheadDynamicChoicesService.h"
-#import "ACRChoiceSetFilteredStyleView.h"
-#import "ACOHostConfigPrivate.h"
+#import <UIKit/UIKit.h>
 
 typedef enum {
     none = 0,
@@ -82,15 +82,15 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
         _choiceSetDelegate = choiceSetDelegate;
         _searchStateParams = searchStateParams;
         _filteredDataSource = filteredDataSource;
-        _validator =  validator;
+        _validator = validator;
         _wrapLines = choiceSet->GetWrap() ? 0 : 1;
         _dynamicChoicesService = [[ACOTypeaheadDynamicChoicesService alloc] initWithRootView:_rootView inputElem:_inputElem typeaheadSearchDelegate:self];
         std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
         _dataSourceType = none;
-        if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0 ) {
+        if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
             _dataSourceType = dynamicDataSource;
         } else if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered) {
-            _dataSourceType =  staticDataSource;
+            _dataSourceType = staticDataSource;
         }
     }
 
@@ -158,21 +158,26 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
         [[_container leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
         [[_container widthAnchor] constraintEqualToAnchor:[self.view widthAnchor]],
         [[_container topAnchor] constraintEqualToAnchor:[self.view topAnchor]],
-        [[_searchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:ACOSearchBarPadding],
-        [[_searchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor] constant:-ACOSearchBarPadding],
-        [[_searchBarSeparator leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor] constant:0],
+        [[_searchBar leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]
+                                                   constant:ACOSearchBarPadding],
+        [[_searchBar trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor]
+                                                    constant:-ACOSearchBarPadding],
+        [[_searchBarSeparator leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]
+                                                            constant:0],
         [[_searchBarSeparator trailingAnchor] constraintEqualToAnchor:[self.view trailingAnchor]],
         [[_listView leadingAnchor] constraintEqualToAnchor:[self.view leadingAnchor]],
-        [[_searchStateTitleLabel topAnchor] constraintEqualToAnchor:[_loader bottomAnchor] constant:0],
+        [[_searchStateTitleLabel topAnchor] constraintEqualToAnchor:[_loader bottomAnchor]
+                                                           constant:0],
         [[_searchStateTitleLabel centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
         [[_searchStateTitleLabel topAnchor] constraintEqualToAnchor:[_searchStateImageView bottomAnchor]],
         [[_loader centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
         [[_loader centerYAnchor] constraintEqualToAnchor:[self.view centerYAnchor]],
         [[_searchStateImageView centerXAnchor] constraintEqualToAnchor:[self.view centerXAnchor]],
         [[_searchStateImageView centerYAnchor] constraintEqualToAnchor:[self.view centerYAnchor]],
-        [[_listView bottomAnchor] constraintEqualToAnchor:[self.view bottomAnchor] constant:-ACOListViewBottomPadding]
+        [[_listView bottomAnchor] constraintEqualToAnchor:[self.view bottomAnchor]
+                                                 constant:-ACOListViewBottomPadding]
     ]];
-    
+
     [_listView reloadData];
     if (_searchBar.text) {
         [self fetchChoicesWithQueryString:_searchBar.text];
@@ -193,11 +198,11 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(shouldConfigureNavigationItemViewWithVC:)]) {
         shouldConfigure = [_rootView.acrActionDelegate shouldConfigureNavigationItemViewWithVC:self];
     }
-    
+
     if (!shouldConfigure) {
         return;
     }
-    
+
     [self.navigationItem setTitle:_typeaheadViewTitle];
     UIImage *image = [UIImage systemImageNamed:@"chevron.backward"];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:image
@@ -206,8 +211,7 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
                                                                   action:@selector(navigateBack)];
     self.navigationItem.leftBarButtonItem = backButton;
 
-    if (_searchBar.text !=nil && _searchBar.text.length)
-    {
+    if (_searchBar.text != nil && _searchBar.text.length) {
         UIImage *rightImage = [UIImage systemImageNamed:@"checkmark"];
         UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:rightImage
                                                                            style:UIBarButtonItemStylePlain
@@ -255,7 +259,7 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 {
     switch (_dataSourceType) {
         case staticDataSource:
-            [_filteredDataSource updatefilteredListForStaticTypeahead:queryString];
+            [_filteredDataSource updateFilteredListForStaticTypeahead:queryString];
             break;
         case dynamicDataSource:
             _searchStateTitleLabel.text = @"Loading options";
@@ -285,11 +289,11 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 
 #pragma mark - ACOTypeaheadDynamicChoicesService Methods
 
-- (void)updateTypeaheadUIWithSearchText:(NSString*)searchText dynamicChoices:(NSDictionary *)choices withError:(NSError *)error
+- (void)updateTypeaheadUIWithSearchText:(NSString *)searchText dynamicChoices:(NSDictionary *)choices withError:(NSError *)error
 {
     if (!error) {
         [_loader stopAnimating];
-        [_filteredDataSource updatefilteredListForStaticAndDynamicTypeahead:searchText dynamicChoices:choices];
+        [_filteredDataSource updateFilteredListForStaticAndDynamicTypeahead:searchText dynamicChoices:choices];
         [_validator updateDynamicTitleMap:choices];
         if (_filteredDataSource.count) {
             [self configureSearchStateUI:displayingResults];
@@ -298,11 +302,10 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
         } else {
             [self configureSearchStateUI:displayingInvalidSearchError];
         }
-    }
-    else {
+    } else {
         [self configureSearchStateUI:displayingGenericError];
     }
-    
+
     if (@available(iOS 16.0, *)) {
         self.navigationItem.rightBarButtonItem.hidden = YES;
         if ([_filteredDataSource findMatch:searchText]) {
@@ -366,8 +369,9 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:resultText];
     [attrString beginEditing];
     [attrString addAttributes:@{
-        NSFontAttributeName: [UIFont boldSystemFontOfSize:cell.textLabel.font.pointSize]}
-                              range:highlightedRanges];
+        NSFontAttributeName : [UIFont boldSystemFontOfSize:cell.textLabel.font.pointSize]
+    }
+                        range:highlightedRanges];
     [attrString endEditing];
     cell.textLabel.attributedText = attrString;
     cell.textLabel.numberOfLines = _wrapLines;

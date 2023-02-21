@@ -6,15 +6,15 @@
 //
 
 #import "ACOBaseActionElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRButton.h"
-#import "ACRViewPrivate.h"
 #import "ACOBaseCardElement.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRButton.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRMockViews.h"
-#import "MockContext.h"
+#import "ACRViewPrivate.h"
 #import "ChoiceSetInput.h"
+#import "MockContext.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
@@ -56,7 +56,7 @@ using namespace AdaptiveCards;
     [dataSource addToSource:@"item2"];
     [dataSource addToSource:@"item3"];
     [dataSource addToSource:@"item4"];
-    [dataSource updatefilteredListForStaticTypeahead:@"item"];
+    [dataSource updateFilteredListForStaticTypeahead:@"item"];
     XCTAssertEqual(dataSource.count, 4);
     XCTAssertEqual([dataSource getItemAt:0], @"item1");
     XCTAssertEqual([dataSource getItemAt:3], @"item4");
@@ -68,14 +68,14 @@ using namespace AdaptiveCards;
 {
     ACOFilteredDataSource *dataSource = [[ACOFilteredDataSource alloc] init:YES];
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
-    [requestPayload setDictionary: @{
-        @"dynamicChoice1": @"selected dynamic choice 1",
-        @"dynamicChoice2": @"selected dynamic choice 2",
-        @"dynamicChoice3": @"selected dynamic choice 3",
-        @"dynamicChoice4": @"selected dynamic choice 4",
-        @"dynamicChoice5": @"selected dynamic choice 5"
+    [requestPayload setDictionary:@{
+        @"dynamicChoice1" : @"selected dynamic choice 1",
+        @"dynamicChoice2" : @"selected dynamic choice 2",
+        @"dynamicChoice3" : @"selected dynamic choice 3",
+        @"dynamicChoice4" : @"selected dynamic choice 4",
+        @"dynamicChoice5" : @"selected dynamic choice 5"
     }];
-    [dataSource updatefilteredListForStaticAndDynamicTypeahead:@"item" dynamicChoices:requestPayload];
+    [dataSource updateFilteredListForStaticAndDynamicTypeahead:@"item" dynamicChoices:requestPayload];
     XCTAssertEqual(dataSource.count, 5);
     NSString *choice = [dataSource getItemAt:0];
     XCTAssertEqual(choice, @"dynamicChoice2");
@@ -92,14 +92,14 @@ using namespace AdaptiveCards;
     [dataSource addToSource:@"Choice3"];
     [dataSource addToSource:@"Choice4"];
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
-    [requestPayload setDictionary: @{
-        @"dynamicChoice1": @"selected dynamic choice 1",
-        @"dynamicChoice2": @"selected dynamic choice 1",
-        @"dynamicChoice3": @"selected dynamic choice 1",
-        @"dynamicChoice4": @"selected dynamic choice 1",
-        @"dynamicChoice5": @"selected dynamic choice 1"
+    [requestPayload setDictionary:@{
+        @"dynamicChoice1" : @"selected dynamic choice 1",
+        @"dynamicChoice2" : @"selected dynamic choice 1",
+        @"dynamicChoice3" : @"selected dynamic choice 1",
+        @"dynamicChoice4" : @"selected dynamic choice 1",
+        @"dynamicChoice5" : @"selected dynamic choice 1"
     }];
-    [dataSource updatefilteredListForStaticAndDynamicTypeahead:@"Choice" dynamicChoices:requestPayload];
+    [dataSource updateFilteredListForStaticAndDynamicTypeahead:@"Choice" dynamicChoices:requestPayload];
     XCTAssertEqual(dataSource.count, 9);
     XCTAssertEqual([dataSource getItemAt:3], @"dynamicChoice4");
     XCTAssertEqual([dataSource getItemAt:5], @"choice1");
@@ -129,12 +129,12 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *acoElem = [self buildBaseCardElement];
     ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:dataSource];
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
-    [requestPayload setDictionary: @{
-        @"dynamicChoice1": @"selected dynamic choice 1",
-        @"dynamicChoice2": @"selected dynamic choice 2",
-        @"dynamicChoice3": @"selected dynamic choice 3",
-        @"dynamicChoice4": @"selected dynamic choice 4",
-        @"dynammicChoice5": @"selected dynamic choice 5"
+    [requestPayload setDictionary:@{
+        @"dynamicChoice1" : @"selected dynamic choice 1",
+        @"dynamicChoice2" : @"selected dynamic choice 2",
+        @"dynamicChoice3" : @"selected dynamic choice 3",
+        @"dynamicChoice4" : @"selected dynamic choice 4",
+        @"dynammicChoice5" : @"selected dynamic choice 5"
     }];
     [validator updateDynamicTitleMap:requestPayload];
     NSString *value = [validator getValue:@"dynamicChoice4"];
@@ -148,12 +148,12 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *acoElem = [self buildBaseCardElement];
     ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:dataSource];
     NSMutableDictionary *requestPayload = [NSMutableDictionary new];
-    [requestPayload setDictionary: @{
-        @"dynamicChoice1": @"selected dynamic choice 1",
-        @"dynamicChoice2": @"selected dynamic choice 2",
-        @"dynamicChoice3": @"selected dynamic choice 3",
-        @"dynamicChoice4": @"selected dynamic choice 4",
-        @"dynammicChoice5": @"selected dynamic choice 5"
+    [requestPayload setDictionary:@{
+        @"dynamicChoice1" : @"selected dynamic choice 1",
+        @"dynamicChoice2" : @"selected dynamic choice 2",
+        @"dynamicChoice3" : @"selected dynamic choice 3",
+        @"dynamicChoice4" : @"selected dynamic choice 4",
+        @"dynammicChoice5" : @"selected dynamic choice 5"
     }];
     [validator updateDynamicTitleMap:requestPayload];
     XCTAssertTrue([validator isValid:@"dynamicChoice1"]);
