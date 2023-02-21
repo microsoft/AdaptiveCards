@@ -18,11 +18,11 @@
 			<div class="accent-paragraph"><%- site.data.home.en.heading_paragraph %></div>
 			<div class="w3-padding-16">
 				<button role="link" onclick="window.location.href='https://docs.microsoft.com/en-us/adaptive-cards/'"
-					style="width:150px" class="w3-button w3-round-xxlarge ac-blue">
+					style="width:150px" class="w3-button w3-round-xxlarge ac-blue" aria-label="<%- site.data.home.en.adaptive_cards %> <%- site.data.home.en.get_started %>">
 					<%- site.data.home.en.get_started %>
 				</button>
 				<button class="w3-button w3-round-xxlarge w3-border w3-border-blue w3-margin-left" style="width:150px"
-					id="watchVideo">
+					id="watchVideo" aria-label="<%- site.data.home.en.adaptive_cards %> <%- site.data.home.en.watch_video %>">
 					<i class="fas fa-play"></i>&nbsp; <%- site.data.home.en.watch_video %>
 				</button>
 			</div>
@@ -39,30 +39,27 @@
 		</div>
 
 		<div class="w3-col l3">
-			<ul class="platform-list">
-				<div role="heading" aria-level="2" class="platform-header"><%- site.data.home.en.made_for_title %>
-				</div>
-
-				<div class="w3-row">
+			<div class="w3-row">
+				<div role="heading" aria-level="2" class="platform-header"><%- site.data.home.en.made_for_title %></div>
+				<ul class="platform-list">
 					<% for(var link of site.data.home.en.made_for) { %>	
 						<li>
 							<div class="w3-col s4 m3 l12"><a
-								href="<%- link.href %>"><i
+								href="<%- link.href %>" aria-label="<%- site.data.home.en.made_for_title %> <%- link.title %>"><i
 									class="<%- link.fa %>"></i> <%- link.title %></a></div>
 						</li>
 					<% } %>
-				</div>
-			</ul>
+				</ul>
+			</div>
 
 			<div class="w3-row">
 				<div class="w3-col s6 l12">
+					<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.releases_title %></div>
 					<ul class="platform-list">
-						<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.releases_title %>
-						</div>
 						<% for(var link of site.data.home.en.releases) { %>
 							<li>
 								<div>
-									<a href="<%- link.href %>" aria-label="<%- link.title %>">
+									<a href="<%- link.href %>" aria-label="<%- site.data.home.en.releases_title %> <%- link.title %>">
 										<i class="<%- link.fa %>" aria-hidden="true"></i>
 										<%- link.title %>
 									</a>
@@ -76,11 +73,11 @@
 
 			<div class="w3-row">
 				<div class="w3-col s6 l12">
+					<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.github_title %></div>
 					<ul class="platform-list">
-						<div role="heading" aria-level="3" class="platform-header">Github</div>
 						<li>
 							<div>
-								<a href="https://github.com/microsoft/AdaptiveCards/" target="_blank" rel="noopener">
+								<a href="https://github.com/microsoft/AdaptiveCards/" target="_blank" rel="noopener" aria-label="<%- site.data.home.en.github_title %> AdaptiveCards">
 									<i class="fab fa-github"></i>
 									AdaptiveCards
 								</a>

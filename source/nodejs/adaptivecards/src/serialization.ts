@@ -529,7 +529,7 @@ export class PixelSizeProperty extends PropertyDefinition {
                 context.logParseEvent(
                     sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidPropertyValue(source[this.name], "minHeight")
+                    Strings.errors.invalidPropertyValue(source[this.name], this.name)
                 );
             }
         }
