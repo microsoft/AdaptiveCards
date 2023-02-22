@@ -39,6 +39,10 @@ module.exports = (env, argv) => {
 						devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
 						'css-loader'
 					]
+				},
+				{
+					test: /\.svg$/,
+					type: 'asset/resource'
 				}
 			]
 		},

@@ -1,0 +1,72 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"rtl": true,
+	"body": [
+		{
+			"type": "Carousel",
+			"orientation": "vertical",
+			"heightInPixels": "200px",
+			"pages": [
+				{
+					"type": "CarouselPage",
+					"id": "firstCarouselPage",
+					"rtl": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "1. Expected: RTL: *true*"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Carousel Page has set Explicit RTL"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "secondCarouselPage",
+					"rtl": false,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "2. Expected: RTL: *false*"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Carousel Page has set Explicit LTR"
+						}
+					]
+				},
+				{
+					"type": "CarouselPage",
+					"id": "thirdCarouselPage",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "3. Expected: RTL: *true*"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Carousel Page get Explicit RTL from its parent *Carousel* \rActions' direction should be RTL as AdaptiveCards has explicit RTL",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "See more",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "Another action",
+			"url": "https://adaptivecards.io"
+		}
+	]
+}

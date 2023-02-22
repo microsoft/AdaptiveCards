@@ -70,7 +70,9 @@ export class Strings {
         elementAlreadyParented: () => "The element already belongs to another container.",
         actionAlreadyParented: () => "The action already belongs to another element.",
         elementTypeNotStandalone: (typeName: string) =>
-            `Elements of type ${typeName} cannot be used as standalone elements.`
+            `Elements of type ${typeName} cannot be used as standalone elements.`,
+        invalidInputLabelWidth: () =>
+            `Invalid input label width. Defaulting to label width from host config.`,
     };
     static readonly magicCodeInputCard = {
         tryAgain: () => "That didn't work... let's try again.",
@@ -100,6 +102,8 @@ export class Strings {
         mediaPlayerPlayMedia: () => "Play media",
         youTubeVideoPlayer: () => "YouTube video player",
         vimeoVideoPlayer: () => "Vimeo video player",
-        dailymotionVideoPlayer: () => "Dailymotion video player"
+        dailymotionVideoPlayer: () => "Dailymotion video player",
+        carouselNavigationPreviousTooltip: () => "Previous carousel page",
+        carouselNavigationNextTooltip: () => "Next carousel page"
     };
 }
