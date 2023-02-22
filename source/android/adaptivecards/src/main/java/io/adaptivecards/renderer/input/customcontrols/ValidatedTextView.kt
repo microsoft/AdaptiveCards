@@ -18,12 +18,6 @@ class ValidatedTextView(context: Context, usingCustomInputs: Boolean) : AppCompa
 
     private val STATE_INPUT_INVALID = intArrayOf(R.attr.state_error)
 
-
-    /**
-     * Creates an instance of a ValidatedSpinner and verifies if custom drawables are being used.
-     * @param context Context necessary for UI object creation
-     */
-
     /**
      * Creates an instance of a ValidatedSpinner setting the background drawable adaptive_choiceset_compact_background.
      * @param context Context necessary for UI object creation
