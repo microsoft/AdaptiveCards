@@ -67,29 +67,6 @@
 					"value": "3"
 				}
 			]
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "dynamicChoiceSet",
-			"placeholder": "Enter the name of your team",
-			"choices": [
-				{
-					"title": "Office",
-					"value": "1"
-				},
-				{
-					"title": "Teams",
-					"value": "2"
-				},
-				{
-					"title": "Outlook",
-					"value": "3"
-				}
-			],
-			"choices.data": {
-				"type": "Data.Query",
-				"dataset": "teamScopeInOrg"
-			}
 		}
 	],
 	"actions": [

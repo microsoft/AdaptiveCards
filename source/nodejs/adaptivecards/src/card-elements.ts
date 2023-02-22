@@ -4490,7 +4490,7 @@ export class ChoiceSetInput extends Input {
                     this._textInput.setAttribute("aria-label", this.placeholder);
                 }
                 this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
-                this._textInput.oninput = Utils.debounce(() => {
+                const onInputChangeEventHandler = Utils.debounce(() => {
                     filteredChoiceSet.processStaticChoices();
                     this.valueChanged();
                     if (this._textInput) {
@@ -4505,6 +4505,8 @@ export class ChoiceSetInput extends Input {
                         }
                     }
                 }, this.hostConfig.inputs.debounceTime);
+                this._textInput.onclick = onInputChangeEventHandler;
+                this._textInput.oninput = onInputChangeEventHandler;
             }
             filteredChoiceSet.parent = this;
             this._filteredChoiceSet = filteredChoiceSet;
@@ -4876,12 +4878,17 @@ export class FilteredChoiceSet {
     }
 
     private filterChoices(isDynamic?: boolean) {
-        const filter = this._textInput?.value.toLowerCase() || "";
-        const choices = isDynamic ? this._dynamicChoices : this._choices;
-        for (const choice of choices) {
-            if (choice.title?.toLowerCase().includes(filter)) {
-                const choiceContainer = this.createChoice(choice.title, this._visibleChoiceCount++);
-                this._dropdown?.appendChild(choiceContainer);
+        const filter = this._textInput?.value.toLowerCase();
+        if (filter) {
+            const choices = isDynamic ? this._dynamicChoices : this._choices;
+            for (const choice of choices) {
+                if (choice.title?.toLowerCase().includes(filter)) {
+                    const choiceContainer = this.createChoice(
+                        choice.title,
+                        this._visibleChoiceCount++
+                    );
+                    this._dropdown?.appendChild(choiceContainer);
+                }
             }
         }
     }
