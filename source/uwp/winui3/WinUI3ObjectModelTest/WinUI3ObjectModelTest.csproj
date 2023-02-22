@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>WinUI3ObjectModelTest</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -30,14 +30,14 @@
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.1" />
-	<PackageReference Include="MSTest.TestAdapter">
-        <Version>2.2.10</Version>
+    <PackageReference Include="MSTest.TestAdapter">
+        <Version>3.0.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-        <Version>2.2.10</Version>
+        <Version>3.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.TestHost">
-        <Version>17.2.0</Version>
+        <Version>17.4.1</Version>
         <ExcludeAssets>build</ExcludeAssets>
     </PackageReference>
     <Manifest Include="$(ApplicationManifest)" />
