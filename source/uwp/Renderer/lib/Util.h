@@ -95,6 +95,8 @@ template<typename TStored> struct property_opt
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
 
+std::optional<double> TryHStringToDouble(winrt::hstring const& in);
+
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
 winrt::hstring UTF8ToHString(std::string_view in);

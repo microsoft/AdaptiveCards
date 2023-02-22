@@ -92,6 +92,19 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(in);
 }
 
+std::optional<double> TryHStringToDouble(winrt::hstring const& in)
+{
+    try
+    {
+        return std::stod(winrt::to_string(in));
+    }
+    catch (std::invalid_argument)
+    {
+        // in was not a valid double
+        return {};
+    }
+}
+
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
