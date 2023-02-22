@@ -163,6 +163,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                 XamlHelpers::AppendXamlElementToPanel(separator, buttonContentsStackPanel);
             }
 
+            // Add Text to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonText, buttonContentsStackPanel);
+
             // Finally, put the stack panel inside the final button
             button.Content(buttonContentsStackPanel);
         }
