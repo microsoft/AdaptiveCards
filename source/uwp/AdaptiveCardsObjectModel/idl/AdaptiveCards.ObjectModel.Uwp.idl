@@ -14,7 +14,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Default,
         Medium,
         Large,
-        ExtraLarge
+        ExtraLarge,
     };
 
     enum TextWeight
@@ -32,7 +32,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Accent,
         Good,
         Warning,
-        Attention
+        Attention,
     };
 
     enum HAlignment
@@ -54,7 +54,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
-        Repeat
+        Repeat,
     };
 
     enum ElementType
@@ -93,7 +93,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         OpenUrl,
         ToggleVisibility,
         Execute,
-        Custom
+        Custom,
     };
 
     enum ImageStyle
@@ -109,7 +109,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Stretch,
         Small,
         Medium,
-        Large
+        Large,
     };
 
     enum SeparatorThickness
@@ -126,7 +126,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Medium,
         Large,
         ExtraLarge,
-        Padding
+        Padding,
     };
 
     enum ChoiceSetStyle
@@ -153,7 +153,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Good,
         Attention,
         Warning,
-        Accent
+        Accent,
     };
 
     enum FontType
@@ -198,7 +198,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         Top = 0,
         Center,
-        Bottom
+        Bottom,
     };
 
     enum HeightType
@@ -211,7 +211,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         IsVisibleToggle = 0,
         IsVisibleTrue,
-        IsVisibleFalse
+        IsVisibleFalse,
     };
 
     enum FallbackType
@@ -227,7 +227,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Right = 0x0010,
         Up = 0x0100,
         Down = 0x1000,
-        All = Left | Right | Up | Down
+        All = Left | Right | Up | Down,
     };
 
     enum AssociatedInputs

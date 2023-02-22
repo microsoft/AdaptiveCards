@@ -1,0 +1,57 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+  batch: True
+
+variables:
+  solution: source/uwp/winui3/AdaptiveCards.sln
+  buildConfiguration: Release
+  buildPlatform: x64
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+
+steps:
+- task: NuGetToolInstaller@1
+  name: NuGetToolInstaller1
+  displayName: Use NuGet 6.4.x
+  inputs:
+    versionSpec: 6.4.x
+
+- task: NuGetAuthenticate@1
+  name: NuGetAuthenticate2
+
+- task: NuGetRestore@1
+  name: NuGetCommand3
+  displayName: NuGet restore
+  inputs:
+    solution: $(solution)
+    selectOrConfig: config
+    nugetConfigPath: source/uwp/winui3/nuget.config
+    verbosity: '-'
+
+- task: VSBuild@1
+  name: VSBuild4
+  displayName: Build solution
+  inputs:
+    solution: $(solution)
+    vsVersion: 16.0
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
+    maximumCpuCount: true
+    createLogFile: true
+    logFileVerbosity: detailed
+
