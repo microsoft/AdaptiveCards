@@ -20,8 +20,7 @@ public interface IBaseActionElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

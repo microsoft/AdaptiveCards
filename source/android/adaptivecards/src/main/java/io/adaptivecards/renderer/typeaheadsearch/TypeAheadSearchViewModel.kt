@@ -24,6 +24,9 @@ class TypeAheadSearchViewModel : ViewModel() {
     private var staticChoicesCount: Int
     private var titleList: List<String>
     private var valueList: List<String>
+    // TODO : Get count from host config
+    private val count: Int = 15
+    private val skip: Int = 0
 
     private lateinit var dataset: String
     private lateinit var dataType: String
@@ -91,16 +94,14 @@ class TypeAheadSearchViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             var result: HttpRequestResult<List<ChoiceInput>>? = null
             DynamicTypeAheadService.getChoicesResolver()?.let {
-                // TODO : Get count from host config
-                result = it.getDynamicChoices(dataType, dataset, queryText, 15, 0)
+                result = it.getDynamicChoices(dataType, dataset, queryText, count, skip)
             }
 
             withContext(Dispatchers.Main) {
                 if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
                     var choices: List<ChoiceInput> = result!!.result
-                    // TODO : Get count from host config
-                    if (choices.size > 15)
-                        choices = choices.subList(0, 14)
+                    if (choices.size > count)
+                        choices = choices.subList(0, count)
 
                     val titles: MutableList<String> = ArrayList()
                     val values: MutableList<String> = ArrayList()
@@ -138,7 +139,7 @@ class TypeAheadSearchViewModel : ViewModel() {
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             // Your holder should contain and initialize a member variable
             // for any view that will be set as you render a row
-            val textView: TextView = itemView.findViewById(android.R.id.text1)
+            val textView: TextView = itemView.findViewById(R.id.choiceTitle)
         }
 
         // ... constructor and member variables
@@ -169,7 +170,8 @@ class TypeAheadSearchViewModel : ViewModel() {
                         intent.putExtra("typeAheadSearchSelectedValue", value)
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
-                    }, 100)
+                    },
+                        100) // delay of 100 ms
                 }
             }
         }

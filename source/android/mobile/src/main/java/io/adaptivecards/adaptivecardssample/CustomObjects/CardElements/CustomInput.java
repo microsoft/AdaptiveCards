@@ -22,13 +22,12 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 /**
  * CustomInput is a class used to demonstrate and test the user experience for creating a custom
@@ -89,8 +88,7 @@ public class CustomInput extends BaseInputElement
                            FragmentManager fragmentManager,
                            ViewGroup viewGroup,
                            BaseCardElement baseCardElement,
-                           ICardActionHandler cardActionHandler,
-                           IChoicesResolver choicesResolver,
+                           ChannelAdaptor channelAdaptor,
                            HostConfig hostConfig,
                            RenderArgs renderArgs) throws Exception
         {

@@ -43,11 +43,11 @@ import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedAutoCompleteTextView;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
@@ -724,7 +724,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 launcher.launch(intent);
             }
             else {
-                //Log error in console
+                renderedCard.addWarning(
+                    new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED,
+                        "Interactivity is not allowed. ActivityResultRegistry is null.")
+                );
             }
         });
 
@@ -746,8 +749,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -762,7 +764,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         View inputView = null;
         if (choiceSetInput.GetChoicesData() != null && !choiceSetInput.GetChoicesData().GetChoicesDataType().isEmpty()) {
             // Create dynamic type ahead control
-            inputView = renderTypeAheadControl(renderedCard, context, choiceSetInput, choicesResolver, hostConfig, renderArgs);
+            inputView = renderTypeAheadControl(renderedCard, context, choiceSetInput, channelAdaptor.getChoicesResolver(), hostConfig, renderArgs);
         }
         else if (choiceSetInput.GetIsMultiSelect())
         {

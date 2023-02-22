@@ -12,12 +12,12 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -27,7 +27,6 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageVector;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public class ImageSetRenderer extends BaseCardElementRenderer
 {
@@ -52,8 +51,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            IChoicesResolver choicesResolver,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -85,7 +83,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             try
             {
-                View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, choicesResolver, hostConfig, renderArgs);
+                View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, channelAdaptor, hostConfig, renderArgs);
                 ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
             }
             catch (AdaptiveFallbackException e)

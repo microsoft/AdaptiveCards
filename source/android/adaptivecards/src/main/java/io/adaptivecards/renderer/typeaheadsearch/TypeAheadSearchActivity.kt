@@ -20,7 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import io.adaptivecards.R
 import io.adaptivecards.databinding.ActivityTypeAheadSearchBinding
-import io.adaptivecards.renderer.ITypeAheadCustomParams
+import io.adaptivecards.renderer.ITypeAheadRenderer
 import io.adaptivecards.renderer.registration.CardRendererRegistration
 
 class TypeAheadSearchActivity : AppCompatActivity() {
@@ -95,17 +95,17 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             dataType = launchParams.choicesDataType
         }
 
-        val typeAheadParams: ITypeAheadCustomParams? = CardRendererRegistration.getInstance().typeAheadCustomParams
+        val typeAheadParams: ITypeAheadRenderer? = CardRendererRegistration.getInstance().getTypeAheadRenderer()
         if (typeAheadParams != null) {
-            crossIconParams = typeAheadParams.crossIconParams
-            searchIconParams = typeAheadParams.searchIconParams
-            tickIconParams = typeAheadParams.tickIconParams
-            backIconParams = typeAheadParams.backIconParams
-            screenTitle = typeAheadParams.screenTitle
+            crossIconParams = typeAheadParams.getCrossIconParams()
+            searchIconParams = typeAheadParams.getSearchIconParams()
+            tickIconParams = typeAheadParams.getTickIconParams()
+            backIconParams = typeAheadParams.getBackIconParams()
+            screenTitle = typeAheadParams.getScreenTitle()
 
-            startSearchingIconParams = typeAheadParams.startSearchingStateParams
-            errorIconParams = typeAheadParams.errorStateParams
-            noResultIconParams = typeAheadParams.noResultStateParams
+            startSearchingIconParams = typeAheadParams.getStartSearchingStateParams()
+            errorIconParams = typeAheadParams.getErrorStateParams()
+            noResultIconParams = typeAheadParams.getNoResultStateParams()
         }
         else {
             crossIconParams = CrossIconParams()
