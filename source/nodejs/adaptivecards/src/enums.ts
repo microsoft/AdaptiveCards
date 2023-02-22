@@ -72,6 +72,11 @@ export enum TextSize {
     ExtraLarge
 }
 
+export enum InputStyle {
+    RevealOnHover,
+    Default
+}
+
 export enum TextWeight {
     Lighter,
     Default,
@@ -155,6 +160,11 @@ export enum InputTextStyle {
     Url,
     Email,
     Password
+}
+
+export enum InputLabelPosition {
+    Inline,
+    Above
 }
 
 export enum ValidationPhase {

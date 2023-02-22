@@ -32,19 +32,24 @@ module.exports = (env, argv) => {
 			extensions: [".ts", ".tsx", ".js"]
 		},
 		module: {
-			rules: [{
-				test: /\.ts$/,
-				loader: "ts-loader",
-				exclude: /(node_modules|__tests__)/
-			},
-			{
-				test: /\.css$/,
-				use: [
-					'style-loader',
-					MiniCssExtractPlugin.loader,
-					'css-loader'
-				]
-			}
+			rules: [
+				{
+					test: /\.ts$/,
+					loader: "ts-loader",
+					exclude: /(node_modules|__tests__)/
+				},
+				{
+					test: /\.css$/,
+					use: [
+						'style-loader',
+						MiniCssExtractPlugin.loader,
+						'css-loader'
+					]
+				},
+				{
+					test: /\.svg$/,
+					type: 'asset/inline'
+				}
 			]
 		},
 		plugins: [
@@ -104,6 +109,10 @@ module.exports = (env, argv) => {
 				{
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/[name][ext]'
+				},
+				{
+					from: 'src/assets/*.*',
+					to: '../lib/assets/[name][ext]'
 				}],
 				options: {
 					concurrency: 8
