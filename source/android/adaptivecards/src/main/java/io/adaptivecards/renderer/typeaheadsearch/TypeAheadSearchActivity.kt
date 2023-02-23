@@ -37,6 +37,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var clearTextIconView: AppCompatImageButton
     private lateinit var descriptiveImageView: AppCompatImageView
     private lateinit var descriptiveTextView: TextView
+    private lateinit var submitButton: ImageButton
 
     private lateinit var selectedTitle: String
     private lateinit var titleList: List<String>
@@ -66,7 +67,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_modal_screen, menu)
         menu?.let {
             val menuItem = menu.findItem(R.id.action_submit)
-            val submitButton = menuItem.actionView as ImageButton
+            submitButton = menuItem.actionView as ImageButton
             val tickIconDrawable: Drawable? = ContextCompat.getDrawable(this, tickIconParams.drawableResourceId)
             tickIconDrawable?.setTint(secondaryColor)
             if (tickIconDrawable != null)
@@ -77,7 +78,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             submitButton.setOnClickListener {
                 onOptionsItemSelected(menuItem)
             }
-            submitButton.contentDescription = menuItem.title
+            submitButton.contentDescription = tickIconParams.contentDescription
             submitButton.isEnabled = true
             submitButton.imageAlpha = 255
             submitButton.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
@@ -166,6 +167,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         viewModel.queryText.observe(this, processClearTextIconVisibility)
 
         clearTextIconView.setBackgroundResource(crossIconParams.drawableResourceId)
+        clearTextIconView.contentDescription = crossIconParams.contentDescription
         clearTextIconView.setOnClickListener { viewModel.clearText().also { searchTextView.text.clear() } }
         activityTypeAheadSearchBinding?.searchIcon?.setBackgroundResource(searchIconParams.drawableResourceId)
 
@@ -198,6 +200,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 actionBar.setHomeAsUpIndicator(backIconDrawable)
             else
                 actionBar.setHomeAsUpIndicator(backIconParams.drawableResourceId)
+            actionBar.setHomeActionContentDescription(backIconParams.contentDescription)
             actionBar.title = screenTitle
         }
 
