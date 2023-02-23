@@ -4188,6 +4188,40 @@ export class Choice extends SerializableObject {
     }
 }
 
+/**
+ * DataQuery class is declared later in the file and derives from subsequent base classes
+ * Hence, it cannot be used in ChoiceSetInput.
+ * Refactor is needed to separate elements and actions in separate files.
+ */
+export class ChoiceSetInputDataQuery extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(
+        Versions.v1_6,
+        "type",
+        true,
+        new RegExp("^Data.Query$")
+    );
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+
+    @property(ChoiceSetInputDataQuery.typeProperty)
+    type: string;
+
+    @property(ChoiceSetInputDataQuery.datasetProperty)
+    dataset: string;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "choices.data";
+    }
+}
+
+export type FetchedChoice = {
+    title: string;
+    value: string;
+};
+
 export class ChoiceSetInput extends Input {
     //#region Schema
 
@@ -4196,6 +4230,11 @@ export class ChoiceSetInput extends Input {
         Versions.v1_0,
         "choices",
         Choice
+    );
+    static readonly choicesDataProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "choices.data",
+        ChoiceSetInputDataQuery
     );
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
@@ -4237,6 +4276,9 @@ export class ChoiceSetInput extends Input {
     @property(ChoiceSetInput.choicesProperty)
     choices: Choice[] = [];
 
+    @property(ChoiceSetInput.choicesDataProperty)
+    choicesData?: ChoiceSetInputDataQuery;
+
     //#endregion
 
     private static _uniqueCategoryCounter = 0;
@@ -4254,6 +4296,31 @@ export class ChoiceSetInput extends Input {
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+    private _filteredChoiceSet?: FilteredChoiceSet;
+
+    isDynamicTypeahead(): boolean {
+        return (
+            !!this.choicesData &&
+            !!this.choicesData.dataset &&
+            this.choicesData.type === "Data.Query"
+        );
+    }
+
+    renderChoices(fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(fetchedChoices);
+    }
+
+    showLoadingIndicator() {
+        this._filteredChoiceSet?.showLoadingIndicator();
+    }
+
+    removeLoadingIndicator() {
+        this._filteredChoiceSet?.removeLoadingIndicator();
+    }
+
+    showErrorIndicator(error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(error);
+    }
 
     private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
         if (!this.value) {
@@ -4405,8 +4472,46 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+        if (this.isDynamicTypeahead()) {
+            const filteredChoiceSet = new FilteredChoiceSet(
+                ChoiceSetInput._uniqueCategoryCounter,
+                this.choices,
+                this.hostConfig
+            );
+            filteredChoiceSet.render();
 
-        if (this.isMultiSelect) {
+            if (filteredChoiceSet.textInput) {
+                this._textInput = filteredChoiceSet.textInput;
+                if (this.defaultValue) {
+                    this._textInput.value = this.defaultValue;
+                }
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+                this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
+                const onInputChangeEventHandler = Utils.debounce(() => {
+                    filteredChoiceSet.processStaticChoices();
+                    this.valueChanged();
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        } else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                }, this.hostConfig.inputs.debounceTimeInMilliSeconds);
+                this._textInput.onclick = onInputChangeEventHandler;
+                this._textInput.oninput = onInputChangeEventHandler;
+            }
+            filteredChoiceSet.parent = this;
+            this._filteredChoiceSet = filteredChoiceSet;
+            return filteredChoiceSet.renderedElement;
+        } else if (this.isMultiSelect) {
             // Render as a list of toggle inputs
             return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
@@ -4601,7 +4706,13 @@ export class ChoiceSetInput extends Input {
                     return true;
                 }
             }
-
+            if (this.dynamicChoices) {
+                for (const choice of this.dynamicChoices) {
+                    if (this.value === choice) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -4649,6 +4760,261 @@ export class ChoiceSetInput extends Input {
 
             return result ? result : undefined;
         }
+    }
+
+    get dynamicChoices() {
+        return this._filteredChoiceSet?.dynamicChoices;
+    }
+}
+
+export class FilteredChoiceSet {
+    private _parent?: CardObject;
+    private _choiceSetId: number;
+    private _choices: Choice[];
+    private _dynamicChoices: FetchedChoice[];
+    private _visibleChoiceCount: number;
+    private _textInput?: HTMLInputElement;
+    private _dropdown?: HTMLDivElement;
+    private _loadingIndicator?: HTMLDivElement;
+    private _errorIndicator?: HTMLDivElement;
+    private _renderedElement?: HTMLElement;
+    private _hostConfig?: HostConfig;
+
+    constructor(choiceSetId: number, choices: Choice[], hostConfig?: HostConfig) {
+        this._choiceSetId = choiceSetId;
+        this._choices = choices;
+        this._dynamicChoices = [];
+        this._visibleChoiceCount = 0;
+        this._hostConfig = hostConfig;
+    }
+
+    render() {
+        const choiceSetContainer = document.createElement("div");
+        choiceSetContainer.style.position = "relative";
+        choiceSetContainer.style.width = "100%";
+
+        this._textInput = document.createElement("input");
+        this._textInput.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-multichoiceInput",
+            "ac-choiceSetInput-filtered"
+        );
+        this._textInput.type = "text";
+        this._textInput.style.width = "100%";
+
+        this._textInput.onkeydown = (event) => {
+            if (event.key === "ArrowDown") {
+                this.focusChoice(0);
+            }
+        };
+
+        this._dropdown = document.createElement("div");
+        this._dropdown.style.display = "none";
+        this._dropdown.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-multichoiceInput",
+            "ac-choiceSetInput-filtered-dropdown"
+        );
+
+        choiceSetContainer.append(this._textInput, this._dropdown);
+
+        document.onclick = (event) => {
+            if (this._dropdown) {
+                let child = this._dropdown.firstChild;
+                while (child && event.target !== child) {
+                    child = child.nextSibling;
+                }
+                // Dropdown closes if user clicks outside the choiceset.
+                if (child || !(event.target === this._textInput)) {
+                    this._dropdown.style.display = "none";
+                }
+            }
+        };
+        this._renderedElement = choiceSetContainer;
+    }
+
+    private createChoice(value: string, filter: string, id: number): HTMLSpanElement {
+        const choice = document.createElement("span");
+        choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
+        choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
+        choice.innerHTML = value.replace(filter, `<b>${filter}</b>`);
+        choice.tabIndex = -1;
+
+        choice.addEventListener("focusin", () => {
+            choice.classList.add("focused");
+        });
+
+        choice.addEventListener("focusout", () => {
+            choice.classList.remove("focused");
+        });
+
+        choice.onclick = () => {
+            if (this._textInput) {
+                this._textInput.value = choice.innerText;
+            }
+            if (this._dropdown) {
+                this._dropdown.style.display = "none";
+            }
+        };
+
+        choice.onkeydown = (event) => {
+            if (event.key === "ArrowDown") {
+                this.focusChoice(id + 1);
+            } else if (event.key === "ArrowUp") {
+                this.focusChoice(id - 1);
+            } else if (event.key === "Enter") {
+                choice.click();
+            }
+        };
+
+        choice.onmouseover = () => {
+            this.focusChoice(id);
+        };
+
+        return choice;
+    }
+
+    private focusChoice(id: number) {
+        const choice = document.getElementById(
+            `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
+        );
+        if (choice) {
+            choice.focus();
+        } else if (this._textInput) {
+            this._textInput.focus();
+            const textLength = this._textInput.value.length;
+            this._textInput.setSelectionRange(textLength, textLength);
+        }
+    }
+
+    private filterChoices(isDynamic?: boolean) {
+        const filter = this._textInput?.value.toLowerCase();
+        if (filter) {
+            const choices = isDynamic ? this._dynamicChoices : this._choices;
+            for (const choice of choices) {
+                if (choice.title) {
+                    const matchIndex = choice.title.toLowerCase().indexOf(filter);
+                    if (matchIndex !== -1) {
+                        const matchedText = choice.title.substring(
+                            matchIndex,
+                            matchIndex + filter.length
+                        );
+                        const choiceContainer = this.createChoice(
+                            choice.title,
+                            matchedText,
+                            this._visibleChoiceCount++
+                        );
+                        this._dropdown?.appendChild(choiceContainer);
+                    }
+                }
+            }
+        }
+    }
+
+    private getStatusIndicator(error?: string): HTMLDivElement {
+        if (error) {
+            if (!this._errorIndicator) {
+                const errorIndicator = document.createElement("div");
+                errorIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator",
+                    "ac-choiceSetInput-errorIndicator"
+                );
+                this._errorIndicator = errorIndicator;
+            }
+            this._errorIndicator.innerText = error;
+            return this._errorIndicator;
+        } else {
+            if (!this._loadingIndicator) {
+                const loadingIndicator = document.createElement("div");
+                loadingIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator"
+                );
+                this._loadingIndicator = loadingIndicator;
+            }
+            this._loadingIndicator.innerText =
+                this._visibleChoiceCount === 0 ? "Loading..." : "Loading more...";
+            return this._loadingIndicator;
+        }
+    }
+
+    private resetDropdown() {
+        this._dynamicChoices = [];
+        if (this._dropdown) {
+            Utils.clearElementChildren(this._dropdown);
+            this._visibleChoiceCount = 0;
+        }
+    }
+
+    private showDropdown() {
+        if (this._dropdown?.hasChildNodes) {
+            this._dropdown.style.display = "block";
+        }
+    }
+
+    processStaticChoices() {
+        this.resetDropdown();
+        this.filterChoices();
+        this.showDropdown();
+    }
+
+    processResponse(fetchedChoices: FetchedChoice[]) {
+        this._dynamicChoices = fetchedChoices;
+        this.filterChoices(true);
+        if (this._visibleChoiceCount === 0) {
+            this.showErrorIndicator("No results found.");
+        }
+    }
+
+    showLoadingIndicator() {
+        const loadingIndicator = this.getStatusIndicator();
+        this._dropdown?.appendChild(loadingIndicator);
+        this.showDropdown();
+    }
+
+    removeLoadingIndicator() {
+        if (this._loadingIndicator && this._dropdown?.contains(this._loadingIndicator)) {
+            this._dropdown?.removeChild(this._loadingIndicator);
+        }
+    }
+
+    showErrorIndicator(error: string) {
+        this.removeLoadingIndicator();
+        const errorIndicator = this.getStatusIndicator(error);
+        this._dropdown?.appendChild(errorIndicator);
+    }
+
+    get dynamicChoices() {
+        return this._dynamicChoices?.map((choice) => choice.title);
+    }
+
+    get hostConfig(): HostConfig {
+        if (this._hostConfig) {
+            return this._hostConfig;
+        } else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            } else {
+                return defaultHostConfig;
+            }
+        }
+    }
+
+    set parent(value: CardObject | undefined) {
+        this._parent = value;
+    }
+
+    get parent() {
+        return this._parent;
+    }
+
+    get renderedElement() {
+        return this._renderedElement;
+    }
+
+    get textInput() {
+        return this._textInput;
     }
 }
 
@@ -5568,7 +5934,12 @@ export class SubmitAction extends SubmitActionBase {
     }
 }
 
-export class ExecuteAction extends SubmitActionBase {
+export abstract class UniversalAction extends SubmitActionBase {
+    // This is the base class for all actions that can be executed via the
+    // adaptiveCards/action activity
+}
+
+export class ExecuteAction extends UniversalAction {
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
@@ -5584,6 +5955,33 @@ export class ExecuteAction extends SubmitActionBase {
 
     getJsonTypeName(): string {
         return ExecuteAction.JsonTypeName;
+    }
+}
+
+export class DataQuery extends UniversalAction {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Data.Query" = "Data.Query";
+
+    //#region Schema
+
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly filterProperty = new StringProperty(Versions.v1_6, "filter");
+
+    @property(DataQuery.datasetProperty)
+    dataset: string;
+
+    @property(DataQuery.filterProperty)
+    filter?: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return DataQuery.JsonTypeName;
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
