@@ -4504,7 +4504,7 @@ export class ChoiceSetInput extends Input {
                             this._textInput.setAttribute("aria-label", this.placeholder);
                         }
                     }
-                }, this.hostConfig.inputs.debounceTime);
+                }, this.hostConfig.inputs.debounceTimeInMilliSeconds);
                 this._textInput.onclick = onInputChangeEventHandler;
                 this._textInput.oninput = onInputChangeEventHandler;
             }
@@ -4804,16 +4804,12 @@ export class FilteredChoiceSet {
 
         this._textInput.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
-                const firstChoice = document.getElementById(
-                    `ac-choiceSetInput-${this._choiceSetId}-choice-0`
-                );
-                if (firstChoice) {
-                    firstChoice.focus();
-                }
+                this.focusChoice(0);
             }
         };
 
         this._dropdown = document.createElement("div");
+        this._dropdown.style.display = "none";
         this._dropdown.className = this.hostConfig.makeCssClassName(
             "ac-input",
             "ac-multichoiceInput",
@@ -4843,6 +4839,14 @@ export class FilteredChoiceSet {
         choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
         choice.innerText = value;
         choice.tabIndex = -1;
+        
+        choice.addEventListener("focusin", () => {
+            choice.classList.add("focused");
+        });
+
+        choice.addEventListener("focusout", () => {
+            choice.classList.remove("focused");
+        });
 
         choice.onclick = () => {
             if (this._textInput) {
@@ -4852,6 +4856,7 @@ export class FilteredChoiceSet {
                 this._dropdown.style.display = "none";
             }
         };
+
         choice.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
                 this.focusChoice(id + 1);
@@ -4861,6 +4866,11 @@ export class FilteredChoiceSet {
                 choice.click();
             }
         };
+
+        choice.onmouseover = () => {
+            this.focusChoice(id);
+        };
+
         return choice;
     }
 
@@ -4962,6 +4972,7 @@ export class FilteredChoiceSet {
     }
 
     showErrorIndicator(error: string) {
+        this.removeLoadingIndicator();
         const errorIndicator = this.getStatusIndicator(error);
         this._dropdown?.appendChild(errorIndicator);
     }

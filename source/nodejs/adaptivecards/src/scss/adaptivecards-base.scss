@@ -323,10 +323,10 @@ $font-family: 'Segoe UI', sans-serif;
             display: flex;
             width: 100%;
 
-            &:focus-visible, &:hover {
+            &.focused {
                 background-color: #DEECF9;
                 box-shadow: #DEECF9 8px 0px 0px, #DEECF9 -8px 0px 0px;
-                outline: none
+                outline: none;
             }
         }
 

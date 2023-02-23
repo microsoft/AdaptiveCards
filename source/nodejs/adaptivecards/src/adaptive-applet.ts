@@ -314,7 +314,7 @@ export class AdaptiveApplet {
                             this.internalExecuteAction(
                                 dataQueryAction,
                                 ActivityRequestTrigger.Manual,
-                                0
+                                0 // consecutiveActions
                             );
                         }
                     };
@@ -542,7 +542,7 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.");
         }
-        const {action} = request;
+        const { action } = request;
         if (action instanceof ExecuteAction) {
             await this.internalSendExecuteRequestAsync(request);
         } else if (action instanceof DataQuery) {
@@ -752,44 +752,48 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendDataQueryRequestAsync: channel adapter not set");
         }
-        this._choiceSet?.showLoadingIndicator();
-        let response = undefined;
-        try {
-            response = await this.channelAdapter.sendRequestAsync(request);
-        } catch (error) {
-            logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
-        }
-        this._choiceSet?.removeLoadingIndicator();
-        if (response) {
-            if (response instanceof SuccessResponse) {
-                const rawResponse = response.rawContent;
-                if (rawResponse) {
-                    let parsedResponse = rawResponse;
-                    try {
-                        parsedResponse = JSON.parse(parsedResponse);
-                    } catch(error) {
-                        throw new Error("Cannot parse response object: " + rawResponse);
+        if (this._choiceSet) {
+            this._choiceSet.showLoadingIndicator();
+            let response = undefined;
+            try {
+                response = await this.channelAdapter.sendRequestAsync(request);
+            } catch (error) {
+                logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
+                this._choiceSet.showErrorIndicator("Unable to load");
+            }
+            this._choiceSet.removeLoadingIndicator();
+            if (response) {
+                if (response instanceof SuccessResponse) {
+                    const rawResponse = response.rawContent;
+                    if (rawResponse) {
+                        let parsedResponse = rawResponse;
+                        try {
+                            parsedResponse = JSON.parse(parsedResponse);
+                        } catch (error) {
+                            throw new Error("Cannot parse response object: " + rawResponse);
+                        }
+                        if (typeof parsedResponse === "object") {
+                            this._choiceSet.renderChoices(parsedResponse);
+                            this.activityRequestSucceeded(response, parsedResponse);
+                        } else {
+                            throw new Error(
+                                "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
+                                    typeof rawResponse +
+                                    ")"
+                            );
+                        }
                     }
-                    if (typeof parsedResponse === "object") {
-                        this._choiceSet?.renderChoices(parsedResponse);
-                        this.activityRequestSucceeded(response, parsedResponse);
-                    } else {
-                        throw new Error(
-                            "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
-                                typeof rawResponse +
-                                ")"
-                        );
-                    }
+                } else if (response instanceof ErrorResponse) {
+                    this._choiceSet.showErrorIndicator("Error loading results.");
+                    logEvent(
+                        Enums.LogLevel.Error,
+                        `Activity request failed: ${response.error.message}.`
+                    );
+                    this.activityRequestFailed(response);
+                } else {
+                    this._choiceSet.showErrorIndicator("Unable to load");
+                    throw new Error("Unhandled response type: " + JSON.stringify(response));
                 }
-            } else if (response instanceof ErrorResponse) {
-                this._choiceSet?.showErrorIndicator("Error loading results.");
-                logEvent(
-                    Enums.LogLevel.Error,
-                    `Activity request failed: ${response.error.message}.`
-                );
-                this.activityRequestFailed(response);
-            } else {
-                throw new Error("Unhandled response type: " + JSON.stringify(response));
             }
         }
     }
