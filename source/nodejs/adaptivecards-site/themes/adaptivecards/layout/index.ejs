@@ -39,11 +39,9 @@
 		</div>
 
 		<div class="w3-col l3">
-			<ul class="platform-list">
-				<div role="heading" aria-level="2" class="platform-header"><%- site.data.home.en.made_for_title %>
-				</div>
-
-				<div class="w3-row">
+			<div class="w3-row">
+				<div role="heading" aria-level="2" class="platform-header"><%- site.data.home.en.made_for_title %></div>
+				<ul class="platform-list">
 					<% for(var link of site.data.home.en.made_for) { %>	
 						<li>
 							<div class="w3-col s4 m3 l12"><a
@@ -51,14 +49,13 @@
 									class="<%- link.fa %>"></i> <%- link.title %></a></div>
 						</li>
 					<% } %>
-				</div>
-			</ul>
+				</ul>
+			</div>
 
 			<div class="w3-row">
 				<div class="w3-col s6 l12">
+					<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.releases_title %></div>
 					<ul class="platform-list">
-						<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.releases_title %>
-						</div>
 						<% for(var link of site.data.home.en.releases) { %>
 							<li>
 								<div>
@@ -76,8 +73,8 @@
 
 			<div class="w3-row">
 				<div class="w3-col s6 l12">
+					<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.github_title %></div>
 					<ul class="platform-list">
-						<div role="heading" aria-level="3" class="platform-header"><%- site.data.home.en.github_title %></div>
 						<li>
 							<div>
 								<a href="https://github.com/microsoft/AdaptiveCards/" target="_blank" rel="noopener" aria-label="<%- site.data.home.en.github_title %> AdaptiveCards">
