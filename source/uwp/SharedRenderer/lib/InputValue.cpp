@@ -184,13 +184,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
                 if (max)
                 {
                     double maxDouble = max.Value();
-                    isValid = (currentDouble <= maxDouble);
+                    isValid &= (currentDouble <= maxDouble);
                 }
 
                 if (min)
                 {
                     double minDouble = min.Value();
-                    isValid = (currentDouble >= minDouble);
+                    isValid &= (currentDouble >= minDouble);
                 }
             }
             catch (...)
@@ -278,7 +278,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
                 unsigned int minHours, minMinutes;
                 if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
                 {
-                    winrt::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 1000000 * 60};
+                    winrt::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 10000000 * 60};
                     isMaxMinValid &= currentTime.count() >= minTime.count();
                 }
             }

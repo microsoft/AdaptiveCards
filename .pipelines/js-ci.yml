@@ -41,6 +41,17 @@ parameters:
   - unit-tests
 
 steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 14.x
+  inputs:
+    versionSpec: 14.x
+
+- bash: |
+   npm install -g npm@8.11.0
+  workingDirectory: source/nodejs
+  displayName: 'Bash - npm install -g npm 8.11.0'
+  
 - bash: |
    npm ci 
    npx lerna bootstrap --ci
