@@ -485,7 +485,6 @@ bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::Ad
     {
         for (auto req : requirements)
         {
-            // winrt::hstring name = req.Name();
             winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
 
             if (registrationVersion.empty())
