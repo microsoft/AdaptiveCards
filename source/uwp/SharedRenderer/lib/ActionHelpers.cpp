@@ -92,6 +92,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             name = tooltip;
         }
 
+        if (tooltip.empty())
+        {
+            tooltip = title;
+        }
+
         SetAutomationNameAndDescription(button, name, description);
         SetTooltip(tooltip, button);
 
@@ -157,6 +162,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             {
                 XamlHelpers::AppendXamlElementToPanel(separator, buttonContentsStackPanel);
             }
+
+            // Add Text to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonText, buttonContentsStackPanel);
 
             // Finally, put the stack panel inside the final button
             button.Content(buttonContentsStackPanel);
@@ -546,7 +554,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                 name = title;
                 description = tooltip;
 
-                if (!tooltip.data() && allowTitleAsTooltip)
+                if (tooltip.empty() && allowTitleAsTooltip)
                 {
                     // If we don't have a tooltip, set the title to the tooltip if we're allowed
                     tooltip = title;
