@@ -20,10 +20,8 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 import io.adaptivecards.renderer.readonly.RendererUtil;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 import static android.text.InputType.TYPE_NULL;
 
