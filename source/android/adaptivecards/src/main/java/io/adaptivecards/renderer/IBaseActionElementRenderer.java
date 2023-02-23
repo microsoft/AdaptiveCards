@@ -7,10 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
 
 public interface IBaseActionElementRenderer
 {

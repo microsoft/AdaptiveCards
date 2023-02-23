@@ -74,14 +74,15 @@ public class AdaptiveCardRenderer
         return render(context, fragmentManager, adaptiveCard, channelAdaptor, overflowActionRenderer, null, hostConfig);
     }
 
-    public RenderedAdaptiveCard render(Context context,
-                                       FragmentManager fragmentManager,
-                                       AdaptiveCard adaptiveCard,
-                                       @NonNull ChannelAdaptor channelAdaptor,
-                                       @Nullable IOverflowActionRenderer overflowActionRenderer,
-                                       @Nullable ActivityResultRegistry activityResultRegistry)
+    public RenderedAdaptiveCard render(
+        Context context,
+        FragmentManager fragmentManager,
+        AdaptiveCard adaptiveCard,
+        ChannelAdaptor channelAdaptor,
+        @Nullable ActivityResultRegistry activityResultRegistry,
+        HostConfig hostConfig)
     {
-        return render(context, fragmentManager, adaptiveCard, channelAdaptor, overflowActionRenderer, activityResultRegistry, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, channelAdaptor, null, activityResultRegistry, hostConfig);
     }
 
     public RenderedAdaptiveCard render(
