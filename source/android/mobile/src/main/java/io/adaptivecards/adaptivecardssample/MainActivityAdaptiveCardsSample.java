@@ -409,7 +409,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 getSupportFragmentManager(),
                 parseResult.GetAdaptiveCard(),
                 new ChannelAdaptor.Builder().actionHandler(this).choicesResolver(this).build(),
-                null,
                 getActivityResultRegistry(),
                 hostConfig);
             layout.addView(renderedCard.getView());
