@@ -4833,13 +4833,13 @@ export class FilteredChoiceSet {
         this._renderedElement = choiceSetContainer;
     }
 
-    private createChoice(value: string, id: number): HTMLSpanElement {
+    private createChoice(value: string, filter: string, id: number): HTMLSpanElement {
         const choice = document.createElement("span");
         choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
         choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
-        choice.innerText = value;
+        choice.innerHTML = value.replace(filter, `<b>${filter}</b>`);
         choice.tabIndex = -1;
-        
+
         choice.addEventListener("focusin", () => {
             choice.classList.add("focused");
         });
@@ -4892,12 +4892,20 @@ export class FilteredChoiceSet {
         if (filter) {
             const choices = isDynamic ? this._dynamicChoices : this._choices;
             for (const choice of choices) {
-                if (choice.title?.toLowerCase().includes(filter)) {
-                    const choiceContainer = this.createChoice(
-                        choice.title,
-                        this._visibleChoiceCount++
-                    );
-                    this._dropdown?.appendChild(choiceContainer);
+                if (choice.title) {
+                    const matchIndex = choice.title.toLowerCase().indexOf(filter);
+                    if (matchIndex !== -1) {
+                        const matchedText = choice.title.substring(
+                            matchIndex,
+                            matchIndex + filter.length
+                        );
+                        const choiceContainer = this.createChoice(
+                            choice.title,
+                            matchedText,
+                            this._visibleChoiceCount++
+                        );
+                        this._dropdown?.appendChild(choiceContainer);
+                    }
                 }
             }
         }

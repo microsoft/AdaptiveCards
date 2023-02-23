@@ -287,6 +287,8 @@ $font-family: 'Segoe UI', sans-serif;
                 background-color: white;
                 border-top: 0px;
                 display: none;
+                max-height: 200px;
+                overflow-y: scroll;
                 padding-top: 0px;
                 padding-bottom: 0px;
                 position: absolute;
