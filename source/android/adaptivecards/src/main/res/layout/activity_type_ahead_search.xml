@@ -11,16 +11,15 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            android:background="#0F6CBD"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -30,10 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                app:titleTextColor="#FFFFFF"
-                android:background="#0F6CBD"
-                app:title="title" />
+                android:textSize="16sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,8 +48,7 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
                     tools:src="@android:drawable/ic_menu_search"
-                    android:visibility="visible"
-                    android:backgroundTint="#FFFFFF"/>
+                    android:visibility="visible" />
 
                 <EditText
                     android:id="@+id/type_ahead_search_query"
@@ -64,8 +59,11 @@
                     android:layout_marginEnd="8dp"
                     android:hint="Start typing to search"
                     android:imeOptions="actionSearch"
-                    android:layout_gravity="center_vertical"
-                    style="@style/adaptiveCardEditBoxStyling" />
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/clearTextIcon"
@@ -76,9 +74,9 @@
                     android:clickable="true"
                     android:contentDescription="Cancel"
                     android:focusable="true"
-                    android:backgroundTint="#FFFFFF"
                     tools:src="@android:drawable/ic_menu_close_clear_cancel"
                     tools:visibility="visible" />
+
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -98,7 +96,6 @@
 
         <ProgressBar
             android:id="@+id/customOverlayView"
-            android:indeterminateTint="#000"
             android:contentDescription="Loading Options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

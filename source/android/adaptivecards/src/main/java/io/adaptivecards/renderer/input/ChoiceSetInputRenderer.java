@@ -657,8 +657,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         ValidatedTextView validatedTypeAheadTextView = new ValidatedTextView(context, usingCustomInputs);
 
-        Drawable mDrawable = getDrawable(context, R.drawable.adaptive_card_ic_chevron_right);
-        validatedTypeAheadTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, mDrawable, null);
+        Drawable chevronDrawable = getDrawable(context, R.drawable.adaptive_card_ic_chevron_right);
+        chevronDrawable.setTint(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Default, false)));
+        validatedTypeAheadTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, chevronDrawable, null);
         validatedTypeAheadTextView.setPaddingRelative(0, 10, 20, 10);
         validatedTypeAheadTextView.setEllipsize(TextUtils.TruncateAt.END);
 
@@ -717,7 +718,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     choiceSetInput.GetChoicesData().GetChoicesDataType(),
                     choiceSetInput.GetChoicesData().GetDataset(),
                     titleList,
-                    valueList);
+                    valueList,
+                    getColor(hostConfig.GetBackgroundColor(ContainerStyle.Default)),
+                    getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Default, false)));
                 intent.putExtra("launchParams", launchParams);
 
                 DynamicTypeAheadService.INSTANCE.setIChoicesResolver(choicesResolver);

@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.typeaheadsearch
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class TypeAheadSearchViewModel : ViewModel() {
     // TODO : Get count from host config
     private val count: Int = 15
     private val skip: Int = 0
+    private var textColor: Int = Color.parseColor("#212121")
 
     private lateinit var dataset: String
     private lateinit var dataType: String
@@ -58,7 +60,7 @@ class TypeAheadSearchViewModel : ViewModel() {
         _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
     }
 
-    fun init(titles: List<String>, values: List<String>, type: String, set: String) {
+    fun init(titles: List<String>, values: List<String>, type: String, set: String, foregroundColor: Int) {
         // get navigation params and initiate choices.data, static choices etc.
         titleList = titles
         valueList = values
@@ -66,8 +68,9 @@ class TypeAheadSearchViewModel : ViewModel() {
 
         dataType = type
         dataset = set
+        textColor = foregroundColor
 
-        adapter = FilteredAdapter(titleList, valueList)
+        adapter = FilteredAdapter(titleList, valueList, textColor)
         showDefaultView()
     }
 
@@ -126,7 +129,13 @@ class TypeAheadSearchViewModel : ViewModel() {
         }
     }
 
-    class FilteredAdapter (private var m_choices: List<String>, private var m_values: List<String>) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
+    class FilteredAdapter (
+        private var m_choices: List<String>,
+        private var m_values: List<String>,
+        private var textColor: Int
+    ) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
+
+        private val delayTimeInMilliSeconds: Long = 100
 
         @SuppressLint("NotifyDataSetChanged")
         fun setChoices(choices: List<String>, values: List<String>) {
@@ -150,6 +159,7 @@ class TypeAheadSearchViewModel : ViewModel() {
             // Inflate the custom layout
             val choicesView = inflater.inflate(R.layout.adaptive_card_select_item, parent, false)
             // Return a new holder instance
+            choicesView.findViewById<TextView>(R.id.choiceTitle).setTextColor(textColor)
             return ViewHolder(choicesView)
         }
 
@@ -170,8 +180,7 @@ class TypeAheadSearchViewModel : ViewModel() {
                         intent.putExtra("typeAheadSearchSelectedValue", value)
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
-                    },
-                        100) // delay of 100 ms
+                    }, delayTimeInMilliSeconds)
                 }
             }
         }

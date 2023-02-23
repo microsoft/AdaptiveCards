@@ -24,22 +24,12 @@ class ValidatedTextView(context: Context, usingCustomInputs: Boolean) : AppCompa
      * @param usingCustomInputs Flag signalizing if a custom drawable is being used
      */
     init {
-        setLayoutParams(
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
+        layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         mIsInvalid = false
         verifyIfUsingCustomInputs(context)
         mIsUsingCustomInputs = usingCustomInputs
         if (mIsUsingCustomInputs) {
-            setBackground(
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.adaptive_choiceset_compact_background
-                )
-            )
+            background = ContextCompat.getDrawable(context, R.drawable.adaptive_choiceset_compact_background)
         }
     }
 

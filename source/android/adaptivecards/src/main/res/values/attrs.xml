@@ -9,10 +9,8 @@
     <style name="adaptiveInlineActionImage" format="reference" />
     <attr name="adaptiveUsingCustomTextInputs" format="boolean" />
     <attr name="adaptiveUsingCustomChoiceSetInputs" format="boolean" />
-    <style name="adaptiveCardEditBoxStyling" format="reference" />
-    <style name="adaptiveCardStyling" format="reference" />
-    <attr name="adaptiveCardStyling" format="reference" />
-    <attr name="adaptiveCardEditBoxStyling" format="reference" />
+    <style name="adaptiveCardTypeAheadStyling" format="reference" />
+    <attr name="adaptiveCardTypeAheadStyling" format="reference" />
     <declare-styleable name="adaptiveCustomInputState">
         <attr name="state_error" format="boolean" />
     </declare-styleable>

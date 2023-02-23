@@ -5,35 +5,23 @@ package io.adaptivecards.renderer
 import io.adaptivecards.renderer.typeaheadsearch.*
 
 interface ITypeAheadRenderer {
-    fun getSearchIconParams(): SearchIconParams {
-        return SearchIconParams()
-    }
+    fun getSearchIconParams(): SearchIconParams
 
-    fun getCrossIconParams(): CrossIconParams {
-        return CrossIconParams()
-    }
+    fun getCrossIconParams(): CrossIconParams
 
-    fun getTickIconParams(): TickIconParams {
-        return TickIconParams()
-    }
+    fun getTickIconParams(): TickIconParams
 
-    fun getBackIconParams(): BackIconParams {
-        return BackIconParams()
-    }
+    fun getBackIconParams(): BackIconParams
 
-    fun getStartSearchingStateParams(): StartSearchingStateParams {
-        return StartSearchingStateParams()
-    }
+    fun getStartSearchingStateParams(): StartSearchingStateParams
 
-    fun getErrorStateParams(): ErrorStateParams {
-        return ErrorStateParams()
-    }
+    fun getErrorStateParams(): ErrorStateParams
 
-    fun getNoResultStateParams(): NoResultStateParams {
-        return NoResultStateParams()
-    }
+    fun getNoResultStateParams(): NoResultStateParams
 
-    fun getScreenTitle(): String {
-        return ""
-    }
+    fun getScreenTitle(): String
+
+    fun getPrimaryColor(): Int
+
+    fun getSecondaryColor(): Int
 }

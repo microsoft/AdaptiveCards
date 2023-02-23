@@ -4,16 +4,22 @@ package io.adaptivecards.renderer.typeaheadsearch
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color.parseColor
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -48,13 +54,25 @@ class TypeAheadSearchActivity : AppCompatActivity() {
 
     private var activityTypeAheadSearchBinding: ActivityTypeAheadSearchBinding? = null
 
+    // TODO: Get delay value from host config here
+    private val delayTimeInMilliSeconds: Long = 250
+    private var backgroundColor: Int = parseColor("#FFFFFF")
+    private var foregroundColor: Int = parseColor("#212121")
+    private var primaryColor: Int = parseColor("#0F6CBD")
+    private var secondaryColor: Int = parseColor("#FFFFFF")
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_modal_screen, menu)
         menu?.let {
             val menuItem = menu.findItem(R.id.action_submit)
             val submitButton = menuItem.actionView as ImageButton
-            submitButton.setImageResource(tickIconParams.drawableResourceId)
+            val tickIconDrawable: Drawable? = ContextCompat.getDrawable(this, tickIconParams.drawableResourceId)
+            tickIconDrawable?.setTint(secondaryColor)
+            if (tickIconDrawable != null)
+                submitButton.setImageDrawable(tickIconDrawable)
+            else
+                submitButton.setImageResource(tickIconParams.drawableResourceId)
             submitButton.background = null
             submitButton.setOnClickListener {
                 onOptionsItemSelected(menuItem)
@@ -93,9 +111,11 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             valueList = launchParams.valueList
             dataset = launchParams.dataset
             dataType = launchParams.choicesDataType
+            foregroundColor = launchParams.foregroundColor
+            backgroundColor = launchParams.backgroundColor
         }
 
-        val typeAheadParams: ITypeAheadRenderer? = CardRendererRegistration.getInstance().getTypeAheadRenderer()
+        val typeAheadParams: ITypeAheadRenderer? = CardRendererRegistration.getInstance().typeAheadRenderer
         if (typeAheadParams != null) {
             crossIconParams = typeAheadParams.getCrossIconParams()
             searchIconParams = typeAheadParams.getSearchIconParams()
@@ -106,13 +126,15 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             startSearchingIconParams = typeAheadParams.getStartSearchingStateParams()
             errorIconParams = typeAheadParams.getErrorStateParams()
             noResultIconParams = typeAheadParams.getNoResultStateParams()
+            primaryColor = typeAheadParams.getPrimaryColor()
+            secondaryColor = typeAheadParams.getSecondaryColor()
         }
         else {
             crossIconParams = CrossIconParams()
             searchIconParams = SearchIconParams()
             tickIconParams = TickIconParams()
             backIconParams = BackIconParams()
-            screenTitle = "Search"
+            screenTitle = ""
 
             startSearchingIconParams = StartSearchingStateParams()
             errorIconParams = ErrorStateParams()
@@ -120,10 +142,10 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         }
 
         // pass choices data, host communication interface
-        viewModel.init(titleList, valueList, dataType, dataset)
+        viewModel.init(titleList, valueList, dataType, dataset, foregroundColor)
 
         // set theme
-        layoutInflater.context.setTheme(R.style.adaptiveCardStyling)
+        layoutInflater.context.setTheme(R.style.adaptiveCardTypeAheadStyling)
 
         activityTypeAheadSearchBinding = ActivityTypeAheadSearchBinding.inflate(layoutInflater)
         activityTypeAheadSearchBinding?.let { activityTypeAheadSearchBinding ->
@@ -157,19 +179,42 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                     { s: String ->
                         viewModel.fetchDynamicOptions(s)
                     },
-                    250 // TODO: pass value from host config here
+                    delayTimeInMilliSeconds
                 )
             )
             setText(selectedTitle)
             showKeyboard(this)
         }
 
-        activityTypeAheadSearchBinding?.toolbar?.let { setSupportActionBar(it) }
+        activityTypeAheadSearchBinding?.toolbar?.let {
+            setSupportActionBar(it)
+        }
 
+        val backIconDrawable: Drawable? = ContextCompat.getDrawable(this, backIconParams.drawableResourceId)
+        backIconDrawable?.setTint(secondaryColor)
         supportActionBar?.let { actionBar ->
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(backIconParams.drawableResourceId)
+            if (backIconDrawable != null)
+                actionBar.setHomeAsUpIndicator(backIconDrawable)
+            else
+                actionBar.setHomeAsUpIndicator(backIconParams.drawableResourceId)
             actionBar.title = screenTitle
+        }
+
+        activityTypeAheadSearchBinding?.let {
+            it.constraintLayout.setBackgroundColor(backgroundColor)
+
+            it.appbar.setBackgroundColor(primaryColor)
+            it.toolbar.setBackgroundColor(primaryColor)
+            it.customOverlayView.indeterminateDrawable.setTint(primaryColor)
+
+            it.toolbar.setTitleTextColor(secondaryColor)
+            it.searchIcon.background?.setTint(secondaryColor)
+            it.clearTextIcon.background?.setTint(secondaryColor)
+            it.typeAheadSearchQuery.setTextColor(secondaryColor)
+            it.typeAheadSearchQuery.setHintTextColor(secondaryColor)
+
+            it.errorMsgText.setTextColor(foregroundColor)
         }
 
         setContentView(activityTypeAheadSearchBinding?.root)
