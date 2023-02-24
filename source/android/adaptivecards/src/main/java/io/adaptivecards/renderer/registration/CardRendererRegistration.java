@@ -44,6 +44,7 @@ import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.IOverflowActionRenderer;
 import io.adaptivecards.renderer.IResourceResolver;
+import io.adaptivecards.renderer.ITypeAheadRenderer;
 import io.adaptivecards.renderer.OverflowActionLayoutRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -253,6 +254,14 @@ public class CardRendererRegistration
     public IActionLayoutRenderer getOverflowActionLayoutRenderer()
     {
         return m_overflowActionLayoutRenderer;
+    }
+
+    public void registerTypeAheadRenderer(ITypeAheadRenderer typeAheadRenderer) {
+        m_typeAheadRenderer = typeAheadRenderer;
+    }
+
+    public ITypeAheadRenderer getTypeAheadRenderer() {
+        return m_typeAheadRenderer;
     }
 
     public void registerActivityResultRegistry(ActivityResultRegistry activityResultRegistry)
@@ -635,4 +644,5 @@ public class CardRendererRegistration
     private IOverflowActionRenderer m_overflowActionRenderer =null;
     private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
     private ActivityResultRegistry m_activityResultRegistry = null;
+    private ITypeAheadRenderer m_typeAheadRenderer = null;
 }
