@@ -119,8 +119,7 @@ class TypeAheadSearchViewModel : ViewModel() {
                     } else if (_queryText.value.equals(queryText)) {
                         adapter.setQuery(_queryText.value)
                         adapter.setChoices(ArrayList(), ArrayList())
-                        val errorMessage = if (result.errorMessage != null) result.errorMessage else ""
-                        _uiState.postValue(DynamicTypeAheadUiState.Error(errorMessage))
+                        _uiState.postValue(DynamicTypeAheadUiState.Error(result.errorMessage))
                     }
                 }
             }
@@ -219,5 +218,5 @@ sealed class DynamicTypeAheadUiState {
     object ShowingChoices : DynamicTypeAheadUiState()
     object Loading : DynamicTypeAheadUiState()
     object NoResults : DynamicTypeAheadUiState()
-    class Error(val errorMessage: String) : DynamicTypeAheadUiState()
+    class Error(val errorMessage: String?) : DynamicTypeAheadUiState()
 }

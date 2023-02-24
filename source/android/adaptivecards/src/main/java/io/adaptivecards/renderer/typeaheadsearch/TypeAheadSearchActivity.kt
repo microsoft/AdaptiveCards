@@ -239,9 +239,10 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(startSearchingIconParams.drawableResourceId)
                 descriptiveHeadingTextView.text = startSearchingIconParams.text
+                descriptiveTextView.text = startSearchingIconParams.message
                 descriptiveImageView.visibility = View.VISIBLE
                 descriptiveHeadingTextView.visibility = View.VISIBLE
-                descriptiveTextView.visibility = View.GONE
+                descriptiveTextView.visibility = View.VISIBLE
                 showKeyboard(searchTextView)
             }
             is DynamicTypeAheadUiState.ShowingChoices -> {
@@ -263,16 +264,17 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(noResultIconParams.drawableResourceId)
                 descriptiveHeadingTextView.text = noResultIconParams.text
+                descriptiveTextView.text = noResultIconParams.message
                 descriptiveImageView.visibility = View.VISIBLE
                 descriptiveHeadingTextView.visibility = View.VISIBLE
-                descriptiveTextView.visibility = View.GONE
+                descriptiveTextView.visibility = View.VISIBLE
             }
             is DynamicTypeAheadUiState.Error -> {
                 recyclerView.visibility = View.GONE
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(errorIconParams.drawableResourceId)
                 descriptiveHeadingTextView.text = errorIconParams.text
-                descriptiveTextView.text = dynamicTypeAheadUiState.errorMessage
+                descriptiveTextView.text = dynamicTypeAheadUiState.errorMessage ?: errorIconParams.message
                 descriptiveImageView.visibility = View.VISIBLE
                 descriptiveHeadingTextView.visibility = View.VISIBLE
                 descriptiveTextView.visibility = View.VISIBLE
