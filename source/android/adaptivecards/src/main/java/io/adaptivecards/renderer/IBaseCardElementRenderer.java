@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public interface IBaseCardElementRenderer
 {
@@ -21,7 +20,7 @@ public interface IBaseCardElementRenderer
             @NonNull FragmentManager fragmentManager,
             @NonNull ViewGroup viewGroup,
             @NonNull BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             @NonNull HostConfig hostConfig,
             @NonNull RenderArgs renderArgs) throws Exception;
 }

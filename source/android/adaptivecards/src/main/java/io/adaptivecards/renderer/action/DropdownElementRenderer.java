@@ -3,8 +3,6 @@
 package io.adaptivecards.renderer.action;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -21,11 +19,11 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 /**
@@ -52,7 +50,7 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
     }
 
     @Override
-    public Button render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException
+    public Button render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElement baseActionElement, ChannelAdaptor channelAdaptor, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(baseActionElement.GetElementTypeString());
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
@@ -69,7 +67,7 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
         //Remove button so it does not get added to the default viewGroup. Also, do not download icon.
         String iconUrl = baseActionElement.GetIconUrl();
         baseActionElement.SetIconUrl("");
-        Button button = actionRenderer.render(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
+        Button button = actionRenderer.render(renderedCard, context, fragmentManager, viewGroup, baseActionElement, channelAdaptor, hostConfig, renderArgs);
         viewGroup.removeView(button);
 
         Button dropDownItem = new Button(context, null, R.style.Widget_AppCompat_Light_ActionButton_Overflow);

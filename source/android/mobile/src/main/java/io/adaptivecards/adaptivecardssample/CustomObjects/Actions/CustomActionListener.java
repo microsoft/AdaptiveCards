@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -20,11 +21,11 @@ public class CustomActionListener extends BaseActionElementRenderer.ActionOnClic
                                 FragmentManager fragmentManager,
                                 ViewGroup viewGroup,
                                 BaseActionElement baseActionElement,
-                                ICardActionHandler cardActionHandler,
+                                ChannelAdaptor channelAdaptor,
                                 HostConfig hostConfig,
                                 RenderArgs renderArgs)
     {
-        super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
+        super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, channelAdaptor, hostConfig, renderArgs);
     }
 
     public CustomActionListener(RenderedAdaptiveCard renderedCard,
