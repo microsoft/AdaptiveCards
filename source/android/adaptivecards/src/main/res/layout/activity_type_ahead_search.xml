@@ -47,6 +47,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     tools:src="@android:drawable/ic_menu_search"
                     android:visibility="visible" />
 
@@ -72,7 +73,6 @@
                     android:visibility="gone"
                     android:layout_gravity="center_vertical"
                     android:clickable="true"
-                    android:contentDescription="Cancel"
                     android:focusable="true"
                     tools:src="@android:drawable/ic_menu_close_clear_cancel"
                     tools:visibility="visible" />
@@ -125,7 +125,7 @@
             tools:visibility="visible"/>
 
         <TextView
-            android:id="@+id/error_msg_text"
+            android:id="@+id/error_heading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -133,6 +133,20 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toBottomOf="@+id/error_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/error_msg_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/error_heading_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"

@@ -36,6 +36,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
     private lateinit var progressBarView: ProgressBar
     private lateinit var clearTextIconView: AppCompatImageButton
     private lateinit var descriptiveImageView: AppCompatImageView
+    private lateinit var descriptiveHeadingTextView: TextView
     private lateinit var descriptiveTextView: TextView
     private lateinit var submitButton: ImageButton
 
@@ -143,7 +144,7 @@ class TypeAheadSearchActivity : AppCompatActivity() {
         }
 
         // pass choices data, host communication interface
-        viewModel.init(titleList, valueList, dataType, dataset, foregroundColor)
+        viewModel.init(titleList, valueList, dataType, dataset, foregroundColor, primaryColor)
 
         // set theme
         layoutInflater.context.setTheme(R.style.adaptiveCardTypeAheadStyling)
@@ -155,7 +156,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             progressBarView = activityTypeAheadSearchBinding.customOverlayView
             clearTextIconView = activityTypeAheadSearchBinding.clearTextIcon
             descriptiveImageView = activityTypeAheadSearchBinding.errorImage
-            descriptiveTextView = activityTypeAheadSearchBinding.errorMsgText
+            descriptiveHeadingTextView = activityTypeAheadSearchBinding.errorHeadingText
+            descriptiveTextView = activityTypeAheadSearchBinding.errorMsgDescription
             activityTypeAheadSearchBinding.viewModel = viewModel
         }
 
@@ -217,7 +219,8 @@ class TypeAheadSearchActivity : AppCompatActivity() {
             it.typeAheadSearchQuery.setTextColor(secondaryColor)
             it.typeAheadSearchQuery.setHintTextColor(secondaryColor)
 
-            it.errorMsgText.setTextColor(foregroundColor)
+            it.errorHeadingText.setTextColor(foregroundColor)
+            it.errorMsgDescription.setTextColor(foregroundColor)
         }
 
         setContentView(activityTypeAheadSearchBinding?.root)
@@ -235,20 +238,23 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 recyclerView.visibility = View.GONE
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(startSearchingIconParams.drawableResourceId)
-                descriptiveTextView.text = startSearchingIconParams.text
+                descriptiveHeadingTextView.text = startSearchingIconParams.text
                 descriptiveImageView.visibility = View.VISIBLE
-                descriptiveTextView.visibility = View.VISIBLE
+                descriptiveHeadingTextView.visibility = View.VISIBLE
+                descriptiveTextView.visibility = View.GONE
                 showKeyboard(searchTextView)
             }
             is DynamicTypeAheadUiState.ShowingChoices -> {
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.visibility = View.GONE
+                descriptiveHeadingTextView.visibility = View.GONE
                 descriptiveTextView.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
             }
             is DynamicTypeAheadUiState.Loading -> {
                 recyclerView.visibility = View.GONE
                 descriptiveImageView.visibility = View.GONE
+                descriptiveHeadingTextView.visibility = View.GONE
                 descriptiveTextView.visibility = View.GONE
                 progressBarView.visibility = View.VISIBLE
             }
@@ -256,16 +262,19 @@ class TypeAheadSearchActivity : AppCompatActivity() {
                 recyclerView.visibility = View.GONE
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(noResultIconParams.drawableResourceId)
-                descriptiveTextView.text = noResultIconParams.text
+                descriptiveHeadingTextView.text = noResultIconParams.text
                 descriptiveImageView.visibility = View.VISIBLE
-                descriptiveTextView.visibility = View.VISIBLE
+                descriptiveHeadingTextView.visibility = View.VISIBLE
+                descriptiveTextView.visibility = View.GONE
             }
             is DynamicTypeAheadUiState.Error -> {
                 recyclerView.visibility = View.GONE
                 progressBarView.visibility = View.GONE
                 descriptiveImageView.setImageResource(errorIconParams.drawableResourceId)
-                descriptiveTextView.text = errorIconParams.text
+                descriptiveHeadingTextView.text = errorIconParams.text
+                descriptiveTextView.text = dynamicTypeAheadUiState.errorMessage
                 descriptiveImageView.visibility = View.VISIBLE
+                descriptiveHeadingTextView.visibility = View.VISIBLE
                 descriptiveTextView.visibility = View.VISIBLE
             }
         }

@@ -4,11 +4,11 @@ package io.adaptivecards.renderer.typeaheadsearch
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +19,8 @@ import io.adaptivecards.renderer.http.HttpRequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TypeAheadSearchViewModel : ViewModel() {
 
@@ -28,7 +30,6 @@ class TypeAheadSearchViewModel : ViewModel() {
     // TODO : Get count from host config
     private val count: Int = 15
     private val skip: Int = 0
-    private var textColor: Int = Color.parseColor("#212121")
 
     private lateinit var dataset: String
     private lateinit var dataType: String
@@ -60,7 +61,7 @@ class TypeAheadSearchViewModel : ViewModel() {
         _uiState.postValue(DynamicTypeAheadUiState.SearchOptions)
     }
 
-    fun init(titles: List<String>, values: List<String>, type: String, set: String, foregroundColor: Int) {
+    fun init(titles: List<String>, values: List<String>, type: String, set: String, textColor: Int, textHighlightColor: Int) {
         // get navigation params and initiate choices.data, static choices etc.
         titleList = titles
         valueList = values
@@ -68,9 +69,8 @@ class TypeAheadSearchViewModel : ViewModel() {
 
         dataType = type
         dataset = set
-        textColor = foregroundColor
 
-        adapter = FilteredAdapter(titleList, valueList, textColor)
+        adapter = FilteredAdapter(titleList, valueList, textColor, textHighlightColor)
         showDefaultView()
     }
 
@@ -95,35 +95,33 @@ class TypeAheadSearchViewModel : ViewModel() {
         _uiState.postValue(DynamicTypeAheadUiState.Loading)
 
         viewModelScope.launch(Dispatchers.IO) {
-            var result: HttpRequestResult<List<ChoiceInput>>? = null
-            DynamicTypeAheadService.getChoicesResolver()?.let {
-                result = it.getDynamicChoices(dataType, dataset, queryText, count, skip)
-            }
-
+            val result: HttpRequestResult<List<ChoiceInput>>? = DynamicTypeAheadService.getChoicesResolver()?.getDynamicChoices(dataType, dataset, queryText, count, skip)
             withContext(Dispatchers.Main) {
-                if (result!!.isSuccessful && _queryText.value.equals(queryText)) {
-                    var choices: List<ChoiceInput> = result!!.result
-                    if (choices.size > count)
-                        choices = choices.subList(0, count)
+                if (result != null) {
+                    if (result.isSuccessful && _queryText.value.equals(queryText)) {
+                        var choices: List<ChoiceInput> = result.result
+                        if (choices.size > count)
+                            choices = choices.subList(0, count)
 
-                    val titles: MutableList<String> = ArrayList()
-                    val values: MutableList<String> = ArrayList()
-                    // save the dynamic choices as well
-                    for (choice in choices) {
-                        titles.add(choice.GetTitle())
-                        values.add(choice.GetValue())
+                        val titles: MutableList<String> = ArrayList()
+                        val values: MutableList<String> = ArrayList()
+                        // save the dynamic choices as well
+                        for (choice in choices) {
+                            titles.add(choice.GetTitle())
+                            values.add(choice.GetValue())
+                        }
+                        adapter.setQuery(_queryText.value)
+                        adapter.setChoices(titles, values)
+                        if (values.isNotEmpty())
+                            _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
+                        else
+                            _uiState.postValue(DynamicTypeAheadUiState.NoResults)
+                    } else if (_queryText.value.equals(queryText)) {
+                        adapter.setQuery(_queryText.value)
+                        adapter.setChoices(ArrayList(), ArrayList())
+                        val errorMessage = if (result.errorMessage != null) result.errorMessage else ""
+                        _uiState.postValue(DynamicTypeAheadUiState.Error(errorMessage))
                     }
-                    if (values.isNotEmpty())
-                        _uiState.postValue(DynamicTypeAheadUiState.ShowingChoices)
-                    else
-                        _uiState.postValue(DynamicTypeAheadUiState.NoResults)
-
-
-                    adapter.setChoices(titles, values)
-                }
-                else if (_queryText.value.equals(queryText)) {
-                    adapter.setChoices(ArrayList(), ArrayList())
-                    _uiState.postValue(DynamicTypeAheadUiState.Error)
                 }
             }
         }
@@ -132,10 +130,18 @@ class TypeAheadSearchViewModel : ViewModel() {
     class FilteredAdapter (
         private var m_choices: List<String>,
         private var m_values: List<String>,
-        private var textColor: Int
+        private var textColor: Int,
+        private var textHighlightColor: Int
     ) : RecyclerView.Adapter<FilteredAdapter.ViewHolder>() {
 
         private val delayTimeInMilliSeconds: Long = 100
+        private var queryText: String = ""
+
+        fun setQuery(query: String?) {
+            if (query != null) {
+                queryText = query
+            }
+        }
 
         @SuppressLint("NotifyDataSetChanged")
         fun setChoices(choices: List<String>, values: List<String>) {
@@ -170,7 +176,12 @@ class TypeAheadSearchViewModel : ViewModel() {
             val value: String = m_values[position]
             // Set item views based on your views and data model
             val textView = viewHolder.textView
-            textView.text = title
+            textView.text = TypeAheadHelper.createHighlightedSearchResultText(
+                title.lowercase(Locale.getDefault()),
+                arrayOf(queryText),
+                ContextCompat.getColor(textView.context, android.R.color.transparent),
+                textHighlightColor
+            )
             textView.setOnClickListener {
                 if (it.context is Activity) {
                     it.postDelayed({
@@ -197,6 +208,7 @@ class TypeAheadSearchViewModel : ViewModel() {
     fun clearText() {
         queryText.postValue("")
         //notify the property listeners
+        adapter.setQuery(_queryText.value)
         adapter.setChoices(titleList, valueList)
         showDefaultView()
     }
@@ -207,5 +219,5 @@ sealed class DynamicTypeAheadUiState {
     object ShowingChoices : DynamicTypeAheadUiState()
     object Loading : DynamicTypeAheadUiState()
     object NoResults : DynamicTypeAheadUiState()
-    object Error : DynamicTypeAheadUiState()
+    class Error(val errorMessage: String) : DynamicTypeAheadUiState()
 }

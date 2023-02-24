@@ -138,17 +138,17 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         List<ChoiceInput> dynamicChoices = new ArrayList();
         synchronized (returnChoices) {
             ChoiceInput choiceInput = new ChoiceInput();
-            choiceInput.SetTitle("a");
+            choiceInput.SetTitle("adbcd");
             choiceInput.SetValue("1");
             dynamicChoices.add(choiceInput);
 
             ChoiceInput choiceInput2 = new ChoiceInput();
-            choiceInput2.SetTitle("a");
+            choiceInput2.SetTitle("adbc");
             choiceInput2.SetValue("2");
             dynamicChoices.add(choiceInput2);
 
             ChoiceInput choiceInput3 = new ChoiceInput();
-            choiceInput3.SetTitle("a");
+            choiceInput3.SetTitle("adbcdsdf");
             choiceInput3.SetValue("3");
             dynamicChoices.add(choiceInput3);
             try {
