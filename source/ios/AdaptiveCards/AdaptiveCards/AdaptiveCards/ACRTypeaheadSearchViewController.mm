@@ -308,7 +308,7 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
         } else {
             [strongSelf configureSearchStateUI:displayingGenericError];
         }
-        
+
         if (@available(iOS 16.0, *)) {
             strongSelf.navigationItem.rightBarButtonItem.hidden = YES;
             if ([strongSelf->_filteredDataSource findMatch:searchText]) {

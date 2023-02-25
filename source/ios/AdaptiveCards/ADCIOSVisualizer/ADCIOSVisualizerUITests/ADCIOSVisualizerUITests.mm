@@ -353,7 +353,10 @@
 
 - (void)testDynamicTypeaheadSearchFromChoiceset
 {
-    [self openCardForVersion:@"v1.5" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.DynamicTypeahead.json"];
+    XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
+    XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
+    [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
+    [self openCardForVersion:@"v1.6" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.DynamicTypeahead.json"];
     XCUIElement *chosenpackageButton = testApp.tables[@"ChatWindow"].buttons[@"chosenPackage"];
     [chosenpackageButton tap];
 
@@ -364,10 +367,9 @@
     [chosenpackageButton tap];
 
     XCUIElement *searchBarChosenpackageTable = testApp.otherElements[@"searchBar, chosenPackage"];
-    [searchBarChosenpackageTable typeText:@"teststring"];
-    [testApp /*@START_MENU_TOKEN@*/.searchFields /*[[".otherElements[@\"searchBar, chosenPackage\"].searchFields",".searchFields"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.buttons[@"Clear text"] tap];
 
     [searchBarChosenpackageTable typeText:@"microsoft"];
+    [NSThread sleepForTimeInterval:0.2];
     XCUIElement *listviewChosenpackageTable = testApp.tables[@"listView, chosenPackage"];
     [listviewChosenpackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
     // Execute a drag from the 4th element to the 2nd element
@@ -383,7 +385,10 @@
 
 - (void)testStaticDynamicTypeaheadSearchFromChoiceset
 {
-    [self openCardForVersion:@"v1.5" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.Static&DynamicTypeahead.json"];
+    XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
+    XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
+    [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
+    [self openCardForVersion:@"v1.6" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.Static&DynamicTypeahead.json"];
     XCUIElement *choicesetPackageButton = testApp.tables[@"ChatWindow"].buttons[@"choiceset1"];
     [choicesetPackageButton tap];
 
@@ -411,6 +416,7 @@
     [choicesetPackageButton tap];
     XCUIElement *searchBarChoicesetPackageTable = testApp.otherElements[@"searchBar, choiceset1"];
     [searchBarChoicesetPackageTable typeText:@"Microsoft.Extensions.Hosting.Abstractions"];
+    [NSThread sleepForTimeInterval:0.2];
     listviewChoicesetPackageTable = testApp.tables[@"listView, choiceset1"];
     [listviewChoicesetPackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
 
