@@ -438,9 +438,16 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)didUpdateTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC searchStateImageView:(UIImageView *)searchStateImageView searchViewState:(TSTypeaehadSearchViewState)searchViewState
 {
+    // modify the UI based on the search view state
     switch (searchViewState) {
         case zeroState:
             searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
+            break;
+        case displayingGenericError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+            break;
+        case displayingInvalidSearchError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
             break;
         default:
             break;

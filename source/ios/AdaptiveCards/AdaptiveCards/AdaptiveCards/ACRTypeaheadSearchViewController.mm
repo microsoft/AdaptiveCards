@@ -326,7 +326,6 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
     switch (searchViewState) {
         case zeroState:
             _searchStateTitleLabel.text = _searchStateParams.zeroStateParams.title;
-            _searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
             break;
         case displayingResults:
             _searchStateTitleLabel.hidden = YES;
@@ -334,12 +333,10 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
             _filteredListView.hidden = NO;
             break;
         case displayingGenericError:
-            _searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
             _searchStateTitleLabel.text = _searchStateParams.errorStateParams.title;
             break;
         case displayingInvalidSearchError:
             _searchStateTitleLabel.text = _searchStateParams.noResultStateParams.title;
-            _searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
             break;
         default:
             break;

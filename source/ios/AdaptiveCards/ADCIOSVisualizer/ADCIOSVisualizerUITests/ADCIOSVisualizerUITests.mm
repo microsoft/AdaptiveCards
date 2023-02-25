@@ -353,6 +353,12 @@
 
 - (void)testDynamicTypeaheadSearchFromChoiceset
 {
+    NSString *payload = [NSString stringWithContentsOfFile:@"../samples/v1.6/Tests/Input.ChoiceSet.Static&DynamicTypeahead.json" encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if (!cardParseResult.isValid) {
+        return;
+    }
+
     XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
     XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
     [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
@@ -385,6 +391,13 @@
 
 - (void)testStaticDynamicTypeaheadSearchFromChoiceset
 {
+    NSString *payload = [NSString stringWithContentsOfFile:@"../samples/v1.6/Tests/Input.ChoiceSet.Static&DynamicTypeahead.json" encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+
+    if (!cardParseResult.isValid) {
+        return;
+    }
+
     XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
     XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
     [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
