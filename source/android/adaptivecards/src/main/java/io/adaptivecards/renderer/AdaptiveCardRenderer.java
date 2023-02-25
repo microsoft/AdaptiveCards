@@ -5,6 +5,8 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.graphics.Color;
 
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
@@ -68,9 +70,34 @@ public class AdaptiveCardRenderer
         @Nullable IOverflowActionRenderer overflowActionRenderer,
         HostConfig hostConfig)
     {
+        ChannelAdaptor channelAdaptor = new ChannelAdaptor.Builder().actionHandler(cardActionHandler).build();
+        return render(context, fragmentManager, adaptiveCard, channelAdaptor, overflowActionRenderer, null, hostConfig);
+    }
+
+    public RenderedAdaptiveCard render(
+        Context context,
+        FragmentManager fragmentManager,
+        AdaptiveCard adaptiveCard,
+        ChannelAdaptor channelAdaptor,
+        @Nullable ActivityResultRegistry activityResultRegistry,
+        HostConfig hostConfig)
+    {
+        return render(context, fragmentManager, adaptiveCard, channelAdaptor, null, activityResultRegistry, hostConfig);
+    }
+
+    public RenderedAdaptiveCard render(
+        Context context,
+        FragmentManager fragmentManager,
+        AdaptiveCard adaptiveCard,
+        @NonNull ChannelAdaptor channelAdaptor,
+        @Nullable IOverflowActionRenderer overflowActionRenderer,
+        @Nullable ActivityResultRegistry activityResultRegistry,
+        HostConfig hostConfig)
+    {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
         CardRendererRegistration.getInstance().registerOverflowActionRenderer(overflowActionRenderer);
-        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
+        CardRendererRegistration.getInstance().registerActivityResultRegistry(activityResultRegistry);
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, channelAdaptor, hostConfig, false, View.NO_ID);
         result.setView(cardView);
         return result;
     }
@@ -79,14 +106,14 @@ public class AdaptiveCardRenderer
                                     Context context,
                                     FragmentManager fragmentManager,
                                     AdaptiveCard adaptiveCard,
-                                    ICardActionHandler cardActionHandler,
+                                    ChannelAdaptor channelAdaptor,
                                     HostConfig hostConfig,
                                     ViewGroup cardLayout,
                                     RenderArgs renderArgs)
     {
         try
         {
-            CardRendererRegistration.getInstance().renderElements(renderedCard, context, fragmentManager, cardLayout, adaptiveCard.GetBody(), cardActionHandler, hostConfig, renderArgs);
+            CardRendererRegistration.getInstance().renderElements(renderedCard, context, fragmentManager, cardLayout, adaptiveCard.GetBody(), channelAdaptor, hostConfig, renderArgs);
         }
         // Catches the exception as the method throws it for performing fallback with elements inside the card,
         // no fallback should be performed here so we just catch the exception
@@ -101,7 +128,7 @@ public class AdaptiveCardRenderer
                                Context context,
                                FragmentManager fragmentManager,
                                AdaptiveCard adaptiveCard,
-                               ICardActionHandler cardActionHandler,
+                               ChannelAdaptor channelAdaptor,
                                HostConfig hostConfig,
                                boolean isInlineShowCard,
                                long containerCardId)
@@ -167,7 +194,7 @@ public class AdaptiveCardRenderer
         // Render the body section of the Adaptive Card
         String color = hostConfig.GetBackgroundColor(style);
         cardLayout.setBackgroundColor(Color.parseColor(color));
-        renderCardElements(renderedCard, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, cardLayout, renderArgs);
+        renderCardElements(renderedCard, context, fragmentManager, adaptiveCard, channelAdaptor, hostConfig, cardLayout, renderArgs);
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -191,14 +218,14 @@ public class AdaptiveCardRenderer
                     try
                     {
                         renderArgs.setRootLevelActions(!isInlineShowCard);
-                        View actionButtonsLayout = actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, cardLayout, primaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                        View actionButtonsLayout = actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, cardLayout, primaryElementVector, channelAdaptor, hostConfig, renderArgs);
 
                         if (!secondaryElementVector.isEmpty())
                         {
                             IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                             //if the actionButtonsLayout is not a viewGroup, then use cardLayout as a root.
                             ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : cardLayout;
-                            secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                            secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, channelAdaptor, hostConfig, renderArgs);
                         }
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,
@@ -215,7 +242,7 @@ public class AdaptiveCardRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, adaptiveCard.GetBackgroundImage(), hostConfig, cardLayout);
-        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler, renderArgs);
+        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, channelAdaptor.getCardActionHandler(), renderArgs);
 
         return rootLayout;
     }

@@ -22,11 +22,11 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ColumnRenderer extends BaseCardElementRenderer
@@ -114,7 +114,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -148,7 +148,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                                                               fragmentManager,
                                                               columnLayout,
                                                               column.GetItems(),
-                                                              cardActionHandler,
+                                                              channelAdaptor,
                                                               hostConfig,
                                                               columnRenderArgs);
             }
@@ -169,7 +169,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerRenderer.applyBleed(column, columnLayout, context, hostConfig);
         BaseCardElementRenderer.applyRtl(column.GetRtl(), columnLayout);
 
-        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);
+        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, channelAdaptor.getCardActionHandler(), renderArgs);
 
         viewGroup.addView(columnLayout);
         return columnLayout;
