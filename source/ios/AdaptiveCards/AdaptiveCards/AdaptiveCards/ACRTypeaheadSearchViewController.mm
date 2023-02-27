@@ -257,7 +257,6 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 }
 
 
-
 - (void)fetchChoicesWithQueryString:(NSString *)queryString
 {
     switch (_dataSourceType) {
