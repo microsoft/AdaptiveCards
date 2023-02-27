@@ -272,3 +272,16 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
         e.cancelBubble = true;
     };
 }
+
+export function debounce(fn: (...args: unknown[]) => unknown, delay: number) {
+    let timer: NodeJS.Timeout;
+    function debouncedFn(...args: unknown[]) {
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+            fn(...args);
+        }, delay);
+    }
+    return debouncedFn;
+}

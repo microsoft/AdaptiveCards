@@ -283,6 +283,19 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $padding;
             background-color: $background-color;
 
+            &.ac-choiceSetInput-filtered-dropdown {
+                background-color: white;
+                border-top: 0px;
+                display: none;
+                max-height: 200px;
+                overflow-y: scroll;
+                padding-top: 0px;
+                padding-bottom: 0px;
+                position: absolute;
+                width: 100%;
+                z-index: 1;
+            }
+
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
@@ -305,6 +318,34 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
+        &.ac-choiceSetInput-choice {
+            padding: $padding;
+            padding-left: 0px;
+            padding-right: 0px;
+            display: flex;
+            width: 100%;
+
+            &.focused {
+                background-color: #DEECF9;
+                box-shadow: #DEECF9 8px 0px 0px, #DEECF9 -8px 0px 0px;
+                outline: none;
+            }
+        }
+
+        &.ac-choiceSetInput-statusIndicator {
+            background-color: white;
+            color: #A19F9D;
+            padding: $padding;
+            padding-left: 0px;
+            padding-right: 0px;
+            width: 100%;
+
+            &.ac-choiceSetInput-errorIndicator {
+                color: #605E5C;
+                text-align: center;
+            }
+        }
+        
         &.ac-inputStyle-revealOnHover-onrender {
             border: $transparent-border;
             background-color: $transparent-background;
