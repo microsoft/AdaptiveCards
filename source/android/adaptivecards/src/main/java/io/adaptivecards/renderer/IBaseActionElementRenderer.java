@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
 
@@ -19,7 +18,7 @@ public interface IBaseActionElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

@@ -10,7 +10,7 @@
 export const sampleCard = {
     type: "AdaptiveCard",
     $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-    version: "1.4",
+    version: "1.6",
     authentication: {
         text: "Let's authenticate",
         connectionName: "myConnection",
@@ -84,6 +84,55 @@ export const sampleCard = {
                 { title: "Assigned to", value: "Matt Hidinger" },
                 { title: "Due date", value: "Not set" }
             ]
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "Surya",
+                    "value": "Choice 1"
+                },
+                {
+                    "title": "Suryansh",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Suryanarayan",
+                    "value": "Choice 3"
+                },
+                {
+                    "title": "Suryavanshi",
+                    "value": "Choice 4"
+                }
+            ],
+            "style": "compact",
+            "placeholder": "Filtered ChoiceSet"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "Surya",
+                    "value": "Choice 1"
+                },
+                {
+                    "title": "Suryansh",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Suryanarayan",
+                    "value": "Choice 3"
+                },
+                {
+                    "title": "Suryavanshi",
+                    "value": "Choice 4"
+                }
+            ],
+            "choices.data": {
+                "type": "Data.Query",
+                "dataset": "random"
+            },
+            "placeholder": "Dynamically Filtered Choiceset"
         }
     ],
     actions: [
