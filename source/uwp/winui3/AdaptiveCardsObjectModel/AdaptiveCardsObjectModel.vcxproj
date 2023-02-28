@@ -130,7 +130,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.WinUI3.idl">
+    <Midl Include="..\..\SharedObjectModel\idl\AdaptiveCards.ObjectModel.Shared.idl">
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);USE_WINUI3</PreprocessorDefinitions>
     </Midl>
   </ItemGroup>
   <ItemGroup>
