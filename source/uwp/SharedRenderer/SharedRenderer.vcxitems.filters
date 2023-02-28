@@ -7,6 +7,9 @@
     <Filter Include="lib">
       <UniqueIdentifier>{f0d5bd17-6de3-451b-8140-05034df4bd3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="idl">
+      <UniqueIdentifier>{35312e60-67cd-4550-ba9c-920cd2a16b1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)dll\CppWinRTIncludes.h">
@@ -504,5 +507,10 @@
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)idl\AdaptiveCards.Rendering.Shared.idl">
+      <Filter>idl</Filter>
+    </Content>
   </ItemGroup>
 </Project>

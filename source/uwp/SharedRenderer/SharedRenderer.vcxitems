@@ -185,4 +185,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\XamlHelpers.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)idl\AdaptiveCards.Rendering.Shared.idl" />
+  </ItemGroup>
 </Project>
