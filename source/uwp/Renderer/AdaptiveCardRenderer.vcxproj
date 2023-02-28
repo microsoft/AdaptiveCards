@@ -167,21 +167,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl">
-      <HeaderFileName>%(Filename).h</HeaderFileName>
+    <Midl Include="..\SharedRenderer\idl\AdaptiveCards.Rendering.Shared.idl">
+      <HeaderFileName>AdaptiveCards.Rendering.Uwp.h</HeaderFileName>
       <!-- Enable Windows Runtime ABI header files. when /reference is passed to midl.exe, the ABI head includes headers
            like Windows.AI.MachineLearning.MachineLearningContract.h which doesn't exist actually in SDK. To workaround
            the problem, DisableReferences is enabled to disable /reference. -->
       <DisableReferences>true</DisableReferences>
-      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl;..\AdaptiveCardsObjectModel</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);..\SharedObjectModel\idl</AdditionalIncludeDirectories>
     </Midl>
   </ItemGroup>
   <ItemGroup>
