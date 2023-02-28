@@ -14,7 +14,7 @@
             "choices.data":
             {
                 "type": "Data.Query",
-                "dataset": "graph.microsoft.com/users",
+                "dataset": "packagesInScope",
                 "count": 1,
                 "skip": 2
             }

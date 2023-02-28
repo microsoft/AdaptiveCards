@@ -14,6 +14,7 @@
 #import <Foundation/Foundation.h>
 
 static NSString *const AdaptiveCardChoices = @"action";
+static NSTimeInterval delayTimeInSeconds = 0.25;
 
 @implementation ACOTypeaheadDynamicChoicesService {
     __weak ACRView *_rootView;
@@ -30,7 +31,7 @@ static NSString *const AdaptiveCardChoices = @"action";
     self = [super init];
     if (self) {
         _rootView = rootView;
-        _debouncer = [[ACOTypeaheadDebouncer alloc] initWithDelay:0.2];
+        _debouncer = [[ACOTypeaheadDebouncer alloc] initWithDelay:delayTimeInSeconds];
         _debouncer.delegate = self;
         _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         _inputElem = inputElem;

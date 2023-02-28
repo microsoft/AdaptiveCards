@@ -44,7 +44,7 @@
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
     ACRInputLabelView *inputLabelView = nil;
     const auto style = choiceSet->GetChoiceSetStyle();
-    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
+    if (choicesData && choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
         auto inputLabel = choiceSet->GetLabel();
         NSString *typeaheadViewTitle = (!inputLabel.empty()) ? [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding] : @"Typeahead Search";
         ACRTypeaheadZeroStateParams *zeroStateParams = [[ACRTypeaheadZeroStateParams alloc] initWithtitle:@"Search options" subtitle:nil];
@@ -149,7 +149,7 @@
         return;
     }
     std::shared_ptr<ChoicesData> choicesData = choiceSet->GetChoicesData();
-    if (choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
+    if (choicesData && choicesData->GetChoicesDataType().compare((AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::DataQuery))) == 0) {
         ACRTypeaheadSearchViewController *typeaheadSearchView = (ACRTypeaheadSearchViewController *)view;
 
         UISearchBar *_customSearchBar = (UISearchBar *)typeaheadSearchView.searchBar;
