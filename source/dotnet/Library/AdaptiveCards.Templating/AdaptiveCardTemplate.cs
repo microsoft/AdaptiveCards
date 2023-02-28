@@ -96,21 +96,33 @@ namespace AdaptiveCards.Templating
                 return jsonTemplateString;
             }
 
-            string jsonData = "";
-
-            if (context != null && context.Root != null)
+            string rootJsonData = "";
+            if (context?.Root != null)
             {
-                if (context.Root is string)
+                if (context.Root is string root)
                 {
-                    jsonData = context.Root as string;
+                    rootJsonData = root;
                 }
                 else
                 {
-                    jsonData = JsonConvert.SerializeObject(context.Root);
+                    rootJsonData = JsonConvert.SerializeObject(context.Root);
                 }
             }
 
-            AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
+            string hostJsonData = "";
+            if (context?.Host != null)
+            {
+                if (context.Host is string host)
+                {
+                    hostJsonData = host;
+                }
+                else
+                {
+                    hostJsonData = JsonConvert.SerializeObject(context.Host);
+                }
+            }
+
+            AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, rootJsonData, hostJsonData);
             AdaptiveCardsTemplateResult result = eval.Visit(parseTree);
 
             templateExpansionWarnings = eval.getTemplateVisitorWarnings();
