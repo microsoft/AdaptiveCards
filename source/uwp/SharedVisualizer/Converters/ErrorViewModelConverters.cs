@@ -3,7 +3,12 @@
 using AdaptiveCardVisualizer.ViewModel;
 using System;
 
-#if !USE_WINUI3
+#if USE_WINUI3
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media;
+#else
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;

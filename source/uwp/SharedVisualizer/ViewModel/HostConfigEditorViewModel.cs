@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-#if !USE_WINUI3
+#if USE_WINUI3
+using AdaptiveCards.Rendering.WinUI3;
+#else
 using AdaptiveCards.Rendering.Uwp;
 #endif
 using System;
