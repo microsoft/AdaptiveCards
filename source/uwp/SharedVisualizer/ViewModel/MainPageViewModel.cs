@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-#if !USE_WINUI3
+#if USE_WINUI3
+using AdaptiveCards.Rendering.WinUI3;
+using Microsoft.UI.Xaml;
+#else
 using AdaptiveCards.Rendering.Uwp;
 #endif
 using AdaptiveCardVisualizer.Helpers;
@@ -35,6 +38,10 @@ namespace AdaptiveCardVisualizer.ViewModel
         }
 
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
+
+#if USE_WINUI3
+        public XamlRoot XamlRoot { get; set; }
+#endif
 
         public bool UseFixedDimensions
         {
@@ -90,6 +97,12 @@ namespace AdaptiveCardVisualizer.ViewModel
                 openPicker.ViewMode = PickerViewMode.List;
                 openPicker.FileTypeFilter.Add(".json");
 
+#if USE_WINUI3
+                // Get the current window's HWND by passing in the Window object
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+                // Associate the HWND with the file picker
+                WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwnd);
+#endif
                 StorageFile file = await openPicker.PickSingleFileAsync();
                 if (file != null)
                 {

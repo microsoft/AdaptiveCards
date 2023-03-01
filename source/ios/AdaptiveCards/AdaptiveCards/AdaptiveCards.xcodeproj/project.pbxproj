@@ -266,6 +266,21 @@
 		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
 		CFB972012941C07A008E3795 /* ChoicesData.h in Headers */ = {isa = PBXBuildFile; fileRef = CFB971FF2941C079008E3795 /* ChoicesData.h */; };
 		CFB972022941C07A008E3795 /* ChoicesData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFB972002941C079008E3795 /* ChoicesData.cpp */; };
+		CFF954CF29819ABD00F321C3 /* ACOTypeaheadDebouncer.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF954CE29819ABD00F321C3 /* ACOTypeaheadDebouncer.mm */; };
+		CFF954D029819AC300F321C3 /* ACOTypeaheadDebouncer.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF954CD29819AA800F321C3 /* ACOTypeaheadDebouncer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFF954D329819B4A00F321C3 /* ACOTypeaheadDynamicChoicesService.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF954D229819B4A00F321C3 /* ACOTypeaheadDynamicChoicesService.mm */; };
+		CFF954D52981AED600F321C3 /* ACOTypeaheadSearchHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF954D429819C1200F321C3 /* ACOTypeaheadSearchHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFF954D82981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF954D62981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.mm */; };
+		CFF954D92981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF954D72981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFF954DC2981B2A700F321C3 /* ACRTypeaheadSearchParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF954DA2981B2A700F321C3 /* ACRTypeaheadSearchParameters.mm */; };
+		CFF954DD2981B2A700F321C3 /* ACRTypeaheadSearchParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF954DB2981B2A700F321C3 /* ACRTypeaheadSearchParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFF954E02981B62000F321C3 /* ACRTypeaheadSearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF954DE2981B62000F321C3 /* ACRTypeaheadSearchViewController.mm */; };
+		CFF954E12981B62000F321C3 /* ACRTypeaheadSearchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF954DF2981B62000F321C3 /* ACRTypeaheadSearchViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFF95C072982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */; };
+		CFF95C092982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */; };
+		CFF95C0B2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */; };
+		CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */; };
+		CFF95C0F2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */; };
 		DD278A02932F65F8BDD1EA5D /* Pods_AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255F5D3143215497D4067E21 /* Pods_AdaptiveCards.framework */; };
 		EC367F912F6036B68C5BBFDB /* Pods_AdaptiveCards_AdaptiveCardsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
@@ -744,6 +759,22 @@
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
 		CFB971FF2941C079008E3795 /* ChoicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChoicesData.h; path = ../../../../shared/cpp/ObjectModel/ChoicesData.h; sourceTree = "<group>"; };
 		CFB972002941C079008E3795 /* ChoicesData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChoicesData.cpp; path = ../../../../shared/cpp/ObjectModel/ChoicesData.cpp; sourceTree = "<group>"; };
+		CFF954CD29819AA800F321C3 /* ACOTypeaheadDebouncer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOTypeaheadDebouncer.h; sourceTree = "<group>"; };
+		CFF954CE29819ABD00F321C3 /* ACOTypeaheadDebouncer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDebouncer.mm; sourceTree = "<group>"; };
+		CFF954D129819B3C00F321C3 /* ACOTypeaheadDynamicChoicesService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOTypeaheadDynamicChoicesService.h; sourceTree = "<group>"; };
+		CFF954D229819B4A00F321C3 /* ACOTypeaheadDynamicChoicesService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesService.mm; sourceTree = "<group>"; };
+		CFF954D429819C1200F321C3 /* ACOTypeaheadSearchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOTypeaheadSearchHandler.h; sourceTree = "<group>"; };
+		CFF954D62981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetFilteredStyleView.mm; sourceTree = "<group>"; };
+		CFF954D72981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRChoiceSetFilteredStyleView.h; sourceTree = "<group>"; };
+		CFF954DA2981B2A700F321C3 /* ACRTypeaheadSearchParameters.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTypeaheadSearchParameters.mm; sourceTree = "<group>"; };
+		CFF954DB2981B2A700F321C3 /* ACRTypeaheadSearchParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRTypeaheadSearchParameters.h; sourceTree = "<group>"; };
+		CFF954DE2981B62000F321C3 /* ACRTypeaheadSearchViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTypeaheadSearchViewController.mm; sourceTree = "<group>"; };
+		CFF954DF2981B62000F321C3 /* ACRTypeaheadSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRTypeaheadSearchViewController.h; sourceTree = "<group>"; };
+		CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTypeaheadSearchParametersTests.mm; sourceTree = "<group>"; };
+		CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetFilteredStyleViewTests.mm; sourceTree = "<group>"; };
+		CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACRChoiceSetCompactStyleViewTests.mm; sourceTree = "<group>"; };
+		CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDynamicChoicesServiceTests.mm; sourceTree = "<group>"; };
+		CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ACOTypeaheadDebouncerTests.mm; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED131801E4C2E2B662925ABF /* Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; path = "Target Support Files/Pods-AdaptiveCards-AdaptiveCardsTests/Pods-AdaptiveCards-AdaptiveCardsTests.apprelease.xcconfig"; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
@@ -1256,6 +1287,36 @@
 			name = Action.Execute;
 			sourceTree = "<group>";
 		};
+		CFF954CC29819A6B00F321C3 /* DynamicTypeahead */ = {
+			isa = PBXGroup;
+			children = (
+				CFF954D429819C1200F321C3 /* ACOTypeaheadSearchHandler.h */,
+				CFF954CD29819AA800F321C3 /* ACOTypeaheadDebouncer.h */,
+				CFF954CE29819ABD00F321C3 /* ACOTypeaheadDebouncer.mm */,
+				CFF954D129819B3C00F321C3 /* ACOTypeaheadDynamicChoicesService.h */,
+				CFF954D229819B4A00F321C3 /* ACOTypeaheadDynamicChoicesService.mm */,
+				CFF954DB2981B2A700F321C3 /* ACRTypeaheadSearchParameters.h */,
+				CFF954DA2981B2A700F321C3 /* ACRTypeaheadSearchParameters.mm */,
+				CFF954D72981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.h */,
+				CFF954D62981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.mm */,
+				CFF954DF2981B62000F321C3 /* ACRTypeaheadSearchViewController.h */,
+				CFF954DE2981B62000F321C3 /* ACRTypeaheadSearchViewController.mm */,
+			);
+			name = DynamicTypeahead;
+			sourceTree = "<group>";
+		};
+		CFF95C052982E2CB00F321C3 /* DynamicTypeahead */ = {
+			isa = PBXGroup;
+			children = (
+				CFF95C062982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm */,
+				CFF95C082982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm */,
+				CFF95C0A2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm */,
+				CFF95C0C2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm */,
+				CFF95C0E2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm */,
+			);
+			path = DynamicTypeahead;
+			sourceTree = "<group>";
+		};
 		F4071C751FCCBAEF00AF4FEA /* json */ = {
 			isa = PBXGroup;
 			children = (
@@ -1305,6 +1366,7 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				CFF95C052982E2CB00F321C3 /* DynamicTypeahead */,
 				6B4C05BE27864B0800882387 /* ACRImagePropertiesTests.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
@@ -1510,6 +1572,7 @@
 				6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */,
 				6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */,
 				6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */,
+				CFF954CC29819A6B00F321C3 /* DynamicTypeahead */,
 				6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */,
 				6B70ABA425797B720095D925 /* InputRenderers */,
 			);
@@ -1641,6 +1704,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFF954DD2981B2A700F321C3 /* ACRTypeaheadSearchParameters.h in Headers */,
 				6B27CD6624BD52D600C0F90F /* ACRInputLabelView.h in Headers */,
 				6BBE841923CD184D00ECA586 /* ACREnums.h in Headers */,
 				6BBE841F23CE60E300ECA586 /* ACRMediaRenderer.h in Headers */,
@@ -1722,6 +1786,7 @@
 				F43110451F357487001AAE30 /* ACOHostConfig.h in Headers */,
 				F4F2556C1F98246000A80D39 /* ACOBaseActionElement.h in Headers */,
 				F427410A1EF864A900399FBB /* ACRBaseCardElementRenderer.h in Headers */,
+				CFF954D52981AED600F321C3 /* ACOTypeaheadSearchHandler.h in Headers */,
 				F4CAE7821F75AB9000545555 /* ACOAdaptiveCard.h in Headers */,
 				F4C1F6001F2C23FD0018CB78 /* ACRActionShowCardRenderer.h in Headers */,
 				F4C1F5E61F2ABB0E0018CB78 /* ACRActionOpenURLRenderer.h in Headers */,
@@ -1730,6 +1795,7 @@
 				F44873021EE2261F00FCAFAE /* Column.h in Headers */,
 				F4C1F5F11F2BC6840018CB78 /* ACRButton.h in Headers */,
 				F42E51771FEC3840008F9642 /* MarkDownBlockParser.h in Headers */,
+				CFF954E12981B62000F321C3 /* ACRTypeaheadSearchViewController.h in Headers */,
 				F4FE456E1F1985200071D9E5 /* ACRColumnSetView.h in Headers */,
 				F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */,
 				F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */,
@@ -1798,6 +1864,7 @@
 				6BFF23F92714C0F000183C59 /* ACORefreshPrivate.h in Headers */,
 				6BFF240C2714E3D100183C59 /* ACRSeparator.h in Headers */,
 				6BFF24022714DE3600183C59 /* ACRChoiceSetViewDataSourceCompactStyle.h in Headers */,
+				CFF954D92981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.h in Headers */,
 				6BFF240A2714E33000183C59 /* ACRToggleVisibilityTarget.h in Headers */,
 				6BFF23F22714C0F000183C59 /* ACORemoteResourceInformationPrivate.h in Headers */,
 				6BFF23F82714C0F000183C59 /* ACRParseWarningPrivate.h in Headers */,
@@ -1806,6 +1873,7 @@
 				6B8C765526449B09009548FA /* TableColumnDefinition.h in Headers */,
 				6B8C765326449B09009548FA /* Table.h in Headers */,
 				6BFCA141264F54B500195CA7 /* ACRTableView.h in Headers */,
+				CFF954D029819AC300F321C3 /* ACOTypeaheadDebouncer.h in Headers */,
 				6BFF24142714EF2200183C59 /* UtiliOS.h in Headers */,
 				6BFF24082714E30B00183C59 /* ACRShowCardTarget.h in Headers */,
 				6BFF24102714E46300183C59 /* ACRImageSetUICollectionView.h in Headers */,
@@ -2116,6 +2184,7 @@
 				6BFCA145264F54B500195CA7 /* ACRTableCellView.mm in Sources */,
 				6BFF99FB26003EBA0028069F /* ACOAutoCardButton.mm in Sources */,
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
+				CFF954DC2981B2A700F321C3 /* ACRTypeaheadSearchParameters.mm in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
 				6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */,
@@ -2125,6 +2194,7 @@
 				6BFF99C925FFF53E0028069F /* Refresh.cpp in Sources */,
 				F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,
+				CFF954CF29819ABD00F321C3 /* ACOTypeaheadDebouncer.mm in Sources */,
 				F4C1F5FE1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm in Sources */,
 				6B377285260194000024E527 /* ACRActionExecuteRenderer.mm in Sources */,
 				F4F6BA35204F200F003741B6 /* ACRParseWarning.mm in Sources */,
@@ -2141,6 +2211,7 @@
 				F4D0694A205B27EA003645E4 /* ACRViewController.mm in Sources */,
 				F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */,
 				F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */,
+				CFF954E02981B62000F321C3 /* ACRTypeaheadSearchViewController.mm in Sources */,
 				F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */,
 				6BAC0F2E228E2D7300E42DEB /* RichTextElementProperties.cpp in Sources */,
 				6BFF99CC25FFF53E0028069F /* Authentication.cpp in Sources */,
@@ -2205,12 +2276,14 @@
 				F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */,
 				6BDE5C4626FEA7DC003A1DDB /* ACRShowCardTarget.mm in Sources */,
 				7ECFB640219A3940004727A9 /* ParseContext.cpp in Sources */,
+				CFF954D82981AF5800F321C3 /* ACRChoiceSetFilteredStyleView.mm in Sources */,
 				6BC30F6E21E56CF900B9FAAE /* UtiliOS.mm in Sources */,
 				6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,
 				F427410B1EF864A900399FBB /* ACRBaseCardElementRenderer.mm in Sources */,
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
+				CFF954D329819B4A00F321C3 /* ACOTypeaheadDynamicChoicesService.mm in Sources */,
 				6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */,
 				7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */,
 				84AE295827FFA26F00D01B82 /* ContentSource.cpp in Sources */,
@@ -2253,12 +2326,17 @@
 			files = (
 				6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */,
 				6BE6C7C126E2ECEA009E9171 /* ADCMockResolver.m in Sources */,
+				CFF95C092982E34300F321C3 /* ACRChoiceSetFilteredStyleViewTests.mm in Sources */,
 				6B124CA426D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm in Sources */,
 				6BE6C7B026E2C9A3009E9171 /* ACRCustomRenderers.mm in Sources */,
+				CFF95C0B2982E38500F321C3 /* ACRChoiceSetCompactStyleViewTests.mm in Sources */,
 				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
 				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
+				CFF95C072982E30E00F321C3 /* ACRTypeaheadSearchParametersTests.mm in Sources */,
+				CFF95C0D2982E3C900F321C3 /* ACOTypeaheadDynamicChoicesServiceTests.mm in Sources */,
 				6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */,
+				CFF95C0F2982E4EC00F321C3 /* ACOTypeaheadDebouncerTests.mm in Sources */,
 				6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */,
 				6B4C05BF27864B0800882387 /* ACRImagePropertiesTests.mm in Sources */,
 			);

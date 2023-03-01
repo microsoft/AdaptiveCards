@@ -22,7 +22,7 @@ using namespace AdaptiveCards;
 @implementation ACRChoiceSetCompactStyleView {
     ACOFilteredDataSource *_filteredDataSource;
     ACOFilteredListStateManager *_stateManager;
-    ACOChoiceSetCompactStyleValidator *_validator;
+    ACOChoiceSetFilteredStyleValidator *_validator;
     ACOFilteredListLayout *_filteredListLayout;
     NSString *_inputLabel;
     UITableView *_listView;
@@ -48,7 +48,7 @@ using namespace AdaptiveCards;
         if (!_filteredDataSource.isEnabled) {
             self.accessibilityTraits |= (UIAccessibilityTraitButton | UIAccessibilityTraitStaticText);
         }
-        _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
+        _validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
 
         if (@available(iOS 11.0, *)) {
             self.spacingTop = self.window.safeAreaInsets.top + 8.0f;
@@ -98,7 +98,7 @@ using namespace AdaptiveCards;
         _filteredListLayout = [[ACOFilteredListLayout alloc] initWithTopMargin:self.spacingTop bottomMargin:self.spacingBottom];
         _wrapLines = choiceSet->GetWrap() ? 0 : 1;
 
-        [_filteredDataSource filter:self.text];
+        [_filteredDataSource updateFilteredListForStaticTypeahead:self.text];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -170,7 +170,7 @@ using namespace AdaptiveCards;
     // implemented fluentUI north star behavior of removing the
     // filtered list when input field is empty
     if ([newString length]) {
-        [self filterList:newString];
+        [_filteredDataSource updateFilteredListForStaticTypeahead:newString];
         [_stateManager expanded];
         if (!_stateManager.shouldUpdateFilteredList) {
             [_listView reloadData];
@@ -202,7 +202,7 @@ using namespace AdaptiveCards;
 
 - (void)filterList:(NSString *)text
 {
-    [_filteredDataSource filter:text];
+    [_filteredDataSource updateFilteredListForStaticTypeahead:text];
 }
 
 - (void)toggleStateListView:(UIButton *)button
@@ -375,6 +375,9 @@ using namespace AdaptiveCards;
 @implementation ACOFilteredDataSource {
     NSMutableArray<NSString *> *_unfilteredList;
     NSArray<NSString *> *_filteredList;
+    NSMutableArray<NSString *> *_staticUnfilteredList;
+    NSArray<NSString *> *_staticFilteredList;
+    NSArray<NSString *> *_dynamicFilteredList;
     NSString *_filter;
 }
 
@@ -382,8 +385,10 @@ using namespace AdaptiveCards;
 {
     self = [super init];
     if (self) {
-        _unfilteredList = [[NSMutableArray alloc] init];
-        _filteredList = _unfilteredList;
+        _staticUnfilteredList = [[NSMutableArray alloc] init];
+        _staticFilteredList = _staticUnfilteredList;
+        _dynamicFilteredList = [[NSMutableArray alloc] init];
+        _filteredList = _staticFilteredList;
         _filter = @"SELF CONTAINS[c] %@";
         _isEnabled = YES;
     }
@@ -402,7 +407,7 @@ using namespace AdaptiveCards;
 - (void)addToSource:(NSString *)item
 {
     if (item) {
-        [_unfilteredList addObject:item];
+        [_staticUnfilteredList addObject:item];
     }
 }
 
@@ -416,22 +421,72 @@ using namespace AdaptiveCards;
     return (index < 0 or index >= self.count) ? @"" : _filteredList[index];
 }
 
-- (void)filter:(NSString *)key
+- (void)updateFilteredListForStaticTypeahead:(NSString *)key
 {
     if (!self.isEnabled) {
         return;
     }
     if (!key || key.length == 0) {
         [self resetFilter];
+        _staticFilteredList = _staticUnfilteredList;
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
         _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
+        _staticFilteredList = [_staticUnfilteredList filteredArrayUsingPredicate:predicate];
+        _filteredList = _staticFilteredList;
     }
+}
+
+- (void)updateFilteredListForDynamicTypeahead:(NSDictionary *)choices
+{
+    if (!self.isEnabled) {
+        return;
+    }
+    if (!choices || choices.count == 0) {
+        [self resetFilter];
+        _dynamicFilteredList = @[];
+    } else {
+        NSMutableArray *dynamicList = [[NSMutableArray alloc] init];
+        for (id item in choices) {
+            [dynamicList addObject:item];
+        }
+        _dynamicFilteredList = dynamicList;
+        _filteredList = _dynamicFilteredList;
+    }
+}
+
+- (void)mergeStaticAndDynamicFilteredList
+{
+    NSMutableArray *mergedList = [[NSMutableArray alloc] init];
+    for (id item in _dynamicFilteredList) {
+        [mergedList addObject:item];
+    }
+    for (id item in _staticFilteredList) {
+        [mergedList addObject:item];
+    }
+    _filteredList = mergedList;
+}
+
+- (void)updateFilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices
+{
+    [self updateFilteredListForStaticTypeahead:key];
+    [self updateFilteredListForDynamicTypeahead:choices];
+    [self mergeStaticAndDynamicFilteredList];
+}
+
+- (BOOL)findMatch:(NSString *)queryString
+{
+    return [_filteredList containsObject:queryString];
+}
+
+- (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText
+{
+    return [resultText rangeOfString:searchText options:NSCaseInsensitiveSearch];
 }
 
 - (void)resetFilter
 {
-    _filteredList = _unfilteredList;
+    _filteredList = _staticUnfilteredList;
 }
 
 @end
@@ -506,8 +561,9 @@ using namespace AdaptiveCards;
 
 @end
 
-@implementation ACOChoiceSetCompactStyleValidator {
-    NSMutableDictionary<NSString *, NSString *> *_titlesMap;
+@implementation ACOChoiceSetFilteredStyleValidator {
+    NSMutableDictionary<NSString *, NSString *> *_staticListTitlesMap;
+    NSMutableDictionary<NSString *, NSString *> *_dynamicListTitlesMap;
 }
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem dataSource:(ACOFilteredDataSource *)dataSource
@@ -519,13 +575,14 @@ using namespace AdaptiveCards;
         self.isRequired = choiceSet->GetIsRequired();
         self.placeHolder = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
 
-        _titlesMap = [[NSMutableDictionary alloc] init];
+        _staticListTitlesMap = [[NSMutableDictionary alloc] init];
+        _dynamicListTitlesMap = [[NSMutableDictionary alloc] init];
         NSString *defaultValue = [NSString stringWithCString:choiceSet->GetValue().c_str()
                                                     encoding:NSUTF8StringEncoding];
         for (auto choice : choiceSet->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
-            _titlesMap[title] = value;
+            _staticListTitlesMap[title] = value;
             if ([value isEqualToString:defaultValue]) {
                 _userInitialChoice = title;
             }
@@ -539,10 +596,10 @@ using namespace AdaptiveCards;
 {
     BOOL isValid = YES;
     if (self.isRequired) {
-        isValid = !(!input || !input.length ||
-                    ![_titlesMap objectForKey:input]);
+        isValid = input != nil && input.length;
+        isValid = isValid ? [_staticListTitlesMap objectForKey:input] != nil || [_dynamicListTitlesMap objectForKey:input] != nil : NO;
     } else if (input && input.length) {
-        isValid = [_titlesMap objectForKey:input] != nil;
+        isValid = ([_staticListTitlesMap objectForKey:input] != nil || [_dynamicListTitlesMap objectForKey:input] != nil);
     }
     return isValid;
 }
@@ -550,10 +607,18 @@ using namespace AdaptiveCards;
 - (NSString *)getValue:(NSString *)input
 {
     if (input && input.length) {
-        NSString *value = [_titlesMap objectForKey:input];
-        return value ? value : @"";
+        NSString *value = [_staticListTitlesMap objectForKey:input];
+        return value ? value : ([_dynamicListTitlesMap objectForKey:input] ?: @"");
     }
     return @"";
+}
+
+- (void)updateDynamicTitleMap:(NSDictionary *)titleMap
+{
+    [_dynamicListTitlesMap removeAllObjects];
+    for (id key in titleMap) {
+        _dynamicListTitlesMap[key] = [titleMap objectForKey:key];
+    }
 }
 
 @end

@@ -7,6 +7,8 @@
 
 #import "ACOAdaptiveCard.h"
 #import "ACOBaseActionElement.h"
+#import "ACOTypeaheadSearchHandler.h"
+
 #import <Foundation/Foundation.h>
 
 @class ACROverflowMenuItem;
@@ -21,6 +23,37 @@
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties;
+
+#pragma mark - callback for typeahead search (input.choiceset)
+
+/**
+- when choices.data property is present in input.choiceset
+ - This callback is called on input change in choiceset control and used to fetch dynamic choices from the host.
+   - "searchRequest": search request object format to be sent to the host
+   - "acoElem": ChoiceSetInput element on which text change was observed
+   - "completion": completion block with results dictionary as response or error in case of any failure
+ */
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion;
+
+/**
+- This callback is to update the layout of the typeahead view whenever search state is changed
+*/
+- (void)didUpdateTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC searchStateImageView:(UIImageView *)searchStateImageView searchViewState:(TSTypeaehadSearchViewState)searchViewState;
+
+/**
+- This callback is to launch the full screen search VC fromm input.choiceset control
+ - Client callback requires to return a BOOL value.
+ - Returning YES means let SDK continue to launch VC on top of the parent view, while NO informs SDK don't launch the typeahead search VC in full screen
+   (which implies client code might grab the typeahead search view controller and launch view by itself).
+ */
+- (BOOL)shouldLaunchTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC;
+
+/**
+- This callback is to configure the navigation item which is present at the top of the search view controller (configure back button and checkmark)
+ - Client callback requires to return a BOOL value.
+ - Returning YES means let SDK continue to launch VC on top of the parent view, while NO informs SDK don't launch the typeahead search VC in full screen
+ */
+- (BOOL)shouldConfigureNavigationItemViewWithVC:(UIViewController *)typeaheadSearchVC;
 
 #pragma mark - callbacks for overflow actions
 

@@ -351,4 +351,95 @@
     XCTAssertTrue(CGColorEqualToColor(color9.CGColor, UIColor.clearColor.CGColor));
 }
 
+- (void)testDynamicTypeaheadSearchFromChoiceset
+{
+    NSString *payload = [NSString stringWithContentsOfFile:@"../samples/v1.6/Tests/Input.ChoiceSet.Static&DynamicTypeahead.json" encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if (!cardParseResult.isValid) {
+        return;
+    }
+
+    XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
+    XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
+    [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
+    [self openCardForVersion:@"v1.6" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.DynamicTypeahead.json"];
+    XCUIElement *chosenpackageButton = testApp.tables[@"ChatWindow"].buttons[@"chosenPackage"];
+    [chosenpackageButton tap];
+
+    // back button test
+    XCUIElement *backButton = testApp.buttons[@"Back"];
+    [backButton tap];
+
+    [chosenpackageButton tap];
+
+    XCUIElement *searchBarChosenpackageTable = testApp.otherElements[@"searchBar, chosenPackage"];
+
+    [searchBarChosenpackageTable typeText:@"microsoft"];
+    [NSThread sleepForTimeInterval:0.2];
+    XCUIElement *listviewChosenpackageTable = testApp.tables[@"listView, chosenPackage"];
+    [listviewChosenpackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
+    // Execute a drag from the 4th element to the 2nd element
+
+    XCUIElementQuery *buttons = testApp.buttons;
+    [buttons[@"OK"] tap];
+
+    NSString *resultsString = [self getInputsString];
+    NSDictionary *resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary *inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    [self verifyInput:@"chosenPackage" matchesExpectedValue:@"Hosting and startup abstractions for applications." inInputSet:inputs];
+}
+
+- (void)testStaticDynamicTypeaheadSearchFromChoiceset
+{
+    NSString *payload = [NSString stringWithContentsOfFile:@"../samples/v1.6/Tests/Input.ChoiceSet.Static&DynamicTypeahead.json" encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+
+    if (!cardParseResult.isValid) {
+        return;
+    }
+
+    XCUICoordinate *startPoint = [testApp.buttons[@"v1.3"] coordinateWithNormalizedOffset:CGVectorMake(0, 0)]; // center of the element
+    XCUICoordinate *finishPoint = [startPoint coordinateWithOffset:CGVectorMake(-1000, 0)];                    // adjust the x-offset to move left
+    [startPoint pressForDuration:0 thenDragToCoordinate:finishPoint];
+    [self openCardForVersion:@"v1.6" forCardType:@"Tests" withCardName:@"Input.ChoiceSet.Static&DynamicTypeahead.json"];
+    XCUIElement *choicesetPackageButton = testApp.tables[@"ChatWindow"].buttons[@"choiceset1"];
+    [choicesetPackageButton tap];
+
+    // back button test
+    XCUIElement *backButton = testApp.buttons[@"Back"];
+    [backButton tap];
+
+    [choicesetPackageButton tap];
+
+    // select static choice
+    XCUIElement *listviewChoicesetPackageTable = testApp.tables[@"listView, choiceset1"];
+    [listviewChoicesetPackageTable.staticTexts[@"Ms.IdentityModel.static"] tap];
+
+    // press OK button
+    XCUIElementQuery *buttons = testApp.buttons;
+    [buttons[@"Submit"] tap];
+
+    NSString *resultsString = [self getInputsString];
+    NSDictionary *resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary *inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    [self verifyInput:@"choiceset1" matchesExpectedValue:@"4" inInputSet:inputs];
+
+    // select dynamic choice
+    choicesetPackageButton = testApp.tables[@"ChatWindow"].buttons[@"choiceset1"];
+    [choicesetPackageButton tap];
+    XCUIElement *searchBarChoicesetPackageTable = testApp.otherElements[@"searchBar, choiceset1"];
+    [searchBarChoicesetPackageTable typeText:@"Microsoft.Extensions.Hosting.Abstractions"];
+    [NSThread sleepForTimeInterval:0.2];
+    listviewChoicesetPackageTable = testApp.tables[@"listView, choiceset1"];
+    [listviewChoicesetPackageTable.staticTexts[@"Microsoft.Extensions.Hosting.Abstractions"] tap];
+
+    buttons = testApp.buttons;
+    [buttons[@"Submit"] tap];
+
+    resultsString = [self getInputsString];
+    resultsDictionary = [self parseJsonToDictionary:resultsString];
+    inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    [self verifyInput:@"choiceset1" matchesExpectedValue:@"Hosting and startup abstractions for applications." inInputSet:inputs];
+}
+
 @end
