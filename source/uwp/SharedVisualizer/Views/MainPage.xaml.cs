@@ -4,7 +4,12 @@ using AdaptiveCardVisualizer.ViewModel;
 using System.Linq;
 using Windows.System;
 
-#if !USE_WINUI3
+#if USE_WINUI3
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
+#else
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,6 +44,9 @@ namespace AdaptiveCardVisualizer
             DataContext = ViewModel;
 
             IsEnabled = true;
+#if USE_WINUI3
+            ViewModel.XamlRoot = this.Content.XamlRoot;
+#endif
         }
 
         private void loadFileButton_Clicked(object sender, RoutedEventArgs args)

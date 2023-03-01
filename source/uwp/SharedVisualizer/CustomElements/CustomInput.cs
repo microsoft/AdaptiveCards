@@ -5,7 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.Data.Json;
 
-#if !USE_WINUI3
+#if USE_WINUI3
+using AdaptiveCards.Rendering.WinUI3;
+using AdaptiveCards.ObjectModel.WinUI3;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+#else
 using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCards.ObjectModel.Uwp;
 using Windows.UI;
