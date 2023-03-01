@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    xmlns:toolkitControls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+    d:DesignWidth="400">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -20,18 +19,8 @@
         <!--Editor and errors-->
         <local:GenericDocumentView x:Name="GenericDocumentViewName"/>
 
-        <!--Vertical draggable column splitter-->
-        <toolkitControls:GridSplitter
-            AutomationProperties.Name="Content splitter"
-            Width="11"
-            Background="{ThemeResource SystemControlBackgroundAccentBrush}"
-            GripperCursor="Default"
-            HorizontalAlignment="Left"
-            Grid.Column="1"
-            ResizeDirection="Auto"
-            ResizeBehavior="BasedOnAlignment"
-            CursorBehavior="ChangeOnSplitterHover"
-            GripperForeground="White"/>
+        <!--Placeholder for vertical draggable column splitter-->
+        <Grid x:Name="GridSplitterPlaceholder" Grid.Column="1" />
 
         <!--Preview-->
         <Grid
