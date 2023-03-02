@@ -5393,6 +5393,7 @@ export abstract class Action extends CardObject {
     );
     static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
     static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
+    static readonly roleProperty = new EnumProperty(Versions.v1_6, "role", Enums.ActionRole);
 
     @property(Action.titleProperty)
     title?: string;
@@ -5411,6 +5412,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.isEnabledProperty)
     isEnabled: boolean;
+    
+    @property(Action.roleProperty)
+    role?: Enums.ActionRole;
 
     //#endregion
 
@@ -5589,7 +5593,25 @@ export abstract class Action extends CardObject {
     }
 
     getAriaRole(): string {
-        return "button";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "button";
+    }
+    
+    getAriaRoleFromEnum(): string | undefined {
+        switch (this.role) {
+            case Enums.ActionRole.Button:
+                return "button";
+            case Enums.ActionRole.Link:
+                return "link";
+            case Enums.ActionRole.Menu:
+                return "menu";
+            case Enums.ActionRole.MenuItem:
+                return "menuitem";
+            case Enums.ActionRole.Tab:
+                return "tab";
+            default:
+                return undefined;
+        }
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
@@ -6004,7 +6026,8 @@ export class OpenUrlAction extends Action {
     }
 
     getAriaRole(): string {
-        return "link";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "link";
     }
 
     internalValidateProperties(context: ValidationResults) {
