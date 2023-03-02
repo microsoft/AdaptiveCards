@@ -281,9 +281,9 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 - (void)resetFilteredList
 {
     _searchBar.text = @"";
-    if (@available(iOS 16.0, *)) {
-        self.navigationItem.rightBarButtonItem.hidden = YES;
-    }
+//    if (@available(iOS 16.0, *)) {
+//        self.navigationItem.rightBarButtonItem.hidden = YES;
+//    }
     [_choiceSetDelegate updateSelectedChoiceInTextField:@""];
     [_filteredDataSource resetFilter];
     [self configureSearchStateUI:_filteredDataSource.count ? displayingResults : zeroState];
@@ -311,12 +311,12 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
             [strongSelf configureSearchStateUI:displayingGenericError];
         }
 
-        if (@available(iOS 16.0, *)) {
-            strongSelf.navigationItem.rightBarButtonItem.hidden = YES;
-            if ([strongSelf->_filteredDataSource findMatch:searchText]) {
-                strongSelf.navigationItem.rightBarButtonItem.hidden = NO;
-            }
-        }
+//        if (@available(iOS 16.0, *)) {
+//            strongSelf.navigationItem.rightBarButtonItem.hidden = YES;
+//            if ([strongSelf->_filteredDataSource findMatch:searchText]) {
+//                strongSelf.navigationItem.rightBarButtonItem.hidden = NO;
+//            }
+//        }
     });
 }
 
