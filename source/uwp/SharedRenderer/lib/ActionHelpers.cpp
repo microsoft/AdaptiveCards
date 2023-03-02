@@ -977,13 +977,40 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
     winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
     {
-        if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
+        // WIP: we can also use the switch here and create wrapper classes (ex: LinkButton) for each role
+        if (action && (action.Role() == winrt::ActionRole::Link))
         {
             return winrt::make<LinkButton>();
         }
         else
         {
-            return winrt::Button{};
+            winrt::Button button = winrt::Button{};
+            SetAutomationType(action, button);
+            return button;
         }
+    }
+
+    void SetAutomationType(winrt::IAdaptiveActionElement const& action, winrt::Button const& button)
+    {
+        winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
+        switch (action.Role())
+        {
+            case winrt::ActionRole::Button:
+                roleType = winrt::AutomationControlType::Button;
+                break;
+            case winrt::ActionRole::Link:
+                roleType = winrt::AutomationControlType::Hyperlink;
+                break;
+            case winrt::ActionRole::Tab:
+                roleType = winrt::AutomationControlType::Tab;
+                break;
+            case winrt::ActionRole::Menu:
+                roleType = winrt::AutomationControlType::Menu;
+                break;
+            case winrt::ActionRole::MenuItem:
+                roleType = winrt::AutomationControlType::MenuItem;
+                break;
+        }
+        winrt::AutomationProperties::SetAutomationControlType(button, roleType);
     }
 }
