@@ -967,7 +967,7 @@
 				);
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-";
+				PRODUCT_BUNDLE_IDENTIFIER = AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1131,7 +1131,7 @@
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-";
+				PRODUCT_BUNDLE_IDENTIFIER = AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1150,7 +1150,7 @@
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-";
+				PRODUCT_BUNDLE_IDENTIFIER = AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
