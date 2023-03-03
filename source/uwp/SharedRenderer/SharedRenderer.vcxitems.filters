@@ -234,9 +234,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\IXamlBuilderListener.h">
       <Filter>lib</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)lib\LinkButton.h">
-      <Filter>lib</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.h">
       <Filter>lib</Filter>
     </ClInclude>
@@ -477,9 +474,6 @@
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\InputValue.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)lib\LinkButton.cpp">
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.cpp">

@@ -94,7 +94,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                                              winrt::AdaptiveRenderContext const& renderContext,
                                                              winrt::AdaptiveRenderArgs const& renderArgs);
 
-    winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action);
+    winrt::Button CreateButton(winrt::IAdaptiveActionElement const& action);
 
     void SetAutomationType(winrt::IAdaptiveActionElement const& action, winrt::Button const& button);
 }

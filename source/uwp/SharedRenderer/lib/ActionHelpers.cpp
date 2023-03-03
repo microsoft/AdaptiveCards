@@ -6,7 +6,6 @@
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
-#include "LinkButton.h"
 #include "WholeItemsPanel.h"
 
 #ifdef USE_WINUI3
@@ -260,7 +259,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
 
-        auto button = CreateAppropriateButton(adaptiveActionElement);
+        auto button = CreateButton(adaptiveActionElement);
         button.Margin(GetButtonMargin(actionsConfig));
 
         if (actionsConfig.ActionsOrientation() == winrt::ActionsOrientation::Horizontal)
@@ -507,7 +506,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             return elementToWrap;
         }
 
-        auto button = CreateAppropriateButton(action);
+        auto button = CreateButton(action);
         button.Content(elementToWrap);
 
         uint32_t cardPadding = 0;
@@ -975,29 +974,22 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return actionPanel;
     }
 
-    winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
+    winrt::Button CreateButton(winrt::IAdaptiveActionElement const& action)
     {
-        // WIP: we can also use the switch here and create wrapper classes (ex: LinkButton) for each role
-        if (action && (action.Role() == winrt::ActionRole::Link))
+        winrt::Button button = winrt::Button{};
+        if (action && (action.Role() != winrt::ActionRole::Button))
         {
-            return winrt::make<LinkButton>();
-        }
-        else
-        {
-            winrt::Button button = winrt::Button{};
             SetAutomationType(action, button);
-            return button;
         }
+        return button;
     }
 
     void SetAutomationType(winrt::IAdaptiveActionElement const& action, winrt::Button const& button)
     {
+        // Default to button role
         winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
         switch (action.Role())
         {
-            case winrt::ActionRole::Button:
-                roleType = winrt::AutomationControlType::Button;
-                break;
             case winrt::ActionRole::Link:
                 roleType = winrt::AutomationControlType::Hyperlink;
                 break;
