@@ -10,7 +10,7 @@ steps:
   displayName: 'Install Provisioning Profile'
   inputs:
     provisioningProfileLocation: 'secureFiles'
-    provProfileSecureFile: '983e1796-30e0-48a7-9453-c305e1b94259.mobileprovision'
+    provProfileSecureFile: 'ADC_iOS_Visualizer_Dogfood_Development.mobileprovision'
 
 - template: ios-build-template.yml
   parameters:
