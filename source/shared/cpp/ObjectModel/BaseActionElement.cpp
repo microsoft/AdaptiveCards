@@ -10,7 +10,7 @@ using namespace AdaptiveCards;
 constexpr const char* const BaseActionElement::defaultStyle;
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true)
+    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true), m_role(type == ActionType::OpenUrl ? ActionRole::Link : ActionRole::Button)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
