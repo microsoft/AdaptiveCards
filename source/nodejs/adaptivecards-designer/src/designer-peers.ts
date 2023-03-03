@@ -1573,6 +1573,7 @@ export class ActionPeer extends DesignerPeer {
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
     static readonly isEnabledProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "isEnabled", "Enabled");
+    static readonly roleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_6, "role", "Role", Adaptive.ActionRole);
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -1644,7 +1645,8 @@ export class ActionPeer extends DesignerPeer {
             ActionPeer.tooltipProperty,
             ActionPeer.modeProperty,
             ActionPeer.styleProperty,
-            ActionPeer.iconUrlProperty);
+            ActionPeer.iconUrlProperty,
+            ActionPeer.roleProperty);
     }
 
     get action(): Adaptive.Action {
