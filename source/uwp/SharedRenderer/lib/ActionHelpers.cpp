@@ -979,16 +979,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         winrt::Button button = winrt::Button{};
         if (action && (action.Role() != winrt::ActionRole::Button))
         {
-            SetAutomationType(action, button);
+            SetAutomationType(action.Role(), button);
         }
         return button;
     }
 
-    void SetAutomationType(winrt::IAdaptiveActionElement const& action, winrt::Button const& button)
+    void SetAutomationType(winrt::ActionRole const& actionRole, winrt::Button const& button)
     {
         // Default to button role
         winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
-        switch (action.Role())
+        switch (actionRole)
         {
             case winrt::ActionRole::Link:
                 roleType = winrt::AutomationControlType::Hyperlink;
