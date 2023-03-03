@@ -35,3 +35,4 @@ steps:
     configuration: ${{ parameters.configuration }}
     destinationPlatformOption: 'iOS'
     destinationSimulators: 'iPhone 12'
+    useXcpretty: false
