@@ -28,7 +28,7 @@ steps:
     actions: 'build'
     xcWorkspacePath: 'source/ios/AdaptiveCards/AdaptiveCards.xcworkspace'
     scheme: 'ADCIOSVisualizer'
-    xcodeVersion: '12'
+    xcodeVersion: 'default'
     packageApp: ${{ parameters.packageApp }}
     signingOption: ${{ parameters.signingOption }}
     sdk: ${{ parameters.sdk }}
