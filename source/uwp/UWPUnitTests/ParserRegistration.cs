@@ -202,6 +202,7 @@ namespace UWPUnitTests
             public string Tooltip { get; set; }
             public bool IsEnabled { get; set; }
             public ActionMode Mode { get; set; }
+            public ActionRole Role { get; set; }
             IAdaptiveActionElement IAdaptiveActionElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveActionElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };

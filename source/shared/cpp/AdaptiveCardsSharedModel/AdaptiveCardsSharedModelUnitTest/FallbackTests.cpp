@@ -107,7 +107,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(fallbackAction->GetUrl().c_str(), "http://example.com/fallback/", L"url comparison");
             auto serializedCard = card->Serialize();
             Assert::AreEqual(serializedCard.c_str(),
-                "{\"actions\":[{\"fallback\":\"drop\",\"title\":\"Drop Test\",\"type\":\"Action.Submit\"},{\"fallback\":{\"title\":\"Fallback content\",\"type\":\"Action.OpenUrl\",\"url\":\"http://example.com/fallback/\"},\"title\":\"Content Test\",\"type\":\"Action.OpenUrl\",\"url\":\"http://example.com/\"}],\"body\":[{\"text\":\"test text\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.2\"}\n");
+                "{\"actions\":[{\"fallback\":\"drop\",\"title\":\"Drop Test\",\"type\":\"Action.Submit\"},{\"fallback\":{\"role\":\"Link\",\"title\":\"Fallback content\",\"type\":\"Action.OpenUrl\",\"url\":\"http://example.com/fallback/\"},\"role\":\"Link\",\"title\":\"Content Test\",\"type\":\"Action.OpenUrl\",\"url\":\"http://example.com/\"}],\"body\":[{\"text\":\"test text\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.2\"}\n");
         }
 
         TEST_METHOD(FallbackSimpleDuplicateTest)

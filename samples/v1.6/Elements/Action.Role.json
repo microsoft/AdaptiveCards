@@ -1,0 +1,86 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "The actions below should use the enum role values",
+			"wrap": true
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.OpenUrl",
+					"title": "Action.OpenUrl",
+					"role": "button",
+					"url": "https://adaptivecards.io"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action.Submit",
+					"role": "tab"
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Action.ShowCard",
+					"card": {
+						"type": "AdaptiveCard"
+					},
+					"role": "menu"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action.Submit",
+					"role": "menuItem"
+				},
+				{
+					"type": "Action.Execute",
+					"title": "Action.Execute",
+					"role": "link"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "The actions below have invalid role values and should default to link and button",
+			"wrap": true
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.OpenUrl",
+					"title": "Action.OpenUrl",
+					"role": "invalidrole",
+					"url": "https://adaptivecards.io"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action.Submit",
+					"role": "invalidrole"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "The actions below do not have role values and should be link and button",
+			"wrap": true
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.OpenUrl",
+					"title": "Action.OpenUrl",
+					"url": "https://adaptivecards.io"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action.Submit"
+				}
+			]
+		}
+	]
+}
