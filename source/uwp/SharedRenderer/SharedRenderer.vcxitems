@@ -89,7 +89,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\ImageLoadTracker.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\InputValue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\IXamlBuilderListener.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)lib\LinkButton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\RenderedAdaptiveCard.h" />
@@ -172,7 +171,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\ElementTagContent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\ImageLoadTracker.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\InputValue.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)lib\LinkButton.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\MediaHelpers.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

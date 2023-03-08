@@ -14,7 +14,8 @@
 				{
 					"type": "Action.OpenUrl",
 					"title": "Action.OpenUrl",
-					"role": "button"
+					"role": "button",
+					"url": "https://adaptivecards.io"
 				},
 				{
 					"type": "Action.Submit",
@@ -30,8 +31,8 @@
 					"role": "menu"
 				},
 				{
-					"type": "Action.ToggleVisibility",
-					"title": "Action.ToggleVisibility",
+					"type": "Action.Submit",
+					"title": "Action.Submit",
 					"role": "menuItem"
 				},
 				{
@@ -52,7 +53,8 @@
 				{
 					"type": "Action.OpenUrl",
 					"title": "Action.OpenUrl",
-					"role": "invalidrole"
+					"role": "invalidrole",
+					"url": "https://adaptivecards.io"
 				},
 				{
 					"type": "Action.Submit",
@@ -71,7 +73,8 @@
 			"actions": [
 				{
 					"type": "Action.OpenUrl",
-					"title": "Action.OpenUrl"
+					"title": "Action.OpenUrl",
+					"url": "https://adaptivecards.io"
 				},
 				{
 					"type": "Action.Submit",
