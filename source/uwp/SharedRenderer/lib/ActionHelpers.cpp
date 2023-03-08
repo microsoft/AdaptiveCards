@@ -6,7 +6,6 @@
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
-#include "LinkButton.h"
 #include "WholeItemsPanel.h"
 
 #ifdef USE_WINUI3
@@ -260,7 +259,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
 
-        auto button = CreateAppropriateButton(adaptiveActionElement);
+        auto button = CreateButton(adaptiveActionElement);
         button.Margin(GetButtonMargin(actionsConfig));
 
         if (actionsConfig.ActionsOrientation() == winrt::ActionsOrientation::Horizontal)
@@ -507,7 +506,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             return elementToWrap;
         }
 
-        auto button = CreateAppropriateButton(action);
+        auto button = CreateButton(action);
         button.Content(elementToWrap);
 
         uint32_t cardPadding = 0;
@@ -975,15 +974,35 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return actionPanel;
     }
 
-    winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
+    winrt::Button CreateButton(winrt::IAdaptiveActionElement const& action)
     {
-        if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
+        winrt::Button button = winrt::Button{};
+        if (action && (action.Role() != winrt::ActionRole::Button))
         {
-            return winrt::make<LinkButton>();
+            SetAutomationType(action.Role(), button);
         }
-        else
+        return button;
+    }
+
+    void SetAutomationType(winrt::ActionRole const& actionRole, winrt::Button const& button)
+    {
+        // Default to button role
+        winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
+        switch (actionRole)
         {
-            return winrt::Button{};
+            case winrt::ActionRole::Link:
+                roleType = winrt::AutomationControlType::Hyperlink;
+                break;
+            case winrt::ActionRole::Tab:
+                roleType = winrt::AutomationControlType::Tab;
+                break;
+            case winrt::ActionRole::Menu:
+                roleType = winrt::AutomationControlType::Menu;
+                break;
+            case winrt::ActionRole::MenuItem:
+                roleType = winrt::AutomationControlType::MenuItem;
+                break;
         }
+        winrt::AutomationProperties::SetAutomationControlType(button, roleType);
     }
 }
