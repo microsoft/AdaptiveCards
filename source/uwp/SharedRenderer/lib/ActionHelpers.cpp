@@ -770,7 +770,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
                 case winrt::FallbackType::None:
                 default:
-                    throw winrt::hresult_error(E_FAIL);
+                    throw winrt::hresult_error(E_FALLBACK_NOT_FOUND);
                 }
             }
         }
@@ -907,9 +907,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                 }
                 catch (winrt::hresult_error const& ex)
                 {
-                    // We want to continue if the error is E_FAIL
+                    // We want to continue if the error is E_FALLBACK_NOT_FOUND
                     // There was no fallback mechanism for this action, but we need to render the rest of the ActionSet
-                    if (ex.code() != E_FAIL)
+                    if (ex.code() != E_FALLBACK_NOT_FOUND)
                     {
                         throw ex;
                     }
