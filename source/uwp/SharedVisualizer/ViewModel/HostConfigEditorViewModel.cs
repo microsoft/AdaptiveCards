@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.ViewManagement;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -58,9 +59,10 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public static async Task<HostConfigEditorViewModel> LoadAsync(MainPageViewModel mainPageViewModel)
         {
+            string fileName = PickHostConfigFile();
             try
             {
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///HostConfigs/DefaultHostConfig.json"));
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///" + fileName));
                 string text = await FileIO.ReadTextAsync(file);
 
                 return new HostConfigEditorViewModel(mainPageViewModel)
@@ -72,6 +74,27 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 return new HostConfigEditorViewModel(mainPageViewModel);
             }
+        }
+
+        protected static string PickHostConfigFile()
+        {
+            AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
+
+            if (accessibilitySettings.HighContrast)
+            {
+                switch (accessibilitySettings.HighContrastScheme)
+                {
+                    case "High Contrast Black":
+                        return "HostConfigs/DefaultHostConfigHighContrastAquatic.json";
+                    case "High Contrast White":
+                        return "HostConfigs/DefaultHostConfigHighContrastDesert.json";
+                    case "High Contrast #1":
+                        return "HostConfigs/DefaultHostConfigHighContrastDusk.json";
+                    case "High Contrast #2":
+                        return "HostConfigs/DefaultHostConfigHighContrastNightSky.json";
+                }
+            }
+            return "HostConfigs/DefaultHostConfig.json";
         }
     }
 }
