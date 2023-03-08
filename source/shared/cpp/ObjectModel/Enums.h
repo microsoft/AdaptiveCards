@@ -13,6 +13,7 @@ enum class AdaptiveCardSchemaKey
     ActionAlignment,
     ActionMode,
     ActionOrientation,
+    ActionRole,
     ActionSet,
     ActionSetConfig,
     Actions,
@@ -412,6 +413,16 @@ enum class ActionMode
     Popup
 };
 DECLARE_ADAPTIVECARD_ENUM(ActionMode);
+
+enum class ActionRole
+{
+    Button = 0,
+    Link,
+    Tab,
+    Menu,
+    MenuItem
+};
+DECLARE_ADAPTIVECARD_ENUM(ActionRole);
 
 enum class ContainerStyle
 {

@@ -18,6 +18,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property<ActionMode> Mode;
         property<hstring> ActionTypeString;
         property<bool> IsEnabled;
+        property<ActionRole> Role;
 
         virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() = 0;
 

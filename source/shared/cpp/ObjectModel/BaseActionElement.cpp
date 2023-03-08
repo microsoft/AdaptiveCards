@@ -10,7 +10,8 @@ using namespace AdaptiveCards;
 constexpr const char* const BaseActionElement::defaultStyle;
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true)
+    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true),
+    m_role(type == ActionType::OpenUrl ? ActionRole::Link : ActionRole::Button)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -101,6 +102,16 @@ Mode BaseActionElement::GetMode() const
     return m_mode;
 }
 
+ActionRole BaseActionElement::GetRole() const
+{
+    return m_role;
+}
+
+void AdaptiveCards::BaseActionElement::SetRole(const ActionRole role)
+{
+    m_role = role;
+}
+
 Json::Value BaseActionElement::SerializeToJsonValue() const
 {
     Json::Value root = BaseElement::SerializeToJsonValue();
@@ -134,6 +145,11 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)] = m_isEnabled;
     }
 
+    if (m_role != ActionRole::Button)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ActionRole)] = ActionRoleToString(m_role);
+    }
+
     return root;
 }
 
@@ -145,7 +161,8 @@ void BaseActionElement::PopulateKnownPropertiesSet()
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
          AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)});
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ActionRole)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -187,4 +204,5 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetMode(ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode, Mode::Primary, ModeFromString));
     element->SetTooltip(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Tooltip));
     element->SetIsEnabled(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsEnabled, true));
+    element->SetRole(ParseUtil::GetEnumValue<ActionRole>(json, AdaptiveCardSchemaKey::ActionRole, ActionRole::Button, ActionRoleFromString));
 }

@@ -73,6 +73,7 @@ namespace UWPUnitTests
             public bool IsEnabled { get; set; }
             public string Tooltip { get; set; }
             public AdaptiveCards.ObjectModel.Uwp.ActionMode Mode { get; set; }
+            public AdaptiveCards.ObjectModel.Uwp.ActionRole Role { get; set; }
             public IAdaptiveActionElement FallbackContent => throw new NotImplementedException();
 
             public FallbackType FallbackType => throw new NotImplementedException();

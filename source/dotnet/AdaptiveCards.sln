@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf.Xceed", "Library\AdaptiveCards.Rendering.Wpf.Xceed\AdaptiveCards.Rendering.Wpf.Xceed.csproj", "{4741ABEC-33B0-424F-B5F1-464EC31AEEBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Sample.Html", "Samples\AdaptiveCards.Sample.Html\AdaptiveCards.Sample.Html.csproj", "{C015DC5F-E523-4828-8E46-118A8242B51A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Test", "Test\AdaptiveCards.Test\AdaptiveCards.Test.csproj", "{4DB2C1D1-630A-4445-95F3-4E342ABD9342}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Sample.ImageRender", "samples\AdaptiveCards.Sample.ImageRender\AdaptiveCards.Sample.ImageRender.csproj", "{BCFC1329-903B-4440-ABE1-160C22A3AE23}"
@@ -30,8 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", "Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{F36E1451-6A16-4E83-B7B3-90024BF36B4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating.Test", "Test\AdaptiveCards.Templating.Test\AdaptiveCards.Templating.Test.csproj", "{9E7E5953-A5B4-4867-9A06-046A754AFAC1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A751CC8F-EF13-4EA1-B9FD-611135AD7C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

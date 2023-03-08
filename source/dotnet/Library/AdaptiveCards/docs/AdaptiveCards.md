@@ -4784,7 +4784,7 @@ Collection of TableRows
 
 ##### Summary
 
-Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
+Specifies whether grid lines should be displayed.
 
 <a name='P-AdaptiveCards-AdaptiveTable-Type'></a>
 ### Type `property`

@@ -403,6 +403,67 @@ CGFloat kFileBrowserWidth = 0;
     return YES; // skip SDK defult display
 }
 
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion
+{
+    NSString *queryString = [searchRequest valueForKey:@"value"];
+    NSMutableDictionary *responseDict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *resultsArray = [[NSMutableDictionary alloc] init];
+    [responseDict setValue:resultsArray forKey:@"value"];
+    [responseDict setValue:@"application/vnd.microsoft.search.searchResponse" forKey:@"type"];
+
+    if (queryString != nil && [queryString length]) {
+        NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if (data != nil) {
+            NSDictionary *resultsDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:kNilOptions
+                                                                                error:nil];
+            NSArray *dataList = [resultsDictionary valueForKey:@"data"];
+            NSNumber *pageSize = [searchRequest valueForKey:@"top"];
+            for (int index = 0; index < [pageSize intValue] && index < [dataList count]; index++) {
+                id itemDict = [dataList objectAtIndex:index];
+                if ([itemDict isKindOfClass:NSDictionary.class]) {
+                    resultsArray[[itemDict objectForKey:@"id"]] = [itemDict objectForKey:@"description"];
+                }
+            }
+            [responseDict setValue:resultsArray forKey:@"value"];
+        } else {
+            [responseDict setValue:nil forKey:@"value"];
+            [responseDict setValue:@"application/vnd.microsoft.search.error" forKey:@"type"];
+        }
+    }
+    completion(responseDict, nil);
+}
+
+- (void)didUpdateTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC searchStateImageView:(UIImageView *)searchStateImageView searchViewState:(TSTypeaehadSearchViewState)searchViewState
+{
+    // modify the UI based on the search view state
+    switch (searchViewState) {
+        case zeroState:
+            searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
+            break;
+        case displayingGenericError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+            break;
+        case displayingInvalidSearchError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (BOOL)shouldLaunchTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
+}
+
+- (BOOL)shouldConfigureNavigationItemViewWithVC:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
+}
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview

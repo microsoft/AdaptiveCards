@@ -1,0 +1,29 @@
+{
+    "version": "1.6",
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "body": [
+        {
+            "type": "Input.ChoiceSet",
+            "isMultiSelect": false,
+            "label": "Please select a package",
+            "style": "filtered",
+            "id": "chosenPackage",
+            "isRequired": true,
+            "errorMessage": "Please select a package",
+            "choices.data":
+            {
+                "type": "Data.Query",
+                "dataset": "packagesInScope",
+                "count": 1,
+                "skip": 2
+            }
+        }
+    ],
+    "actions": [
+        {
+            "title": "OK",
+            "type": "Action.Submit"
+        }
+    ]
+}

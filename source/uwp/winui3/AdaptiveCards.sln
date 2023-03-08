@@ -24,6 +24,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RendererCsProjection", "Ren
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleVisualizer", "SimpleVisualizer\SimpleVisualizer.csproj", "{C3038503-11AC-4E7C-AAAE-4E5F887989C9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCardVisualizer", "Visualizer\AdaptiveCardVisualizer.csproj", "{A0353998-CF26-43C8-85C3-9CC8011A3D91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{90FC73CA-F54D-486F-A7F8-32CD3FF508BB} = {90FC73CA-F54D-486F-A7F8-32CD3FF508BB}
+		{BE5A624F-8376-43DE-B2FC-F758F78E9C99} = {BE5A624F-8376-43DE-B2FC-F758F78E9C99}
+	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedVisualizer", "..\SharedVisualizer\SharedVisualizer.shproj", "{85425680-C8BF-43F3-84C4-773D0ADE45EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -198,6 +206,36 @@ Global
 		{C3038503-11AC-4E7C-AAAE-4E5F887989C9}.Release|x86.ActiveCfg = Release|x86
 		{C3038503-11AC-4E7C-AAAE-4E5F887989C9}.Release|x86.Build.0 = Release|x86
 		{C3038503-11AC-4E7C-AAAE-4E5F887989C9}.Release|x86.Deploy.0 = Release|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|Any CPU.Build.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|Any CPU.Deploy.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|ARM.ActiveCfg = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|ARM.Build.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|ARM.Deploy.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|arm64.ActiveCfg = Debug|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|arm64.Build.0 = Debug|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|arm64.Deploy.0 = Debug|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x64.ActiveCfg = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x64.Build.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x64.Deploy.0 = Debug|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x86.ActiveCfg = Debug|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x86.Build.0 = Debug|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Debug|x86.Deploy.0 = Debug|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|Any CPU.ActiveCfg = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|Any CPU.Build.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|Any CPU.Deploy.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|ARM.ActiveCfg = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|ARM.Build.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|ARM.Deploy.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|arm64.ActiveCfg = Release|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|arm64.Build.0 = Release|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|arm64.Deploy.0 = Release|ARM64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x64.ActiveCfg = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x64.Build.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x64.Deploy.0 = Release|x64
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x86.ActiveCfg = Release|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x86.Build.0 = Release|x86
+		{A0353998-CF26-43C8-85C3-9CC8011A3D91}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,7 +245,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\SharedRenderer\SharedRenderer.vcxitems*{40c8962d-3e19-4142-a0b4-1614548aa3d1}*SharedItemsImports = 4
+		..\SharedVisualizer\SharedVisualizer.projitems*{85425680-c8bf-43f3-84c4-773d0ade45ef}*SharedItemsImports = 13
 		..\SharedObjectModel\SharedObjectModel.vcxitems*{8e2f84c6-5215-4c81-93fc-a35883762e10}*SharedItemsImports = 4
+		..\SharedVisualizer\SharedVisualizer.projitems*{a0353998-cf26-43c8-85c3-9cc8011a3d91}*SharedItemsImports = 5
 		..\SharedObjectModel\SharedObjectModel.vcxitems*{bb89bde2-fa11-4f6e-a27d-7025063b8b21}*SharedItemsImports = 9
 		..\SharedRenderer\SharedRenderer.vcxitems*{dcf1bda8-e94a-4d57-8ed6-5d30e29b69ed}*SharedItemsImports = 9
 	EndGlobalSection
