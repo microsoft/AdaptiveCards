@@ -246,6 +246,15 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Secondary,
     };
 
+    enum ActionRole
+    {
+        Button = 0,
+        Link,
+        Tab,
+        Menu,
+        MenuItem
+    };
+
     declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation>; }
 
     interface IAdaptiveCardElement
@@ -671,6 +680,7 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Windows.Data.Json.JsonObject AdditionalProperties;
         Boolean IsEnabled;
         ActionMode Mode;
+        ActionRole Role;
 
         Windows.Data.Json.JsonObject ToJson();
     };
