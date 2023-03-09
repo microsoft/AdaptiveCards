@@ -15,7 +15,7 @@ import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
-import { BasePaletteItem, ElementPaletteItem, DataPaletteItem, CustomPaletteItem } from "./tool-palette";
+import { BasePaletteItem, ElementPaletteItem, DataPaletteItem, CustomPaletteItem, ExtensionPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
@@ -28,6 +28,7 @@ import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
 import { WidgetContainer, ContainerSize } from "./containers";
+import { PlatformPackage } from "./platform-package";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -62,7 +63,9 @@ export class CardDesigner extends Designer.DesignContext {
     private _deviceEmulation: DeviceEmulation;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
-    private _startDragPayload: object;
+	private _startDragPayload: object;
+	
+	// TODO: we want to add extensions here!
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
     private _propertySheetCard: Adaptive.AdaptiveCard;
@@ -80,6 +83,8 @@ export class CardDesigner extends Designer.DesignContext {
     private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
     private _sampleCatalogue: SampleCatalogue = new SampleCatalogue();
+    private _platformPackages: Array<PlatformPackage>;
+    private _platformPackage: PlatformPackage;
 
     private togglePreview() {
         this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
@@ -203,6 +208,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         let categorizedTypes: object = {};
 
+		// TODO: deciding if we're getting rid of hostContainers is a big decision
         for (let i = 0; i < this.hostContainer.elementsRegistry.getItemCount(); i++) {
             let registration = this.hostContainer.elementsRegistry.getItemAt(i);
 
@@ -230,7 +236,21 @@ export class CardDesigner extends Designer.DesignContext {
                     categorizedTypes[peerRegistration.category].push(paletteItem);
                 }
             }
-        }
+		}
+		
+		for (let i = 0; i < this.hostContainer.extensionsRegistry.length; i++) {
+			let registration = this.hostContainer.extensionsRegistry.at(i);
+
+			if (registration.schemaVersion === this.targetPackage) {
+				if (!categorizedTypes.hasOwnProperty(registration.category)) {
+					categorizedTypes[registration.category] = [];
+				}
+
+				let paletteItem = new ExtensionPaletteItem(registration);
+
+				categorizedTypes[registration.category].push(paletteItem);
+			}
+		}
 
         if (this.customPaletteItems) {
             for (let item of this.customPaletteItems) {
@@ -673,9 +693,11 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
+	private _targetVersion: Adaptive.Version;
+	private _targetPackage: Adaptive.Version;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
+    private _packageChoicePicker: ToolbarChoicePicker;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
     private _deviceEmulationChoicePicker: ToolbarChoicePicker;
     private _versionChoicePicker: ToolbarChoicePicker;
@@ -840,10 +862,29 @@ export class CardDesigner extends Designer.DesignContext {
 
         this.toolbar.addElement(this._newCardButton);
 
+        this._packageChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.PackagePicker);
+        this._packageChoicePicker.separator = true;
+        this._packageChoicePicker.label = "Select package:";
+
+        for (let i = 0; i < this._platformPackages.length; i++) {
+            this._packageChoicePicker.choices.push(
+                {
+                    name: this._platformPackages[i].name,
+                    value: i.toString(),
+                }
+            );
+        }
+        
+        this._packageChoicePicker.onChanged = (sender) => {
+            this.platformPackage = this._platformPackages[parseInt(this._hostContainerChoicePicker.value)];
+        };
+
+        this.toolbar.addElement(this._packageChoicePicker);
+        
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
             this._hostContainerChoicePicker.separator = true;
-            this._hostContainerChoicePicker.label = "Select host app:"
+            this._hostContainerChoicePicker.label = "Select host app:";
 
             for (let i = 0; i < this._hostContainers.length; i++) {
                 this._hostContainerChoicePicker.choices.push(
@@ -1314,7 +1355,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     lockDataStructure: boolean = false;
 
-    constructor(hostContainers: Array<HostContainer> = null, deviceEmulations: Array<DeviceEmulation> = null) {
+    constructor( hostContainers: Array<HostContainer> = null, deviceEmulations: Array<DeviceEmulation> = null, platformPackages: Array<PlatformPackage> = null) {
         super();
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
@@ -1325,6 +1366,7 @@ export class CardDesigner extends Designer.DesignContext {
             CardDesigner.internalProcessMarkdown(text, result);
         }
 
+        this._platformPackages = platformPackages ? platformPackages : [new PlatformPackage("Common", Adaptive.Versions.v1_6)];
         this._hostContainers = hostContainers ? hostContainers : [];
         this._deviceEmulations = deviceEmulations ? deviceEmulations : [];
 
@@ -1460,6 +1502,9 @@ export class CardDesigner extends Designer.DesignContext {
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
+        
+        this._platformPackage = this._platformPackages[0];
+        this._targetPackage = this.platformPackage.version;
 
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainer = this._hostContainers[0];
@@ -1739,7 +1784,34 @@ export class CardDesigner extends Designer.DesignContext {
                 this._preventRecursiveSetTargetVersion = false;
             }
         }
-    }
+	}
+	
+	get targetPackage(): Adaptive.Version {
+		return this._targetPackage;
+	}
+
+	set targetPackage(value: Adaptive.Version) {
+		// TODO: another preventative bool?
+		if (this._targetPackage.compareTo(value) !== 0 && !this._preventRecursiveSetTargetVersion) {
+            this._preventRecursiveSetTargetVersion = true;
+
+            try {
+                this._targetPackage = value;
+
+				// TODO what do these next two methods do?
+				this.targetVersionChanged();
+				
+				this.recreateDesignerSurface();
+
+                if (this._packageChoicePicker) {
+                    this._packageChoicePicker.selectedIndex = Shared.GlobalSettings.supportedTargetVersions.indexOf(this._targetVersion);
+                }
+            }
+            finally {
+                this._preventRecursiveSetTargetVersion = false;
+            }
+        }
+	}
 
     get dataStructure(): FieldDefinition {
         return this._dataStructure;
@@ -1785,6 +1857,20 @@ export class CardDesigner extends Designer.DesignContext {
 
     set bindingPreviewMode(value: Designer.BindingPreviewMode) {
         this._bindingPreviewMode = value;
+    }
+
+    get platformPackage(): PlatformPackage {
+        return this._platformPackage;
+    }
+
+    set platformPackage(value: PlatformPackage) {
+        if (this._platformPackage !== value) {
+            this._platformPackage = value;
+
+            // this.activatePlatformPackageChanged();
+
+            this.targetPackage = this._platformPackage.version;
+        }
     }
 
     get hostContainer(): HostContainer {
@@ -1876,6 +1962,7 @@ export class CardDesigner extends Designer.DesignContext {
 
 export module CardDesigner {
     export class ToolbarCommands {
+        static readonly PackagePicker = "__platformPackagePicker";
         static readonly HostAppPicker = "__hostAppPicker";
         static readonly DeviceEmulationPicker = "__deviceEmulationPicker";
         static readonly VersionPicker = "__versionPicker";

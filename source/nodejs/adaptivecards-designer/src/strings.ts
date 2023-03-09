@@ -31,5 +31,5 @@ export class Strings {
         }
     };
     static loadingEditor = "Loading editor...";
-    static readonly widgetOverflowWarning = `[Designer] We have adjusted your card to hide overflow elements. Please ensure all card elements are contained within the proper card height per Widgets Board design guidelines. Only Carousel pagination dots can be present in the bottom ${WidgetContainer.widgetPadding}px margin of a widget.`;
+    static readonly widgetOverflowWarning = `[Designer] We have adjusted your card to hide overflow elements. Please ensure all card elements are contained within the proper card height per Widgets Board design guidelines. Only Carousel pagination dots can be present in the bottom 16px margin of a widget.`;
 }

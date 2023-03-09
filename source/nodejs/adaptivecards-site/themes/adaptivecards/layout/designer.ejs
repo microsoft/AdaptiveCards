@@ -88,7 +88,7 @@
 		}
 
 		function initializeDesigner() {
-			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations);
+			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts, ACDesigner.defaultMicrosoftDeviceEmulations, ACDesigner.defaultPlatformPackages);
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
 			designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
 			designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;

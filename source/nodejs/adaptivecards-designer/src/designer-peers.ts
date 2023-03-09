@@ -3509,3 +3509,6 @@ export class CarouselPagePeer extends ContainerPeer {
         return this._pageOffset;
     }
 }
+
+// TODO: we probably don't need this?
+//export class ExtensionPeer extends 

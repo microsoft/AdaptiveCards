@@ -10,3 +10,5 @@ export class GlobalSettings {
     static showTargetVersionMismatchWarning: boolean = true;
     static supportedTargetVersions: Adaptive.Version[] = Adaptive.Versions.getAllDeclaredVersions();
 }
+
+// TODO: it's an option to include the platforms here as well? - might be a good option since people likely will not create custom platforms?

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 import * as containers from "./containers";
 import { DeviceEmulation } from "./device-emulation";
+import { PlatformPackage, PlatformVersions } from "./platform-package";
 
 export * from "./adaptivecards-designer-standalone";
 export * from "./containers/index";
@@ -16,6 +17,12 @@ export const defaultMicrosoftHosts: containers.HostContainer[] = [
     new containers.CortanaClassicContainer("Cortana Skills (Classic)", "containers/cortana-classic-container.css"),
     new containers.FederatedSearchContainer("Federated Search","containers/federated-search-container.css"),
     new containers.WidgetContainer(containers.ContainerSize.Small),
+];
+
+export const defaultPlatformPackages: PlatformPackage[] = [
+	new PlatformPackage("Common", PlatformVersions.CommonVersion),
+	new PlatformPackage("Windows", PlatformVersions.WindowsVersion),
+	new PlatformPackage("Mobile", PlatformVersions.MobileVersion)
 ];
 
 export const defaultMicrosoftDeviceEmulations: DeviceEmulation[] = [

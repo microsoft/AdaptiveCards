@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 export * from "./strings";
 export * from "./shared";
+export * from "./extensions";
 export * from "./containers/host-container";
 export * from "./containers/default/default-container";
 export * from "./field-picker";
@@ -26,3 +27,4 @@ export * from "./catalogue";
 export * from "./containers/host-container";
 export * from "./containers/default/default-container";
 export * from "./pic2card";
+export * from "./platform-package";

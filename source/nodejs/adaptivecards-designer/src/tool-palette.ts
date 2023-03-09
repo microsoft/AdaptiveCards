@@ -5,6 +5,7 @@ import { DraggableElement } from "./draggable-element";
 import { FieldDefinition } from "./data";
 import { DesignContext, CardDesignerSurface } from "./card-designer-surface";
 import { CardElementPeer, DesignerPeerRegistrationBase } from "./designer-peers";
+import { DesignerExtensionPeerRegistration } from "./extensions";
 
 export abstract class BasePaletteItem extends DraggableElement {
     protected abstract getText(): string;
@@ -58,7 +59,7 @@ export class ElementPaletteItem extends BasePaletteItem {
         this.peerRegistration = peerRegistration;
     }
 
-    createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer {
+    createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer | undefined {
         return CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, new this.typeRegistration.objectType(), true);
     }
 }
@@ -137,4 +138,35 @@ export class SnippetPaletteItem extends CustomPaletteItem {
             }
         }
     }
+}
+
+// We might not even need peers here :/
+// TODO: we'll want a url property here that opens docs!
+export class ExtensionPaletteItem extends BasePaletteItem {
+	protected getText(): string {
+        return (this.peerRegistration as DesignerExtensionPeerRegistration).typeName;
+    }
+
+    protected getIconClass(): string {
+        return this.peerRegistration.iconClass;
+    }
+
+    // readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
+    readonly peerRegistration: DesignerPeerRegistrationBase;
+
+    constructor(peerRegistration: DesignerPeerRegistrationBase) {
+        super();
+
+        // this.typeRegistration = typeRegistration;
+        this.peerRegistration = peerRegistration;
+    }
+
+	// will need some null checks here now :)
+	createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer | undefined {
+		return undefined;
+	}
+	
+	isDraggable(): boolean {
+		return false;
+	}
 }

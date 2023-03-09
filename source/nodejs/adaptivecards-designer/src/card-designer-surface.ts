@@ -38,12 +38,13 @@ export type ActionPeerType = {
     ): DesignerPeers.ActionPeer
 };
 
+// try removing this?
 class DesignerPeerCategory {
     static Unknown = "Unknown";
     static Containers = "Containers";
     static Elements = "Elements";
     static Inputs = "Inputs";
-    static Actions = "Actions";
+	static Actions = "Actions";
 }
 
 export abstract class DesignerPeerRegistry<TSource, TPeer> {
@@ -96,9 +97,18 @@ export abstract class DesignerPeerRegistry<TSource, TPeer> {
                 return;
             }
         }
-    }
+	}
+	
+	// registerExtensionPeer(peerType: TPeer, category: string, iconClass: string = null) {s
+	// 	// Will we need another _items[] for extensions
+	// 	this._items.push(new DesignerPeers.DesignerExtensionPeerRegistration<TPeer>(
+	// 		peerType,
+	// 		category,
+	// 		iconClass));
+	// }
 }
 
+// TODO: Ask Paul - Do we need extensions here???
 export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementType, CardElementPeerType> {
     reset() {
         this.clear();
@@ -126,7 +136,10 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.TimeInput, DesignerPeers.TimeInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputTime");
         this.registerPeer(Adaptive.ToggleInput, DesignerPeers.ToggleInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputToggle");
         this.registerPeer(Adaptive.NumberInput, DesignerPeers.NumberInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputNumber");
-        this.registerPeer(Adaptive.ChoiceSetInput, DesignerPeers.ChoiceSetInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputChoiceSet");
+		this.registerPeer(Adaptive.ChoiceSetInput, DesignerPeers.ChoiceSetInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputChoiceSet");
+		
+		// It doesn't need to allow a backing element
+		//this.registerExtensionPeer(DesignerPeers.TestExtensions, DesignerPeerCategory.Extensions, "acd-icon-testExtension");
     }
 
     createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement, initializeCardElement?: boolean): DesignerPeers.CardElementPeer {

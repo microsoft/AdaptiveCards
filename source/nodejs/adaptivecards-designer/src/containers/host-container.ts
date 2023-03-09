@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version, Versions } from "adaptivecards";
+import { DesignerExtensionPeerRegistration, ExtensionsHelper } from "../extensions";
 import * as hostConfig from "../hostConfigs/sample.json";
 
 export enum ColorTheme {
@@ -11,7 +12,10 @@ export enum ColorTheme {
 export abstract class HostContainer {
     private _cardHost: HTMLElement;
     private _elementsRegistry = new CardObjectRegistry<CardElement>();
-    private _actionsRegistry = new CardObjectRegistry<Action>();
+	private _actionsRegistry = new CardObjectRegistry<Action>();
+
+	// Do we need another registry here??
+	private _extensionsRegistry: Array<DesignerExtensionPeerRegistration>;
 
     readonly name: string;
 
@@ -22,7 +26,8 @@ export abstract class HostContainer {
         this._cardHost.className = "cardHost";
 
         GlobalRegistry.populateWithDefaultElements(this._elementsRegistry);
-        GlobalRegistry.populateWithDefaultActions(this._actionsRegistry);
+		GlobalRegistry.populateWithDefaultActions(this._actionsRegistry);
+		this._extensionsRegistry = ExtensionsHelper.getDefaultExtensionResigtrations();
     }
 
     abstract renderTo(hostElement: HTMLElement);
@@ -86,7 +91,11 @@ export abstract class HostContainer {
 
     get actionsRegistry(): CardObjectRegistry<Action> {
         return this._actionsRegistry;
-    }
+	}
+	
+	get extensionsRegistry(): Array<DesignerExtensionPeerRegistration> {
+		return this._extensionsRegistry;
+	}
 
     get targetVersion(): Version {
         return Versions.v1_0;
