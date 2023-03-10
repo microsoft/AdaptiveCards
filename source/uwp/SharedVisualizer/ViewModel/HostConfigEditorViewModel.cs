@@ -16,11 +16,15 @@ namespace AdaptiveCardVisualizer.ViewModel
 {
     public class HostConfigEditorViewModel : GenericDocumentViewModel
     {
-        private HostConfigEditorViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
+        private HostConfigEditorViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) {
+            accessibilitySettings.HighContrastChanged += AccessibilitySettings_HighContrastChanged;
+        }
 
         public event EventHandler<AdaptiveHostConfig> HostConfigChanged;
+        public event EventHandler<AccessibilitySettings> HighContrastThemeChanged;
 
         public AdaptiveHostConfig HostConfig { get; private set; }
+        protected AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
 
         protected override void LoadPayload(string payload)
         {
@@ -59,20 +63,36 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public static async Task<HostConfigEditorViewModel> LoadAsync(MainPageViewModel mainPageViewModel)
         {
+            string hostConfig = await LoadHostConfigFromFileAsync();
+
+            if (hostConfig != null)
+            {
+                return new HostConfigEditorViewModel(mainPageViewModel)
+                {
+                    Payload = hostConfig
+                };
+            }
+            return new HostConfigEditorViewModel(mainPageViewModel);
+        }
+
+        private void AccessibilitySettings_HighContrastChanged(AccessibilitySettings sender, object args)
+        {
+            HighContrastThemeChanged?.Invoke(this, sender);
+        }
+
+        public static async Task<string> LoadHostConfigFromFileAsync()
+        {
             string fileName = PickHostConfigFile();
             try
             {
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///" + fileName));
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///HostConfigs/" + fileName));
                 string text = await FileIO.ReadTextAsync(file);
 
-                return new HostConfigEditorViewModel(mainPageViewModel)
-                {
-                    Payload = text
-                };
+                return text;
             }
             catch
             {
-                return new HostConfigEditorViewModel(mainPageViewModel);
+                return null;
             }
         }
 
@@ -85,16 +105,16 @@ namespace AdaptiveCardVisualizer.ViewModel
                 switch (accessibilitySettings.HighContrastScheme)
                 {
                     case "High Contrast Black":
-                        return "HostConfigs/DefaultHostConfigHighContrastAquatic.json";
+                        return "DefaultHostConfigHighContrastAquatic.json";
                     case "High Contrast White":
-                        return "HostConfigs/DefaultHostConfigHighContrastDesert.json";
+                        return "DefaultHostConfigHighContrastDesert.json";
                     case "High Contrast #1":
-                        return "HostConfigs/DefaultHostConfigHighContrastDusk.json";
+                        return "DefaultHostConfigHighContrastDusk.json";
                     case "High Contrast #2":
-                        return "HostConfigs/DefaultHostConfigHighContrastNightSky.json";
+                        return "DefaultHostConfigHighContrastNightSky.json";
                 }
             }
-            return "HostConfigs/DefaultHostConfig.json";
+            return "DefaultHostConfig.json";
         }
     }
 }
