@@ -135,6 +135,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
             viewModel.HostConfigEditor = await HostConfigEditorViewModel.LoadAsync(viewModel);
             viewModel.HostConfigEditor.HostConfigChanged += viewModel.HostConfigEditor_HostConfigChanged;
+            viewModel.HostConfigEditor.HighContrastThemeChanged += viewModel.HostConfigEditor_HighContrastThemeChanged;
 
             var tokens = await GetFileTokensAsync();
             ObservableCollection<DocumentViewModel> documents = new ObservableCollection<DocumentViewModel>();
@@ -186,6 +187,17 @@ namespace AdaptiveCardVisualizer.ViewModel
         {
             DocumentViewModel.InitializeRenderer(e);
             ReRenderCards();
+        }
+
+        private async void HostConfigEditor_HighContrastThemeChanged(object sender, object e)
+        {
+            string hostConfig = await HostConfigEditorViewModel.LoadHostConfigFromFileAsync();
+
+            if (hostConfig != null)
+            {
+                HostConfigEditor.Payload = hostConfig;
+                HostConfigEditor.Reload();
+            }
         }
 
         private static async Task<string[]> GetFileTokensAsync()

@@ -10,16 +10,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.ViewManagement;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
     public class HostConfigEditorViewModel : GenericDocumentViewModel
     {
-        private HostConfigEditorViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
+        private HostConfigEditorViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) {
+            accessibilitySettings.HighContrastChanged += AccessibilitySettings_HighContrastChanged;
+        }
 
         public event EventHandler<AdaptiveHostConfig> HostConfigChanged;
+        public event EventHandler<AccessibilitySettings> HighContrastThemeChanged;
 
         public AdaptiveHostConfig HostConfig { get; private set; }
+        protected AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
 
         protected override void LoadPayload(string payload)
         {
@@ -58,20 +63,58 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public static async Task<HostConfigEditorViewModel> LoadAsync(MainPageViewModel mainPageViewModel)
         {
-            try
-            {
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///HostConfigs/DefaultHostConfig.json"));
-                string text = await FileIO.ReadTextAsync(file);
+            string hostConfig = await LoadHostConfigFromFileAsync();
 
+            if (hostConfig != null)
+            {
                 return new HostConfigEditorViewModel(mainPageViewModel)
                 {
-                    Payload = text
+                    Payload = hostConfig
                 };
+            }
+            return new HostConfigEditorViewModel(mainPageViewModel);
+        }
+
+        private void AccessibilitySettings_HighContrastChanged(AccessibilitySettings sender, object args)
+        {
+            HighContrastThemeChanged?.Invoke(this, sender);
+        }
+
+        public static async Task<string> LoadHostConfigFromFileAsync()
+        {
+            string fileName = PickHostConfigFile();
+            try
+            {
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///HostConfigs/" + fileName));
+                string text = await FileIO.ReadTextAsync(file);
+
+                return text;
             }
             catch
             {
-                return new HostConfigEditorViewModel(mainPageViewModel);
+                return null;
             }
+        }
+
+        protected static string PickHostConfigFile()
+        {
+            AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
+
+            if (accessibilitySettings.HighContrast)
+            {
+                switch (accessibilitySettings.HighContrastScheme)
+                {
+                    case "High Contrast Black":
+                        return "DefaultHostConfigHighContrastAquatic.json";
+                    case "High Contrast White":
+                        return "DefaultHostConfigHighContrastDesert.json";
+                    case "High Contrast #1":
+                        return "DefaultHostConfigHighContrastDusk.json";
+                    case "High Contrast #2":
+                        return "DefaultHostConfigHighContrastNightSky.json";
+                }
+            }
+            return "DefaultHostConfig.json";
         }
     }
 }
