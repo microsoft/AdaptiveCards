@@ -28,7 +28,8 @@ import { SampleCatalogue } from "./catalogue";
 import { HelpDialog } from "./help-dialog";
 import { DeviceEmulation } from "./device-emulation";
 import { WidgetContainer, ContainerSize } from "./containers";
-import { PlatformPackage } from "./platform-package";
+import { PlatformPackage, PlatformType } from "./platform-package";
+import { defaultMicrosoftHosts } from "./adaptivecards-designer";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -241,7 +242,7 @@ export class CardDesigner extends Designer.DesignContext {
 		for (let i = 0; i < this.hostContainer.extensionsRegistry.length; i++) {
 			let registration = this.hostContainer.extensionsRegistry.at(i);
 
-			if (registration.schemaVersion === this.targetPackage) {
+			if (registration.platformType === this.targetPackage) {
 				if (!categorizedTypes.hasOwnProperty(registration.category)) {
 					categorizedTypes[registration.category] = [];
 				}
@@ -693,12 +694,12 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-	private _targetVersion: Adaptive.Version;
-	private _targetPackage: Adaptive.Version;
+	private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
+	private _targetPackage: PlatformType = PlatformType.Common;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _packageChoicePicker: ToolbarChoicePicker;
-    private _hostContainerChoicePicker: ToolbarChoicePicker;
+    // private _hostContainerChoicePicker: ToolbarChoicePicker;
     private _deviceEmulationChoicePicker: ToolbarChoicePicker;
     private _versionChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
@@ -869,38 +870,51 @@ export class CardDesigner extends Designer.DesignContext {
         for (let i = 0; i < this._platformPackages.length; i++) {
             this._packageChoicePicker.choices.push(
                 {
-                    name: this._platformPackages[i].name,
+                    name: this._platformPackages[i].type,
                     value: i.toString(),
                 }
-            );
+			);
         }
         
         this._packageChoicePicker.onChanged = (sender) => {
-            this.platformPackage = this._platformPackages[parseInt(this._hostContainerChoicePicker.value)];
+            this.platformPackage = this._platformPackages[parseInt(this._packageChoicePicker.value)];
         };
 
-        this.toolbar.addElement(this._packageChoicePicker);
-        
-        if (this._hostContainers && this._hostContainers.length > 0) {
-            this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
-            this._hostContainerChoicePicker.separator = true;
-            this._hostContainerChoicePicker.label = "Select host app:";
+		this.toolbar.addElement(this._packageChoicePicker);
+		
+		// Handle hostContainer setup
+		for (let i = 0; i < this._platformPackages.length; i++) {
+			this._platformPackages[i].onSelectedHostChanged = () => {
+				this.hostContainer = this._platformPackages[i].currentHost;
+			}
 
-            for (let i = 0; i < this._hostContainers.length; i++) {
-                this._hostContainerChoicePicker.choices.push(
-                    {
-                        name: this._hostContainers[i].name,
-                        value: i.toString(),
-                    }
-                );
-            }
+			// if (i !== 0) {
+			// 	this._platformPackages[i].hostChoicePicker.isVisible = false;
+			// }
 
-            this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
-            };
-
-            this.toolbar.addElement(this._hostContainerChoicePicker);
+			this.toolbar.addElement(this._platformPackages[i].hostChoicePicker);
         }
+        
+        // if (this._hostContainers && this._hostContainers.length > 0) {
+        //     this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
+        //     this._hostContainerChoicePicker.separator = true;
+        //     this._hostContainerChoicePicker.label = "Select host app:";
+
+        //     for (let i = 0; i < this._hostContainers.length; i++) {
+        //         this._hostContainerChoicePicker.choices.push(
+        //             {
+        //                 name: this._hostContainers[i].name,
+        //                 value: i.toString(),
+        //             }
+        //         );
+        //     }
+
+        //     this._hostContainerChoicePicker.onChanged = (sender) => {
+        //         this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
+        //     };
+
+        //     this.toolbar.addElement(this._hostContainerChoicePicker);
+        // }
 
         const supportsTheme = this._hostContainers.some((x) => { return x.supportsMultipleThemes; });
         const supportsSize = this._hostContainers.some((x) => { return x.supportsMultipleSizes; });
@@ -1355,7 +1369,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     lockDataStructure: boolean = false;
 
-    constructor( hostContainers: Array<HostContainer> = null, deviceEmulations: Array<DeviceEmulation> = null, platformPackages: Array<PlatformPackage> = null) {
+    constructor(hostContainers: Array<HostContainer> = null, deviceEmulations: Array<DeviceEmulation> = null, platformPackages: Array<PlatformPackage> = null) {
         super();
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
@@ -1366,8 +1380,9 @@ export class CardDesigner extends Designer.DesignContext {
             CardDesigner.internalProcessMarkdown(text, result);
         }
 
-        this._platformPackages = platformPackages ? platformPackages : [new PlatformPackage("Common", Adaptive.Versions.v1_6)];
-        this._hostContainers = hostContainers ? hostContainers : [];
+		// TODO: what do we want the default to be here?
+		this._platformPackages = platformPackages ? platformPackages : [new PlatformPackage(PlatformType.Common, defaultMicrosoftHosts, CardDesigner.ToolbarCommands.CommonHostAppPicker)];
+        this._hostContainers = this._platformPackages[0].assoiciatedHosts ? this._platformPackages[0].assoiciatedHosts : (hostContainers ? hostContainers : []);
         this._deviceEmulations = deviceEmulations ? deviceEmulations : [];
 
         this.prepareToolbar();
@@ -1504,7 +1519,7 @@ export class CardDesigner extends Designer.DesignContext {
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
         
         this._platformPackage = this._platformPackages[0];
-        this._targetPackage = this.platformPackage.version;
+        this._targetPackage = this.platformPackage.type;
 
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainer = this._hostContainers[0];
@@ -1786,13 +1801,13 @@ export class CardDesigner extends Designer.DesignContext {
         }
 	}
 	
-	get targetPackage(): Adaptive.Version {
+	get targetPackage(): PlatformType {
 		return this._targetPackage;
 	}
 
-	set targetPackage(value: Adaptive.Version) {
-		// TODO: another preventative bool?
-		if (this._targetPackage.compareTo(value) !== 0 && !this._preventRecursiveSetTargetVersion) {
+	set targetPackage(value: PlatformType) {
+		// TODO: another preventative bool or should we use the same one?
+		if (this._targetPackage !== value && !this._preventRecursiveSetTargetVersion) {
             this._preventRecursiveSetTargetVersion = true;
 
             try {
@@ -1864,12 +1879,19 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     set platformPackage(value: PlatformPackage) {
-        if (this._platformPackage !== value) {
-            this._platformPackage = value;
+		if (this._platformPackage !== value) {
+
+			// Hide the old choice picker
+			//this._platformPackage.hostChoicePicker.isVisible = false;
+
+			this._platformPackage = value;
+			
+			// Show the new choice picker
+			//this._platformPackage.hostChoicePicker.isVisible = true;
 
             // this.activatePlatformPackageChanged();
 
-            this.targetPackage = this._platformPackage.version;
+            this.targetPackage = this._platformPackage.type;
         }
     }
 
@@ -1963,7 +1985,9 @@ export class CardDesigner extends Designer.DesignContext {
 export module CardDesigner {
     export class ToolbarCommands {
         static readonly PackagePicker = "__platformPackagePicker";
-        static readonly HostAppPicker = "__hostAppPicker";
+		static readonly CommonHostAppPicker = "__commonHostAppPicker";
+		static readonly WindowsHostAppPicker = "__windowsHostAppPicker";
+        static readonly MobileHostAppPicker = "__mobileHostAppPicker";
         static readonly DeviceEmulationPicker = "__deviceEmulationPicker";
         static readonly VersionPicker = "__versionPicker";
         static readonly Undo = "__undoButton";

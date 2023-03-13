@@ -1,25 +1,54 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Version } from "adaptivecards";
+import { HostContainer } from "./containers/host-container";
+import { ToolbarChoicePicker } from "./toolbar";
 
 export class PlatformPackage {
+	private _choicePickerId: string;
 
-	readonly name: string;
+	readonly type: PlatformType;
+	readonly assoiciatedHosts: Array<HostContainer>;
+	
+	hostChoicePicker: ToolbarChoicePicker;
+	currentHost: HostContainer;
 
-	// For version, will we want a base and beta version
-	// TODO: we could have an extension class of Version for packages?
-	// then we could override comparing logic?
-	readonly version: Version;
+	onSelectedHostChanged: () => void;
 
-	// potentially add a supported host here
-    constructor(name: string, version: Version) {
-		this.name = name;
-		this.version = version;
-    }
+	// TODO: we need a hostOptions here (unless we remove hosts completely)
+	// then maybe we only have one associated host?
+
+    constructor(name: PlatformType, associatedHosts: Array<HostContainer>, choicePickerId: string) {
+		this.type = name;
+		this.assoiciatedHosts = associatedHosts;
+		this._choicePickerId = choicePickerId;
+
+		this.createHostChoicePicker();
+	}
+	
+	private createHostChoicePicker(): void {
+		if (this.assoiciatedHosts && this.assoiciatedHosts.length > 0) {
+            this.hostChoicePicker = new ToolbarChoicePicker(this._choicePickerId);
+            this.hostChoicePicker.separator = true;
+            this.hostChoicePicker.label = "Select host app:";
+
+            for (let i = 0; i < this.assoiciatedHosts.length; i++) {
+                this.hostChoicePicker.choices.push(
+                    {
+                        name: this.assoiciatedHosts[i].name,
+                        value: i.toString(),
+                    }
+                );
+            }
+
+            this.hostChoicePicker.onChanged = (sender) => {
+                this.currentHost = this.assoiciatedHosts[parseInt(this.hostChoicePicker.value)];
+            };
+        }
+	}
 }
 
-export class PlatformVersions {
-	static readonly CommonVersion = new Version(1, 0, "CommonVersion");
-	static readonly WindowsVersion = new Version(1, 0, "WindowsVersion");
-	static readonly MobileVersion = new Version(1, 0, "MobileVersion");
+export enum PlatformType {
+	Common = "Common",
+	Windows = "Windows",
+	Mobile = "Mobile"
 }

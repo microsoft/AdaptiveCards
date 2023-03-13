@@ -144,7 +144,7 @@ export class SnippetPaletteItem extends CustomPaletteItem {
 // TODO: we'll want a url property here that opens docs!
 export class ExtensionPaletteItem extends BasePaletteItem {
 	protected getText(): string {
-        return (this.peerRegistration as DesignerExtensionPeerRegistration).typeName;
+        return this.peerRegistration.typeName;
     }
 
     protected getIconClass(): string {
@@ -152,9 +152,9 @@ export class ExtensionPaletteItem extends BasePaletteItem {
     }
 
     // readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
-    readonly peerRegistration: DesignerPeerRegistrationBase;
+    readonly peerRegistration: DesignerExtensionPeerRegistration;
 
-    constructor(peerRegistration: DesignerPeerRegistrationBase) {
+    constructor(peerRegistration: DesignerExtensionPeerRegistration) {
         super();
 
         // this.typeRegistration = typeRegistration;
