@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
 using XamlCardVisualizer.CustomElements;
+using Windows.UI.ViewManagement;
 
 #if USE_WINUI3
 using AdaptiveCards.ObjectModel.WinUI3;
@@ -16,12 +17,14 @@ using AdaptiveCards.Rendering.WinUI3;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Windows.UI;
 #else
 using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI;
 #endif
 
 namespace AdaptiveCardVisualizer.ViewModel
@@ -200,6 +203,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
+
+                    ApplyBorderIfHighContrast();                 
                 }
                 errors = newErrors;
                 TimeCounter.ResetCounter();
@@ -293,6 +298,22 @@ namespace AdaptiveCardVisualizer.ViewModel
             _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
             _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
             */
+        }
+
+        public void ApplyBorderIfHighContrast()
+        {
+            if (RenderedCard is Grid)
+            {
+                AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
+
+                if (accessibilitySettings.HighContrast)
+                {
+                    Grid grid = (Grid)RenderedCard;
+
+                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Color)grid.Resources["SystemColorWindowTextColor"]);
+                    (RenderedCard as Grid).BorderThickness = new Thickness(2);
+                }
+            }
         }
     }
 }
