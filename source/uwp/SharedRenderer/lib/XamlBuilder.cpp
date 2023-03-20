@@ -302,7 +302,18 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                     throw ex;
                 }
 
-                std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
+                try
+                {
+                    std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
+                }
+                catch (winrt::hresult_error const& ex)
+                {
+                    // if we get an E_PERFORM_FALLBACK error again, we should only throw it if `ancestorHasFallBack`
+                    if (ex.code() != E_PERFORM_FALLBACK || (ex.code() == E_PERFORM_FALLBACK && ancestorHasFallback))
+                    {
+                        throw ex;
+                    }
+                }
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
