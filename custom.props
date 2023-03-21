@@ -2,9 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Version">
     <VersionMajor>1</VersionMajor>
-    <VersionMinor>1</VersionMinor>
+    <VersionMinor>2</VersionMinor>
     <!-- The nuget package version should be incremented when we produce QFEs -->
-    <NuGetPackVersion>1.1.0</NuGetPackVersion>
+    <NuGetPackVersion>1.2.0</NuGetPackVersion>
     <VersionInfoProductName>AdaptiveCards</VersionInfoProductName>
   </PropertyGroup>
 </Project>
