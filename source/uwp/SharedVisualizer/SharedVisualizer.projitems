@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\adaptive-card.svg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\adaptive-card-fixed-height.svg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\down.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\up.png" />
     <Content Include="$(MSBuildThisFileDirectory)HostConfigs\DefaultHostConfigHighContrastNightSky.json" />
