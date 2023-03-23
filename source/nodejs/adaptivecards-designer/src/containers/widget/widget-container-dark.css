@@ -260,7 +260,7 @@ input[type='radio']:hover {
     cursor: pointer;
     height: 32px;
     padding: 5px 12px 7px;
-    width: 120px;
+    max-width: 268px;
 }
 
 .ac-pushButton:active {
@@ -284,7 +284,7 @@ input[type='radio']:hover {
     cursor: pointer;
     height: 32px;
     padding: 5px 12px 7px;
-    width: 120px;
+    max-width: 268px;
 }
 
 a.ac-anchor {
