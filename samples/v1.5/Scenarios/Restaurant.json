@@ -1,0 +1,66 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 2,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Malt & Vine",
+							"weight": "bolder",
+							"size": "extraLarge",
+							"spacing": "none",
+							"wrap": true,
+							"style": "heading"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Redmond, WA",
+							"spacing": "none",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "4.5 stars (176 reviews) · mid-priced",
+							"isSubtle": true,
+							"spacing": "none",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "**Blaire S.** said \"Great concept and a wide selection of beers both on tap and bottled! Smaller wine selection than I wanted, but the variety of beers certainly made up for that. Although I didn't order anything, my boyfriend got a beer and he loved it. Their prices are fair too. \n\nThe concept is really awesome. It's a bar/store that you can bring outside food into. The place was pretty packed tonight. I wish we had stayed for more than one drink. I would have loved to sample everything!\"",
+							"size": "small",
+							"wrap": true,
+							"maxLines": 3
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/300?image=882",
+							"size": "auto",
+							"altText": "Seated guest drinking a cup of coffee"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "More Info",
+			"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+		}
+	]
+}

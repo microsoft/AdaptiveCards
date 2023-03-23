@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +34,7 @@ import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -65,7 +67,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -103,7 +105,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                                                               fragmentManager,
                                                               containerView,
                                                               container.GetItems(),
-                                                              cardActionHandler,
+                                                              channelAdaptor,
                                                               hostConfig,
                                                               containerRenderArgs);
             }
@@ -114,7 +116,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, container.GetBackgroundImage(), hostConfig, containerView);
-        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler, renderArgs);
+        setSelectAction(renderedCard, container.GetSelectAction(), containerView, channelAdaptor.getCardActionHandler(), renderArgs);
 
         viewGroup.addView(containerView);
         return containerView;
@@ -308,6 +310,27 @@ public class ContainerRenderer extends BaseCardElementRenderer
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
 
             applyTitleAndTooltip(selectAction, view);
+
+            if (view instanceof ViewGroup)
+            {
+                ViewGroup group = (ViewGroup) view;
+                if (group.getChildCount() == 1)
+                {
+                    View childView = group.getChildAt(0);
+                    if (childView.isFocusable())
+                    {
+                        childView.setFocusable(false);
+
+                        // setScreenReaderFocusable is only available in API level 28 (P) and above
+                        // Need to check the SDK version of the current device
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                        {
+                            childView.setScreenReaderFocusable(false);
+                        }
+                        childView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+                    }
+                }
+            }
         }
     }
 

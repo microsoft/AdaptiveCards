@@ -37,6 +37,7 @@ steps:
   inputs:
     solution: $(solution)
     selectOrConfig: config
+    nugetConfigPath: source/nuget.config
     verbosity: '-'
 
 - task: VSBuild@1

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C443BF0A-C616-4E98-8994-C5BAE76AE556}"
 EndProject
@@ -16,8 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf", "Library\AdaptiveCards.Rendering.Wpf\AdaptiveCards.Rendering.Wpf.csproj", "{385BFAAD-07E0-4DBF-844D-9EE12EFC0799}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Wpf.Xceed", "Library\AdaptiveCards.Rendering.Wpf.Xceed\AdaptiveCards.Rendering.Wpf.Xceed.csproj", "{4741ABEC-33B0-424F-B5F1-464EC31AEEBD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Sample.Html", "Samples\AdaptiveCards.Sample.Html\AdaptiveCards.Sample.Html.csproj", "{C015DC5F-E523-4828-8E46-118A8242B51A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Test", "Test\AdaptiveCards.Test\AdaptiveCards.Test.csproj", "{4DB2C1D1-630A-4445-95F3-4E342ABD9342}"
 EndProject

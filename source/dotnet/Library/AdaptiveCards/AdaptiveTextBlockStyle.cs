@@ -8,7 +8,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Indicates TextBlock element's content type.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextBlockStyle>), true)]
     public enum AdaptiveTextBlockStyle
     {
         /// <summary>

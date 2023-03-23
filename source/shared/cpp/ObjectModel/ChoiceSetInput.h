@@ -8,6 +8,7 @@
 namespace AdaptiveCards
 {
 class ChoiceInput;
+class ChoicesData;
 
 class ChoiceSetInput : public BaseInputElement
 {
@@ -32,6 +33,9 @@ public:
     std::vector<std::shared_ptr<ChoiceInput>>& GetChoices();
     const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
+    const std::shared_ptr<ChoicesData>& GetChoicesData() const;
+    void SetChoicesData(const std::shared_ptr<ChoicesData>);
+
     std::string GetValue() const;
     void SetValue(const std::string& value);
 
@@ -52,6 +56,7 @@ private:
     ChoiceSetStyle m_choiceSetStyle;
 
     std::vector<std::shared_ptr<ChoiceInput>> m_choices;
+    std::shared_ptr<ChoicesData> m_choicesData;
 };
 
 class ChoiceSetInputParser : public BaseCardElementParser

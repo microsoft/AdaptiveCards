@@ -197,7 +197,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="..\..\..\samples\v1.0\Elements\AdaptiveCard.json" />
+    <None Include="..\..\..\samples\v1.5\Elements\AdaptiveCard.json" />
     <None Include="PerfApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

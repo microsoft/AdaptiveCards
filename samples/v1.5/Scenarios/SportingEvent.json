@@ -1,0 +1,94 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Scoreboard",
+			"wrap": true,
+			"style": "heading",
+			"horizontalAlignment": "center"
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/3.png",
+									"size": "small",
+									"altText": "Shades cat team emblem"
+								},
+								{
+									"type": "TextBlock",
+									"text": "SHADES",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "stretch",
+							"separator": true,
+							"spacing": "medium",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Sat, Aug 31, 2019",
+									"horizontalAlignment": "center",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "Final",
+									"spacing": "none",
+									"horizontalAlignment": "center",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "45 - 7",
+									"size": "extraLarge",
+									"horizontalAlignment": "center",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "auto",
+							"separator": true,
+							"spacing": "medium",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/2.png",
+									"size": "small",
+									"horizontalAlignment": "center",
+									"altText": "Skins cat team emblem"
+								},
+								{
+									"type": "TextBlock",
+									"text": "SKINS",
+									"horizontalAlignment": "center",
+									"weight": "bolder",
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,262 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"type": "AdaptiveCard",
+	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Your Flight Itinerary",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Passengers",
+			"weight": "bolder",
+			"isSubtle": false,
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Sarah Hum",
+			"separator": true,
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Jeremy Goldberg",
+			"spacing": "none",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Evan Litvak",
+			"spacing": "none",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "2 Stops",
+			"weight": "bolder",
+			"spacing": "medium",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Tue, May 30, 2017 12:25 PM",
+			"weight": "bolder",
+			"spacing": "none",
+			"wrap": true
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"text": "San Francisco",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "SFO",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/airplane.png",
+							"size": "small",
+							"spacing": "none",
+							"altText": "Flight to"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "Amsterdam",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "AMS",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Non-Stop",
+			"weight": "bolder",
+			"spacing": "medium",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Fri, Jun 2, 2017 1:55 PM",
+			"weight": "bolder",
+			"spacing": "none",
+			"wrap": true
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Departs From",
+							"wrap": true,
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Amsterdam",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "AMS",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/airplane.png",
+							"size": "small",
+							"spacing": "none",
+							"altText": "Flight to"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Arrives At",
+							"wrap": true,
+							"horizontalAlignment": "right",
+							"style": "default",
+							"weight": "bolder",
+							"color": "light"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "San Francisco",
+							"isSubtle": true,
+							"wrap": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "SFO",
+							"spacing": "none",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"spacing": "medium",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "1",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Total",
+							"size": "medium",
+							"isSubtle": true,
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "$4,032.54",
+							"size": "medium",
+							"weight": "bolder",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

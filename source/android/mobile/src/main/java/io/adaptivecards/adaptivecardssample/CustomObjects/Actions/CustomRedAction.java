@@ -18,10 +18,10 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class CustomRedAction extends BaseActionElement
 {
@@ -97,7 +97,7 @@ public class CustomRedAction extends BaseActionElement
                              FragmentManager fragmentManager,
                              ViewGroup viewGroup,
                              BaseActionElement baseActionElement,
-                             ICardActionHandler cardActionHandler,
+                             ChannelAdaptor channelAdaptor,
                              HostConfig hostConfig,
                              RenderArgs renderArgs)
         {
@@ -109,7 +109,7 @@ public class CustomRedAction extends BaseActionElement
             backwardActionButton.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.redActionColor), PorterDuff.Mode.SRC_ATOP);
             backwardActionButton.setText(customAction.getBackwardString());
             backwardActionButton.setAllCaps(false);
-            backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+            backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, channelAdaptor.getCardActionHandler()));
 
             viewGroup.addView(backwardActionButton);
 

@@ -15,13 +15,13 @@ namespace AdaptiveCards.Test
         public void TestThatInputsRequireId()
         {
             var json = @"{
-	""type"": ""AdaptiveCard"",
-	""version"": ""1.0"",
-	""body"": [
-		{
-			""type"": ""Input.Text""
-		}
-	]
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Input.Text""
+    }
+  ]
 }";
 
             var ex = Assert.ThrowsException<AdaptiveSerializationException>(() =>
@@ -30,6 +30,17 @@ namespace AdaptiveCards.Test
             });
 
             StringAssert.Contains(ex.Message, "'id'");
+        }
+
+        [TestMethod]
+        public void TestPassWordInputStyle()
+        {
+            var expectedJSON = Utilities.BuildExpectedCardJSON("textInput", new SerializableDictionary<string, object>() { ["style"] = "Password" });
+            var testCard = AdaptiveCard.FromJson(expectedJSON);
+            Assert.IsTrue(testCard.Warnings.Count == 0);
+            AdaptiveTextInput textInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "textInput") as AdaptiveTextInput;
+            Assert.IsNotNull(textInput);
+            Assert.AreEqual(AdaptiveTextInputStyle.Password, textInput.Style);
         }
     }
 }

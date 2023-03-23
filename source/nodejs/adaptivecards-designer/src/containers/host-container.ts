@@ -60,6 +60,16 @@ export abstract class HostContainer {
         return new HostConfig(hostConfig);
     }
 
+    public requiresOverflowStyling(): boolean {
+        // By default, overflow styling is not handled
+        return false;
+    }
+
+    public adjustStyleForBackground(): void {
+        // By default, we make no adjustments
+        return;
+    }
+
     supportsActionBar: boolean = false;
 
     get cardHost(): HTMLElement {

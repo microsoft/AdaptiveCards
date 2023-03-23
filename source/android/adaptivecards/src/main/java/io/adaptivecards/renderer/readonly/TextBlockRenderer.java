@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.readonly;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -30,6 +31,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -42,11 +44,11 @@ import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -239,8 +241,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             @Override
             public void onAccessibilityStateChanged(boolean b)
             {
-                boolean isEnabled = am.isEnabled();
-                if (b && isEnabled)
+                boolean isTalkBackEnabled = isTalkBackEnabled(am);
+                if (b && isTalkBackEnabled)
                 {
                     textView.setFocusable(true);
                 }
@@ -250,7 +252,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
                 }
             }
         });
-        textView.setFocusable(am.isEnabled());
+        textView.setFocusable(isTalkBackEnabled(am));
     }
 
     @Override
@@ -260,7 +262,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -316,4 +318,18 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     private final int g_textWeightDefault = Typeface.NORMAL;
     private final int g_textWeightBolder = Typeface.BOLD;
     private final int g_textWeightLighter = Typeface.ITALIC;
+
+    private boolean isTalkBackEnabled(AccessibilityManager am)
+    {
+        if (am.isEnabled())
+        {
+            List<AccessibilityServiceInfo> talkBackInfo = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN);
+            if (talkBackInfo.isEmpty())
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

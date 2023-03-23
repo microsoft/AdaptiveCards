@@ -8,8 +8,12 @@ import { WaitUtils } from "./wait-utils";
 describe("Mock function", function() {
     let utils: TestUtils;
 
+    // This is a constant value for the wait time until the image is loaded.
+    // Only use this if you see some test flakiness. Values is given in ms.
+    const timeoutForImageLoad: number = 1000;
+
     // This is a constant value for the wait time between pressing an action and retrieving
-    // the input value. Only use this if you see some test flakiness. Value is given in ms
+    // the input value. Only use this if you see some test flakiness. Value is given in ms.
     const delayForCarouselTimer: number = 6000;
     const timeOutValueForCarousel: number = 30000;
     const timeOutValueForSuddenJumpTest: number = 20000;
@@ -29,19 +33,24 @@ describe("Mock function", function() {
     });
 
     test("Test ActivityUpdate submit", (async() => {
-        await utils.goToTestCase("v1.0/ActivityUpdate");
+        await utils.goToTestCase("v1.5/ActivityUpdate");
 
         await ACAction.clickOnActionWithTitle("Set due date");
 
         let dueDateInput = await ACInputDate.getInputWithId("dueDate");
         await dueDateInput.setDate(1993, 2, 4);
 
+        await ACAction.clickOnActionWithTitle("Send");
+        
+        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
+
+        await ACAction.clickOnActionWithTitle("Comment");
+
         let commentInput = await ACInputText.getInputWithId("comment");
         await commentInput.setData("A comment");
 
         await ACAction.clickOnActionWithTitle("OK");
 
-        Assert.strictEqual(await utils.getInputFor("dueDate"), "1993-02-04");
         Assert.strictEqual(await utils.getInputFor("comment"), "A comment");
     }));
 
@@ -190,16 +199,18 @@ describe("Mock function", function() {
     }));
 
     test("Image: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Image.SelectAction");
+        await utils.goToTestCase("v1.5/Image.SelectAction");
 
         let image = await ACImage.getImage("cool link");
+
+        await TestUtils.getInstance().driver.wait(image.elementIsVisible(), timeoutForImageLoad);
         await image.click();
         
         Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     }));
 
     test("Column: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Column.SelectAction");
+        await utils.goToTestCase("v1.1/Column.SelectAction");
 
         let firstColumn = await ACColumn.getContainerWithAction("cool link");
         await firstColumn.click();
@@ -208,7 +219,7 @@ describe("Mock function", function() {
     }));
 
     test("ColumnSet: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/ColumnSet.SelectAction");
+        await utils.goToTestCase("v1.1/ColumnSet.SelectAction");
 
         let secondColumnSet = await ACColumnSet.getContainerWithAction("Remodel your kitchen with our new cabinet styles!");
         await secondColumnSet.click();
@@ -217,7 +228,7 @@ describe("Mock function", function() {
     }));
 
     test("Container: Test select action can be clicked", (async() => {
-        await utils.goToTestCase("v1.0/Container.SelectAction");
+        await utils.goToTestCase("v1.1/Container.SelectAction");
 
         let submitContainer = await ACContainer.getContainerWithAction("Submit action");
         await submitContainer.click();
@@ -228,7 +239,47 @@ describe("Mock function", function() {
         await emphasisContainer.click();
         
         Assert.strictEqual(await utils.getUrlInRetrievedInputs(), "https://msn.com");
-    }));    
+    }));
+    
+    test("ToggleVisibility: Test ToggleVisibility and ShowCard within actions", (async () => {
+        await utils.goToTestCase("v1.5/ToggleVisibility.ShowCard.actions");
+
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
+
+        let inputDate = await ACInputDate.getInputWithId("date");
+        let dateIsVisible = await inputDate.elementIsVisible();
+        Assert.strictEqual(dateIsVisible, true);
+
+        let inputTime = await ACInputTime.getInputWithId("time");
+        let timeIsVisible = await inputTime.elementIsVisible();
+        Assert.strictEqual(timeIsVisible, true);
+        
+        await ACAction.clickOnActionWithTitle("Action.ToggleVisibility");
+        await WaitUtils.waitUntilElementIsNotVisible("date");
+
+        dateIsVisible = await inputDate.elementIsVisible();
+        timeIsVisible = await inputTime.elementIsVisible();
+        
+        Assert.strictEqual(dateIsVisible, false);
+        Assert.strictEqual(timeIsVisible, false);
+    }), 2500);
+
+    test("ToggleVisibility: Test ToggleVisibility and ShowCard within ActionSet", (async () => {
+        await utils.goToTestCase("v1.5/ToggleVisibility.ShowCard.ActionSet");
+
+        await ACAction.clickOnActionWithTitle("Action.ShowCard");
+
+        let inputDate = await ACInputDate.getInputWithId("date");
+        let dateIsVisible = await inputDate.elementIsVisible();
+        Assert.strictEqual(dateIsVisible, true);
+
+        await ACAction.clickOnActionWithTitle("Action.ToggleVisibility");
+        await WaitUtils.waitUntilElementIsNotVisible("date");
+
+        dateIsVisible = await inputDate.elementIsVisible();
+
+        Assert.strictEqual(dateIsVisible, false);
+    }), 2500);
 
     test("Carousel: Test actions are rendered and active", (async() => {
         await utils.goToTestCase("v1.6/Carousel.HostConfig");

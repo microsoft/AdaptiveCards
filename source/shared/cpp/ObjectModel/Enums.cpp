@@ -11,6 +11,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Action, "action"},
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
+            {AdaptiveCardSchemaKey::ActionRole, "role"},
             {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
             {AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig"},
             {AdaptiveCardSchemaKey::Actions, "actions"},
@@ -42,6 +43,8 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Center, "center"},
             {AdaptiveCardSchemaKey::ChoiceSet, "choiceSet"},
             {AdaptiveCardSchemaKey::Choices, "choices"},
+            {AdaptiveCardSchemaKey::ChoicesData, "choices.data"},
+            {AdaptiveCardSchemaKey::ChoicesDataType, "type"},
             {AdaptiveCardSchemaKey::Color, "color"},
             {AdaptiveCardSchemaKey::ColorConfig, "colorConfig"},
             {AdaptiveCardSchemaKey::Column, "column"},
@@ -53,6 +56,8 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ContainerStyles, "containerStyles"},
             {AdaptiveCardSchemaKey::Dark, "dark"},
             {AdaptiveCardSchemaKey::Data, "data"},
+            {AdaptiveCardSchemaKey::DataQuery, "Data.Query"},
+            {AdaptiveCardSchemaKey::Dataset, "dataset"},
             {AdaptiveCardSchemaKey::DateInput, "dateInput"},
             {AdaptiveCardSchemaKey::Default, "default"},
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
@@ -332,6 +337,13 @@ namespace AdaptiveCards
     DEFINE_ADAPTIVECARD_ENUM(ActionMode, {
             {ActionMode::Inline, "Inline"},
             {ActionMode::Popup, "Popup"}});
+
+    DEFINE_ADAPTIVECARD_ENUM(ActionRole, {
+            {ActionRole::Button, "Button"},
+            {ActionRole::Link, "Link"},
+            {ActionRole::Tab, "Tab"},
+            {ActionRole::Menu, "Menu"},
+            {ActionRole::MenuItem, "MenuItem"}});
 
     DEFINE_ADAPTIVECARD_ENUM(AssociatedInputs, {
             {AssociatedInputs::Auto, "Auto"},

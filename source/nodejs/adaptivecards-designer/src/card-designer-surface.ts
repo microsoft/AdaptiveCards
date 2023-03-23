@@ -10,6 +10,7 @@ import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
+import { Strings } from "./strings";
 
 export enum BindingPreviewMode {
     NoPreview,
@@ -387,19 +388,33 @@ export class CardDesignerSurface {
 
         let renderedCard = cardToRender.render();
 
-        if (this.fixedHeightCard) {
-            renderedCard.style.height = "100%";
-
-            // truncate the content if the host container is fixed height
-            if (this.isPreviewMode)
-            {
-                renderedCard.style.overflow = "hidden";
-            }
-        }
-
         if (this._cardHost.innerHTML === "") {
             this._cardHost.appendChild(renderedCard);
         }
+        
+        if (this.fixedHeightCard) {
+            // truncate the content if the host container is fixed height
+            if (this.isPreviewMode) {
+                if (this.context.hostContainer?.requiresOverflowStyling()) {
+                    this.appendErrorMessage(Strings.widgetOverflowWarning);
+                } else {
+                    renderedCard.style.overflow = "hidden";
+                }
+            }
+            this.context.hostContainer?.adjustStyleForBackground();
+            renderedCard.style.height = "100%"; 
+        }
+    }
+
+    private appendErrorMessage(message: string) {
+        let errorElement = document.createElement("div");
+        errorElement.className = "acd-error-pane-message";
+
+        errorElement.innerText = message;
+        errorElement.style.whiteSpace = "normal";
+
+        const errorPane = document.getElementById("errorPane");
+        errorPane.appendChild(errorElement);
     }
 
     private addPeer(peer: DesignerPeers.DesignerPeer, insertAfterNeighbor: boolean = false) {

@@ -31,13 +31,13 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -314,7 +314,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
+            ChannelAdaptor channelAdaptor,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -375,7 +375,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 
-        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler, renderArgs);
+        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, channelAdaptor.getCardActionHandler(), renderArgs);
 
         return imageView;
     }

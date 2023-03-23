@@ -17,14 +17,19 @@ namespace AdaptiveCards
 
         private readonly string defaultValue;
 
+        private string GetDefaultValueFromEnum()
+        {
+            return Enum.Parse(typeof(TEnum), "0").ToString();
+        }
+
         public IgnoreDefaultStringEnumConverter()
         {
-            defaultValue = Enum.Parse(typeof(TEnum), "0").ToString();
+            defaultValue = GetDefaultValueFromEnum(); 
         }
 
         public IgnoreDefaultStringEnumConverter(bool camelCaseText) : base(camelCaseText)
         {
-            defaultValue = Enum.Parse(typeof(TEnum), "0").ToString();
+            defaultValue = GetDefaultValueFromEnum();
         }
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {

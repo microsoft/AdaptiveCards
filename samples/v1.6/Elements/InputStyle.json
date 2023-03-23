@@ -1,0 +1,85 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Input.Text",
+			"id": "inputProduct",
+			"value": "Cosmetics",
+			"label": "Product Name",
+			"labelPosition": "inline",
+			"labelWidth": 40,
+			"inputStyle": "revealOnHover"
+		},
+		{
+			"type": "Input.Date",
+			"id": "inputDate",
+			"value": "2017-10-12",
+			"label": "Est. Delivery",
+			"labelPosition": "inline",
+			"labelWidth": "60px",
+			"inputStyle": "default"
+		},
+		{
+			"type": "Input.Number",
+			"id": "inputAmount",
+			"value": 500,
+			"inputStyle": "revealOnHover"
+		},
+		{
+			"type": "Input.Time",
+			"id": "inputTime",
+			"value": "15:30",
+			"label": "Est. Time",
+			"labelPosition": "inline",
+			"inputStyle": "revealOnHover"
+		},
+		{
+			"type": "Input.Toggle",
+			"id": "acceptTerms",
+			"title": "I accept the terms and agreements",
+			"value": "true",
+			"valueOn": "true",
+			"valueOff": "false",
+			"label": "Please check the box:",
+			"labelPosition": "inline"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "itemColor",
+			"style": "compact",
+			"labelPosition": "inline",
+			"label": "Select color",
+			"isMultiSelect": false,
+			"inputStyle": "revealOnHover",
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Save",
+			"associatedInputs": "auto",
+			"disabledUnlessAssociatedInputsChange": true
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "Learn More",
+			"url": "https://github.com/Microsoft/AdaptiveCards"
+		}
+	]
+}
