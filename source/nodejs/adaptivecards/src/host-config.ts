@@ -268,13 +268,13 @@ export class InputConfig {
     });
     readonly debounceTimeInMilliSeconds: number = 0;
 
-	allowRevealOnHoverStyle: boolean = false;
+    allowRevealOnHoverStyle: boolean = true;
 
     constructor(obj?: any) {
         if (obj) {
             this.label = new InputLabelConfig(obj["label"]);
             this.errorMessage = new BaseTextDefinition(obj["errorMessage"]);
-			this.allowRevealOnHoverStyle = obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
+            this.allowRevealOnHoverStyle = obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
             this.debounceTimeInMilliSeconds = obj.debounceTimeInMilliSeconds;
         }
     }

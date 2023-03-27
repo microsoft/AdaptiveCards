@@ -3652,34 +3652,34 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
-	protected get allowRevealOnHoverStyle() {
+    protected get allowRevealOnHoverStyle() {
         return this.hostConfig.inputs && this.hostConfig.inputs.allowRevealOnHoverStyle;
     }
 
-	protected shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
-		// show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
-		// 1. intial render of card: hide input adorners
-		// 2. mouse hover on the card: show input adorners
-		// 3. mouse hover outside the card: hide input adorners unless input is still in focus state
-		// 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
-	
-		// check if input still has the focus
-		const isInputInFocus = input === document.activeElement;
-	
-		// check if mouse is still on the card
-		const inputHoverClassName = this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover");
-		const isMouseOverCard = input.classList.contains(inputHoverClassName);
-	
-		const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
-								  (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
-								  (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
-		return hideInputAdorners;
-	}
+    protected shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
+        // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
+        // 1. intial render of card: hide input adorners
+        // 2. mouse hover on the card: show input adorners
+        // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
+        // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
+    
+        // check if input still has the focus
+        const isInputInFocus = input === document.activeElement;
+    
+        // check if mouse is still on the card
+        const inputHoverClassName = this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover");
+        const isMouseOverCard = input.classList.contains(inputHoverClassName);
+    
+        const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
+                                  (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
+                                  (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
+        return hideInputAdorners;
+    }
 
     updateVisualState(eventType: InputEventType): void {
         if (!this.allowRevealOnHoverStyle || 
-			!this._renderedInputControlElement || 
-			this.inputStyle !== Enums.InputStyle.RevealOnHover) {
+            !this._renderedInputControlElement || 
+            this.inputStyle !== Enums.InputStyle.RevealOnHover) {
             return;
         }
         if (eventType === InputEventType.InitialRender) {
@@ -3960,9 +3960,9 @@ export class TextInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
-		if (!this.allowRevealOnHoverStyle) {
-			return;
-		}
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
 
         if (!(this.inlineAction || this.isMultiline)) {
             super.updateVisualState(eventType);
@@ -4667,9 +4667,9 @@ export class ChoiceSetInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
-		if (!this.allowRevealOnHoverStyle) {
-			return;
-		}
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
 
         if (!this.isMultiSelect && this.isCompact) {
             super.updateVisualState(eventType);
@@ -5208,9 +5208,9 @@ export class DateInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
-		if (!this.allowRevealOnHoverStyle) {
-			return;
-		}
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
 
         super.updateVisualState(eventType);
 
@@ -5353,10 +5353,10 @@ export class TimeInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
-		if (!this.allowRevealOnHoverStyle) {
-			return;
-		}
-		
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+        
         super.updateVisualState(eventType);
 
         if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
