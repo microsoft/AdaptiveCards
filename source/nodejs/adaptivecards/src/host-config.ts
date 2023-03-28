@@ -268,7 +268,7 @@ export class InputConfig {
     });
     readonly debounceTimeInMilliSeconds: number = 0;
 
-    allowRevealOnHoverStyle: boolean = true;
+    allowRevealOnHoverStyle: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
