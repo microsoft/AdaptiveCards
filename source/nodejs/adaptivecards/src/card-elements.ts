@@ -4679,9 +4679,11 @@ export class ChoiceSetInput extends Input {
                 
                 if (hideDropDownPicker) {
                     this._selectElement.style.appearance = "none";
+					this._selectElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
                 } else {
                     this._selectElement.style.appearance = "auto";
-                }
+					this._selectElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+                }			
             }
         }
     }
@@ -5216,6 +5218,13 @@ export class DateInput extends Input {
 
         if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
             const hideDatePicker = this.shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
+
+			if (hideDatePicker) {
+				this._dateInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+			} else {
+				this._dateInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+			}
+
             updateInputAdornersVisibility(this._dateInputElement, hideDatePicker  /*hide*/);
         }
     }
@@ -5361,6 +5370,13 @@ export class TimeInput extends Input {
 
         if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
             const hideTimePicker = this.shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
+
+			if (hideTimePicker) {
+				this._timeInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+			} else {
+				this._timeInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+			}
+
             updateInputAdornersVisibility(this._timeInputElement, hideTimePicker /*hide*/);
         }
     }

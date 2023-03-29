@@ -352,13 +352,14 @@ $font-family: 'Segoe UI', sans-serif;
             &:hover {
                 border: $revealOnHover-active-border;
             }
-            &:focus {
-                border: $revealOnHover-active-border;
-            }
         }
 
         &.ac-inputStyle-revealOnHover-onhover {
             border: $revealOnHover-subdued-border;
+        }
+
+		&.ac-inputStyle-revealOnHover-onfocus {
+			border: $revealOnHover-subdued-border;
         }
     }
 }
