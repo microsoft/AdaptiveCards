@@ -115,7 +115,7 @@ using namespace AdaptiveCards;
     } else if (_stateManager.isShowFilteredListControlSelected) {
         _button.selected = YES;
     }
-    
+
     if (_stateManager.shouldUpdateFilteredList) {
         if (_stateManager.isFilteredListVisible) {
             [self showListView];
