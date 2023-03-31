@@ -27,6 +27,7 @@ CGFloat kFileBrowserWidth = 0;
 @interface ViewController () {
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
+    __weak UIView *_targetView;
     dispatch_queue_t _global_queue;
     __weak AVPlayerViewController *_mediaViewController;
 }
@@ -212,7 +213,6 @@ CGFloat kFileBrowserWidth = 0;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleVoiceOverEvent:) name:UIAccessibilityElementFocusedNotification object:nil];
 }
 
@@ -281,7 +281,7 @@ CGFloat kFileBrowserWidth = 0;
     } else if (action.type == ACRToggleVisibility) {
         [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
     } else if (action.type == ACRShowCard) {
-        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
+        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows targetView:_targetView];
     }
 }
 
@@ -313,6 +313,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
 {
+    _targetView = button;
     if (isVisible) {
         button.backgroundColor = [UIColor redColor];
     } else {
@@ -666,6 +667,11 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+    [self reloadRowsAtChatWindowsWithIndexPaths:indexPaths targetView:nil];
+}
+
+- (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths targetView:(UIView *)targetView
+{
     dispatch_async(_global_queue,
                    ^{
                        // This lines are required for updating the element tree after a
@@ -687,7 +693,7 @@ CGFloat kFileBrowserWidth = 0;
                                    [self.chatWindow reloadData];
                                }
                                completion:^(BOOL finished) {
-                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
+                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, targetView);
                                }];
                        }
                    });
