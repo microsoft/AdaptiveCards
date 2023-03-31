@@ -693,7 +693,7 @@ CGFloat kFileBrowserWidth = 0;
                                    [self.chatWindow reloadData];
                                }
                                completion:^(BOOL finished) {
-                               UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, targetView);
+                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, targetView);
                                }];
                        }
                    });
