@@ -115,13 +115,13 @@ using namespace AdaptiveCards;
     } else if (_stateManager.isShowFilteredListControlSelected) {
         _button.selected = YES;
     }
+
     if (_stateManager.shouldUpdateFilteredList) {
         if (_stateManager.isFilteredListVisible) {
             [self showListView];
         } else {
             [self hideListView];
         }
-        [_rootView.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:self.frame];
     }
 }
 
@@ -153,6 +153,9 @@ using namespace AdaptiveCards;
             // announce layout change, and move the VO focus to the filtered list
             UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
         }
+    } else {
+        [_stateManager expanded];
+        [self updateControls];
     }
 }
 
@@ -177,7 +180,6 @@ using namespace AdaptiveCards;
         }
     } else {
         [self resetFilteredList];
-        [_stateManager collapsed];
     }
 
     [self updateControls];
