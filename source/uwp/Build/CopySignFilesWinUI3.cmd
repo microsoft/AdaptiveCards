@@ -7,7 +7,7 @@ set ACUWP=AdaptiveCards.Rendering.WinUI3
 set ACOM=AdaptiveCards.ObjectModel.WinUI3
 
 REM setting path variables
-set ACROOT=source\uwp\winui3
+set ACROOT=source\uwp\winui3\
 set ACPATH=AdaptiveCardRenderer\
 set ACPATHOM=AdaptiveCardsObjectModel\
 set BINPATH=Release\
@@ -27,13 +27,11 @@ REM AdaptiveCards UWP
 
 mkdir tosign\%ACPATH%\Win32
 mkdir tosign\%ACPATH%\x64
-mkdir tosign\%ACPATH%\ARM
 mkdir tosign\%ACPATH%\ARM64
 
 call :checkedCopy %ACROOT%\Release\%ACPATH%%ACUWP%.winmd tosign\%ACPATH%%ACUWP%.winmd
 call :checkedCopy %ACROOT%Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%Win32\%ACUWP%.dll
 call :checkedCopy %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%x64\%ACUWP%.dll
-call :checkedCopy %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM\%ACUWP%.dll
 call :checkedCopy %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM64\%ACUWP%.dll
 
 REM AdaptiveCards
@@ -42,13 +40,11 @@ REM AdaptiveCards ObjectModel
 
 mkdir tosign\%ACPATHOM%\Win32
 mkdir tosign\%ACPATHOM%\x64
-mkdir tosign\%ACPATHOM%\ARM
 mkdir tosign\%ACPATHOM%\ARM64
 
 call :checkedCopy %ACROOT%\Release\%ACPATHOM%%ACOM%.winmd tosign\%ACPATHOM%%ACOM%.winmd
 call :checkedCopy %ACROOT%Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%Win32\%ACOM%.dll
 call :checkedCopy %ACROOT%x64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%x64\%ACOM%.dll
-call :checkedCopy %ACROOT%ARM\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%ARM\%ACOM%.dll
 call :checkedCopy %ACROOT%ARM64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%ARM64\%ACOM%.dll
 
 popd
@@ -61,14 +57,12 @@ REM AdaptiveCards
 call :checkedCopy signed\%ACPATH%%ACUWP%.winmd %ACROOT%Release\%ACPATH%%ACUWP%.winmd
 call :checkedCopy signed\%ACPATH%Win32\%ACUWP%.dll %ACROOT%Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%x64\%ACUWP%.dll %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll
-call :checkedCopy signed\%ACPATH%ARM\%ACUWP%.dll %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%ARM64\%ACUWP%.dll %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll
 
 REM AdaptiveCardsObjectModel
 call :checkedCopy signed\%ACPATHOM%%ACOM%.winmd %ACROOT%Release\%ACPATHOM%%ACOM%.winmd
 call :checkedCopy signed\%ACPATHOM%Win32\%ACOM%.dll %ACROOT%Release\%ACPATHOM%%ACOM%.dll
 call :checkedCopy signed\%ACPATHOM%x64\%ACOM%.dll %ACROOT%x64\Release\%ACPATHOM%%ACOM%.dll
-call :checkedCopy signed\%ACPATHOM%ARM\%ACOM%.dll %ACROOT%ARM\Release\%ACPATHOM%%ACOM%.dll
 call :checkedCopy signed\%ACPATHOM%ARM64\%ACOM%.dll %ACROOT%ARM64\Release\%ACPATHOM%%ACOM%.dll
 
 popd
