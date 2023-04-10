@@ -28,11 +28,13 @@ REM AdaptiveCards UWP
 mkdir tosign\%ACPATH%\Win32
 mkdir tosign\%ACPATH%\x64
 mkdir tosign\%ACPATH%\ARM64
+mkdir tosign\%ACPATH%\AnyCPU
 
 call :checkedCopy %ACROOT%\Release\%ACPATH%%ACUWP%.winmd tosign\%ACPATH%%ACUWP%.winmd
 call :checkedCopy %ACROOT%Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%Win32\%ACUWP%.dll
 call :checkedCopy %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%x64\%ACUWP%.dll
 call :checkedCopy %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM64\%ACUWP%.dll
+call :checkedCopy %ACROOT%AnyCPU\RendererCsProjection\Release\net6.0-windows10.0.17763.0\RendererCsProjection.dll
 
 REM AdaptiveCards
 echo %ACPATHOM%
@@ -46,6 +48,7 @@ call :checkedCopy %ACROOT%\Release\%ACPATHOM%%ACOM%.winmd tosign\%ACPATHOM%%ACOM
 call :checkedCopy %ACROOT%Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%Win32\%ACOM%.dll
 call :checkedCopy %ACROOT%x64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%x64\%ACOM%.dll
 call :checkedCopy %ACROOT%ARM64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%ARM64\%ACOM%.dll
+call :checkedCopy %ACROOT%AnyCPU\ObjectModelCsProjection\Release\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll
 
 popd
 goto :end
