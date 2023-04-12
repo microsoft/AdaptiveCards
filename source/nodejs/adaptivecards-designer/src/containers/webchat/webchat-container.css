@@ -252,6 +252,12 @@ a.ac-anchor:visited:active {
     border-radius: 4px;
 }
 
+@media (max-width: 416px) {
+    .webChatOuterContainer {
+        width: 100%;
+    }
+}
+
 /* Popup menu */
 
 .ac-ctrl-overlay {
