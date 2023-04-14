@@ -17,7 +17,7 @@
 		"build-and-test": "npm run build && npm run test"
 	},
 	"devDependencies": {
-		"selenium-webdriver": "^4.1.0",
+		"selenium-webdriver": "^4.8.2",
 		"vkbeautify": "^0.99.3"
 	},
 	"dependencies": {
