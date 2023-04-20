@@ -93,7 +93,8 @@
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "${viewUrl}"
+			"url": "${viewUrl}",
+			"role": "button"
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
