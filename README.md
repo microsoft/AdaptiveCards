@@ -35,7 +35,7 @@ We release the Adaptive Cards products on the third week of each month, assuming
 
 |Product|Last Release Date|Next Release Date|
 |---|---|---|
-|Website|3/23/2023|4/19/2023|
+|Website|4/21/2023|5/15/2023|
 |Designer|1/31/2023|5/15/2023|
 |JavaScript Renderer|2/14/2023|5/15/2023|
 |JavaScript Renderer Beta|4/9/2023|5/15/2023|
