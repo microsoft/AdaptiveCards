@@ -113,7 +113,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
 
-        textBox.TextChanged([inputValue, textBox](winrt::IInspectable const& /*sender*/, winrt::TextChangedEventArgs const& /*args*/)
+        textBox.TextChanged([inputValue](winrt::IInspectable const& /*sender*/, winrt::TextChangedEventArgs const& /*args*/)
         {
             inputValue.as<IAdaptiveInputValue>().Validate();
         });
