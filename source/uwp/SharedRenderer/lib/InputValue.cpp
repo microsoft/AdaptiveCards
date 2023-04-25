@@ -37,6 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
+        winrt::AutomationProperties::SetLiveSetting(m_validationError, winrt::AutomationLiveSetting::Polite);
         auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
         uint32_t index;
@@ -46,6 +47,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         if (!isInputValid && !found)
         {
             uiElementDescribers.Append(uiValidationErrorAsDependencyObject);
+
+            // We also want to raise a LiveRegionChanged event so that the error text is announced by narrator when it appears
+            auto errorAutomationPeer = winrt::FrameworkElementAutomationPeer::FromElement(m_validationError);
+            if (errorAutomationPeer != nullptr)
+            {
+                errorAutomationPeer.RaiseAutomationEvent(winrt::AutomationEvents::LiveRegionChanged);
+            }
         }
         else if (isInputValid && found)
         {

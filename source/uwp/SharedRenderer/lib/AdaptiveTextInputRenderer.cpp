@@ -112,6 +112,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto [textInputControl, validationBorder] = HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
+
+        textBox.TextChanged([inputValue, textBox](winrt::IInspectable const& /*sender*/, winrt::TextChangedEventArgs const& /*args*/)
+        {
+            inputValue.as<IAdaptiveInputValue>().Validate();
+        });
+
         renderContext.AddInputValue(*inputValue, renderArgs);
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);
