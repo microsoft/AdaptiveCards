@@ -1071,6 +1071,34 @@
         }
       ]
     },
+    "Data.Query": {
+      "description": "Data to be sent to the bot to fetch dynamic choices that can be displayed in the choiceset dropdown for selection",
+      "properties": {
+        "type": {
+          "enum": [
+            "Data.Query"
+          ],
+          "description": "Must be `Data.Query`"
+        },
+        "dataset": {
+          "type": "string",
+          "description": "The dataset to be queried to get the choices"
+        },
+        "count": {
+          "type": "number",
+          "description": "The maximum number of choices that should be sent by the bot. It can be ignored if the bot wants to send a different number."
+        },
+        "skip": {
+          "type": "number",
+          "description": "The number of choices to be skipped in the list of choices returned by the query. It can be ignored if the bot does not want pagination"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset"
+      ]
+    },
     "Input.Choice": {
       "description": "Describes a choice for use in a ChoiceSet.",
       "properties": {
@@ -1112,6 +1140,10 @@
           },
           "description": "`Choice` options."
         },
+        "choices.data": {
+          "$ref": "#/definitions/Data.Query",
+          "description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field"
+        },
         "isMultiSelect": {
           "type": "boolean",
           "description": "Allow multiple choices to be selected.",
@@ -1137,6 +1169,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1181,6 +1216,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1225,6 +1263,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1284,6 +1325,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1328,6 +1372,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1380,6 +1427,9 @@
         "errorMessage": {},
         "isRequired": {},
         "label": {},
+        "labelPosition": {},
+        "labelWidth": {},
+        "inputStyle": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -2165,6 +2215,34 @@
         },
         {
           "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([p|P][e|E][r|R][s|S][o|O][n|N])$"
+        }
+      ]
+    },
+    "InputLabelPosition": {
+      "description": "Specifies position of the label with respect to input.",
+      "anyOf": [
+        {
+          "enum": [
+            "inline",
+            "above"
+          ]
+        },
+        {
+          "pattern": "^([i|I][n|N][l|L][i|I][n|N][e|E])|([a|A][b|B][o|O][v|V][e|E])$"
+        }
+      ]
+    },
+    "InputStyle": {
+      "description": "`revealOnHover`: Show input fields in read only view unless user takes any action. `default`: Show the existing view for input controls",
+      "anyOf": [
+        {
+          "enum": [
+            "revealOnHover",
+            "default"
+          ]
+        },
+        {
+          "pattern": "^([r|R][e|E][v|V][e|E][a|A][l|L][o|O][n|N][h|H][o|O][v|V][e|E][r|R])|([d|D][e|E][f|F][a|A][u|U][l|L][t|T])$"
         }
       ]
     },
@@ -3278,6 +3356,28 @@
           "type": "string",
           "description": "Label for this input",
           "version": "1.3"
+        },
+        "labelPosition": {
+          "$ref": "#/definitions/InputLabelPosition",
+          "description": "Determines the position of the label. It can take 'inline' and 'above' values. By default, the label is placed 'above' when label position is not specified.",
+          "version": "1.6"
+        },
+        "labelWidth": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Determines the width of the label in percent like 40 or a specific pixel width like '40px' when label is placed inline with the input . labelWidth would be ignored when the label is displayed above the input.",
+          "version": "1.6"
+        },
+        "inputStyle": {
+          "$ref": "#/definitions/InputStyle",
+          "description": "Style hint for input fields. Allows input fields to appear as read-only but when user clicks/focuses on the field, it allows them to update those fields.",
+          "version": "1.6"
         },
         "fallback": {
           "anyOf": [
