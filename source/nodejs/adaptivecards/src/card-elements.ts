@@ -4233,12 +4233,20 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
         new RegExp("^Data.Query$")
     );
     static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
 
     @property(ChoiceSetInputDataQuery.typeProperty)
     type: string;
 
     @property(ChoiceSetInputDataQuery.datasetProperty)
     dataset: string;
+
+    @property(ChoiceSetInputDataQuery.countProperty)
+    count?: number;
+
+    @property(ChoiceSetInputDataQuery.skipProperty)
+	skip?: number;
 
     //#endregion
 
@@ -4334,6 +4342,10 @@ export class ChoiceSetInput extends Input {
             !!this.choicesData.dataset &&
             this.choicesData.type === "Data.Query"
         );
+    }
+
+    getFilterForDynamicSearch(): string | undefined {
+        return this._filteredChoiceSet?.textInput?.value;
     }
 
     renderChoices(fetchedChoices: FetchedChoice[]) {
@@ -6045,12 +6057,20 @@ export class DataQuery extends UniversalAction {
 
     static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
     static readonly filterProperty = new StringProperty(Versions.v1_6, "filter");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
 
     @property(DataQuery.datasetProperty)
     dataset: string;
 
     @property(DataQuery.filterProperty)
-    filter?: string;
+    filter: string;
+
+    @property(DataQuery.countProperty)
+    count?: number;
+
+    @property(DataQuery.skipProperty)
+    skip?: number;
 
     //#endregion
 

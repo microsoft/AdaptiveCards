@@ -301,21 +301,22 @@ export class AdaptiveApplet {
                     this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
-                        if (
-                            input instanceof ChoiceSetInput &&
-                            input.isDynamicTypeahead() &&
-                            input.value
-                        ) {
-                            const dataQueryAction = new DataQuery();
-                            dataQueryAction.filter = input.value;
-                            dataQueryAction.dataset = input.choicesData?.dataset || "";
+                        if (input instanceof ChoiceSetInput && input.isDynamicTypeahead()) {
+                            const filter = input.getFilterForDynamicSearch();
+                            if (filter) {
+                                const dataQueryAction = new DataQuery();
+                                dataQueryAction.filter = filter;
+                                dataQueryAction.dataset = input.choicesData?.dataset || "";
+                                dataQueryAction.count = input.choicesData?.count;
+                                dataQueryAction.skip = input.choicesData?.skip;
 
-                            this._choiceSet = input;
-                            this.internalExecuteAction(
-                                dataQueryAction,
-                                ActivityRequestTrigger.Manual,
-                                0 // consecutiveActions
-                            );
+                                this._choiceSet = input;
+                                this.internalExecuteAction(
+                                    dataQueryAction,
+                                    ActivityRequestTrigger.Manual,
+                                    0 // consecutiveActions
+                                );
+                            }
                         }
                     };
 
@@ -754,7 +755,7 @@ export class AdaptiveApplet {
         }
         if (this._choiceSet) {
             this._choiceSet.showLoadingIndicator();
-            let response = undefined;
+            let response: ActivityResponse | undefined = undefined;
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             } catch (error) {
