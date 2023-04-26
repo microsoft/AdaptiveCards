@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
-        winrt::AutomationProperties::SetLiveSetting(m_validationError, winrt::AutomationLiveSetting::Polite);
+        winrt::AutomationProperties::SetLiveSetting(m_validationError, winrt::AutomationLiveSetting::Assertive);
         auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
         uint32_t index;
