@@ -4246,7 +4246,7 @@ export class ChoiceSetInputDataQuery extends SerializableObject {
     count?: number;
 
     @property(ChoiceSetInputDataQuery.skipProperty)
-	skip?: number;
+    skip?: number;
 
     //#endregion
 
