@@ -134,7 +134,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 TextWeight textWeight = TextRendererUtil.computeTextWeight(hostConfig, TextStyle.Default, textRun.GetTextWeight(), renderArgs);
                 boolean isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, TextStyle.Default, textRun.GetIsSubtle(), renderArgs);
                 FontType fontType = TextRendererUtil.computeFontType(hostConfig, TextStyle.Default, textRun.GetFontType(), renderArgs);
-                if (textRun.GetLanguage() == null && textRun.GetLanguage().isEmpty())
+                if (textRun.GetLanguage() == null || textRun.GetLanguage().isEmpty())
                 {
                     textRun.SetLanguage(Locale.getDefault().getLanguage());
                 }
