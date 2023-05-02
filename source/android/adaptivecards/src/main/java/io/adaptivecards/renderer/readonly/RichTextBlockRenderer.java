@@ -24,6 +24,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.Locale;
+
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.FontType;
@@ -132,7 +134,10 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 TextWeight textWeight = TextRendererUtil.computeTextWeight(hostConfig, TextStyle.Default, textRun.GetTextWeight(), renderArgs);
                 boolean isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, TextStyle.Default, textRun.GetIsSubtle(), renderArgs);
                 FontType fontType = TextRendererUtil.computeFontType(hostConfig, TextStyle.Default, textRun.GetFontType(), renderArgs);
-
+                if (textRun.GetLanguage() == null || textRun.GetLanguage().isEmpty())
+                {
+                    textRun.SetLanguage(Locale.getDefault().getLanguage());
+                }
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
                 String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());
 
