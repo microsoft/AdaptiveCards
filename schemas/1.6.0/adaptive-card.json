@@ -1072,7 +1072,7 @@
       ]
     },
     "Data.Query": {
-      "description": "Data to be sent to the bot to fetch dynamic choices that can be displayed in the choiceset dropdown for selection",
+      "description": "The data populated in the event payload for fetching dynamic choices, sent to the card-author to help identify the dataset from which choices might be fetched to be displayed in the dropdown. It might contain auxillary data to limit the maximum number of choices that can be sent and to support pagination.",
       "properties": {
         "type": {
           "enum": [
@@ -1082,15 +1082,18 @@
         },
         "dataset": {
           "type": "string",
-          "description": "The dataset to be queried to get the choices"
+          "description": "The dataset to be queried to get the choices.",
+          "version": "1.6"
         },
         "count": {
           "type": "number",
-          "description": "The maximum number of choices that should be sent by the bot. It can be ignored if the bot wants to send a different number."
+          "description": "The maximum number of choices that should be returned by the query. It can be ignored if the card-author wants to send a different number.",
+          "version": "1.6"
         },
         "skip": {
           "type": "number",
-          "description": "The number of choices to be skipped in the list of choices returned by the query. It can be ignored if the bot does not want pagination"
+          "description": "The number of choices to be skipped in the list of choices returned by the query. It can be ignored if the card-author does not want pagination.",
+          "version": "1.6"
         }
       },
       "type": "object",
@@ -1142,7 +1145,8 @@
         },
         "choices.data": {
           "$ref": "#/definitions/Data.Query",
-          "description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field"
+          "description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field.",
+          "version": "1.6"
         },
         "isMultiSelect": {
           "type": "boolean",
@@ -2233,7 +2237,7 @@
       ]
     },
     "InputStyle": {
-      "description": "`revealOnHover`: Show input fields in read only view unless user takes any action. `default`: Show the existing view for input controls",
+      "description": "`revealOnHover`: Show input fields in read only view unless user takes any action. `default`: Show the default editable state for input controls",
       "anyOf": [
         {
           "enum": [
@@ -3371,7 +3375,7 @@
               "type": "number"
             }
           ],
-          "description": "Determines the width of the label in percent like 40 or a specific pixel width like '40px' when label is placed inline with the input . labelWidth would be ignored when the label is displayed above the input.",
+          "description": "Determines the width of the label in percent like 40 or a specific pixel width like '40px' when label is placed inline with the input. labelWidth would be ignored when the label is displayed above the input.",
           "version": "1.6"
         },
         "inputStyle": {

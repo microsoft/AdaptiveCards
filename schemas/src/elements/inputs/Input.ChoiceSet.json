@@ -9,7 +9,8 @@
 		},
 		"choices.data": {
 			"type": "Data.Query",
-			"description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field"
+			"description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field.",
+			"version": "1.6"
 		},
 		"isMultiSelect": {
 			"type": "boolean",
