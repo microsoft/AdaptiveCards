@@ -336,7 +336,7 @@ export abstract class CardElement extends CardObject {
             element.style.color = foregroundCssColor;
         }
 
-        element.innerText = "Empty " + this.getJsonTypeName();
+        element.innerText = Strings.defaults.emptyElementText(this.getJsonTypeName());
 
         return element;
     }

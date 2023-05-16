@@ -98,6 +98,7 @@ export class Strings {
         inlineActionTitle: () => "Inline Action",
         overflowButtonText: () => "...",
         overflowButtonTooltip: () => "More options",
+        emptyElementText: (elementType: string) => `Empty ${elementType}`,
         mediaPlayerAriaLabel: () => "Media content",
         mediaPlayerPlayMedia: () => "Play media",
         youTubeVideoPlayer: () => "YouTube video player",
