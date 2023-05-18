@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AdaptiveCards.Rendering.Uwp</id>
-        <version>1.0.0</version>
+        <version>3.2.1</version>
         <authors>Microsoft</authors>
         <summary>Adaptive Cards library for UWP</summary>
         <description>Used to render Adaptive Cards into UWP XAML</description>
