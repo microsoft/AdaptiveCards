@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         property<bool> IsStretchable;
 
         winrt::UIElement Separator() { return m_separator; }
-        winrt::Panel ParentPanel() { return m_parentPanel; }
+        winrt::Panel ParentPanel() { return m_parentPanel.get(); }
         winrt::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
         winrt::IAdaptiveCardElement CardElement() { return m_cardElement; }
 
@@ -31,7 +31,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
     private:
         winrt::UIElement m_separator{nullptr};
-        winrt::Panel m_parentPanel{nullptr};
+        winrt::weak_ref<winrt::Panel> m_parentPanel{nullptr};
         winrt::ColumnDefinition m_columnDefinition;
         winrt::IAdaptiveCardElement m_cardElement;
     };
