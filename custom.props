@@ -3,8 +3,11 @@
   <PropertyGroup Label="Version">
     <VersionMajor>3</VersionMajor>
     <VersionMinor>2</VersionMinor>
+	<VersionPatch>1</VersionPatch>
     <!-- The nuget package version should be incremented when we produce QFEs -->
-    <NuGetPackVersion>3.2.0</NuGetPackVersion>
+	<!-- Information from this file won't be used for UWP ObjectModel/Renderer releases. -->
+	<!-- Release pipelines have `ReleaseVersion` variable that should be used. -->
+    <NuGetPackVersion>3.2.1</NuGetPackVersion>
     <VersionInfoProductName>AdaptiveCards</VersionInfoProductName>
   </PropertyGroup>
 </Project>
