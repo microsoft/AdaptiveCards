@@ -12,6 +12,8 @@
 #import "ACRIBaseInputHandler.h"
 #import <Foundation/Foundation.h>
 
+extern NSString *const Version;
+
 @interface ACOAdaptiveCard : NSObject
 
 @property ACORefresh *refresh;

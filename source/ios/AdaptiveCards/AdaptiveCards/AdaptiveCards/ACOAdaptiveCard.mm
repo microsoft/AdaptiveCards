@@ -22,6 +22,8 @@
 
 using namespace AdaptiveCards;
 
+NSString *const Version = @"1.6";
+
 @implementation ACOAdaptiveCard {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
     NSMutableArray<ACRIBaseInputHandler> *_inputs;
@@ -62,7 +64,7 @@ using namespace AdaptiveCards;
     if (payload) {
         try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.6"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string(Version));
             NSMutableArray *acrParseWarnings = [[NSMutableArray alloc] init];
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for (const auto &warning : parseWarnings) {
