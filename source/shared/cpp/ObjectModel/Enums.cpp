@@ -222,7 +222,6 @@ namespace AdaptiveCards
             {CardElementType::Image, "Image"},
             {CardElementType::ImageSet, "ImageSet"},
             {CardElementType::Media, "Media"},
-			{CardElementType::MetaData, "MetaData"},
             {CardElementType::NumberInput, "Input.Number"},
             {CardElementType::RichTextBlock, "RichTextBlock"},
             {CardElementType::Table, "Table"},

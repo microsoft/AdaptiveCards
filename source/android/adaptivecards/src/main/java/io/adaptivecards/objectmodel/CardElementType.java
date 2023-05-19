@@ -23,7 +23,6 @@ public enum CardElementType {
   Image,
   ImageSet,
   Media,
-  MetaData,
   NumberInput,
   RichTextBlock,
   Table,
