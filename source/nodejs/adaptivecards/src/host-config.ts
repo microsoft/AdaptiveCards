@@ -1204,5 +1204,8 @@ export const defaultHostConfig: HostConfig = new HostConfig({
     carousel: {
         maxCarouselPages: 10,
         minAutoplayDuration: 5000
+    },
+    textBlock: {
+        headingLevel: 2
     }
 });
