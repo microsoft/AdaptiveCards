@@ -3,11 +3,11 @@
 	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
 		style="width: 200px" aria-label="Sample cards">
 		<div class="sidebar__inner">
-			<ul class="samples-sidebar-list">
+			<ul role="listbox" aria-label="Sample cards" class="samples-sidebar-list">
 				<% page.samples.forEach(function(sample, i) {
                     const isSelected = (page.samplePath === sample.htmlPath);
                 %>
-					<a role="listitem"
+					<a role="option"
                        <%= isSelected ? "class=selectedHolder" : "" %>
                        aria-current='<%= isSelected.toString() %>'
                        aria-posinset='<%= (i+1).toString() %>'
