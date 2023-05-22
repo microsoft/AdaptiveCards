@@ -40,6 +40,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
+						"url": "https://adaptivecards.io",
 						"title": "Container Level 2 Select Action"
 					}
 				}
