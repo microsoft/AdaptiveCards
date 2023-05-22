@@ -38,7 +38,6 @@ export interface IShowCardAction extends IAction {
     card: IAdaptiveCard;
 }
 
-
 export interface ICardElement {
     id?: string;
     speak?: string;
