@@ -185,7 +185,6 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
-
     
 #if !defined(__APPLE__)
     // check if language is valid
