@@ -25,7 +25,9 @@
 			],
 			"choices.data": {
 				"type": "Data.Query",
-				"dataset": "teamScopeInOrg"
+				"dataset": "teamScopeInOrg",
+				"count": 15,
+				"skip": 0
 			}
 		}
 	]
