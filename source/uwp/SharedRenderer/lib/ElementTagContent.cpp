@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                                          boolean isStretchable)
     {
         m_cardElement = cardElement;
-        m_parentPanel = parentPanel;
+        m_parentPanel = winrt::make_weak(parentPanel);
         m_separator = separator;
         m_columnDefinition = columnDefinition;
         ExpectedVisibility = expectedVisibility;
