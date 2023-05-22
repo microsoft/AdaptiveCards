@@ -22,6 +22,12 @@ export interface ISubmitAction extends IAction {
     data?: any;
 }
 
+export interface IExecuteAction extends IAction {
+    type: "Action.Execute";
+    data?: any;
+    verb?: string;
+}
+
 export interface IOpenUrlAction extends IAction {
     type: "Action.OpenUrl";
     url: string;
@@ -169,6 +175,6 @@ export interface IAdaptiveCard extends ICardElement {
     version?: IVersion | string;
     backgroundImage?: IBackgroundImage | string;
     body?: (ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer)[];
-    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];
+    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction | IExecuteAction)[];
     speak?: string;
 }
