@@ -1715,6 +1715,6 @@ a.default-ac-anchor:visited:active {
     }
 
     input[type="date"]::-webkit-input-placeholder{
-        visibility: hidden !important;
+        visibility: hidden;
     }
 }
