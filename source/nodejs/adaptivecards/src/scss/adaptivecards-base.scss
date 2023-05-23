@@ -313,31 +313,32 @@ $font-family: 'Segoe UI', sans-serif;
 
         &.ac-choiceSetInput-filtered-textbox {
             border: $border;
-			padding: $padding;
-			background-color: $background-color;
-			width: 100%;
+            padding: $padding;
+            background-color: $background-color;
+            width: 100%;
         }
 
         &.ac-choiceSetInput-filtered-dropdown {
-			background-color: white;
-			border: $border;
-			border-top: 0px;
-			box-sizing: border-box;
-			display: none;
-			max-height: 200px;
-			overflow-y: scroll;
-			position: absolute;
-			top: calc(100%);
-			width: 100%;
-			&.open {
-			    display: flex;
-			    flex-direction: column;
-			}
+            background-color: white;
+            border: $border;
+            border-top: 0px;
+            box-sizing: border-box;
+            display: none;
+            max-height: 200px;
+            overflow-y: scroll;
+            position: absolute;
+            top: calc(100%);
+            width: 100%;
+
+            &.open {
+                display: flex;
+                flex-direction: column;
+            }
         }
 
         &.ac-choiceSetInput-choice {
-			box-sizing: border-box;
-			padding: $padding;
+            box-sizing: border-box;
+            padding: $padding;
             width: 100%;
 
             &.focused {
@@ -347,7 +348,7 @@ $font-family: 'Segoe UI', sans-serif;
         }
 
         &.ac-choiceSetInput-statusIndicator {
-			box-sizing: border-box;
+            box-sizing: border-box;
             color: #A19F9D;
             padding: $padding;
             width: 100%;
@@ -357,7 +358,7 @@ $font-family: 'Segoe UI', sans-serif;
                 text-align: center;
             }
         }
-        
+
         &.ac-inputStyle-revealOnHover-onrender {
             border: $transparent-border;
             background-color: $transparent-background;

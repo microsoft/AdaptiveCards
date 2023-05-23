@@ -783,7 +783,6 @@ export class AdaptiveApplet {
                             } else {
                                 this._choiceSet.renderChoices(parsedResponse);
                             }
-                            this.activityRequestSucceeded(response, rawResponse);
                         } else {
                             this._choiceSet.showErrorIndicator("Error loading results.");
                             throw new Error(
@@ -792,7 +791,10 @@ export class AdaptiveApplet {
                                     ")"
                             );
                         }
+                    } else {
+                        this._choiceSet.showErrorIndicator("No results found.");
                     }
+                    this.activityRequestSucceeded(response, rawResponse);
                 } else if (response instanceof ErrorResponse) {
                     this._choiceSet.showErrorIndicator("Error loading results.");
                     logEvent(
