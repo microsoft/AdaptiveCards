@@ -58,11 +58,12 @@ using namespace AdaptiveCards;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
+	const std::string g_version = "1.6";
     ACOAdaptiveCardParseResult *result = nil;
     if (payload) {
         try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.5"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), g_version);
             NSMutableArray *acrParseWarnings = [[NSMutableArray alloc] init];
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for (const auto &warning : parseWarnings) {
