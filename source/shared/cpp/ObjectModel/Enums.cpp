@@ -128,6 +128,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::MaxWidth, "maxWidth"},
             {AdaptiveCardSchemaKey::Media, "media"},
             {AdaptiveCardSchemaKey::Medium, "medium"},
+			{AdaptiveCardSchemaKey::MetaData, "metaData"},
             {AdaptiveCardSchemaKey::Method, "method"},
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
@@ -202,6 +203,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::VerticalCellContentAlignment, "verticalCellContentAlignment"},
             {AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment"},
             {AdaptiveCardSchemaKey::Warning, "warning"},
+			{AdaptiveCardSchemaKey::WebUrl, "webUrl"},
             {AdaptiveCardSchemaKey::Weight, "weight"},
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
