@@ -50,7 +50,7 @@
                         }
                     ],
                     "backgroundImage": {
-						"url": "https://adaptivecards.io/content/cats/1.png",
+                        "url": "https://adaptivecards.io/content/cats/1.png",
                         "verticalAlignment": "Center",
                         "horizontalAlignment": "Center"
                     },
