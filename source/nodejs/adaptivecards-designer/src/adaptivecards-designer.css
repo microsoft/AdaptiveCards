@@ -1708,3 +1708,13 @@ a.default-ac-anchor:visited:active {
         padding-right: 3px;
     }
 }
+
+@media (max-width: 350px) {
+    input::-webkit-calendar-picker-indicator{
+        display: none;
+    }
+
+    input[type="date"]::-webkit-input-placeholder{
+        visibility: hidden;
+    }
+}

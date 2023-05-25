@@ -58,7 +58,7 @@ using namespace AdaptiveCards;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
-	const std::string g_version = "1.6";
+    const std::string g_version = "1.6";
     ACOAdaptiveCardParseResult *result = nil;
     if (payload) {
         try {
