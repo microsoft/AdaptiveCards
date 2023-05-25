@@ -225,7 +225,7 @@
 
 - (void)testCanGatherDefaultValuesFromChoiceInputSet
 {
-    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
     [chatWindow swipeUp];
@@ -245,7 +245,7 @@
 
 - (void)testCanGatherCorrectValuesFromCompactChoiceSet
 {
-    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
     [chatWindow /*@START_MENU_TOKEN@*/.buttons[@"myColor"] /*[[".cells.buttons[@\"myColor\"]",".buttons[@\"myColor\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
@@ -270,7 +270,7 @@
 
 - (void)testCanGatherCorrectValuesFromExpandedRadioButton
 {
-    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
     [chatWindow.tables[@"myColor2"].staticTexts[@"myColor2, Blue"] tap];
@@ -295,7 +295,7 @@
 
 - (void)testCanGatherCorrectValuesFromChoiceset
 {
-    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
 
     XCUIElement *chatWindow = testApp.tables[@"ChatWindow"];
     [chatWindow.tables[@"myColor3"].staticTexts[@"myColor3, Blue"] tap];
