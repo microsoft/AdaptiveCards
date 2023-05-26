@@ -28,6 +28,6 @@ export class VivaConnectionsContainer extends MultiThemeHostContainer {
     }
 
     get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_3;
+        return Adaptive.Versions.v1_5;
     }
 }
