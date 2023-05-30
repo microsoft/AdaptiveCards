@@ -27,6 +27,7 @@ CGFloat kFileBrowserWidth = 0;
 @interface ViewController () {
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
+    __weak UIView *_targetView;
     dispatch_queue_t _global_queue;
     __weak AVPlayerViewController *_mediaViewController;
 }
@@ -212,7 +213,6 @@ CGFloat kFileBrowserWidth = 0;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleVoiceOverEvent:) name:UIAccessibilityElementFocusedNotification object:nil];
 }
 
@@ -281,7 +281,7 @@ CGFloat kFileBrowserWidth = 0;
     } else if (action.type == ACRToggleVisibility) {
         [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
     } else if (action.type == ACRShowCard) {
-        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
+        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows targetView:_targetView];
     }
 }
 
@@ -313,6 +313,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
 {
+    _targetView = button;
     if (isVisible) {
         button.backgroundColor = [UIColor redColor];
     } else {
@@ -401,6 +402,67 @@ CGFloat kFileBrowserWidth = 0;
                                               handler:nil]];
     [self presentViewController:myAlert animated:YES completion:nil];
     return YES; // skip SDK defult display
+}
+
+- (void)onChoiceSetQueryChange:(NSDictionary *)searchRequest acoElem:(ACOBaseCardElement *)elem completion:(void (^)(NSDictionary *response, NSError *error))completion
+{
+    NSString *queryString = [searchRequest valueForKey:@"value"];
+    NSMutableDictionary *responseDict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *resultsArray = [[NSMutableDictionary alloc] init];
+    [responseDict setValue:resultsArray forKey:@"value"];
+    [responseDict setValue:@"application/vnd.microsoft.search.searchResponse" forKey:@"type"];
+
+    if (queryString != nil && [queryString length]) {
+        NSString *urlString = [NSString stringWithFormat:@"https://azuresearch-usnc.nuget.org/query?q=id:%@", queryString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if (data != nil) {
+            NSDictionary *resultsDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                              options:kNilOptions
+                                                                                error:nil];
+            NSArray *dataList = [resultsDictionary valueForKey:@"data"];
+            NSNumber *pageSize = [searchRequest valueForKey:@"top"];
+            for (int index = 0; index < [pageSize intValue] && index < [dataList count]; index++) {
+                id itemDict = [dataList objectAtIndex:index];
+                if ([itemDict isKindOfClass:NSDictionary.class]) {
+                    resultsArray[[itemDict objectForKey:@"id"]] = [itemDict objectForKey:@"description"];
+                }
+            }
+            [responseDict setValue:resultsArray forKey:@"value"];
+        } else {
+            [responseDict setValue:nil forKey:@"value"];
+            [responseDict setValue:@"application/vnd.microsoft.search.error" forKey:@"type"];
+        }
+    }
+    completion(responseDict, nil);
+}
+
+- (void)didUpdateTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC searchStateImageView:(UIImageView *)searchStateImageView searchViewState:(TSTypeaehadSearchViewState)searchViewState
+{
+    // modify the UI based on the search view state
+    switch (searchViewState) {
+        case zeroState:
+            searchStateImageView.image = [UIImage systemImageNamed:@"magnifyingglass"];
+            break;
+        case displayingGenericError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+            break;
+        case displayingInvalidSearchError:
+            searchStateImageView.image = [UIImage systemImageNamed:@"xmark.circle"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (BOOL)shouldLaunchTypeaheadSearchViewController:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
+}
+
+- (BOOL)shouldConfigureNavigationItemViewWithVC:(UIViewController *)typeaheadSearchVC
+{
+    return YES; // continue SDK defult render;
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
@@ -605,6 +667,11 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+    [self reloadRowsAtChatWindowsWithIndexPaths:indexPaths targetView:nil];
+}
+
+- (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths targetView:(UIView *)targetView
+{
     dispatch_async(_global_queue,
                    ^{
                        // This lines are required for updating the element tree after a
@@ -626,7 +693,7 @@ CGFloat kFileBrowserWidth = 0;
                                    [self.chatWindow reloadData];
                                }
                                completion:^(BOOL finished) {
-                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
+                                   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, targetView);
                                }];
                        }
                    });

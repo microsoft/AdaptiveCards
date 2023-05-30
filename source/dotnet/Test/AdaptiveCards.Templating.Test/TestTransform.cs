@@ -13678,6 +13678,227 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
+    public sealed class TestHostKeyword
+    {
+        [TestMethod]
+        public void TestRootInDataContext()
+        {
+            string jsonTemplate = @"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                  {
+                    ""type"": ""Container"",
+                    ""items"": [
+                      {
+                        ""$data"": ""${$root.LineItems}"",
+                        ""type"": ""TextBlock"",
+                        ""id"": ""ReceiptRequired${$index}"",
+                        ""text"": ""${string(Milage)}""
+                      }
+                    ]
+                  },
+                  {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""${$host.text}""
+                  }
+                ]
+            }";
+            string rootData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string hostData = @"{
+              ""text"": ""placeholder""
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = rootData,
+                Host = hostData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired0"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired1"",
+                    ""text"": ""10""
+                }
+            ]
+        },
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""placeholder""
+            }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestCanAccessByAEL()
+        {
+            string jsonTemplate = @"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                  {
+                    ""type"": ""Container"",
+                    ""items"": [
+                      {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""${$root.LineItems[0].Milage}""
+                      },
+                      {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""${$root.LineItems[1].Milage}""
+                      }
+                    ]
+                  },
+                  {
+                    ""type"": ""Container"",
+                    ""items"": [
+                      {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""${$host.Parameters[0].one}""
+                      },
+                      {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""${$host.Parameters[1].two}""
+                      }
+                    ]
+                  }
+                ]
+            }";
+            string rootJsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string hostJsonData = @"{
+                ""Parameters"": [
+                    {""one"": 1},
+                    {""two"": 2}
+                ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = rootJsonData,
+                Host = hostJsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            TestTemplate.AssertJsonEqual(@"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": 1
+                            },
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": 10
+                            }
+                        ]
+                    },
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": 1
+                            },
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": 2
+                            }
+                        ]
+                    }
+                ]
+            }",
+            cardJson);
+        }
+
+        [TestMethod]
+        public void TestWorkWithRepeatingItems()
+        {
+            string jsonTemplate = @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                      {
+                        ""type"": ""Container"",
+                        ""items"": [
+                          {
+                            ""$data"": ""${$host.LineItems}"",
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Class: ${$host.Class}, Mileage: ${Mileage}""
+                          }
+                        ]
+                      }
+                    ]
+                }";
+
+            string rootJsonData = "{}";
+            string hostJsonData = @"{
+                      ""Class"" : ""Ship"",
+                      ""LineItems"": [
+                            {""Mileage"" : 1},
+                            {""Mileage"" : 10}
+                        ]
+                    }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = rootJsonData,
+                Host = hostJsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            TestTemplate.AssertJsonEqual(@"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+                      {
+                        ""type"": ""Container"",
+                        ""items"": [
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Class: Ship, Mileage: 1""
+                        },
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Class: Ship, Mileage: 10""
+                        }
+                    ]
+                }
+            ]
+        }", cardJson);
+        }
+    }
+
+    [TestClass]
     public sealed class TestDataKeyword
     {
         [TestMethod]

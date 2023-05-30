@@ -37,6 +37,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto uiElementDescribers = winrt::AutomationProperties::GetDescribedBy(m_uiInputElement);
 
+        winrt::AutomationProperties::SetLiveSetting(m_validationError, winrt::AutomationLiveSetting::Assertive);
         auto uiValidationErrorAsDependencyObject = m_validationError.as<winrt::DependencyObject>();
 
         uint32_t index;
@@ -46,6 +47,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
         if (!isInputValid && !found)
         {
             uiElementDescribers.Append(uiValidationErrorAsDependencyObject);
+
+            // We also want to raise a LiveRegionChanged event so that the error text is announced by narrator when it appears
+            if (const auto errorAutomationPeer = winrt::FrameworkElementAutomationPeer::FromElement(m_validationError))
+            {
+                errorAutomationPeer.RaiseAutomationEvent(winrt::AutomationEvents::LiveRegionChanged);
+            }
         }
         else if (isInputValid && found)
         {
@@ -184,13 +191,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
                 if (max)
                 {
                     double maxDouble = max.Value();
-                    isValid = (currentDouble <= maxDouble);
+                    isValid &= (currentDouble <= maxDouble);
                 }
 
                 if (min)
                 {
                     double minDouble = min.Value();
-                    isValid = (currentDouble >= minDouble);
+                    isValid &= (currentDouble >= minDouble);
                 }
             }
             catch (...)
@@ -278,7 +285,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering
                 unsigned int minHours, minMinutes;
                 if (::AdaptiveCards::DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
                 {
-                    winrt::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 1000000 * 60};
+                    winrt::TimeSpan minTime{(int64_t)(minHours * 60 + minMinutes) * 10000000 * 60};
                     isMaxMinValid &= currentTime.count() >= minTime.count();
                 }
             }

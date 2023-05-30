@@ -41,8 +41,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             bool isMultiline = adaptiveTextInput.IsMultiline();
             winrt::TextInputStyle style = adaptiveTextInput.TextInputStyle();
             isMultiline &= style != winrt::TextInputStyle::Password;
-            textBoxParentContainer = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleInlineAction(
+            auto textBoxWithInlineAction = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleInlineAction(
                 renderContext, renderArgs, inputUIElement, textBoxParentContainer, isMultiline, inlineAction);
+
+            // If the inlineAction is ShowCard, textBoxWithInlineAction will be null and we should not update the parent container
+            if (textBoxWithInlineAction)
+            {
+                textBoxParentContainer = textBoxWithInlineAction;
+            }
         }
 
         if (!adaptiveTextInput.IsMultiline())
@@ -106,6 +112,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto [textInputControl, validationBorder] = HandleLayoutAndValidation(adaptiveTextInput, textBox, renderContext, renderArgs);
 
         auto inputValue = winrt::make_self<winrt::TextInputValue>(adaptiveTextInput, textBox, validationBorder);
+
+        textBox.TextChanged([inputValue](winrt::IInspectable const& /*sender*/, winrt::TextChangedEventArgs const& /*args*/)
+        {
+            inputValue.as<IAdaptiveInputValue>().Validate();
+        });
+
         renderContext.AddInputValue(*inputValue, renderArgs);
 
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBox);

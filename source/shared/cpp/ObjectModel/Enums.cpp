@@ -11,6 +11,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Action, "action"},
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
+            {AdaptiveCardSchemaKey::ActionRole, "role"},
             {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
             {AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig"},
             {AdaptiveCardSchemaKey::Actions, "actions"},
@@ -127,6 +128,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::MaxWidth, "maxWidth"},
             {AdaptiveCardSchemaKey::Media, "media"},
             {AdaptiveCardSchemaKey::Medium, "medium"},
+            {AdaptiveCardSchemaKey::MetaData, "metaData"},
             {AdaptiveCardSchemaKey::Method, "method"},
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
@@ -201,6 +203,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::VerticalCellContentAlignment, "verticalCellContentAlignment"},
             {AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment"},
             {AdaptiveCardSchemaKey::Warning, "warning"},
+            {AdaptiveCardSchemaKey::WebUrl, "webUrl"},
             {AdaptiveCardSchemaKey::Weight, "weight"},
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
@@ -336,6 +339,13 @@ namespace AdaptiveCards
     DEFINE_ADAPTIVECARD_ENUM(ActionMode, {
             {ActionMode::Inline, "Inline"},
             {ActionMode::Popup, "Popup"}});
+
+    DEFINE_ADAPTIVECARD_ENUM(ActionRole, {
+            {ActionRole::Button, "Button"},
+            {ActionRole::Link, "Link"},
+            {ActionRole::Tab, "Tab"},
+            {ActionRole::Menu, "Menu"},
+            {ActionRole::MenuItem, "MenuItem"}});
 
     DEFINE_ADAPTIVECARD_ENUM(AssociatedInputs, {
             {AssociatedInputs::Auto, "Auto"},

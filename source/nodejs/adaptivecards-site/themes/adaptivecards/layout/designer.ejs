@@ -99,7 +99,8 @@
 				"acd-icon-storyboard",
 				function () {
 					window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
-				}
+				},
+				true
 			);
 			hostDocsButton.separator = true;
 			hostDocsButton.toolTip = "Learn more about the Host Apps";
@@ -112,7 +113,8 @@
 				function () {
 					appInsights.trackEvent({ name: "ViewedTemplatingDocs" }, { Origin: "Designer" });
 					window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
-				}
+				},
+				true
 			);
 			templateDocsButton.separator = false;
 			templateDocsButton.toolTip = "Learn more about Adaptive Cards templating";
@@ -129,7 +131,8 @@
 						+ encodeURIComponent("[Designer] Feedback title here")
 						+ "&labels=" + encodeURIComponent("Bug,Triage-Needed,Area-Designer")
 						+ "&template=" + encodeURIComponent("designer-bug-report.md"))
-				}
+				},
+				true
 			);
 
 			feedbackButton.separator = true;

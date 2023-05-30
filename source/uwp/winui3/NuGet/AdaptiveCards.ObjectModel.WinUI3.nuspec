@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AdaptiveCards.ObjectModel.WinUI3</id>
+        <version>0.4.0</version>
+        <authors>Microsoft</authors>
+        <summary>Adaptive Cards Object Model library for WinUI3</summary>
+        <description>Used to work with the object model for Adaptive Cards</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>adaptivecards;adaptive-cards</tags>
+        <projectUrl>https://adaptivecards.io</projectUrl>
+        <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+        <license type="file">EULA-Windows.txt</license>
+        <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    </metadata>
+    <files>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.winmd" target="lib\uap10.0"/>
+
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x86\native"/>
+
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x64\native"/>
+
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
+
+        <file src="..\AnyCPU\ObjectModelCsProjection\$Configuration$\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll" target="lib\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll"/>
+
+        <file src="EULA-Windows.txt" target="\"/>
+        <file src="AdaptiveCards.ObjectModel.WinUI3.native.targets" target="build\native\AdaptiveCards.ObjectModel.WinUI3.targets"/>
+    </files>
+</package>

@@ -10,8 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\adaptive-card.svg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\adaptive-card-fixed-height.svg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\down.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Symbols\up.png" />
+    <Content Include="$(MSBuildThisFileDirectory)HostConfigs\DefaultHostConfigHighContrastNightSky.json" />
+    <Content Include="$(MSBuildThisFileDirectory)HostConfigs\DefaultHostConfigHighContrastDusk.json" />
+    <Content Include="$(MSBuildThisFileDirectory)HostConfigs\DefaultHostConfigHighContrastDesert.json" />
+    <Content Include="$(MSBuildThisFileDirectory)HostConfigs\DefaultHostConfigHighContrastAquatic.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\LockScreenLogo.scale-200.png" />

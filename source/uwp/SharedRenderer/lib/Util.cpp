@@ -92,6 +92,19 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(in);
 }
 
+std::optional<double> TryHStringToDouble(winrt::hstring const& in)
+{
+    try
+    {
+        return std::stod(winrt::to_string(in));
+    }
+    catch (std::invalid_argument)
+    {
+        // in was not a valid double
+        return {};
+    }
+}
+
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 winrt::Windows::UI::Color GetColorFromString(const std::string& colorString)
@@ -481,25 +494,27 @@ bool MeetsRequirements(winrt::IAdaptiveCardElement const& cardElement, winrt::Ad
     winrt::IVector<winrt::AdaptiveRequirement> requirements = cardElement.Requirements();
     bool meetsRequirementsLocal = true;
 
-    for (auto req : requirements)
+    if (requirements)
     {
-        // winrt::hstring name = req.Name();
-        winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
+        for (auto req : requirements)
+        {
+            winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
 
-        if (registrationVersion.empty())
-        {
-            meetsRequirementsLocal = false;
-        }
-        else
-        {
-            std::string requirementVersionString = HStringToUTF8(req.Version());
-            if (requirementVersionString != "*")
+            if (registrationVersion.empty())
             {
-                AdaptiveCards::SemanticVersion requirementSemanticVersion(requirementVersionString);
-                AdaptiveCards::SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
-                if (registrationSemanticVersion < requirementSemanticVersion)
+                meetsRequirementsLocal = false;
+            }
+            else
+            {
+                std::string requirementVersionString = HStringToUTF8(req.Version());
+                if (requirementVersionString != "*")
                 {
-                    meetsRequirementsLocal = false;
+                    AdaptiveCards::SemanticVersion requirementSemanticVersion(requirementVersionString);
+                    AdaptiveCards::SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
+                    if (registrationSemanticVersion < requirementSemanticVersion)
+                    {
+                        meetsRequirementsLocal = false;
+                    }
                 }
             }
         }

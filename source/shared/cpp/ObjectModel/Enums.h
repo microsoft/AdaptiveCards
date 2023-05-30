@@ -13,6 +13,7 @@ enum class AdaptiveCardSchemaKey
     ActionAlignment,
     ActionMode,
     ActionOrientation,
+    ActionRole,
     ActionSet,
     ActionSetConfig,
     Actions,
@@ -129,6 +130,7 @@ enum class AdaptiveCardSchemaKey
     MaxWidth,
     Media,
     Medium,
+    MetaData,
     Method,
     MimeType,
     Min,
@@ -203,6 +205,7 @@ enum class AdaptiveCardSchemaKey
     VerticalCellContentAlignment,
     VerticalContentAlignment,
     Warning,
+    WebUrl,
     Weight,
     Width,
     Wrap,
@@ -412,6 +415,16 @@ enum class ActionMode
     Popup
 };
 DECLARE_ADAPTIVECARD_ENUM(ActionMode);
+
+enum class ActionRole
+{
+    Button = 0,
+    Link,
+    Tab,
+    Menu,
+    MenuItem
+};
+DECLARE_ADAPTIVECARD_ENUM(ActionRole);
 
 enum class ContainerStyle
 {

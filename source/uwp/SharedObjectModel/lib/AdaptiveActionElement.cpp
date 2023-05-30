@@ -20,6 +20,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         sharedCardElement.SetIsEnabled(IsEnabled.get());
         sharedCardElement.SetMode(static_cast<::AdaptiveCards::Mode>(Mode.get()));
+        sharedCardElement.SetRole(static_cast<::AdaptiveCards::ActionRole>(Role.get()));
 
         if (m_fallbackType == FallbackType::Content)
         {
@@ -45,6 +46,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         Style = UTF8ToHString(sharedModel->GetStyle());
         Tooltip = UTF8ToHString(sharedModel->GetTooltip());
         Mode = static_cast<Xaml_OM::ActionMode>(sharedModel->GetMode());
+        Role = static_cast<Xaml_OM::ActionRole>(sharedModel->GetRole());
 
         IsEnabled = sharedModel->GetIsEnabled();
 

@@ -27,6 +27,8 @@ public class InputUtil
         CharSequence text = RendererUtil.handleSpecialText(label);
         paragraph.append(text);
 
+        CharSequence labelContentDescription = text;
+
         InputLabelConfig inputLabelConfig;
         if (isRequired)
         {
@@ -46,6 +48,13 @@ public class InputUtil
             if (requiredLabelSuffix == null || requiredLabelSuffix.isEmpty())
             {
                 requiredLabelSuffix = " *";
+
+                // TalkBack should read "required" instead of "asterisk"
+                labelContentDescription += " required";
+            }
+            else
+            {
+                labelContentDescription += requiredLabelSuffix;
             }
 
             paragraph.append(requiredLabelSuffix);
@@ -55,6 +64,7 @@ public class InputUtil
         TextView labelView = new TextView(context);
         labelView.setText(paragraph);
         labelView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        labelView.setContentDescription(labelContentDescription);
 
         TextBlockRenderer.applyTextFormat(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getWeight(), renderArgs);
         TextBlockRenderer.applyTextSize(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getSize(), renderArgs);

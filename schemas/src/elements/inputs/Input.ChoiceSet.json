@@ -7,6 +7,11 @@
 			"type": "Input.Choice[]",
 			"description": "`Choice` options."
 		},
+		"choices.data": {
+			"type": "Data.Query",
+			"description": "Allows dynamic fetching of choices from the bot to be displayed as suggestions in the dropdown when the user types in the input field.",
+			"version": "1.6"
+		},
 		"isMultiSelect": {
 			"type": "boolean",
 			"description": "Allow multiple choices to be selected.",

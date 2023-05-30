@@ -101,7 +101,7 @@
         [filteredDataSource addToSource:key];
     }
 
-    [filteredDataSource filter:@"7"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"7"];
     XCTAssertTrue([[filteredDataSource getItemAt:0] isEqualToString:@"7"]);
 }
 
@@ -110,11 +110,11 @@
     ACOFilteredDataSource *filteredDataSource = [[ACOFilteredDataSource alloc] init];
     addDataToFilteredSource(filteredDataSource, _testStrings1);
 
-    [filteredDataSource filter:@"a"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"a"];
     XCTAssertEqual(filteredDataSource.count, 4);
-    [filteredDataSource filter:@"an"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"an"];
     XCTAssertEqual(filteredDataSource.count, 2);
-    [filteredDataSource filter:@"ang"];
+    [filteredDataSource updateFilteredListForStaticTypeahead:@"ang"];
     XCTAssertEqual(filteredDataSource.count, 1);
 }
 
@@ -185,7 +185,7 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     ACOBaseCardElement *acoElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:[cardParseResult.card card]->GetBody().at(1)];
     ACOFilteredDataSource *dataSource = [[ACOFilteredDataSource alloc] init];
-    ACOChoiceSetCompactStyleValidator *validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElement dataSource:dataSource];
+    ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElement dataSource:dataSource];
     XCTAssertNotNil(validator);
     XCTAssertTrue([validator isValid:@"Red"]);
 }
@@ -196,7 +196,7 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     ACOBaseCardElement *acoElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:[cardParseResult.card card]->GetBody().at(1)];
     ACOFilteredDataSource *dataSource = [[ACOFilteredDataSource alloc] init];
-    ACOChoiceSetCompactStyleValidator *validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElement dataSource:dataSource];
+    ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElement dataSource:dataSource];
 
     validator.isRequired = NO;
     XCTAssertTrue([validator isValid:nil]);
@@ -213,7 +213,7 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     ACOBaseCardElement *acoElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:[cardParseResult.card card]->GetBody().at(2)];
     ACOFilteredDataSource *dataSource = [[ACOFilteredDataSource alloc] init];
-    ACOChoiceSetCompactStyleValidator *validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElement dataSource:dataSource];
+    ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElement dataSource:dataSource];
 
     validator.isRequired = YES;
     XCTAssertFalse([validator isValid:@"Please choose"]);
@@ -225,7 +225,7 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     ACOBaseCardElement *acoElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:[cardParseResult.card card]->GetBody().at(2)];
     ACOFilteredDataSource *dataSource = [[ACOFilteredDataSource alloc] init];
-    ACOChoiceSetCompactStyleValidator *validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElement dataSource:dataSource];
+    ACOChoiceSetFilteredStyleValidator *validator = [[ACOChoiceSetFilteredStyleValidator alloc] init:acoElement dataSource:dataSource];
 
     validator.isRequired = YES;
     XCTAssertTrue([[validator getValue:@"Please choose"] isEqualToString:@""]);

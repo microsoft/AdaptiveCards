@@ -223,3 +223,11 @@ export enum CarouselInteractionEvent {
     Pagination,
     Autoplay
 }
+
+export enum ActionRole {
+    Button,
+    Link,
+    Tab,
+    Menu,
+    MenuItem
+}
