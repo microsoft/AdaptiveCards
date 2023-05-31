@@ -283,19 +283,6 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $padding;
             background-color: $background-color;
 
-            &.ac-choiceSetInput-filtered-dropdown {
-                background-color: white;
-                border-top: 0px;
-                display: none;
-                max-height: 200px;
-                overflow-y: scroll;
-                padding-top: 0px;
-                padding-bottom: 0px;
-                position: absolute;
-                width: 100%;
-                z-index: 1;
-            }
-
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
@@ -318,26 +305,52 @@ $font-family: 'Segoe UI', sans-serif;
             }
         }
 
-        &.ac-choiceSetInput-choice {
-            padding: $padding;
-            padding-left: 0px;
-            padding-right: 0px;
+        &.ac-choiceSetInput-filtered-container {
             display: flex;
+            position: relative;
+            width: 100%;
+        }
+
+        &.ac-choiceSetInput-filtered-textbox {
+            border: $border;
+            padding: $padding;
+            background-color: $background-color;
+            width: 100%;
+        }
+
+        &.ac-choiceSetInput-filtered-dropdown {
+            background-color: white;
+            border: $border;
+            border-top: 0px;
+            box-sizing: border-box;
+            display: none;
+            max-height: 200px;
+            overflow-y: scroll;
+            position: absolute;
+            top: calc(100%);
+            width: 100%;
+
+            &.open {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        &.ac-choiceSetInput-choice {
+            box-sizing: border-box;
+            padding: $padding;
             width: 100%;
 
             &.focused {
                 background-color: #DEECF9;
-                box-shadow: #DEECF9 8px 0px 0px, #DEECF9 -8px 0px 0px;
                 outline: none;
             }
         }
 
         &.ac-choiceSetInput-statusIndicator {
-            background-color: white;
+            box-sizing: border-box;
             color: #A19F9D;
             padding: $padding;
-            padding-left: 0px;
-            padding-right: 0px;
             width: 100%;
 
             &.ac-choiceSetInput-errorIndicator {
@@ -345,7 +358,7 @@ $font-family: 'Segoe UI', sans-serif;
                 text-align: center;
             }
         }
-        
+
         &.ac-inputStyle-revealOnHover-onrender {
             border: $transparent-border;
             background-color: $transparent-background;

@@ -4836,17 +4836,17 @@ export class FilteredChoiceSet {
 
     render() {
         const choiceSetContainer = document.createElement("div");
-        choiceSetContainer.style.position = "relative";
-        choiceSetContainer.style.width = "100%";
+        choiceSetContainer.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-container"
+        );
 
         this._textInput = document.createElement("input");
         this._textInput.className = this.hostConfig.makeCssClassName(
             "ac-input",
-            "ac-multichoiceInput",
-            "ac-choiceSetInput-filtered"
+            "ac-choiceSetInput-filtered-textbox"
         );
         this._textInput.type = "text";
-        this._textInput.style.width = "100%";
 
         this._textInput.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
@@ -4855,10 +4855,8 @@ export class FilteredChoiceSet {
         };
 
         this._dropdown = document.createElement("div");
-        this._dropdown.style.display = "none";
         this._dropdown.className = this.hostConfig.makeCssClassName(
             "ac-input",
-            "ac-multichoiceInput",
             "ac-choiceSetInput-filtered-dropdown"
         );
 
@@ -4872,7 +4870,7 @@ export class FilteredChoiceSet {
                 }
                 // Dropdown closes if user clicks outside the choiceset.
                 if (child || !(event.target === this._textInput)) {
-                    this._dropdown.style.display = "none";
+                    this._dropdown.classList.remove("open");
                 }
             }
         };
@@ -4899,7 +4897,7 @@ export class FilteredChoiceSet {
                 this._textInput.value = choice.innerText;
             }
             if (this._dropdown) {
-                this._dropdown.style.display = "none";
+                this._dropdown.classList.remove("open");
             }
         };
 
@@ -4994,8 +4992,8 @@ export class FilteredChoiceSet {
     }
 
     private showDropdown() {
-        if (this._dropdown?.hasChildNodes) {
-            this._dropdown.style.display = "block";
+        if (this._dropdown?.hasChildNodes()) {
+            this._dropdown.classList.add("open");
         }
     }
 

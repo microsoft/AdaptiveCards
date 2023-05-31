@@ -597,7 +597,7 @@ export class AdaptiveApplet {
 
                     if (response.rawContent === undefined) {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is undefined"
+                            "internalSendExecuteRequestAsync: Action.Execute result is undefined"
                         );
                     }
 
@@ -633,7 +633,7 @@ export class AdaptiveApplet {
                         this.activityRequestSucceeded(response, this.card);
                     } else {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" +
+                            "internalSendExecuteRequestAsync: Action.Execute result is of unsupported type (" +
                                 typeof response.rawContent +
                                 ")"
                         );
@@ -696,7 +696,7 @@ export class AdaptiveApplet {
 
                             if (response.signinButton === undefined) {
                                 throw new Error(
-                                    "internalSendActivityRequestAsync: the login request doesn't contain a valid signin URL."
+                                    "internalSendExecuteRequestAsync: the login request doesn't contain a valid signin URL."
                                 );
                             }
 
@@ -767,23 +767,34 @@ export class AdaptiveApplet {
                 if (response instanceof SuccessResponse) {
                     const rawResponse = response.rawContent;
                     if (rawResponse) {
-                        let parsedResponse = rawResponse;
+                        let parsedResponse;
                         try {
-                            parsedResponse = JSON.parse(parsedResponse);
+                            parsedResponse = JSON.parse(rawResponse);
                         } catch (error) {
-                            throw new Error("Cannot parse response object: " + rawResponse);
+                            this._choiceSet.showErrorIndicator("Unable to load");
+                            throw new Error(
+                                "internalSendDataQueryRequestAsync: Cannot parse response object: " +
+                                    rawResponse
+                            );
                         }
                         if (typeof parsedResponse === "object") {
-                            this._choiceSet.renderChoices(parsedResponse);
-                            this.activityRequestSucceeded(response, parsedResponse);
+                            if (parsedResponse.length === 0) {
+                                this._choiceSet.showErrorIndicator("No results found.");
+                            } else {
+                                this._choiceSet.renderChoices(parsedResponse);
+                            }
                         } else {
+                            this._choiceSet.showErrorIndicator("Error loading results.");
                             throw new Error(
                                 "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
                                     typeof rawResponse +
                                     ")"
                             );
                         }
+                    } else {
+                        this._choiceSet.showErrorIndicator("No results found.");
                     }
+                    this.activityRequestSucceeded(response, rawResponse);
                 } else if (response instanceof ErrorResponse) {
                     this._choiceSet.showErrorIndicator("Error loading results.");
                     logEvent(
