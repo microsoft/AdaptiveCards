@@ -4348,8 +4348,8 @@ export class ChoiceSetInput extends Input {
         return this._filteredChoiceSet?.textInput?.value;
     }
 
-    renderChoices(fetchedChoices: FetchedChoice[]) {
-        this._filteredChoiceSet?.processResponse(fetchedChoices);
+    renderChoices(filter: string, fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(filter, fetchedChoices);
     }
 
     showLoadingIndicator() {
@@ -4360,8 +4360,8 @@ export class ChoiceSetInput extends Input {
         this._filteredChoiceSet?.removeLoadingIndicator();
     }
 
-    showErrorIndicator(error: string) {
-        this._filteredChoiceSet?.showErrorIndicator(error);
+    showErrorIndicator(filter: string, error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(filter, error);
     }
 
     private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
@@ -5003,12 +5003,14 @@ export class FilteredChoiceSet {
         this.showDropdown();
     }
 
-    processResponse(fetchedChoices: FetchedChoice[]) {
-        this.resetDropdown();
-        this._dynamicChoices = fetchedChoices;
-        this.filterChoices();
-        if (this._visibleChoiceCount === 0) {
-            this.showErrorIndicator("No results found.");
+    processResponse(filter: string, fetchedChoices: FetchedChoice[]) {
+        if (filter === this._textInput?.value) {
+            this.resetDropdown();
+            this._dynamicChoices = fetchedChoices;
+            this.filterChoices();
+            if (this._visibleChoiceCount === 0) {
+                this.showErrorIndicator(filter, "No results found.");
+            }
         }
     }
 
@@ -5024,10 +5026,12 @@ export class FilteredChoiceSet {
         }
     }
 
-    showErrorIndicator(error: string) {
-        this.processStaticChoices();
-        const errorIndicator = this.getStatusIndicator(error);
-        this._dropdown?.appendChild(errorIndicator);
+    showErrorIndicator(filter: string, error: string) {
+        if (filter === this._textInput?.value) {
+            this.processStaticChoices();
+            const errorIndicator = this.getStatusIndicator(error);
+            this._dropdown?.appendChild(errorIndicator);
+        }
     }
 
     get dynamicChoices() {
