@@ -778,11 +778,7 @@ export class AdaptiveApplet {
                             );
                         }
                         if (typeof parsedResponse === "object") {
-                            if (parsedResponse.length === 0) {
-                                this._choiceSet.showErrorIndicator("No results found.");
-                            } else {
-                                this._choiceSet.renderChoices(parsedResponse);
-                            }
+                            this._choiceSet.renderChoices(parsedResponse);
                         } else {
                             this._choiceSet.showErrorIndicator("Error loading results.");
                             throw new Error(

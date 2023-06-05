@@ -4931,10 +4931,10 @@ export class FilteredChoiceSet {
         }
     }
 
-    private filterChoices(isDynamic?: boolean) {
+    private filterChoices() {
         const filter = this._textInput?.value.toLowerCase();
         if (filter) {
-            const choices = isDynamic ? this._dynamicChoices : this._choices;
+            const choices = [...this._choices, ...this._dynamicChoices];
             for (const choice of choices) {
                 if (choice.title) {
                     const matchIndex = choice.title.toLowerCase().indexOf(filter);
@@ -5004,8 +5004,9 @@ export class FilteredChoiceSet {
     }
 
     processResponse(fetchedChoices: FetchedChoice[]) {
+        this.resetDropdown();
         this._dynamicChoices = fetchedChoices;
-        this.filterChoices(true);
+        this.filterChoices();
         if (this._visibleChoiceCount === 0) {
             this.showErrorIndicator("No results found.");
         }
@@ -5024,7 +5025,7 @@ export class FilteredChoiceSet {
     }
 
     showErrorIndicator(error: string) {
-        this.removeLoadingIndicator();
+        this.processStaticChoices();
         const errorIndicator = this.getStatusIndicator(error);
         this._dropdown?.appendChild(errorIndicator);
     }
