@@ -293,9 +293,9 @@ static CGFloat const ACOStackViewSpacing = 14.0f;
 
 - (void)updateTypeaheadUIWithSearchText:(NSString *)searchText dynamicChoices:(NSDictionary *)choices withError:(NSError *)error
 {
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        __strong typeof(self) strongSelf = weakSelf;
+        __strong __typeof(self) strongSelf = weakSelf;
         if (!error) {
             [strongSelf->_loader stopAnimating];
             [strongSelf->_filteredDataSource updateFilteredListForStaticAndDynamicTypeahead:searchText dynamicChoices:choices];
