@@ -20,6 +20,9 @@ Pod::Spec.new do |spec|
     sspec.resource_bundles = {'AdaptiveCards' => ['source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Resources/**/*']}
     sspec.dependency 'AdaptiveCards/AdaptiveCardsPrivate'
     sspec.dependency 'AdaptiveCards/ObjectModel'
+    sspec.xcconfig = {
+         'GCC_C_LANGUAGE_STANDARD' => 'gnu99',
+    }
   end
 
   spec.subspec 'ObjectModel' do | sspec |
