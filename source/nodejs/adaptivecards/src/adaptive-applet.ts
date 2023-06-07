@@ -760,10 +760,9 @@ export class AdaptiveApplet {
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             } catch (error) {
-                logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
                 this._choiceSet.showErrorIndicator(filter, "Unable to load");
+                logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
             }
-            this._choiceSet.removeLoadingIndicator();
             if (response) {
                 if (response instanceof SuccessResponse) {
                     const rawResponse = response.rawContent;
@@ -780,8 +779,9 @@ export class AdaptiveApplet {
                         }
                         if (typeof parsedResponse === "object") {
                             this._choiceSet.renderChoices(filter, parsedResponse);
+                            this.activityRequestSucceeded(response, rawResponse);
                         } else {
-                            this._choiceSet.showErrorIndicator(filter, "Error loading results.");
+                            this._choiceSet.showErrorIndicator(filter, "Error loading results");
                             throw new Error(
                                 "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
                                     typeof rawResponse +
@@ -789,11 +789,16 @@ export class AdaptiveApplet {
                             );
                         }
                     } else {
-                        this._choiceSet.showErrorIndicator(filter, "No results found.");
+                        this._choiceSet.showErrorIndicator(filter, "Unable to load");
+                        throw new Error(
+                            "internalSendDataQueryRequestAsync: Data.Query result is undefined"
+                        );
                     }
-                    this.activityRequestSucceeded(response, rawResponse);
                 } else if (response instanceof ErrorResponse) {
-                    this._choiceSet.showErrorIndicator(filter, "Error loading results.");
+                    this._choiceSet.showErrorIndicator(
+                        filter,
+                        response.error.message || "Error loading results"
+                    );
                     logEvent(
                         Enums.LogLevel.Error,
                         `Activity request failed: ${response.error.message}.`
@@ -803,6 +808,8 @@ export class AdaptiveApplet {
                     this._choiceSet.showErrorIndicator(filter, "Unable to load");
                     throw new Error("Unhandled response type: " + JSON.stringify(response));
                 }
+            } else {
+                this._choiceSet.removeLoadingIndicator();
             }
         }
     }

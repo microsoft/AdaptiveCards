@@ -4348,6 +4348,10 @@ export class ChoiceSetInput extends Input {
         return this._filteredChoiceSet?.textInput?.value;
     }
 
+    getDropdownElement() {
+        return this._filteredChoiceSet?.dropdown;
+    }
+
     renderChoices(filter: string, fetchedChoices: FetchedChoice[]) {
         this._filteredChoiceSet?.processResponse(filter, fetchedChoices);
     }
@@ -4819,6 +4823,7 @@ export class FilteredChoiceSet {
     private _choices: Choice[];
     private _dynamicChoices: FetchedChoice[];
     private _visibleChoiceCount: number;
+    private _highlightedChoiceId: number;
     private _textInput?: HTMLInputElement;
     private _dropdown?: HTMLDivElement;
     private _loadingIndicator?: HTMLDivElement;
@@ -4831,6 +4836,7 @@ export class FilteredChoiceSet {
         this._choices = choices;
         this._dynamicChoices = [];
         this._visibleChoiceCount = 0;
+        this._highlightedChoiceId = -1;
         this._hostConfig = hostConfig;
     }
 
@@ -4850,7 +4856,16 @@ export class FilteredChoiceSet {
 
         this._textInput.onkeydown = (event) => {
             if (event.key === "ArrowDown") {
-                this.focusChoice(0);
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId + 1);
+            } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId - 1);
+            } else if (event.key === "Enter") {
+                const choice = document.getElementById(
+                    `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+                );
+                choice?.click();
             }
         };
 
@@ -4862,18 +4877,6 @@ export class FilteredChoiceSet {
 
         choiceSetContainer.append(this._textInput, this._dropdown);
 
-        document.onclick = (event) => {
-            if (this._dropdown) {
-                let child = this._dropdown.firstChild;
-                while (child && event.target !== child) {
-                    child = child.nextSibling;
-                }
-                // Dropdown closes if user clicks outside the choiceset.
-                if (child || !(event.target === this._textInput)) {
-                    this._dropdown.classList.remove("open");
-                }
-            }
-        };
         this._renderedElement = choiceSetContainer;
     }
 
@@ -4884,72 +4887,62 @@ export class FilteredChoiceSet {
         choice.innerHTML = value.replace(filter, `<b>${filter}</b>`);
         choice.tabIndex = -1;
 
-        choice.addEventListener("focusin", () => {
-            choice.classList.add("focused");
-        });
-
-        choice.addEventListener("focusout", () => {
-            choice.classList.remove("focused");
-        });
-
         choice.onclick = () => {
+            choice.classList.remove("focused");
+            this._highlightedChoiceId = -1;
             if (this._textInput) {
                 this._textInput.value = choice.innerText;
+                this._textInput.focus();
             }
             if (this._dropdown) {
                 this._dropdown.classList.remove("open");
             }
         };
-
-        choice.onkeydown = (event) => {
-            if (event.key === "ArrowDown") {
-                this.focusChoice(id + 1);
-            } else if (event.key === "ArrowUp") {
-                this.focusChoice(id - 1);
-            } else if (event.key === "Enter") {
-                choice.click();
-            }
-        };
-
-        choice.onmouseover = () => {
-            this.focusChoice(id);
+        choice.onmouseenter = () => {
+            this.highlightChoice(id);
         };
 
         return choice;
     }
 
-    private focusChoice(id: number) {
-        const choice = document.getElementById(
-            `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
-        );
-        if (choice) {
-            choice.focus();
-        } else if (this._textInput) {
-            this._textInput.focus();
-            const textLength = this._textInput.value.length;
-            this._textInput.setSelectionRange(textLength, textLength);
+    private highlightChoice(id: number) {
+        if (this._visibleChoiceCount > 0) {
+            const currentHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+            );
+            const nextHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
+            );
+            if (nextHighlightedChoice) {
+                currentHighlightedChoice?.classList.remove("focused");
+                nextHighlightedChoice.classList.add("focused");
+                nextHighlightedChoice.scrollIntoView();
+                this._highlightedChoiceId = id;
+            } else if (currentHighlightedChoice && this._highlightedChoiceId !== 0) {
+                this.highlightChoice(0);
+            } else {
+                this.highlightChoice(this._visibleChoiceCount - 1);
+            }
         }
     }
 
     private filterChoices() {
-        const filter = this._textInput?.value.toLowerCase();
-        if (filter) {
-            const choices = [...this._choices, ...this._dynamicChoices];
-            for (const choice of choices) {
-                if (choice.title) {
-                    const matchIndex = choice.title.toLowerCase().indexOf(filter);
-                    if (matchIndex !== -1) {
-                        const matchedText = choice.title.substring(
-                            matchIndex,
-                            matchIndex + filter.length
-                        );
-                        const choiceContainer = this.createChoice(
-                            choice.title,
-                            matchedText,
-                            this._visibleChoiceCount++
-                        );
-                        this._dropdown?.appendChild(choiceContainer);
-                    }
+        const filter = this._textInput?.value.toLowerCase().trim() || "";
+        const choices = [...this._choices, ...this._dynamicChoices];
+        for (const choice of choices) {
+            if (choice.title) {
+                const matchIndex = choice.title.toLowerCase().indexOf(filter);
+                if (matchIndex !== -1) {
+                    const matchedText = choice.title.substring(
+                        matchIndex,
+                        matchIndex + filter.length
+                    );
+                    const choiceContainer = this.createChoice(
+                        choice.title,
+                        matchedText,
+                        this._visibleChoiceCount++
+                    );
+                    this._dropdown?.appendChild(choiceContainer);
                 }
             }
         }
@@ -4988,6 +4981,7 @@ export class FilteredChoiceSet {
         if (this._dropdown) {
             Utils.clearElementChildren(this._dropdown);
             this._visibleChoiceCount = 0;
+            this._highlightedChoiceId = -1;
         }
     }
 
@@ -5009,7 +5003,7 @@ export class FilteredChoiceSet {
             this._dynamicChoices = fetchedChoices;
             this.filterChoices();
             if (this._visibleChoiceCount === 0) {
-                this.showErrorIndicator(filter, "No results found.");
+                this.showErrorIndicator(filter, "No results found");
             }
         }
     }
@@ -5064,6 +5058,10 @@ export class FilteredChoiceSet {
 
     get textInput() {
         return this._textInput;
+    }
+
+    get dropdown() {
+        return this._dropdown;
     }
 }
 
@@ -9395,6 +9393,18 @@ export class AdaptiveCard extends ContainerWithActions {
 
             this.updateLayout();
         }
+
+        const inputElements = this.getAllInputs();
+        document.onclick = (event) => {
+            inputElements.forEach((input) => {
+                if (
+                    input instanceof ChoiceSetInput &&
+                    !input.renderedElement?.contains(event.target as Node)
+                ) {
+                    input.getDropdownElement()?.classList.remove("open");
+                }
+            });
+        };
 
         return renderedCard;
     }
