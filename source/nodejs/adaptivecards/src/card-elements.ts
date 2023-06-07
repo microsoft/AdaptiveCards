@@ -4899,13 +4899,13 @@ export class FilteredChoiceSet {
             }
         };
         choice.onmouseenter = () => {
-            this.highlightChoice(id);
+            this.highlightChoice(id, false);
         };
 
         return choice;
     }
 
-    private highlightChoice(id: number) {
+    private highlightChoice(id: number, scrollIntoView: boolean = true) {
         if (this._visibleChoiceCount > 0) {
             const currentHighlightedChoice = document.getElementById(
                 `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
@@ -4916,7 +4916,9 @@ export class FilteredChoiceSet {
             if (nextHighlightedChoice) {
                 currentHighlightedChoice?.classList.remove("focused");
                 nextHighlightedChoice.classList.add("focused");
-                nextHighlightedChoice.scrollIntoView();
+                if (scrollIntoView) {
+                    nextHighlightedChoice.scrollIntoView();
+                }
                 this._highlightedChoiceId = id;
             } else if (currentHighlightedChoice && this._highlightedChoiceId !== 0) {
                 this.highlightChoice(0);
