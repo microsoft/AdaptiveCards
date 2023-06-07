@@ -323,12 +323,14 @@ $font-family: 'Segoe UI', sans-serif;
             border: $border;
             border-top: 0px;
             box-sizing: border-box;
+            cursor: pointer;
             display: none;
             max-height: 200px;
             overflow-y: scroll;
             position: absolute;
             top: calc(100%);
             width: 100%;
+            z-index: 1;
 
             &.open {
                 display: flex;
@@ -350,6 +352,7 @@ $font-family: 'Segoe UI', sans-serif;
         &.ac-choiceSetInput-statusIndicator {
             box-sizing: border-box;
             color: #A19F9D;
+            cursor: default;
             padding: $padding;
             width: 100%;
 

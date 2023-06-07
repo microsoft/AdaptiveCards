@@ -753,16 +753,16 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendDataQueryRequestAsync: channel adapter not set");
         }
+        const filter = (request.action as DataQuery).filter;
         if (this._choiceSet) {
             this._choiceSet.showLoadingIndicator();
             let response: ActivityResponse | undefined = undefined;
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             } catch (error) {
+                this._choiceSet.showErrorIndicator(filter, "Unable to load");
                 logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
-                this._choiceSet.showErrorIndicator("Unable to load");
             }
-            this._choiceSet.removeLoadingIndicator();
             if (response) {
                 if (response instanceof SuccessResponse) {
                     const rawResponse = response.rawContent;
@@ -771,20 +771,17 @@ export class AdaptiveApplet {
                         try {
                             parsedResponse = JSON.parse(rawResponse);
                         } catch (error) {
-                            this._choiceSet.showErrorIndicator("Unable to load");
+                            this._choiceSet.showErrorIndicator(filter, "Unable to load");
                             throw new Error(
                                 "internalSendDataQueryRequestAsync: Cannot parse response object: " +
                                     rawResponse
                             );
                         }
                         if (typeof parsedResponse === "object") {
-                            if (parsedResponse.length === 0) {
-                                this._choiceSet.showErrorIndicator("No results found.");
-                            } else {
-                                this._choiceSet.renderChoices(parsedResponse);
-                            }
+                            this._choiceSet.renderChoices(filter, parsedResponse);
+                            this.activityRequestSucceeded(response, rawResponse);
                         } else {
-                            this._choiceSet.showErrorIndicator("Error loading results.");
+                            this._choiceSet.showErrorIndicator(filter, "Error loading results");
                             throw new Error(
                                 "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
                                     typeof rawResponse +
@@ -792,20 +789,27 @@ export class AdaptiveApplet {
                             );
                         }
                     } else {
-                        this._choiceSet.showErrorIndicator("No results found.");
+                        this._choiceSet.showErrorIndicator(filter, "Unable to load");
+                        throw new Error(
+                            "internalSendDataQueryRequestAsync: Data.Query result is undefined"
+                        );
                     }
-                    this.activityRequestSucceeded(response, rawResponse);
                 } else if (response instanceof ErrorResponse) {
-                    this._choiceSet.showErrorIndicator("Error loading results.");
+                    this._choiceSet.showErrorIndicator(
+                        filter,
+                        response.error.message || "Error loading results"
+                    );
                     logEvent(
                         Enums.LogLevel.Error,
                         `Activity request failed: ${response.error.message}.`
                     );
                     this.activityRequestFailed(response);
                 } else {
-                    this._choiceSet.showErrorIndicator("Unable to load");
+                    this._choiceSet.showErrorIndicator(filter, "Unable to load");
                     throw new Error("Unhandled response type: " + JSON.stringify(response));
                 }
+            } else {
+                this._choiceSet.removeLoadingIndicator();
             }
         }
     }
