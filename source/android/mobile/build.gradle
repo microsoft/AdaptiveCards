@@ -56,5 +56,6 @@ dependencies {
     implementation 'org.webrtc:google-webrtc:1.0.27306'
     implementation 'androidx.core:core-ktx:1.6.0'
     testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation project(':adaptivecards')
 }
