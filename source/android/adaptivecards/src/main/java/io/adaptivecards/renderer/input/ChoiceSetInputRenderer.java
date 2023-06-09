@@ -2,24 +2,24 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
-import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
+//import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 
-import android.app.Activity;
+//import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+//import android.content.Intent;
 import android.content.res.Resources;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContracts;
+//import androidx.activity.result.ActivityResultLauncher;
+//import androidx.activity.result.ActivityResultRegistry;
+//import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
-import android.graphics.drawable.Drawable;
+//import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
+//import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -54,7 +54,7 @@ import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedRadioGroup;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedTextView;
+//import io.adaptivecards.renderer.input.customcontrols.ValidatedTextView;
 import io.adaptivecards.renderer.inputhandler.AutoCompleteTextViewHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -63,12 +63,12 @@ import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
-import io.adaptivecards.renderer.inputhandler.TypeAheadTextViewHandler;
+//import io.adaptivecards.renderer.inputhandler.TypeAheadTextViewHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.DynamicTypeAheadService;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
-import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchActivity;
-import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchLaunchParams;
+//import io.adaptivecards.renderer.typeaheadsearch.DynamicTypeAheadService;
+//import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
+//import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchActivity;
+//import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchLaunchParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -627,6 +627,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
     }
 
+/*
+
     public View renderTypeAheadControl(
         RenderedAdaptiveCard renderedCard,
         Context context,
@@ -744,6 +746,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             return validatedTypeAheadTextView;
         }
     }
+ */
 
     @Override
     public View render(
@@ -765,11 +768,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ChoiceSetInput choiceSetInput = Util.castTo(baseCardElement, ChoiceSetInput.class);
 
         View inputView = null;
+
+        /*
         if (choiceSetInput.GetChoicesData() != null && !choiceSetInput.GetChoicesData().GetChoicesDataType().isEmpty()) {
             // Create dynamic type ahead control
             inputView = renderTypeAheadControl(renderedCard, context, choiceSetInput, channelAdaptor.getChoicesResolver(), hostConfig, renderArgs);
         }
-        else if (choiceSetInput.GetIsMultiSelect())
+        else
+         */
+
+        if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
             inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
