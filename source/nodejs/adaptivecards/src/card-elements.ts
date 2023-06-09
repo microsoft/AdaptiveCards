@@ -4888,14 +4888,18 @@ export class FilteredChoiceSet {
         choice.tabIndex = -1;
 
         choice.onclick = () => {
-            choice.classList.remove("focused");
+            choice.classList.remove(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+            );
             this._highlightedChoiceId = -1;
             if (this._textInput) {
                 this._textInput.value = choice.innerText;
                 this._textInput.focus();
             }
             if (this._dropdown) {
-                this._dropdown.classList.remove("open");
+                this._dropdown.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+                );
             }
         };
         choice.onmouseenter = () => {
@@ -4914,8 +4918,12 @@ export class FilteredChoiceSet {
                 `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
             );
             if (nextHighlightedChoice) {
-                currentHighlightedChoice?.classList.remove("focused");
-                nextHighlightedChoice.classList.add("focused");
+                currentHighlightedChoice?.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+                );
+                nextHighlightedChoice.classList.add(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+                );
                 if (scrollIntoView) {
                     nextHighlightedChoice.scrollIntoView();
                 }
@@ -4989,7 +4997,9 @@ export class FilteredChoiceSet {
 
     private showDropdown() {
         if (this._dropdown?.hasChildNodes()) {
-            this._dropdown.classList.add("open");
+            this._dropdown.classList.add(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+            );
         }
     }
 
@@ -9403,7 +9413,13 @@ export class AdaptiveCard extends ContainerWithActions {
                     input instanceof ChoiceSetInput &&
                     !input.renderedElement?.contains(event.target as Node)
                 ) {
-                    input.getDropdownElement()?.classList.remove("open");
+                    input
+                        .getDropdownElement()
+                        ?.classList.remove(
+                            this.hostConfig.makeCssClassName(
+                                "ac-choiceSetInput-filtered-dropdown-open"
+                            )
+                        );
                 }
             });
         };

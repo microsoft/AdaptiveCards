@@ -332,7 +332,7 @@ $font-family: 'Segoe UI', sans-serif;
             width: 100%;
             z-index: 1;
 
-            &.open {
+            &.ac-choiceSetInput-filtered-dropdown-open {
                 display: flex;
                 flex-direction: column;
             }
@@ -343,7 +343,7 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $padding;
             width: 100%;
 
-            &.focused {
+            &.ac-choiceSetInput-choice-focused {
                 background-color: #DEECF9;
                 outline: none;
             }
