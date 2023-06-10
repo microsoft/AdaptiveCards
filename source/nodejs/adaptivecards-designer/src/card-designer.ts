@@ -855,7 +855,7 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
+                this.setHostContainerByIndex(parseInt(this._hostContainerChoicePicker.value));
             };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
@@ -1712,6 +1712,14 @@ export class CardDesigner extends Designer.DesignContext {
 
         this.setCardPayload(card, true);
     }
+
+	setHostContainerByIndex(hostContainerIndex: number){
+		if (hostContainerIndex < 0 || this._hostContainers.length < hostContainerIndex) {
+			return;
+		}
+
+		this.hostContainer = this._hostContainers[hostContainerIndex];
+	}
 
     onCardPayloadChanged: (designer: CardDesigner) => void;
     onCardValidated: (designer: CardDesigner, validationLogEntries: Adaptive.IValidationEvent[]) => void;

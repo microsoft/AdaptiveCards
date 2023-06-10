@@ -144,8 +144,13 @@
 			designer.attachTo(document.getElementById("designerRootHost"));
 			designer.monacoModuleLoaded();
 
+			var hostContainerIndexParam = getParameterByName("hostContainerIndex", null);
 			var cardUrl = getParameterByName("card", null);
 			var dataUrl = getParameterByName("data", null);
+
+			if (hostContainerIndexParam) {
+				designer.setHostContainerByIndex(parseInt(hostContainerIndexParam))
+			}
 
 			if (dataUrl) {
 				var dataXhttp = new XMLHttpRequest();
