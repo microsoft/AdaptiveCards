@@ -168,7 +168,7 @@
 				} catch (e) {
 					// Check if the data is a valid JSON
 					try {
-						var sampleData = JSON.parse(decodeURIComponent(dataParam));
+						var sampleData = JSON.parse(dataParam);
 						designer.sampleData = sampleData;
 					} catch (e) {
 					}
@@ -219,7 +219,7 @@
 				} catch (e) {
 					// Check if the card is a valid JSON
 					try {
-						designer.setCard(JSON.parse(decodeURIComponent(cardParam)));
+						designer.setCard(JSON.parse(cardParam));
 					} catch (e) {
 					}
 				}
