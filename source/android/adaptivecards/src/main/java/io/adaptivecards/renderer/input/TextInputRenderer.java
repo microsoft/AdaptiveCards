@@ -45,7 +45,6 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -57,6 +56,7 @@ import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -370,7 +370,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ChannelAdaptor channelAdaptor,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -423,7 +423,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             // Add KeyListener if it's single line and action is submit, so when user touches enter key,
             // submit action will get triggered.
-            editText.setOnKeyListener(new EditTextKeyListener(textInput, channelAdaptor.getCardActionHandler(), renderedCard, action));
+            editText.setOnKeyListener(new EditTextKeyListener(textInput, cardActionHandler, renderedCard, action));
         }
 
         setTextInputStyle(editText, textInput.GetTextInputStyle());
@@ -447,7 +447,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     View view = subViewGroup.getChildAt(index);
                     if (view instanceof Button || view instanceof ImageButton)
                     {
-                        view.setOnClickListener(new ActionElementRenderer.SelectActionOnClickListener(renderedCard, action, channelAdaptor.getCardActionHandler()));
+                        view.setOnClickListener(new ActionElementRenderer.SelectActionOnClickListener(renderedCard, action, cardActionHandler));
                     }
                 }
             }
