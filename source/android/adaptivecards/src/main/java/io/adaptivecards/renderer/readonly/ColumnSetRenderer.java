@@ -24,12 +24,12 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -56,7 +56,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         FragmentManager fragmentManager,
         ViewGroup viewGroup,
         BaseCardElement baseCardElement,
-        ChannelAdaptor channelAdaptor,
+        ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
         RenderArgs renderArgs) throws Exception
     {
@@ -102,13 +102,13 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    fragmentManager,
                                                                                    column,
                                                                                    columnSetLayout,
-                                                                                   channelAdaptor,
+                                                                                   cardActionHandler,
                                                                                    hostConfig,
                                                                                    columnRenderArgs,
                                                                                    featureRegistration);
         }
 
-        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, channelAdaptor.getCardActionHandler(), renderArgs);
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler, renderArgs);
 
         TagContent tagContent = new TagContent(columnSet);
         if (columnSet.GetHeight() == HeightType.Stretch)

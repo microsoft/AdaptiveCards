@@ -9,9 +9,9 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class CustomBlahRenderer extends BaseCardElementRenderer
 {
@@ -21,7 +21,7 @@ public class CustomBlahRenderer extends BaseCardElementRenderer
                        FragmentManager fragmentManager,
                        ViewGroup viewGroup,
                        BaseCardElement baseCardElement,
-                       ChannelAdaptor channelAdaptor,
+                       ICardActionHandler cardActionHandler,
                        HostConfig hostConfig,
                        RenderArgs renderArgs)
     {
