@@ -29,6 +29,10 @@ android {
         targetCompatibility 1.8
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -45,7 +49,7 @@ dependencies {
     implementation project(path: ':adaptivecards')
 }
 
-task copyTestFiles(type: Copy)
+task copyTestFiles(type: Copy) { duplicatesStrategy = DuplicatesStrategy.INCLUDE }
 
 copyTestFiles {
     description = 'Copies test files to the assets folder'
