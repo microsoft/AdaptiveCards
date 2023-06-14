@@ -6,7 +6,6 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#import "ACRTypeaheadSearchViewControllerPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
@@ -16,6 +15,7 @@
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRChoiceSetFilteredStyleView.h"
 #import "ACRInputLabelView.h"
+#import "ACRTypeaheadSearchViewControllerPrivate.h"
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
