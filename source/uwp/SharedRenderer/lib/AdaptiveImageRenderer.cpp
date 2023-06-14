@@ -11,6 +11,10 @@
 #include <robuffer.h>
 #include "WholeItemsPanel.h"
 
+#ifdef USE_WINUI3
+#include <wil/cppwinrt_helpers.h>
+#endif
+
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> xamlBuilder) :
@@ -599,7 +603,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     winrt::fire_and_forget XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
                                                         winrt::Uri const uri)
     {
+#ifdef USE_WINUI3
+        co_await wil::resume_foreground(imageSource.DispatcherQueue());
+#else
         co_await winrt::resume_foreground(imageSource.Dispatcher());
+#endif
         imageSource.UriSource(uri);
     }
 
@@ -610,7 +618,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto weakThis = this->get_weak();
 
+#ifdef USE_WINUI3
+        co_await wil::resume_foreground(imageSource.DispatcherQueue());
+#else
         co_await winrt::resume_foreground(imageSource.Dispatcher());
+#endif
         auto setSourceOperation = imageSource.SetSourceAsync(stream);
 
         setSourceOperation.Completed(
@@ -798,10 +810,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     winrt::fire_and_forget XamlBuilder::SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSource,
-                                                                           double const imageSize,
-                                                                           bool const dropIfUnset)
+                                                                      double const imageSize,
+                                                                      bool const dropIfUnset)
     {
+#ifdef USE_WINUI3
+        co_await wil::resume_foreground(imageSource.DispatcherQueue());
+#else
         co_await winrt::resume_foreground(imageSource.Dispatcher());
+#endif
         auto currentSize = imageSource.RasterizePixelHeight();
         bool sizeIsUnset = isinf(currentSize);
 
@@ -817,10 +833,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     }
 
     winrt::fire_and_forget XamlBuilder::SetRasterizedPixelWidthAsync(winrt::SvgImageSource const imageSource,
-                                                                          double const imageSize,
-                                                                          bool const dropIfUnset)
+                                                                     double const imageSize,
+                                                                     bool const dropIfUnset)
     {
+#ifdef USE_WINUI3
+        co_await wil::resume_foreground(imageSource.DispatcherQueue());
+#else
         co_await winrt::resume_foreground(imageSource.Dispatcher());
+#endif
         auto currentSize = imageSource.RasterizePixelWidth();
         bool sizeIsUnset = isinf(currentSize);
 
