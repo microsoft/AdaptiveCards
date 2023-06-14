@@ -14,7 +14,7 @@
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ACRTypeaheadSearchParameters.h"
-#import "ACRTypeaheadSearchViewController.h"
+#import "ACRTypeaheadSearchViewControllerPrivate.h"
 #import "ChoiceSetInput.h"
 #import "ChoicesData.h"
 #import "UtiliOS.h"

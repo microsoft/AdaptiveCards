@@ -6,7 +6,7 @@
 //  Copyright © 2023 Microsoft. All rights reserved.
 //
 
-#import "ACRTypeaheadSearchViewController.h"
+#import "ACRTypeaheadSearchViewControllerPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
