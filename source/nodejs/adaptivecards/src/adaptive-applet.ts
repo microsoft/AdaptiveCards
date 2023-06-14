@@ -301,21 +301,22 @@ export class AdaptiveApplet {
                     this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
-                        if (
-                            input instanceof ChoiceSetInput &&
-                            input.isDynamicTypeahead() &&
-                            input.value
-                        ) {
-                            const dataQueryAction = new DataQuery();
-                            dataQueryAction.filter = input.value;
-                            dataQueryAction.dataset = input.choicesData?.dataset || "";
+                        if (input instanceof ChoiceSetInput && input.isDynamicTypeahead()) {
+                            const filter = input.getFilterForDynamicSearch();
+                            if (filter) {
+                                const dataQueryAction = new DataQuery();
+                                dataQueryAction.filter = filter;
+                                dataQueryAction.dataset = input.choicesData?.dataset || "";
+                                dataQueryAction.count = input.choicesData?.count;
+                                dataQueryAction.skip = input.choicesData?.skip;
 
-                            this._choiceSet = input;
-                            this.internalExecuteAction(
-                                dataQueryAction,
-                                ActivityRequestTrigger.Manual,
-                                0 // consecutiveActions
-                            );
+                                this._choiceSet = input;
+                                this.internalExecuteAction(
+                                    dataQueryAction,
+                                    ActivityRequestTrigger.Manual,
+                                    0 // consecutiveActions
+                                );
+                            }
                         }
                     };
 
@@ -596,7 +597,7 @@ export class AdaptiveApplet {
 
                     if (response.rawContent === undefined) {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is undefined"
+                            "internalSendExecuteRequestAsync: Action.Execute result is undefined"
                         );
                     }
 
@@ -632,7 +633,7 @@ export class AdaptiveApplet {
                         this.activityRequestSucceeded(response, this.card);
                     } else {
                         throw new Error(
-                            "internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" +
+                            "internalSendExecuteRequestAsync: Action.Execute result is of unsupported type (" +
                                 typeof response.rawContent +
                                 ")"
                         );
@@ -695,7 +696,7 @@ export class AdaptiveApplet {
 
                             if (response.signinButton === undefined) {
                                 throw new Error(
-                                    "internalSendActivityRequestAsync: the login request doesn't contain a valid signin URL."
+                                    "internalSendExecuteRequestAsync: the login request doesn't contain a valid signin URL."
                                 );
                             }
 
@@ -752,48 +753,63 @@ export class AdaptiveApplet {
         if (!this.channelAdapter) {
             throw new Error("internalSendDataQueryRequestAsync: channel adapter not set");
         }
+        const filter = (request.action as DataQuery).filter;
         if (this._choiceSet) {
             this._choiceSet.showLoadingIndicator();
-            let response = undefined;
+            let response: ActivityResponse | undefined = undefined;
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             } catch (error) {
+                this._choiceSet.showErrorIndicator(filter, "Unable to load");
                 logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
-                this._choiceSet.showErrorIndicator("Unable to load");
             }
-            this._choiceSet.removeLoadingIndicator();
             if (response) {
                 if (response instanceof SuccessResponse) {
                     const rawResponse = response.rawContent;
                     if (rawResponse) {
-                        let parsedResponse = rawResponse;
+                        let parsedResponse;
                         try {
-                            parsedResponse = JSON.parse(parsedResponse);
+                            parsedResponse = JSON.parse(rawResponse);
                         } catch (error) {
-                            throw new Error("Cannot parse response object: " + rawResponse);
+                            this._choiceSet.showErrorIndicator(filter, "Unable to load");
+                            throw new Error(
+                                "internalSendDataQueryRequestAsync: Cannot parse response object: " +
+                                    rawResponse
+                            );
                         }
                         if (typeof parsedResponse === "object") {
-                            this._choiceSet.renderChoices(parsedResponse);
-                            this.activityRequestSucceeded(response, parsedResponse);
+                            this._choiceSet.renderChoices(filter, parsedResponse);
+                            this.activityRequestSucceeded(response, rawResponse);
                         } else {
+                            this._choiceSet.showErrorIndicator(filter, "Error loading results");
                             throw new Error(
                                 "internalSendDataQueryRequestAsync: Data.Query result is of unsupported type (" +
                                     typeof rawResponse +
                                     ")"
                             );
                         }
+                    } else {
+                        this._choiceSet.showErrorIndicator(filter, "Unable to load");
+                        throw new Error(
+                            "internalSendDataQueryRequestAsync: Data.Query result is undefined"
+                        );
                     }
                 } else if (response instanceof ErrorResponse) {
-                    this._choiceSet.showErrorIndicator("Error loading results.");
+                    this._choiceSet.showErrorIndicator(
+                        filter,
+                        response.error.message || "Error loading results"
+                    );
                     logEvent(
                         Enums.LogLevel.Error,
                         `Activity request failed: ${response.error.message}.`
                     );
                     this.activityRequestFailed(response);
                 } else {
-                    this._choiceSet.showErrorIndicator("Unable to load");
+                    this._choiceSet.showErrorIndicator(filter, "Unable to load");
                     throw new Error("Unhandled response type: " + JSON.stringify(response));
                 }
+            } else {
+                this._choiceSet.removeLoadingIndicator();
             }
         }
     }

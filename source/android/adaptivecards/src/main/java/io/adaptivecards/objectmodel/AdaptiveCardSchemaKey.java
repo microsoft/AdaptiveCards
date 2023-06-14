@@ -130,6 +130,7 @@ public enum AdaptiveCardSchemaKey {
   MaxWidth,
   Media,
   Medium,
+  MetaData,
   Method,
   MimeType,
   Min,
@@ -204,6 +205,7 @@ public enum AdaptiveCardSchemaKey {
   VerticalCellContentAlignment,
   VerticalContentAlignment,
   Warning,
+  WebUrl,
   Weight,
   Width,
   Wrap;

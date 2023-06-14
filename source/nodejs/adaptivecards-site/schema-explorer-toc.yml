@@ -33,6 +33,7 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
+  - Data.Query
 - Types:
   - BackgroundImage
   - Refresh

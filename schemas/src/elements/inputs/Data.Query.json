@@ -1,0 +1,22 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"description": "The data populated in the event payload for fetching dynamic choices, sent to the card-author to help identify the dataset from which choices might be fetched to be displayed in the dropdown. It might contain auxillary data to limit the maximum number of choices that can be sent and to support pagination.",
+	"properties": {
+		"dataset": {
+			"type": "string",
+			"description": "The dataset to be queried to get the choices.",
+			"required": true,
+			"version": "1.6"
+		},
+		"count": {
+			"type": "number",
+			"description": "The maximum number of choices that should be returned by the query. It can be ignored if the card-author wants to send a different number.",
+			"version": "1.6"
+		},
+		"skip": {
+			"type": "number",
+			"description": "The number of choices to be skipped in the list of choices returned by the query. It can be ignored if the card-author does not want pagination.",
+			"version": "1.6"
+		}
+	}
+}
