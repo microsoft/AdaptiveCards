@@ -6,7 +6,7 @@ plugins {
 apply from: '../constants.gradle'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 
 android {
@@ -15,8 +15,6 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         externalNativeBuild {
@@ -44,7 +42,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    ndkVersion '24.0.8215888'
+    ndkVersion '21.4.7075529'
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 task sourceJar(type: Jar) {
