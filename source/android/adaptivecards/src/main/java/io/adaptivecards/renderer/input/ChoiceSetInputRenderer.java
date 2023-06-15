@@ -2,24 +2,14 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
-import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -43,18 +33,17 @@ import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.renderer.AdaptiveWarning;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedAutoCompleteTextView;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedRadioGroup;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedTextView;
 import io.adaptivecards.renderer.inputhandler.AutoCompleteTextViewHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -63,12 +52,7 @@ import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
-import io.adaptivecards.renderer.inputhandler.TypeAheadTextViewHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.typeaheadsearch.DynamicTypeAheadService;
-import io.adaptivecards.renderer.typeaheadsearch.IChoicesResolver;
-import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchActivity;
-import io.adaptivecards.renderer.typeaheadsearch.TypeAheadSearchLaunchParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -627,123 +611,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
     }
 
-    public View renderTypeAheadControl(
-        RenderedAdaptiveCard renderedCard,
-        Context context,
-        ChoiceSetInput choiceSetInput,
-        IChoicesResolver choicesResolver,
-        HostConfig hostConfig,
-        RenderArgs renderArgs)
-    {
-        final List<String> titleList = new ArrayList();
-        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
-        long size = choiceInputVector.size();
-        int valueIndex = -1;
-        String value = choiceSetInput.GetValue();
-        final List<String> valueList = new ArrayList();
-        for (int i = 0; i < size; i++)
-        {
-            ChoiceInput choiceInput = choiceInputVector.get(i);
-            titleList.add(choiceInput.GetTitle());
-            valueList.add(choiceInput.GetTitle());
-
-            if (choiceInput.GetValue().equals(value))
-            {
-                valueIndex = i;
-            }
-        }
-
-        boolean usingCustomInputs = isUsingCustomInputs(context);
-
-        ValidatedTextView validatedTypeAheadTextView = new ValidatedTextView(context, usingCustomInputs);
-
-        Drawable chevronDrawable = getDrawable(context, R.drawable.adaptive_card_ic_chevron_right);
-        chevronDrawable.setTint(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Default, false)));
-        validatedTypeAheadTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, chevronDrawable, null);
-        validatedTypeAheadTextView.setPaddingRelative(0, 10, 20, 10);
-        validatedTypeAheadTextView.setEllipsize(TextUtils.TruncateAt.END);
-
-        final TypeAheadTextViewHandler typeAheadTextInputHandler = new TypeAheadTextViewHandler(choiceSetInput);
-
-        ValidatedInputLayout inputLayout = null;
-
-        // if using custom inputs, we don't have to create the surrounding linear layout
-        boolean needsOuterLayout = (!usingCustomInputs);
-        if (needsOuterLayout)
-        {
-            inputLayout = new ValidatedSpinnerLayout(context,
-                getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
-            inputLayout.setTag(new TagContent(choiceSetInput, typeAheadTextInputHandler));
-            typeAheadTextInputHandler.setView(inputLayout);
-        }
-        else
-        {
-            validatedTypeAheadTextView.setTag(new TagContent(choiceSetInput, typeAheadTextInputHandler));
-            typeAheadTextInputHandler.setView(validatedTypeAheadTextView);
-        }
-        renderedCard.registerInputHandler(typeAheadTextInputHandler, renderArgs.getContainerCardId());
-
-        validatedTypeAheadTextView.setFocusable(true);
-        if (valueIndex != -1)
-        {
-            validatedTypeAheadTextView.setText(titleList.get(valueIndex));
-            typeAheadTextInputHandler.setInput(titleList.get(valueIndex), valueList.get(valueIndex));
-        }
-
-        validatedTypeAheadTextView.setOnClickListener(view -> {
-            ActivityResultRegistry registry = CardRendererRegistration.getInstance().getActivityResultRegistry();
-            if (registry != null) {
-                ActivityResultLauncher<Intent> launcher = registry.register("adaptive-card-dynamic-type-ahead",
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK
-                            && result.getData() != null
-                            && result.getData().getExtras() != null
-                            && result.getData().getExtras().getString("typeAheadSearchSelectedKey") != null) {
-                            String selectedTitle = result.getData().getExtras().getString("typeAheadSearchSelectedKey");
-                            String selectedValue = result.getData().getExtras().getString("typeAheadSearchSelectedValue");
-
-                            validatedTypeAheadTextView.setText(selectedTitle);
-                            typeAheadTextInputHandler.setInput(selectedTitle, selectedValue);
-                            CardRendererRegistration.getInstance().notifyInputChange(typeAheadTextInputHandler.getId(), typeAheadTextInputHandler.getInput());
-                            Log.d("SelectedChoice", selectedTitle);
-                        }
-                        DynamicTypeAheadService.INSTANCE.removeIChoicesResolver();
-                    }
-                );
-
-                Intent intent = new Intent(context, TypeAheadSearchActivity.class);
-                TypeAheadSearchLaunchParams launchParams = new TypeAheadSearchLaunchParams(
-                    typeAheadTextInputHandler.getInputTitle(),
-                    choiceSetInput.GetChoicesData().GetChoicesDataType(),
-                    choiceSetInput.GetChoicesData().GetDataset(),
-                    titleList,
-                    valueList,
-                    getColor(hostConfig.GetBackgroundColor(ContainerStyle.Default)),
-                    getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Default, false)));
-                intent.putExtra("launchParams", launchParams);
-
-                DynamicTypeAheadService.INSTANCE.setIChoicesResolver(choicesResolver);
-                launcher.launch(intent);
-            }
-            else {
-                renderedCard.addWarning(
-                    new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED,
-                        "Interactivity is not allowed. ActivityResultRegistry is null.")
-                );
-            }
-        });
-
-        if (needsOuterLayout)
-        {
-            inputLayout.addView(validatedTypeAheadTextView);
-            return inputLayout;
-        }
-        else
-        {
-            return validatedTypeAheadTextView;
-        }
-    }
 
     @Override
     public View render(
@@ -752,7 +619,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ChannelAdaptor channelAdaptor,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -765,11 +632,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ChoiceSetInput choiceSetInput = Util.castTo(baseCardElement, ChoiceSetInput.class);
 
         View inputView = null;
-        if (choiceSetInput.GetChoicesData() != null && !choiceSetInput.GetChoicesData().GetChoicesDataType().isEmpty()) {
-            // Create dynamic type ahead control
-            inputView = renderTypeAheadControl(renderedCard, context, choiceSetInput, channelAdaptor.getChoicesResolver(), hostConfig, renderArgs);
-        }
-        else if (choiceSetInput.GetIsMultiSelect())
+        if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
             inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, hostConfig, renderArgs);

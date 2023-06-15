@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public interface IActionLayoutRenderer {
     public View renderActions(RenderedAdaptiveCard renderedCard,
@@ -16,7 +17,7 @@ public interface IActionLayoutRenderer {
                               FragmentManager fragmentManager,
                               ViewGroup viewGroup,
                               BaseActionElementVector baseActionElementList,
-                              ChannelAdaptor channelAdaptor,
+                              ICardActionHandler cardActionHandler,
                               HostConfig hostConfig,
                               RenderArgs renderArgs) throws AdaptiveFallbackException;
 }
