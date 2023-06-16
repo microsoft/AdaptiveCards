@@ -15,11 +15,11 @@ import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class CustomBlueAction extends BaseActionElement
 {
@@ -57,7 +57,7 @@ public class CustomBlueAction extends BaseActionElement
                              FragmentManager fragmentManager,
                              ViewGroup viewGroup,
                              BaseActionElement baseActionElement,
-                             ChannelAdaptor channelAdaptor,
+                             ICardActionHandler cardActionHandler,
                              HostConfig hostConfig,
                              RenderArgs renderArgs) throws AdaptiveFallbackException
         {
@@ -66,11 +66,11 @@ public class CustomBlueAction extends BaseActionElement
                                                                            fragmentManager,
                                                                            viewGroup,
                                                                            baseActionElement,
-                                                                           channelAdaptor,
+                                                                           cardActionHandler,
                                                                            hostConfig,
                                                                            renderArgs);
 
-            blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, channelAdaptor.getCardActionHandler()));
+            blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, cardActionHandler));
 
             blueAction.setAllCaps(false);
             blueAction.setBackgroundResource(R.drawable.custom_button_style);

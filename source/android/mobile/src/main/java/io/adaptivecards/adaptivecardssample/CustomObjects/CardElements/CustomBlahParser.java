@@ -3,6 +3,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.CardElements;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.adaptivecards.adaptivecardssample.MainActivityAdaptiveCardsSample;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementParser;
 import io.adaptivecards.objectmodel.CardElementType;
