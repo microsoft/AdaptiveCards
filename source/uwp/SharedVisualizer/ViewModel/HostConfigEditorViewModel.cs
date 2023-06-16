@@ -8,7 +8,6 @@ using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
