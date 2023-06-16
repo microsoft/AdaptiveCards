@@ -13,7 +13,7 @@
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRInputLabelView.h"
 #import "ACRTypeaheadSearchParameters.h"
-#import "ACRTypeaheadSearchViewController.h"
+#import "ACRTypeaheadSearchViewControllerPrivate.h"
 #import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
