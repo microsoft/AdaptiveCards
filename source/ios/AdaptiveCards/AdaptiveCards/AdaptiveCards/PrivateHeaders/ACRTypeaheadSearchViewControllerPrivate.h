@@ -1,5 +1,5 @@
 //
-//  ACRTypeaheadSearchViewController.h
+//  ACRTypeaheadSearchViewControllerPrivate.h
 //  AdaptiveCards
 //
 //  Copyright © 2023 Microsoft. All rights reserved.
