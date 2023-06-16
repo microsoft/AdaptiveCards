@@ -41,7 +41,6 @@ import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -202,7 +201,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ChannelAdaptor channelAdaptor,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws Exception
     {
@@ -226,7 +225,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         InlineVector inlines = richTextBlock.GetInlines();
 
         textView.setText("");
-        SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, channelAdaptor.getCardActionHandler(), hostConfig, renderArgs);
+        SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
         textView.append(convertedString);
 
         // Properties required for actions to fire onClick event
