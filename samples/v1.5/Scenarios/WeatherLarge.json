@@ -97,7 +97,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View Wednesday",
+						"title": "View Wednesday, Drizzly weather. Highest temperature 50 degrees. Lowest temperature 32 degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				},
@@ -136,7 +136,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View Thursday",
+						"title": "View Thursday, Mostly cloudy weather. Highest temperature 50 degrees. Lowest temperature 32 degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				},
@@ -175,7 +175,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View Friday",
+						"title": "View Friday, Mostly cloudy weather. Highest temperature 59 degrees. Lowest temperature 32 degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				},
@@ -214,7 +214,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View Saturday",
+						"title": "View Saturday, Mostly cloudy weather. Highest temperature 50 degrees. Lowest temperature 32 degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				}
