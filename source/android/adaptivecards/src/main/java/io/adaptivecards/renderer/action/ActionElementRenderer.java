@@ -27,10 +27,10 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class ActionElementRenderer extends BaseActionElementRenderer
 {
@@ -167,16 +167,16 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
-            ChannelAdaptor channelAdaptor,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs) {
-        if (channelAdaptor.getCardActionHandler() == null)
+        if (cardActionHandler == null)
         {
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, channelAdaptor, hostConfig, renderArgs));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
 
         return button;
     }

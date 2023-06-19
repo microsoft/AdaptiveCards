@@ -15,10 +15,10 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class CustomGreenAction extends BaseActionElement
 {
@@ -70,7 +70,7 @@ public class CustomGreenAction extends BaseActionElement
                              FragmentManager fragmentManager,
                              ViewGroup viewGroup,
                              BaseActionElement baseActionElement,
-                             ChannelAdaptor channelAdaptor,
+                             ICardActionHandler cardActionHandler,
                              HostConfig hostConfig,
                              RenderArgs renderArgs)
         {
@@ -81,7 +81,7 @@ public class CustomGreenAction extends BaseActionElement
             greenActionButton.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.greenActionColor), PorterDuff.Mode.SRC_ATOP);
             greenActionButton.setText(customAction.getMessage());
             greenActionButton.setAllCaps(false);
-            greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, channelAdaptor.getCardActionHandler()));
+            greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
 
             viewGroup.addView(greenActionButton);
 
