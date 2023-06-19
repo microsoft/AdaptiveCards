@@ -17,14 +17,12 @@ using AdaptiveCards.Rendering.WinUI3;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Windows.UI;
 #else
 using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI;
 #endif
 
 namespace AdaptiveCardVisualizer.ViewModel
@@ -310,7 +308,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     Grid grid = (Grid)RenderedCard;
 
-                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Color)grid.Resources["SystemColorWindowTextColor"]);
+                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Windows.UI.Color)grid.Resources["SystemColorWindowTextColor"]);
                     (RenderedCard as Grid).BorderThickness = new Thickness(2);
                 }
             }
