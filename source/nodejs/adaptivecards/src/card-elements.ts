@@ -3615,9 +3615,13 @@ export abstract class Input extends CardElement implements IInput {
 
     protected resetValidationFailureCue() {
         if (this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.remove(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.removeValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
 
             this.updateInputControlAriaLabelledBy();
 
@@ -3755,10 +3759,13 @@ export abstract class Input extends CardElement implements IInput {
         const result = this.isRequired ? this.isSet() && this.isValid() : this.isValid();
 
         if (!result && this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.add(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
-
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.showValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.add(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
             this.showValidationErrorMessage();
         }
 
@@ -4338,6 +4345,7 @@ export class ChoiceSetInput extends Input {
 
     isDynamicTypeahead(): boolean {
         return (
+            this.hostConfig.inputs.allowDynamicallyFilteredChoiceSet &&
             !!this.choicesData &&
             !!this.choicesData.dataset &&
             this.choicesData.type === "Data.Query"
@@ -4345,7 +4353,7 @@ export class ChoiceSetInput extends Input {
     }
 
     getFilterForDynamicSearch(): string | undefined {
-        return this._filteredChoiceSet?.textInput?.value;
+        return this._textInput?.value;
     }
 
     getDropdownElement() {
@@ -4366,6 +4374,18 @@ export class ChoiceSetInput extends Input {
 
     showErrorIndicator(filter: string, error: string) {
         this._filteredChoiceSet?.showErrorIndicator(filter, error);
+    }
+
+    showValidationFailureCue() {
+        this._textInput?.classList.add(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
+    }
+
+    removeValidationFailureCue() {
+        this._textInput?.classList.remove(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
     }
 
     private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
@@ -4537,7 +4557,7 @@ export class ChoiceSetInput extends Input {
                 }
                 this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
                 const onInputChangeEventHandler = Utils.debounce(() => {
-                    filteredChoiceSet.processStaticChoices();
+                    filteredChoiceSet.processChoices();
                     this.valueChanged();
                     if (this._textInput) {
                         // Remove aria-label when value is not empty so narration software doesn't
@@ -4889,7 +4909,7 @@ export class FilteredChoiceSet {
 
         choice.onclick = () => {
             choice.classList.remove(
-                this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
             );
             this._highlightedChoiceId = -1;
             if (this._textInput) {
@@ -4902,8 +4922,10 @@ export class FilteredChoiceSet {
                 );
             }
         };
-        choice.onmouseenter = () => {
-            this.highlightChoice(id, false);
+        choice.onmousemove = () => {
+            if (this._highlightedChoiceId !== id) {
+                this.highlightChoice(id, false);
+            }
         };
 
         return choice;
@@ -4919,10 +4941,10 @@ export class FilteredChoiceSet {
             );
             if (nextHighlightedChoice) {
                 currentHighlightedChoice?.classList.remove(
-                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
                 );
                 nextHighlightedChoice.classList.add(
-                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-focused")
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
                 );
                 if (scrollIntoView) {
                     nextHighlightedChoice.scrollIntoView();
@@ -4987,7 +5009,6 @@ export class FilteredChoiceSet {
     }
 
     private resetDropdown() {
-        this._dynamicChoices = [];
         if (this._dropdown) {
             Utils.clearElementChildren(this._dropdown);
             this._visibleChoiceCount = 0;
@@ -5003,7 +5024,7 @@ export class FilteredChoiceSet {
         }
     }
 
-    processStaticChoices() {
+    processChoices() {
         this.resetDropdown();
         this.filterChoices();
         this.showDropdown();
@@ -5034,9 +5055,10 @@ export class FilteredChoiceSet {
 
     showErrorIndicator(filter: string, error: string) {
         if (filter === this._textInput?.value) {
-            this.processStaticChoices();
+            this.processChoices();
             const errorIndicator = this.getStatusIndicator(error);
             this._dropdown?.appendChild(errorIndicator);
+            errorIndicator.scrollIntoView();
         }
     }
 

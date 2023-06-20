@@ -293,7 +293,8 @@ $font-family: 'Segoe UI', sans-serif;
         &.ac-numberInput,
         &.ac-dateInput,
         &.ac-timeInput,
-        &.ac-multichoiceInput.ac-choiceSetInput-compact {
+        &.ac-multichoiceInput.ac-choiceSetInput-compact,
+        &.ac-choiceSetInput-filtered-textbox {
             &.ac-input-validation-failed {
                 border: $validation-failed-border;
             }
@@ -343,8 +344,8 @@ $font-family: 'Segoe UI', sans-serif;
             padding: $padding;
             width: 100%;
 
-            &.ac-choiceSetInput-choice-focused {
-                background-color: #DEECF9;
+            &.ac-choiceSetInput-choice-highlighted {
+                background-color: #F3F2F1;
                 outline: none;
             }
         }
