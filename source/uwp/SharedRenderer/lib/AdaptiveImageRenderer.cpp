@@ -11,10 +11,6 @@
 #include <robuffer.h>
 #include "WholeItemsPanel.h"
 
-#ifdef USE_WINUI3
-#include <wil/cppwinrt_helpers.h>
-#endif
-
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer(winrt::com_ptr<::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder> xamlBuilder) :
