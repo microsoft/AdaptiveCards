@@ -35,6 +35,15 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
+    auto inline GetDispatcher(winrt::SvgImageSource const &imageSource)
+    {
+#ifdef USE_WINUI3
+        return imageSource.DispatcherQueue();
+#else
+        return imageSource.Dispatcher();
+#endif
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -599,11 +608,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     winrt::fire_and_forget XamlBuilder::SetSvgUriSource(winrt::SvgImageSource const imageSource,
                                                         winrt::Uri const uri)
     {
-#ifdef USE_WINUI3
-        co_await wil::resume_foreground(imageSource.DispatcherQueue());
-#else
-        co_await winrt::resume_foreground(imageSource.Dispatcher());
-#endif
+        co_await wil::resume_foreground(GetDispatcher(imageSource));
         imageSource.UriSource(uri);
     }
 
@@ -614,11 +619,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     {
         auto weakThis = this->get_weak();
 
-#ifdef USE_WINUI3
-        co_await wil::resume_foreground(imageSource.DispatcherQueue());
-#else
-        co_await winrt::resume_foreground(imageSource.Dispatcher());
-#endif
+        co_await wil::resume_foreground(GetDispatcher(imageSource));
         auto setSourceOperation = imageSource.SetSourceAsync(stream);
 
         setSourceOperation.Completed(
@@ -809,11 +810,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                                                       double const imageSize,
                                                                       bool const dropIfUnset)
     {
-#ifdef USE_WINUI3
-        co_await wil::resume_foreground(imageSource.DispatcherQueue());
-#else
-        co_await winrt::resume_foreground(imageSource.Dispatcher());
-#endif
+        co_await wil::resume_foreground(GetDispatcher(imageSource));
         auto currentSize = imageSource.RasterizePixelHeight();
         bool sizeIsUnset = isinf(currentSize);
 
@@ -832,11 +829,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                                                      double const imageSize,
                                                                      bool const dropIfUnset)
     {
-#ifdef USE_WINUI3
-        co_await wil::resume_foreground(imageSource.DispatcherQueue());
-#else
-        co_await winrt::resume_foreground(imageSource.Dispatcher());
-#endif
+        co_await wil::resume_foreground(GetDispatcher(imageSource));
         auto currentSize = imageSource.RasterizePixelWidth();
         bool sizeIsUnset = isinf(currentSize);
 
