@@ -16,6 +16,7 @@
     <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
     <DocumentationFile>$(MSBuildProjectDirectory)/docs/AdaptiveCards.xml</DocumentationFile>
     <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>   
   </PropertyGroup>
   <ItemGroup>
     <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
@@ -37,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AdaptiveCards\**\*.cs" Exclude="..\AdaptiveCards\obj\**" />
-    <Content Include="..\AdaptiveCards\**\EULA-Windows.txt" />
+    <None Include="..\AdaptiveCards\obj\project.assets.json" />
     <None Include="..\AdaptiveCards\**\*.settings" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework) == 'uap10.0'">
