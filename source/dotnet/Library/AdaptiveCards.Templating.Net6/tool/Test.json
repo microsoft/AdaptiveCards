@@ -1,0 +1,9 @@
+{
+	"type" : "AdaptiveCard",
+	"body": [
+	{
+		"type": "TextBlock",
+		"text": "**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**"
+	}
+	]
+}
