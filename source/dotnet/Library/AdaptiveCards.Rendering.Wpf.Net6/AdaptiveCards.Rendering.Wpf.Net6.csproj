@@ -23,6 +23,11 @@
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\AdaptiveCards.Rendering.Wpf\**\*.cs" Exclude="..\AdaptiveCards.Rendering.Wpf\obj\**" />
     <None Include="..\AdaptiveCards.Rendering.Wpf\**\*.settings" />
