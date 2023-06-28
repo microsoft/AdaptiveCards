@@ -4,8 +4,21 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyName>AdaptiveCards.Rendering.Wpf.Core</AssemblyName>
+    <AssemblyName>AdaptiveCards.Rendering.Wpf.Net6</AssemblyName>
     <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
+    
+    <Authors>Microsoft</Authors>
+    <Summary>Adaptive Card renderer for WPF .Net6</Summary>
+    <Description>This library implements classes for rendering Adaptive Cards into WPF controls</Description>
+    <PackageId>AdaptiveCards.Rendering.Wpf.Net6</PackageId>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>adaptivecards;adaptive-cards</PackageTags>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />

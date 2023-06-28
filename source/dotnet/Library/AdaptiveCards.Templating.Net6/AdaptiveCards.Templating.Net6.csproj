@@ -7,6 +7,7 @@
     <Product>Adaptive Cards</Product>
     <Summary>JSON templating library</Summary>
     <Description>This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.</Description>
+    <PackageId>AdaptiveCards.Templating.Net6</PakageId>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
