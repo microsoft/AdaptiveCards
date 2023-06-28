@@ -4,7 +4,7 @@
     <Authors>Microsoft</Authors>
     <Summary>Adaptive Card object model for .NET 6.0</Summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
-    <PackageId>AdaptiveCards.Net6</PakageId>
+    <PackageId>AdaptiveCards.Net6</PackageId>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>adaptivecards;adaptive-cards</PackageTags>
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
