@@ -232,10 +232,6 @@
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
       <Name>AdaptiveCardRenderer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UWPTestLibrary\UWPTestLibrary.csproj">
-      <Project>{c286ce4a-0aa5-42d8-ae42-4765860bcba1}</Project>
-      <Name>UWPTestLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
