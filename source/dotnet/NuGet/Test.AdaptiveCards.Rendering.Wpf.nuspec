@@ -28,10 +28,12 @@
       <frameworkAssembly assemblyName="System.Windows.Presentation" targetFramework=".NETFramework4.5.2" />
       <frameworkAssembly assemblyName="System.Xaml" targetFramework=".NETFramework4.5.2" />
       <frameworkAssembly assemblyName="WindowsBase" targetFramework=".NETFramework4.5.2" />
+    </frameworkAssemblies>
+    <frameworkReferences>
       <group targetFramework="net6.0-windows7.0">
         <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
       </group>
-    </frameworkAssemblies>
+    </frameworkReferences>
   </metadata>
   <files>
     <file src="..\Library\AdaptiveCards.Rendering.Wpf\bin\Release\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" target="lib\net452"/>
