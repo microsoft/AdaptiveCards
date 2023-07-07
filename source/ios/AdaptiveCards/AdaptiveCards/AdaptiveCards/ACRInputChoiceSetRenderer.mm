@@ -5,12 +5,18 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
+#import "ACRChoiceSetViewDataSource.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
+#endif
 #import "ACRInputChoiceSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRChoiceSetFilteredStyleView.h"
-#import "ACRChoiceSetViewDataSource.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ACRTypeaheadSearchParameters.h"

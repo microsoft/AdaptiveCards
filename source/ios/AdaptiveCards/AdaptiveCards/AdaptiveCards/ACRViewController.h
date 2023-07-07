@@ -5,10 +5,17 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
-#import "ACOHostConfig.h"
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACOWarning.h"
 #import "ACRActionDelegate.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACOWarning.h>
+#import <AdaptiveCards/ACRActionDelegate.h>
+#endif
+#import "ACOAdaptiveCard.h"
+#import "ACOHostConfig.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

@@ -4,10 +4,19 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRContentStackView.h"
 #import "ACRIContentHoldingView.h"
 #import "HostConfig.h"
 #import "SharedAdaptiveCard.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRContentStackView.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

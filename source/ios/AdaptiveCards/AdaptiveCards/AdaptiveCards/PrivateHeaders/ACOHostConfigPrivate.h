@@ -4,6 +4,8 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACOBaseActionElement.h"
 #import "ACOBaseCardElement.h"
 #import "ACOHostConfig.h"
@@ -11,6 +13,16 @@
 #import "ACREnums.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOHostConfig.h>
+#import <AdaptiveCards/ACORenderContext.h>
+#import <AdaptiveCards/ACREnums.h>
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/TextBlock.h>
+#endif
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

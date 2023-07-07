@@ -6,6 +6,8 @@
 //
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACOInputResults.h"
 #import "ACRErrors.h"
 #import "ACRRegistration.h"
@@ -16,6 +18,19 @@
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "StyledCollectionElement.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRErrors.h>
+#import <AdaptiveCards/ACOInputResults.h>
+#import <AdaptiveCards/ACRTargetBuilderDirector.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/ActionParserRegistration.h>
+#import <AdaptiveCards/BackgroundImage.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
+#import <AdaptiveCards/Image.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/ACRRegistration.h>
+#endif
 
 using namespace AdaptiveCards;
 
