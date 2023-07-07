@@ -15,10 +15,10 @@
 #else
 /// Cocoapods Imports
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
+#import <AdaptiveCards/ACOAuthentication.h>
+#import <AdaptiveCards/ACORefresh.h>
 #import <AdaptiveCards/ACORemoteResourceInformation.h>
 #import <AdaptiveCards/ACRIBaseInputHandler.h>
-#import <AdaptiveCards/ACORefresh.h>
-#import <AdaptiveCards/ACOAuthentication.h>
 #endif
 #import <Foundation/Foundation.h>
 

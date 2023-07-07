@@ -80,8 +80,6 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRView.h"
 #else
 /// Cocoapods Imports
-#import <AdaptiveCards/ACROverflowTarget.h>
-#import <AdaptiveCards/ACRAggregateTarget.h>
 #import <AdaptiveCards/ACOActionOverflow.h>
 #import <AdaptiveCards/ACOAdaptiveCard.h>
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
@@ -100,6 +98,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRActionSetRenderer.h>
 #import <AdaptiveCards/ACRActionShowCardRenderer.h>
 #import <AdaptiveCards/ACRActionSubmitRenderer.h>
+#import <AdaptiveCards/ACRAggregateTarget.h>
 #import <AdaptiveCards/ACRBaseActionElementRenderer.h>
 #import <AdaptiveCards/ACRBaseCardElementRenderer.h>
 #import <AdaptiveCards/ACRBaseTarget.h>
@@ -127,6 +126,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRInputToggleRenderer.h>
 #import <AdaptiveCards/ACRMediaRenderer.h>
 #import <AdaptiveCards/ACRMediaTarget.h>
+#import <AdaptiveCards/ACROverflowTarget.h>
 #import <AdaptiveCards/ACRParseWarning.h>
 #import <AdaptiveCards/ACRRegistration.h>
 #import <AdaptiveCards/ACRRenderResult.h>

@@ -11,8 +11,8 @@
 #import "ACRChoiceSetViewDataSource.h"
 #else
 /// Cocoapods Imports
-#import <AdaptiveCards/ACRChoiceSetViewDataSourceCompactStyle.h>
 #import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
+#import <AdaptiveCards/ACRChoiceSetViewDataSourceCompactStyle.h>
 #endif
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"

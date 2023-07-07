@@ -15,9 +15,9 @@
 #else
 /// Cocoapods Imports
 #import <AdaptiveCards/ACRInputLabelView.h>
+#import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/BaseInputElement.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/ACRView.h>
 #endif
 
 using namespace AdaptiveCards;

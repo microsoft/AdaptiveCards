@@ -11,8 +11,8 @@
 #import "ACRIBaseInputHandler.h"
 #else
 /// Cocoapods Imports
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
 #import <AdaptiveCards/ACOEnums.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
 #endif
 #import <UIKit/UIKit.h>
 

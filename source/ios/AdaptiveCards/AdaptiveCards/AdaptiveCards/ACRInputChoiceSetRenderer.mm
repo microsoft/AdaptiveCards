@@ -12,11 +12,11 @@
 /// Cocoapods Imports
 #import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 #endif
-#import "ACRInputChoiceSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRChoiceSetFilteredStyleView.h"
+#import "ACRInputChoiceSetRenderer.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ACRTypeaheadSearchParameters.h"

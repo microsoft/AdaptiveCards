@@ -13,8 +13,8 @@
 #else
 /// Cocoapods Imports
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
-#import <AdaptiveCards/ACRView.h>
 #import <AdaptiveCards/ACRTargetBuilder.h>
+#import <AdaptiveCards/ACRView.h>
 #endif
 #import <Foundation/Foundation.h>
 
