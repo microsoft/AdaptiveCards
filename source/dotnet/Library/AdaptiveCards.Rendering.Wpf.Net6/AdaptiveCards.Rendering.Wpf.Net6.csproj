@@ -3,7 +3,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyName>AdaptiveCards.Rendering.Wpf.Net6</AssemblyName>
     <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
     
