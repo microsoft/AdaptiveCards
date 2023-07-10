@@ -18,6 +18,9 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <SignAssembly>True</SignAssembly>
+    <DelaySign>True</DelaySign>
+    <AssemblyOriginatorKeyFile>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
 
   </PropertyGroup>
   <ItemGroup>
