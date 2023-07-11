@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Test.AdaptiveCards</id>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
     <authors>Microsoft</authors>
     <license type="file">EULA-Windows.txt</license>
     <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
