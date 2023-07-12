@@ -95,8 +95,25 @@
     <Compile Remove="Properties\Settings.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\WPFVisualizer\CustomElements\MyCustomAction.cs" Link="CustomElements\MyCustomAction.cs" />
+    <Compile Include="..\WPFVisualizer\CustomElements\MyCustomRating.cs" Link="CustomElements\MyCustomRating.cs" />
+    <Compile Include="..\WPFVisualizer\ShowCardWindow.xaml.cs" Link="ShowCardWindow.xaml.cs" />
+    <Compile Include="..\WPFVisualizer\ViewImageWindow.xaml.cs" Link="ViewImageWindow.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\WPFVisualizer\ShowCardWindow.xaml" Link="ShowCardWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\WPFVisualizer\ViewImageWindow.xaml" Link="ViewImageWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomElements\" />
   </ItemGroup>
 </Project>
