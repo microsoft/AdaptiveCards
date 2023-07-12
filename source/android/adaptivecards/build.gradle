@@ -6,7 +6,7 @@ plugins {
 apply from: '../constants.gradle'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 
 android {
@@ -15,8 +15,6 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         externalNativeBuild {
@@ -25,9 +23,6 @@ android {
                 arguments "-DANDROID_STL=c++_shared"
             }
         }
-    }
-    buildFeatures {
-        dataBinding true
     }
     buildTypes {
         release {
@@ -44,7 +39,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    ndkVersion '24.0.8215888'
+    ndkVersion '23.1.7779620'
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 task sourceJar(type: Jar) {
@@ -189,9 +188,4 @@ dependencies {
     implementation 'androidx.core:core-ktx:' + androidxKotlinCoreVersion
     implementation 'com.google.android.exoplayer:exoplayer:' + androidExoPlayerVersion
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.recyclerview:recyclerview:' + androidxRecyclerViewVersion
-    implementation 'androidx.recyclerview:recyclerview-selection:' + androidxRecyclerViewSelectionVersion
-    implementation 'com.google.android.material:material:' + androidMaterialVersion
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:' + androidxLifecycleVersion
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:' + androidxLifecycleVersion
 }

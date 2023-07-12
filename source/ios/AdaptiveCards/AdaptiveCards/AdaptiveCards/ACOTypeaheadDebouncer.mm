@@ -25,7 +25,7 @@
 
 - (void)postInput:(id)input
 {
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     [NSObject cancelPreviousPerformRequestsWithTarget:weakSelf];
     [weakSelf performSelector:@selector(sendOutput:) withObject:input afterDelay:weakSelf.delay];
 }

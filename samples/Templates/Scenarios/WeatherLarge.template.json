@@ -99,7 +99,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View ${formatEpoch(sunrise_ts, 'dddd')}",
+						"title": "View ${formatEpoch(sunrise_ts, 'dddd')}, ${weather.description}. Highest temperature ${formatNumber(app_max_temp / 5 * 9  + 32, 0)} degrees. Lowest temperature ${formatNumber(app_min_temp / 5 * 9  + 32, 0)} degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				}

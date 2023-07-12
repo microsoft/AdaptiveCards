@@ -35,17 +35,17 @@ We release the Adaptive Cards products on the third week of each month, assuming
 
 |Product|Last Release Date|Next Release Date|
 |---|---|---|
-|Website|4/21/2023|5/15/2023|
-|Designer|1/31/2023|5/15/2023|
-|JavaScript Renderer|2/14/2023|5/15/2023|
-|JavaScript Renderer Beta|4/9/2023|5/15/2023|
-|JavaScript Templating|9/16/2022|5/15/2023|
-|XAML Renderer|3/23/2023|5/15/2023|
-|XAML Object Model|3/22/2023|5/15/2023|
-|WinUI 3 Renderer|N/A|5/15/2023|
-|WinUI 3 Object Model|N/A|5/15/2023|
-|.NET Renderer|12/1/2022|5/15/2023|
-|.NET Templating|3/7/2023|5/15/2023|
+|Website|4/21/2023|7/17/2023|
+|Designer|1/31/2023|7/17/2023|
+|JavaScript Renderer|6/23/2023|7/17/2023|
+|JavaScript Renderer Beta|4/9/2023|7/17/2023|
+|JavaScript Templating|9/16/2022|7/17/2023|
+|XAML Renderer|3/23/2023|7/17/2023|
+|XAML Object Model|3/22/2023|7/17/2023|
+|WinUI 3 Renderer|6/29/2023|7/17/2023|
+|WinUI 3 Object Model|5/12/2023|7/17/2023|
+|.NET Renderer|12/1/2022|7/17/2023|
+|.NET Templating|3/7/2023|7/17/2023|
 
 **Note:** These release dates are subject to change based on availability and active development of each product.
 

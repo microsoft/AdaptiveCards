@@ -1,5 +1,12 @@
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRRegistration.h"
 #import "FeatureRegistration.h"
+#else
+/// Cocoapods Imports
+#include <AdaptiveCards/ACRRegistration.h>
+#include <AdaptiveCards/FeatureRegistration.h>
+#endif
 
 using namespace AdaptiveCards;
 
