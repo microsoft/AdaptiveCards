@@ -399,8 +399,6 @@ export class Toolbar {
 
         this._alertPanel = document.createElement("div");
         this._alertPanel.className = "screen-reader-only";
-        this._alertPanel.setAttribute("aria-live", "polite");
-
         this._attachedTo.appendChild(this._alertPanel);
     }
 
@@ -449,6 +447,7 @@ export class Toolbar {
     addAlert(alertText: string) {
         var alert = document.createElement('div');
         alert.innerHTML = alertText;
+        alert.setAttribute("aria-live", "polite");
         this._alertPanel.appendChild(alert);
     }
 }
