@@ -165,13 +165,19 @@ function createTable(formattedProperties: any[], title: string) {
 	var tableData = [];
 	var headerRow = [];
 
-	// Used for custom table rendering
-	// The first header row cell will be used for the title, and then removed from the table
-	headerRow.push(title);
-
 	for (let propName in formattedProperties[0]) {
 		headerRow.push(__(propName));
 	}
+
+	// Used for custom table rendering.
+	// We append the table title (wrapped in braces) to the first cell in the header,
+	// and the table renderer will use this value for aria-label.
+	// It is then removed from the header.
+	var firstValue = headerRow[0];
+	if (firstValue) {
+		headerRow[0] = `{${title}}` + firstValue;
+	}
+
 	tableData.push(headerRow);
 
 	formattedProperties.forEach((formattedProperty) => {
