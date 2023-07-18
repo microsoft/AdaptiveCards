@@ -82,9 +82,9 @@ static NSTimeInterval delayTimeInSeconds = 0.25;
 - (void)debouncerDidSendOutput:(id)key
 {
     if ([key isKindOfClass:NSString.class]) {
-        __weak typeof(self) weakSelf = self;
+        __weak __typeof(self) weakSelf = self;
         dispatch_async(_global_queue, ^{
-            __strong typeof(self) strongSelf = weakSelf;
+            __strong __typeof(self) strongSelf = weakSelf;
             if ([strongSelf->_rootView.acrActionDelegate respondsToSelector:@selector(onChoiceSetQueryChange:acoElem:completion:)]) {
                 NSDictionary *requestPayload = [strongSelf getRequestPayloadForTypeaheadSearchWithQueryText:key withSkipValue:0 AndTopValue:15];
                 [strongSelf->_rootView.acrActionDelegate onChoiceSetQueryChange:requestPayload

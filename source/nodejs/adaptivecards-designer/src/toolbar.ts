@@ -334,6 +334,7 @@ export class ToolbarChoicePicker extends ToolbarElement {
 export class Toolbar {
     private _elements: Array<ToolbarElement> = [];
     private _attachedTo: HTMLElement;
+    private _alertPanel: HTMLDivElement;
 
     private createSeparatorElement(): HTMLElement {
         let separatorElement = document.createElement("div");
@@ -395,6 +396,10 @@ export class Toolbar {
 
         this._attachedTo.appendChild(leftContainer);
         this._attachedTo.appendChild(rightContainer);
+
+        this._alertPanel = document.createElement("div");
+        this._alertPanel.className = "screen-reader-only";
+        this._attachedTo.appendChild(this._alertPanel);
     }
 
     addElement(element: ToolbarElement) {
@@ -437,5 +442,12 @@ export class Toolbar {
         // Insert as first element if no element was found with the
         // specified id
         this._elements.splice(0, 0, element);
+    }
+
+    addAlert(alertText: string) {
+        var alert = document.createElement('div');
+        alert.innerHTML = alertText;
+        alert.setAttribute("aria-live", "polite");
+        this._alertPanel.appendChild(alert);
     }
 }

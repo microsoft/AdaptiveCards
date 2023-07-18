@@ -5,8 +5,15 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACOInputResults.h"
 #import "ACRBaseTarget.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACOInputResults.h>
+#import <AdaptiveCards/ACRBaseTarget.h>
+#endif
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
 #import <UIKit/UIKit.h>

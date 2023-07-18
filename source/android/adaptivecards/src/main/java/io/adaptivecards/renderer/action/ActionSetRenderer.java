@@ -17,12 +17,13 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
+import io.adaptivecards.renderer.OverflowActionLayoutRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ActionSetRenderer extends BaseCardElementRenderer
@@ -44,7 +45,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
-            ChannelAdaptor channelAdaptor,
+            ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs) throws ClassCastException
     {
@@ -83,13 +84,13 @@ public class ActionSetRenderer extends BaseCardElementRenderer
 
         try
         {
-            View actionButtonsLayout = ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, primaryElementVector, channelAdaptor, hostConfig, renderArgs);
+            View actionButtonsLayout = ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, primaryElementVector, cardActionHandler, hostConfig, renderArgs);
             if (!secondaryElementVector.isEmpty())
             {
                 IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                 //if the actionButtonsLayout is not a viewGroup, then use actionsLayout as a root.
                 ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : actionsLayout;
-                secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, channelAdaptor, hostConfig, renderArgs);
+                secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
             }
         }
         catch (Exception e) {}

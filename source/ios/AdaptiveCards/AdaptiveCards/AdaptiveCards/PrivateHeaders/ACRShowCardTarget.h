@@ -5,11 +5,21 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
 #import "SharedAdaptiveCard.h"
 #import "ShowCardAction.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/ShowCardAction.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @interface ACRShowCardTarget : ACRBaseTarget

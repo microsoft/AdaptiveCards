@@ -19,7 +19,6 @@ import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.ChannelAdaptor;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -90,11 +89,11 @@ public class APITest
                                     FragmentManager fragmentManager,
                                     ViewGroup viewGroup,
                                     BaseActionElement baseActionElement,
-                                    ChannelAdaptor channelAdaptor,
+                                    ICardActionHandler cardActionHandler,
                                     HostConfig hostConfig,
                                     RenderArgs renderArgs)
         {
-            super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, channelAdaptor, hostConfig, renderArgs);
+            super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
         }
 
         public CustomActionListener(RenderedAdaptiveCard renderedCard,
@@ -151,7 +150,7 @@ public class APITest
                                  FragmentManager fragmentManager,
                                  ViewGroup viewGroup,
                                  BaseActionElement baseActionElement,
-                                 ChannelAdaptor channelAdaptor,
+                                 ICardActionHandler cardActionHandler,
                                  HostConfig hostConfig,
                                  RenderArgs renderArgs) throws AdaptiveFallbackException
             {
@@ -160,11 +159,11 @@ public class APITest
                                                                                fragmentManager,
                                                                                viewGroup,
                                                                                baseActionElement,
-                                                                               channelAdaptor,
+                                                                               cardActionHandler,
                                                                                hostConfig,
                                                                                renderArgs);
 
-                blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, channelAdaptor.getCardActionHandler()));
+                blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, cardActionHandler));
                 renderedCard.registerSubmitableAction(blueAction, renderArgs);
 
                 renderedButton = blueAction;
@@ -241,7 +240,7 @@ public class APITest
 
         @Override
         public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
-                           ViewGroup viewGroup, BaseCardElement baseCardElement, ChannelAdaptor channelAdaptor,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
                            HostConfig hostConfig, RenderArgs renderArgs) throws Exception
         {
             ImageView img = new ImageView(context);
@@ -261,7 +260,7 @@ public class APITest
 
         @Override
         public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
-                           ViewGroup viewGroup, BaseCardElement baseCardElement, ChannelAdaptor channelAdaptor,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
                            HostConfig hostConfig, RenderArgs renderArgs) throws Exception
         {
             ImageView img = new ImageView(context);

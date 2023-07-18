@@ -5,10 +5,17 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
+#import "ACRChoiceSetViewDataSource.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
+#import <AdaptiveCards/ACRChoiceSetViewDataSourceCompactStyle.h>
+#endif
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"
-#import "ACRChoiceSetViewDataSource.h"
 #import "ACRView.h"
 #import <Foundation/Foundation.h>
 

@@ -13,22 +13,14 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentManager
 import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.*
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler
 import io.adaptivecards.renderer.registration.CardRendererRegistration
 import android.widget.TableRow as TableRowLayout
 
 open class TableCellRenderArgs(renderArgs: RenderArgs, val table: Table, val tableLayout: TableLayout, val rowIndex: Int, val colIndex: Int, val gridStyle: ContainerStyle) : RenderArgs(renderArgs)
 
 object TableCellRenderer : BaseCardElementRenderer() {
-    override fun render(
-        renderedCard: RenderedAdaptiveCard,
-        context: Context,
-        fragmentManager: FragmentManager,
-        viewGroup: ViewGroup,
-        baseCardElement: BaseCardElement,
-        channelAdaptor: ChannelAdaptor,
-        hostConfig: HostConfig,
-        renderArgs: RenderArgs
-    ): View {
+    override fun render(renderedCard: RenderedAdaptiveCard, context: Context, fragmentManager: FragmentManager, viewGroup: ViewGroup, baseCardElement: BaseCardElement, cardActionHandler: ICardActionHandler?, hostConfig: HostConfig, renderArgs: RenderArgs): View {
         if (renderArgs !is TableCellRenderArgs) throw IllegalArgumentException("renderArgs must be instance of TableCellRenderArgs")
 
         val row = renderArgs.table.GetRows()[renderArgs.rowIndex]
@@ -65,14 +57,14 @@ object TableCellRenderer : BaseCardElementRenderer() {
         ContainerRenderer.applyContainerStyle(computedStyle, renderArgs.containerStyle, cellLayout, hostConfig)
         ContainerRenderer.applyVerticalContentAlignment(cellLayout,
                 computeVerticalContentAlignment(cell.GetVerticalContentAlignment(), row, col, renderArgs.table))
-        ContainerRenderer.setSelectAction(renderedCard, cell.GetSelectAction(), cellLayout, channelAdaptor.cardActionHandler, renderArgs)
+        ContainerRenderer.setSelectAction(renderedCard, cell.GetSelectAction(), cellLayout, cardActionHandler, renderArgs)
 
         CardRendererRegistration.getInstance().renderElements(renderedCard,
                 context,
                 fragmentManager,
                 cellLayout,
                 cell.GetItems(),
-                channelAdaptor,
+                cardActionHandler,
                 hostConfig,
                 RenderArgs(renderArgs).apply {
                     containerStyle = computedStyle
