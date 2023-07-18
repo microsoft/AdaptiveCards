@@ -139,13 +139,13 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 
 		// Format as markdown table
 		if (mainFormattedProperties.length > 0) {
-			md += createTable(mainFormattedProperties);
+			md += createTable(mainFormattedProperties, classDefinition.type + " Properties");
 			md += '\n';
 		}
 
 		if (inheritedFormattedProperties.length > 0) {
 			md += "\n" + __("### Inherited properties") + "\n\n";
-			md += createTable(inheritedFormattedProperties);
+			md += createTable(inheritedFormattedProperties, classDefinition.type + " Inherited properties");
 			md += "\n";
 		}
 	}
@@ -153,7 +153,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 	return md;
 }
 
-function createTable(formattedProperties: any[]) {
+function createTable(formattedProperties: any[], title: string) {
 	// Data needs to be formatted as follows for use with markdown library
 	/*
 		table([
@@ -164,6 +164,11 @@ function createTable(formattedProperties: any[]) {
 	*/
 	var tableData = [];
 	var headerRow = [];
+
+	// Used for custom table rendering
+	// The first header row cell will be used for the title, and then removed from the table
+	headerRow.push(title);
+
 	for (let propName in formattedProperties[0]) {
 		headerRow.push(__(propName));
 	}
