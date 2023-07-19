@@ -170,7 +170,7 @@ function createTable(formattedProperties: any[], title: string) {
 	}
 
 	// Used for custom table rendering.
-	// We append the table title (wrapped in braces) to the first cell in the header,
+	// We append the table title to the first cell in the header,
 	// and the table renderer will use this value for aria-label.
 	// It is then removed from the header.
 	var firstValue = headerRow[0];

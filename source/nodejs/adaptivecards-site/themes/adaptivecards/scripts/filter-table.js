@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // Used for custom rendering of the table element
-// We assume that the first header row cell contains the title of the table, wrapped in braces
+// We check if the first header row cell contains the title of the table
 // We then remove the title from the first cell
 hexo.extend.filter.register('marked:renderer', function(renderer) {
   renderer.table = function(header, body) {
