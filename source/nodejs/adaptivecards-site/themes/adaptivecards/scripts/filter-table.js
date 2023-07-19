@@ -18,8 +18,8 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
     // Index for start of title
     var startingIndex = header.indexOf("<!-- TableTitle: ")
-    // Index for end of title (+4 for the 4 characters in the delimiter)
-    var closingIndex = header.indexOf(" -->") + 4;
+    // Index for end of title
+    var closingIndex = header.indexOf(" -->");
 
     var titleString = "";
     var updatedHeader = header;
@@ -27,12 +27,12 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
     // Only proceed if both indices are valid
     if (startingIndex !== -1 && closingIndex !== -1) {
         // Parse for the title. Should be: "<!-- TableTitle: Title -->"
-        titleString = header.substring(startingIndex, closingIndex);
+        titleString = header.substring(startingIndex, closingIndex + 4);
         // Remove delimiters
         titleString = titleString.replace("<!-- TableTitle: ", "");
         titleString = titleString.replace(" -->", "");
         // Remove the title from the header
-        updatedHeader = header.substring(0, startingIndex) + header.substring(closingIndex);
+        updatedHeader = header.substring(0, startingIndex) + header.substring(closingIndex + 4);
     }
   
     if (body) body = `<tbody>${body}</tbody>`;
