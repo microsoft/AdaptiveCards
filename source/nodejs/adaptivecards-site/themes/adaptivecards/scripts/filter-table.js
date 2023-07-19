@@ -9,19 +9,31 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
     // Example header string:
     // <tr>
-    // <th>{ActionSet Inherited properties}Property</th>
+    // <th><!-- TableTitle: ActionSet Inherited properties -->Property</th>
     // <th>Type</th>
     // <th>Required</th>
     // <th>Description</th>
     // <th>Version</th>
     // </tr>
 
-    // Index of the end of the title
-    var closingIndex = header.indexOf("}");
-    // Parse for the title
-    var titleString = header.substring(10, closingIndex);
-    // Remove the title from the header
-    var updatedHeader = header.substring(0, 9) + header.substring(closingIndex + 1);
+    // Index for start of title
+    var startingIndex = header.indexOf("<!-- TableTitle: ")
+    // Index for end of title (+4 for the 4 characters in the delimiter)
+    var closingIndex = header.indexOf(" -->") + 4;
+
+    var titleString = "";
+    var updatedHeader = header;
+
+    // Only proceed if both indices are valid
+    if (startingIndex !== -1 && closingIndex !== -1) {
+        // Parse for the title. Should be: "<!-- TableTitle: Title -->"
+        titleString = header.substring(startingIndex, closingIndex);
+        // Remove delimiters
+        titleString = titleString.replace("<!-- TableTitle: ", "");
+        titleString = titleString.replace(" -->", "");
+        // Remove the title from the header
+        updatedHeader = header.substring(0, startingIndex) + header.substring(closingIndex);
+    }
   
     if (body) body = `<tbody>${body}</tbody>`;
 

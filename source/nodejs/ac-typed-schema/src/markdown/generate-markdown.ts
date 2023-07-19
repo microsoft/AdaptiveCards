@@ -175,7 +175,7 @@ function createTable(formattedProperties: any[], title: string) {
 	// It is then removed from the header.
 	var firstValue = headerRow[0];
 	if (firstValue) {
-		headerRow[0] = `{${title}}` + firstValue;
+		headerRow[0] = `<!-- TableTitle: ${title} -->` + firstValue;
 	}
 
 	tableData.push(headerRow);
