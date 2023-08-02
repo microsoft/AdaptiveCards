@@ -29,6 +29,7 @@ public class ValidatedSpinner extends Spinner implements IValidatedInputView
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        setMinimumHeight(context.getResources().getDimensionPixelSize(R.dimen.spinner_min_height));
         m_isInvalid = false;
         verifyIfUsingCustomInputs(context);
     }

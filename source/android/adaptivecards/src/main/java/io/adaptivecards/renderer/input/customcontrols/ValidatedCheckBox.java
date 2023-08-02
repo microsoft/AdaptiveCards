@@ -27,6 +27,7 @@ public class ValidatedCheckBox extends AppCompatCheckBox implements IValidatedIn
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        setMinimumHeight(context.getResources().getDimensionPixelSize(R.dimen.check_box_min_height));
         setBackground(ContextCompat.getDrawable(context, R.drawable.adaptive_choiceset_expanded_background));
 
         m_isInvalid = false;

@@ -151,6 +151,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             final CheckBox checkBox = new CheckBox(context);
+            checkBox.setMinimumHeight(context.getResources().getDimensionPixelSize(R.dimen.check_box_min_height));
             checkBox.setText(choiceInput.GetTitle());
 
             if (!choiceSetInput.GetWrap())
@@ -208,6 +209,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             RadioButton radioButton = new RadioButton(context);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            radioButton.setLayoutParams(params);
+            radioButton.setMinimumHeight(context.getResources().getDimensionPixelSize(R.dimen.radio_button_min_height));
             radioButton.setId(i);
 
             if(!choiceSetInput.GetWrap())

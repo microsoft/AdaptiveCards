@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radio_button_min_height">48dp</dimen>
+    <dimen name="check_box_min_height">48dp</dimen>
+    <dimen name="text_view_min_height">48dp</dimen>
+    <dimen name="spinner_min_height">48dp</dimen>
+</resources>
+
