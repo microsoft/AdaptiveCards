@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -142,6 +143,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         button.setLayoutParams(layoutParams);
+        int minHeight = context.getResources().getDimensionPixelSize(R.dimen.action_min_height);
+        button.post(() -> Util.expandClickArea(button, minHeight));
 
         String iconUrl = baseActionElement.GetIconUrl();
         if (!iconUrl.isEmpty())

@@ -4,12 +4,14 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.util.TypedValue;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,6 +47,26 @@ public final class Util {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
+    }
+
+    public static void expandClickArea(@NonNull View viewToIncreaseClickArea, int adjustedMinSize) {
+        // Get the hit rectangle for the button.
+        Rect delegateArea = new Rect();
+        viewToIncreaseClickArea.getHitRect(delegateArea);
+
+        // Extend the touch area to include the above and below the button to the edges of the card
+        int widthOffset = (int) ((adjustedMinSize - delegateArea.width()) / 2f);
+        int heightOffset = (int) ((adjustedMinSize - delegateArea.height()) / 2f);
+        delegateArea.left -= widthOffset;
+        delegateArea.right += widthOffset;
+        delegateArea.top -= heightOffset;
+        delegateArea.bottom += heightOffset;
+
+        // Sets the TouchDelegate on the parent view and touches within the new extended bounds are routed to button.
+        TouchDelegate touchDelegate = new TouchDelegate(delegateArea, viewToIncreaseClickArea);
+        if (viewToIncreaseClickArea.getParent() instanceof View) {
+            ((View) viewToIncreaseClickArea.getParent()).setTouchDelegate(touchDelegate);
+        }
     }
 
     public static byte[] getBytes(CharVector charVector)
