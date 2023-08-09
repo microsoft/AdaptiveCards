@@ -4,7 +4,6 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.util.TypedValue;
