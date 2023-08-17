@@ -31,7 +31,7 @@
 		"dts": "dts-generator --prefix adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "eslint .",
 		"prerelease": "npm run clean && npm run build-source",
-		"release": "webpack --mode=production && npm run dts",
+		"release": "webpack --mode=development && webpack --mode=production && npm run dts",
 		"docs": "npx typedoc"
 	},
 	"repository": {
