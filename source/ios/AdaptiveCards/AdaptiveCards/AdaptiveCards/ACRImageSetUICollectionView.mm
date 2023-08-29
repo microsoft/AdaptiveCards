@@ -65,6 +65,13 @@ using namespace AdaptiveCards;
     return 1;
 }
 
+static ACOBaseActionElement *buildAcoActionElementFromAdaptiveImage(ACOBaseCardElement *acoElement)
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElement element];
+    std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
+    return imgElem ? [ACOBaseActionElement getACOActionElementFromAdaptiveElement:imgElem->GetSelectAction()] : nil;
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"cellId";
@@ -77,7 +84,12 @@ using namespace AdaptiveCards;
 
     ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
 
-    UIView *content = [imageRenderer render:_viewGroup rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    UIView *content = [imageRenderer render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+
+    ACOBaseActionElement *acoSelectAction = buildAcoActionElementFromAdaptiveImage(_acoElem);
+    if (acoSelectAction && content && content.subviews.count == 1) {
+        addSelectActionToView(_acoConfig, acoSelectAction, _rootView, content.subviews[0], _viewGroup);
+    }
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
