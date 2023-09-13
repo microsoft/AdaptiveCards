@@ -25,7 +25,6 @@
     <Antlr4 Remove="tool\**" />
     <Compile Remove="tool\**" />
     <EmbeddedResource Remove="tool\**" />
-    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
     <None Remove="tool\**" />
   </ItemGroup>
 
