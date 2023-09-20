@@ -16,18 +16,11 @@ parameters:
   displayName: Is this a pre-release?
   type: boolean
   default: true
-- name: is_postrelease
-  displayName: Is this a post_release?
-  type: boolean
-  default: true
 - name: prerelease_suffix
   displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release checkbox selected above)"
   type: string
   default: beta.1
-- name: posterelease_suffix
-  displayName: "what is your name?"
-  type: string
-  default: beta.1
+
 
 variables:
 - group: AdaptiveCards-KVLink
