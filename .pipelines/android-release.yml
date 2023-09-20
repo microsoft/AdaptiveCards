@@ -24,6 +24,11 @@ parameters:
   displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release checkbox selected above)"
   type: string
   default: beta.1
+  
+- name: prerelease_suffix
+  displayName: "what is your name?"
+  type: string
+  default: beta.1
 
 variables:
 - group: AdaptiveCards-KVLink
