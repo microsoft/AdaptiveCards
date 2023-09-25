@@ -44,8 +44,8 @@
     <None Remove="..\AdaptiveCards.Templating\AdaptiveCardsTemplatingLexer.tokens" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AdaptiveExpressions" Version="4.11.2" />
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
+    <PackageReference Include="AdaptiveExpressions" Version="4.20.1" />
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.11.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
