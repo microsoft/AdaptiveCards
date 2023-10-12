@@ -22,4 +22,10 @@
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj" />
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <SpectreMitigation>Spectre</SpectreMitigation>
+    </ClCompile>
+  </ItemDefinitionGroup>
 </Project>
