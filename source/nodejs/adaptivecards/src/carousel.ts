@@ -458,7 +458,7 @@ export class Carousel extends Container {
         carouselContainer.appendChild(carouselWrapper);
 
         carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
-		
+
         containerForAdorners.appendChild(carouselContainer);
         containerForAdorners.appendChild(navigationContainer);
 
