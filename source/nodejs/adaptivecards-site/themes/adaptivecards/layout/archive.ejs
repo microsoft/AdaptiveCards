@@ -25,7 +25,7 @@ layout: layout
 		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px">
 			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-wide.png');
 				var style = "background-image: url('" + imageSrc + "')"  %>
-			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" role="presentation" aria-label="<%= post.title %>"></a>
+			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" aria-label="<%= post.title %>"></a>
 
 			<h2><a class="article-title" href="<%- config.root %><%- post.path %>"><%- post.title %></a></h2>
 
@@ -33,7 +33,7 @@ layout: layout
 
 			<div class="w3-margin-top">
 				<div class="w3-cell w3-cell-middle">
-					<a href="<%- post.author.webpage %>" role="presentation"><img src="<%- post.author.avatar %>" class="w3-image w3-circle"
+					<a href="<%- post.author.webpage %>"><img src="<%- post.author.avatar %>" class="w3-image w3-circle"
 							style="width: 35px; margin-right: 6px" alt="Go to the webpage for <%- post.author.name %>" /></a>
 				</div>
 				<div class="w3-cell">
