@@ -63,8 +63,8 @@ export class MenuItem {
             };
             this._element.onkeydown = (e) => {
                 if (e.key === Constants.keys.enter) {
-                    e.cancelBubble = true;
-
+                    e.stopPropagation();
+                    e.preventDefault();
                     this.click();
                 }
             };
