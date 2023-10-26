@@ -6644,11 +6644,13 @@ class OverflowAction extends Action {
             }
 
             contextMenu.onClose = () => {
+                this.renderedElement?.focus();
                 this.renderedElement?.setAttribute("aria-expanded", "false");
             }
 
             this.renderedElement.setAttribute("aria-expanded", "true");
             contextMenu.popup(this.renderedElement);
+            contextMenu.selectedIndex = 0;
         }
     }
     
