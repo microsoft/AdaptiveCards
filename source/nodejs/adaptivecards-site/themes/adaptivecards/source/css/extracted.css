@@ -684,6 +684,10 @@ screen and (min-width:768px) {
 	color: #07704a;
 }
 
+.hljs-comment {
+    color: #006400;
+}
+
 .hljs-string {
 	color: #a31515;
 }
