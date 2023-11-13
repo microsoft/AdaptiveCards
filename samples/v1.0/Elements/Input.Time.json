@@ -4,11 +4,8 @@
 	"version": "1.0",
 	"body": [
 		{
-			"type": "TextBlock",
-			"text": "What time do you want to meet?"
-		},
-		{
 			"type": "Input.Time",
+			"label": "What time do you want to meet?",
 			"id": "time",
 			"min": "09:00",
 			"max": "17:00",
