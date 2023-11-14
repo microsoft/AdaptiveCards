@@ -134,12 +134,12 @@
 }
 
 .ms-ctrl-dropdown:hover {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 @media (forced-colors: none) {
     .ms-ctrl-dropdown:focus {
-        border: 1px solid #0078D7;
+        border: 1px solid #0072CC;
         outline: 0;
     }
 }
@@ -166,7 +166,7 @@
 }
 
 .ms-ctrl-dropdown-button:hover {
-    color: #0078D7;
+    color: #0072CC;
 }
 
 .ms-ctrl-dropdown-item {
@@ -250,7 +250,7 @@
 
 .ms-ctrl-calendarDay.selected {
     color: white;
-    background-color: #0078D7;
+    background-color: #0072CC;
 }
 
 .ms-calendarPopup {
@@ -268,11 +268,11 @@
 }
 
 .ms-ctrl-datePicker:hover {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 .ms-ctrl-datePicker:focus {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
     outline: 0;
 }
 
@@ -321,8 +321,8 @@
 
 .ms-ctrl-checkbox input[type=checkbox]:checked+label::before {
     content: "";
-    border: 1px solid #0078D7;
-    background-color: #0078D7;
+    border: 1px solid #0072CC;
+    background-color: #0072CC;
 }
 
 .ms-ctrl-checkbox input[type=checkbox]:checked+label::after {
@@ -387,7 +387,7 @@
 }
 
 .ms-ctrl-radiobutton input[type=radio]:checked+label::before {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 .ms-ctrl-radiobutton input[type=radio]+label::after {
@@ -406,7 +406,7 @@
     left: 4px;
     width: 8px;
     height: 8px;
-    background-color: #0078D7;
+    background-color: #0072CC;
     border-radius: 50%;
     transition-property: top, left, right, width, height;
     transition-duration: 150ms;
@@ -446,11 +446,11 @@
 }
 
 .ms-ctrl-textbox:hover {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 .ms-ctrl-textbox:focus, .ms-ctrl-textbox:active {
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 /*

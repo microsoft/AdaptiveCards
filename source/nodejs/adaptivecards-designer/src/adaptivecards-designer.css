@@ -1120,16 +1120,16 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-pushButton.subdued:hover {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 @media (forced-colors: none) {
     .default-ac-pushButton.expanded {
-        background-color: #0078D7;
+        background-color: #0072CC;
         color: white;
-        border: 1px solid #0078D7;
+        border: 1px solid #0072CC;
     }
 }
 
