@@ -96,7 +96,8 @@
 												{
 													"type": "Image",
 													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
-													"height": "16px"
+													"height": "16px",
+													"altText": "Flight to"
 												}
 											],
 											"width": "auto"

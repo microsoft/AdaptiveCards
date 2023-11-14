@@ -195,8 +195,6 @@
 						designer.setCard(JSON.parse(cardXhttp.responseText));
 					}
 
-					// TODO: Talk to David: I want to put the sampleData setter here but it was failing
-
 					history.replaceState(null, null, "<%- config.root %>designer");
 				};
 
@@ -229,6 +227,7 @@
 										"type": "Image",
 										"style": "Person",
 										"url": "${creator.profileImage}",
+										"altText": "${creator.name}",
 										"size": "Small"
 									}
 								],
