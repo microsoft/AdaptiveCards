@@ -366,7 +366,7 @@ s {
 
 .toc-todo a:active,
 .toc-todo a:hover {
-  color: #0078d7;
+      color: #0072cc;
 }
 
 .toc-todo > ul {
@@ -614,7 +614,7 @@ dir {
 }
 
 .homepage .mainSection {
-  /*background-color: #0078D7;*/
+  /*background-color: #0072CC;*/
 }
 
 .homepage .w3-modal {
