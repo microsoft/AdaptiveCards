@@ -27,7 +27,7 @@ Which can be delivered instantly into Microsoft Teams by using AtBot's integrati
 
 Watch the call here.
 
-<iframe src="https://www.youtube.com/embed/Uvm9_7aP618" height="315" width="560"></iframe>
+<iframe src="https://www.youtube.com/embed/Uvm9_7aP618" title="January 2019 Adaptive Cards Community Call" height="315" width="560"></iframe>
 
 
 Next month's call will be held on Thursday, February 14, 2019 at 9:00am PST.  We look forward to talking to you then!
