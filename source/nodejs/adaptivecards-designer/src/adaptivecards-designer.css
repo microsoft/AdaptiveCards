@@ -78,6 +78,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 6px;
+    padding-bottom: 6px;
     background-color: white;
 }
 
@@ -444,6 +445,7 @@
 
 .acd-icon-chevronDown::before {
     content: "\E70D";
+    line-height: 16px;
 }
 
 .acd-icon-chevronUp::before {
@@ -452,6 +454,7 @@
 
 .acd-icon-chevronRight::before {
     content: "\E76C";
+    line-height: 16px;
 }
 
 .acd-icon-chevronLeft::before {
@@ -848,6 +851,14 @@
 
 .acd-tree-item {
     cursor: pointer;
+}
+
+.acd-treeView li:focus-visible {
+    outline: none;
+}
+
+.acd-treeView li:focus-visible > .acd-tree-item {
+    outline: 1px solid #2D7BB7;
 }
 
 .acd-tree-item.selected {
