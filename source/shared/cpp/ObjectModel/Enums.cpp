@@ -38,6 +38,8 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Buttons, "buttons"},
             {AdaptiveCardSchemaKey::CaptionSources, "captionSources"},
             {AdaptiveCardSchemaKey::Card, "card"},
+            {AdaptiveCardSchemaKey::Carousel, "carousel"},
+            {AdaptiveCardSchemaKey::Pages, "pages"},
             {AdaptiveCardSchemaKey::CellSpacing, "cellSpacing"},
             {AdaptiveCardSchemaKey::Cells, "cells"},
             {AdaptiveCardSchemaKey::Center, "center"},
@@ -83,6 +85,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Heading, "heading"},
             {AdaptiveCardSchemaKey::HeadingLevel, "headingLevel"},
             {AdaptiveCardSchemaKey::Height, "height"},
+            {AdaptiveCardSchemaKey::HeightInPixels, "heightInPixels"},
             {AdaptiveCardSchemaKey::Highlight, "highlight"},
             {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
             {AdaptiveCardSchemaKey::HighlightColors, "highlightColors"},
@@ -98,6 +101,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ImageSize, "imageSize"},
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
             {AdaptiveCardSchemaKey::Images, "images"},
+            {AdaptiveCardSchemaKey::InitialPage, "initialPage"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
@@ -120,6 +124,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
             {AdaptiveCardSchemaKey::LineThickness, "lineThickness"},
+            {AdaptiveCardSchemaKey::Loop, "loop"},
             {AdaptiveCardSchemaKey::Max, "max"},
             {AdaptiveCardSchemaKey::MaxActions, "maxActions"},
             {AdaptiveCardSchemaKey::MaxImageHeight, "maxImageHeight"},
@@ -137,7 +142,9 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
+            {AdaptiveCardSchemaKey::Orientation, "orientation"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
+            {AdaptiveCardSchemaKey::Pages, "pages"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
@@ -184,6 +191,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::TextWeight, "weight"},
             {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::TimeInput, "timeInput"},
+            {AdaptiveCardSchemaKey::Timer, "timer"},
             {AdaptiveCardSchemaKey::Title, "title"},
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::TokenExchangeResource, "tokenExchangeResource"},
@@ -211,6 +219,8 @@ namespace AdaptiveCards
     DEFINE_ADAPTIVECARD_ENUM(CardElementType, {
             {CardElementType::ActionSet, "ActionSet"},
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
+            {CardElementType::Carousel, "Carousel"},
+            {CardElementType::CarouselPage, "CarouselPage"},
             {CardElementType::ChoiceSetInput, "Input.ChoiceSet"},
             {CardElementType::Column, "Column"},
             {CardElementType::ColumnSet, "ColumnSet"},
@@ -389,6 +399,10 @@ namespace AdaptiveCards
     DEFINE_ADAPTIVECARD_ENUM(InlineElementType, {
             {InlineElementType::TextRun, "TextRun"}});
 
+    DEFINE_ADAPTIVECARD_ENUM(CarouselOrientation, {
+            {CarouselOrientation::Horizontal, "horizontal"},
+            {CarouselOrientation::Vertical, "vertical"}});
+
     DEFINE_ADAPTIVECARD_ENUM(Mode, {
             {Mode::Primary, "primary"},
             {Mode::Secondary, "secondary"}});
@@ -400,5 +414,6 @@ namespace AdaptiveCards
             {ErrorStatusCode::InvalidPropertyValue, "InvalidPropertyValue"},
             {ErrorStatusCode::UnsupportedParserOverride, "UnsupportedParserOverride"},
             {ErrorStatusCode::IdCollision, "IdCollision"},
+            {ErrorStatusCode::ProhibitedType, "ProhibitedType"},
             {ErrorStatusCode::CustomError, "CustomError"}});
 }

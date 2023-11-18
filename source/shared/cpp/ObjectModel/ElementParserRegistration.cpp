@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "ElementParserRegistration.h"
 #include "ActionSet.h"
+#include "Carousel.h"
+#include "CarouselPage.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Column.h"
@@ -49,6 +51,8 @@ ElementParserRegistration::ElementParserRegistration()
 {
     m_knownElements.insert(
         {CardElementTypeToString(CardElementType::ActionSet),
+         CardElementTypeToString(CardElementType::Carousel),
+         CardElementTypeToString(CardElementType::CarouselPage),
          CardElementTypeToString(CardElementType::ChoiceSetInput),
          CardElementTypeToString(CardElementType::Column),
          CardElementTypeToString(CardElementType::ColumnSet),
@@ -69,6 +73,8 @@ ElementParserRegistration::ElementParserRegistration()
 
     m_cardElementParsers.insert(
         {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
+         {CardElementTypeToString(CardElementType::Carousel), std::make_shared<CarouselParser>()},
+         {CardElementTypeToString(CardElementType::CarouselPage), std::make_shared<CarouselPageParser>()},
          {CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>()},
          {CardElementTypeToString(CardElementType::Column), std::make_shared<ColumnParser>()},
          {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},
