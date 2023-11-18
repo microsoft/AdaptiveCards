@@ -49,27 +49,26 @@ std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::DeserializeFromSt
 
 ElementParserRegistration::ElementParserRegistration()
 {
-    m_knownElements.insert(
-        {CardElementTypeToString(CardElementType::ActionSet),
-         CardElementTypeToString(CardElementType::Carousel),
-         CardElementTypeToString(CardElementType::CarouselPage),
-         CardElementTypeToString(CardElementType::ChoiceSetInput),
-         CardElementTypeToString(CardElementType::Column),
-         CardElementTypeToString(CardElementType::ColumnSet),
-         CardElementTypeToString(CardElementType::Container),
-         CardElementTypeToString(CardElementType::DateInput),
-         CardElementTypeToString(CardElementType::FactSet),
-         CardElementTypeToString(CardElementType::Image),
-         CardElementTypeToString(CardElementType::ImageSet),
-         CardElementTypeToString(CardElementType::Media),
-         CardElementTypeToString(CardElementType::NumberInput),
-         CardElementTypeToString(CardElementType::RichTextBlock),
-         CardElementTypeToString(CardElementType::Table),
-         CardElementTypeToString(CardElementType::TextBlock),
-         CardElementTypeToString(CardElementType::TextInput),
-         CardElementTypeToString(CardElementType::TimeInput),
-         CardElementTypeToString(CardElementType::ToggleInput),
-         CardElementTypeToString(CardElementType::Unknown)});
+    m_knownElements.insert({CardElementTypeToString(CardElementType::ActionSet),
+                            CardElementTypeToString(CardElementType::Carousel),
+                            CardElementTypeToString(CardElementType::CarouselPage),
+                            CardElementTypeToString(CardElementType::ChoiceSetInput),
+                            CardElementTypeToString(CardElementType::Column),
+                            CardElementTypeToString(CardElementType::ColumnSet),
+                            CardElementTypeToString(CardElementType::Container),
+                            CardElementTypeToString(CardElementType::DateInput),
+                            CardElementTypeToString(CardElementType::FactSet),
+                            CardElementTypeToString(CardElementType::Image),
+                            CardElementTypeToString(CardElementType::ImageSet),
+                            CardElementTypeToString(CardElementType::Media),
+                            CardElementTypeToString(CardElementType::NumberInput),
+                            CardElementTypeToString(CardElementType::RichTextBlock),
+                            CardElementTypeToString(CardElementType::Table),
+                            CardElementTypeToString(CardElementType::TextBlock),
+                            CardElementTypeToString(CardElementType::TextInput),
+                            CardElementTypeToString(CardElementType::TimeInput),
+                            CardElementTypeToString(CardElementType::ToggleInput),
+                            CardElementTypeToString(CardElementType::Unknown)});
 
     m_cardElementParsers.insert(
         {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},

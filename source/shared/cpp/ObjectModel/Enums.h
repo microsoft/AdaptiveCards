@@ -448,10 +448,10 @@ enum class ContainerStyle
 };
 DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 
-enum class CarouselOrientation 
+enum class CarouselOrientation
 {
     Horizontal = 0,
-    Vertical 
+    Vertical
 };
 DECLARE_ADAPTIVECARD_ENUM(CarouselOrientation);
 

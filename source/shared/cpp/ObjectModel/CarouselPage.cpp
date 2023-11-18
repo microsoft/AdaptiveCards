@@ -5,13 +5,13 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCards
 {
-    std::shared_ptr<BaseCardElement> CarouselPageParser::Deserialize(ParseContext& context, const Json::Value& value)
-    {
-        auto carouselPage = StyledCollectionElement::Deserialize<CarouselPage>(context, value);
+std::shared_ptr<BaseCardElement> CarouselPageParser::Deserialize(ParseContext& context, const Json::Value& value)
+{
+    auto carouselPage = StyledCollectionElement::Deserialize<CarouselPage>(context, value);
 
-        carouselPage->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
+    carouselPage->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
-        return carouselPage;
-    }
+    return carouselPage;
+}
 
 } // namespace AdaptiveCards

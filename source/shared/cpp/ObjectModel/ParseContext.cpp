@@ -337,8 +337,7 @@ void ParseContext::ShouldParse(const std::string& typeString)
         // ShouldParse only checks for prohibited types list
         // However, additional checks can be added in the future
         // the exception code should be updated accordingly
-        throw AdaptiveCardParseException(
-            ErrorStatusCode::ProhibitedType, "type: " + typeString + " is prohibited");
+        throw AdaptiveCardParseException(ErrorStatusCode::ProhibitedType, "type: " + typeString + " is prohibited");
     }
 }
 

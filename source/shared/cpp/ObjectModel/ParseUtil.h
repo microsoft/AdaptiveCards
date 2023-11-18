@@ -331,12 +331,12 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
         }
         catch (const AdaptiveCardParseException& e)
         {
-            // If exception is thrown because of prohibited type, we log the exception 
+            // If exception is thrown because of prohibited type, we log the exception
             // as warning, and continue parsing
             if (e.GetStatusCode() == ErrorStatusCode::ProhibitedType)
             {
-                context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                    WarningStatusCode::ProhibitedTypeDetected, e.GetReason()));
+                context.warnings.emplace_back(
+                    std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::ProhibitedTypeDetected, e.GetReason()));
             }
             else
             {
