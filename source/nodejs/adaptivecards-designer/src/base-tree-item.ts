@@ -77,8 +77,59 @@ export abstract class BaseTreeItem extends DraggableElement {
         }
     }
 
+    protected itemInvoked() {
+        if (this.onItemInvoked) {
+            this.onItemInvoked(this);
+        }
+    }
+
     private getExpandCollapseAriaText() : string {
         return (this._isExpanded ? "collapse" : "expand") + " " + this.getLabelText() + " element";
+    }
+
+    // collapse node or navigate to parent, if present
+    private handleKeyboardLeftNav(): void {
+        if (this._isExpanded && this.getChildCount() > 0) {
+            // if we're an expanded node that has children, collapse the node.
+            this._isExpanded = false;
+            this.updateLayout();
+            this._rootElement.tabIndex = 0;
+            this._rootElement.focus();
+        }
+        else {
+            // otherwise, we need to find the nearest ancestor treeitem or the root of the tree
+            const nearestTreeItem = <HTMLElement>this._rootElement.parentElement.closest("[role='treeitem'], [role='tree']");
+            const roleAttr = nearestTreeItem?.getAttribute("role");
+            if (roleAttr === "treeitem") {
+                nearestTreeItem.tabIndex = 0;
+                nearestTreeItem.focus();
+                this._rootElement.tabIndex = -1;
+            }
+            else if (roleAttr == "tree")
+            {
+                // only element higher up is the root DOM element of the tree, meaning `this`
+                // represents the root node of the tree. set tabIndex so keyboard users can
+                // tab back in.
+                this._rootElement.tabIndex = 0;
+                this._rootElement.focus();
+            }
+        }
+    }
+
+    // expand child nodes or navigate to first child, if present
+    private handleKeyboardRightNav(): void {
+        if (this.getChildCount() > 0) {
+            if (this._isExpanded) {
+                const childToFocus = <HTMLElement>this._childContainerElement.firstElementChild;
+                childToFocus.tabIndex = 0;
+                childToFocus.focus();
+                this._rootElement.tabIndex = -1;
+            }
+            else {
+                this._isExpanded = true;
+                this.updateLayout();
+            }
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -92,7 +143,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._rootElement.setAttribute("aria-labelledby", labelId);
         this._rootElement.setAttribute("aria-level", this._level.toString());
         this._rootElement.setAttribute("aria-current", this._isSelected.toString());
-        this._rootElement.tabIndex = 0;
+        this._rootElement.tabIndex = -1;
 
         if (hasChildren) {
             this._rootElement.setAttribute("aria-expanded", this._isExpanded.toString());
@@ -100,35 +151,49 @@ export abstract class BaseTreeItem extends DraggableElement {
 
         this._rootElement.setAttribute("role", "treeitem");
         this._rootElement.onclick = () => { this.click; };
+        this._rootElement.onfocus = () => { this.setIsSelected(true, false); };
         this._rootElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
-                this.setIsSelected(!this.isSelected, !this.isSelected);
-                this._rootElement.focus();
+            let handled = true;
+            switch (e.key) {
+                case Constants.keys.enter: {
+                    this.itemInvoked();
+                    break;
+                }
+
+                case Constants.keys.left: {
+                    this.handleKeyboardLeftNav();
+                    break;
+                }
+
+                case Constants.keys.right: {
+                    this.handleKeyboardRightNav();
+                    break;
+                }
+
+                default: {
+                    handled = false;
+                }
+            }
+
+            if (handled) {
                 e.preventDefault();
                 e.cancelBubble = true;
             }
-        }
+        };
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
         this._treeItemElement.style.display = "flex";
         this._treeItemElement.style.alignItems = "center";
         this._treeItemElement.style.paddingLeft = this.getIndentationLevelIncrement() * (1 + this.level) + "px";
+        this._treeItemElement.classList.toggle("selected", this._isSelected);
 
-        if (this._isSelected) {
-            this._treeItemElement.classList.add("selected");
-        }
-
-        if (hasChildren) {
-            this._treeItemElement.setAttribute("role", "treeitem");
-        }
         this._treeItemElement.setAttribute("aria-labelledby", labelId);
 
         this._expandCollapseElement = document.createElement("div");
         this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
         this._expandCollapseElement.style.flex = "0 0 auto";
         this._expandCollapseElement.style.visibility = hasChildren ? "visible" : "hidden";
-        this._expandCollapseElement.tabIndex = 0;
         this._expandCollapseElement.setAttribute("role", "button");
         this._expandCollapseElement.setAttribute("aria-label", this.getExpandCollapseAriaText());
 
@@ -141,18 +206,6 @@ export abstract class BaseTreeItem extends DraggableElement {
             e.preventDefault();
         }
 
-        this._expandCollapseElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
-                this._isExpanded = !this._isExpanded;
-
-                this.updateLayout();
-                this._expandCollapseElement.focus();
-
-                e.preventDefault();
-                e.cancelBubble = true;
-            }
-        }
-
         this._treeItemElement.appendChild(this._expandCollapseElement);
 
         let textElement = document.createElement("div");
@@ -163,6 +216,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         textElement.style.whiteSpace = "nowrap";
         textElement.style.textOverflow = "ellipsis";
         textElement.style.overflow = "hidden";
+        textElement.style.marginRight = "8px";
 
         if (this.getIconClass()) {
             let iconElement = document.createElement("div");
@@ -219,6 +273,8 @@ export abstract class BaseTreeItem extends DraggableElement {
 
     onSelectedChange: (sender: BaseTreeItem) => void;
 
+    onItemInvoked: (sender: BaseTreeItem) => void;
+
     constructor(isExpanded: boolean = true) {
         super();
 
@@ -232,17 +288,9 @@ export abstract class BaseTreeItem extends DraggableElement {
         if (this.getChildCount() > 0) {
             this._rootElement.setAttribute("aria-expanded", this._isExpanded.toString());
             this._expandCollapseElement.setAttribute("aria-label", this.getExpandCollapseAriaText());
-
-            if (this._isExpanded) {
-                this._childContainerElement?.classList.remove("acd-hidden");
-                this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
-                this._expandCollapseElement.classList.add(BaseTreeItem.expandedIconClass);
-            }
-            else {
-                this._childContainerElement?.classList.add("acd-hidden");
-                this._expandCollapseElement.classList.add(BaseTreeItem.collapsedIconClass);
-                this._expandCollapseElement.classList.remove(BaseTreeItem.expandedIconClass);
-            }
+            this._expandCollapseElement.classList.toggle(BaseTreeItem.expandedIconClass, this._isExpanded);
+            this._expandCollapseElement.classList.toggle(BaseTreeItem.collapsedIconClass, !this._isExpanded);
+            this._childContainerElement?.classList.toggle("acd-hidden", !this._isExpanded);
         }
     }
 
