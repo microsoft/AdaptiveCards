@@ -4,6 +4,8 @@
 
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveActionSet.h"
+#include "AdaptiveCarousel.h"
+#include "AdaptiveCarouselPage.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveContainer.h"
@@ -125,6 +127,10 @@ std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::Ada
     {
     case winrt::AdaptiveCards::ObjectModel::Xaml_OM::ElementType::ActionSet:
         return GetSharedModel<rtimpl::AdaptiveActionSet>(item);
+    case winrt::AdaptiveCards::ObjectModel::Xaml_OM::ElementType::Carousel:
+        return GetSharedModel<rtimpl::AdaptiveCarousel>(item);
+    case winrt::AdaptiveCards::ObjectModel::Xaml_OM::ElementType::CarouselPage:
+        return GetSharedModel<rtimpl::AdaptiveCarouselPage>(item);
     case winrt::AdaptiveCards::ObjectModel::Xaml_OM::ElementType::ChoiceSetInput:
         return GetSharedModel<rtimpl::AdaptiveChoiceSetInput>(item);
     case winrt::AdaptiveCards::ObjectModel::Xaml_OM::ElementType::Column:
@@ -262,6 +268,12 @@ winrt::AdaptiveCards::ObjectModel::Xaml_OM::IAdaptiveCardElement GenerateElement
     case CardElementType::Image:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveImage>(
             std::AdaptivePointerCast<AdaptiveCards::Image>(baseElement));
+    case CardElementType::Carousel:
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveCarousel>(
+            std::AdaptivePointerCast<AdaptiveCards::Carousel>(baseElement));
+     case CardElementType::CarouselPage:
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveCarouselPage>(
+            std::AdaptivePointerCast<AdaptiveCards::CarouselPage>(baseElement));
     case CardElementType::Container:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation::AdaptiveContainer>(
             std::AdaptivePointerCast<AdaptiveCards::Container>(baseElement));

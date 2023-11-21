@@ -259,6 +259,73 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
+    void XamlBuilder::ShouldFallback(
+        winrt::IAdaptiveCardElement const& element,
+        winrt::IAdaptiveElementRenderer const& elementRenderer,
+        winrt::AdaptiveRenderArgs const& renderArgs,
+        winrt::AdaptiveFeatureRegistration const& featureRegistration,
+        boolean ancestorHasFallback)
+    {
+		winrt::FallbackType elementFallback = element.FallbackType();
+		bool elementHasFallback = elementFallback != winrt::FallbackType::None || ancestorHasFallback;
+		renderArgs.AncestorHasFallback(elementHasFallback);
+		// Check to see if element's requirements are being met
+		bool shouldFallback = featureRegistration && !MeetsRequirements(element, featureRegistration);
+		if (!elementRenderer || shouldFallback)
+		{
+			throw winrt::hresult_error(E_PERFORM_FALLBACK);
+		}
+    }
+
+    RenderedElementStruct XamlBuilder::RenderAsUIElement(
+        winrt::IAdaptiveCardElement const& element,
+        winrt::AdaptiveRenderContext const&renderContext,
+		winrt::AdaptiveRenderArgs const&renderArgs,
+        winrt::AdaptiveFeatureRegistration const& featureRegistration,
+        bool ancestorHasFallback)
+    {
+		winrt::UIElement newControl{nullptr};
+		winrt::IAdaptiveCardElement renderedElement{nullptr};
+
+		try
+		{
+            auto elementRenderer = renderContext.ElementRenderers().Get(element.ElementTypeString());
+
+			ShouldFallback(
+				element,
+				elementRenderer,
+				renderArgs,
+				featureRegistration,
+                ancestorHasFallback);
+
+            return {elementRenderer.Render(element, renderContext, renderArgs), element};
+
+		}
+		catch (winrt::hresult_error const& ex)
+		{
+			// We're only interested in fallback exception
+			if (ex.code() != E_PERFORM_FALLBACK)
+			{
+				throw ex;
+			}
+
+			try
+			{
+				std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
+			}
+			catch (winrt::hresult_error const& ex)
+			{
+				// if we get an E_PERFORM_FALLBACK error again, we should only throw it if `ancestorHasFallBack`
+				if (ex.code() != E_PERFORM_FALLBACK || (ex.code() == E_PERFORM_FALLBACK && ancestorHasFallback))
+				{
+					throw ex;
+				}
+			}
+		}
+
+        return {};
+    }
+
     void XamlBuilder::BuildPanelChildren(winrt::IVector<winrt::IAdaptiveCardElement> const& children,
                                          winrt::Panel parentPanel,
                                          winrt::AdaptiveRenderContext renderContext,
@@ -270,55 +337,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::AdaptiveFeatureRegistration featureRegistration = renderContext.FeatureRegistration();
         for (auto element : children)
         {
-            // Get fallback state
-            winrt::FallbackType elementFallback = element.FallbackType();
-            bool elementHasFallback = elementFallback != winrt::FallbackType::None || ancestorHasFallback;
-            renderArgs.AncestorHasFallback(elementHasFallback);
-
-            // Check to see if element's requirements are being met
-            bool shouldFallback = featureRegistration && !MeetsRequirements(element, featureRegistration);
-            auto elementRenderers = renderContext.ElementRenderers();
-            winrt::hstring elementType = element.ElementTypeString();
-            auto elementRenderer = elementRenderers.Get(elementType);
-            auto hostConfig = renderContext.HostConfig();
-
-            winrt::UIElement newControl{nullptr};
-            winrt::IAdaptiveCardElement renderedElement{nullptr};
-            try
-            {
-                if (!elementRenderer || shouldFallback)
-                {
-                    throw winrt::hresult_error(E_PERFORM_FALLBACK);
-                }
-
-                newControl = elementRenderer.Render(element, renderContext, renderArgs);
-                renderedElement = element;
-            }
-            catch (winrt::hresult_error const& ex)
-            {
-                // We're only interested in fallback exception
-                if (ex.code() != E_PERFORM_FALLBACK)
-                {
-                    throw ex;
-                }
-
-                try
-                {
-                    std::tie(newControl, renderedElement) = XamlHelpers::RenderFallback(element, renderContext, renderArgs);
-                }
-                catch (winrt::hresult_error const& ex)
-                {
-                    // if we get an E_PERFORM_FALLBACK error again, we should only throw it if `ancestorHasFallBack`
-                    if (ex.code() != E_PERFORM_FALLBACK || (ex.code() == E_PERFORM_FALLBACK && ancestorHasFallback))
-                    {
-                        throw ex;
-                    }
-                }
-            }
+            auto [newControl, renderedElement] =
+                RenderAsUIElement(element, renderContext, renderArgs, featureRegistration, ancestorHasFallback);
 
             // If we got a control, add a separator if needed and the control to the parent panel
             if (newControl)
             {
+				auto hostConfig = renderContext.HostConfig();
                 auto separator = XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 // If the renderedElement was an input, render the label and error message

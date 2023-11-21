@@ -8,6 +8,12 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
+	struct RenderedElementStruct
+	{
+		winrt::UIElement renderedUI {nullptr};
+		winrt::IAdaptiveCardElement adaptiveElement {nullptr};
+	};
+
     struct XamlBuilder : winrt::implements<XamlBuilder, winrt::IInspectable, IImageLoadTrackerListener>
     {
     public:
@@ -49,7 +55,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                     winrt::AdaptiveRenderContext const& renderContext,
                                     winrt::AdaptiveRenderArgs const& renderArgs);
 
+		static RenderedElementStruct RenderAsUIElement(
+            winrt::IAdaptiveCardElement const& element,
+            winrt::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveFeatureRegistration const& featureRegistration,
+            bool ancestorHasFallback);
+
     private:
+
         winrt::com_ptr<ImageLoadTracker> m_imageLoadTracker;
         std::set<IXamlBuilderListener*> m_listeners;
         std::vector<winrt::IAsyncOperationWithProgress<winrt::IInputStream, winrt::HttpProgress>> m_getStreamOperations;
@@ -117,5 +131,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         void SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize);
         void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize);
+
+		static void ShouldFallback(winrt::IAdaptiveCardElement const& element,
+                                   winrt::IAdaptiveElementRenderer const& elementRenderer,
+                                   winrt::AdaptiveRenderArgs const& renderArgs,
+                                   winrt::AdaptiveFeatureRegistration const& featureRegistration,
+                                   boolean ancestorHasFallback);
     };
 }

@@ -62,6 +62,11 @@ Json::Value Carousel::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Timer)] = m_timer.value_or(0);
     }
 
+    if (m_rtl.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value_or("");
+    }
+
     return root;
 }
 
@@ -130,6 +135,16 @@ void Carousel::setAutoLoop(const std::optional<bool>& value)
     m_autoLoop = value;
 }
 
+std::optional<bool> Carousel::GetRtl() const
+{
+    return m_rtl;
+}
+
+void Carousel::SetRtl(const std::optional<bool>& value)
+{
+    m_rtl = value;
+}
+
 void Carousel::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     if (auto deserializedPages =
@@ -158,6 +173,8 @@ std::shared_ptr<BaseCardElement> CarouselParser::Deserialize(ParseContext& conte
 
     carousel->SetOrientation(ParseUtil::GetOptionalEnumValue<CarouselOrientation>(
         value, AdaptiveCardSchemaKey::Orientation, CarouselOrientationFromString));
+
+    carousel->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
     return carousel;
 }

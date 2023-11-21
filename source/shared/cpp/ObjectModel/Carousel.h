@@ -38,6 +38,9 @@ public:
     std::optional<bool> GetAutoLoop() const;
     void setAutoLoop(const std::optional<bool>& value);
 
+    std::optional<bool> GetRtl() const;
+    void SetRtl(const std::optional<bool>& value);
+
 private:
     void PopulateKnownPropertiesSet();
 
@@ -47,6 +50,7 @@ private:
     std::optional<unsigned int> m_initialPage;
     std::optional<CarouselOrientation> m_orientation;
     std::optional<bool> m_autoLoop;
+    std::optional<bool> m_rtl;
 };
 
 class CarouselParser : public BaseCardElementParser
