@@ -97,7 +97,7 @@
         user32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
-      <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/profile /DEBUGTYPE:CV,FIXUP %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
