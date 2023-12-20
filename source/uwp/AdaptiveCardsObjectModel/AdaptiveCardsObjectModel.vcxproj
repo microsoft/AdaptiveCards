@@ -62,6 +62,9 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <SpectreMitigation>Spectre</SpectreMitigation>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -97,7 +100,7 @@
         user32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
-      <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/profile /DEBUGTYPE:FIXUP %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
