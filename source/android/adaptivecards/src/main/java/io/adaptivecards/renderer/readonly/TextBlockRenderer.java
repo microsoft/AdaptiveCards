@@ -30,6 +30,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.FragmentManager;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 
@@ -219,7 +220,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
     }
 
-    private void applyAccessibilityProperties(TextView textView, Context context, RendererUtil.SpecialTextHandleResult textHandleResult)
+    private void applyAccessibilityProperties(final TextView textView, Context context, RendererUtil.SpecialTextHandleResult textHandleResult)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
         {
@@ -236,23 +237,41 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             }
         }
 
-        AccessibilityManager am = (AccessibilityManager)context.getSystemService(ACCESSIBILITY_SERVICE);
-        am.addAccessibilityStateChangeListener(new AccessibilityManager.AccessibilityStateChangeListener() {
-            @Override
-            public void onAccessibilityStateChanged(boolean b)
-            {
-                boolean isTalkBackEnabled = isTalkBackEnabled(am);
-                if (b && isTalkBackEnabled)
-                {
-                    textView.setFocusable(true);
-                }
-                else
-                {
-                    textView.setFocusable(false);
+        final AccessibilityManager am = (AccessibilityManager)context.getSystemService(ACCESSIBILITY_SERVICE);
+        final WeakReference<TextView> textViewWeakReference = new WeakReference<>(textView);
+
+        final AccessibilityManager.AccessibilityStateChangeListener listener = new AccessibilityManager.AccessibilityStateChangeListener() {
+            public void onAccessibilityStateChanged(boolean b) {
+                TextView textView = textViewWeakReference.get();
+                if (textView != null) {
+                    boolean isTalkBackEnabled = TextBlockRenderer.this.isTalkBackEnabled(am);
+                    if (b && isTalkBackEnabled) {
+                        textView.setFocusable(true);
+                    } else {
+                        textView.setFocusable(false);
+                    }
+                } else {
+                    // TextView is no longer in memory, remove the listener
+                    am.removeAccessibilityStateChangeListener(this);
                 }
             }
+        };
+
+        am.addAccessibilityStateChangeListener(listener);
+        textView.setFocusable(this.isTalkBackEnabled(am));
+
+        textView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                // Nothing to do
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                // When the TextView is detached from the window, remove the listener
+                am.removeAccessibilityStateChangeListener(listener);
+            }
         });
-        textView.setFocusable(isTalkBackEnabled(am));
     }
 
     @Override
