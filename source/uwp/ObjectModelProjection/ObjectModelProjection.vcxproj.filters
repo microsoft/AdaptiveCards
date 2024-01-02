@@ -75,6 +75,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CaptionSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ContentSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Carousel.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CarouselPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -157,6 +159,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CaptionSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Carousel.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CarouselPage.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

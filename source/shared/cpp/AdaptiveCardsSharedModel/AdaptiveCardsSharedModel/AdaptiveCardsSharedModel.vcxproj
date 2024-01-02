@@ -219,6 +219,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Carousel.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CarouselPage.cpp" />
     <ClCompile Include="..\..\ObjectModel\ChoicesData.cpp" />
     <ClCompile Include="..\..\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
@@ -301,6 +303,8 @@
     <ClInclude Include="..\..\ObjectModel\AuthCardButton.h" />
     <ClInclude Include="..\..\ObjectModel\Authentication.h" />
     <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
+    <ClInclude Include="..\..\ObjectModel\Carousel.h" />
+    <ClInclude Include="..\..\ObjectModel\CarouselPage.h" />
     <ClInclude Include="..\..\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />

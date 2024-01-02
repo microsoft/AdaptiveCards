@@ -48,6 +48,9 @@ public:
     void PushBleedDirection(const ContainerBleedDirection direction);
     void PopBleedDirection();
 
+    void AddProhibitedElementType(const std::vector<std::string>& list);
+    void ShouldParse(const std::string& type);
+
 private:
     const AdaptiveCards::InternalId GetNearestFallbackId(const AdaptiveCards::InternalId& skipId) const;
     // This enum is just a helper to keep track of the position of contents within the std::tuple used in
@@ -77,6 +80,8 @@ private:
     std::vector<ContainerStyle> m_parentalContainerStyles;
     std::vector<AdaptiveCards::InternalId> m_parentalPadding;
     std::vector<ContainerBleedDirection> m_parentalBleedDirection;
+
+    std::unordered_set<std::string> m_prohibitedElementTypes;
 
     bool m_canFallbackToAncestor;
     std::string m_language;
