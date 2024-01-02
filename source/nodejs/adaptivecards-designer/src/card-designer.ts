@@ -108,6 +108,18 @@ export class CardDesigner extends Designer.DesignContext {
             }
             else {
                 let treeView = new TreeView(this.designerSurface.rootPeer.treeItem);
+                treeView.onItemInvoked = () => {
+                    const propertySheetHosts = document.getElementsByClassName("acd-propertySheet-host");
+                    if (propertySheetHosts.length === 1) {
+                        const propertySheetHost = <HTMLElement>propertySheetHosts[0];
+
+                        // get focusable children
+                        const focusableElements = propertySheetHost.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+                        if (focusableElements.length > 0) {
+                            (<HTMLElement>focusableElements[0]).focus();
+                        }
+                    }
+                };
 
                 this._treeViewToolbox.content.appendChild(treeView.render());
             }
