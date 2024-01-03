@@ -64,6 +64,9 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <SpectreMitigation>Spectre</SpectreMitigation>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -75,6 +78,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
+  <PropertyGroup>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -98,6 +104,8 @@
         OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
+      <AdditionalOptions>/profile /DEBUGTYPE:FIXUP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(VC_LibraryPath_VC_OneCore_CurrentPlatform_spectre);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
