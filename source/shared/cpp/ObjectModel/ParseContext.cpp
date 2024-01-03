@@ -325,6 +325,22 @@ void ParseContext::PopBleedDirection()
     m_parentalBleedDirection.pop_back();
 }
 
+void ParseContext::AddProhibitedElementType(const std::vector<std::string>& list)
+{
+    m_prohibitedElementTypes.insert(list.begin(), list.end());
+}
+
+void ParseContext::ShouldParse(const std::string& typeString)
+{
+    if (m_prohibitedElementTypes.find(typeString) != m_prohibitedElementTypes.end())
+    {
+        // ShouldParse only checks for prohibited types list
+        // However, additional checks can be added in the future
+        // the exception code should be updated accordingly
+        throw AdaptiveCardParseException(ErrorStatusCode::ProhibitedType, "type: " + typeString + " is prohibited");
+    }
+}
+
 void ParseContext::SetLanguage(const std::string& value)
 {
     m_language = value;
