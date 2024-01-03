@@ -29,6 +29,26 @@ PS: Latest Build Status is against `main` branch.
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/37917/main.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564/main.svg) |
 
+## Release schedule
+
+We release the Adaptive Cards products on the third week of each month, assuming there are updates. Please see the table below for the most recent and upcoming release dates.
+
+|Product|Last Release Date|Next Release Date|
+|---|---|---|
+|Website|4/21/2023|7/17/2023|
+|Designer|1/31/2023|7/17/2023|
+|JavaScript Renderer|6/23/2023|7/17/2023|
+|JavaScript Renderer Beta|4/9/2023|7/17/2023|
+|JavaScript Templating|9/16/2022|7/17/2023|
+|XAML Renderer|3/23/2023|7/17/2023|
+|XAML Object Model|3/22/2023|7/17/2023|
+|WinUI 3 Renderer|6/29/2023|7/17/2023|
+|WinUI 3 Object Model|5/12/2023|7/17/2023|
+|.NET Renderer|12/1/2022|7/17/2023|
+|.NET Templating|3/7/2023|7/17/2023|
+
+**Note:** These release dates are subject to change based on availability and active development of each product.
+
 ## Code format
 
 We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.

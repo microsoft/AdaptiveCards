@@ -293,7 +293,8 @@ $font-family: 'Segoe UI', sans-serif;
         &.ac-numberInput,
         &.ac-dateInput,
         &.ac-timeInput,
-        &.ac-multichoiceInput.ac-choiceSetInput-compact {
+        &.ac-multichoiceInput.ac-choiceSetInput-compact,
+        &.ac-choiceSetInput-filtered-textbox {
             &.ac-input-validation-failed {
                 border: $validation-failed-border;
             }
@@ -302,6 +303,63 @@ $font-family: 'Segoe UI', sans-serif;
         &.ac-toggleInput, &.ac-choiceSetInput-expanded, &.ac-choiceSetInput-multiSelect {
             &.ac-input-validation-failed {
                 outline: $validation-failed-outline;
+            }
+        }
+
+        &.ac-choiceSetInput-filtered-container {
+            display: flex;
+            position: relative;
+            width: 100%;
+        }
+
+        &.ac-choiceSetInput-filtered-textbox {
+            border: $border;
+            padding: $padding;
+            background-color: $background-color;
+            width: 100%;
+        }
+
+        &.ac-choiceSetInput-filtered-dropdown {
+            background-color: white;
+            border: $border;
+            border-top: 0px;
+            box-sizing: border-box;
+            cursor: pointer;
+            display: none;
+            max-height: 200px;
+            overflow-y: scroll;
+            position: absolute;
+            top: calc(100%);
+            width: 100%;
+            z-index: 1;
+
+            &.ac-choiceSetInput-filtered-dropdown-open {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        &.ac-choiceSetInput-choice {
+            box-sizing: border-box;
+            padding: $padding;
+            width: 100%;
+
+            &.ac-choiceSetInput-choice-highlighted {
+                background-color: #F3F2F1;
+                outline: none;
+            }
+        }
+
+        &.ac-choiceSetInput-statusIndicator {
+            box-sizing: border-box;
+            color: #A19F9D;
+            cursor: default;
+            padding: $padding;
+            width: 100%;
+
+            &.ac-choiceSetInput-errorIndicator {
+                color: #605E5C;
+                text-align: center;
             }
         }
 

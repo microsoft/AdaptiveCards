@@ -25,7 +25,7 @@ On the **Admin Portal Dashboard**, users can see a summary of card management. U
 
 On the **New Template** page, users can create and edit Adaptive Cards. Users can expect to create Adaptive Cards effortlessly since [Adaptive Cards Designer Tool](https://adaptivecards.io/designer/) is nicely embedded into the ACMS Admin Portal.
 
-![](https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2020/03/A-screenshot-1024x522.png)
+![A screenshot of the ACMS New Template page.](https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2020/03/A-screenshot-1024x522.pn)
 
 If you click a card on the Dashboard, users will land in **Template View** page where they can check all the details of the card. They can share and publish cards here too! If users **publish** a card template, it can later be retrieved at "run-time" via the ACMS REST API.
 

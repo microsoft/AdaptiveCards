@@ -266,11 +266,20 @@ export class InputConfig {
     readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({
         color: Enums.TextColor.Attention
     });
+    readonly debounceTimeInMilliSeconds: number = 0;
+    readonly allowDynamicallyFilteredChoiceSet: boolean = true;
+    readonly allowRevealOnHoverStyle: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
             this.label = new InputLabelConfig(obj["label"]);
             this.errorMessage = new BaseTextDefinition(obj["errorMessage"]);
+            this.allowRevealOnHoverStyle =
+                obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
+            this.allowDynamicallyFilteredChoiceSet =
+                obj["allowDynamicallyFilteredChoiceSet"] || this.allowDynamicallyFilteredChoiceSet;
+            this.debounceTimeInMilliSeconds =
+                obj["debounceTimeInMilliSeconds"] || this.debounceTimeInMilliSeconds;
         }
     }
 }
@@ -1157,7 +1166,8 @@ export const defaultHostConfig: HostConfig = new HostConfig({
         errorMessage: {
             color: Enums.TextColor.Attention,
             weight: Enums.TextWeight.Bolder
-        }
+        },
+        debounceTimeInMilliSeconds: 250
     },
     actions: {
         maxActions: 5,
@@ -1198,5 +1208,8 @@ export const defaultHostConfig: HostConfig = new HostConfig({
     carousel: {
         maxCarouselPages: 10,
         minAutoplayDuration: 5000
+    },
+    textBlock: {
+        headingLevel: 2
     }
 });

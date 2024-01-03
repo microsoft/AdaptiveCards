@@ -36,7 +36,13 @@
 
 - (NSString *)getItemAt:(NSInteger)index;
 
-- (void)filter:(NSString *)filter;
+- (BOOL)findMatch:(NSString *)queryString;
+
+- (NSRange)getHighlightRangeForSearchText:(NSString *)searchText resultText:(NSString *)resultText;
+
+- (void)updateFilteredListForStaticTypeahead:(NSString *)choices;
+
+- (void)updateFilteredListForStaticAndDynamicTypeahead:(NSString *)key dynamicChoices:(NSDictionary *)choices;
 
 - (void)resetFilter;
 
@@ -54,7 +60,7 @@
 
 @end
 
-@interface ACOChoiceSetCompactStyleValidator : NSObject
+@interface ACOChoiceSetFilteredStyleValidator : NSObject
 
 @property BOOL isRequired;
 @property NSString *placeHolder;
@@ -65,6 +71,8 @@
 - (BOOL)isValid:(NSString *)input;
 
 - (NSString *)getValue:(NSString *)input;
+
+- (void)updateDynamicTitleMap:(NSDictionary *)titleMap;
 
 @end
 

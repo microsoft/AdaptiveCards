@@ -25,6 +25,8 @@ pool:
   vmImage: windows-2019
 
 steps:
+- template: templates/uwp-download-secure-files.yml
+
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
@@ -37,6 +39,7 @@ steps:
   inputs:
     solution: $(solution)
     selectOrConfig: config
+    nugetConfigPath: source/nuget.config
     verbosity: '-'
 
 - task: VSBuild@1

@@ -4,6 +4,8 @@
 //  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACORenderContext.h"
 #import "ACOVisibilityManager.h"
 #import "ACRErrors.h"
@@ -16,6 +18,22 @@
 #import "TextBlock.h"
 #import "TextRun.h"
 #import "UnknownAction.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACORenderContext.h>
+#import <AdaptiveCards/ACOVisibilityManager.h>
+#import <AdaptiveCards/ACRErrors.h>
+#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
+#import <AdaptiveCards/ACRSeparator.h>
+#import <AdaptiveCards/ACRViewPrivate.h>
+#import <AdaptiveCards/BaseCardElement.h>
+#import <AdaptiveCards/RichTextElementProperties.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
+#import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/TextRun.h>
+#import <AdaptiveCards/UnknownAction.h>
+
+#endif
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

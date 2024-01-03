@@ -29,12 +29,12 @@
 		"release": "npm run clean && webpack --mode=production"
 	},
 	"dependencies": {
-		"adaptivecards-controls": "^0.11.0-alpha.0",
+		"adaptivecards-controls": "^0.10.1",
 		"remarkable": "^2.0.1"
 	},
 	"devDependencies": {
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^3.0.0-beta.6",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-controls": "^0.9.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0"
 	},

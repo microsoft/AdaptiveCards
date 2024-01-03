@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AdaptiveCards</id>
+    <version>3.1.0</version>
+    <authors>Microsoft</authors>
+    <license type="file">EULA-Windows.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://adaptivecards.io/</projectUrl>
+    <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+    <description>This library implements classes for building and serializing adaptive card objects</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>adaptivecards adaptive-cards</tags>
+    <repository url="https://github.com/Microsoft/AdaptiveCards" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Library\AdaptiveCards\bin\Release\net4.5.2\AdaptiveCards.dll" target="lib\net452"/>
+    <file src="..\Library\AdaptiveCards\bin\Release\net4.5.2\AdaptiveCards.xml" target="lib\net452"/>
+
+    <file src="..\Library\AdaptiveCards\bin\Release\netstandard1.3\AdaptiveCards.dll" target="lib\netstandard1.3"/>
+    <file src="..\Library\AdaptiveCards\bin\Release\netstandard1.3\AdaptiveCards.xml" target="lib\netstandard1.3"/>
+
+    <file src="..\Library\AdaptiveCards\bin\Release\netstandard2.0\AdaptiveCards.dll" target="lib\netstandard2.0"/>
+    <file src="..\Library\AdaptiveCards\bin\Release\netstandard2.0\AdaptiveCards.xml" target="lib\netstandard2.0"/>
+
+    <file src="..\Library\AdaptiveCards.Net6\bin\Release\net6.0\AdaptiveCards.dll" target="lib\net6.0"/>
+    <file src="..\Library\AdaptiveCards.Net6\bin\Release\net6.0\AdaptiveCards.xml" target="lib\net6.0"/>
+
+    <file src="EULA-Windows.txt" target="\"/>
+  </files>
+</package>

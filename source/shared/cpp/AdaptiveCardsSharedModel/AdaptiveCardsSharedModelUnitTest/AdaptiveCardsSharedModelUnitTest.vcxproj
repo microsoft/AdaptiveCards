@@ -247,6 +247,7 @@
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="Base64Test.cpp" />
+    <ClCompile Include="CarouselTest.cpp" />
     <ClCompile Include="ContainerStyleTest.cpp" />
     <ClCompile Include="ElementTest.cpp" />
     <ClCompile Include="FallbackTests.cpp" />

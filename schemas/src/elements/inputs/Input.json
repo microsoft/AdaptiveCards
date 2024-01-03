@@ -24,6 +24,21 @@
 			"type": "string",
 			"description": "Label for this input",
 			"version": "1.3"
+		},
+		"labelPosition": {
+			"type": "InputLabelPosition",
+			"description": "[SUPPORTED ONLY IN JAVASCRIPT SDK] Determines the position of the label. It can take 'inline' and 'above' values. By default, the label is placed 'above' when label position is not specified.",
+			"version": "1.6"
+		},
+		"labelWidth": {
+			"type": "string|number",
+			"description": "[SUPPORTED ONLY IN JAVASCRIPT SDK] Determines the width of the label in percent like 40 or a specific pixel width like '40px' when label is placed inline with the input. labelWidth would be ignored when the label is displayed above the input.",
+			"version": "1.6"
+		},
+		"inputStyle": {
+			"type": "InputStyle",
+			"description": "[SUPPORTED ONLY IN JAVASCRIPT SDK] Style hint for input fields. Allows input fields to appear as read-only but when user clicks/focuses on the field, it allows them to update those fields.",
+			"version": "1.6"
 		}
 	}
 }

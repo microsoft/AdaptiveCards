@@ -51,6 +51,9 @@ public:
     bool GetIsEnabled() const;
     void SetIsEnabled(const bool isEnabled);
 
+    ActionRole GetRole() const;
+    void SetRole(const ActionRole role);
+
     void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
     Json::Value SerializeToJsonValue() const override;
 
@@ -77,6 +80,7 @@ private:
 
     ActionType m_type;
     Mode m_mode;
+    ActionRole m_role;
 };
 
 template <typename T>

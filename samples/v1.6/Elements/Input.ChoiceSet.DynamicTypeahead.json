@@ -1,0 +1,34 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "dynamicChoiceSet",
+			"label": "Enter the name of your team",
+			"placeholder": "AdaptiveCards",
+			"isRequired": true,
+			"errorMessage": "You must select a valid team",
+			"choices": [
+				{
+					"title": "Office",
+					"value": "1"
+				},
+				{
+					"title": "Teams",
+					"value": "2"
+				},
+				{
+					"title": "Outlook",
+					"value": "3"
+				}
+			],
+			"choices.data": {
+				"type": "Data.Query",
+				"dataset": "teamScopeInOrg",
+				"count": 15,
+				"skip": 0
+			}
+		}
+	]
+}

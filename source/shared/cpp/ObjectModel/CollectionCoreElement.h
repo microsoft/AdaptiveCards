@@ -31,7 +31,7 @@ std::shared_ptr<T> CollectionCoreElement::Deserialize(ParseContext& context, con
 {
     auto collection = BaseCardElement::Deserialize<T>(context, value);
 
-    bool canFallbackToAncestor = context.GetCanFallbackToAncestor();
+    const bool canFallbackToAncestor = context.GetCanFallbackToAncestor();
     context.SetCanFallbackToAncestor(canFallbackToAncestor || (collection->GetFallbackType() != FallbackType::None));
     collection->SetCanFallbackToAncestor(canFallbackToAncestor);
 

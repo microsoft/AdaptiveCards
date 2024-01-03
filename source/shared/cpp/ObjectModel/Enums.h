@@ -13,6 +13,7 @@ enum class AdaptiveCardSchemaKey
     ActionAlignment,
     ActionMode,
     ActionOrientation,
+    ActionRole,
     ActionSet,
     ActionSetConfig,
     Actions,
@@ -38,6 +39,8 @@ enum class AdaptiveCardSchemaKey
     ButtonSpacing,
     Buttons,
     CaptionSources,
+    Carousel,
+    CarouselPage,
     Card,
     CellSpacing,
     Cells,
@@ -84,6 +87,7 @@ enum class AdaptiveCardSchemaKey
     Heading,
     HeadingLevel,
     Height,
+    HeightInPixels,
     Highlight,
     HighlightColor,
     HighlightColors,
@@ -99,6 +103,7 @@ enum class AdaptiveCardSchemaKey
     ImageSize,
     ImageSizes,
     Images,
+    InitialPage,
     InlineAction,
     InlineTopMargin,
     Inlines,
@@ -121,6 +126,7 @@ enum class AdaptiveCardSchemaKey
     Lighter,
     LineColor,
     LineThickness,
+    Loop,
     Max,
     MaxActions,
     MaxImageHeight,
@@ -129,6 +135,7 @@ enum class AdaptiveCardSchemaKey
     MaxWidth,
     Media,
     Medium,
+    MetaData,
     Method,
     MimeType,
     Min,
@@ -137,7 +144,9 @@ enum class AdaptiveCardSchemaKey
     Monospace,
     NumberInput,
     OptionalInputs,
+    Orientation,
     Padding,
+    Pages,
     Placeholder,
     PlayButton,
     Poster,
@@ -184,6 +193,7 @@ enum class AdaptiveCardSchemaKey
     TextWeight,
     Thickness,
     TimeInput,
+    Timer,
     Title,
     ToggleInput,
     TokenExchangeResource,
@@ -203,6 +213,7 @@ enum class AdaptiveCardSchemaKey
     VerticalCellContentAlignment,
     VerticalContentAlignment,
     Warning,
+    WebUrl,
     Weight,
     Width,
     Wrap,
@@ -214,6 +225,8 @@ enum class CardElementType
     // When the order of existing enums are changed, corresponding changes are needed in iOS (ACOBaseCardElement.h)
     ActionSet = 0,
     AdaptiveCard,
+    Carousel,
+    CarouselPage,
     ChoiceInput,
     ChoiceSetInput,
     Column,
@@ -413,6 +426,16 @@ enum class ActionMode
 };
 DECLARE_ADAPTIVECARD_ENUM(ActionMode);
 
+enum class ActionRole
+{
+    Button = 0,
+    Link,
+    Tab,
+    Menu,
+    MenuItem
+};
+DECLARE_ADAPTIVECARD_ENUM(ActionRole);
+
 enum class ContainerStyle
 {
     None,
@@ -424,6 +447,13 @@ enum class ContainerStyle
     Accent
 };
 DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
+
+enum class CarouselOrientation
+{
+    Horizontal = 0,
+    Vertical
+};
+DECLARE_ADAPTIVECARD_ENUM(CarouselOrientation);
 
 enum class Mode
 {
@@ -439,6 +469,7 @@ enum class ErrorStatusCode
     RequiredPropertyMissing,
     InvalidPropertyValue,
     UnsupportedParserOverride,
+    ProhibitedType,
     IdCollision,
     CustomError,
 };
@@ -464,6 +495,7 @@ enum class WarningStatusCode
     CustomWarning,
     EmptyLabelInRequiredInput,
     RequiredPropertyMissing,
+    ProhibitedTypeDetected,
 };
 // No mapping to string needed
 

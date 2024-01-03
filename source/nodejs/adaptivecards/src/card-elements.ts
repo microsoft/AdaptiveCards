@@ -336,7 +336,7 @@ export abstract class CardElement extends CardObject {
             element.style.color = foregroundCssColor;
         }
 
-        element.innerText = "Empty " + this.getJsonTypeName();
+        element.innerText = Strings.defaults.emptyElementText(this.getJsonTypeName());
 
         return element;
     }
@@ -589,8 +589,6 @@ export abstract class CardElement extends CardObject {
         } else if (this.isDesignMode()) {
             this._renderedElement = this.createPlaceholderElement();
         }
-
-        this.getRootElement().updateActionsEnabledState();
 
         return this._renderedElement;
     }
@@ -2124,7 +2122,7 @@ export class Image extends CardElement {
                     }
                 };
 
-                this.setupElementForAccessibility(imageElement);
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEffectivelyEnabled()) {
                     imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2155,12 +2153,6 @@ export class Image extends CardElement {
         }
 
         return element;
-    }
-
-    protected setupElementForAccessibility(element: HTMLImageElement) {
-        this.selectAction?.setupElementForAccessibility(element);
-        // Image elements cannot have aria-description
-        element.removeAttribute("aria-description");
     }
 
     maxHeight?: number;
@@ -3565,7 +3557,6 @@ export abstract class Input extends CardElement implements IInput {
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
-                this._renderedInputControlElement.setAttribute("aria-required", "true");
                 this._renderedInputControlElement.classList.add(
                     hostConfig.makeCssClassName("ac-input-required")
                 );
@@ -3578,12 +3569,12 @@ export abstract class Input extends CardElement implements IInput {
                 if (!this.labelWidth) {
                     const defaultLabelWidth = hostConfig.inputs.label.width;
                     this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - defaultLabelWidth) + "%";
+                    this._inputControlContainerElement.style.width = (100 - defaultLabelWidth) + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
                     const labelWidthInPercent = this.labelWidth.physicalSize;
                     this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
-                    this._renderedInputControlElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - labelWidthInPercent).toString() + "%";
                 }
                 else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
                     const labelWidthInPixel = this.labelWidth.physicalSize;
@@ -3623,9 +3614,13 @@ export abstract class Input extends CardElement implements IInput {
 
     protected resetValidationFailureCue() {
         if (this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.remove(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.removeValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
 
             this.updateInputControlAriaLabelledBy();
 
@@ -3660,8 +3655,34 @@ export abstract class Input extends CardElement implements IInput {
         }
     }
 
+    protected get allowRevealOnHoverStyle() {
+        return this.hostConfig.inputs && this.hostConfig.inputs.allowRevealOnHoverStyle;
+    }
+
+    protected shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
+        // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
+        // 1. intial render of card: hide input adorners
+        // 2. mouse hover on the card: show input adorners
+        // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
+        // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
+    
+        // check if input still has the focus
+        const isInputInFocus = input === document.activeElement;
+    
+        // check if mouse is still on the card
+        const inputHoverClassName = this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover");
+        const isMouseOverCard = input.classList.contains(inputHoverClassName);
+    
+        const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
+                                  (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
+                                  (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
+        return hideInputAdorners;
+    }
+
     updateVisualState(eventType: InputEventType): void {
-        if (!this._renderedInputControlElement || this.inputStyle !== Enums.InputStyle.RevealOnHover) {
+        if (!this.allowRevealOnHoverStyle || 
+            !this._renderedInputControlElement || 
+            this.inputStyle !== Enums.InputStyle.RevealOnHover) {
             return;
         }
         if (eventType === InputEventType.InitialRender) {
@@ -3737,10 +3758,13 @@ export abstract class Input extends CardElement implements IInput {
         const result = this.isRequired ? this.isSet() && this.isValid() : this.isValid();
 
         if (!result && this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.add(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
-
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.showValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.add(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
             this.showValidationErrorMessage();
         }
 
@@ -3942,6 +3966,10 @@ export class TextInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
         if (!(this.inlineAction || this.isMultiline)) {
             super.updateVisualState(eventType);
         }
@@ -4196,6 +4224,48 @@ export class Choice extends SerializableObject {
     }
 }
 
+/**
+ * DataQuery class is declared later in the file and derives from subsequent base classes
+ * Hence, it cannot be used in ChoiceSetInput.
+ * Refactor is needed to separate elements and actions in separate files.
+ */
+export class ChoiceSetInputDataQuery extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(
+        Versions.v1_6,
+        "type",
+        true,
+        new RegExp("^Data.Query$")
+    );
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
+
+    @property(ChoiceSetInputDataQuery.typeProperty)
+    type: string;
+
+    @property(ChoiceSetInputDataQuery.datasetProperty)
+    dataset: string;
+
+    @property(ChoiceSetInputDataQuery.countProperty)
+    count?: number;
+
+    @property(ChoiceSetInputDataQuery.skipProperty)
+    skip?: number;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "choices.data";
+    }
+}
+
+export type FetchedChoice = {
+    title: string;
+    value: string;
+};
+
 export class ChoiceSetInput extends Input {
     //#region Schema
 
@@ -4204,6 +4274,11 @@ export class ChoiceSetInput extends Input {
         Versions.v1_0,
         "choices",
         Choice
+    );
+    static readonly choicesDataProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "choices.data",
+        ChoiceSetInputDataQuery
     );
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
@@ -4245,6 +4320,9 @@ export class ChoiceSetInput extends Input {
     @property(ChoiceSetInput.choicesProperty)
     choices: Choice[] = [];
 
+    @property(ChoiceSetInput.choicesDataProperty)
+    choicesData?: ChoiceSetInputDataQuery;
+
     //#endregion
 
     private static _uniqueCategoryCounter = 0;
@@ -4262,6 +4340,68 @@ export class ChoiceSetInput extends Input {
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+    private _filteredChoiceSet?: FilteredChoiceSet;
+
+    isDynamicTypeahead(): boolean {
+        return (
+            this.hostConfig.inputs.allowDynamicallyFilteredChoiceSet &&
+            !!this.choicesData &&
+            !!this.choicesData.dataset &&
+            this.choicesData.type === "Data.Query"
+        );
+    }
+
+    getFilterForDynamicSearch(): string | undefined {
+        return this._textInput?.value;
+    }
+
+    getDropdownElement() {
+        return this._filteredChoiceSet?.dropdown;
+    }
+
+    renderChoices(filter: string, fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(filter, fetchedChoices);
+    }
+
+    showLoadingIndicator() {
+        this._filteredChoiceSet?.showLoadingIndicator();
+    }
+
+    removeLoadingIndicator() {
+        this._filteredChoiceSet?.removeLoadingIndicator();
+    }
+
+    showErrorIndicator(filter: string, error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(filter, error);
+    }
+
+    showValidationFailureCue() {
+        this._textInput?.classList.add(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
+    }
+
+    removeValidationFailureCue() {
+        this._textInput?.classList.remove(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
+    }
+
+    private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
+        if (!this.value) {
+            const placeholderOption = document.createElement("option");
+            placeholderOption.selected = true;
+            placeholderOption.disabled = true;
+            placeholderOption.hidden = true;
+            placeholderOption.value = "";
+
+            if (this.placeholder) {
+                placeholderOption.text = this.placeholder;
+            }
+            return placeholderOption;
+        }
+        return undefined;
+    }
 
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
@@ -4397,8 +4537,46 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+        if (this.isDynamicTypeahead()) {
+            const filteredChoiceSet = new FilteredChoiceSet(
+                ChoiceSetInput._uniqueCategoryCounter,
+                this.choices,
+                this.hostConfig
+            );
+            filteredChoiceSet.render();
 
-        if (this.isMultiSelect) {
+            if (filteredChoiceSet.textInput) {
+                this._textInput = filteredChoiceSet.textInput;
+                if (this.defaultValue) {
+                    this._textInput.value = this.defaultValue;
+                }
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+                this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
+                const onInputChangeEventHandler = Utils.debounce(() => {
+                    filteredChoiceSet.processChoices();
+                    this.valueChanged();
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        } else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                }, this.hostConfig.inputs.debounceTimeInMilliSeconds);
+                this._textInput.onclick = onInputChangeEventHandler;
+                this._textInput.oninput = onInputChangeEventHandler;
+            }
+            filteredChoiceSet.parent = this;
+            this._filteredChoiceSet = filteredChoiceSet;
+            return filteredChoiceSet.renderedElement;
+        } else if (this.isMultiSelect) {
             // Render as a list of toggle inputs
             return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
@@ -4489,15 +4667,7 @@ export class ChoiceSetInput extends Input {
 
                 this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
-                const placeholderOption = document.createElement("option");
-                placeholderOption.selected = true;
-                placeholderOption.disabled = true;
-                placeholderOption.hidden = true;
-                placeholderOption.value = "";
-
-                if (this.placeholder) {
-                    placeholderOption.text = this.placeholder;
-                }
+                const placeholderOption = this.createPlaceholderOptionWhenValueDoesNotExist();
 
                 Utils.appendChild(this._selectElement, placeholderOption);
 
@@ -4532,11 +4702,15 @@ export class ChoiceSetInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
         if (!this.isMultiSelect && this.isCompact) {
             super.updateVisualState(eventType);
 
             if (this._selectElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-                const hideDropDownPicker = shouldHideInputAdornersForRevealOnHover(this._selectElement, eventType);
+                const hideDropDownPicker = this.shouldHideInputAdornersForRevealOnHover(this._selectElement, eventType);
                 
                 if (hideDropDownPicker) {
                     this._selectElement.style.appearance = "none";
@@ -4544,7 +4718,7 @@ export class ChoiceSetInput extends Input {
                 } else {
                     this._selectElement.style.appearance = "auto";
                     this._selectElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
-                }
+                }			
             }
         }
     }
@@ -4601,7 +4775,13 @@ export class ChoiceSetInput extends Input {
                     return true;
                 }
             }
-
+            if (this.dynamicChoices) {
+                for (const choice of this.dynamicChoices) {
+                    if (this.value === choice) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -4649,6 +4829,272 @@ export class ChoiceSetInput extends Input {
 
             return result ? result : undefined;
         }
+    }
+
+    get dynamicChoices() {
+        return this._filteredChoiceSet?.dynamicChoices;
+    }
+}
+
+export class FilteredChoiceSet {
+    private _parent?: CardObject;
+    private _choiceSetId: number;
+    private _choices: Choice[];
+    private _dynamicChoices: FetchedChoice[];
+    private _visibleChoiceCount: number;
+    private _highlightedChoiceId: number;
+    private _textInput?: HTMLInputElement;
+    private _dropdown?: HTMLDivElement;
+    private _loadingIndicator?: HTMLDivElement;
+    private _errorIndicator?: HTMLDivElement;
+    private _renderedElement?: HTMLElement;
+    private _hostConfig?: HostConfig;
+
+    constructor(choiceSetId: number, choices: Choice[], hostConfig?: HostConfig) {
+        this._choiceSetId = choiceSetId;
+        this._choices = choices;
+        this._dynamicChoices = [];
+        this._visibleChoiceCount = 0;
+        this._highlightedChoiceId = -1;
+        this._hostConfig = hostConfig;
+    }
+
+    render() {
+        const choiceSetContainer = document.createElement("div");
+        choiceSetContainer.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-container"
+        );
+
+        this._textInput = document.createElement("input");
+        this._textInput.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-textbox"
+        );
+        this._textInput.type = "text";
+
+        this._textInput.onkeydown = (event) => {
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId + 1);
+            } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId - 1);
+            } else if (event.key === "Enter") {
+                const choice = document.getElementById(
+                    `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+                );
+                choice?.click();
+            }
+        };
+
+        this._dropdown = document.createElement("div");
+        this._dropdown.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-dropdown"
+        );
+
+        choiceSetContainer.append(this._textInput, this._dropdown);
+
+        this._renderedElement = choiceSetContainer;
+    }
+
+    private createChoice(value: string, filter: string, id: number): HTMLSpanElement {
+        const choice = document.createElement("span");
+        choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
+        choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
+        choice.innerHTML = value.replace(filter, `<b>${filter}</b>`);
+        choice.tabIndex = -1;
+
+        choice.onclick = () => {
+            choice.classList.remove(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+            );
+            this._highlightedChoiceId = -1;
+            if (this._textInput) {
+                this._textInput.value = choice.innerText;
+                this._textInput.focus();
+            }
+            if (this._dropdown) {
+                this._dropdown.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+                );
+            }
+        };
+        choice.onmousemove = () => {
+            if (this._highlightedChoiceId !== id) {
+                this.highlightChoice(id, false);
+            }
+        };
+
+        return choice;
+    }
+
+    private highlightChoice(id: number, scrollIntoView: boolean = true) {
+        if (this._visibleChoiceCount > 0) {
+            const currentHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+            );
+            const nextHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
+            );
+            if (nextHighlightedChoice) {
+                currentHighlightedChoice?.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+                );
+                nextHighlightedChoice.classList.add(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+                );
+                if (scrollIntoView) {
+                    nextHighlightedChoice.scrollIntoView();
+                }
+                this._highlightedChoiceId = id;
+            } else if (currentHighlightedChoice && this._highlightedChoiceId !== 0) {
+                this.highlightChoice(0);
+            } else {
+                this.highlightChoice(this._visibleChoiceCount - 1);
+            }
+        }
+    }
+
+    private filterChoices() {
+        const filter = this._textInput?.value.toLowerCase().trim() || "";
+        const choices = [...this._choices, ...this._dynamicChoices];
+        for (const choice of choices) {
+            if (choice.title) {
+                const matchIndex = choice.title.toLowerCase().indexOf(filter);
+                if (matchIndex !== -1) {
+                    const matchedText = choice.title.substring(
+                        matchIndex,
+                        matchIndex + filter.length
+                    );
+                    const choiceContainer = this.createChoice(
+                        choice.title,
+                        matchedText,
+                        this._visibleChoiceCount++
+                    );
+                    this._dropdown?.appendChild(choiceContainer);
+                }
+            }
+        }
+    }
+
+    private getStatusIndicator(error?: string): HTMLDivElement {
+        if (error) {
+            if (!this._errorIndicator) {
+                const errorIndicator = document.createElement("div");
+                errorIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator",
+                    "ac-choiceSetInput-errorIndicator"
+                );
+                this._errorIndicator = errorIndicator;
+            }
+            this._errorIndicator.innerText = error;
+            return this._errorIndicator;
+        } else {
+            if (!this._loadingIndicator) {
+                const loadingIndicator = document.createElement("div");
+                loadingIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator"
+                );
+                this._loadingIndicator = loadingIndicator;
+            }
+            this._loadingIndicator.innerText =
+                this._visibleChoiceCount === 0 ? "Loading..." : "Loading more...";
+            return this._loadingIndicator;
+        }
+    }
+
+    private resetDropdown() {
+        if (this._dropdown) {
+            Utils.clearElementChildren(this._dropdown);
+            this._visibleChoiceCount = 0;
+            this._highlightedChoiceId = -1;
+        }
+    }
+
+    private showDropdown() {
+        if (this._dropdown?.hasChildNodes()) {
+            this._dropdown.classList.add(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+            );
+        }
+    }
+
+    processChoices() {
+        this.resetDropdown();
+        this.filterChoices();
+        this.showDropdown();
+    }
+
+    processResponse(filter: string, fetchedChoices: FetchedChoice[]) {
+        if (filter === this._textInput?.value) {
+            this.resetDropdown();
+            this._dynamicChoices = fetchedChoices;
+            this.filterChoices();
+            if (this._visibleChoiceCount === 0) {
+                this.showErrorIndicator(filter, "No results found");
+            }
+        }
+    }
+
+    showLoadingIndicator() {
+        const loadingIndicator = this.getStatusIndicator();
+        this._dropdown?.appendChild(loadingIndicator);
+        this.showDropdown();
+    }
+
+    removeLoadingIndicator() {
+        if (this._loadingIndicator && this._dropdown?.contains(this._loadingIndicator)) {
+            this._dropdown?.removeChild(this._loadingIndicator);
+        }
+    }
+
+    showErrorIndicator(filter: string, error: string) {
+        if (filter === this._textInput?.value) {
+            this.processChoices();
+            const errorIndicator = this.getStatusIndicator(error);
+            this._dropdown?.appendChild(errorIndicator);
+            errorIndicator.scrollIntoView();
+        }
+    }
+
+    get dynamicChoices() {
+        return this._dynamicChoices?.map((choice) => choice.title);
+    }
+
+    get hostConfig(): HostConfig {
+        if (this._hostConfig) {
+            return this._hostConfig;
+        } else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            } else {
+                return defaultHostConfig;
+            }
+        }
+    }
+
+    set parent(value: CardObject | undefined) {
+        this._parent = value;
+    }
+
+    get parent() {
+        return this._parent;
+    }
+
+    get renderedElement() {
+        return this._renderedElement;
+    }
+
+    get textInput() {
+        return this._textInput;
+    }
+
+    get dropdown() {
+        return this._dropdown;
     }
 }
 
@@ -4810,10 +5256,21 @@ export class DateInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
         super.updateVisualState(eventType);
 
         if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            const hideDatePicker = shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
+            const hideDatePicker = this.shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
+
+            if (hideDatePicker) {
+                this._dateInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            } else {
+                this._dateInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            }
+
             updateInputAdornersVisibility(this._dateInputElement, hideDatePicker  /*hide*/);
         }
     }
@@ -4951,10 +5408,21 @@ export class TimeInput extends Input {
     }
 
     updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+        
         super.updateVisualState(eventType);
 
         if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
-            const hideTimePicker = shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
+            const hideTimePicker = this.shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
+
+            if (hideTimePicker) {
+                this._timeInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            } else {
+                this._timeInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            }
+
             updateInputAdornersVisibility(this._timeInputElement, hideTimePicker /*hide*/);
         }
     }
@@ -5027,6 +5495,7 @@ export abstract class Action extends CardObject {
     );
     static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
     static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
+    static readonly roleProperty = new EnumProperty(Versions.v1_6, "role", Enums.ActionRole);
 
     @property(Action.titleProperty)
     title?: string;
@@ -5045,6 +5514,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.isEnabledProperty)
     isEnabled: boolean;
+    
+    @property(Action.roleProperty)
+    role?: Enums.ActionRole;
 
     //#endregion
 
@@ -5223,7 +5695,25 @@ export abstract class Action extends CardObject {
     }
 
     getAriaRole(): string {
-        return "button";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "button";
+    }
+    
+    getAriaRoleFromEnum(): string | undefined {
+        switch (this.role) {
+            case Enums.ActionRole.Button:
+                return "button";
+            case Enums.ActionRole.Link:
+                return "link";
+            case Enums.ActionRole.Menu:
+                return "menu";
+            case Enums.ActionRole.MenuItem:
+                return "menuitem";
+            case Enums.ActionRole.Tab:
+                return "tab";
+            default:
+                return undefined;
+        }
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
@@ -5250,14 +5740,10 @@ export abstract class Action extends CardObject {
             element.removeAttribute("title");
         }
 
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
+        if (this.tooltip) {			
+            if (promoteTooltipToLabel && !this.title) {
+                element.setAttribute("aria-label", this.tooltip);
+            }
             element.title = this.tooltip;
         }
     }
@@ -5572,7 +6058,12 @@ export class SubmitAction extends SubmitActionBase {
     }
 }
 
-export class ExecuteAction extends SubmitActionBase {
+export abstract class UniversalAction extends SubmitActionBase {
+    // This is the base class for all actions that can be executed via the
+    // adaptiveCards/action activity
+}
+
+export class ExecuteAction extends UniversalAction {
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
@@ -5588,6 +6079,41 @@ export class ExecuteAction extends SubmitActionBase {
 
     getJsonTypeName(): string {
         return ExecuteAction.JsonTypeName;
+    }
+}
+
+export class DataQuery extends UniversalAction {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Data.Query" = "Data.Query";
+
+    //#region Schema
+
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly filterProperty = new StringProperty(Versions.v1_6, "filter");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
+
+    @property(DataQuery.datasetProperty)
+    dataset: string;
+
+    @property(DataQuery.filterProperty)
+    filter: string;
+
+    @property(DataQuery.countProperty)
+    count?: number;
+
+    @property(DataQuery.skipProperty)
+    skip?: number;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return DataQuery.JsonTypeName;
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
@@ -5610,7 +6136,8 @@ export class OpenUrlAction extends Action {
     }
 
     getAriaRole(): string {
-        return "link";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "link";
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6116,11 +6643,13 @@ class OverflowAction extends Action {
             }
 
             contextMenu.onClose = () => {
+                this.renderedElement?.focus();
                 this.renderedElement?.setAttribute("aria-expanded", "false");
             }
 
             this.renderedElement.setAttribute("aria-expanded", "true");
             contextMenu.popup(this.renderedElement);
+            contextMenu.selectedIndex = 0;
         }
     }
     
@@ -8170,25 +8699,6 @@ function updateInputAdornersVisibility(input: HTMLInputElement, hide: boolean) {
     
 }
 
-function shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
-    // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
-    // 1. intial render of card: hide input adorners
-    // 2. mouse hover on the card: show input adorners
-    // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
-    // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
-
-    // check if input still has the focus
-    const isInputInFocus = input === document.activeElement;
-
-    // check if mouse is still on the card
-    const isMouseOverCard = input.classList.contains("ac-inputStyle-revealOnHover-onhover");
-
-    const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
-                              (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
-                              (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
-    return hideInputAdorners;
-}
-
 /**
  * @returns return false to continue with default context menu; return true to skip SDK default context menu
  */
@@ -8908,6 +9418,8 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.onmouseleave = (ev: MouseEvent) => {
                     this.updateInputsVisualState(false /* hover */);
                 };
+
+                this.getRootElement().updateActionsEnabledState();
             }
         }
 
@@ -8916,6 +9428,24 @@ export class AdaptiveCard extends ContainerWithActions {
 
             this.updateLayout();
         }
+
+        const inputElements = this.getAllInputs();
+        document.onclick = (event) => {
+            inputElements.forEach((input) => {
+                if (
+                    input instanceof ChoiceSetInput &&
+                    !input.renderedElement?.contains(event.target as Node)
+                ) {
+                    input
+                        .getDropdownElement()
+                        ?.classList.remove(
+                            this.hostConfig.makeCssClassName(
+                                "ac-choiceSetInput-filtered-dropdown-open"
+                            )
+                        );
+                }
+            });
+        };
 
         return renderedCard;
     }

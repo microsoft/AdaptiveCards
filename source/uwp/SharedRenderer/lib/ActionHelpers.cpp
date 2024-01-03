@@ -6,7 +6,6 @@
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
-#include "LinkButton.h"
 #include "WholeItemsPanel.h"
 
 #ifdef USE_WINUI3
@@ -92,6 +91,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             name = tooltip;
         }
 
+        if (tooltip.empty())
+        {
+            tooltip = title;
+        }
+
         SetAutomationNameAndDescription(button, name, description);
         SetTooltip(tooltip, button);
 
@@ -157,6 +161,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             {
                 XamlHelpers::AppendXamlElementToPanel(separator, buttonContentsStackPanel);
             }
+
+            // Add Text to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonText, buttonContentsStackPanel);
 
             // Finally, put the stack panel inside the final button
             button.Content(buttonContentsStackPanel);
@@ -252,7 +259,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         auto hostConfig = renderContext.HostConfig();
         auto actionsConfig = hostConfig.Actions();
 
-        auto button = CreateAppropriateButton(adaptiveActionElement);
+        auto button = CreateButton(adaptiveActionElement);
         button.Margin(GetButtonMargin(actionsConfig));
 
         if (actionsConfig.ActionsOrientation() == winrt::ActionsOrientation::Horizontal)
@@ -499,7 +506,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
             return elementToWrap;
         }
 
-        auto button = CreateAppropriateButton(action);
+        auto button = CreateButton(action);
         button.Content(elementToWrap);
 
         uint32_t cardPadding = 0;
@@ -546,7 +553,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                 name = title;
                 description = tooltip;
 
-                if (!tooltip.data() && allowTitleAsTooltip)
+                if (tooltip.empty() && allowTitleAsTooltip)
                 {
                     // If we don't have a tooltip, set the title to the tooltip if we're allowed
                     tooltip = title;
@@ -757,12 +764,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
                 case winrt::FallbackType::Content:
                     action = action.FallbackContent();
+                    actionType = action.ActionType();
                     XamlHelpers::WarnForFallbackContentElement(renderContext, actionTypeString, action.ActionTypeString());
                     break; // Go again
 
                 case winrt::FallbackType::None:
                 default:
-                    throw winrt::hresult_error(E_FAIL);
+                    throw winrt::hresult_error(E_FALLBACK_NOT_FOUND);
                 }
             }
         }
@@ -882,18 +890,30 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
             if (currentButtonIndex < maxActions && mode == winrt::AdaptiveCards::ObjectModel::Xaml_OM::ActionMode::Primary)
             {
-                // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                actionControl = CreateActionButtonInActionSet(adaptiveCard,
-                                                              adaptiveActionSet,
-                                                              action,
-                                                              currentButtonIndex,
-                                                              actionsPanel,
-                                                              showCardsStackPanel,
-                                                              columnDefinitions,
-                                                              renderContext,
-                                                              renderArgs);
+                try
+                {
+                    // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
+                    actionControl = CreateActionButtonInActionSet(adaptiveCard,
+                                                                  adaptiveActionSet,
+                                                                  action,
+                                                                  currentButtonIndex,
+                                                                  actionsPanel,
+                                                                  showCardsStackPanel,
+                                                                  columnDefinitions,
+                                                                  renderContext,
+                                                                  renderArgs);
 
-                currentButtonIndex++;
+                    currentButtonIndex++;
+                }
+                catch (winrt::hresult_error const& ex)
+                {
+                    // We want to continue if the error is E_FALLBACK_NOT_FOUND
+                    // There was no fallback mechanism for this action, but we need to render the rest of the ActionSet
+                    if (ex.code() != E_FALLBACK_NOT_FOUND)
+                    {
+                        throw ex;
+                    }
+                }
             }
             else if (currentButtonIndex >= maxActions &&
                      (mode == winrt::AdaptiveCards::ObjectModel::Xaml_OM::ActionMode::Primary) && !overflowMaxActions)
@@ -967,15 +987,35 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         return actionPanel;
     }
 
-    winrt::Button CreateAppropriateButton(winrt::IAdaptiveActionElement const& action)
+    winrt::Button CreateButton(winrt::IAdaptiveActionElement const& action)
     {
-        if (action && (action.ActionType() == winrt::ActionType::OpenUrl))
+        winrt::Button button = winrt::Button{};
+        if (action && (action.Role() != winrt::ActionRole::Button))
         {
-            return winrt::make<LinkButton>();
+            SetAutomationType(action.Role(), button);
         }
-        else
+        return button;
+    }
+
+    void SetAutomationType(winrt::ActionRole const& actionRole, winrt::Button const& button)
+    {
+        // Default to button role
+        winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
+        switch (actionRole)
         {
-            return winrt::Button{};
+            case winrt::ActionRole::Link:
+                roleType = winrt::AutomationControlType::Hyperlink;
+                break;
+            case winrt::ActionRole::Tab:
+                roleType = winrt::AutomationControlType::Tab;
+                break;
+            case winrt::ActionRole::Menu:
+                roleType = winrt::AutomationControlType::Menu;
+                break;
+            case winrt::ActionRole::MenuItem:
+                roleType = winrt::AutomationControlType::MenuItem;
+                break;
         }
+        winrt::AutomationProperties::SetAutomationControlType(button, roleType);
     }
 }

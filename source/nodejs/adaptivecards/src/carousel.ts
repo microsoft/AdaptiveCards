@@ -357,10 +357,6 @@ export class Carousel extends Container {
         this._containerForAdorners = containerForAdorners;
 
         cardLevelContainer.appendChild(containerForAdorners);
-        
-        const navigationContainer: HTMLElement = document.createElement("div");
-        navigationContainer.className = this.hostConfig.makeCssClassName("ac-carousel-navigation");
-        containerForAdorners.appendChild(navigationContainer);
 
         const carouselWrapper: HTMLElement = document.createElement("div");
         carouselWrapper.className = this.hostConfig.makeCssClassName(
@@ -395,6 +391,9 @@ export class Carousel extends Container {
             // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
             carouselWrapper.style.minHeight = "-webkit-min-content";
         }
+
+        const navigationContainer: HTMLElement = document.createElement("div");
+        navigationContainer.className = this.hostConfig.makeCssClassName("ac-carousel-navigation");
 
         const prevElementDiv: HTMLElement = document.createElement("div");
         prevElementDiv.className = this.hostConfig.makeCssClassName(
@@ -461,6 +460,7 @@ export class Carousel extends Container {
         carouselContainer.tabIndex = this.isDesignMode() ? -1 : 0;
 
         containerForAdorners.appendChild(carouselContainer);
+        containerForAdorners.appendChild(navigationContainer);
 
         // `isRtl()` will set the correct value of rtl by reading the value from the parents
         this.rtl = this.isRtl();
@@ -562,7 +562,7 @@ export class Carousel extends Container {
                 enabled: true
             },
             keyboard: {
-                enabled: true,
+                enabled: false,
                 onlyInViewport: true
             },
             direction: this.carouselOrientation === Enums.Orientation.Horizontal ? "horizontal" : "vertical",
@@ -603,6 +603,17 @@ export class Carousel extends Container {
 
         carousel.on('autoplay',  () => {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
+        });
+
+        carousel.on('paginationRender', (swiper, paginationEl) => {
+            swiper.pagination.bullets.forEach((bullet, index) => {
+                bullet.addEventListener("keypress", function(event : KeyboardEvent) {
+                    if (event.key == "Enter") {
+                        event.preventDefault();
+                        swiper.slideTo(index + 1);
+                    }
+                });
+            });
         });
 
         carousel.on('destroy', () => {

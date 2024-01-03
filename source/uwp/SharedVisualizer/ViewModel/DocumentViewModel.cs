@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
 using XamlCardVisualizer.CustomElements;
+using Windows.UI.ViewManagement;
 
-#if !USE_WINUI3
+#if USE_WINUI3
+using AdaptiveCards.ObjectModel.WinUI3;
+using AdaptiveCards.Rendering.WinUI3;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+#else
 using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
@@ -96,6 +103,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                         _renderedAdaptiveCard.Action += async (sender, e) =>
                         {
                             var m_actionDialog = new ContentDialog();
+#if USE_WINUI3
+                            m_actionDialog.XamlRoot = this.MainPageViewModel.XamlRoot;
+#endif
 
                             if (e.Action.ActionType == ActionType.ShowCard)
                             {
@@ -121,6 +131,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                             _renderedAdaptiveCard.MediaClicked += async (sender, e) =>
                             {
                                 var onPlayDialog = new ContentDialog();
+#if USE_WINUI3
+                                onPlayDialog.XamlRoot = this.MainPageViewModel.XamlRoot;
+#endif
                                 onPlayDialog.Content = "MediaClickedEvent:";
 
                                 foreach (var source in e.Media.Sources)
@@ -188,6 +201,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
+
+                    ApplyBorderIfHighContrast();                 
                 }
                 errors = newErrors;
                 TimeCounter.ResetCounter();
@@ -281,6 +296,22 @@ namespace AdaptiveCardVisualizer.ViewModel
             _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
             _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
             */
+        }
+
+        public void ApplyBorderIfHighContrast()
+        {
+            if (RenderedCard is Grid)
+            {
+                AccessibilitySettings accessibilitySettings = new AccessibilitySettings();
+
+                if (accessibilitySettings.HighContrast)
+                {
+                    Grid grid = (Grid)RenderedCard;
+
+                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Windows.UI.Color)grid.Resources["SystemColorWindowTextColor"]);
+                    (RenderedCard as Grid).BorderThickness = new Thickness(2);
+                }
+            }
         }
     }
 }

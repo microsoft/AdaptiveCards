@@ -78,6 +78,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 6px;
+    padding-bottom: 6px;
     background-color: white;
 }
 
@@ -444,6 +445,7 @@
 
 .acd-icon-chevronDown::before {
     content: "\E70D";
+    line-height: 16px;
 }
 
 .acd-icon-chevronUp::before {
@@ -452,6 +454,7 @@
 
 .acd-icon-chevronRight::before {
     content: "\E76C";
+    line-height: 16px;
 }
 
 .acd-icon-chevronLeft::before {
@@ -850,6 +853,14 @@
     cursor: pointer;
 }
 
+.acd-treeView li:focus-visible {
+    outline: none;
+}
+
+.acd-treeView li:focus-visible > .acd-tree-item {
+    outline: 1px solid #2D7BB7;
+}
+
 .acd-tree-item.selected {
     background-color: #BCE2FF;
 }
@@ -1120,16 +1131,16 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-pushButton.subdued:hover {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 @media (forced-colors: none) {
     .default-ac-pushButton.expanded {
-        background-color: #0078D7;
+        background-color: #0072CC;
         color: white;
-        border: 1px solid #0078D7;
+        border: 1px solid #0072CC;
     }
 }
 
@@ -1707,4 +1718,27 @@ a.default-ac-anchor:visited:active {
         padding-left: 3px;
         padding-right: 3px;
     }
+}
+
+@media (max-width: 350px) {
+    input::-webkit-calendar-picker-indicator{
+        display: none;
+    }
+
+    input[type="date"]::-webkit-input-placeholder{
+        visibility: hidden;
+    }
+}
+
+.screen-reader-only {
+    border: 0;
+    clip: rect(0,0,0,0);
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
 }
