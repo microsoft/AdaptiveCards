@@ -16,6 +16,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         InitialPage = sharedCarousel->GetInitialPage();
         AutoLoop = sharedCarousel->GetAutoLoop();
 
+        Rtl = false;
+        Bleed = false;
+        BleedDirection = BleedDirection::All;
+        SelectAction = nullptr;
+        Style = ContainerStyle::None;
+
         InitializeBaseElement(sharedCarousel);
     }
 

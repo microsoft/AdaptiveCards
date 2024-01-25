@@ -17,8 +17,13 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property_opt<uint64_t> Timer;
         property_opt<uint32_t> InitialPage;
         property_opt<bool> AutoLoop;
+        property<uint32_t> MinHeight;
 
         property_opt<bool> Rtl;
+        property<bool> Bleed;
+        property<Xaml_OM::BleedDirection> BleedDirection;
+        property<Xaml_OM::IAdaptiveActionElement> SelectAction;
+        property<Xaml_OM::ContainerStyle> Style;
 
         // IAdaptiveCardElement
         auto ElementType() { return Xaml_OM::ElementType::Carousel; }

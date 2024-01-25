@@ -612,7 +612,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                          winrt::com_ptr<XamlBuilder> xamlBuilder)
     {
         registration->Set(L"ActionSet", winrt::make<winrt::implementation::AdaptiveActionSetRenderer>());
-        registration->Set(L"Carousel", winrt::make<winrt::implementation::AdaptiveCarouselRenderer>());
+        registration->Set(L"Carousel", winrt::make<winrt::implementation::AdaptiveCarouselRenderer>(xamlBuilder));
         registration->Set(L"CarouselPage", winrt::make<winrt::implementation::AdaptiveCarouselPageRenderer>());
         registration->Set(L"Column", winrt::make<winrt::implementation::AdaptiveColumnRenderer>());
         registration->Set(L"ColumnSet", winrt::make<winrt::implementation::AdaptiveColumnSetRenderer>());

@@ -603,10 +603,9 @@ namespace AdaptiveCards.ObjectModel.WinUI3
 		AdaptiveCarouselPage();
 	};
 
-    runtimeclass AdaptiveCarousel : IAdaptiveCardElement
+    runtimeclass AdaptiveCarousel : IAdaptiveContainerBase, IAdaptiveCardElement
     {
 		AdaptiveCarousel();
-        Windows.Foundation.IReference<Boolean> Rtl;
 		Windows.Foundation.Collections.IVector<AdaptiveCarouselPage> Pages { get; };
 		CarouselOrientation Orientation;
         Windows.Foundation.IReference<UInt64> Timer;

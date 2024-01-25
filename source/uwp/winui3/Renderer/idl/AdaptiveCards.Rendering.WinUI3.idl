@@ -673,6 +673,13 @@ namespace AdaptiveCards
                 Boolean ExpectedVisibility;
                 Boolean IsStretchable;
             }
+
+            //runtimeclass CarouselView : Microsoft.UI.Xaml.Controls.FlipView
+            //{
+            //    CarouselView();
+            //    void AddPanel(Microsoft.UI.Xaml.UIElement uielement);
+            //}
+
         }
     }
 }

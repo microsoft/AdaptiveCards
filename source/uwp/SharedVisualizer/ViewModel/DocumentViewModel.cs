@@ -260,7 +260,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
             if (Settings.UseFixedDimensions)
             {
-                _renderer.SetFixedDimensions(320, 180);
+                _renderer.SetFixedDimensions(320, 220);
             }
 
             // Custom resource resolvers
