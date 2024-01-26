@@ -5,7 +5,7 @@ namespace AdaptiveCardsTemplatingCSharpWinRT
     {
         public AdaptiveCardTemplate(String jsonTemplate)
         {
-            adaptiveCardTemplate = new AdaptiveCards.Templating.AdaptiveCardTemplate(null);
+            adaptiveCardTemplate = new AdaptiveCards.Templating.AdaptiveCardTemplate(jsonTemplate);
         }
 
         public string Expand(String rootData)

@@ -16,7 +16,7 @@ int main()
     winrt::hstring data{ L"{\"hi\": \"world\"}" };
     auto result = adaptiveCardTemplate.Expand(data);
 
-    std::wcout << result.c_str() << std::endl;
+    std::cout << "Expanded: " << winrt::to_string(result) << std::endl;
 
     //AdaptiveCards.Templating.CSharp.WinRT::AdaptiveCardTemplate template{ L"{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\",\"text\": \"Hello, World!\"}]}"};
 };
