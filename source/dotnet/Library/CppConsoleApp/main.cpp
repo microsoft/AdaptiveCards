@@ -4,19 +4,18 @@
 using namespace winrt;
 using namespace Windows::Foundation;
 
+// Sample Test App for AdaptiveCards.Template project which is a C#/WinRT component
 int main()
 {
     init_apartment();
 
-	//winrt::AdaptiveCards.Templating.CSharp.WinRT::AdaptiveCardTemplate
     winrt::hstring input{
         L"{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\",\"text\": \"Hello, ${hi}!\"}]}"};
-    winrt::AdaptiveCardsTemplatingCSharpWinRT::AdaptiveCardTemplate adaptiveCardTemplate{ input };
+
+    winrt::AdaptiveCards::Template::AdaptiveCardTemplate adaptiveCardTemplate{ input };
 
     winrt::hstring data{ L"{\"hi\": \"world\"}" };
     auto result = adaptiveCardTemplate.Expand(data);
 
     std::cout << "Expanded: " << winrt::to_string(result) << std::endl;
-
-    //AdaptiveCards.Templating.CSharp.WinRT::AdaptiveCardTemplate template{ L"{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\",\"text\": \"Hello, World!\"}]}"};
 };

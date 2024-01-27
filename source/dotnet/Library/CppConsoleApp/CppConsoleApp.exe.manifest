@@ -3,7 +3,7 @@
     <assemblyIdentity version="1.0.0.0" name="CppConsoleApp"/>
     <file name="WinRT.Host.dll">
         <activatableClass
-            name="AdaptiveCardsTemplatingCSharpWinRT.AdaptiveCardTemplate"
+            name="AdaptiveCards.Template.AdaptiveCardTemplate"
             threadingModel="both"
             xmlns="urn:schemas-microsoft-com:winrt.v1" />
     </file>
