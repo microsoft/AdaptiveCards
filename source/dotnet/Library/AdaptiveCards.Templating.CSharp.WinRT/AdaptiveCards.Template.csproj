@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>   
+    <CsWinRTComponent>true</CsWinRTComponent>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageOutputPath>$(SolutionDir)packages</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdaptiveCards.Templating" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.4" />
+  </ItemGroup>
+
+</Project>
