@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", "Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{83599799-97B3-4B42-A580-B4CA81DD54CF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppConsoleApp", "Library\CppConsoleApp\CppConsoleApp.vcxproj", "{ED459EEC-7211-403E-8C08-78A43A05A7BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847} = {3F9B2B81-512C-4276-A06D-69A8C30DE847}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Template", "Library\AdaptiveCards.Templating.CSharp.WinRT\AdaptiveCards.Template.csproj", "{3F9B2B81-512C-4276-A06D-69A8C30DE847}"
 EndProject
