@@ -12,7 +12,7 @@ namespace AdaptiveCards.Template
         /// <summary>
         /// Given a JSON template, create a AdaptiveCardTemplate object that can be used to expand the template
         /// </summary>
-        /// <param name="jsonTemplate"></param>
+        /// <param name="jsonTemplate">JSON serialized AdaptiveCard Template</param>
         public AdaptiveCardTemplate(String jsonTemplate)
         {
             adaptiveCardTemplate = new AdaptiveCards.Templating.AdaptiveCardTemplate(jsonTemplate);
@@ -21,7 +21,7 @@ namespace AdaptiveCards.Template
         /// <summary>
         /// Expands the template with the given data
         /// </summary>
-        /// <param name="rootData"></param>
+        /// <param name="rootData">JSON serialized data for AdaptiveCard template</param>
         /// <returns></returns>
         public string Expand(String rootData)
         {

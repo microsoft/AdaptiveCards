@@ -12,13 +12,15 @@ int main()
 {
     init_apartment();
 
-    winrt::hstring input{
+    hstring input{
         L"{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\",\"text\": \"Hello, ${hi}!\"}]}"};
 
-    winrt::AdaptiveCards::Template::AdaptiveCardTemplate adaptiveCardTemplate{ input };
+    AdaptiveCards::Template::AdaptiveCardTemplate adaptiveCardTemplate{ input };
 
-    winrt::hstring data{ L"{\"hi\": \"world\"}" };
+    hstring data{ L"{\"hi\": \"world\"}" };
     auto result = adaptiveCardTemplate.Expand(data);
 
-    std::cout << "Expanded: " << winrt::to_string(result) << std::endl;
+    std::cout << "Expanded: " << to_string(result) << std::endl;
+
+    return 0;
 };
