@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
+    <Midl Include="..\SharedRenderer\idl\AdaptiveCards.Rendering.Shared.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

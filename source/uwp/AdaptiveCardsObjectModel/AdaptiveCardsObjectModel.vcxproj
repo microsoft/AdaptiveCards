@@ -137,8 +137,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl">
-      <HeaderFileName>%(Filename).h</HeaderFileName>
+    <Midl Include="..\SharedObjectModel\idl\AdaptiveCards.ObjectModel.Shared.idl">
+      <HeaderFileName>AdaptiveCards.ObjectModel.Uwp.h</HeaderFileName>
       <!-- Enable Windows Runtime ABI header files. when /reference is passed to midl.exe, the ABI head includes headers
            like Windows.AI.MachineLearning.MachineLearningContract.h which doesn't exist actually in SDK. To workaround
            the problem, DisableReferences is enabled to disable /reference. -->

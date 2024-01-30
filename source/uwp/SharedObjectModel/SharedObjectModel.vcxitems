@@ -173,4 +173,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\CustomElementWrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\ObjectModelUtil.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)idl\AdaptiveCards.ObjectModel.Shared.idl" />
+  </ItemGroup>
 </Project>

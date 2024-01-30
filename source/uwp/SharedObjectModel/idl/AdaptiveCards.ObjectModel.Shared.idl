@@ -1,7 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace AdaptiveCards.ObjectModel.WinUI3
+#ifdef USE_WINUI3
+
+#define Xaml_OM WinUI3
+
+#else // !USE_WINUI3
+
+import "Windows.Foundation.idl";
+import "Windows.Data.Json.idl";
+
+#define Xaml_OM Uwp
+
+#endif // USE_WINUI3
+
+namespace AdaptiveCards.ObjectModel.Xaml_OM
 {
     runtimeclass AdaptiveCardParseResult;
 

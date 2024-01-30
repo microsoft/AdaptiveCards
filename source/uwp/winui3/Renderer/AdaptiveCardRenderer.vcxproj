@@ -144,8 +144,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.WinUI3.idl">
-      <AdditionalIncludeDirectories>..\AdaptiveCardsObjectModel\idl;</AdditionalIncludeDirectories>
+    <Midl Include="..\..\SharedRenderer\idl\AdaptiveCards.Rendering.Shared.idl">
+      <AdditionalIncludeDirectories>..\..\SharedObjectModel\idl;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);USE_WINUI3</PreprocessorDefinitions>
     </Midl>
   </ItemGroup>
   <ItemGroup>

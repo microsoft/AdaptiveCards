@@ -7,6 +7,9 @@
     <Filter Include="lib">
       <UniqueIdentifier>{1ec8d94c-6cf1-4aa0-84ec-9e56e7e29bbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="idl">
+      <UniqueIdentifier>{9cc5c3b9-11da-434a-b9db-872f2b3e63c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)dll\dll.cpp">
@@ -473,5 +476,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\pch.h">
       <Filter>lib</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)idl\AdaptiveCards.ObjectModel.Shared.idl">
+      <Filter>idl</Filter>
+    </Content>
   </ItemGroup>
 </Project>
