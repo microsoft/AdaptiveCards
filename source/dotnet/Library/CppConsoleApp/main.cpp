@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 #include "pch.h"
-#include "iostream"
 
 using namespace winrt;
 using namespace Windows::Foundation;

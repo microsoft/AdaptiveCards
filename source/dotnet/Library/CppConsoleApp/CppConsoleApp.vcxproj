@@ -129,7 +129,7 @@
     <None Include="PropertySheet.props" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="CppConsoleApp.exe.manifest">
+    <Manifest Include="TemplateCppConsoleTestApp.exe.manifest">
       <DeploymentContent>true</DeploymentContent>
     </Manifest>
   </ItemGroup>

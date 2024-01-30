@@ -32,6 +32,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="CppConsoleApp.exe.manifest" />
+    <Manifest Include="TemplateCppConsoleTestApp.exe.manifest" />
   </ItemGroup>
 </Project>
