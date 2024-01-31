@@ -9,6 +9,9 @@
 
   <PropertyGroup>   
     <CsWinRTComponent>true</CsWinRTComponent>
+    <SignAssembly>True</SignAssembly>   
+    <AssemblyOriginatorKeyFile>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>   
+    <DelaySign>True</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
