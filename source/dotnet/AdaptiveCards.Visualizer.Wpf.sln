@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29317.48
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards", "Library\AdaptiveCards\AdaptiveCards.csproj", "{D40ACA37-F5EA-4D3F-B443-CE714AA479A1}"
 EndProject
@@ -14,6 +14,13 @@ EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AdaptiveCards.Sample.WPFVisualizer.PackageProject", "Samples\WPFVisualizer.PackageProject\AdaptiveCards.Sample.WPFVisualizer.PackageProject.wapproj", "{71340F5E-2B3B-4F1D-B113-236BBB0D7632}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", "Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{83599799-97B3-4B42-A580-B4CA81DD54CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateCppConsoleTestApp", "Library\CppConsoleApp\CppConsoleApp.vcxproj", "{ED459EEC-7211-403E-8C08-78A43A05A7BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847} = {3F9B2B81-512C-4276-A06D-69A8C30DE847}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Template", "Library\AdaptiveCards.Templating.CSharp.WinRT\AdaptiveCards.Template.csproj", "{3F9B2B81-512C-4276-A06D-69A8C30DE847}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +110,30 @@ Global
 		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x64.Build.0 = Release|Any CPU
 		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x86.ActiveCfg = Release|Any CPU
 		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x86.Build.0 = Release|Any CPU
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|Any CPU.Build.0 = Debug|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|x64.ActiveCfg = Debug|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|x64.Build.0 = Debug|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|x86.ActiveCfg = Debug|Win32
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Debug|x86.Build.0 = Debug|Win32
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|Any CPU.ActiveCfg = Release|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|Any CPU.Build.0 = Release|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|x64.ActiveCfg = Release|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|x64.Build.0 = Release|x64
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|x86.ActiveCfg = Release|Win32
+		{ED459EEC-7211-403E-8C08-78A43A05A7BE}.Release|x86.Build.0 = Release|Win32
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|Any CPU.Build.0 = Debug|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|x64.ActiveCfg = Debug|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|x64.Build.0 = Debug|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|x86.ActiveCfg = Debug|x86
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Debug|x86.Build.0 = Debug|x86
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|Any CPU.ActiveCfg = Release|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|Any CPU.Build.0 = Release|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|x64.ActiveCfg = Release|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|x64.Build.0 = Release|x64
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|x86.ActiveCfg = Release|x86
+		{3F9B2B81-512C-4276-A06D-69A8C30DE847}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
