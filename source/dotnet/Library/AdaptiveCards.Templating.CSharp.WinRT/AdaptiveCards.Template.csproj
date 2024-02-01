@@ -21,7 +21,7 @@
 
   <PropertyGroup>
     <CsWinRTComponent>true</CsWinRTComponent>
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFilePath>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFilePath>
     <AssemblyOriginatorKeyFile>$(AssemblyOriginatorKeyFilePath)</AssemblyOriginatorKeyFile>
     <DelaySign>True</DelaySign>
