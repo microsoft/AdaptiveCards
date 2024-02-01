@@ -2,7 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
-    <Platforms>x86;x64;arm64</Platforms>
+    <Authors>Microsoft</Authors>
+    <Summary>Adaptive Card Template for WinRT</Summary>
+    <Description>This library implements classes for building and serializing adaptive card objects</Description>
+    <PackageId>AdaptiveCards.Template</PackageId>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>adaptivecardstemplatewinrt</PackageTags>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,7 +25,15 @@
     <AssemblyOriginatorKeyFilePath>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFilePath>
     <AssemblyOriginatorKeyFile>$(AssemblyOriginatorKeyFilePath)</AssemblyOriginatorKeyFile>
     <DelaySign>True</DelaySign>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\NuGet\EULA-Windows.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AdaptiveCards.Templating" Version="1.5.0" />
