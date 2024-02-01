@@ -33,6 +33,20 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 			pipsPager.SelectedPageIndex(carousel.InitialPage().GetInt32());
         }
 
+		auto hostConfig = context.HostConfig();
+
+        // FlipView has its own background color property, so we need to clear the background color
+		auto backgroundColor = GetBackgroundColorFromStyle(ContainerStyle::None, hostConfig);
+		carouselUI.Background(winrt::SolidColorBrush{backgroundColor});
+
+		auto adaptiveCarouselContainer = element.as<winrt::IAdaptiveContainer>();
+		// Get any RTL setting set on either the current context or on this container. Any value set on the
+		// container should be set on the context to apply to all children
+		auto previousContextRtl = context.Rtl();
+		auto currentRtl = previousContextRtl;
+		auto containerRtl = adaptiveCarouselContainer.Rtl();
+        carouselUI.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+
         carouselUI.SelectionChanged([carouselUI, pipsPager](auto &&, auto &&) {
 			pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
 		});
@@ -55,6 +69,24 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto gridContainer = winrt::make<winrt::implementation::WholeItemsPanel>();
 
+            // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
+            auto containerHeightType = element.Height();
+            if (containerHeightType == winrt::HeightType::Auto)
+            {
+                gridContainer.VerticalAlignment(winrt::VerticalAlignment::Stretch);
+            }
+
+            uint32_t carouselMinHeight = styledCollection.MinHeight();
+
+            if (carouselMinHeight > 0)
+            {
+                gridContainer.MinHeight(carouselMinHeight);
+            }
+
+            auto fixedHeightInPixel = carousel.HeightInPixels();
+            auto bReadjustHeight = fixedHeightInPixel.size() == 0;
+            carouselUI.MaxHeight(static_cast<double>(fixedHeightInPixel));
+
             carouselBorder.Child(gridContainer);
 
             winrt::Border containerBorder{};
@@ -64,8 +96,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto newRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
-
-            auto hostConfig = context.HostConfig();
 
 			for (auto page : carousel.Pages())
             {
@@ -88,12 +118,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto selectAction = styledCollection.SelectAction();
             auto adaptiveBaseElement = element.try_as<winrt::IAdaptiveCardElement>();
             auto heightType = adaptiveBaseElement.Height();
-
-            //auto columnSetMinHeight = adaptiveCarousel.MinHeight();
-            //if (columnSetMinHeight > 0)
-            //{
-            //    gridContainer.MinHeight(columnSetMinHeight);
-            //}
 
             XamlHelpers::AppendXamlElementToPanel(stackPanel, gridContainer, heightType);
 
