@@ -66,7 +66,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         TextBlock{winrt::make<implementation::AdaptiveTextBlockConfig>(sharedHostConfig.GetTextBlock())},
         TextStyles{winrt::make<implementation::AdaptiveTextStylesConfig>(sharedHostConfig.GetTextStyles())},
         Table{winrt::make<implementation::AdaptiveTableConfig>(sharedHostConfig.GetTable())}, OverflowMaxActions{false},
-        OverflowButtonText{L"..."}, OverflowButtonAccessibilityText{L"More Actions"}
+        OverflowButtonText{L"..."}, OverflowButtonAccessibilityText{L"More Actions"}, AddSelectActionMargin{true}
     {
     }
 }
