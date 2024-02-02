@@ -11,7 +11,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::Microsoft::UI::Xaml::UIElement AdaptiveCarouselRenderer::Render(
+    winrt::UIElement AdaptiveCarouselRenderer::Render(
         winrt::AdaptiveCards::ObjectModel::Xaml_Rendering::IAdaptiveCardElement const& element,
         winrt::AdaptiveCards::Rendering::Xaml_Rendering::AdaptiveRenderContext const& context,
         winrt::AdaptiveCards::Rendering::Xaml_Rendering::AdaptiveRenderArgs const& renderArgs)
@@ -28,9 +28,13 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             loopEnabled = carousel.AutoLoop().GetBoolean();
         }
 
+// WinUI3 is currently the primary target for Carousel.
+// Carousel is compatible with UWP; however, pagination is not supported.
+#ifdef USE_WINUI3
         PipsPager pipsPager{};
         pipsPager.HorizontalAlignment(winrt::HorizontalAlignment::Center);
         pipsPager.NumberOfPages(carousel.Pages().Size());
+#endif
         auto hostConfig = context.HostConfig();
 
         // FlipView has its own background color property, so we need to clear the background color
@@ -54,29 +58,36 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         if (currentRtl)
         {
             carouselUI.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+#ifdef USE_WINUI3
             pipsPager.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+#endif
         }
 
+#ifdef USE_WINUI3
         carouselUI.SelectionChanged([carouselUI, pipsPager, loopEnabled](auto &&, auto &&) {
             auto val = carouselUI.SelectedIndex();
             if (loopEnabled &&
                 static_cast<unsigned int>(val) == carouselUI.Items().Size())
             {
-				pipsPager.SelectedPageIndex(0);
+                pipsPager.SelectedPageIndex(0);
                 carouselUI.SelectedIndex(0);
-			}
+            }
             else
             {
-				pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
-			}
+                pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
+            }
         });
 
         pipsPager.SelectedIndexChanged([carouselUI](winrt::PipsPager pager, winrt::IPipsPagerSelectedIndexChangedEventArgs) {
             carouselUI.SelectedIndex(pager.SelectedPageIndex());
         });
+#endif
 
         stackPanel.Children().Append(carouselUI);
+
+#ifdef USE_WINUI3
         stackPanel.Children().Append(pipsPager);
+#endif
 
         winrt::AdaptiveFeatureRegistration featureRegistration = context.FeatureRegistration();
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
@@ -131,10 +142,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                }
             }
 
-			if (carousel.InitialPage())
-			{
-				carouselUI.SelectedIndex(carousel.InitialPage().GetUInt32());
-			}
+            if (carousel.InitialPage())
+            {
+                carouselUI.SelectedIndex(carousel.InitialPage().GetUInt32());
+            }
 
             auto verticalContentAlignmentReference = carousel.VerticalContentAlignment();
             winrt::VerticalContentAlignment verticalContentAlignment =

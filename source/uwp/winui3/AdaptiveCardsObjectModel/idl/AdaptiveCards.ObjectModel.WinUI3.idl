@@ -259,9 +259,9 @@ namespace AdaptiveCards.ObjectModel.WinUI3
 
     enum CarouselOrientation
     {
-		Horizontal = 0,
-		Vertical,
-	};
+        Horizontal = 0,
+        Vertical,
+    };
 
     declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation>; }
 
@@ -600,14 +600,14 @@ namespace AdaptiveCards.ObjectModel.WinUI3
 
     [default_interface] runtimeclass AdaptiveCarouselPage : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
     {
-		AdaptiveCarouselPage();
-	};
+        AdaptiveCarouselPage();
+    };
 
     runtimeclass AdaptiveCarousel : IAdaptiveContainerBase, IAdaptiveCardElement
     {
-		AdaptiveCarousel();
-		Windows.Foundation.Collections.IVector<AdaptiveCarouselPage> Pages { get; };
-		CarouselOrientation Orientation;
+        AdaptiveCarousel();
+        Windows.Foundation.Collections.IVector<AdaptiveCarouselPage> Pages { get; };
+        CarouselOrientation Orientation;
         Windows.Foundation.IReference<UInt64> Timer;
         Windows.Foundation.IReference<UInt32> InitialPage;
         Windows.Foundation.IReference<Boolean> AutoLoop;
@@ -615,7 +615,7 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Windows.Foundation.IReference<Boolean> Rtl;
         AdaptiveBackgroundImage BackgroundImage;
         UInt32 HeightInPixels;
-	};
+    };
 
     runtimeclass AdaptiveFact
     {

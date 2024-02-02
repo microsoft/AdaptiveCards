@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
-    winrt::Microsoft::UI::Xaml::UIElement AdaptiveCarouselPageRenderer::Render(
+    winrt::UIElement AdaptiveCarouselPageRenderer::Render(
         winrt::IAdaptiveCardElement const& cardElement,
         winrt::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveRenderArgs const& renderArgs)
