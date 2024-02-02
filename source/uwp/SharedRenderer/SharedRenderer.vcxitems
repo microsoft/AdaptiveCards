@@ -25,6 +25,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardGetResourceStreamArgs.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardResourceResolvers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPageRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorConfig.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorsConfig.h" />
@@ -110,6 +112,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCardResourceResolvers.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPageRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveChoiceSetInputRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorConfig.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveColorsConfig.cpp" />

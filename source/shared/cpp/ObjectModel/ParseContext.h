@@ -49,6 +49,7 @@ public:
     void PopBleedDirection();
 
     void AddProhibitedElementType(const std::vector<std::string>& list);
+    void RemoveProhibitedElementType(const std::vector<std::string>& list);
     void ShouldParse(const std::string& type);
 
 private:

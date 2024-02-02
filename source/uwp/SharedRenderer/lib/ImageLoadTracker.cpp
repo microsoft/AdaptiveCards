@@ -34,7 +34,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         auto trackedImageDetails = winrt::make_self<TrackedBitmapImageDetails>();
 
         trackedImageDetails->imageOpenedRevoker =
-            bitmapImage.ImageOpened(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_BitmapImageLoaded});
+            bitmapImage.ImageOpened(winrt::auto_revoke, {get_weak(), &ImageLoadTracker::TrackedImage_BitmapImageLoaded});
 
         trackedImageDetails->imageFailedRevoker =
             bitmapImage.ImageFailed(winrt::auto_revoke, {this, &ImageLoadTracker::TrackedImage_BitmapImageFailed});

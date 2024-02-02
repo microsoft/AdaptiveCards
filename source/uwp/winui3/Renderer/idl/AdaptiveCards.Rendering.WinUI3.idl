@@ -550,6 +550,16 @@ namespace AdaptiveCards
                 AdaptiveImageSetRenderer();
             }
 
+            [default_interface] runtimeclass AdaptiveCarouselRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveCarouselRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveCarouselPageRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveCarouselPageRenderer();
+            }
+
             [default_interface] runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveContainerRenderer();

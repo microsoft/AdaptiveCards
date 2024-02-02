@@ -330,6 +330,17 @@ void ParseContext::AddProhibitedElementType(const std::vector<std::string>& list
     m_prohibitedElementTypes.insert(list.begin(), list.end());
 }
 
+void ParseContext::RemoveProhibitedElementType(const std::vector<std::string>& list)
+{
+    for (const auto& type : list)
+    {
+		if (const auto itr = m_prohibitedElementTypes.find(type); itr != m_prohibitedElementTypes.end())
+		{
+			m_prohibitedElementTypes.erase(itr);
+		}
+    }
+}
+
 void ParseContext::ShouldParse(const std::string& typeString)
 {
     if (m_prohibitedElementTypes.find(typeString) != m_prohibitedElementTypes.end())
