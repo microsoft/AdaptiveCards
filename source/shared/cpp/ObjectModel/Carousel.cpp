@@ -33,7 +33,6 @@ Json::Value Carousel::SerializeToJsonValue() const
 		std::ostringstream stringStream;
 		stringStream << m_heightInPixels;
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HeightInPixels)] = stringStream.str() + "px";
-;
 	}
 
     if (m_initialPage.has_value())

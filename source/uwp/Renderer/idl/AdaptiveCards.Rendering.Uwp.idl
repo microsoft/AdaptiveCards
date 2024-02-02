@@ -54,6 +54,8 @@ namespace AdaptiveCards
                 String OverflowButtonText;
                 String OverflowButtonAccessibilityText;
 
+                Boolean AddSelectActionMargin;
+
                 void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
                 void ResetFixedDimensions();
 

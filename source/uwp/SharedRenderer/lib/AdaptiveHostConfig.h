@@ -35,6 +35,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         property<bool> OverflowMaxActions;
         property<hstring> OverflowButtonText;
         property<hstring> OverflowButtonAccessibilityText;
+        property<bool> AddSelectActionMargin;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
