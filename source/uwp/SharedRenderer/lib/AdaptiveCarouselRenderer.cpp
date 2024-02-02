@@ -34,8 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         auto hostConfig = context.HostConfig();
 
         // FlipView has its own background color property, so we need to clear the background color
-        auto backgroundColor = GetBackgroundColorFromStyle(ContainerStyle::None, hostConfig);
-        carouselUI.Background(winrt::SolidColorBrush{backgroundColor});
+        carouselUI.Background(winrt::SolidColorBrush{GetColorFromString("#00FFFFFF")});
 
         //auto adaptiveCarouselContainer = element.as<winrt::IAdaptiveContainerBase>();
         // Get any RTL setting set on either the current context or on this container. Any value set on the
