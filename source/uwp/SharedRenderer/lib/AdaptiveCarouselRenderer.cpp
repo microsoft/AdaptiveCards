@@ -171,7 +171,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 carouselBorder.Child(gridContainer);
             }
 
-
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
             {
