@@ -12,15 +12,23 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         Orientation = static_cast<Xaml_OM::CarouselOrientation>(
             sharedCarousel->GetOrientation().value_or(::AdaptiveCards::CarouselOrientation::Horizontal));
         Timer = sharedCarousel->GetTimer();
-        HeightInPixels = UTF8ToHString(sharedCarousel->GetHeightInPixels());
+        HeightInPixels = sharedCarousel->GetHeightInPixels();
         InitialPage = sharedCarousel->GetInitialPage();
         AutoLoop = sharedCarousel->GetAutoLoop();
 
-        Rtl = false;
-        Bleed = false;
-        BleedDirection = BleedDirection::All;
-        SelectAction = nullptr;
-        Style = ContainerStyle::None;
+        MinHeight = sharedCarousel->GetMinHeight();
+        Rtl = sharedCarousel->GetRtl();
+        Bleed = sharedCarousel->GetBleed();
+        BleedDirection = static_cast<Xaml_OM::BleedDirection>(sharedCarousel->GetBleedDirection());
+        SelectAction = GenerateActionProjection(sharedCarousel->GetSelectAction());
+        Style = static_cast<Xaml_OM::ContainerStyle>(sharedCarousel->GetStyle());
+        VerticalContentAlignment = opt_cast<Xaml_OM::VerticalContentAlignment>(sharedCarousel->GetVerticalContentAlignment());
+
+        auto backgroundImage = sharedCarousel->GetBackgroundImage();
+        if (backgroundImage && !backgroundImage->GetUrl().empty())
+        {
+            BackgroundImage = winrt::make<implementation::AdaptiveBackgroundImage>(backgroundImage);
+        }
 
         InitializeBaseElement(sharedCarousel);
     }
@@ -34,9 +42,30 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         carousel->SetRtl(Rtl);
         carousel->SetOrientation(static_cast<::AdaptiveCards::CarouselOrientation>(Orientation.get()));
         carousel->SetTimer(Timer);
-        carousel->SetHeightInPixels(HStringToUTF8(HeightInPixels));
+        carousel->SetHeightInPixels(HeightInPixels);
 		carousel->SetInitialPage(InitialPage);
         carousel->setAutoLoop(AutoLoop);
+        carousel->SetBleed(Bleed);
+        carousel->SetMinHeight(MinHeight);
+
+        if (SelectAction.get())
+        {
+            carousel->SetSelectAction(GenerateSharedAction(SelectAction.get()));
+        }
+
+        if (VerticalContentAlignment)
+        {
+            carousel->SetVerticalContentAlignment(VerticalContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
+        }
+
+        if (auto adaptiveBackgroundImage = peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get()))
+        {
+            if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())
+            {
+                carousel->SetBackgroundImage(sharedBackgroundImage);
+            }
+        }
+
         return carousel;
     }
 }

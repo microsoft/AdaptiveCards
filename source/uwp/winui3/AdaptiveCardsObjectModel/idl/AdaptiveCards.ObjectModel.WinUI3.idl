@@ -611,7 +611,10 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Windows.Foundation.IReference<UInt64> Timer;
         Windows.Foundation.IReference<UInt32> InitialPage;
         Windows.Foundation.IReference<Boolean> AutoLoop;
-        String HeightInPixels;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
+        Windows.Foundation.IReference<Boolean> Rtl;
+        AdaptiveBackgroundImage BackgroundImage;
+        UInt32 HeightInPixels;
 	};
 
     runtimeclass AdaptiveFact

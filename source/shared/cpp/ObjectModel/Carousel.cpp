@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Carousel.h"
 
@@ -5,7 +7,7 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCards
 {
-Carousel::Carousel() : CollectionCoreElement(CardElementType::Carousel)
+Carousel::Carousel() : StyledCollectionElement(CardElementType::Carousel)
 {
     PopulateKnownPropertiesSet();
 }
@@ -26,10 +28,13 @@ Json::Value Carousel::SerializeToJsonValue() const
 {
     Json::Value root = CollectionCoreElement::SerializeToJsonValue();
 
-    if (!m_heightInPixels.empty())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HeightInPixels)] = m_heightInPixels;
-    }
+	if (m_heightInPixels)
+	{
+		std::ostringstream stringStream;
+		stringStream << m_heightInPixels;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HeightInPixels)] = stringStream.str() + "px";
+;
+	}
 
     if (m_initialPage.has_value())
     {
@@ -85,12 +90,12 @@ void Carousel::SetPages(const std::vector<std::shared_ptr<AdaptiveCards::Carouse
     m_pages = value;
 }
 
-std::string Carousel::GetHeightInPixels() const
+unsigned int Carousel::GetHeightInPixels() const
 {
     return m_heightInPixels;
 }
 
-void Carousel::SetHeightInPixels(const std::string& value)
+void Carousel::SetHeightInPixels(const unsigned int value)
 {
     m_heightInPixels = value;
 }
@@ -161,9 +166,15 @@ std::shared_ptr<BaseCardElement> CarouselParser::Deserialize(ParseContext& conte
 
     context.AddProhibitedElementType(m_prohibitedTypesList);
 
-    std::shared_ptr<Carousel> carousel = CollectionCoreElement::Deserialize<Carousel>(context, value);
+    std::shared_ptr<Carousel> carousel = StyledCollectionElement::Deserialize<Carousel>(context, value);
 
-    carousel->SetHeightInPixels(ParseUtil::GetString(value, AdaptiveCardSchemaKey::HeightInPixels));
+    const auto& optionalPixelHeight =
+		ParseSizeForPixelSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::HeightInPixels), &context.warnings);
+
+    if (optionalPixelHeight.has_value())
+    {
+        carousel->SetHeightInPixels(optionalPixelHeight.value_or(0));
+    }
 
     carousel->SetInitialPage(ParseUtil::GetOptionalUnsignedInt(value, AdaptiveCardSchemaKey::InitialPage));
 
@@ -175,6 +186,8 @@ std::shared_ptr<BaseCardElement> CarouselParser::Deserialize(ParseContext& conte
         value, AdaptiveCardSchemaKey::Orientation, CarouselOrientationFromString));
 
     carousel->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
+
+    context.RemoveProhibitedElementType(m_prohibitedTypesList);
 
     return carousel;
 }

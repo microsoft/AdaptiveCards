@@ -1,12 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "CollectionCoreElement.h"
+#include "StyledCollectionElement.h"
 #include "CarouselPage.h"
 
 namespace AdaptiveCards
 {
-class Carousel : public CollectionCoreElement
+class Carousel : public StyledCollectionElement
 {
 public:
     Carousel();
@@ -23,8 +25,8 @@ public:
     const std::vector<std::shared_ptr<AdaptiveCards::CarouselPage>>& GetPages() const;
     void SetPages(const std::vector<std::shared_ptr<AdaptiveCards::CarouselPage>>& value);
 
-    std::string GetHeightInPixels() const;
-    void SetHeightInPixels(const std::string& value);
+    unsigned int GetHeightInPixels() const;
+    void SetHeightInPixels(const unsigned int value);
 
     std::optional<unsigned long> GetTimer() const;
     void SetTimer(const std::optional<unsigned long>& value);
@@ -45,7 +47,7 @@ private:
     void PopulateKnownPropertiesSet();
 
     std::vector<std::shared_ptr<AdaptiveCards::CarouselPage>> m_pages;
-    std::string m_heightInPixels;
+    unsigned int m_heightInPixels{0};
     std::optional<unsigned int> m_timer;
     std::optional<unsigned int> m_initialPage;
     std::optional<CarouselOrientation> m_orientation;

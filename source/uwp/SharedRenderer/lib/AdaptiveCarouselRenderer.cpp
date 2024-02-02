@@ -1,4 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
+#include "ActionHelpers.h"
 #include "AdaptiveCarouselRenderer.h"
 #include "AdaptiveCarouselRenderer.g.cpp"
 #include "AdaptiveRenderArgs.h"
@@ -28,28 +31,46 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         PipsPager pipsPager{};
         pipsPager.HorizontalAlignment(winrt::HorizontalAlignment::Center);
         pipsPager.NumberOfPages(carousel.Pages().Size());
-        if (carousel.InitialPage())
-        {
-			pipsPager.SelectedPageIndex(carousel.InitialPage().GetInt32());
-        }
-
-		auto hostConfig = context.HostConfig();
+        auto hostConfig = context.HostConfig();
 
         // FlipView has its own background color property, so we need to clear the background color
-		auto backgroundColor = GetBackgroundColorFromStyle(ContainerStyle::None, hostConfig);
-		carouselUI.Background(winrt::SolidColorBrush{backgroundColor});
+        auto backgroundColor = GetBackgroundColorFromStyle(ContainerStyle::None, hostConfig);
+        carouselUI.Background(winrt::SolidColorBrush{backgroundColor});
 
-		auto adaptiveCarouselContainer = element.as<winrt::IAdaptiveContainer>();
-		// Get any RTL setting set on either the current context or on this container. Any value set on the
-		// container should be set on the context to apply to all children
-		auto previousContextRtl = context.Rtl();
-		auto currentRtl = previousContextRtl;
-		auto containerRtl = adaptiveCarouselContainer.Rtl();
-        carouselUI.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+        //auto adaptiveCarouselContainer = element.as<winrt::IAdaptiveContainerBase>();
+        // Get any RTL setting set on either the current context or on this container. Any value set on the
+        // container should be set on the context to apply to all children
+        auto previousContextRtl = context.Rtl();
+        auto currentRtl = previousContextRtl;
+        auto containerRtl = carousel.Rtl();
 
-        carouselUI.SelectionChanged([carouselUI, pipsPager](auto &&, auto &&) {
-			pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
-		});
+        bool updatedRtl = false;
+        if (containerRtl)
+        {
+            currentRtl = containerRtl;
+            context.Rtl(currentRtl);
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            carouselUI.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+            pipsPager.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
+        }
+
+        carouselUI.SelectionChanged([carouselUI, pipsPager, loopEnabled](auto &&, auto &&) {
+            auto val = carouselUI.SelectedIndex();
+            if (loopEnabled &&
+                static_cast<unsigned int>(val) == carouselUI.Items().Size())
+            {
+				pipsPager.SelectedPageIndex(0);
+                carouselUI.SelectedIndex(0);
+			}
+            else
+            {
+				pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
+			}
+        });
 
         pipsPager.SelectedIndexChanged([carouselUI](winrt::PipsPager pager, winrt::IPipsPagerSelectedIndexChangedEventArgs) {
             carouselUI.SelectedIndex(pager.SelectedPageIndex());
@@ -63,8 +84,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         try
         {
-			auto adaptiveCarousel = element.as<winrt::IAdaptiveCarousel>();
-
             winrt::Border carouselBorder{};
 
             auto gridContainer = winrt::make<winrt::implementation::WholeItemsPanel>();
@@ -84,20 +103,18 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
 
             auto fixedHeightInPixel = carousel.HeightInPixels();
-            auto bReadjustHeight = fixedHeightInPixel.size() == 0;
-            carouselUI.MaxHeight(static_cast<double>(fixedHeightInPixel));
-
-            carouselBorder.Child(gridContainer);
-
-            winrt::Border containerBorder{};
+            if (fixedHeightInPixel)
+            {
+                carouselUI.MaxHeight(static_cast<double>(fixedHeightInPixel));
+            }
 
             auto containerStyle =
-                XamlHelpers::HandleStylingAndPadding(styledCollection, containerBorder, context, renderArgs);
+                XamlHelpers::HandleStylingAndPadding(styledCollection, carouselBorder, context, renderArgs);
 
             auto newRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
-			for (auto page : carousel.Pages())
+            for (auto page : carousel.Pages())
             {
                 auto [carouselPageUI, carouselPage] =
                     ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::RenderAsUIElement(
@@ -107,21 +124,59 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 {
                     carouselUI.Items().Append(carouselPageUI);
 
-					carouselPageUI.try_as<FrameworkElement>().LayoutUpdated(
-						[carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
-                }
+                    if (fixedHeightInPixel == 0)
+                    {
+                        carouselPageUI.try_as<FrameworkElement>().LayoutUpdated(
+                            [carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
+                    }
+               }
+            }
+
+			if (carousel.InitialPage())
+			{
+				carouselUI.SelectedIndex(carousel.InitialPage().GetUInt32());
+			}
+
+            auto verticalContentAlignmentReference = carousel.VerticalContentAlignment();
+            winrt::VerticalContentAlignment verticalContentAlignment =
+                GetValueFromRef(verticalContentAlignmentReference, winrt::VerticalContentAlignment::Top);
+            XamlHelpers::SetVerticalContentAlignmentToChildren(gridContainer, verticalContentAlignment);
+
+            // Check if backgroundImage defined
+            auto backgroundImage = carousel.BackgroundImage();
+            if (IsBackgroundImageValid(backgroundImage))
+            {
+                winrt::Grid rootElement{};
+                XamlHelpers::ApplyBackgroundToRoot(rootElement, backgroundImage, context);
+
+                // Add rootElement to containerBorder
+                carouselBorder.Child(rootElement);
+
+                // Add containerPanel to rootElement
+                XamlHelpers::AppendXamlElementToPanel(gridContainer, rootElement, containerHeightType);
+            }
+            else
+            {
+                // instead, directly add containerPanel to containerBorder
+                carouselBorder.Child(gridContainer);
+            }
+
+
+            // If we changed the context's rtl setting, set it back after rendering the children
+            if (updatedRtl)
+            {
+                context.Rtl(previousContextRtl);
             }
 
             XamlHelpers::SetStyleFromResourceDictionary(context, L"Adaptive.Carousel", carouselUI);
-            carouselUI.VerticalAlignment(winrt::VerticalAlignment::Stretch);
 
-            auto selectAction = styledCollection.SelectAction();
             auto adaptiveBaseElement = element.try_as<winrt::IAdaptiveCardElement>();
             auto heightType = adaptiveBaseElement.Height();
-
             XamlHelpers::AppendXamlElementToPanel(stackPanel, gridContainer, heightType);
 
-			return gridContainer;
+            auto selectAction = styledCollection.SelectAction();
+            return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
+                element, selectAction, context, carouselBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -133,11 +188,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             XamlHelpers::ErrForRenderFailedForElement(context, element.ElementTypeString(), ex.message());
         }
-		return nullptr;
+        return nullptr;
     }
 
     void SetFlipViewMaxHeight(FlipView const& flipView)
-	{
+    {
         auto selectIndex = flipView.SelectedIndex();
         auto carouselPageUI = flipView.Items().GetAt(selectIndex).try_as<FrameworkElement>();
 
@@ -153,5 +208,5 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 flipView.MaxHeight(maxHeight);
             }
         }
-	}
+    }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "AdaptiveCarousel.g.h"
 #include "AdaptiveCarouselPage.h"
+#include "AdaptiveBackgroundImage.h"
 #include "Carousel.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
@@ -13,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveCarouselPage>> Pages;
 
         property<Xaml_OM::CarouselOrientation> Orientation;
-        property<hstring> HeightInPixels;
+        property<uint32_t> HeightInPixels;
         property_opt<uint64_t> Timer;
         property_opt<uint32_t> InitialPage;
         property_opt<bool> AutoLoop;
@@ -24,6 +25,8 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property<Xaml_OM::BleedDirection> BleedDirection;
         property<Xaml_OM::IAdaptiveActionElement> SelectAction;
         property<Xaml_OM::ContainerStyle> Style;
+        property<Xaml_OM::AdaptiveBackgroundImage> BackgroundImage{nullptr};
+        property_opt<Xaml_OM::VerticalContentAlignment> VerticalContentAlignment;
 
         // IAdaptiveCardElement
         auto ElementType() { return Xaml_OM::ElementType::Carousel; }

@@ -190,7 +190,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>(carousel->GetElementTypeString(), CardElementTypeToString(CardElementType::Carousel));
             Assert::AreEqual<bool>(carousel->GetAutoLoop().value(), false);
             Assert::AreEqual<int>(carousel->GetInitialPage().value(), static_cast<size_t>(1));
-            Assert::AreEqual<std::string>(carousel->GetHeightInPixels(), "100px");
+            Assert::AreEqual<int>(carousel->GetHeightInPixels(), 100);
             Assert::AreEqual<int>(carousel->GetTimer().value(), 5000);
 
             auto carouselPage = std::dynamic_pointer_cast<CarouselPage>(carousel->GetPages()[0]);
@@ -300,7 +300,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>(carousel->GetElementTypeString(), CardElementTypeToString(CardElementType::Carousel));
             Assert::AreEqual<bool>(carousel->GetAutoLoop().value(), false);
             Assert::AreEqual<int>(carousel->GetInitialPage().value(), static_cast<size_t>(1));
-            Assert::AreEqual<std::string>(carousel->GetHeightInPixels(), "100px");
+            Assert::AreEqual<int>(carousel->GetHeightInPixels(), 100);
             Assert::AreEqual<int>(carousel->GetTimer().value(), 5000);
 
             auto carouselPage = std::dynamic_pointer_cast<CarouselPage>(carousel->GetPages()[0]);
