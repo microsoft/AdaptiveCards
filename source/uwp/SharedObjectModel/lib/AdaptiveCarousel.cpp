@@ -43,7 +43,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         carousel->SetOrientation(static_cast<::AdaptiveCards::CarouselOrientation>(Orientation.get()));
         carousel->SetTimer(Timer);
         carousel->SetHeightInPixels(HeightInPixels);
-		carousel->SetInitialPage(InitialPage);
+        carousel->SetInitialPage(InitialPage);
         carousel->setAutoLoop(AutoLoop);
         carousel->SetBleed(Bleed);
         carousel->SetMinHeight(MinHeight);

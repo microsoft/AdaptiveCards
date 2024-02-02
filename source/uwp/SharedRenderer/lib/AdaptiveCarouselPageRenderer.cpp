@@ -16,7 +16,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         // Carousel Page is just a Container
         // Added the renderer here anyway for future bifurcation
-		auto containerRenderer = renderContext.ElementRenderers().Get(L"Container");
+        auto containerRenderer = renderContext.ElementRenderers().Get(L"Container");
         return containerRenderer.Render(cardElement, renderContext, renderArgs);
     }
 }
