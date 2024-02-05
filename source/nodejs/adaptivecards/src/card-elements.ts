@@ -5551,6 +5551,7 @@ export abstract class Action extends CardObject {
                 iconElement.style.width = hostConfig.actions.iconSize + "px";
                 iconElement.style.height = hostConfig.actions.iconSize + "px";
                 iconElement.style.flex = "0 0 auto";
+                iconElement.setAttribute("role", "presentation");
 
                 if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
                     this.renderedElement.classList.add("iconAbove");
