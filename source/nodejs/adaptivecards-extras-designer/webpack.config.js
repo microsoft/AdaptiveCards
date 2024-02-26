@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			library: "ACExtrasDesigner",
+            hashFunction: "xxhash64",
 			libraryTarget: "umd",
 			globalObject: "this",
 			// umdNamedDefine: true

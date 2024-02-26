@@ -14,6 +14,7 @@ module.exports = (env, argv) => {
 		output: {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
+            hashFunction: "xxhash64",
 			libraryTarget: "umd",
 			library: "ACData",
 			globalObject: "this"

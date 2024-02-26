@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
 		},
 		output: {
 			path: path.resolve(__dirname, "dist"),
+            hashFunction: "xxhash64",
 			filename: devMode ? "[name].js" : "[name].min.js",
 		},
 		resolve: {
