@@ -13,79 +13,80 @@ module.exports = (env, argv) => {
 
     console.info('running webpack with mode:', mode);
 
-	return {
-		mode: mode,
-		target: 'web',
-		entry: {
-			"adaptivecards-ui-testapp": "./src/adaptivecards-ui-testapp.ts"
-		},
-		output: {
-			path: path.resolve(__dirname, "./dist"),
-			filename: devMode ? "[name].js" : "[name].min.js",
-			library: "ACUITestApp",
-			libraryTarget: "umd",
-			globalObject: "this",
-			// umdNamedDefine: true
-		},
-		devtool: devMode ? "inline-source-map" : "source-map",
-		devServer: {
-			static: {
-				directory: path.resolve(__dirname, "./dist"),
-			},
-			liveReload: false,
-		},
-		resolve: {
-			extensions: [".ts", ".tsx", ".js"]
-		},
-		module: {
-			rules: [{
-				test: /\.ts$/,
-				loader: "ts-loader",
-				exclude: /(node_modules|__tests__)/
-			},
-			{
-				test: /\.css$/,
-				use: [
-					devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-					'css-loader'
-				]
-			}
-			]
-		},
-		plugins: [
-			new Dotenv(),
-			new HtmlWebpackPlugin({
-				title: "Adaptive Cards UI TestApp",
-				template: "./index.html",
-				filename: "index.html",
-				chunks: ["adaptivecards-ui-testapp"]
-			}),
-			new MiniCssExtractPlugin({
-				filename: '[name].css'
-			}),
-			new CopyWebpackPlugin({
-				patterns: [
-				{
-					from: '../../../samples/',
-					to: './samples/[path]/[name][ext]',
-					context: '.'
-				}],
-				options: {
-					concurrency: 8
-				}
-			})
-		],
-		externals: {
-			"adaptive-expressions": {
-				commonjs2: "adaptive-expressions",
-				commonjs: "adaptive-expressions",
-				root: "AEL"
-			},
-			"adaptivecards-templating": {
-				commonjs2: "adaptivecards-templating",
-				commonjs: "adaptivecards-templating",
-				root: "ACData"
-			}
-		}
-	}
+    return {
+        mode: mode,
+        target: 'web',
+        entry: {
+            "adaptivecards-ui-testapp": "./src/adaptivecards-ui-testapp.ts"
+        },
+        output: {
+            path: path.resolve(__dirname, "./dist"),
+            filename: devMode ? "[name].js" : "[name].min.js",
+            hashFunction: "xxhash64",
+            library: "ACUITestApp",
+            libraryTarget: "umd",
+            globalObject: "this",
+            // umdNamedDefine: true
+        },
+        devtool: devMode ? "inline-source-map" : "source-map",
+        devServer: {
+            static: {
+                directory: path.resolve(__dirname, "./dist"),
+            },
+            liveReload: false,
+        },
+        resolve: {
+            extensions: [".ts", ".tsx", ".js"]
+        },
+        module: {
+            rules: [{
+                test: /\.ts$/,
+                loader: "ts-loader",
+                exclude: /(node_modules|__tests__)/
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            }
+            ]
+        },
+        plugins: [
+            new Dotenv(),
+            new HtmlWebpackPlugin({
+                title: "Adaptive Cards UI TestApp",
+                template: "./index.html",
+                filename: "index.html",
+                chunks: ["adaptivecards-ui-testapp"]
+            }),
+            new MiniCssExtractPlugin({
+                filename: '[name].css'
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                {
+                    from: '../../../samples/',
+                    to: './samples/[path]/[name][ext]',
+                    context: '.'
+                }],
+                options: {
+                    concurrency: 8
+                }
+            })
+        ],
+        externals: {
+            "adaptive-expressions": {
+                commonjs2: "adaptive-expressions",
+                commonjs: "adaptive-expressions",
+                root: "AEL"
+            },
+            "adaptivecards-templating": {
+                commonjs2: "adaptivecards-templating",
+                commonjs: "adaptivecards-templating",
+                root: "ACData"
+            }
+        }
+    }
 }
