@@ -2521,6 +2521,7 @@ export class ImageSet extends CardElementContainer {
             element = document.createElement("div");
             element.style.display = "flex";
             element.style.flexWrap = "wrap";
+            element.classList.add(this.hostConfig.makeCssClassName("ac-imageSet"));
 
             for (const image of this._images) {
                 switch (this.imageSize) {
