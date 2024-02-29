@@ -35,13 +35,13 @@ steps:
   name: NuGetAuthenticate2
 
 - task: NuGetRestore@1
-  name: NuGetCommand3
   displayName: NuGet restore
   inputs:
-    solution: $(solution)
-    selectOrConfig: config
+    command: 'restore'
+    feedsToUse: config
     nugetConfigPath: source/uwp/winui3/nuget.config
-    verbosity: '-'
+    restoreSolution: $(solution)
+    verbosityRestore: Detailed
 
 - task: VSBuild@1
   name: VSBuild4
