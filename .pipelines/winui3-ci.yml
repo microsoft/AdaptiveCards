@@ -34,7 +34,7 @@ steps:
 - task: NuGetAuthenticate@1
   name: NuGetAuthenticate2
 
-- task: NuGetCommand2
+- task: NuGetCommand@2
   displayName: NuGet restore
   inputs:
     command: 'restore'

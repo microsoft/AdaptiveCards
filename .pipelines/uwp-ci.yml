@@ -33,7 +33,7 @@ steps:
   inputs:
     versionSpec: 5.x
 
-- task: NuGetCommand2
+- task: NuGetCommand@2
   displayName: NuGet restore
   inputs:
     command: 'restore'
