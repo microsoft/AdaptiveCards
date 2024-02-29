@@ -354,7 +354,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         for (auto child : panel.Children())
         {
             // Subgroups (columns) are implemented with WholeItemsPanel
-            if (auto childAsWholeItemPanel = child.as<winrt::WholeItemsPanel>())
+            if (auto childAsWholeItemPanel = child.try_as<winrt::WholeItemsPanel>())
             {
                 if (childAsWholeItemPanel.IsTruncated())
                 {
