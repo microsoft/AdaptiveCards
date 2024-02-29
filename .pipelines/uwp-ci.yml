@@ -33,14 +33,14 @@ steps:
   inputs:
     versionSpec: 5.x
 
-- task: NuGetRestore@1
-  name: NuGetCommand2
+- task: NuGetCommand@2
   displayName: NuGet restore
   inputs:
-    solution: $(solution)
-    selectOrConfig: config
+    command: 'restore'
+    feedsToUse: config
     nugetConfigPath: source/nuget.config
-    verbosity: '-'
+    restoreSolution: $(solution)
+    verbosityRestore: Detailed
 
 - task: VSBuild@1
   name: VSBuild3
