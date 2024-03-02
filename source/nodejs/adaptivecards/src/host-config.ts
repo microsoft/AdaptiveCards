@@ -839,6 +839,20 @@ export class HostConfig {
         }
     }
 
+    getEffectiveImageSize(imageSize: Enums.ImageSize | Enums.Size): number {
+        switch (imageSize) {
+            case Enums.Size.Small:
+                return this.imageSizes.small;
+
+            case Enums.Size.Large:
+                return this.imageSizes.large;
+
+            case Enums.Size.Medium:
+            default:
+                return this.imageSizes.medium;
+        }
+    }
+
     getEffectiveSpacing(spacing: Enums.Spacing): number {
         switch (spacing) {
             case Enums.Spacing.Small:
