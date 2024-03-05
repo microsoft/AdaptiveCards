@@ -380,6 +380,7 @@ export class ActionsConfig {
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
     iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
     allowTitleToWrap: boolean = false;
+    showIconInOverflow: boolean = false;
     iconSize: number = 16;
 
     constructor(obj?: any) {
@@ -414,6 +415,7 @@ export class ActionsConfig {
             );
             this.allowTitleToWrap =
                 obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.showIconInOverflow = obj["showIconInOverflow"] ?? this.showIconInOverflow;
 
             try {
                 const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
