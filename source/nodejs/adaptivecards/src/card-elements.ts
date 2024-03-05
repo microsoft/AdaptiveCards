@@ -6629,7 +6629,7 @@ class OverflowAction extends Action {
             contextMenu.hostConfig = this.hostConfig;
 
             for (let i = 0; i < this._actions.length; i++) {
-                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "");
+                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "", this._actions[i].iconUrl);
                 menuItem.isEnabled = this._actions[i].isEnabled;
                 menuItem.onClick = () => {
                     const actionToExecute = this._actions[i];

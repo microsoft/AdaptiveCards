@@ -7,6 +7,7 @@ export class MenuItem {
     private _hostConfig?: HostConfig;
     private _element: HTMLElement;
     private _value: string;
+    private _iconUrl: string | undefined;
     private _isEnabled: boolean = true;
 
     private click() {
@@ -36,9 +37,10 @@ export class MenuItem {
 
     onClick?: (item: MenuItem) => void;
 
-    constructor(key: string, value: string) {
+    constructor(key: string, value: string, iconUrl?: string) {
         this.key = key;
         this._value = value;
+        this._iconUrl = iconUrl;
     }
 
     toString(): string {
@@ -50,12 +52,31 @@ export class MenuItem {
 
         if (!this._element) {
             this._element = document.createElement("span");
-            this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
+            this._element.style.display = "flex";
+            this._element.style.alignItems = "center";
+            this._element.style.justifyContent = "left";
 
             if (!this.isEnabled) {
                 this._element.setAttribute("aria-disabled", "true");
             }
+
+            if (this._iconUrl && this._hostConfig?.actions.showIconInOverflow) {
+                const iconSize = this._hostConfig?.actions.iconSize ?? 16;
+
+                const iconElement = document.createElement("img");
+                iconElement.style.width = iconSize + "px";
+                iconElement.style.height = iconSize + "px";
+                iconElement.style.marginRight = "6px";
+                iconElement.setAttribute("role", "presentation");
+                iconElement.src = this._iconUrl;
+                this._element.appendChild(iconElement);
+            }
+
+            const textElement = document.createElement("span");
+            textElement.style.flex = "0 1 auto";
+            textElement.innerText = this.value;
+            this._element.appendChild(textElement);
 
             this._element.setAttribute("aria-current", "false");
             this._element.onmouseup = (_e) => {
