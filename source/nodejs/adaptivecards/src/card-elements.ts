@@ -4430,8 +4430,6 @@ export class ChoiceSetInput extends Input {
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
 
-        element.tabIndex = this.isDesignMode() ? -1 : 0;
-
         this._toggleInputs = [];
         this._labels = [];
 
