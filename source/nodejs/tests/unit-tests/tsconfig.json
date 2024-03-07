@@ -2,14 +2,12 @@
 	"extends": "../../tsconfig.json",
 
 	"compilerOptions": {
-        "outDir": "./lib",
+		"outDir": "./lib",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"types": ["node", "jest"]
 	},
 	"include": ["./src/**/*"],
-	"exclude": [
-		"node_modules",
-		"test"
-	]
+	"exclude": ["node_modules", "test"]
 }

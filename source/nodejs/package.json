@@ -29,6 +29,7 @@
 	],
 	"devDependencies": {
 		"@types/jest": "^27.0.2",
+		"@types/node": "^20",
 		"@types/react": "^16.14.16",
 		"@types/react-dom": "^16.9.14",
 		"@types/trusted-types": "^2.0.2",

@@ -1,7 +1,8 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"outDir": "./lib"
+		"outDir": "./lib",
+		"types": ["trusted-types"]
 	},
 	"files": ["./src/adaptivecards-controls.ts"]
 }

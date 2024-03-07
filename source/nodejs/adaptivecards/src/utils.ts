@@ -274,7 +274,7 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
 }
 
 export function debounce(fn: (...args: unknown[]) => unknown, delay: number) {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     function debouncedFn(...args: unknown[]) {
         if (timer) {
             clearTimeout(timer);

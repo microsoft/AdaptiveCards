@@ -7,7 +7,8 @@
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noFallthroughCasesInSwitch": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"types": ["node", "trusted-types"]
 	},
 	"files": ["./src/adaptivecards.ts"]
 }

@@ -4,7 +4,8 @@
         "jsx": "react",
         "esModuleInterop": true,
         "outDir": "./lib",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "types": ["trusted-types"]
     },
     "files": ["src/adaptivecards-react.ts"]
 }
