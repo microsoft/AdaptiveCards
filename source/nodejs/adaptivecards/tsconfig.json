@@ -7,7 +7,9 @@
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noFallthroughCasesInSwitch": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"module": "es2020",
+		"types": ["node", "trusted-types", "jest"]
 	},
 	"files": ["./src/adaptivecards.ts"]
 }

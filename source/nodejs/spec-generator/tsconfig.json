@@ -1,7 +1,8 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-        "outDir": "./lib"
+		"outDir": "./lib",
+		"types": ["node"]
 	},
 	"files": ["./src/spec-generator.ts", "./src/spec-generator-script.ts"]
 }

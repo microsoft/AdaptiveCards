@@ -19,7 +19,6 @@ We use lerna to manage package linking and building.
 
 1. `cd source/nodejs`
 2. `npm install`
-3. `npx lerna bootstrap`
 
 ## Build
 

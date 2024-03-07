@@ -23,8 +23,9 @@ import {
 import { GlobalRegistry } from "./registry";
 import { TypeErrorType, ValidationEvent } from "./enums";
 import { Strings } from "./strings";
+import Swiper from "swiper";
+import { SwiperOptions } from "swiper/types";
 import {
-    Swiper,
     A11y,
     Autoplay,
     History,
@@ -32,8 +33,7 @@ import {
     Navigation,
     Pagination,
     Scrollbar,
-    SwiperOptions
-} from "swiper";
+} from "swiper/modules";
 import * as Utils from "./utils";
 import { GlobalSettings } from "./shared";
 
@@ -547,7 +547,7 @@ export class Carousel extends Container {
         const prevElementAdjustedForOrientation = (Enums.Orientation.Horizontal === this.carouselOrientation) ? prevElementAdjustedForRtl : prevElement;
         const nextElementAdjustedForOrientation = (Enums.Orientation.Horizontal === this.carouselOrientation) ? nextElementAdjustedForRtl : nextElement;
 
-        const swiperOptions: SwiperOptions = {
+        const swiperOptions : SwiperOptions = {
             loop: !this.isDesignMode() && this.carouselLoop,
             modules: [Navigation, Pagination, Scrollbar, A11y, History, Keyboard],
             pagination: {
@@ -605,7 +605,7 @@ export class Carousel extends Container {
             this.raiseCarouselEvent(Enums.CarouselInteractionEvent.Autoplay);
         });
 
-        carousel.on('paginationRender', (swiper, paginationEl) => {
+        carousel.on('paginationRender', (swiper : Swiper) => {
             swiper.pagination.bullets.forEach((bullet, index) => {
                 bullet.addEventListener("keypress", function(event : KeyboardEvent) {
                     if (event.key == "Enter") {

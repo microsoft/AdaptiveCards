@@ -7,6 +7,7 @@
 	"main": "lib/adaptivecards-controls.js",
 	"types": "lib/adaptivecards-controls.d.ts",
 	"style": "dist/adaptivecards-controls.css",
+	"sideEffects": false,
 	"files": [
 		"lib",
 		"dist",

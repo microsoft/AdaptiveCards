@@ -2,7 +2,8 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "./lib",
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+        "types": ["node", "trusted-types"]
 	},
 	"files": ["./src/adaptivecards-ui-testapp.ts"]
 }
