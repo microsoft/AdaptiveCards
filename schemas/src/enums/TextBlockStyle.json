@@ -6,11 +6,11 @@
 		"values": [
 			{
 				"value": "default",
-				"description": "This is the default style which provide no special styling or behavior."
+				"description": "This is the default style which provides no special styling or behavior."
 			},
 			{
 				"value": "heading",
-				"description": "The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity."
+				"description": "The `TextBlock` is a heading. This will apply the heading styling defaults and mark the `TextBlock` as a heading for accessiblity."
 			}
 		]
 	}

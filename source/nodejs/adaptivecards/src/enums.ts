@@ -56,7 +56,8 @@ export enum ImageSize {
 
 export enum ImageSetPresentationStyle {
     Default,
-    Stacked
+    Stacked,
+    Grid
 }
 
 export enum SizeUnit {

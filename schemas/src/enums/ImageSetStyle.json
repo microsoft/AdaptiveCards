@@ -1,0 +1,20 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"classType": "Enum",
+	"description": "Controls how an `ImageSet` is displayed.",
+    "version": "1.6",
+	"values": [
+		{
+            "value": "default",
+            "description": "This is the default style for `ImageSet`. Images are displayed in their original aspect ratio."
+        },
+        {
+            "value": "stacked",
+            "description": "Display images in this `ImageSet` stack on top of each other (similar to a stack of photos)."
+        },
+        {
+            "value": "grid",
+            "description": "Display images in a grid. They are all shown at the same size. Images are clipped as needed to fit in the available space."
+        }
+	]
+}
