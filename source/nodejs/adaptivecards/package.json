@@ -45,7 +45,7 @@
 		"jest": "^27.3.1",
 		"rimraf": "^3.0.2",
 		"ts-jest": "^27.0.7",
-		"typedoc": "^0.22.5",
+		"typedoc": "^0.24.0",
 		"typedoc-plugin-markdown": "^3.11.2"
 	},
 	"peerDependencies": {

@@ -5,12 +5,28 @@
 	"scripts": {
 		"start:designer": "lerna run start --scope=adaptivecards-designer --stream",
 		"start:designer-app": "lerna run start --scope=adaptivecards-designer-app --stream",
-		"start:all": "lerna run --parallel watch && lerna run --parallel start",
-		"audit-all": "lerna-audit",
-		"format": "clang-format-launcher --verbose",
-		"verify": "clang-format-launcher -verify --verbose",
-		"prepare": "cd ../.. && husky install source/nodejs/.husky"
+		"start:all": "lerna run --parallel watch && lerna run --parallel start"
 	},
+	"workspaces": [
+		"ac-typed-schema",
+		"adaptivecards",
+		"adaptivecards-aaf-testapp",
+		"adaptivecards-controls",
+		"adaptivecards-designer",
+		"adaptivecards-designer-app",
+		"adaptivecards-extras",
+		"adaptivecards-extras-designer",
+		"adaptivecards-react",
+		"adaptivecards-react-testapp",
+		"adaptivecards-site",
+		"adaptivecards-templating",
+		"adaptivecards-ui-testapp",
+		"marked-schema",
+		"spec-generator",
+		"tests/test-adaptive-card-schema",
+		"tests/ui-tests",
+		"tests/unit-tests"
+	],
 	"devDependencies": {
 		"@types/jest": "^27.0.2",
 		"@types/react": "^16.14.16",
@@ -19,8 +35,6 @@
 		"@typescript-eslint/eslint-plugin": "^5.2.0",
 		"@typescript-eslint/parser": "^5.2.0",
 		"async": "^3.2.4",
-		"clang-format": "^1.5.0",
-		"clang-format-launcher": "^0.1.4",
 		"copy-webpack-plugin": "^9.0.1",
 		"css-loader": "^6.4.0",
 		"dotenv-webpack": "^7.0.3",
@@ -32,15 +46,12 @@
 		"jest": "^27.3.1",
 		"js-yaml": "^4.1.0",
 		"json-loader": "^0.5.7",
-		"lerna": "^5.5.1",
-		"lerna-audit": "^1.3.3",
+		"lerna": "^8.1.2",
 		"lint-staged": "^12.1.2",
 		"markdown-it": "^12.2.0",
 		"mini-css-extract-plugin": "^2.4.3",
-		"nx": "^14.5.6",
+		"nx": "^18.0.7",
 		"prettier": "^2.4.1",
-		"react": "^16.14.0",
-		"react-dom": "^16.14.0",
 		"rimraf": "^3.0.2",
 		"sass": "^1.43.4",
 		"style-loader": "^3.3.1",
@@ -54,38 +65,5 @@
 	},
 	"overrides": {
 		"parse-url": "8.1.0"
-	},
-	"clang-format-launcher": {
-		"includeEndsWith": [
-			".h",
-			".cpp",
-			".hpp",
-			".c",
-			".m",
-			".mm"
-		],
-		"excludePathContains": [
-			"/PerfApp/",
-			"/experimental/",
-			"/dotnet/",
-			"/community/",
-			"/pic2card/",
-			"/uwp/",
-			"/include/",
-			"/nodejs/",
-			"/android/"
-		],
-		"excludePathEndsWith": [
-			".g.h",
-			".g.cpp",
-			"ObjectModel/jsoncpp.cpp"
-		],
-		"excludePathStartsWith": [
-			"specs/",
-			"samples",
-			"assets/",
-			"scripts"
-		],
-		"style": "--style=file"
 	}
 }
