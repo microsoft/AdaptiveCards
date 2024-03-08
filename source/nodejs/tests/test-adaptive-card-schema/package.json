@@ -18,8 +18,5 @@
 	},
 	"dependencies": {
 		"ajv": "^6.10.0"
-	},
-	"devDependencies": {
-		"typescript": "^4.2.3"
 	}
 }

@@ -46,10 +46,6 @@ function JSONSchemaCardElement(schema: JSONSchema7Definition, path: string, dept
             } else {
                 return JSONSchemaCardText(schema, path)
             }
-        case "date-time":
-        case "time":
-        case "date":
-            return JSONSchemaCardTime(schema, path)
         default:
             return null;
     }
@@ -169,15 +165,5 @@ function JSONSchemaCardText(schema: JSONSchema7, path: string): ITextInput {
         value: schema.default as string,
         maxLength: schema.maxLength,
         regex: schema.pattern,
-    }
-}
-
-function JSONSchemaCardTime(schema: JSONSchema7, path: string): ITimeInput {
-    return {
-        type: "Input.Time",
-        id: path,
-        title: schema.title,
-        placeholder: schema.description,
-        value: schema.default as string,
     }
 }

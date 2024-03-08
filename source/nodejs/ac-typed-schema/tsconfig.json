@@ -10,7 +10,7 @@
 		"noImplicitAny": false,
 		"sourceMap": true,
 		"declaration": true,
-        "types": []
+        "types": ["node"]
 	},
 	"files": ["./src/typed-schema.ts", "./src/command-line.ts"],
 	"exclude": [

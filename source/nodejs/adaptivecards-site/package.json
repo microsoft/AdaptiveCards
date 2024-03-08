@@ -44,7 +44,7 @@
 		"highlightjs": "^9.16.2",
 		"jquery": "^3.6.1",
 		"js-yaml": "^4.1.0",
-		"markdown-it": "^13.0.1",
+		"markdown-it": "^14.0.0",
 		"md5": "^2.3.0",
 		"minimist": "^1.2.6",
 		"monaco-editor": "^0.34.0",

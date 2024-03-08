@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 @import 'adaptivecards-vars';
 @import 'swiper/swiper.scss';
-@import 'swiper/modules/pagination/pagination.scss';
-@import 'swiper/modules/navigation/navigation.scss';
+@import 'swiper/modules/pagination.scss';
+@import 'swiper/modules/navigation.scss';
 
 .swiper-pagination-bullet {
     text-align: center;
