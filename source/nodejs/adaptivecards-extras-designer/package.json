@@ -29,7 +29,7 @@
 	},
 	"dependencies": {
 		"@microsoft/adaptivecards-extras": "^0.3.0-alpha.0",
-		"adaptivecards": "^3.0.0-beta.10",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-designer": "^2.5.0-alpha.0"
 	}
 }

@@ -60,6 +60,8 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         AdaptiveCard,
         TextBlock,
         Image,
+        Carousel,
+        CarouselPage,
         Container,
         Column,
         ColumnSet,
@@ -253,6 +255,12 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Tab,
         Menu,
         MenuItem
+    };
+
+    enum CarouselOrientation
+    {
+        Horizontal = 0,
+        Vertical,
     };
 
     declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation>; }
@@ -588,6 +596,25 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         AdaptiveColumnSet();
 
         Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
+    };
+
+    [default_interface] runtimeclass AdaptiveCarouselPage : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveCarouselPage();
+    };
+
+    runtimeclass AdaptiveCarousel : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveCarousel();
+        Windows.Foundation.Collections.IVector<AdaptiveCarouselPage> Pages { get; };
+        CarouselOrientation Orientation;
+        Windows.Foundation.IReference<UInt64> Timer;
+        Windows.Foundation.IReference<UInt32> InitialPage;
+        Windows.Foundation.IReference<Boolean> AutoLoop;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
+        Windows.Foundation.IReference<Boolean> Rtl;
+        AdaptiveBackgroundImage BackgroundImage;
+        UInt32 HeightInPixels;
     };
 
     runtimeclass AdaptiveFact

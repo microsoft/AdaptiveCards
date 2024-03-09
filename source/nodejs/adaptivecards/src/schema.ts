@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { ImageSetPresentationStyle } from "./enums";
+
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 export type TextSize = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
@@ -110,6 +112,7 @@ export interface IImageSet extends ICardElement {
     type: "ImageSet";
     images: IImage[];
     size?: Size;
+    style?: ImageSetPresentationStyle;
 }
 
 export interface IInput extends ICardElement {

@@ -48,6 +48,8 @@ namespace ParseUtil
 
     std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key);
 
+    std::optional<unsigned int> GetOptionalUnsignedInt(const Json::Value& json, AdaptiveCardSchemaKey key);
+
     std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key);
 
     Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
@@ -152,7 +154,7 @@ std::optional<T> ParseUtil::GetOptionalEnumValue(const Json::Value& json, Adapti
 template <typename T, typename Fn>
 T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired)
 {
-    std::optional<T> optionalEnum = GetOptionalEnumValue<T, Fn>(json, key, enumConverter);
+    const std::optional<T> optionalEnum = GetOptionalEnumValue<T, Fn>(json, key, enumConverter);
 
     if (isRequired && !optionalEnum.has_value())
     {
@@ -260,6 +262,8 @@ T ParseUtil::ExtractJsonValueAndMergeWithDefault(
 template <typename T>
 static void ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
 {
+    context.ShouldParse(ParseUtil::GetTypeAsString(json));
+
     T::ParseJsonObject(context, json, baseElement);
 }
 
@@ -318,8 +322,28 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
         }
 
         std::shared_ptr<BaseElement> curElement;
-        ParseJsonObject<T>(context, curJsonValue, curElement);
-        elements.push_back(std::static_pointer_cast<T>(curElement));
+
+        try
+        {
+            ParseJsonObject<T>(context, curJsonValue, curElement);
+
+            elements.push_back(std::static_pointer_cast<T>(curElement));
+        }
+        catch (const AdaptiveCardParseException& e)
+        {
+            // If exception is thrown because of prohibited type, we log the exception
+            // as warning, and continue parsing
+            if (e.GetStatusCode() == ErrorStatusCode::ProhibitedType)
+            {
+                context.warnings.emplace_back(
+                    std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::ProhibitedTypeDetected, e.GetReason()));
+            }
+            else
+            {
+                // re-throw the exception to preserve the existing pattern for now
+                throw e;
+            }
+        }
 
         // restores the parent's bleed state
         context.PopBleedDirection();

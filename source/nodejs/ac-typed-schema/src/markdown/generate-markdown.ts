@@ -139,13 +139,13 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 
 		// Format as markdown table
 		if (mainFormattedProperties.length > 0) {
-			md += createTable(mainFormattedProperties);
+			md += createTable(mainFormattedProperties, classDefinition.type + " Properties");
 			md += '\n';
 		}
 
 		if (inheritedFormattedProperties.length > 0) {
 			md += "\n" + __("### Inherited properties") + "\n\n";
-			md += createTable(inheritedFormattedProperties);
+			md += createTable(inheritedFormattedProperties, classDefinition.type + " Inherited properties");
 			md += "\n";
 		}
 	}
@@ -153,7 +153,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 	return md;
 }
 
-function createTable(formattedProperties: any[]) {
+function createTable(formattedProperties: any[], title: string) {
 	// Data needs to be formatted as follows for use with markdown library
 	/*
 		table([
@@ -164,9 +164,20 @@ function createTable(formattedProperties: any[]) {
 	*/
 	var tableData = [];
 	var headerRow = [];
+
 	for (let propName in formattedProperties[0]) {
 		headerRow.push(__(propName));
 	}
+
+	// Used for custom table rendering.
+	// We append the table title to the first cell in the header,
+	// and the table renderer will use this value for aria-label.
+	// It is then removed from the header.
+	var firstValue = headerRow[0];
+	if (firstValue) {
+		headerRow[0] = `<!-- TableTitle: ${title} -->` + firstValue;
+	}
+
 	tableData.push(headerRow);
 
 	formattedProperties.forEach((formattedProperty) => {

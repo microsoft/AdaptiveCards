@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <Authors>Microsoft</Authors>
+    <Summary>Adaptive Card object model for .NET 6.0</Summary>
+    <Description>This library implements classes for building and serializing adaptive card objects</Description>
+    <PackageId>AdaptiveCards.Net6</PackageId>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>adaptivecards;adaptive-cards</PackageTags>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <DocumentationFile>$(MSBuildProjectDirectory)/docs/AdaptiveCards.xml</DocumentationFile>
+    <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>   
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output -->
+  <!--<PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
+    <TargetFrameworks>$(TargetFrameworks);uap10.0</TargetFrameworks>
+  </PropertyGroup>-->
+  <PropertyGroup Condition="$(TargetFramework) == 'uap10.0' ">
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AdaptiveCards\**\*.cs" Exclude="..\AdaptiveCards\obj\**" />
+    <None Include="..\AdaptiveCards\obj\project.assets.json" />
+    <None Include="..\AdaptiveCards\**\*.settings" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'uap10.0'">
+    <PackageReference Include="System.Reflection" Version="4.3.*" />
+    <PackageReference Include="System.Collections" Version="4.3.*" />
+    <PackageReference Include="System.Linq" Version="4.3.*" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.*" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.*" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.*" />
+  </ItemGroup>
+  <PropertyGroup Condition="$(Configuration) == 'Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Vsxmd" Version="1.4.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <!-- workaround for multiple TargetFramework regression -->
+  <Target Name="_CheckForGenerateAppxPackageOnBuild" />
+</Project>

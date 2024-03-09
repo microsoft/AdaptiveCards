@@ -17,7 +17,10 @@ namespace AdaptiveCardVisualizer.ViewModel
     public class HostConfigEditorViewModel : GenericDocumentViewModel
     {
         private HostConfigEditorViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) {
+#if !USE_WINUI3
+            // HighContrastChanged event does not work without a core window in WinUI3
             accessibilitySettings.HighContrastChanged += AccessibilitySettings_HighContrastChanged;
+#endif
         }
 
         public event EventHandler<AdaptiveHostConfig> HostConfigChanged;

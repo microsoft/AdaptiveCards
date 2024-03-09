@@ -48,6 +48,8 @@ namespace AdaptiveCards
                 String OverflowButtonText;
                 String OverflowButtonAccessibilityText;
 
+                Boolean AddSelectActionMargin;
+
                 void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
                 void ResetFixedDimensions();
 
@@ -546,6 +548,16 @@ namespace AdaptiveCards
             [default_interface] runtimeclass AdaptiveImageSetRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveImageSetRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveCarouselRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveCarouselRenderer();
+            }
+
+            [default_interface] runtimeclass AdaptiveCarouselPageRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveCarouselPageRenderer();
             }
 
             [default_interface] runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer

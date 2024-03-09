@@ -12,6 +12,6 @@
 		"release": "npm run build"
 	},
 	"dependencies": {
-		"adaptivecards": "^3.0.0-beta.10"
+		"adaptivecards": "^3.0.2"
 	}
 }

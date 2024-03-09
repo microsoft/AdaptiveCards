@@ -20,7 +20,7 @@
 		"@microsoft/ac-typed-schema": "^0.8.0-alpha.0",
 		"@microsoft/marked-schema": "^0.3.0-alpha.0",
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^3.0.0-beta.10",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-designer": "^2.5.0-alpha.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"change-case": "^4.1.2",

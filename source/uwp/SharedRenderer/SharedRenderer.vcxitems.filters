@@ -261,6 +261,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\XamlHelpers.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPageRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselRenderer.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\ActionHelpers.cpp">
@@ -504,5 +510,11 @@
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPageRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselRenderer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

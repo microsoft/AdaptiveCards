@@ -267,15 +267,19 @@ export class InputConfig {
         color: Enums.TextColor.Attention
     });
     readonly debounceTimeInMilliSeconds: number = 0;
-
-    allowRevealOnHoverStyle: boolean = false;
+    readonly allowDynamicallyFilteredChoiceSet: boolean = true;
+    readonly allowRevealOnHoverStyle: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
             this.label = new InputLabelConfig(obj["label"]);
             this.errorMessage = new BaseTextDefinition(obj["errorMessage"]);
-            this.allowRevealOnHoverStyle = obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
-            this.debounceTimeInMilliSeconds = obj.debounceTimeInMilliSeconds;
+            this.allowRevealOnHoverStyle =
+                obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
+            this.allowDynamicallyFilteredChoiceSet =
+                obj["allowDynamicallyFilteredChoiceSet"] || this.allowDynamicallyFilteredChoiceSet;
+            this.debounceTimeInMilliSeconds =
+                obj["debounceTimeInMilliSeconds"] || this.debounceTimeInMilliSeconds;
         }
     }
 }
@@ -376,6 +380,7 @@ export class ActionsConfig {
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
     iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
     allowTitleToWrap: boolean = false;
+    showIconInOverflow: boolean = false;
     iconSize: number = 16;
 
     constructor(obj?: any) {
@@ -410,6 +415,7 @@ export class ActionsConfig {
             );
             this.allowTitleToWrap =
                 obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.showIconInOverflow = obj["showIconInOverflow"] ?? this.showIconInOverflow;
 
             try {
                 const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
@@ -830,6 +836,20 @@ export class HostConfig {
             return style === Enums.FontType.Monospace
                 ? FontTypeDefinition.monospace
                 : this._legacyFontType;
+        }
+    }
+
+    getEffectiveImageSize(imageSize: Enums.ImageSize | Enums.Size): number {
+        switch (imageSize) {
+            case Enums.Size.Small:
+                return this.imageSizes.small;
+
+            case Enums.Size.Large:
+                return this.imageSizes.large;
+
+            case Enums.Size.Medium:
+            default:
+                return this.imageSizes.medium;
         }
     }
 

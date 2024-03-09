@@ -5,9 +5,15 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
+#import "ACRRenderResult.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRRenderResult.h>
+#endif
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
-#import "ACRRenderResult.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

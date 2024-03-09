@@ -71,79 +71,6 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Passengers",
-									"isSubtle": true,
-									"weight": "bolder",
-									"wrap": true,
-									"spacing": "none"
-								},
-								{
-									"type": "TextBlock",
-									"text": "${underName.name}",
-									"spacing": "small",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "Jeremy Goldberg",
-									"spacing": "small",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "Evan Litvak",
-									"spacing": "small",
-									"wrap": true
-								}
-							]
-						},
-						{
-							"type": "TableCell"
-						},
-						{
-							"type": "TableCell",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "Seat",
-									"horizontalAlignment": "right",
-									"isSubtle": true,
-									"weight": "bolder",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "14A",
-									"horizontalAlignment": "right",
-									"spacing": "small",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "14B",
-									"horizontalAlignment": "right",
-									"spacing": "small",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "14C",
-									"horizontalAlignment": "right",
-									"spacing": "small",
-									"wrap": true
-								}
-							]
-						}
-					]
-				},
-				{
-					"type": "TableRow",
-					"cells": [
-						{
-							"type": "TableCell",
-							"items": [
-								{
-									"type": "TextBlock",
 									"text": "Flight",
 									"isSubtle": true,
 									"weight": "bolder",
@@ -196,6 +123,133 @@
 									"color": "attention",
 									"horizontalAlignment": "right",
 									"weight": "bolder",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Passengers",
+									"isSubtle": true,
+									"weight": "bolder",
+									"wrap": true,
+									"spacing": "none"
+								}
+							]
+						},
+						{
+							"type": "TableCell"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Seat",
+									"horizontalAlignment": "right",
+									"isSubtle": true,
+									"weight": "bolder",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "${underName.name}",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "14A",
+									"horizontalAlignment": "right",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Jeremy Goldberg",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "14B",
+									"horizontalAlignment": "right",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Evan Litvak",
+									"spacing": "small",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "14C",
+									"horizontalAlignment": "right",
 									"spacing": "small",
 									"wrap": true
 								}

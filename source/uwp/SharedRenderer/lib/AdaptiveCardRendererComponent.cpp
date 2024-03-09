@@ -78,6 +78,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         GetHostConfig()->OverflowMaxActions = overflowMaxActions;
     }
 
+    bool AdaptiveCardRenderer::AddSelectActionMargin()
+    {
+        return GetHostConfig()->AddSelectActionMargin;
+    }
+
+    void AdaptiveCardRenderer::AddSelectActionMargin(bool addSelectActionMargin)
+    {
+        GetHostConfig()->AddSelectActionMargin = addSelectActionMargin;
+    }
+
     winrt::RenderedAdaptiveCard AdaptiveCardRenderer::RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard)
     {
         auto renderedCard = winrt::make_self<implementation::RenderedAdaptiveCard>();

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AdaptiveCards.Rendering.Wpf</id>
+    <version>2.8.0</version>
+    <authors>Microsoft</authors>
+    <license type="file">EULA-Windows.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://adaptivecards.io/</projectUrl>
+    <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+    <description>This library implements classes for rendering Adaptive Cards into WPF controls</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>adaptivecards adaptive-cards</tags>
+    <repository url="https://github.com/Microsoft/AdaptiveCards" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="AdaptiveCards" version="3.0.2" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0-windows7.0">
+        <dependency id="AdaptiveCards" version="3.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.Drawing.Common" version="4.7.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework=".NETFramework4.5.2" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework=".NETFramework4.5.2" />
+      <frameworkAssembly assemblyName="System.Windows.Presentation" targetFramework=".NETFramework4.5.2" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework=".NETFramework4.5.2" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework=".NETFramework4.5.2" />
+    </frameworkAssemblies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="..\Library\AdaptiveCards.Rendering.Wpf\bin\Release\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" target="lib\net452"/>
+
+    <file src="..\Library\AdaptiveCards.Rendering.Wpf.Net6\bin\Release\net6.0-windows\AdaptiveCards.Rendering.Wpf.Net6.dll" target="lib\net6.0-windows7.0"/>
+
+    <file src="EULA-Windows.txt" target="\"/>
+  </files>
+</package>

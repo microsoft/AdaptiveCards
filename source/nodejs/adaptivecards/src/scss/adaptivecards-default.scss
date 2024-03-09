@@ -6,14 +6,14 @@
 @include base-container;
 @include base-anchor;
 
-$main-fg-color: "white";
+$main-fg-color: white;
 $border-style: 1px solid;
 $positive-hl-bg-color: #006ABC;
 $destructive-bg-color: #E50000;
 $destructive-hl-bg-color: #BF0000;
 @include base-push-button(
     $background-color: $main-fg-color,
-    $color: #0079db,
+    $color: #0B78D0,
     $border: $border-style #B2E0FF,
     $hover-background-color: $button-hl-bg-color,
     $hover-color: $main-fg-color,

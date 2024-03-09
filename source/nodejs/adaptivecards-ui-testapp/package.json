@@ -34,7 +34,7 @@
 	},
 	"devDependencies": {
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^3.0.0-beta.10",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-controls": "^0.9.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0"
 	},

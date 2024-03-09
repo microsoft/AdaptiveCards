@@ -5,8 +5,15 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACORefresh.h"
 #import "Refresh.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACORefresh.h>
+#import <AdaptiveCards/Refresh.h>
+#endif
 
 using namespace AdaptiveCards;
 

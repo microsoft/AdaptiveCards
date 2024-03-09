@@ -783,7 +783,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         if (label)
         {
             winrt::AutomationProperties::SetLabeledBy(actualUIElement, label);
-            winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
+
+            /// SetIsRequiredForForm does not work for AutoSuggestBox, manually adding a11y label 
+            if (adaptiveInput.IsRequired() && actualUIElement.try_as<winrt::AutoSuggestBox>() != nullptr)
+            {
+                winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label() + L" required, ");
+            }
+            else
+            {
+                winrt::AutomationProperties::SetName(actualUIElement, adaptiveInput.Label());
+            }
         }
 
         return inputStackPanel;

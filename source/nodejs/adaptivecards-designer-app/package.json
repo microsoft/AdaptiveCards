@@ -18,7 +18,7 @@
 		"monaco-editor-webpack-plugin": "^5.0.0"
 	},
 	"dependencies": {
-		"adaptivecards": "^3.0.0-beta.10",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-designer": "^2.5.0-alpha.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"monaco-editor": "^0.29.1"

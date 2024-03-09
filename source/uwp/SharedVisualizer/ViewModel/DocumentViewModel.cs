@@ -17,14 +17,12 @@ using AdaptiveCards.Rendering.WinUI3;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Windows.UI;
 #else
 using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI;
 #endif
 
 namespace AdaptiveCardVisualizer.ViewModel
@@ -257,12 +255,15 @@ namespace AdaptiveCardVisualizer.ViewModel
 
             _renderer.OverflowMaxActions = true;
 
+            // Uncomment the line below to remove margins from selectAction. Default is `true`
+            //_renderer.AddSelectActionMargin = false;
+
             // Add a feature representing this version of the visualizer. used for test cards.
             _renderer.FeatureRegistration.Set("acTest", "1.0");
 
             if (Settings.UseFixedDimensions)
             {
-                _renderer.SetFixedDimensions(320, 180);
+                _renderer.SetFixedDimensions(320, 220);
             }
 
             // Custom resource resolvers
@@ -310,7 +311,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     Grid grid = (Grid)RenderedCard;
 
-                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Color)grid.Resources["SystemColorWindowTextColor"]);
+                    (RenderedCard as Grid).BorderBrush = new SolidColorBrush((Windows.UI.Color)grid.Resources["SystemColorWindowTextColor"]);
                     (RenderedCard as Grid).BorderThickness = new Thickness(2);
                 }
             }

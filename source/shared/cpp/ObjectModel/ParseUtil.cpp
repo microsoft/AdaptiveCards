@@ -267,6 +267,25 @@ std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json, AdaptiveCa
     return propertyValue.asInt();
 }
 
+std::optional<unsigned int> ParseUtil::GetOptionalUnsignedInt(const Json::Value& json, AdaptiveCardSchemaKey key)
+{
+    const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        return std::nullopt;
+    }
+
+    if (!propertyValue.isUInt())
+    {
+        throw AdaptiveCardParseException(
+            ErrorStatusCode::InvalidPropertyValue,
+            "Value for property " + propertyName + " was invalid. Expected type unsigned int.");
+    }
+
+    return propertyValue.asUInt();
+}
+
 std::optional<double> ParseUtil::GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key)
 {
     const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
@@ -405,6 +424,8 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(ParseContex
 
     // Get the element's type
     std::string typeString = GetTypeAsString(json);
+
+    context.ShouldParse(typeString);
 
     auto parser = context.actionParserRegistration->GetParser(typeString);
     if (parser == nullptr)

@@ -5,11 +5,21 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACOBaseCardElement.h"
 #import "ACRIBaseInputHandler.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import <AdaptiveCards/ChoiceInput.h>
+#import <AdaptiveCards/ChoiceSetInput.h>
+#import <AdaptiveCards/HostConfig.h>
+#endif
 #import <UIKit/UIKit.h>
 
 extern NSString *checkedCheckboxReuseID;

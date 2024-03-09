@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "ElementParserRegistration.h"
 #include "ActionSet.h"
+#include "Carousel.h"
+#include "CarouselPage.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Column.h"
@@ -47,28 +49,31 @@ std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::DeserializeFromSt
 
 ElementParserRegistration::ElementParserRegistration()
 {
-    m_knownElements.insert(
-        {CardElementTypeToString(CardElementType::ActionSet),
-         CardElementTypeToString(CardElementType::ChoiceSetInput),
-         CardElementTypeToString(CardElementType::Column),
-         CardElementTypeToString(CardElementType::ColumnSet),
-         CardElementTypeToString(CardElementType::Container),
-         CardElementTypeToString(CardElementType::DateInput),
-         CardElementTypeToString(CardElementType::FactSet),
-         CardElementTypeToString(CardElementType::Image),
-         CardElementTypeToString(CardElementType::ImageSet),
-         CardElementTypeToString(CardElementType::Media),
-         CardElementTypeToString(CardElementType::NumberInput),
-         CardElementTypeToString(CardElementType::RichTextBlock),
-         CardElementTypeToString(CardElementType::Table),
-         CardElementTypeToString(CardElementType::TextBlock),
-         CardElementTypeToString(CardElementType::TextInput),
-         CardElementTypeToString(CardElementType::TimeInput),
-         CardElementTypeToString(CardElementType::ToggleInput),
-         CardElementTypeToString(CardElementType::Unknown)});
+    m_knownElements.insert({CardElementTypeToString(CardElementType::ActionSet),
+                            CardElementTypeToString(CardElementType::Carousel),
+                            CardElementTypeToString(CardElementType::CarouselPage),
+                            CardElementTypeToString(CardElementType::ChoiceSetInput),
+                            CardElementTypeToString(CardElementType::Column),
+                            CardElementTypeToString(CardElementType::ColumnSet),
+                            CardElementTypeToString(CardElementType::Container),
+                            CardElementTypeToString(CardElementType::DateInput),
+                            CardElementTypeToString(CardElementType::FactSet),
+                            CardElementTypeToString(CardElementType::Image),
+                            CardElementTypeToString(CardElementType::ImageSet),
+                            CardElementTypeToString(CardElementType::Media),
+                            CardElementTypeToString(CardElementType::NumberInput),
+                            CardElementTypeToString(CardElementType::RichTextBlock),
+                            CardElementTypeToString(CardElementType::Table),
+                            CardElementTypeToString(CardElementType::TextBlock),
+                            CardElementTypeToString(CardElementType::TextInput),
+                            CardElementTypeToString(CardElementType::TimeInput),
+                            CardElementTypeToString(CardElementType::ToggleInput),
+                            CardElementTypeToString(CardElementType::Unknown)});
 
     m_cardElementParsers.insert(
         {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
+         {CardElementTypeToString(CardElementType::Carousel), std::make_shared<CarouselParser>()},
+         {CardElementTypeToString(CardElementType::CarouselPage), std::make_shared<CarouselPageParser>()},
          {CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>()},
          {CardElementTypeToString(CardElementType::Column), std::make_shared<ColumnParser>()},
          {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},

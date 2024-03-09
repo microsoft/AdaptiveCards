@@ -74,7 +74,7 @@
 		},
 		{
 			"type": "Input.Number",
-			"label": "Quantity",
+			"label": "Quantity (Minimum -5, Maximum 5)",
 			"min": -5,
 			"max": 5,
 			"value": 1,

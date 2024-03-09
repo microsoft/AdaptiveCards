@@ -509,31 +509,37 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         auto button = CreateButton(action);
         button.Content(elementToWrap);
 
-        uint32_t cardPadding = 0;
-        if (fullWidth)
+        auto hostConfigImpl = peek_innards<winrt::implementation::AdaptiveHostConfig>(hostConfig);
+        auto addSelectActionMargin = hostConfigImpl->AddSelectActionMargin();
+
+        if (addSelectActionMargin)
         {
-            cardPadding = hostConfig.Spacing().Padding();
-        }
+            uint32_t cardPadding = 0;
+            if (fullWidth)
+            {
+                cardPadding = hostConfig.Spacing().Padding();
+            }
 
-        // We want the hit target to equally split the vertical space above and below the current item.
-        // However, all we know is the spacing of the current item, which only applies to the spacing above.
-        // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing
-        // below. For now, we'll simply assume the bottom spacing is the same as the top. NOTE: Only apply spacings
-        // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
-        if (adaptiveCardElement)
-        {
-            auto elementSpacing = adaptiveCardElement.Spacing();
-            uint32_t spacingSize = GetSpacingSizeFromSpacing(hostConfig, elementSpacing);
+            // We want the hit target to equally split the vertical space above and below the current item.
+            // However, all we know is the spacing of the current item, which only applies to the spacing above.
+            // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing
+            // below. For now, we'll simply assume the bottom spacing is the same as the top. NOTE: Only apply spacings
+            // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
+            if (adaptiveCardElement)
+            {
+                auto elementSpacing = adaptiveCardElement.Spacing();
+                uint32_t spacingSize = GetSpacingSizeFromSpacing(hostConfig, elementSpacing);
 
-            double topBottomPadding = spacingSize / 2.0;
+                double topBottomPadding = spacingSize / 2.0;
 
-            // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
-            button.Padding({(double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding});
+                // For button padding, we apply the cardPadding and topBottomPadding (and then we negate these in the margin)
+                button.Padding({(double)cardPadding, topBottomPadding, (double)cardPadding, topBottomPadding});
 
-            double negativeCardMargin = cardPadding * -1.0;
-            double negativeTopBottomMargin = topBottomPadding * -1.0;
+                double negativeCardMargin = cardPadding * -1.0;
+                double negativeTopBottomMargin = topBottomPadding * -1.0;
 
-            button.Margin({negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin});
+                button.Margin({negativeCardMargin, negativeTopBottomMargin, negativeCardMargin, negativeTopBottomMargin});
+            }
         }
 
         // Style the hit target button

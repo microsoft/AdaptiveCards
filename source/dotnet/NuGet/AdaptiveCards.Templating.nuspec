@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AdaptiveCards.Templating</id>
+    <version>1.5.0</version>
+    <authors>Microsoft</authors>
+    <license type="file">EULA-Windows.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</projectUrl>
+    <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+    <description>This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <repository url="https://github.com/Microsoft/AdaptiveCards" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="AdaptiveExpressions" version="4.20.1" exclude="Build,Analyzers" />
+        <dependency id="Antlr4.Runtime.Standard" version="4.11.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="AdaptiveExpressions" version="4.20.1" exclude="Build,Analyzers" />
+        <dependency id="Antlr4.Runtime.Standard" version="4.11.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Library\AdaptiveCards.Templating\bin\Release\netstandard2.0\AdaptiveCards.Templating.dll" target="lib\netstandard2.0"/>
+
+    <file src="..\Library\AdaptiveCards.Templating.Net6\bin\Release\net6.0\AdaptiveCards.Templating.Net6.dll" target="lib\net6.0"/>
+
+    <file src="EULA-Windows.txt" target="\"/>
+  </files>
+</package>

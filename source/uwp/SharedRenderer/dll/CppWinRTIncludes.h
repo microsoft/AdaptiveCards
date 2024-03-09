@@ -39,6 +39,8 @@
 #include <UI.Xaml.Media.Imaging.h>
 #include <UI.Xaml.Shapes.h>
 
+#include <wil/cppwinrt_helpers.h>
+
 #ifdef USE_WINUI3
 #include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
 #else

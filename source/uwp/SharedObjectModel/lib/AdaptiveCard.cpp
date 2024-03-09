@@ -36,7 +36,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         try
         {
             ::AdaptiveCards::ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.5";
+            const std::string c_rendererVersion = "1.6";
             auto sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             adaptiveParseResult->AdaptiveCard =
                 *winrt::make_self<implementation::AdaptiveCard>(sharedParseResult->GetAdaptiveCard());

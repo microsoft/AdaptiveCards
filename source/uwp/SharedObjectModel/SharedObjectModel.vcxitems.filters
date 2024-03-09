@@ -240,6 +240,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\pch.cpp">
       <Filter>lib</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarousel.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPage.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionElement.h">
@@ -471,6 +477,12 @@
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\pch.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarousel.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPage.h">
       <Filter>lib</Filter>
     </ClInclude>
   </ItemGroup>

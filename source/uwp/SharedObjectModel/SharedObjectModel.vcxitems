@@ -14,9 +14,13 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarousel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarousel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)lib\AdaptiveCarouselPage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lib\pch.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionElement.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)lib\AdaptiveActionParserRegistration.cpp" />

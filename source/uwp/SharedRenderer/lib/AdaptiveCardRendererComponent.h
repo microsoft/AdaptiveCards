@@ -70,6 +70,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             return GetHostConfig()->OverflowButtonAccessibilityText = text;
         }
 
+        void AddSelectActionMargin(bool addSelectActionMargin);
+        bool AddSelectActionMargin();
+
         winrt::RenderedAdaptiveCard RenderAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard);
         winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
         winrt::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::JsonObject const& adaptiveJson);
