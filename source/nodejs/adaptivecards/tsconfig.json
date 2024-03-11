@@ -8,6 +8,7 @@
 		"noImplicitThis": true,
 		"noFallthroughCasesInSwitch": true,
 		"experimentalDecorators": true,
+        "module": "es2020",
 		"types": ["node", "trusted-types"]
 	},
 	"files": ["./src/adaptivecards.ts"]
