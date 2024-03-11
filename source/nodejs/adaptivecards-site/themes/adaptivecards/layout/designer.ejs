@@ -310,6 +310,10 @@
 			designer.sampleHostData = {};
 
 			designer.configHostContainer(parseInt(getParameterByName("hostApp")), getParameterByName("theme"), getParameterByName("size"), parseInt(getParameterByName("deviceEmulation")));
+
+			if (getParameterByName("preview") === "1") {
+				designer.togglePreviewButton();
+			}
 		}
 
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {

@@ -1761,6 +1761,11 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+    public togglePreviewButton() {
+        this._togglePreviewButton.isToggled = true;
+        this.togglePreview();
+    }
+
     onCardPayloadChanged: (designer: CardDesigner) => void;
     onCardValidated: (designer: CardDesigner, validationLogEntries: Adaptive.IValidationEvent[]) => void;
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
