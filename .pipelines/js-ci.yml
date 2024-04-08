@@ -46,16 +46,26 @@ steps:
   inputs:
     version: '20.x'
 
-- bash: |
-   npm ci
-   npx lerna run release
-  workingDirectory: source/nodejs
-  displayName: 'Bash - lerna run release'
+- task: Npm@1
+  displayName: 'npm ci'
+  inputs:
+    command: 'ci'
+    workingDir: 'sources/nodejs'
+    verbose: true
 
-- bash: |
-   npx lerna run test
-  workingDirectory: source/nodejs
-  displayName: 'Run all tests'
+- task: Npm@1
+  displayName: 'npm exec - lerna run release'
+  inputs:
+    command: 'custom'
+    customCommand: 'exec lerna run release --stream'
+    workingDir: 'source/nodejs'
+
+- task: Npm@1
+  displayName: 'npm exec - lerna run test'
+  inputs:
+    command: 'custom'
+    customCommand: 'exec lerna run test --stream'
+    workingDir: source/nodejs
   condition: failed() # This is disabled because of issue 6874
 
 - ${{ each target_package in parameters.target_packages }}:
