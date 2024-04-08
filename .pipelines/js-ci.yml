@@ -50,7 +50,7 @@ steps:
   displayName: 'npm ci'
   inputs:
     command: 'ci'
-    workingDir: 'sources/nodejs'
+    workingDir: 'source/nodejs'
     verbose: true
 
 - task: Npm@1
@@ -65,7 +65,7 @@ steps:
   inputs:
     command: 'custom'
     customCommand: 'exec lerna run test --stream'
-    workingDir: source/nodejs
+    workingDir: 'source/nodejs'
   condition: failed() # This is disabled because of issue 6874
 
 - ${{ each target_package in parameters.target_packages }}:
