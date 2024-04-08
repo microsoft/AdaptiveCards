@@ -46,6 +46,11 @@ steps:
   inputs:
     version: '20.x'
 
+- task: npmAuthenticate@0
+  displayName: 'npm authenticate'
+  inputs:
+    workingFile: 'source/nodejs/.npmrc'
+
 - task: Npm@1
   displayName: 'npm ci'
   inputs:
