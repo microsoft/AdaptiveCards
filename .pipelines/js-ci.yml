@@ -10,7 +10,7 @@ pr:
 
 pool:
   name: Azure Pipelines
-  vmImage: windows-2019
+  vmImage: ubuntu-22.04
   demands:
   - npm
 
@@ -41,19 +41,13 @@ parameters:
   - unit-tests
 
 steps:
-- task: NodeTool@0
-  name: NodeTool1
-  displayName: Use Node 14.x
+- task: UseNode@1
+  displayName: Use Node 20.x
   inputs:
-    versionSpec: 14.x
+    version: '20.x'
 
 - bash: |
-   npm install -g npm@8.11.0
-  workingDirectory: source/nodejs
-  displayName: 'Bash - npm install -g npm 8.11.0'
-  
-- bash: |
-   npm ci 
+   npm ci
    npx lerna run release
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna run release'
