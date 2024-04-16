@@ -32,7 +32,7 @@ steps:
     versionSpec: '20.x'
 
 - bash: |
-   npm ci
+   npm ci --maxsockets=1
   workingDirectory: source/nodejs
   displayName: 'Bash - npm ci'
 
@@ -65,6 +65,3 @@ steps:
        git push --tags
       workingDirectory: source/android/adaptivecards
       displayName: 'Push git tag'
-
-
-

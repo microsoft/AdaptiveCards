@@ -51,12 +51,10 @@ steps:
   inputs:
     workingFile: 'source/nodejs/.npmrc'
 
-- task: Npm@1
+- bash: |
+   npm ci --maxsockets=1
+  workingDirectory: source/nodejs
   displayName: 'npm ci'
-  inputs:
-    command: 'ci'
-    workingDir: 'source/nodejs'
-    verbose: true
 
 - task: Npm@1
   displayName: 'npm exec - lerna run release'
