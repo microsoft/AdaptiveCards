@@ -30,7 +30,6 @@ parameters:
   type: object
   default:
   - adaptivecards-ui-testapp
-  - adaptivecards-react-testapp
 
 - name: test_projects
   displayName: "project in tests/."
