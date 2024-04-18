@@ -649,7 +649,11 @@ std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUr
     winrt::Windows::Foundation::Uri uriObj(imageUrl);
     winrt::hstring unescapedUri = uriObj.UnescapeComponent(uriObj.AbsoluteUri());
     std::string dataUri = HStringToUTF8(unescapedUri);
-    size_t comaPosition = dataUri.find_first_of(",");
-    std::string data = dataUri.substr(comaPosition + 1);
+    size_t svgPosition = dataUri.find("<svg");
+    std::string data;
+    if (svgPosition != std::string::npos)
+    {
+        data = dataUri.substr(svgPosition);
+    }
     return data;
 }

@@ -360,7 +360,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
 
             auto foundBase64 = HStringToUTF8(imageUrl.Path()).find("base64");
-            if (!(foundBase64 == std::string::npos))
+            if (foundBase64 != std::string::npos)
             {
                 // Decode base 64 string
                 winrt::hstring dataPath = imageUrl.Path();
@@ -370,7 +370,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             }
             else
             {
-                // <svg> ... </svg> string
+                // Extract <svg> ... </svg> string
                 std::string data = ExtractSvgDataFromUri(imageUrl);
                 dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
             }
