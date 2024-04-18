@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -21,6 +22,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-		public override string Type { get; set; } = TypeName;
+        [JsonProperty(Required = Required.Default)]
+        public override string Type { get; set; } = TypeName;
     }
 }
