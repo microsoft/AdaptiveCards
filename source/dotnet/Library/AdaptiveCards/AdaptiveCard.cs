@@ -258,6 +258,16 @@ namespace AdaptiveCards
         public AdaptiveAuthentication Authentication { get; set; }
 
         /// <summary>
+        /// Defines various metadata properties typically not used for rendering the card
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveMetadata Metadata { get; set; }
+
+        /// <summary>
         /// Determines whether the height property of an AdaptiveCard should be serialized.
         /// </summary>
         /// <returns>true iff the height property should be serialized.</returns>
