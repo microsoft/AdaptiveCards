@@ -158,7 +158,7 @@ namespace AdaptiveCards.Test
             var json = card.ToJson();
             const string ExpectedJSON = @"{
                                       ""type"": ""AdaptiveCard"",
-                                      ""version"": ""1.5"",
+                                      ""version"": ""1.6"",
                                       ""body"": [
                                         {
                                           ""type"": ""Table"",
@@ -190,7 +190,7 @@ namespace AdaptiveCards.Test
             var json = card.ToJson();
             const string ExpectedJSON = @"{
                                       ""type"": ""AdaptiveCard"",
-                                      ""version"": ""1.5"",
+                                      ""version"": ""1.6"",
                                       ""body"": [
                                         {
                                           ""type"": ""Table"",
