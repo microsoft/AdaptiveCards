@@ -368,7 +368,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
                 dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
             }
-            else
+            else if (imgProperties.isImageSvg)
             {
                 // Extract <svg> ... </svg> string
                 std::string data = ExtractSvgDataFromUri(imageUrl);
