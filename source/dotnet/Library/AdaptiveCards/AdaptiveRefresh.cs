@@ -23,8 +23,9 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveExecuteAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
 #endif
-        public AdaptiveExecuteAction Action { get; set; }
+        public AdaptiveAction Action { get; set; }
 
         /// <summary>
         ///     A list of user Ids informing the client for which users should the refresh action should be run automatically.

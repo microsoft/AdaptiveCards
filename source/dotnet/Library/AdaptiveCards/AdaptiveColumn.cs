@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -35,21 +36,12 @@ namespace AdaptiveCards
         /// <summary>
         /// Width for the column (either ColumnWidth string or number which is relative size of the column).
         /// </summary>
+        [JsonConverter(typeof(AdaptiveWidthConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(null)]
-        public string Width { get; set; } // TODO: this should be a ColumnWidth type with implicit converter
+        public AdaptiveWidth Width { get; set; }
 
-        /// <summary>
-        /// Sets the text flow direction
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(null)]
-        public bool? Rtl { get; set; } = null;
     }
 }

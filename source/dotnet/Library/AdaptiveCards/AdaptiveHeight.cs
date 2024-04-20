@@ -52,6 +52,38 @@ namespace AdaptiveCards
         }
 
         /// <summary>
+        /// Initializes an AdaptiveHeight instance with the given string "auto" |"stretch" or "100px"
+        /// </summary>
+        /// <param name="value">enumeration value or pixel .</param>
+        public AdaptiveHeight(string value)
+        {
+            if (value == null)
+            {
+                HeightType = AdaptiveHeightType.Auto;
+            }
+            else if (value.EndsWith("px"))
+            {
+                value = value.Substring(0, value.Length - 2);
+                HeightType = AdaptiveHeightType.Pixel;
+                Unit = uint.Parse(value);
+            }
+            else if (uint.TryParse(value, out var val))
+            {
+                HeightType = AdaptiveHeightType.Pixel;
+                Unit = val;
+            }
+            else
+            {
+                HeightType = (AdaptiveHeightType)Enum.Parse(typeof(AdaptiveHeightType), value, ignoreCase: true);
+            }
+        }
+
+        public static AdaptiveHeight Parse(string value)
+        {
+            return new AdaptiveHeight(value);
+        }
+
+        /// <summary>
         /// Initializes an AdaptiveHeight instance with the given pixel size.
         /// </summary>
         /// <param name="px">The device-independent pixel size to use.</param>
@@ -136,6 +168,33 @@ namespace AdaptiveCards
             return true;
         }
 
+        /// <summary>
+        /// Assignment operator with uint pixels
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator AdaptiveHeight(uint value)
+        {
+            return new AdaptiveHeight(value);
+        }
+
+        /// <summary>
+        /// Assignment operator with type
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator AdaptiveHeight(AdaptiveHeightType value)
+        {
+            return new AdaptiveHeight(value);
+        }
+
+        /// <summary>
+        /// Assignment operator with string (100x)
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator AdaptiveHeight(string value)
+        {
+            return new AdaptiveHeight(value);
+        }
+
         /// <inheritdoc />
         public static bool operator ==(AdaptiveHeight ah1, AdaptiveHeight ah2)
         {
@@ -176,6 +235,15 @@ namespace AdaptiveCards
                 return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            if (HeightType == AdaptiveHeightType.Stretch)
+                return "stretch";
+            if (HeightType == AdaptiveHeightType.Auto)
+                return "auto";
+            return $"{Unit}px";
         }
     }
 }
