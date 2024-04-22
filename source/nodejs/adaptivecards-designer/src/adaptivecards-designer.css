@@ -776,7 +776,6 @@
     pointer-events: all !important;
     height: 20px;
     border-radius: 0;
-    outline: none;
 }
 
 .acd-peerButton.fixedWidth {
