@@ -74,6 +74,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             rootAsFrameworkElement = rootSelectActionElement.as<winrt::FrameworkElement>();
 
+            // Set automation name using speak property
+            winrt::Automation::AutomationProperties::SetName(rootAsFrameworkElement, adaptiveCard.Speak());
+
             // Enumerate the child items of the card and build xaml for them
             auto body = adaptiveCard.Body();
             auto bodyRenderArgs =
