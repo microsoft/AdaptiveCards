@@ -33,6 +33,10 @@ steps:
   inputs:
     versionSpec: 5.x
 
+- task: NuGetAuthenticate@1
+    inputs:
+      nuGetServiceConnections: acNugetConnection
+
 - task: NuGetCommand@2
   displayName: NuGet restore
   inputs:
