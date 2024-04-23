@@ -77,6 +77,15 @@ namespace winrt
     {
         using namespace ::winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation;
     }
+    
+    // using namespace winrt::Windows::Data::Xml::Dom
+    using XmlDocument = ::winrt::Windows::Data::Xml::Dom::XmlDocument;
+    using IXmlNode = ::winrt::Windows::Data::Xml::Dom::IXmlNode;
+
+    // using namespace winrt::Windows::Web::Http
+    using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;
+    using HttpClient = ::winrt::Windows::Web::Http::HttpClient;
+    using HttpResponseMessage = ::winrt::Windows::Web::Http::HttpResponseMessage;
 
 #ifdef USE_WINUI3
     using MediaElement = xaml::Controls::MediaPlayerElement;
@@ -97,16 +106,8 @@ namespace winrt
     // using namespace winrt::Windows::Data::Json
     using JsonObject = ::winrt::Windows::Data::Json::JsonObject;
 
-    // using namespace winrt::Windows::Data::Xml::Dom
-    using XmlDocument = ::winrt::Windows::Data::Xml::Dom::XmlDocument;
-    using IXmlNode = ::winrt::Windows::Data::Xml::Dom::IXmlNode;
-
     // using namespace winrt::Windows::Globalization::DateTimeFormatting;
     using DateTimeFormatter = ::winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter;
-
-    // using namespace winrt::Windows::Web::Http
-    using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;
-    using HttpClient = ::winrt::Windows::Web::Http::HttpClient;
 
     // using namespace winrt::Windows::Web::Http::HttpFilters
     using HttpBaseProtocolFilter = ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter;
