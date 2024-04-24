@@ -3,6 +3,48 @@ layout: layout
 ---
 <!-- This is the blog index page -->
 
+<script type="text/javascript">
+	function onKeyUp(event) {
+		let current = event.target;
+		// Only continue if we are focused on an article element
+		if (current.classList.contains("article")) {
+			switch(event.key) {
+				case "ArrowRight":
+					let next = current.nextElementSibling;
+					if (next != null) {
+						// Focus on next article
+						next.focus();
+					} else {
+						// Look at next row
+						let parentRow = current.parentElement;
+						let nextRow = parentRow.nextElementSibling;
+						if (nextRow != null) {
+							// Focus on the first article in that row
+							nextRow.firstElementChild.focus();
+						}
+					}
+					break;
+				case "ArrowLeft":
+					let prev = current.previousElementSibling;
+					if (prev != null) {
+						prev.focus();
+					} else {
+						// Look at previous row
+						let parentRow = current.parentElement;
+						let prevRow = parentRow.previousElementSibling;
+						if (prevRow != null) {
+							// Focus on the last article in that row
+							prevRow.lastElementChild.focus();
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+</script>
+
 <style>
 	.main-container {
 		padding: 0 !important;
@@ -22,7 +64,7 @@ layout: layout
 	<% if(i % 3 === 0) { /* start a new row every 3 posts */ %>
 	<div class="w3-cell-row w3-padding-16">
 		<% } %>
-		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px">
+		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px" onkeyup="onKeyUp(event)" tabindex="0">
 			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-wide.png');
 				var style = "background-image: url('" + imageSrc + "')"  %>
 			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" aria-label="<%= post.title %>"></a>
