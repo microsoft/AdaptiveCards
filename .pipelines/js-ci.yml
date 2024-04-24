@@ -10,7 +10,7 @@ pr:
 
 pool:
   name: Azure Pipelines
-  vmImage: windows-2022
+  vmImage: ubuntu-22.04
   demands:
   - npm
 
