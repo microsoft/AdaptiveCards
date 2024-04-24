@@ -8,11 +8,14 @@ using Newtonsoft.Json.Converters;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Format datetime as Iso8601 instant format "yyyy-MM-ddTHH:mm:ssZ";
+    /// </summary>
     public class Iso8601DateTimeConverter : IsoDateTimeConverter
     {
         public Iso8601DateTimeConverter() : base()
         {
-            DateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ"; // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+            DateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ"; 
         }
     }
 }
