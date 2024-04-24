@@ -13,6 +13,10 @@ This directory contains all the JS packages for adaptive cards:
 Removed JS packages:
 * `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer. This package has been deprecated. Please migrate to [`adaptivecards-fluentui`](https://www.npmjs.com/package/adaptivecards-fluentui). The source code is available in [21.09](https://github.com/microsoft/AdaptiveCards/releases/tag/21.09) or before releases.
 
+## Prerequisites
+
+- Node 20+
+
 ## Authenticate with npm registry
 
 1. `vsts-npm-auth -config .npmrc` in `source/nodejs`
