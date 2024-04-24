@@ -54,7 +54,7 @@ namespace AdaptiveCards
                 }
 
                 Warnings.Add(new AdaptiveWarning(-1, $@"The Value ""{value}"" for field ""{reader.Path}"" was not valid, it will be ignored."));
-                return null;
+                return AdaptiveWidth.Auto;
             }
 
         }

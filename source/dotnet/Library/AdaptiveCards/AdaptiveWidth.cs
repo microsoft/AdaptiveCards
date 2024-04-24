@@ -29,7 +29,7 @@ namespace AdaptiveCards
         Pixel
     }
 
-    
+
     /// <summary>
     /// Represents the Width property in Adaptive Cards.
     /// </summary>
@@ -53,29 +53,31 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Initializes an AdaptiveWidth instance with the given string "auto" |"stretch" or "100px"
+        /// Initializes an AdaptiveWidth instance with the given string "auto"|"stretch"|"100px"
         /// </summary>
         /// <param name="value">enumeration value or pixel .</param>
         public AdaptiveWidth(string value)
         {
-            if (value == null)
+            WidthType = AdaptiveWidthType.Auto;
+            if (!String.IsNullOrEmpty(value))
             {
-                WidthType = AdaptiveWidthType.Auto;
-            }
-            else if (value.EndsWith("px"))
-            {
-                value = value.Substring(0, value.Length - 2);
-                WidthType = AdaptiveWidthType.Pixel;
-                Unit = uint.Parse(value);
-            }
-            else if (uint.TryParse(value, out var val))
-            {
-                WidthType = AdaptiveWidthType.Pixel;
-                Unit = val;
-            }
-            else
-            {
-                WidthType = (AdaptiveWidthType)Enum.Parse(typeof(AdaptiveWidthType), value, ignoreCase: true);
+                if (value.EndsWith("px"))
+                {
+                    value = value.Substring(0, value.Length - 2);
+                    // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
+                    Unit = uint.Parse(value);
+                    WidthType = AdaptiveWidthType.Pixel;
+                }
+                else if (uint.TryParse(value, out var val))
+                {
+                    WidthType = AdaptiveWidthType.Pixel;
+                    Unit = val;
+                }
+                else
+                {
+                    // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
+                    WidthType = (AdaptiveWidthType)Enum.Parse(typeof(AdaptiveWidthType), value, ignoreCase: true);
+                }
             }
         }
 

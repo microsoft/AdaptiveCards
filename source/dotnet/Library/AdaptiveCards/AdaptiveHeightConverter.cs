@@ -16,7 +16,6 @@ namespace AdaptiveCards
         {
         }
 
-
         public override void WriteJson(JsonWriter writer, AdaptiveHeight value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());
@@ -51,7 +50,7 @@ namespace AdaptiveCards
                     Warnings.Add(new AdaptiveWarning(-1,
                         $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
                 }
-                return null;
+                return AdaptiveHeight.Auto;
             }
         }
     }

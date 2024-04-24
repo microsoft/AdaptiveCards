@@ -52,29 +52,31 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Initializes an AdaptiveHeight instance with the given string "auto" |"stretch" or "100px"
+        /// Initializes an AdaptiveHeight instance with the given string "auto"|"stretch"|"100px"
         /// </summary>
         /// <param name="value">enumeration value or pixel .</param>
         public AdaptiveHeight(string value)
         {
-            if (value == null)
+            HeightType = AdaptiveHeightType.Auto;
+            if (!String.IsNullOrEmpty(value))
             {
-                HeightType = AdaptiveHeightType.Auto;
-            }
-            else if (value.EndsWith("px"))
-            {
-                value = value.Substring(0, value.Length - 2);
-                HeightType = AdaptiveHeightType.Pixel;
-                Unit = uint.Parse(value);
-            }
-            else if (uint.TryParse(value, out var val))
-            {
-                HeightType = AdaptiveHeightType.Pixel;
-                Unit = val;
-            }
-            else
-            {
-                HeightType = (AdaptiveHeightType)Enum.Parse(typeof(AdaptiveHeightType), value, ignoreCase: true);
+                if (value.EndsWith("px"))
+                {
+                    value = value.Substring(0, value.Length - 2);
+                    // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
+                    Unit = uint.Parse(value);
+                    HeightType = AdaptiveHeightType.Pixel;
+                }
+                else if (uint.TryParse(value, out var val))
+                {
+                    HeightType = AdaptiveHeightType.Pixel;
+                    Unit = val;
+                }
+                else
+                {
+                    // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
+                    HeightType = (AdaptiveHeightType)Enum.Parse(typeof(AdaptiveHeightType), value, ignoreCase: true);
+                }
             }
         }
 
