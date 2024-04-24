@@ -51,7 +51,8 @@ steps:
     workingFile: 'source/nodejs/.npmrc'
 
 - bash: |
-   npm ci --maxsockets=1
+    npm cache clean --force
+    npm ci --maxsockets=1
   workingDirectory: source/nodejs
   displayName: 'npm ci'
 

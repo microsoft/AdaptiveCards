@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"outDir": "./lib",
 		"resolveJsonModule": true,
-        "types": ["node", "trusted-types"]
+		"types": ["node", "trusted-types"]
 	},
 	"files": ["./src/adaptivecards-ui-testapp.ts"]
 }
