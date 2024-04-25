@@ -643,3 +643,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         registration->Set(L"Action.Execute", winrt::make<winrt::implementation::AdaptiveExecuteActionRenderer>());
     }
 }
+
+std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUrl)
+{
+    winrt::Windows::Foundation::Uri uriObj(imageUrl);
+    winrt::hstring unescapedUri = uriObj.UnescapeComponent(uriObj.AbsoluteUri());
+    std::string dataUri = HStringToUTF8(unescapedUri);
+    size_t svgPosition = dataUri.find("<svg");
+    std::string data;
+    if (svgPosition != std::string::npos)
+    {
+        data = dataUri.substr(svgPosition);
+    }
+    return data;
+}

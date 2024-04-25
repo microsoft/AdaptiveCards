@@ -9,6 +9,7 @@
 #include "AdaptiveBase64Util.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 #include <robuffer.h>
+#include "Util.h"
 #include "WholeItemsPanel.h"
 
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
@@ -356,14 +357,22 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         if (schemeName == L"data")
         {
-            // Decode base 64 string
-            winrt::hstring dataPath = imageUrl.Path();
-            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath));
-            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
-
             winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
-
-            dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+            auto imagePath = HStringToUTF8(imageUrl.Path());
+            auto foundBase64 = imagePath.find("base64");
+            if (foundBase64 != std::string::npos)
+            {
+                // Decode base 64 string
+                std::string data = AdaptiveBase64Util::ExtractDataFromUri(imagePath);
+                std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+                dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+            }
+            else if (imgProperties.isImageSvg)
+            {
+                // Extract <svg> ... </svg> string
+                std::string data = ExtractSvgDataFromUri(imageUrl);
+                dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
+            }
 
             auto image = CreateImageSource(imgProperties.isImageSvg);
 
@@ -427,6 +436,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                     // Now that we've parsed the height and width successfully, we can set the image source
                                     strongThis->SetSvgUriSource(strongImageSource, imageUrl);
                                 }
+                            }
+                            else if (status == winrt::AsyncStatus::Error)
+                            {
+                                // Handle error
+                                winrt::hresult error = operation.ErrorCode();
                             }
                         }
                     });
