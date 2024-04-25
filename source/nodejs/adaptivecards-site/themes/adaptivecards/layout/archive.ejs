@@ -8,6 +8,9 @@ layout: layout
 		let current = event.target;
 		// Only continue if we are focused on an article element
 		if (current.classList.contains("article")) {
+			let parentRow = current.parentElement;
+			let nextRow = parentRow.nextElementSibling;
+			let prevRow = parentRow.previousElementSibling;
 			switch(event.key) {
 				case "ArrowRight":
 					let next = current.nextElementSibling;
@@ -15,13 +18,7 @@ layout: layout
 						// Focus on next article
 						next.focus();
 					} else {
-						// Look at next row
-						let parentRow = current.parentElement;
-						let nextRow = parentRow.nextElementSibling;
-						if (nextRow != null) {
-							// Focus on the first article in that row
-							nextRow.firstElementChild.focus();
-						}
+						nextRow?.firstElementChild?.focus();
 					}
 					break;
 				case "ArrowLeft":
@@ -29,15 +26,44 @@ layout: layout
 					if (prev != null) {
 						prev.focus();
 					} else {
-						// Look at previous row
-						let parentRow = current.parentElement;
-						let prevRow = parentRow.previousElementSibling;
-						if (prevRow != null) {
-							// Focus on the last article in that row
-							prevRow.lastElementChild.focus();
+						prevRow?.lastElementChild?.focus();
+					}
+					break;
+				case "ArrowUp":
+					if (prevRow != null) {
+						// Special case - only one element in the row
+						if (parentRow.children.length === 1) {
+							// Go to the middle element
+							prevRow.children[1]?.focus();
+						} else if (current === parentRow.children[0]) {
+							prevRow.children[0]?.focus();
+						} else if (current === parentRow.children[1]) {
+							prevRow.children[1]?.focus();
+						} else {
+							prevRow.children[2]?.focus();
 						}
 					}
 					break;
+				case "ArrowDown":
+					if (nextRow != null) {
+						if (nextRow.children.length === 1) {
+							nextRow.children[0]?.focus();
+						} else if (nextRow.children.length === 2) {
+							if (current === parentRow.children[0]) {
+								nextRow.children[0]?.focus();
+							} else {
+								nextRow.children[1]?.focus();
+							}
+						} else {
+							if (current === parentRow.children[0]) {
+								nextRow.children[0]?.focus();
+							} else if (current === parentRow.children[1]) {
+								nextRow.children[1]?.focus();
+							} else {
+								nextRow.children[2]?.focus();
+							}
+						}						
+					}
 				default:
 					break;
 			}
@@ -92,6 +118,10 @@ layout: layout
 	</div>
 	<% } %>
 	<% }); %>
+
+	<% if(page.posts.length % 3 !== 0) { /* if the posts were not divisible by 3, we need to close the last row */ %>
+	</div>
+	<% } %>
 
 	<!-- Pager -->
 
