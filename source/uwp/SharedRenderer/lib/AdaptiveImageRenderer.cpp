@@ -414,36 +414,45 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (imgProperties.isImageSvg)
             {
-                // If we have an SVG, we need to try to parse for the image size before setting the image source
-                auto svgDocumentLoadOperation = winrt::XmlDocument::LoadFromUriAsync(imageUrl);
+                winrt::HttpClient httpClient;
+                auto getOperation = httpClient.GetAsync(imageUrl);
 
-                svgDocumentLoadOperation.Completed(
-                    [weakThis = this->get_weak(),
-                     weakImageSource = winrt::make_weak(image.as<winrt::SvgImageSource>()),
-                     imageUrl](auto const& operation, auto status) -> void
+                getOperation.Completed([weakThis = this->get_weak(),
+                                        weakImageSource = winrt::make_weak(image.as<winrt::SvgImageSource>()),
+                                        imageUrl](auto const& operation, auto status)
+                {
+                    if (status == winrt::AsyncStatus::Completed)
                     {
-                        auto strongThis = weakThis.get();
-                        auto strongImageSource = weakImageSource.get();
+                        winrt::HttpResponseMessage response = operation.GetResults();
 
-                        if (strongThis && strongImageSource)
+                        if (response.IsSuccessStatusCode())
                         {
-                            if (status == winrt::AsyncStatus::Completed)
-                            {
-                                auto success = strongThis->ParseXmlForHeightAndWidth(operation.GetResults(), strongImageSource);
+                            auto readOperation = response.Content().ReadAsStringAsync();
 
-                                if (success)
+                            readOperation.Completed([weakThis, weakImageSource, imageUrl](auto const& operation, auto status)
                                 {
-                                    // Now that we've parsed the height and width successfully, we can set the image source
-                                    strongThis->SetSvgUriSource(strongImageSource, imageUrl);
+                                auto strongThis = weakThis.get();
+                                auto strongImageSource = weakImageSource.get();
+
+                                if (strongThis && strongImageSource)
+                                {
+                                    if (status == winrt::AsyncStatus::Completed)
+                                    {
+                                        // Read SVG xml
+                                        winrt::XmlDocument xmlDoc;
+                                        xmlDoc.LoadXml(operation.GetResults());
+                                        auto success = strongThis->ParseXmlForHeightAndWidth(xmlDoc, strongImageSource);
+                                        if (success)
+                                        {
+                                            // Now that we've parsed the height and width successfully, we can set the image source
+                                            strongThis->SetSvgUriSource(strongImageSource, imageUrl);
+                                        }
+                                    }
                                 }
-                            }
-                            else if (status == winrt::AsyncStatus::Error)
-                            {
-                                // Handle error
-                                winrt::hresult error = operation.ErrorCode();
-                            }
+                            });
                         }
-                    });
+                    }
+                });
             }
             else
             {
