@@ -3,6 +3,7 @@
 	"version": "0.3.0-alpha.0",
 	"description": "Create markdown documentations from a JSON-schema file",
 	"main": "lib/index.js",
+	"sideEffects": false,
 	"scripts": {
 		"test": "node bin/marked-schema ./test/adaptive-card.json ./test/toc.yml -r AdaptiveCard",
 		"test-with-examples": "node bin/marked-schema ./test/adaptive-card.json ./test/toc.yml -r AdaptiveCard -e C:/Dev/Projects/AdaptiveCards/samples/v1.0"
@@ -15,6 +16,7 @@
 	"private": true,
 	"dependencies": {
 		"json-schema-ref-parser": "^9.0.9",
+		"glob": "^8.0.3",
 		"minimist": "^1.2.5"
 	}
 }
