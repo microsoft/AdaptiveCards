@@ -4,7 +4,7 @@ layout: layout
 <!-- This is the blog index page -->
 
 <script type="text/javascript">
-	function onKeyUp(event) {
+	function onKeyUp(event, href) {
 		let current = event.target;
 		// Only continue if we are focused on an article element
 		if (current.classList.contains("article")) {
@@ -64,6 +64,9 @@ layout: layout
 							}
 						}						
 					}
+				case "Enter":
+					window.location.href = href;
+					break;
 				default:
 					break;
 			}
@@ -90,7 +93,7 @@ layout: layout
 	<% if(i % 3 === 0) { /* start a new row every 3 posts */ %>
 	<div class="w3-cell-row w3-padding-16">
 		<% } %>
-		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px" onkeyup="onKeyUp(event)" tabindex="0">
+		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px" onkeyup="onKeyUp(event, '<%- config.root %><%- post.path %>')" tabindex="0">
 			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-wide.png');
 				var style = "background-image: url('" + imageSrc + "')"  %>
 			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" aria-label="<%= post.title %>"></a>
