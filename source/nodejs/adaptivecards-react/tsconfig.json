@@ -1,10 +1,11 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "jsx": "react",
-        "esModuleInterop": true,
-        "outDir": "./lib",
-        "resolveJsonModule": true
-    },
-    "files": ["src/adaptivecards-react.ts"]
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"jsx": "react",
+		"esModuleInterop": true,
+		"outDir": "./lib",
+		"resolveJsonModule": true,
+		"types": ["trusted-types"]
+	},
+	"files": ["src/adaptivecards-react.ts"]
 }
