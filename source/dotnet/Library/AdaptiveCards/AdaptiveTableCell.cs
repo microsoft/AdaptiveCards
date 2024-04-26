@@ -16,5 +16,11 @@ namespace AdaptiveCards
     {
         /// <inheritdoc />
         public new const string TypeName = "TableCell";
+
+        /// <inheritdoc />
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+		public override string Type { get; set; } = TypeName;
     }
 }

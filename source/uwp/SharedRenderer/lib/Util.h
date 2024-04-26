@@ -223,3 +223,5 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
     void RegisterDefaultActionRenderers(winrt::implementation::AdaptiveActionRendererRegistration* registration);
 }
+
+std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUrl);

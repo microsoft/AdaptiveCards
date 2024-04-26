@@ -10,7 +10,7 @@ pr:
 
 pool:
   name: Azure Pipelines
-  vmImage: windows-2019
+  vmImage: ubuntu-22.04
   demands:
   - npm
 
@@ -30,7 +30,6 @@ parameters:
   type: object
   default:
   - adaptivecards-ui-testapp
-  - adaptivecards-react-testapp
 
 - name: test_projects
   displayName: "project in tests/."
@@ -41,28 +40,35 @@ parameters:
   - unit-tests
 
 steps:
-- task: NodeTool@0
-  name: NodeTool1
-  displayName: Use Node 14.x
+- task: UseNode@1
+  displayName: Use Node 20.x
   inputs:
-    versionSpec: 14.x
+    version: '20.x'
+
+- task: npmAuthenticate@0
+  displayName: 'npm authenticate'
+  inputs:
+    workingFile: 'source/nodejs/.npmrc'
 
 - bash: |
-   npm install -g npm@8.11.0
+    npm cache clean --force
+    npm ci --maxsockets=1
   workingDirectory: source/nodejs
-  displayName: 'Bash - npm install -g npm 8.11.0'
-  
-- bash: |
-   npm ci 
-   npx lerna bootstrap --ci
-   npx lerna run release
-  workingDirectory: source/nodejs
-  displayName: 'Bash - lerna bootstrap'
+  displayName: 'npm ci'
 
-- bash: |
-   npx lerna run test
-  workingDirectory: source/nodejs
-  displayName: 'Run all tests'
+- task: Npm@1
+  displayName: 'npm exec - lerna run release'
+  inputs:
+    command: 'custom'
+    customCommand: 'exec lerna run release --stream'
+    workingDir: 'source/nodejs'
+
+- task: Npm@1
+  displayName: 'npm exec - lerna run test'
+  inputs:
+    command: 'custom'
+    customCommand: 'exec lerna run test --stream'
+    workingDir: 'source/nodejs'
   condition: failed() # This is disabled because of issue 6874
 
 - ${{ each target_package in parameters.target_packages }}:
