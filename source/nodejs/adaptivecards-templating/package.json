@@ -39,8 +39,8 @@
 		"@types/json-schema": "^7.0.8",
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^3.0.2",
-		"typedoc": "^0.22.5",
-		"typedoc-plugin-markdown": "^3.11.2"
+		"typedoc": "^0.25.11",
+		"typedoc-plugin-markdown": "^3.17.1"
 	},
 	"peerDependencies": {
 		"adaptive-expressions": "^4.11.0"
