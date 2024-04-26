@@ -1,19 +1,14 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es5",
-		"lib": [
-			"dom",
-			"es2015"
-		],
+		"target": "es6",
+		"lib": ["dom", "es2022"],
 		"moduleResolution": "node",
 		"jsx": "react",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"declaration": true
+		"declaration": true,
+		"types": []
 	},
-	"exclude": [
-		"node_modules",
-		"**/*.spec.ts"
-	]
+	"exclude": ["node_modules", "**/*.spec.ts"]
 }

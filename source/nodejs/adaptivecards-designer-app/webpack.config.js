@@ -51,13 +51,13 @@ module.exports = (env, argv) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: 'node_modules/adaptivecards-designer/src/containers/**/*',
+                        from: '../node_modules/adaptivecards-designer/src/containers/**/*',
                         to: 'containers/[name][ext]'
                     },
                     {
                         // the designer expects to find its CSS here. an alternative for a consumer would
                         // be to make sure they load it themselves.
-                        from: 'node_modules/adaptivecards-designer/dist/adaptivecards-designer.css',
+                        from: '../node_modules/adaptivecards-designer/dist/adaptivecards-designer.css',
                         to: 'adaptivecards-designer.css'
                     }
                 ]
