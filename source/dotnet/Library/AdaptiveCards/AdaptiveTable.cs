@@ -107,6 +107,6 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(true)]
-        public bool FirstRowAsHeaders { get; set; }
+        public bool FirstRowAsHeaders { get; set; } = true;
     }
 }

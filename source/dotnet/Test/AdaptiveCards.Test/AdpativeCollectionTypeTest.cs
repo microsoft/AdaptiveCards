@@ -88,7 +88,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(0, table.Columns.Count);
             Assert.AreEqual(0, table.Rows.Count);
             Assert.IsTrue(table.ShowGridLines);
-            Assert.IsFalse(table.FirstRowAsHeaders);
+            Assert.IsTrue(table.FirstRowAsHeaders);
             Assert.AreEqual(null, table.GridStyle);
         }
 
