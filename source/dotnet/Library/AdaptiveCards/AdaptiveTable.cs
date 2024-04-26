@@ -106,7 +106,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(false)]
-        public bool FirstRowAsHeaders{ get; set; }
+        [DefaultValue(true)]
+        public bool FirstRowAsHeaders { get; set; }
     }
 }
