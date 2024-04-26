@@ -41,7 +41,7 @@ module.exports = (env, argv) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: 'node_modules/adaptivecards/dist/*.css',
+                        from: '../node_modules/adaptivecards/dist/*.css',
                         to: './[name][ext]'
                     }
                 ]
