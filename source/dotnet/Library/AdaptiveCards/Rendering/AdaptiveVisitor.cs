@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using AdaptiveCards;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AdaptiveCards.Rendering
 {
@@ -332,6 +333,11 @@ namespace AdaptiveCards.Rendering
             foreach (var item in cell.Items)
             {
                 Visit(item);
+            }
+
+            if (cell.SelectAction != null)
+            {
+                Visit(cell.SelectAction);
             }
         }
     }
