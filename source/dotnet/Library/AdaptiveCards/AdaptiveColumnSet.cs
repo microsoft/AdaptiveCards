@@ -24,6 +24,16 @@ namespace AdaptiveCards
 #endif
         public override string Type { get; set; } = TypeName;
 
+		/// <summary>
+        /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
         /// <summary>
         /// Collection of Columns that this ColumnSet contains.
         /// </summary>
