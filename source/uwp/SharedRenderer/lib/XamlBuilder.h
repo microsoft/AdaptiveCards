@@ -109,33 +109,33 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::fire_and_forget SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
                                             winrt::Uri const uriRef);
 
-        template<typename TElement, typename TStream>
-        winrt::IAsyncAction SetSvgImageSourceAsync(winrt::SvgImageSource const imageSourceRef,
-                                                   TStream const streamRef,
-                                                   ImageProperties<TElement> const imgProperties);
+		winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageAsync(winrt::IRandomAccessStream const stream);
+
+		winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
+            winrt::Uri const uri, winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg);
+
+        winrt::IAsyncOperation<winrt::SvgImageSource> XamlBuilder::SetImageSourceAsync(
+            winrt::SvgImageSource imageSource, winrt::IRandomAccessStream const stream);
+
+		template<typename TElement>
+        winrt::fire_and_forget ResolveImageAsync(
+            winrt::Uri const uri,
+            winrt::AdaptiveCardResourceResolvers const resolvers,
+            winrt::ImageSource imageSource,
+            ImageProperties<TElement> const properties);
 
         boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
 
-        bool ParseXmlForHeightAndWidth(winrt::XmlDocument const& xmlDoc,
-                                       winrt::SvgImageSource const& imageSourceRef);
-        
-        winrt::fire_and_forget SetRasterizedPixelHeightAsync(winrt::SvgImageSource const imageSourceRef,
-                                                     double const imageSize,
-                                                     bool const dropIfUnset = false);
-        winrt::fire_and_forget SetRasterizedPixelWidthAsync(winrt::SvgImageSource const imageSourceRef,
-                                                    double const imageSize,
-                                                    bool const dropIfUnset = false);
-
         void SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize);
         void SetRasterizedPixelWidth(winrt::ImageSource const& imageSource, double const& imageSize);
-
         static void ShouldFallback(winrt::IAdaptiveCardElement const& element,
                                    winrt::IAdaptiveElementRenderer const& elementRenderer,
                                    winrt::AdaptiveRenderArgs const& renderArgs,
                                    winrt::AdaptiveFeatureRegistration const& featureRegistration,
                                    boolean ancestorHasFallback);
+        static winrt::Windows::Foundation::Size ParseXmlForHeightAndWidth(winrt::hstring const& content);
     };
 }

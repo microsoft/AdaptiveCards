@@ -2,7 +2,8 @@
   "profiles": {
     "AdaptiveCardVisualizer (Package)": {
       "commandName": "MsixPackage",
-      "nativeDebugging": true
+      "nativeDebugging": true,
+      "hotReloadEnabled": false
     },
     "AdaptiveCardVisualizer (Unpackaged)": {
       "commandName": "Project"
