@@ -69,7 +69,7 @@ namespace AdaptiveCards
         public bool? Rtl { get; set; } = null;
 
 		/// <summary>
-        /// Sets padding
+        /// Gets or sets the padding.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3

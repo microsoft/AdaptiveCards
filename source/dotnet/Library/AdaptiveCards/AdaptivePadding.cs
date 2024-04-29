@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents any input element.
+    /// Represents padding object.
     /// </summary>
     public class AdaptivePadding
     {

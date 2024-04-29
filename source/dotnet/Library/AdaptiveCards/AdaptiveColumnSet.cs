@@ -27,11 +27,10 @@ namespace AdaptiveCards
 		/// <summary>
         /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace AdaptiveCards
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
 		/// <summary>
-        /// Sets padding
+        /// Gets or sets the padding.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3

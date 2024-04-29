@@ -268,6 +268,26 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Originator { get; set; }
 
+		/// <summary>
+        /// Sets the text flow direction
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(false)]
+        public bool? Rtl { get; set; } = null;
+
+		/// <summary>
+        /// Tells the client whether or not it should constrain the width of the card.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(false)]
+        public bool? ConstrainWidth { get; set; } = null;
+
         /// <summary>
         /// Determines whether the height property of an AdaptiveCard should be serialized.
         /// </summary>
