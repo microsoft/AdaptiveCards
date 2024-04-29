@@ -10,7 +10,7 @@
 		"release": "npm run generate && npm run generate-sw",
 		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"start": "hexo server",
-		"pregenerate": "npx workbox-cli copyLibraries node_modules/",
+		"pregenerate": "hexo clean && npx workbox-cli copyLibraries node_modules/",
 		"generate": "hexo generate",
 		"generate-sw": "npx workbox-cli injectManifest workbox-config.json"
 	},
@@ -46,8 +46,8 @@
 		"highlightjs": "^9.16.2",
 		"jquery": "^3.6.1",
 		"js-yaml": "^4.1.0",
-		"marked": "^12",
 		"markdown-it": "^14.0.0",
+		"marked": "^12",
 		"md5": "^2.3.0",
 		"minimist": "^1.2.6",
 		"monaco-editor": "^0.34.0",
