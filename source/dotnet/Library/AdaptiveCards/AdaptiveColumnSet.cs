@@ -24,6 +24,15 @@ namespace AdaptiveCards
 #endif
         public override string Type { get; set; } = TypeName;
 
+		/// <summary>
+        /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
         /// <summary>
         /// Collection of Columns that this ColumnSet contains.
         /// </summary>
@@ -32,6 +41,15 @@ namespace AdaptiveCards
         [XmlElement(Type = typeof(AdaptiveColumn), ElementName = AdaptiveColumn.TypeName)]
 #endif
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
+
+		/// <summary>
+        /// Gets or sets the padding.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        public AdaptivePadding Padding { get; set; }
 
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {

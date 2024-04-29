@@ -81,6 +81,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
+		[XmlElement(typeof(AdaptiveHttpAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif

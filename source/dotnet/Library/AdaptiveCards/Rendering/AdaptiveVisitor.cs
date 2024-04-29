@@ -140,6 +140,9 @@ namespace AdaptiveCards.Rendering
 
             if (action is AdaptiveSubmitAction submitAction)
                 Visit(submitAction);
+			
+			if (action is AdaptiveHttpAction httpAction)
+                Visit(submitAction);
 
             if (action is AdaptiveShowCardAction cardAction)
                 Visit(cardAction);
@@ -152,6 +155,10 @@ namespace AdaptiveCards.Rendering
         }
 
         public virtual void Visit(AdaptiveSubmitAction action)
+        {
+        }
+
+		public virtual void Visit(AdaptiveHttpAction action)
         {
         }
 

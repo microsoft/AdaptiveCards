@@ -32,6 +32,15 @@ namespace AdaptiveCards
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
+		/// <summary>
+        /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
         /// <summary>
         /// The actions contained within this ActionSet.
         /// </summary>
@@ -40,6 +49,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
+		[XmlElement(typeof(AdaptiveHttpAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
         [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
