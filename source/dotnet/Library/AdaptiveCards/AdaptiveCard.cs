@@ -275,7 +275,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(false)]
+        [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
 
 		/// <summary>
@@ -285,7 +285,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(false)]
+        [DefaultValue(null)]
         public bool? ConstrainWidth { get; set; } = null;
 
         /// <summary>

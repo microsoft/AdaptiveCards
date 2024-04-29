@@ -71,11 +71,10 @@ namespace AdaptiveCards
 		/// <summary>
         /// Gets or sets the padding.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(null)]
         public AdaptivePadding Padding { get; set; }
 
         public override IEnumerator<AdaptiveElement> GetEnumerator()

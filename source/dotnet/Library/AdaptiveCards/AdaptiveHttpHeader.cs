@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents any input element.
+    /// Represents the AdaptiveHttpHeader.
     /// </summary>
     public class AdaptiveHttpHeader
     {
@@ -22,7 +22,7 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Header name.
+        /// Gets or sets the header name.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -31,7 +31,7 @@ namespace AdaptiveCards
         public string Name { get; set; }
 
 		/// <summary>
-        /// Header value.
+        /// Gets or sets the header value.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
