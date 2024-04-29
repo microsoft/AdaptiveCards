@@ -49,6 +49,7 @@ namespace AdaptiveCards
                 [AdaptiveTableRow.TypeName] = typeof(AdaptiveTableRow),
                 [AdaptiveTableCell.TypeName] = typeof(AdaptiveTableCell),
                 [AdaptiveSubmitAction.TypeName] = typeof(AdaptiveSubmitAction),
+				[AdaptiveHttpAction.TypeName] = typeof(AdaptiveHttpAction),
                 [AdaptiveExecuteAction.TypeName] = typeof(AdaptiveExecuteAction),
                 [AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction),
                 [AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction),

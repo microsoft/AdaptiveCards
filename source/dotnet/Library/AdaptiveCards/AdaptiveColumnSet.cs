@@ -43,6 +43,16 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
+		/// <summary>
+        /// Sets padding
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptivePadding Padding { get; set; }
+
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {
             return Columns.GetEnumerator();

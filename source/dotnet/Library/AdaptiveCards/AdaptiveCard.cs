@@ -190,6 +190,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
         [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
+		[XmlElement(typeof(AdaptiveHttpAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
@@ -256,6 +257,16 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAuthentication Authentication { get; set; }
+
+		/// <summary>
+        /// Defines originator id for card.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public string Originator { get; set; }
 
         /// <summary>
         /// Determines whether the height property of an AdaptiveCard should be serialized.

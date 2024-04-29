@@ -14,6 +14,7 @@ namespace AdaptiveCards.Rendering
         {
             typeof(AdaptiveOpenUrlAction),
             typeof(AdaptiveSubmitAction),
+			typeof(AdaptiveHttpAction),
             typeof(AdaptiveShowCardAction),
             typeof(AdaptiveToggleVisibilityAction),
             typeof(AdaptiveExecuteAction)
