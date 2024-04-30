@@ -88,7 +88,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                          bool imageFiresOpenEvent);
 
         template<typename TDest>
-        void SetImageSource(TDest const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
+        void SetImageSourceToFrameworkElement(TDest const& destination, winrt::ImageSource const& imageSource, winrt::Stretch stretch = winrt::Stretch::UniformToFill);
 
         template<typename TElement>
         winrt::ImageSource SetImageOnUIElement(winrt::Uri const& imageUrl,
@@ -109,13 +109,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::fire_and_forget SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
                                             winrt::Uri const uriRef);
 
-		winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageAsync(winrt::IRandomAccessStream const stream);
+		winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content);
+
+		winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
 
 		winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
             winrt::Uri const uri, winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg);
-
-        winrt::IAsyncOperation<winrt::SvgImageSource> XamlBuilder::SetImageSourceAsync(
-            winrt::SvgImageSource imageSource, winrt::IRandomAccessStream const stream);
 
 		template<typename TElement>
         winrt::fire_and_forget ResolveImageAsync(
