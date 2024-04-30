@@ -384,12 +384,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             {
                 strongThis->m_writeAsyncOperations.push_back(storeOp);
 
-				co_await storeOp;
+                co_await storeOp;
 
-				auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
-				stream.Seek(0);
+                auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
+                stream.Seek(0);
 
-				co_return stream;
+                co_return stream;
             }
         }
 
@@ -429,9 +429,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                         // as size is being parsed, we can switch to the UI thread to set the source
                         co_await wil::resume_foreground(GetDispatcher(strongImageSource));
                         auto svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
-                        auto size = co_await sizeParseOp;
-						svgImageSource.RasterizePixelHeight(size.Height);
-						svgImageSource.RasterizePixelWidth(size.Width);
+
+                        if (!isAutoSize)
+                        {
+                            auto size = co_await sizeParseOp;
+                            svgImageSource.RasterizePixelHeight(size.Height);
+                            svgImageSource.RasterizePixelWidth(size.Width);
+                        }
+
                         co_await svgImageSource.SetSourceAsync(stream);
                     }
                     else
@@ -442,41 +447,41 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 }
                 else
                 {
-					// Otherwise, no resolver...
+                    // Otherwise, no resolver...
                     if (auto strongThis = weakThis.get();
                         (strongThis->m_enableXamlImageHandling) || (strongThis->m_listeners.size() == 0))
                     {
-							// If we've been explicitly told to let Xaml handle the image loading, or there are
-							// no listeners waiting on the image load callbacks, use Xaml to load the images
-							if (isSVG)
-							{
-								winrt::HttpClient httpClient;
-								auto getOperation = co_await httpClient.GetAsync(uri);
-								auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
-								auto size{ParseSizeOfSVGImageFromString(readOperation)};
-								co_await wil::resume_foreground(GetDispatcher(strongImageSource));
-								auto svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
-								svgImageSource.RasterizePixelHeight(size.Height);
-								svgImageSource.RasterizePixelWidth(size.Width);
-								svgImageSource.UriSource(uri);
-							}
-							else
-							{
-								co_await wil::resume_foreground(GetDispatcher(strongImageSource));
-								strongImageSource.as<winrt::BitmapImage>().UriSource(uri);
-							}
-						}
+                            // If we've been explicitly told to let Xaml handle the image loading, or there are
+                            // no listeners waiting on the image load callbacks, use Xaml to load the images
+                            if (isSVG)
+                            {
+                                winrt::HttpClient httpClient;
+                                auto getOperation = co_await httpClient.GetAsync(uri);
+                                auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
+                                auto size{ParseSizeOfSVGImageFromString(readOperation)};
+                                co_await wil::resume_foreground(GetDispatcher(strongImageSource));
+                                auto svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
+                                svgImageSource.RasterizePixelHeight(size.Height);
+                                svgImageSource.RasterizePixelWidth(size.Width);
+                                svgImageSource.UriSource(uri);
+                            }
+                            else
+                            {
+                                co_await wil::resume_foreground(GetDispatcher(strongImageSource));
+                                strongImageSource.as<winrt::BitmapImage>().UriSource(uri);
+                            }
+                        }
                     }
                 }
 
-				if (auto strongThis = weakThis.get(); isAutoSize)
-				{
-					strongThis->SetAutoSize(properties.uiElement,
-											properties.parentElement,
-											properties.imageContainer,
-											properties.isVisible,
-											imageFiresOpenEvent);
-				}
+                if (auto strongThis = weakThis.get(); isAutoSize)
+                {
+                    strongThis->SetAutoSize(properties.uiElement,
+                                            properties.parentElement,
+                                            properties.imageContainer,
+                                            properties.isVisible,
+                                            imageFiresOpenEvent);
+                }
         }
        catch (...)
         {
@@ -494,7 +499,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                                         ImageProperties<TElement> const& imgProperties)
     {
         auto imageSource = CreateImageSource(imgProperties.isImageSvg);
-		SetImageSourceToFrameworkElement(imgProperties.uiElement, imageSource, imgProperties.stretch);
+        SetImageSourceToFrameworkElement(imgProperties.uiElement, imageSource, imgProperties.stretch);
         ResolveImageAsync(imageUrl, resolvers, imageSource, imgProperties);
         return imageSource;
     }
