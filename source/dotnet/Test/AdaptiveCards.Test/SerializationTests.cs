@@ -1311,13 +1311,13 @@ namespace AdaptiveCards.Test
       ""columns"": [
         {
           ""type"": ""Column"",
-          ""rtl"": true,
-          ""items"": []
+          ""items"": [],
+          ""rtl"": true
         },
         {
           ""type"": ""Column"",
-          ""rtl"": false,
-          ""items"": []
+          ""items"": [],
+          ""rtl"": false
         },
         {
           ""type"": ""Column"",

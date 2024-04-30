@@ -288,15 +288,5 @@ namespace AdaptiveCards.Rendering.Wpf
             await visitor.GetAllImages(card).WithCancellation(cancellationToken).ConfigureAwait(false);
             return visitor.LoadedImages;
         }
-
-        public void UseXceedElementRenderers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UseDefaultElementRenderers()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

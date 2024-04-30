@@ -42,7 +42,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Auto"/>.
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonConverter(typeof(AdaptiveHeightConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]

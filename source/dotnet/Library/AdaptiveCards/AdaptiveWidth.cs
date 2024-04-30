@@ -7,57 +7,58 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Controls the vertical size (height) of element.
+    /// Controls the vertical size (Width) of element.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveHeightType>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveWidthType>), true)]
 
-    public enum AdaptiveHeightType
+    public enum AdaptiveWidthType
     {
         /// <summary>
-        /// The height of the element matches element content.
+        /// The Width of the element matches element content.
         /// </summary>
         Auto,
 
         /// <summary>
-        /// The height of the element uses as much space as it is able to.
+        /// The Width of the element uses as much space as it is able to.
         /// </summary>
         Stretch,
 
         /// <summary>
-        /// The height of the element was explicitly specified (only for Image elements).
+        /// The Width of the element was explicitly specified (only for Image elements).
         /// </summary>
         Pixel
     }
 
+
     /// <summary>
-    /// Represents the height property in Adaptive Cards.
+    /// Represents the Width property in Adaptive Cards.
     /// </summary>
-    public class AdaptiveHeight : IEquatable<AdaptiveHeight>
+    public class AdaptiveWidth : IEquatable<AdaptiveWidth>
     {
         /// <summary>
-        /// Returns a new AdaptiveHeight instance initialized for the <see cref="AdaptiveHeightType.Auto"/> height type.
+        /// Returns a new AdaptiveWidth instance initialized for the <see cref="AdaptiveWidthType.Auto"/> Width type.
         /// </summary>
-        public static AdaptiveHeight Auto { get; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
+        public static AdaptiveWidth Auto { get; } = new AdaptiveWidth(AdaptiveWidthType.Auto);
 
         /// <summary>
-        /// Returns a new AdaptiveHeight instance initialized for the <see cref="AdaptiveHeightType.Stretch"/> height type.
+        /// Returns a new AdaptiveWidth instance initialized for the <see cref="AdaptiveWidthType.Stretch"/> Width type.
         /// </summary>
-        public static AdaptiveHeight Stretch { get; } = new AdaptiveHeight(AdaptiveHeightType.Stretch);
+        public static AdaptiveWidth Stretch { get; } = new AdaptiveWidth(AdaptiveWidthType.Stretch);
 
         /// <summary>
-        /// Initializes an empty AdaptiveHeight instance.
+        /// Initializes an empty AdaptiveWidth instance.
         /// </summary>
-        public AdaptiveHeight()
+        public AdaptiveWidth()
         {
         }
 
         /// <summary>
-        /// Initializes an AdaptiveHeight instance with the given string "auto"|"stretch"|"100px"
+        /// Initializes an AdaptiveWidth instance with the given string "auto"|"stretch"|"100px"
         /// </summary>
         /// <param name="value">enumeration value or pixel .</param>
-        public AdaptiveHeight(string value)
+        public AdaptiveWidth(string value)
         {
-            HeightType = AdaptiveHeightType.Auto;
+            WidthType = AdaptiveWidthType.Auto;
             if (!String.IsNullOrEmpty(value))
             {
                 if (value.EndsWith("px"))
@@ -65,57 +66,57 @@ namespace AdaptiveCards
                     value = value.Substring(0, value.Length - 2);
                     // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
                     Unit = uint.Parse(value);
-                    HeightType = AdaptiveHeightType.Pixel;
+                    WidthType = AdaptiveWidthType.Pixel;
                 }
                 else if (uint.TryParse(value, out var val))
                 {
-                    HeightType = AdaptiveHeightType.Pixel;
+                    WidthType = AdaptiveWidthType.Pixel;
                     Unit = val;
                 }
                 else
                 {
                     // NOTE: We want to throw exception here if this is not valid as the Converter then will generate a warning on the value.
-                    HeightType = (AdaptiveHeightType)Enum.Parse(typeof(AdaptiveHeightType), value, ignoreCase: true);
+                    WidthType = (AdaptiveWidthType)Enum.Parse(typeof(AdaptiveWidthType), value, ignoreCase: true);
                 }
             }
         }
 
-        public static AdaptiveHeight Parse(string value)
+        public static AdaptiveWidth Parse(string value)
         {
-            return new AdaptiveHeight(value);
+            return new AdaptiveWidth(value);
         }
 
         /// <summary>
-        /// Initializes an AdaptiveHeight instance with the given pixel size.
+        /// Initializes an AdaptiveWidth instance with the given pixel size.
         /// </summary>
         /// <param name="px">The device-independent pixel size to use.</param>
-        public AdaptiveHeight(uint px)
+        public AdaptiveWidth(uint px)
         {
-            HeightType = AdaptiveHeightType.Pixel;
+            WidthType = AdaptiveWidthType.Pixel;
             this.Unit = px;
         }
 
         /// <summary>
-        /// Initializes an AdaptiveHeight instance with the given <see cref="AdaptiveHeightType"/>.
+        /// Initializes an AdaptiveWidth instance with the given <see cref="AdaptiveWidthType"/>.
         /// </summary>
-        /// <param name="heightType">The AdaptiveHeightType to use.</param>
-        public AdaptiveHeight(AdaptiveHeightType heightType)
+        /// <param name="WidthType">The AdaptiveWidthType to use.</param>
+        public AdaptiveWidth(AdaptiveWidthType widthType)
         {
-            HeightType = heightType;
+            WidthType = widthType;
             Unit = null;
         }
 
         /// <summary>
-        /// The <see cref="AdaptiveHeightType"/> this instance represents.
+        /// The <see cref="AdaptiveWidthType"/> this instance represents.
         /// </summary>
-        [JsonProperty("heightType")]
+        [JsonProperty("WidthType")]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        public AdaptiveHeightType HeightType { get; set; }
+        public AdaptiveWidthType WidthType { get; set; }
 
         /// <summary>
-        /// The specific height to use (only valid for the <see cref="AdaptiveHeightType.Pixel"/> type).
+        /// The specific Width to use (only valid for the <see cref="AdaptiveWidthType.Pixel"/> type).
         /// </summary>
         [JsonProperty("unit")]
 #if !NETSTANDARD1_3
@@ -125,38 +126,38 @@ namespace AdaptiveCards
 
 #if !NETSTANDARD1_3
         /// <summary>
-        /// Helper to aid in XML serialization of the <see cref="AdaptiveHeight.Unit"/> property.
+        /// Helper to aid in XML serialization of the <see cref="AdaptiveWidth.Unit"/> property.
         /// </summary>
         [XmlAttribute("Unit")]
         [JsonIgnore]
         public uint UnitXml { get { return Unit.HasValue ? Unit.Value : 0; } set { Unit = value; } }
 
         /// <summary>
-        /// Determines whether to serialize the <see cref="AdaptiveHeight.UnitXml"/> property.
+        /// Determines whether to serialize the <see cref="AdaptiveWidth.UnitXml"/> property.
         /// </summary>
         public bool ShouldSerializeUnitXml() => Unit.HasValue;
 #endif
 
         /// <summary>
-        /// Returns true if this <see cref="AdaptiveHeight"/> instance represents the <see
-        /// cref="AdaptiveHeightType.Pixel"/> <see cref="AdaptiveHeightType"/>.
+        /// Returns true if this <see cref="AdaptiveWidth"/> instance represents the <see
+        /// cref="AdaptiveWidthType.Pixel"/> <see cref="AdaptiveWidthType"/>.
         /// </summary>
         public bool IsPixel()
         {
-            return HeightType == AdaptiveHeightType.Pixel;
+            return WidthType == AdaptiveWidthType.Pixel;
         }
 
         /// <summary>
-        /// Determines whether this <see cref="AdaptiveHeight"/> instance should be serialized.
+        /// Determines whether this <see cref="AdaptiveWidth"/> instance should be serialized.
         /// </summary>
-        public bool ShouldSerializeAdaptiveHeight()
+        public bool ShouldSerializeAdaptiveWidth()
         {
-            if (HeightType == AdaptiveHeightType.Auto)
+            if (WidthType == AdaptiveWidthType.Auto)
             {
                 return false;
             }
 
-            if (HeightType == AdaptiveHeightType.Pixel)
+            if (WidthType == AdaptiveWidthType.Pixel)
             {
                 if (!Unit.HasValue)
                 {
@@ -174,37 +175,37 @@ namespace AdaptiveCards
         /// Assignment operator with uint pixels
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator AdaptiveHeight(uint value)
+        public static implicit operator AdaptiveWidth(uint value)
         {
-            return new AdaptiveHeight(value);
+            return new AdaptiveWidth(value);
         }
 
         /// <summary>
         /// Assignment operator with type
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator AdaptiveHeight(AdaptiveHeightType value)
+        public static implicit operator AdaptiveWidth(AdaptiveWidthType value)
         {
-            return new AdaptiveHeight(value);
+            return new AdaptiveWidth(value);
         }
 
         /// <summary>
         /// Assignment operator with string (100x)
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator AdaptiveHeight(string value)
+        public static implicit operator AdaptiveWidth(string value)
         {
-            return new AdaptiveHeight(value);
+            return new AdaptiveWidth(value);
         }
 
         /// <inheritdoc />
-        public static bool operator ==(AdaptiveHeight ah1, AdaptiveHeight ah2)
+        public static bool operator ==(AdaptiveWidth ah1, AdaptiveWidth ah2)
         {
             return ah1.Equals(ah2);
         }
 
         /// <inheritdoc />
-        public static bool operator !=(AdaptiveHeight ah1, AdaptiveHeight ah2)
+        public static bool operator !=(AdaptiveWidth ah1, AdaptiveWidth ah2)
         {
             return !ah1.Equals(ah2);
         }
@@ -216,21 +217,21 @@ namespace AdaptiveCards
             {
                 return -1;
             }
-            return (int)(Unit.Value * 10 + (int)HeightType);
+            return (int)(Unit.Value * 10 + (int)WidthType);
         }
 
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as AdaptiveHeight);
+            return this.Equals(obj as AdaptiveWidth);
         }
 
         /// <inheritdoc />
-        public Boolean Equals(AdaptiveHeight other)
+        public Boolean Equals(AdaptiveWidth other)
         {
-            if (this.HeightType == other.HeightType)
+            if (this.WidthType == other.WidthType)
             {
-                if (this.HeightType == AdaptiveHeightType.Pixel)
+                if (this.WidthType == AdaptiveWidthType.Pixel)
                 {
                     return this.Unit == other.Unit;
                 }
@@ -241,11 +242,12 @@ namespace AdaptiveCards
 
         public override string ToString()
         {
-            if (HeightType == AdaptiveHeightType.Stretch)
+            if (WidthType == AdaptiveWidthType.Stretch)
                 return "stretch";
-            if (HeightType == AdaptiveHeightType.Auto)
+            if (WidthType == AdaptiveWidthType.Auto)
                 return "auto";
             return $"{Unit}px";
         }
+
     }
 }

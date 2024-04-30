@@ -94,7 +94,7 @@ namespace AdaptiveCards.Test
 
             const string expectedJson = @"{
               ""type"": ""AdaptiveCard"",
-              ""version"": ""1.5"",
+              ""version"": ""1.6"",
               ""body"": [
                 {
                   ""type"": ""Input.ChoiceSet"",

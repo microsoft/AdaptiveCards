@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
+using System;
 
 namespace AdaptiveCards
 {
@@ -42,7 +43,7 @@ namespace AdaptiveCards
         [DefaultValue(typeof(AdaptiveHorizontalContentAlignment), "left")]
         public AdaptiveHorizontalContentAlignment HorizontalContentAlignment { get; set; }
 
-        [JsonConverter(typeof(ColumnWidthConverter))]
+        [JsonConverter(typeof(TableColumnWidthConverter))]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
@@ -51,34 +52,49 @@ namespace AdaptiveCards
         private TableColumnWidth TableColumnWidth { get; set; } = new TableColumnWidth();
 
         [JsonIgnore]
-        public double PixelWidth {
+        public double PixelWidth
+        {
             get { return TableColumnWidth.PixelWidth; }
-            set { TableColumnWidth.PixelWidth = value;}
+            set { TableColumnWidth.PixelWidth = value; }
         }
 
         [JsonIgnore]
-        public long Width
+        public double Width
         {
             get { return TableColumnWidth.RelativeWidth; }
-            set { TableColumnWidth.RelativeWidth = value;}
+            set { TableColumnWidth.RelativeWidth = value; }
         }
     }
-    public class TableColumnWidth
+
+    internal class TableColumnWidth
     {
-        public TableColumnWidth()
+        private double _pixel;
+        private double _relative;
+
+        internal TableColumnWidth()
         {
         }
 
-        public TableColumnWidth(double pixelWidth)
+
+
+        internal double PixelWidth
         {
-            PixelWidth = pixelWidth;
-        }
-        public TableColumnWidth(long relativeWidth)
-        {
-            RelativeWidth = relativeWidth;
+            get => _pixel;
+            set
+            {
+                _pixel = value;
+                _relative = 0;
+            }
         }
 
-        public double PixelWidth { get; set; }
-        public long RelativeWidth { get; set; }
+        internal double RelativeWidth
+        {
+            get => _relative;
+            set
+            {
+                _relative = value;
+                _pixel = 0;
+            }
+        }
     }
 }

@@ -47,11 +47,12 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Refresh.UserIds[2], "user3");
 
             // Check Execute Action
-            Assert.IsNotNull(card.Refresh.Action);
-            Assert.AreEqual(card.Refresh.Action.Verb, "doStuff");
+            var action = card.Refresh.Action as AdaptiveExecuteAction;
+            Assert.IsNotNull(action);
+            Assert.AreEqual(action.Verb, "doStuff");
 
             // Check Action data json
-            JsonTextReader reader = new JsonTextReader(new StringReader(card.Refresh.Action.DataJson));
+            JsonTextReader reader = new JsonTextReader(new StringReader(action.DataJson));
             reader.Read();
             Assert.AreEqual(reader.TokenType.ToString(), "StartObject");
             reader.Read();

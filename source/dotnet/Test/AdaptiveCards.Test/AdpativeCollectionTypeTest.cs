@@ -75,7 +75,7 @@ namespace AdaptiveCards.Test
         {
             AdaptiveTableColumnDefinition definition = new AdaptiveTableColumnDefinition();
             Assert.AreEqual("AdaptiveCards.AdaptiveTableColumnDefinition", definition.GetType().ToString());
-            Assert.AreEqual(0U, definition.Width);
+            Assert.AreEqual(0f, definition.Width);
             Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, definition.HorizontalContentAlignment);
             Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, definition.VerticalContentAlignment);
         }
@@ -88,7 +88,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(0, table.Columns.Count);
             Assert.AreEqual(0, table.Rows.Count);
             Assert.IsTrue(table.ShowGridLines);
-            Assert.IsFalse(table.FirstRowAsHeaders);
+            Assert.IsTrue(table.FirstRowAsHeaders);
             Assert.AreEqual(null, table.GridStyle);
         }
 
@@ -117,8 +117,8 @@ namespace AdaptiveCards.Test
         public void TestTableDefaultAlignments()
         {
             AdaptiveTableRow tableRow = new AdaptiveTableRow();
-            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, tableRow.HorizontalContentAlignment);
-            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, tableRow.VerticalContentAlignment);
+            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, tableRow.HorizontalCellContentAlignment);
+            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, tableRow.VerticalCellContentAlignment);
 
             AdaptiveTableCell tableCell = new AdaptiveTableCell();
             Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, tableCell.VerticalContentAlignment);
@@ -128,8 +128,8 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, definition.VerticalContentAlignment);
 
             AdaptiveTable table = new AdaptiveTable();
-            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, table.HorizontalContentAlignment);
-            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, table.VerticalContentAlignment);
+            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, table.HorizontalCellContentAlignment);
+            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top, table.VerticalCellContentAlignment);
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace AdaptiveCards.Test
             var json = card.ToJson();
             const string ExpectedJSON = @"{
                                       ""type"": ""AdaptiveCard"",
-                                      ""version"": ""1.5"",
+                                      ""version"": ""1.6"",
                                       ""body"": [
                                         {
                                           ""type"": ""Table"",
@@ -190,7 +190,7 @@ namespace AdaptiveCards.Test
             var json = card.ToJson();
             const string ExpectedJSON = @"{
                                       ""type"": ""AdaptiveCard"",
-                                      ""version"": ""1.5"",
+                                      ""version"": ""1.6"",
                                       ""body"": [
                                         {
                                           ""type"": ""Table"",
@@ -326,15 +326,15 @@ namespace AdaptiveCards.Test
 
             var innerTable1 = table.Rows[0].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable1);
-            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top,innerTable1.VerticalContentAlignment);
+            Assert.AreEqual(AdaptiveVerticalContentAlignment.Top,innerTable1.VerticalCellContentAlignment);
 
             var innerTable2 = table.Rows[1].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable2);
-            Assert.AreEqual(AdaptiveVerticalContentAlignment.Center, innerTable2.VerticalContentAlignment);
+            Assert.AreEqual(AdaptiveVerticalContentAlignment.Center, innerTable2.VerticalCellContentAlignment);
 
             var innerTable3 = table.Rows[2].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable3);
-            Assert.AreEqual(AdaptiveVerticalContentAlignment.Bottom, innerTable3.VerticalContentAlignment);
+            Assert.AreEqual(AdaptiveVerticalContentAlignment.Bottom, innerTable3.VerticalCellContentAlignment);
         }
 
         [TestMethod]
@@ -348,15 +348,15 @@ namespace AdaptiveCards.Test
 
             var innerTable1 = table.Rows[0].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable1);
-            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, innerTable1.HorizontalContentAlignment);
+            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Left, innerTable1.HorizontalCellContentAlignment);
 
             var innerTable2 = table.Rows[1].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable2);
-            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Center, innerTable2.HorizontalContentAlignment);
+            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Center, innerTable2.HorizontalCellContentAlignment);
 
             var innerTable3 = table.Rows[2].Cells[1].Items[0] as AdaptiveTable;
             Assert.IsNotNull(innerTable3);
-            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Right, innerTable3.HorizontalContentAlignment);
+            Assert.AreEqual(AdaptiveHorizontalContentAlignment.Right, innerTable3.HorizontalCellContentAlignment);
         }
 
         [TestMethod]
