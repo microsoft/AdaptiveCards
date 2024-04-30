@@ -1,10 +1,125 @@
 {
-	"tasksRunnerOptions": {
-		"default": {
-			"runner": "nx/tasks-runners/default",
-			"options": {
-				"cacheableOperations": ["build", "test"]
-			}
-		}
-	}
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "test"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "clean": {
+      "dependsOn": [
+        "^clean"
+      ]
+    },
+    "build": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/lib"
+      ]
+    },
+    "dts": {
+      "cache": true,
+      "dependsOn": [
+        "^dts"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "lint": {
+      "dependsOn": []
+    },
+    "release": {
+      "cache": true,
+      "dependsOn": [
+        "^release"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "test": {
+      "dependsOn": []
+    },
+    "build-and-test": {
+      "dependsOn": []
+    },
+    "generate-schema": {
+      "dependsOn": []
+    },
+    "generate-adaptive-schema": {
+      "dependsOn": []
+    },
+    "generate-css": {
+      "dependsOn": []
+    },
+    "build-source": {
+      "dependsOn": []
+    },
+    "prebuild": {
+      "dependsOn": []
+    },
+    "watch": {
+      "dependsOn": []
+    },
+    "start": {
+      "dependsOn": []
+    },
+    "prerelease": {
+      "dependsOn": []
+    },
+    "docs": {
+      "dependsOn": []
+    },
+    "copy-hostconfigs": {
+      "dependsOn": []
+    },
+    "start:preview": {
+      "dependsOn": []
+    },
+    "start:nohosts": {
+      "dependsOn": []
+    },
+    "iterate": {
+      "dependsOn": []
+    },
+    "release-deps": {
+      "dependsOn": []
+    },
+    "eject": {
+      "dependsOn": []
+    },
+    "generate-md-ac": {
+      "dependsOn": []
+    },
+    "generate-md-hc": {
+      "dependsOn": []
+    },
+    "generate-sw": {
+      "dependsOn": []
+    },
+    "test-with-examples": {
+      "dependsOn": []
+    },
+    "run": {
+      "dependsOn": []
+    },
+    "run-release": {
+      "dependsOn": []
+    },
+    "build-all": {
+      "dependsOn": []
+    },
+    "build-all-and-run": {
+      "dependsOn": []
+    }
+  }
 }

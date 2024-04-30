@@ -107,7 +107,7 @@ namespace winrt
     // using namespace winrt::Windows::Web::Http
     using HttpProgress = ::winrt::Windows::Web::Http::HttpProgress;
     using HttpClient = ::winrt::Windows::Web::Http::HttpClient;
-	using HttpResponseMessage = ::winrt::Windows::Web::Http::HttpResponseMessage;
+    using HttpResponseMessage = ::winrt::Windows::Web::Http::HttpResponseMessage;
 
     // using namespace winrt::Windows::Web::Http::HttpFilters
     using HttpBaseProtocolFilter = ::winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter;

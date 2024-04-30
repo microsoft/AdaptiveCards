@@ -1,14 +1,11 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
+		"module": "es2020",
 		"inlineSourceMap": false,
 		"outDir": "../output/dist",
 		"removeComments": true
 	},
-	"include": [
-		"../src/**/*.ts"
-	],
-	"exclude": [
-		"../src/**/*.spec.ts"
-	]
+	"include": ["../src/**/*.ts"],
+	"exclude": ["../src/**/*.spec.ts"]
 }

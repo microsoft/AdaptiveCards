@@ -97,24 +97,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-        template<typename TElement>
-        winrt::ImageSource PopulateImageFromUrlAsync(winrt::Uri const& imageUrl,
-                                                     ImageProperties<TElement> const& imgProperties);
-
-        template<typename TElement, typename TStream>
-        void HandleAccessStreamForImageSource(ImageProperties<TElement> const& imgProperties,
-                                              TStream const& stream,
-                                              winrt::ImageSource const& imageSource);
-
-        winrt::fire_and_forget SetSvgUriSource(winrt::SvgImageSource const imageSourceRef,
-                                            winrt::Uri const uriRef);
-
 		winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content);
 
 		winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
 
 		winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
             winrt::Uri const uri, winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg);
+
+		void CreateOptionsForBitmapImageSource(winrt::Uri const& imageUrl,
+            winrt::AdaptiveCardResourceResolvers const& resolvers,
+            winrt::ImageSource const& imageSource);
 
 		template<typename TElement>
         winrt::fire_and_forget ResolveImageAsync(
@@ -135,6 +127,5 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                    winrt::AdaptiveRenderArgs const& renderArgs,
                                    winrt::AdaptiveFeatureRegistration const& featureRegistration,
                                    boolean ancestorHasFallback);
-        static winrt::Windows::Foundation::Size ParseXmlForHeightAndWidth(winrt::hstring const& content);
     };
 }
