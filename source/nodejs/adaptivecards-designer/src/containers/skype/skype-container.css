@@ -114,16 +114,16 @@ a.ac-anchor:visited:active {
     padding: 4px 10px 6px 10px;
     height: 31px;
     background-color: white;
-    color: #0078d7;
+    color: #0072cc;
 }
 
 .ac-pushButton:hover {
-    background-color: #0078d7;
+    background-color: #0072cc;
     color: #fff;
 }
 
 .ac-pushButton:active {
-    background-color: #0078d7;
+    background-color: #0072cc;
     color: #fff;
 }
 

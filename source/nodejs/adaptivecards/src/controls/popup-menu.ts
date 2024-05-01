@@ -13,7 +13,7 @@ export class PopupMenu extends PopupControl {
     protected renderContent(): HTMLElement {
         const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
-        element.setAttribute("role", "listbox");
+        element.setAttribute("role", "menu");
 
         for (let i = 0; i < this._items.length; i++) {
             const renderedItem = this._items.get(i).render(this.hostConfig);
@@ -115,7 +115,4 @@ export class PopupMenu extends PopupControl {
             this._renderedItems[index].removeAttribute("aria-expanded");
         }
     }
-
-
-
 }

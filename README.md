@@ -35,15 +35,17 @@ We release the Adaptive Cards products on the third week of each month, assuming
 
 |Product|Last Release Date|Next Release Date|
 |---|---|---|
-|Website|4/21/2023|7/17/2023|
+|Website|3/18/2024|4/22/2024|
 |Designer|1/31/2023|7/17/2023|
 |JavaScript Renderer|6/23/2023|7/17/2023|
 |JavaScript Renderer Beta|4/9/2023|7/17/2023|
 |JavaScript Templating|9/16/2022|7/17/2023|
-|XAML Renderer|3/23/2023|7/17/2023|
-|XAML Object Model|3/22/2023|7/17/2023|
-|WinUI 3 Renderer|6/29/2023|7/17/2023|
-|WinUI 3 Object Model|5/12/2023|7/17/2023|
+|XAML Renderer|2/2/2024|3/2/2024|
+|XAML Object Model|2/2/2024|3/2/2024|
+|WinUI 3 Renderer|2/2/2024|3/2/2024|
+|WinUI 3 Object Model|2/2/2024|3/2/2024|
+|C++/WinRT Templating|2/2/2024|3/2/2024|
+|C#/WinRT Templating|2/2/2024|3/2/2024|
 |.NET Renderer|12/1/2022|7/17/2023|
 |.NET Templating|3/7/2023|7/17/2023|
 
@@ -173,64 +175,64 @@ the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) o
 |Action IsEnabled|v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Action IsEnabled|v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Action IsEnabled|v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Action IsEnabled|v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Action IsEnabled|v1.5|.NET| :white_check_mark: | :x:|
 |Action Mode|v1.5|JS| :white_check_mark: | :white_check_mark:|
 |Action Mode|v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Action Mode|v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Action Mode|v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Action Mode|v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Action Mode|v1.5|.NET| :white_check_mark: | :x:|
 |Action/SelectAction ToolTip|v1.5|JS| :white_check_mark: | :white_check_mark:|
 |Action/SelectAction ToolTip|v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Action/SelectAction ToolTip|v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Action/SelectAction ToolTip|v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Action/SelectAction ToolTip|v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Action/SelectAction ToolTip|v1.5|.NET| :white_check_mark: | :x:|
 |Input.ChoiceSet Filtered Style |v1.5|JS| :white_check_mark: | :white_check_mark:|
 |Input.ChoiceSet Filtered Style |v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Input.ChoiceSet Filtered Style |v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Input.ChoiceSet Filtered Style |v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Input.ChoiceSet Filtered Style |v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Input.ChoiceSet Filtered Style |v1.5|.NET| :white_check_mark: | :x:|
 |Input.Text Password Style |v1.5|JS| :white_check_mark: | :white_check_mark:|
 |Input.Text Password Style |v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Input.Text Password Style |v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Input.Text Password Style |v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Input.Text Password Style |v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Input.Text Password Style |v1.5|.NET| :white_check_mark: | :x:|
 |TextBlock Heading Style|v1.5|JS| :white_check_mark: | :white_check_mark:|
 |TextBlock Heading Style|v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |TextBlock Heading Style|v1.5|Android| :white_check_mark: | :white_check_mark:|
 |TextBlock Heading Style|v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|TextBlock Heading Style|v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|TextBlock Heading Style|v1.5|.NET| :white_check_mark: | :x:|
 |RTL |v1.5|JS| :white_check_mark: | :white_check_mark:|
 |RTL |v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |RTL |v1.5|Android| :white_check_mark: | :white_check_mark:|
 |RTL |v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|RTL |v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|RTL |v1.5|.NET| :white_check_mark: | :x:|
 |Table |v1.5|JS| :white_check_mark: | :white_check_mark:|
 |Table |v1.5|iOS| :white_check_mark: | :white_check_mark:|
 |Table |v1.5|Android| :white_check_mark: | :white_check_mark:|
 |Table |v1.5|XAML| :white_check_mark: | :white_check_mark:|
-|Table |v1.5|.NET| :white_check_mark: | :negative_squared_cross_mark:|
+|Table |v1.5|.NET| :white_check_mark: | :x:|
 |Carousel|v1.6|JS| :white_check_mark: | :white_check_mark:|
-|Carousel|v1.6|iOS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Carousel|v1.6|Android| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Carousel|v1.6|XAML| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Carousel|v1.6|.NET| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
+|Carousel|v1.6|iOS| :x: | :x:|
+|Carousel|v1.6|Android| :x: | :x:|
+|Carousel|v1.6|XAML| :x: | :x:|
+|Carousel|v1.6|.NET| :x: | :x:|
 |ImageSet Stacked Presentation Style|v1.6|JS| :white_check_mark: | :white_check_mark:|
-|ImageSet Stacked Presentation Style|v1.6|iOS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|ImageSet Stacked Presentation Style|v1.6|Android| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|ImageSet Stacked Presentation Style|v1.6|XAML| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|ImageSet Stacked Presentation Style|v1.6|.NET| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Dynamic Type Ahead Search|v1.6|JS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Dynamic Type Ahead Search|v1.6|iOS| :white_check_mark: | :negative_squared_cross_mark:|
-|Dynamic Type Ahead Search|v1.6|Android| :white_check_mark: | :negative_squared_cross_mark:|
-|Dynamic Type Ahead Search|v1.6|XAML| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Dynamic Type Ahead Search|v1.6|.NET| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Label Position|v1.6|JS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Label Position|v1.6|iOS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Label Position|v1.6|Android| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Label Position|v1.6|XAML| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Label Position|v1.6|.NET| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Inline Editable Input Style|v1.6|JS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Inline Editable Input Style|v1.6|iOS| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Inline Editable Input Style|v1.6|Android| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Inline Editable Input Style|v1.6|XAML| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
-|Inline Editable Input Style|v1.6|.NET| :negative_squared_cross_mark: | :negative_squared_cross_mark:|
+|ImageSet Stacked Presentation Style|v1.6|iOS| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|Android| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|XAML| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|.NET| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|JS| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|iOS| :white_check_mark: | :x:|
+|Dynamic Type Ahead Search|v1.6|Android| :white_check_mark: | :x:|
+|Dynamic Type Ahead Search|v1.6|XAML| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|.NET| :x: | :x:|
+|Label Position|v1.6|JS| :x: | :x:|
+|Label Position|v1.6|iOS| :x: | :x:|
+|Label Position|v1.6|Android| :x: | :x:|
+|Label Position|v1.6|XAML| :x: | :x:|
+|Label Position|v1.6|.NET| :x: | :x:|
+|Inline Editable Input Style|v1.6|JS| :x: | :x:|
+|Inline Editable Input Style|v1.6|iOS| :x: | :x:|
+|Inline Editable Input Style|v1.6|Android| :x: | :x:|
+|Inline Editable Input Style|v1.6|XAML| :x: | :x:|
+|Inline Editable Input Style|v1.6|.NET| :x: | :x:|

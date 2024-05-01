@@ -380,6 +380,7 @@ export class ActionsConfig {
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
     iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
     allowTitleToWrap: boolean = false;
+    showIconInOverflow: boolean = false;
     iconSize: number = 16;
 
     constructor(obj?: any) {
@@ -414,6 +415,7 @@ export class ActionsConfig {
             );
             this.allowTitleToWrap =
                 obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.showIconInOverflow = obj["showIconInOverflow"] ?? this.showIconInOverflow;
 
             try {
                 const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
@@ -834,6 +836,20 @@ export class HostConfig {
             return style === Enums.FontType.Monospace
                 ? FontTypeDefinition.monospace
                 : this._legacyFontType;
+        }
+    }
+
+    getEffectiveImageSize(imageSize: Enums.ImageSize | Enums.Size): number {
+        switch (imageSize) {
+            case Enums.Size.Small:
+                return this.imageSizes.small;
+
+            case Enums.Size.Large:
+                return this.imageSizes.large;
+
+            case Enums.Size.Medium:
+            default:
+                return this.imageSizes.medium;
         }
     }
 

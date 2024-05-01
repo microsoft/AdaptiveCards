@@ -64,6 +64,7 @@
 		{
 			"type": "Action.ShowCard",
 			"title": "عربي",
+			"tooltip": "Arabic",
 			"card": {
 				"type": "AdaptiveCard",
 				"rtl": true,

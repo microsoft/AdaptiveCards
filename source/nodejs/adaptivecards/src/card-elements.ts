@@ -2000,18 +2000,7 @@ export class Image extends CardElement {
                 // auto and stretch are ignored (default to medium). THis is necessary for
                 // ImageSet which uses a maximum image height as opposed to the cards width
                 // as a constraining dimension
-                switch (this.size) {
-                    case Enums.Size.Small:
-                        element.style.height = this.hostConfig.imageSizes.small + "px";
-                        break;
-                    case Enums.Size.Large:
-                        element.style.height = this.hostConfig.imageSizes.large + "px";
-                        break;
-                    default:
-                        element.style.height = this.hostConfig.imageSizes.medium + "px";
-                        break;
-                }
-
+                element.style.height = this.hostConfig.getEffectiveImageSize(this.size) + "px";
                 element.style.maxHeight = this.maxHeight + "px";
             } else {
                 switch (this.size) {
@@ -2021,14 +2010,8 @@ export class Image extends CardElement {
                     case Enums.Size.Auto:
                         element.style.maxWidth = "100%";
                         break;
-                    case Enums.Size.Small:
-                        element.style.width = this.hostConfig.imageSizes.small + "px";
-                        break;
-                    case Enums.Size.Large:
-                        element.style.width = this.hostConfig.imageSizes.large + "px";
-                        break;
-                    case Enums.Size.Medium:
-                        element.style.width = this.hostConfig.imageSizes.medium + "px";
+                    default:
+                        element.style.width = this.hostConfig.getEffectiveImageSize(this.size) + "px";
                         break;
                 }
 
@@ -2518,37 +2501,64 @@ export class ImageSet extends CardElementContainer {
         let element: HTMLElement | undefined = undefined;
 
         if (this._images.length > 0) {
+            const imageSetIsGrid = (this.presentationStyle === Enums.ImageSetPresentationStyle.Grid);
+
             element = document.createElement("div");
             element.style.display = "flex";
             element.style.flexWrap = "wrap";
+            element.classList.add(this.hostConfig.makeCssClassName("ac-imageSet"));
+            element.classList.toggle(this.hostConfig.makeCssClassName("ac-imageSetStyle-grid"), imageSetIsGrid);
+            element.style.gap = "5px";
+
+            let renderImageSize : Enums.Size;
+            switch (this.imageSize) {
+                case Enums.ImageSize.Small:
+                    renderImageSize = Enums.Size.Small;
+                    break;
+                case Enums.ImageSize.Large:
+                    renderImageSize = Enums.Size.Large;
+                    break;
+                default:
+                    renderImageSize = Enums.Size.Medium;
+                    break;
+            }
+
+            const effectiveImageSize = this.hostConfig.getEffectiveImageSize(renderImageSize);
 
             for (const image of this._images) {
-                switch (this.imageSize) {
-                    case Enums.ImageSize.Small:
-                        image.size = Enums.Size.Small;
-                        break;
-                    case Enums.ImageSize.Large:
-                        image.size = Enums.Size.Large;
-                        break;
-                    default:
-                        image.size = Enums.Size.Medium;
-                        break;
-                }
-
                 image.maxHeight = this.hostConfig.imageSet.maxImageHeight;
 
-                const renderedImage = image.render();
+                if (imageSetIsGrid) {
+                    image.pixelWidth = effectiveImageSize;
+                } else {
+                    image.size = renderImageSize;
+                }
 
-                if (renderedImage) {
-                    renderedImage.style.display = "inline-flex";
-                    renderedImage.style.margin = "0px";
-                    if (this.presentationStyle == Enums.ImageSetPresentationStyle.Default) {
-                        renderedImage.style.marginRight = "10px";
+                const imageContainer = image.render();
+
+                if (imageContainer) {
+                    imageContainer.style.display = "inline-flex";
+                    imageContainer.style.margin = "0px";
+
+                    if (imageSetIsGrid) {
+                        imageContainer.style.flexBasis = effectiveImageSize + "px";
+                        imageContainer.style.height =  effectiveImageSize + "px";
+                        imageContainer.style.flexGrow = "0";
+                        imageContainer.style.flexShrink = "0";
+
+                        const renderedImageStyle = image.renderedImageElement?.style;
+                        if (renderedImageStyle) {
+                            renderedImageStyle.width = "100%";
+                            renderedImageStyle.height = "100%";
+                            renderedImageStyle.objectFit = "cover";
+                            renderedImageStyle.verticalAlign = "middle";
+                        }
                     }
 
-                    Utils.appendChild(element, renderedImage);
+                    Utils.appendChild(element, imageContainer);
                 }
             }
+
             if (this.presentationStyle == Enums.ImageSetPresentationStyle.Stacked) {
                 this.applyStackedPresentationStyle();
             }
@@ -3557,7 +3567,6 @@ export abstract class Input extends CardElement implements IInput {
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
-                this._renderedInputControlElement.setAttribute("aria-required", "true");
                 this._renderedInputControlElement.classList.add(
                     hostConfig.makeCssClassName("ac-input-required")
                 );
@@ -4429,8 +4438,6 @@ export class ChoiceSetInput extends Input {
         const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
-
-        element.tabIndex = this.isDesignMode() ? -1 : 0;
 
         this._toggleInputs = [];
         this._labels = [];
@@ -5552,6 +5559,7 @@ export abstract class Action extends CardObject {
                 iconElement.style.width = hostConfig.actions.iconSize + "px";
                 iconElement.style.height = hostConfig.actions.iconSize + "px";
                 iconElement.style.flex = "0 0 auto";
+                iconElement.setAttribute("role", "presentation");
 
                 if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
                     this.renderedElement.classList.add("iconAbove");
@@ -6628,7 +6636,7 @@ class OverflowAction extends Action {
             contextMenu.hostConfig = this.hostConfig;
 
             for (let i = 0; i < this._actions.length; i++) {
-                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "");
+                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "", this._actions[i].iconUrl);
                 menuItem.isEnabled = this._actions[i].isEnabled;
                 menuItem.onClick = () => {
                     const actionToExecute = this._actions[i];
