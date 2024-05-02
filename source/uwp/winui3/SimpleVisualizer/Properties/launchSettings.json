@@ -4,8 +4,7 @@
       "commandName": "MsixPackage"
     },
     "SimpleVisualizer (Unpackaged)": {
-      "commandName": "Project",
-      "hotReloadEnabled": false
+      "commandName": "Project"
     }
   }
 }

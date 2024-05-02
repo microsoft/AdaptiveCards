@@ -500,7 +500,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 if (auto strongThis = weakThis.get(); isAutoSize)
                 {
                     strongThis->SetAutoSize(
-                        properties.uiElement, properties.parentElement, properties.imageContainer, properties.isVisible, imageFiresOpenEvent);
+                        properties.uiElement,
+                        properties.parentElement,
+                        properties.imageContainer,
+                        properties.isVisible,
+                        imageFiresOpenEvent);
                 }
             }
         }
@@ -514,22 +518,31 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         }
     }
 
-    void XamlBuilder::CreateOptionsForBitmapImageSource(winrt::Uri const& imageUrl,
-                                                        winrt::AdaptiveCardResourceResolvers const& resolvers,
-                                                        winrt::ImageSource const& imageSource)
+    void XamlBuilder::ConfigureImageSource(winrt::Uri const& imageUrl,
+                                        winrt::AdaptiveCardResourceResolvers const& resolvers,
+                                        winrt::ImageSource const& imageSource,
+                                        bool isImageSvg)
     {
         winrt::hstring schemeName = imageUrl.SchemeName();
         auto hasResolver = resolvers && resolvers.Get(schemeName) != nullptr;
         auto externalHandling = !(m_enableXamlImageHandling || (m_listeners.size() == 0));
         auto schemeNameIsData = schemeName == L"data";
 
-        if ((hasResolver || !schemeNameIsData) && externalHandling)
+        if (!isImageSvg)
         {
-            imageSource.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+            if ((hasResolver || !schemeNameIsData) && externalHandling)
+            {
+                imageSource.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::None);
+            }
+            else if (schemeNameIsData)
+            {
+                imageSource.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+            }
         }
-        else if (schemeNameIsData)
+
+        if ((hasResolver && externalHandling) || schemeNameIsData)
         {
-            imageSource.as<winrt::BitmapImage>().CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
+            m_imageLoadTracker->TrackImage(imageSource);
         }
     }
 
@@ -542,10 +555,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         SetImageSourceToFrameworkElement(imgProperties.uiElement, imageSource, imgProperties.stretch);
 
-        if (!imgProperties.isImageSvg)
-        {
-            CreateOptionsForBitmapImageSource(imageUrl, resolvers, imageSource);
-        }
+        ConfigureImageSource(imageUrl, resolvers, imageSource, imgProperties.isImageSvg);
 
         ResolveImageAsync(imageUrl, resolvers, imageSource, imgProperties);
 
@@ -604,9 +614,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
-                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                ellipse.Visibility(winrt::Visibility::Collapsed);
-
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
                 auto weakParent = winrt::make_weak(parentElement);

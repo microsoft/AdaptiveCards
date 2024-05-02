@@ -97,18 +97,19 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-		winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content);
+        winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content);
 
-		winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
+        winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
 
-		winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
+        winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
             winrt::Uri const uri, winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg);
 
-		void CreateOptionsForBitmapImageSource(winrt::Uri const& imageUrl,
+        void ConfigureImageSource(winrt::Uri const& imageUrl,
             winrt::AdaptiveCardResourceResolvers const& resolvers,
-            winrt::ImageSource const& imageSource);
+            winrt::ImageSource const& imageSource,
+            bool isImageSvg);
 
-		template<typename TElement>
+        template<typename TElement>
         winrt::fire_and_forget ResolveImageAsync(
             winrt::Uri const uri,
             winrt::AdaptiveCardResourceResolvers const resolvers,
