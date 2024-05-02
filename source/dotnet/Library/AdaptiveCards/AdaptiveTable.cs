@@ -54,13 +54,14 @@ namespace AdaptiveCards
         /// Add an AdpativeTableRow
         /// </summary>
         /// <param name="element"></param>
-        public void Add(AdaptiveElement element)
+        public override void Add(AdaptiveElement element)
         {
             if (element is AdaptiveTableRow)
             {
                 Rows.Add(element as AdaptiveTableRow);
             }
         }
+
         /// <summary>
         /// Defines the style of the grid. This property currently only controls the grid’s color 
         /// </summary>
@@ -105,7 +106,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(false)]
-        public bool FirstRowAsHeaders{ get; set; }
+        [DefaultValue(true)]
+        public bool FirstRowAsHeaders { get; set; } = true;
     }
 }

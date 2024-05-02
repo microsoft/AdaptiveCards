@@ -38,7 +38,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The latest known schema version supported by this library.
         /// </summary>
-        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 5);
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 6);
 
         /// <summary>
         /// Creates an AdaptiveCard using a specific schema version.
@@ -128,7 +128,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeightType.Auto"/>.
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonConverter(typeof(AdaptiveHeightConverter))]
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
@@ -136,15 +136,23 @@ namespace AdaptiveCards
         public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
 
         /// <summary>
-        /// Explicit card minimum height in pixels.
+        /// Explicit card minimum height with 'px'. (100px, 200px)
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
         [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(0)]
-        public uint PixelMinHeight { get; set; }
+        [DefaultValue(null)]
+        public string MinHeight { get; set; }
+
+        /// <summary>
+        /// PixelMinHeight if height is not auto/stretch
+        /// </summary>
+        [JsonIgnore]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public uint PixelMinHeight { get => uint.TryParse(MinHeight?.Replace("px", ""), out var val) ? (uint)val : 0; set => MinHeight = $"{value}px"; }
 
         /// <summary>
         /// The Body elements for this card.
@@ -177,6 +185,33 @@ namespace AdaptiveCards
         /// </summary>
         /// <returns>true iff the body should be serialized.</returns>
         public bool ShouldSerializeBody() => Body?.Count > 0;
+
+        /// <summary>
+        /// Sets the text flow direction
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        [DefaultValue(null)]
+        public bool? Rtl { get; set; } = null;
+
+#if !NETSTANDARD1_3
+        /// <summary>
+        /// Controls XML serialization of style.
+        /// </summary>
+        // The XML serializer doesn't handle nullable value types. This allows serialization if non-null.
+        [JsonIgnore]
+        [XmlAttribute("Rtl")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool RtlXml { get { return (Rtl.HasValue) ? Rtl.Value : false; } set { Rtl = value; } }
+
+        /// <summary>
+        /// Determines whether to serialize the style for XML.
+        /// </summary>
+        public bool ShouldSerializeRtlXml() => this.Rtl.HasValue;
+#endif
+
 
         /// <summary>
         /// The Actions for this card.
@@ -256,6 +291,16 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAuthentication Authentication { get; set; }
+
+        /// <summary>
+        /// Defines various metadata properties typically not used for rendering the card
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveMetadata Metadata { get; set; }
 
         /// <summary>
         /// Determines whether the height property of an AdaptiveCard should be serialized.

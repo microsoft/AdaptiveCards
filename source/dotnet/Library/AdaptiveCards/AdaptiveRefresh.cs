@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -36,5 +39,22 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         public List<string> UserIds { get; set; } = new List<string>();
+
+
+        /// <summary>
+        /// A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z
+        /// </summary>
+        //[JsonConverter(typeof(IsoDateTimeConverter))]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public DateTime? Expires { get; set; }
+
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+        [JsonIgnore]
+        public string ExpiresXml { get => Expires?.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture); set => Expires = DateTime.Parse(value); }
+#endif
     }
 }

@@ -138,7 +138,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Explicit image width.
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
+        [JsonConverter(typeof(StringSizeWithUnitConverter))]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]

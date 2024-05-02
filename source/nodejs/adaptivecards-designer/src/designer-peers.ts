@@ -1257,6 +1257,16 @@ export abstract class DesignerPeer extends DraggableElement {
             this.renderedElement.style.left = clientRect.left + "px";
             this.renderedElement.style.top = clientRect.top + "px";
         }
+
+        this.updateAriaProperties();
+    }
+
+    protected updateAriaProperties() {
+        if (this._children.length === 0 && this.getCardObject() instanceof Adaptive.CardElementContainer) {
+            this.renderedElement.setAttribute("aria-label", "Empty " + this.getCardObject().getJsonTypeName());
+        } else {
+            this.renderedElement.setAttribute("aria-label", this.getCardObject().getJsonTypeName());
+        }
     }
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
@@ -2170,6 +2180,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                                     this.addAction(action);
 
                                     popupMenu.closePopup(false);
+                                    this.renderedElement.focus();
                                 };
 
                                 popupMenu.items.add(menuItem);
