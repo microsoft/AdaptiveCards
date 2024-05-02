@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System;
+#pragma warning disable CS1591
 namespace Microsoft.MarkedNet
 {
     public static class Emoji
@@ -1289,5 +1285,6 @@ namespace Microsoft.MarkedNet
         public readonly static string flag_za = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1E6);
         public readonly static string flag_zm = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1F2);
         public readonly static string flag_zw = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1FC);
+#pragma warning restore
     }
 }
