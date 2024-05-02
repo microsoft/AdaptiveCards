@@ -75,7 +75,7 @@ namespace WpfVisualizer
             Renderer.FeatureRegistration.Set("acTest", "1.0");
 
             // Use the Xceed rich input controls
-            Renderer.UseXceedElementRenderers();
+            //Renderer.UseXceedElementRenderers();
             xceedCheckbox.IsChecked = true;
 
             // Register custom elements and actions
