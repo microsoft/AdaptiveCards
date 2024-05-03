@@ -97,7 +97,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-        winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content);
+        winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
 
         winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
 

@@ -289,9 +289,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromString(winrt::hstring const& content)
+    winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
     {
-        // Parse the size from the XamlDocument
+        // Parse the size from the XamlDocument as XML
         winrt::XmlDocument xmlDoc;
 
         xmlDoc.LoadXml(content);
@@ -301,7 +301,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             auto rootElement = xmlDoc.DocumentElement();
 
             // Root element must be an SVG
-            if (winrt::operator==(rootElement.NodeName(), L"svg"))
+            if (rootElement.NodeName() == L"svg")
             {
                 auto heightAttribute = rootElement.GetAttribute(L"height");
                 auto widthAttribute = rootElement.GetAttribute(L"width");
@@ -337,7 +337,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         // Read the data as a string
         winrt::hstring svgString = dataReader.ReadString(numBytesLoaded);
 
-        co_return ParseSizeOfSVGImageFromString(svgString);
+        co_return ParseSizeOfSVGImageFromXmlString(svgString);
     }
 
     winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(winrt::Uri const imageUrl,
@@ -469,7 +469,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 }
                 else
                 {
-                    // Otherwise, no resolver...
+                    // Use Xaml to load the images 
                     if (auto strongThis = weakThis.get())
                     {
                         if ((strongThis->m_enableXamlImageHandling) || (strongThis->m_listeners.size() == 0))
@@ -481,7 +481,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                 winrt::HttpClient httpClient;
                                 auto getOperation = co_await httpClient.GetAsync(uri);
                                 auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
-                                auto size{ParseSizeOfSVGImageFromString(readOperation)};
+                                auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
                                 co_await wil::resume_foreground(GetDispatcher(strongImageSource));
                                 auto svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
                                 svgImageSource.RasterizePixelHeight(size.Height);
