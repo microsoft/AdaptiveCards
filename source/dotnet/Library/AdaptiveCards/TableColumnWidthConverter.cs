@@ -8,10 +8,10 @@ using System.Xml;
 
 namespace AdaptiveCards
 {
-    internal class ColumnWidthConverter : JsonConverter, ILogWarnings
+    internal class TableColumnWidthConverter : JsonConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
-        public ColumnWidthConverter()
+        public TableColumnWidthConverter()
         {
         }
 
@@ -46,14 +46,14 @@ namespace AdaptiveCards
             }
             else
             {
-                long relativeWidth = (long)reader.Value;
+                double relativeWidth = Convert.ToDouble(reader.Value);
                 if (relativeWidth < 0)
                 {
                     Warnings.Add(new AdaptiveWarning(-1,
                         $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was invalid, default value (0) will be used."));
                     relativeWidth = 0;
                 }
-                tableColumnWidth.RelativeWidth = relativeWidth; 
+                tableColumnWidth.RelativeWidth = relativeWidth;
             }
 
             return tableColumnWidth;
@@ -68,7 +68,10 @@ namespace AdaptiveCards
             }
             else
             {
-                writer.WriteValue(tableColumnWidth.RelativeWidth);
+                if (tableColumnWidth.PixelWidth == (int)tableColumnWidth.PixelWidth) 
+                    writer.WriteValue((int)tableColumnWidth.RelativeWidth);
+                else
+                    writer.WriteValue(tableColumnWidth.RelativeWidth);
             }
         }
     }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 "use strict";
-
+const { inspect } = require('node:util');
 const emitDebugOutput = false; // set to true to get debug spew firehose
 
 function debugLog(msg) {
@@ -17,6 +17,14 @@ var path = require("path");
 var glob = require("glob");
 var md5 = require("md5");
 
+// note: we can't support escaping to match literal '?' or '*' because of this path munging. needed
+// for builds to work in Windows *and* Linux
+const npmPathPrefix = process.env.npm_config_local_prefix.replace(/\\/g, "/");
+
+function pathJoinWithSlashes(pathToJoin, additionalPath) {
+    return path.join(pathToJoin, additionalPath).replace(/\\/g, "/");
+}
+
 // These are the flat asset files that will be copied into the output folder and available to
 // reference in HTML templates. Note that these are expected to exist within the
 // `adaptivecards-site/node_modules` directory
@@ -26,8 +34,7 @@ var simpleAssets = [
     "node_modules/@fortawesome/fontawesome-free/webfonts/*.*",
     "node_modules/highlightjs/highlight.pack.min.js",
     "node_modules/highlightjs/styles/default.css",
-    "node_modules/jquery/dist/jquery.min.js",
-    "node_modules/markdown-it/dist/markdown-it.min.js"
+    "node_modules/jquery/dist/jquery.min.js"
 ];
 
 // These are the other asset files that need to be copied into a specific location
@@ -35,18 +42,18 @@ var simpleAssets = [
 var customAssets = [
     {
         // AC renderer
-        path: "node_modules/adaptivecards/dist/*.*",
-        pathPrefix: process.env.npm_config_local_prefix
+        path: "node_modules/adaptivecards/dist/{*.min.*,*.css,*.css.map}",
+        pathPrefix: npmPathPrefix
     },
     {
         // AC designer
-        path: "node_modules/adaptivecards-{templating,designer}/dist/*.*",
-        pathPrefix: process.env.npm_config_local_prefix
+        path: "node_modules/adaptivecards-{templating,designer}/dist/{*.min.*,*.css,*.css.map}",
+        pathPrefix: npmPathPrefix
     },
     {
         // markdown-it
         path: "node_modules/markdown-it/dist/markdown-it.min.js",
-        pathPrefix: process.env.npm_config_local_prefix
+        pathPrefix: npmPathPrefix
     },
     {
         // Sample payloads and templates
@@ -73,7 +80,7 @@ var customAssets = [
     {
         // CSS used for samples on the site
         path: "node_modules/adaptivecards-designer/dist/containers/outlook-container.css",
-        pathPrefix: process.env.npm_config_local_prefix,
+        pathPrefix: npmPathPrefix,
         dest: function (p) {
             return "css/outlook.css";
         }
@@ -81,19 +88,19 @@ var customAssets = [
     {
         // designer module (hashing not working for CSS files; the designer expects certain filenames)
         path: "node_modules/adaptivecards-designer/dist/containers/*.*",
-        pathPrefix: process.env.npm_config_local_prefix,
+        pathPrefix: npmPathPrefix,
         noHash: true
     },
     {
         // designer module (hashing not working for CSS files; the designer expects certain filenames)
         path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.css",
-        pathPrefix: process.env.npm_config_local_prefix,
+        pathPrefix: npmPathPrefix,
         noHash: true
     },
     {
         // monaco-editor module and maps, for science
         path: "node_modules/monaco-editor/{min,min-maps}/vs/**/*.*",
-        pathPrefix: path.join(process.env.npm_config_local_prefix, "adaptivecards-site"),
+        pathPrefix: pathJoinWithSlashes(npmPathPrefix, "adaptivecards-site"),
         noHash: true
     },
     {
@@ -125,25 +132,30 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
     let hashedAssets = [];
 
     debugLog("processing simple assets");
-    debugLog(`  prefix: ${process.env.npm_config_local_prefix}`);
+    debugLog(`  prefix: ${npmPathPrefix}`);
     simpleAssets.forEach(function (a) {
         debugLog(`  path: ${a}`);
         customAssets.push({
             path: a,
-            pathPrefix: path.join(process.env.npm_config_local_prefix, "adaptivecards-site")
+            pathPrefix: pathJoinWithSlashes(npmPathPrefix, "adaptivecards-site")
         });
     });
 
     debugLog("\ngenerating custom assets");
     customAssets.forEach(function (asset) {
+        debugLog(`--------------------`);
         let assetPath = asset.path;
         if (asset.pathPrefix) {
-            assetPath = path.join(asset.pathPrefix, asset.path);
+            debugLog("adjusting asset path for prefix.");
+            debugLog(`  prefix: "${asset.pathPrefix}"`);
+            debugLog(`  path:   "${asset.path}"`);
+            assetPath = pathJoinWithSlashes(asset.pathPrefix, asset.path);
         }
-        debugLog(`--------------------`);
         debugLog(`asset path is "${assetPath}"`);
 
-        var g = glob.sync(assetPath, { nocase: false }).map(function (sourcePath) {
+        const globbedAssets = glob.sync(assetPath, { nocase: false });
+        debugLog(`  found ${globbedAssets.length} assets`);
+        const adjustedAssets = globbedAssets.map(function (sourcePath) {
             if (!asset.dest) {
                 asset.dest = function (p) {
                     return p;
@@ -164,9 +176,9 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
             if (!asset.noHash && hashExtensions.includes(path.extname(destPath))) {
                 // For cache-busting append the md5 hash of our script and CSS content
                 // EXAMPLE: adaptivecards.js => adaptivecards.c66a8322.js
-                let originalDestPath = destPath;
-                let hash = md5(fs.readFileSync(sourcePath)).substring(0, 6);
-                let hashedFilename =
+                const originalDestPath = destPath;
+                const hash = md5(fs.readFileSync(sourcePath)).substring(0, 6);
+                const hashedFilename =
                     path.basename(destPath, path.extname(destPath)) +
                     "." +
                     hash +
@@ -184,7 +196,7 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
             return {
                 path: destPath,
                 data: function () {
-                    debugLog(`  asset "${sourcePath}" => "${destPath}"`);
+                    console.log(`  asset "${sourcePath}" => "${destPath}"`);
                     if (emitDebugOutput && !fs.existsSync(sourcePath)) {
                         debugLog(`===>ERROR: unable to find "${sourcePath}"<===`);
                     }
@@ -193,8 +205,9 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
             };
         });
 
-        g.forEach(function (item) {
+        adjustedAssets.forEach(function (item) {
             allAssets.push(item);
+            debugLog(`adding asset to outputs: ${inspect(item)}`);
         });
     });
 

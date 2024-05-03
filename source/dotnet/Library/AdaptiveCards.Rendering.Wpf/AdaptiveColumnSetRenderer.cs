@@ -95,7 +95,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                     // do some sizing magic using the magic GridUnitType.Star
-                    var width = column.Width?.ToLower();
+                    var width = column.Width?.ToString().ToLower();
                     if (string.IsNullOrEmpty(width))
 #pragma warning disable CS0618 // Type or member is obsolete
                         width = column.Size?.ToLower();
