@@ -11,9 +11,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the backgroundImage property
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveBackgroundImage.TypeName)]
-#endif
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveBackgroundImage
     {
@@ -79,19 +77,15 @@ namespace AdaptiveCards
         /// The Url of the background image.
         /// </summary>
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public Uri Url { get; set; }
 
         /// <summary>
         /// The Url of the background image as a string.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlAttribute("BackgroundImage")]
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-#endif
         [JsonIgnore]
         public string UrlString
         {
@@ -103,9 +97,7 @@ namespace AdaptiveCards
         /// Controls how the image is tiled or stretched.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveImageFillMode), "cover")]
         public AdaptiveImageFillMode FillMode { get; set; }
 
@@ -113,9 +105,7 @@ namespace AdaptiveCards
         /// Determines how to align the background image horizontally.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
@@ -123,9 +113,7 @@ namespace AdaptiveCards
         /// Determines how to align the background image vertically.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveVerticalAlignment), "top")]
         public AdaptiveVerticalAlignment VerticalAlignment { get; set; }
 

@@ -17,9 +17,7 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string Title { get; set; }
 
         /// <summary>
@@ -33,18 +31,14 @@ namespace AdaptiveCards
         ///     IconUrl that can be specified for actions
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string IconUrl { get; set; }
 
         /// <summary>
         ///     Style that can be specified for actions
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue("default")]
         public string Style { get; set; } = "default";
 
@@ -52,9 +46,7 @@ namespace AdaptiveCards
         ///    When set false, action is disabled 
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(true)]
         public bool IsEnabled{ get; set; } = true;
 
@@ -62,9 +54,7 @@ namespace AdaptiveCards
         /// Determines whether the action should be displayed as a button or in the overflow menu.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveActionMode), "primary")]
         public AdaptiveActionMode Mode { get; set; }
 
@@ -72,9 +62,7 @@ namespace AdaptiveCards
         /// Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string Tooltip{ get; set; }
     }
 }

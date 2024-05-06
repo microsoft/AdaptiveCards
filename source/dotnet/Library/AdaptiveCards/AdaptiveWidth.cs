@@ -81,6 +81,11 @@ namespace AdaptiveCards
             }
         }
 
+        /// <summary>
+        /// Parse string into AdaptiveWidth
+        /// </summary>
+        /// <param name="value">string</param>
+        /// <returns>AdaptiveWidth</returns>
         public static AdaptiveWidth Parse(string value)
         {
             return new AdaptiveWidth(value);
@@ -99,7 +104,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Initializes an AdaptiveWidth instance with the given <see cref="AdaptiveWidthType"/>.
         /// </summary>
-        /// <param name="WidthType">The AdaptiveWidthType to use.</param>
+        /// <param name="widthType">The AdaptiveWidthType to use.</param>
         public AdaptiveWidth(AdaptiveWidthType widthType)
         {
             WidthType = widthType;
@@ -110,21 +115,16 @@ namespace AdaptiveCards
         /// The <see cref="AdaptiveWidthType"/> this instance represents.
         /// </summary>
         [JsonProperty("WidthType")]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public AdaptiveWidthType WidthType { get; set; }
 
         /// <summary>
         /// The specific Width to use (only valid for the <see cref="AdaptiveWidthType.Pixel"/> type).
         /// </summary>
         [JsonProperty("unit")]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint? Unit { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Helper to aid in XML serialization of the <see cref="AdaptiveWidth.Unit"/> property.
         /// </summary>
@@ -136,7 +136,6 @@ namespace AdaptiveCards
         /// Determines whether to serialize the <see cref="AdaptiveWidth.UnitXml"/> property.
         /// </summary>
         public bool ShouldSerializeUnitXml() => Unit.HasValue;
-#endif
 
         /// <summary>
         /// Returns true if this <see cref="AdaptiveWidth"/> instance represents the <see
@@ -240,6 +239,7 @@ namespace AdaptiveCards
             return false;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (WidthType == AdaptiveWidthType.Stretch)

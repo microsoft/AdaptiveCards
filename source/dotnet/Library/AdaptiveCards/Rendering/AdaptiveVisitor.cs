@@ -11,8 +11,16 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveVisitor
     {
+
+        /// <summary>
+        /// A hashset of each object found while visiting. This is useful for finding an element using Linq
+        /// </summary>
         public HashSet<AdaptiveTypedElement> Elements { get; set; } = new HashSet<AdaptiveTypedElement>();
 
+        /// <summary>
+        /// Visit an element
+        /// </summary>
+        /// <param name="adaptiveElement"></param>
         public virtual void Visit(AdaptiveElement adaptiveElement)
         {
             if (adaptiveElement is AdaptiveImage image)
@@ -65,6 +73,10 @@ namespace AdaptiveCards.Rendering
                 Visit(table);
         }
 
+        /// <summary>
+        /// Visit a card
+        /// </summary>
+        /// <param name="card"></param>
         public virtual void Visit(AdaptiveCard card)
         {
             if (card == null)
@@ -95,6 +107,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a container
+        /// </summary>
+        /// <param name="container"></param>
         public virtual void Visit(AdaptiveContainer container)
         {
             Elements.Add(container);
@@ -110,6 +126,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a columnSet
+        /// </summary>
+        /// <param name="columnSet"></param>
         public virtual void Visit(AdaptiveColumnSet columnSet)
         {
             Elements.Add(columnSet);
@@ -125,6 +145,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a factset
+        /// </summary>
+        /// <param name="factSet"></param>
         public virtual void Visit(AdaptiveFactSet factSet)
         {
             Elements.Add(factSet);
@@ -135,6 +159,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit an imagesset.
+        /// </summary>
+        /// <param name="imageSet"></param>
         public virtual void Visit(AdaptiveImageSet imageSet)
         {
             Elements.Add(imageSet);
@@ -145,11 +173,19 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a textblock
+        /// </summary>
+        /// <param name="textBlock"></param>
         public virtual void Visit(AdaptiveTextBlock textBlock)
         {
             Elements.Add(textBlock);
         }
 
+        /// <summary>
+        /// Visit a image
+        /// </summary>
+        /// <param name="image"></param>
         public virtual void Visit(AdaptiveImage image)
         {
             Elements.Add(image);
@@ -160,10 +196,18 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a Fact.
+        /// </summary>
+        /// <param name="fact"></param>
         public virtual void Visit(AdaptiveFact fact)
         {
         }
 
+        /// <summary>
+        /// Visit a textInput
+        /// </summary>
+        /// <param name="inputText"></param>
         public virtual void Visit(AdaptiveTextInput inputText)
         {
             Elements.Add(inputText);
@@ -174,31 +218,55 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a Date Input
+        /// </summary>
+        /// <param name="inputDate"></param>
         public virtual void Visit(AdaptiveDateInput inputDate)
         {
             Elements.Add(inputDate);
         }
 
+        /// <summary>
+        /// Visit a Number Input
+        /// </summary>
+        /// <param name="inputNumber"></param>
         public virtual void Visit(AdaptiveNumberInput inputNumber)
         {
             Elements.Add(inputNumber);
         }
 
+        /// <summary>
+        /// Visit a time input
+        /// </summary>
+        /// <param name="inputTime"></param>
         public virtual void Visit(AdaptiveTimeInput inputTime)
         {
             Elements.Add(inputTime);
         }
 
+        /// <summary>
+        /// Visit a toggle input
+        /// </summary>
+        /// <param name="inputToggle"></param>
         public virtual void Visit(AdaptiveToggleInput inputToggle)
         {
             Elements.Add(inputToggle);
         }
 
+        /// <summary>
+        /// Visit a choiceSet Input
+        /// </summary>
+        /// <param name="adaptiveChoiceSetInput"></param>
         public virtual void Visit(AdaptiveChoiceSetInput adaptiveChoiceSetInput)
         {
             Elements.Add(adaptiveChoiceSetInput);
         }
 
+        /// <summary>
+        /// Visit a actionSet
+        /// </summary>
+        /// <param name="actionSet"></param>
         public virtual void Visit(AdaptiveActionSet actionSet)
         {
             Elements.Add(actionSet);
@@ -208,6 +276,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit an action
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveAction action)
         {
             if (action is AdaptiveOpenUrlAction urlAction)
@@ -226,22 +298,38 @@ namespace AdaptiveCards.Rendering
                 Visit(executeAction);
         }
 
+        /// <summary>
+        /// Visit a submit action
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveSubmitAction action)
         {
             Elements.Add(action);
         }
 
+        /// <summary>
+        /// Visit a OpenUrlAction
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveOpenUrlAction action)
         {
             Elements.Add(action);
         }
 
+        /// <summary>
+        /// Visit a showCard action
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveShowCardAction action)
         {
             Elements.Add(action);
             Visit(action.Card);
         }
 
+        /// <summary>
+        /// Visit a toggle visibility action.
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveToggleVisibilityAction action)
         {
             Elements.Add(action);
@@ -252,21 +340,37 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a targetElement.
+        /// </summary>
+        /// <param name="targetElement"></param>
         public virtual void Visit(AdaptiveTargetElement targetElement)
         {
 
         }
 
+        /// <summary>
+        /// Visit a execute Action.
+        /// </summary>
+        /// <param name="action"></param>
         public virtual void Visit(AdaptiveExecuteAction action)
         {
             Elements.Add(action);
         }
 
+        /// <summary>
+        /// Visit a Media element
+        /// </summary>
+        /// <param name="media"></param>
         public virtual void Visit(AdaptiveMedia media)
         {
             Elements.Add(media);
         }
 
+        /// <summary>
+        /// Visit a RichTextBlock 
+        /// </summary>
+        /// <param name="rtb"></param>
         public virtual void Visit(AdaptiveRichTextBlock rtb)
         {
             Elements.Add(rtb);
@@ -277,6 +381,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit an Inline element
+        /// </summary>
+        /// <param name="inline"></param>
         public virtual void Visit(AdaptiveInline inline)
         {
             if (inline is AdaptiveTextRun run)
@@ -285,6 +393,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit a textRun
+        /// </summary>
+        /// <param name="run"></param>
         public virtual void Visit(AdaptiveTextRun run)
         {
             if (run.SelectAction != null)
@@ -293,6 +405,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit refresh
+        /// </summary>
+        /// <param name="refresh"></param>
         public virtual void Visit(AdaptiveRefresh refresh)
         {
             if (refresh.Action != null)
@@ -301,6 +417,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit table
+        /// </summary>
+        /// <param name="table"></param>
         public virtual void Visit(AdaptiveTable table)
         {
             Elements.Add(table);
@@ -316,6 +436,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit TableRow
+        /// </summary>
+        /// <param name="row"></param>
         public virtual void Visit(AdaptiveTableRow row)
         {
             foreach (var cell in row.Cells)
@@ -324,10 +448,18 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Visit TableColumnDefinition
+        /// </summary>
+        /// <param name="col"></param>
         public virtual void Visit(AdaptiveTableColumnDefinition col)
         {
         }
 
+        /// <summary>
+        /// Visit table cell
+        /// </summary>
+        /// <param name="cell"></param>
         public virtual void Visit(AdaptiveTableCell cell)
         {
             foreach (var item in cell.Items)
