@@ -11,18 +11,14 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the Column element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveColumn.TypeName)]
-#endif
     public class AdaptiveColumn : AdaptiveContainer
     {
         /// <inheritdoc />
         public new const string TypeName = "Column";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
@@ -38,9 +34,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(AdaptiveWidthConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public AdaptiveWidth Width { get; set; }
 
     }

@@ -10,9 +10,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the Adaptive Cards Image element type.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveImage.TypeName)]
-#endif
     public class AdaptiveImage : AdaptiveElement
     {
         /// <summary>
@@ -44,9 +42,7 @@ namespace AdaptiveCards
         public const string TypeName = "Image";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
@@ -54,9 +50,7 @@ namespace AdaptiveCards
         /// Controls the sizing (<see cref="AdaptiveImageSize"/>) of the displayed image.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize Size { get; set; }
 
@@ -64,9 +58,7 @@ namespace AdaptiveCards
         /// The style (<see cref="AdaptiveImageStyle"/>) in which the image is displayed.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveImageStyle), "default")]
         public AdaptiveImageStyle Style { get; set; }
 
@@ -74,19 +66,15 @@ namespace AdaptiveCards
         /// The URL of the image.
         /// </summary>
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public Uri Url { get; set; }
 
         /// <summary>
         /// This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlAttribute("Url")]
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-#endif
         [JsonIgnore]
         public string UrlString
         {
@@ -98,9 +86,7 @@ namespace AdaptiveCards
         /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
@@ -109,9 +95,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(HashColorConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string BackgroundColor { get; set; }
 
@@ -119,9 +103,7 @@ namespace AdaptiveCards
         /// Action to execute when image is invoked.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlElement]
-#endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
@@ -129,9 +111,7 @@ namespace AdaptiveCards
         /// Alternate text (alttext) to display for this image.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string AltText { get; set; }
 
@@ -140,9 +120,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter))]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(0)]
         public uint PixelWidth { get; set; }
 
@@ -150,9 +128,7 @@ namespace AdaptiveCards
         /// Explicit image height.
         /// </summary>
         [JsonIgnore]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint PixelHeight
         {
             get

@@ -13,9 +13,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the ActionSet element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveActionSet.TypeName)]
-#endif
     public class AdaptiveActionSet : AdaptiveElement
     {
         /// <summary>
@@ -26,9 +24,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The JSON property name that this class implements.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
@@ -36,14 +32,12 @@ namespace AdaptiveCards
         /// The actions contained within this ActionSet.
         /// </summary>
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
-#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
         [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
-#endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
     }
 }

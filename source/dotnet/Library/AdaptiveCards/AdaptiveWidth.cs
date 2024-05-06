@@ -115,21 +115,16 @@ namespace AdaptiveCards
         /// The <see cref="AdaptiveWidthType"/> this instance represents.
         /// </summary>
         [JsonProperty("WidthType")]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public AdaptiveWidthType WidthType { get; set; }
 
         /// <summary>
         /// The specific Width to use (only valid for the <see cref="AdaptiveWidthType.Pixel"/> type).
         /// </summary>
         [JsonProperty("unit")]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint? Unit { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Helper to aid in XML serialization of the <see cref="AdaptiveWidth.Unit"/> property.
         /// </summary>
@@ -141,7 +136,6 @@ namespace AdaptiveCards
         /// Determines whether to serialize the <see cref="AdaptiveWidth.UnitXml"/> property.
         /// </summary>
         public bool ShouldSerializeUnitXml() => Unit.HasValue;
-#endif
 
         /// <summary>
         /// Returns true if this <see cref="AdaptiveWidth"/> instance represents the <see

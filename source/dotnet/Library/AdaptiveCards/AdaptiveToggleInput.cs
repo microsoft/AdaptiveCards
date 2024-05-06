@@ -9,27 +9,21 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the Input.Toggle element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveToggleInput.TypeName)]
-#endif
     public class AdaptiveToggleInput : AdaptiveInput
     {
         /// <inheritdoc />
         public const string TypeName = "Input.Toggle";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// Title text for this element.
         /// </summary>
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Title { get; set; }
 
@@ -37,9 +31,7 @@ namespace AdaptiveCards
         /// Value to use when toggle is on.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string ValueOn { get; set; } = bool.TrueString;
 
@@ -47,9 +39,7 @@ namespace AdaptiveCards
         /// Value to use when toggle is off.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string ValueOff { get; set; } = bool.FalseString;
 
@@ -57,9 +47,7 @@ namespace AdaptiveCards
         /// Controls text wrapping behavior.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Wrap { get; set; }
 
@@ -67,9 +55,7 @@ namespace AdaptiveCards
         /// The value for the field.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 

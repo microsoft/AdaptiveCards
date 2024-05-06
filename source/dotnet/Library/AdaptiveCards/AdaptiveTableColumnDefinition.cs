@@ -12,9 +12,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the backgroundImage property
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTableColumnDefinition.TypeName)]
-#endif
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveTableColumnDefinition
     {
@@ -27,9 +25,7 @@ namespace AdaptiveCards
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
         [JsonProperty("verticalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
@@ -37,17 +33,13 @@ namespace AdaptiveCards
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
         [JsonProperty("horizontalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalContentAlignment), "left")]
         public AdaptiveHorizontalContentAlignment HorizontalContentAlignment { get; set; }
 
         [JsonConverter(typeof(TableColumnWidthConverter))]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(0)]
         private TableColumnWidth TableColumnWidth { get; set; } = new TableColumnWidth();
 

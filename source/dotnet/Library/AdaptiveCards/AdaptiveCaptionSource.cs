@@ -10,9 +10,7 @@ namespace AdaptiveCards
     /// Represents a "media source" for a Media element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-#if !NETSTANDARD1_3
     [XmlType(TypeName = "CaptionSource")]
-#endif
     public class AdaptiveCaptionSource
     {
         /// <summary>
@@ -37,27 +35,21 @@ namespace AdaptiveCards
         /// The mime type of this media source.
         /// </summary>
         [JsonProperty]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string MimeType { get; set; }
 
         /// <summary>
         /// The URL of this media source.
         /// </summary>
         [JsonProperty]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string Url { get; set; }
 
         /// <summary>
         /// The caption label for the caption
         /// </summary>
         [JsonProperty]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string Label { get; set; }
     }
 }

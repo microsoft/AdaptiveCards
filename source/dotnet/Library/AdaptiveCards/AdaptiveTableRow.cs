@@ -12,18 +12,14 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents TableRow element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTableRow.TypeName)]
-#endif
     public class AdaptiveTableRow : AdaptiveCollectionWithContentAlignment 
     {
         /// <inheritdoc />
         public const string TypeName = "TableRow";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
@@ -32,9 +28,7 @@ namespace AdaptiveCards
         /// </summary>
 
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlElement(Type = typeof(AdaptiveTableCell), ElementName = AdaptiveTableCell.TypeName)]
-#endif
         public List<AdaptiveTableCell> Cells{ get; set; } = new List<AdaptiveTableCell>();
 
         /// <inheritdoc/>
@@ -56,13 +50,10 @@ namespace AdaptiveCards
         /// Sets the content flow direction
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Controls XML serialization of style.
         /// </summary>
@@ -76,7 +67,6 @@ namespace AdaptiveCards
         /// Determines whether to serialize the style for XML.
         /// </summary>
         public bool ShouldSerializeRtlXml() => this.Rtl.HasValue;
-#endif
 
     }
 }

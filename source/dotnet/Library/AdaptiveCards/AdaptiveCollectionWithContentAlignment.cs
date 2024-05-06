@@ -21,9 +21,7 @@ namespace AdaptiveCards
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
         [JsonProperty("verticalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalCellContentAlignment { get; set; }
 
@@ -31,9 +29,7 @@ namespace AdaptiveCards
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
         [JsonProperty("horizontalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalContentAlignment), "left")]
         public AdaptiveHorizontalContentAlignment HorizontalCellContentAlignment { get; set; }
     }

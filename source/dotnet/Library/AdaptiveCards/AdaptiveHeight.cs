@@ -114,21 +114,16 @@ namespace AdaptiveCards
         /// The <see cref="AdaptiveHeightType"/> this instance represents.
         /// </summary>
         [JsonProperty("heightType")]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public AdaptiveHeightType HeightType { get; set; }
 
         /// <summary>
         /// The specific height to use (only valid for the <see cref="AdaptiveHeightType.Pixel"/> type).
         /// </summary>
         [JsonProperty("unit")]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint? Unit { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Helper to aid in XML serialization of the <see cref="AdaptiveHeight.Unit"/> property.
         /// </summary>
@@ -140,7 +135,6 @@ namespace AdaptiveCards
         /// Determines whether to serialize the <see cref="AdaptiveHeight.UnitXml"/> property.
         /// </summary>
         public bool ShouldSerializeUnitXml() => Unit.HasValue;
-#endif
 
         /// <summary>
         /// Returns true if this <see cref="AdaptiveHeight"/> instance represents the <see

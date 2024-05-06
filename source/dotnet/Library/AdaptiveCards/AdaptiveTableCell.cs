@@ -12,18 +12,14 @@ namespace AdaptiveCards
     /// Represents a cell within a row of a Table element.
     /// </summary>
 
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTableCell.TypeName)]
-#endif
     public class AdaptiveTableCell : AdaptiveCollectionWithContentAlignment
     {
         /// <inheritdoc />
         public const string TypeName = "TableCell";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
@@ -31,13 +27,10 @@ namespace AdaptiveCards
         /// Sets the text flow direction
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Controls XML serialization of style.
         /// </summary>
@@ -51,14 +44,12 @@ namespace AdaptiveCards
         /// Determines whether to serialize the style for XML.
         /// </summary>
         public bool ShouldSerializeRtlXml() => this.Rtl.HasValue;
-#endif
 
         /// <summary>
         /// Elements within this container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
         [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
@@ -76,7 +67,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveActionSet))]
         [XmlElement(typeof(AdaptiveTable))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
-#endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <inheritdoc/>

@@ -43,21 +43,16 @@ namespace AdaptiveCards
         /// <summary>
         /// Target element Id.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public string ElementId { get; set; }
 
         /// <summary>
         /// Target element visibility.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public bool? IsVisible { get; set; } = null;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Helper to do custom serialization of <see cref="AdaptiveTargetElement.IsVisible"/> property for XML.
         /// </summary>
@@ -70,7 +65,6 @@ namespace AdaptiveCards
         /// Determines whether the <see cref="AdaptiveTargetElement.IsVisibleXml"/> property should be serialized.
         /// </summary>
         public bool ShouldSerializeIsVisibleXml() => this.IsVisible.HasValue;
-#endif
 
         /// <summary>
         /// Implicit conversion from <see cref="string"/> to <see cref="AdaptiveTargetElement"/>.
