@@ -22,6 +22,11 @@ namespace AdaptiveCards.Rendering
         private static readonly Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?",
             RegexOptions.ExplicitCapture);
 
+        /// <summary>
+        /// Utility function for spacings.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string HandleHtmlSpaces(string text)
         {
             return text.Replace("&amp;nbsp;", "&#x00A0;")
@@ -33,6 +38,7 @@ namespace AdaptiveCards.Rendering
         ///     This funct will return modified text replacing {{DATE|TIME()}} style functions as the formatted text
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="lang"></param>
         /// <returns></returns>
         public static string ApplyTextFunctions(string text, string lang)
         {
@@ -117,6 +123,13 @@ namespace AdaptiveCards.Rendering
             LONG
         }
 
+        /// <summary>
+        /// Joines strings choices together
+        /// </summary>
+        /// <param name="choices"></param>
+        /// <param name="sep"></param>
+        /// <param name="last"></param>
+        /// <returns></returns>
         public static string JoinString(List<string> choices, string sep, string last)
         {
             if (choices == null || choices.Count == 0)
@@ -136,6 +149,13 @@ namespace AdaptiveCards.Rendering
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Typed lookup for anonymous dictionary.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dictionary"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static T TryGetValue<T>(this IDictionary dictionary, string key)
         {
             if (dictionary != null && dictionary.Contains(key))
@@ -146,6 +166,13 @@ namespace AdaptiveCards.Rendering
             return default(T);
         }
 
+        /// <summary>
+        /// Typed value lookup for anonymous dictionary.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dictionary"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
         {
             if (dictionary != null && dictionary.ContainsKey(key))

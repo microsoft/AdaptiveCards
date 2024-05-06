@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,9 @@ namespace Microsoft.MarkedNet
     /// </summary>
     public class XamlRenderer : EmojiMarkdownRenderer
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public XamlRenderer() : base()
         {
         }
@@ -81,55 +84,69 @@ namespace Microsoft.MarkedNet
         /// </summary>
         public string ListItemStyle { get; set; } = String.Empty;
 
+        /// <summary>
+        /// Constructor for renderer
+        /// </summary>
+        /// <param name="options"></param>
         public XamlRenderer(Options options) : base(options)
         {
         }
 
+        /// <inheritdoc/>
         public override string Blockquote(string quote)
         {
             return quote.Replace(ParagraphStyle, BlockQuoteStyle);
         }
 
+        /// <inheritdoc/>
         public override string Br()
         {
             return "<LineBreak/>\n";
         }
 
+        /// <inheritdoc/>
         public override string Code(string code, string lang, bool escaped)
         {
             return $"<Paragraph {CodeStyle}\">" + code.Replace("\r\n", "<LineBreak/>") + "</Paragraph>\n";
         }
 
+        /// <inheritdoc/>
         public override string Codespan(string text)
         {
             return $"<Run {CodespanStyle}>{text}</Run>\n";
         }
 
+        /// <inheritdoc/>
         public override string Del(string text)
         {
             return $"<Run TextDecorations=\"Strikethrough\">{text}</Run>";
         }
 
+        /// <inheritdoc/>
         public override string Em(string text)
         {
             return $"<Italic>{text}</Italic>";
         }
 
+        /// <inheritdoc/>
         public override string Heading(string text, int level, string raw)
         {
             return $"<Paragraph {HeadingStyles[level-1]}>{text}</Paragraph>\n";
         }
 
+        /// <inheritdoc/>
         public override string Hr()
         {
             return "<Paragraph>_____________________________</Paragraph>\n";
         }
 
+        /// <inheritdoc/>
         public override string Html(string html)
         {
             return String.Empty;
         }
 
+        /// <inheritdoc/>
         public override string Image(string href, string title, string text)
         {
             StringBuilder sb = new StringBuilder();
@@ -141,11 +158,13 @@ namespace Microsoft.MarkedNet
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         public override string Link(string href, string title, string text)
         {
             return $"<Hyperlink Command=\"NavigationCommands.GoToPage\" CommandParameter=\"{href}\">{text}</Hyperlink>";
         }
 
+        /// <inheritdoc/>
         public override string List(string body, bool ordered, int start)
         {
             StringBuilder sb = new StringBuilder();
@@ -158,11 +177,13 @@ namespace Microsoft.MarkedNet
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         public override string ListItem(string text)
         {
             return $"<ListItem {ListItemStyle}>{Paragraph(text)}</ListItem>\n";
         }
 
+        /// <inheritdoc/>
         public override string Paragraph(string text)
         {
             if (text.StartsWith("<Paragraph"))
@@ -171,11 +192,13 @@ namespace Microsoft.MarkedNet
                 return $"<Paragraph {ParagraphStyle}>{text}</Paragraph>\n";
         }
 
+        /// <inheritdoc/>
         public override string Strong(string text)
         {
             return $"<Bold>{text}</Bold>";
         }
 
+        /// <inheritdoc/>
         public override string Table(string header, string body)
         {
             StringBuilder sb = new StringBuilder();
@@ -186,12 +209,14 @@ namespace Microsoft.MarkedNet
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         public override string TableRow(string content)
         {
             return $"<TableRow>{content}</TableRow>\n";
         }
 
 
+        /// <inheritdoc/>
         public override string TableCell(string content, TableCellFlags flags)
         {
             StringBuilder sb = new StringBuilder();

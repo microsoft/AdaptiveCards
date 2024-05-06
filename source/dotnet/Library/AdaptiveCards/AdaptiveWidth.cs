@@ -81,6 +81,11 @@ namespace AdaptiveCards
             }
         }
 
+        /// <summary>
+        /// Parse string into AdaptiveWidth
+        /// </summary>
+        /// <param name="value">string</param>
+        /// <returns>AdaptiveWidth</returns>
         public static AdaptiveWidth Parse(string value)
         {
             return new AdaptiveWidth(value);
@@ -99,7 +104,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Initializes an AdaptiveWidth instance with the given <see cref="AdaptiveWidthType"/>.
         /// </summary>
-        /// <param name="WidthType">The AdaptiveWidthType to use.</param>
+        /// <param name="widthType">The AdaptiveWidthType to use.</param>
         public AdaptiveWidth(AdaptiveWidthType widthType)
         {
             WidthType = widthType;
@@ -240,6 +245,7 @@ namespace AdaptiveCards
             return false;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (WidthType == AdaptiveWidthType.Stretch)

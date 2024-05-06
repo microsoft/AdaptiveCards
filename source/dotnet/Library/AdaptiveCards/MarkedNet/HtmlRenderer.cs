@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +12,17 @@ namespace Microsoft.MarkedNet
     /// </summary>
     public class HtmlRenderer : EmojiMarkdownRenderer
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public HtmlRenderer() : base()
         {
         }
 
+        /// <summary>
+        /// Constructor with options.
+        /// </summary>
+        /// <param name="options"></param>
         public HtmlRenderer(Options options) : base(options)
         {
         }

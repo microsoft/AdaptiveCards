@@ -80,6 +80,11 @@ namespace AdaptiveCards
             }
         }
 
+        /// <summary>
+        /// Parse string to adaptive height
+        /// </summary>
+        /// <param name="value">string value</param>
+        /// <returns>AdaptiveHeight</returns>
         public static AdaptiveHeight Parse(string value)
         {
             return new AdaptiveHeight(value);
@@ -239,6 +244,7 @@ namespace AdaptiveCards
             return false;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (HeightType == AdaptiveHeightType.Stretch)

@@ -18,7 +18,7 @@ namespace AdaptiveCards
     public class AdaptiveTableCell : AdaptiveCollectionWithContentAlignment
     {
         /// <inheritdoc />
-        public new const string TypeName = "TableCell";
+        public const string TypeName = "TableCell";
 
         /// <inheritdoc />
 #if !NETSTANDARD1_3
@@ -79,11 +79,13 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
+        /// <inheritdoc/>
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {
             return Items.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public override void Add(AdaptiveElement element)
         {
             Items.Add(element);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.MarkedNet
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class StringHelper
     {
         public static string DecodeURIComponent(string str)
@@ -72,4 +73,5 @@ namespace Microsoft.MarkedNet
             return regex.Matches(src).Cast<Match>().Select(x => x.Value).ToArray();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

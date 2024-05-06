@@ -64,6 +64,10 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public List<AdaptiveCaptionSource> CaptionSources { get; set; } = new List<AdaptiveCaptionSource>();
 
+        /// <summary>
+        /// XmlSerializer method
+        /// </summary>
+        /// <returns></returns>
         public bool ShouldSerializeCaptionSources() => CaptionSources.Any();
     }
 }

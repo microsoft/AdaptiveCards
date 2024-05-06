@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Class for TokenExchangeResource
+    /// </summary>
     public class AdaptiveTokenExchangeResource
     {
         /// <summary>

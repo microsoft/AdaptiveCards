@@ -13,11 +13,18 @@ namespace AdaptiveCards.Rendering
     {
         private readonly IDictionary<string, Func<string>> _inputBindings;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public RenderedAdaptiveCardInputs()
         {
             _inputBindings = new Dictionary<string, Func<string>>();
         }
 
+        /// <summary>
+        /// Constructor with bindings.
+        /// </summary>
+        /// <param name="inputBindings"></param>
         public RenderedAdaptiveCardInputs(ref IDictionary<string, Func<string>> inputBindings)
         {
             _inputBindings = inputBindings;

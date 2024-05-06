@@ -24,11 +24,6 @@ namespace AdaptiveCards
         }
 
         /// <inheritdoc />
-        public IgnoreNullEnumConverter(bool camelCase) : base(camelCase)
-        {
-        }
-
-        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             try

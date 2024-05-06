@@ -51,6 +51,9 @@ namespace AdaptiveCards
         [DefaultValue(0)]
         private TableColumnWidth TableColumnWidth { get; set; } = new TableColumnWidth();
 
+        /// <summary>
+        /// Ths width in pixels
+        /// </summary>
         [JsonIgnore]
         public double PixelWidth
         {
@@ -58,6 +61,9 @@ namespace AdaptiveCards
             set { TableColumnWidth.PixelWidth = value; }
         }
 
+        /// <summary>
+        /// Ths relative width as a weight
+        /// </summary>
         [JsonIgnore]
         public double Width
         {

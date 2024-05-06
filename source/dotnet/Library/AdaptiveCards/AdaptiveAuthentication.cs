@@ -6,6 +6,9 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Class to for authentication data.
+    /// </summary>
     public class AdaptiveAuthentication
     {
         /// <summary>
