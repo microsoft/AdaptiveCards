@@ -58,10 +58,12 @@ namespace AdaptiveCards
                 converterWithContext.ParseContext = _parseContext;
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if (property?.MemberConverter is ILogWarnings memberConverter)
             {
                 memberConverter.Warnings = _parseResult.Warnings;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             return property;
         }

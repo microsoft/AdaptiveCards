@@ -40,10 +40,13 @@ namespace AdaptiveCards
         /// </summary>
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
 #endif
+        /// <inheritdoc/>
         public abstract IEnumerator<AdaptiveElement> GetEnumerator();
 
+        /// <inheritdoc/>
         public abstract void Add(AdaptiveElement value);
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new System.NotImplementedException();

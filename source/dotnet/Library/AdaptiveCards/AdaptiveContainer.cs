@@ -88,11 +88,13 @@ namespace AdaptiveCards
         public bool ShouldSerializeRtlXml() => this.Rtl.HasValue;
 #endif
 
+        /// <inheritdoc/>
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {
             return Items.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public override void Add(AdaptiveElement element)
         {
             Items.Add(element);

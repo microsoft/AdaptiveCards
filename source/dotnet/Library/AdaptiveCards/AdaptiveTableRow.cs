@@ -43,7 +43,7 @@ namespace AdaptiveCards
             return Cells.GetEnumerator(); 
         }
 
-
+        /// <inheritdoc/>
         public override void Add(AdaptiveElement value)
         {
             if (value is AdaptiveTableCell cell)

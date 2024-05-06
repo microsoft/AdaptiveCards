@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MarkedNet
 {
+    /// <summary>
+    /// Emoji to markup constants
+    /// </summary>
     public static class EmojiMarkup
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public const string copyright = ":copyright:";
         public const string registered = ":registered:";
         public const string bangbang = ":bangbang:";
@@ -1287,5 +1291,6 @@ namespace Microsoft.MarkedNet
         public const string flag_za = ":flag-za:";
         public const string flag_zm = ":flag-zm:";
         public const string flag_zw = ":flag-zw:";
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

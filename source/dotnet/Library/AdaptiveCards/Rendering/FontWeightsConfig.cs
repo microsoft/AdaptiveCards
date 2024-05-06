@@ -5,15 +5,32 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
+    /// <summary>
+    /// FontWeight config
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontWeightsConfig
     {
+        /// <summary>
+        /// Lighter config
+        /// </summary>
         public int? Lighter { get; set; }
 
+        /// <summary>
+        /// Default confing
+        /// </summary>
         public int? Default { get; set; }
 
+        /// <summary>
+        /// Bolder config
+        /// </summary>
         public int? Bolder { get; set; }
 
+        /// <summary>
+        /// Given a textWeight get the fontweight config for it.
+        /// </summary>
+        /// <param name="fontWeight"></param>
+        /// <returns></returns>
         public int? GetFontWeight(AdaptiveTextWeight fontWeight)
         {
             switch (fontWeight)
@@ -28,6 +45,11 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+        /// <summary>
+        /// Given a text weight get the default font weight for it.
+        /// </summary>
+        /// <param name="fontWeight"></param>
+        /// <returns></returns>
         public static int GetDefaultFontWeight(AdaptiveTextWeight fontWeight)
         {
             switch (fontWeight)

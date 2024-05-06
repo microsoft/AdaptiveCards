@@ -86,7 +86,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Determines whether to serialize the style for XML.
         /// </summary>
-        public bool ShouldSerializeStyleXml() => this.GridStyle.HasValue;
+        public bool ShouldSerializeGridStyleXml() => this.GridStyle.HasValue;
 #endif
 
         /// <summary>

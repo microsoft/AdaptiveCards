@@ -5,11 +5,12 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
+    /// <summary>
+    /// Class ContainersStyleConfig
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ContainerStyleConfig
     {
-        public ContainerStyleConfig() { }
-
         /// <summary>
         /// The background color to use for this container
         /// </summary>

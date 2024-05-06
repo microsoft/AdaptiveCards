@@ -52,6 +52,9 @@ namespace AdaptiveCards
         public DateTime? Expires { get; set; }
 
 #if !NETSTANDARD1_3
+        /// <summary>
+        /// Internal property for serializing xml.
+        /// </summary>
         [XmlAttribute]
         [JsonIgnore]
         public string ExpiresXml { get => Expires?.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture); set => Expires = DateTime.Parse(value); }

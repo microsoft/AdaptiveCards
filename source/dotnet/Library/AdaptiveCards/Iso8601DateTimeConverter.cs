@@ -13,6 +13,9 @@ namespace AdaptiveCards
     /// </summary>
     public class Iso8601DateTimeConverter : IsoDateTimeConverter
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Iso8601DateTimeConverter() : base()
         {
             DateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ"; 

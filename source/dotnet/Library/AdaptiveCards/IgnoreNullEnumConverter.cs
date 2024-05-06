@@ -24,7 +24,9 @@ namespace AdaptiveCards
         }
 
         /// <inheritdoc />
+#pragma warning disable CS0618 // Type or member is obsolete
         public IgnoreNullEnumConverter(bool camelCase) : base(camelCase)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
         }
 

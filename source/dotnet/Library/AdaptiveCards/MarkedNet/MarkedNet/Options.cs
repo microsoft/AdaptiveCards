@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Microsoft.MarkedNet
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class Options
     {
         #region Fields
@@ -75,4 +76,5 @@ namespace Microsoft.MarkedNet
 
         #endregion
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

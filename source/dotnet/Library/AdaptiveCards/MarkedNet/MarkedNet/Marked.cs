@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Microsoft.MarkedNet
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class Marked
     {
         public Options Options { get; set; }
@@ -35,4 +36,5 @@ namespace Microsoft.MarkedNet
             return Options.Renderer.Postprocess(result);
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

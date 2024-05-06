@@ -33,11 +33,13 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
+        /// <inheritdoc/>
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {
             return Columns.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public override void Add(AdaptiveElement element)
         {
             if (element is AdaptiveColumn)
