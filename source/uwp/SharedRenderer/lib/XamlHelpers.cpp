@@ -253,6 +253,26 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                 return RenderImageFromDataUri(imageUrl);
             }
 
+            auto imagePath = HStringToUTF8(imageUrl.Path());
+            bool isImageSvg = imagePath.find("svg") != std::string::npos;
+
+            if (isImageSvg)
+            {
+                winrt::SvgImageSource svgImageSource{};             
+
+                /*winrt::HttpClient httpClient;
+                auto getOperation = co_await httpClient.GetAsync(imageUrl);
+                auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
+                auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
+                svgImageSource.RasterizePixelHeight(size.Height);
+                svgImageSource.RasterizePixelWidth(size.Width);*/
+
+                svgImageSource.UriSource(imageUrl);
+
+                winrt::Image backgroundImage;
+                backgroundImage.Source(svgImageSource);
+			}            
+
             winrt::BitmapImage bitmapImage{};
             bitmapImage.UriSource(imageUrl);
 
@@ -909,6 +929,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     winrt::Image XamlHelpers::RenderImageFromDataUri(winrt::Uri const& imageUrl)
     {
         winrt::Image image{};
+
+        auto imagePath = HStringToUTF8(imageUrl.Path());
+        bool isImageSvg = imagePath.find("svg") != std::string::npos;
+
+        if (isImageSvg)
+        {
+            winrt::SvgImageSource svgImageSource{};
+        }  
         winrt::BitmapImage bitmapImage{};
         bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
 
