@@ -24,6 +24,13 @@ namespace AdaptiveCards
         }
 
         /// <inheritdoc />
+#pragma warning disable CS0618 // Type or member is obsolete
+        public IgnoreNullEnumConverter(bool camelCase) : base(camelCase)
+#pragma warning restore CS0618 // Type or member is obsolete
+        {
+        }
+
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             try
