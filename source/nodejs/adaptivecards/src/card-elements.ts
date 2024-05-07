@@ -4911,7 +4911,37 @@ export class FilteredChoiceSet {
         const choice = document.createElement("span");
         choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
         choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
-        choice.innerHTML = value.replace(filter, `<b>${filter}</b>`);
+        
+        const startIndex = value.indexOf(filter);
+        if (startIndex === -1) {
+            // Filter wasn't found, add the value as is
+            const valueSpan = document.createElement("span");
+            valueSpan.innerText = value;
+            choice.appendChild(valueSpan);
+        } else {
+            if (startIndex > 0) {
+                // Add a span with the beginning unmatched text
+                const unmatchedBeg = value.substring(0, startIndex);
+                const unmatchedBegSpan = document.createElement("span");
+                unmatchedBegSpan.innerText = unmatchedBeg;
+                choice.appendChild(unmatchedBegSpan);
+            }
+
+            // Add the matched filter with bold styling
+            const filterSpan = document.createElement("span");
+            filterSpan.innerText = filter;
+            filterSpan.style.fontWeight = "bold";
+            choice.appendChild(filterSpan);
+
+            if (startIndex + filter.length < value.length) {
+                // Add a span with the ending unmatched text
+                const unmatchedEnd = value.substring(startIndex + filter.length);
+                const unmatchedEndSpan = document.createElement("span");
+                unmatchedEndSpan.innerText = unmatchedEnd;
+                choice.appendChild(unmatchedEndSpan);
+            }
+        }
+
         choice.tabIndex = -1;
 
         choice.onclick = () => {
