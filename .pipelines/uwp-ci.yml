@@ -35,8 +35,6 @@ steps:
 
 - task: NuGetAuthenticate@1
   displayName: Authenticate to NuGet
-  inputs:
-    nuGetServiceConnections: acNugetConnection
 
 - task: NuGetCommand@2
   displayName: NuGet restore
@@ -45,7 +43,6 @@ steps:
     feedsToUse: config
     nugetConfigPath: source/nuget.config
     restoreSolution: $(solution)
-    externalFeedCredentials: 'acNugetConnection'
     verbosityRestore: Detailed
 
 - task: VSBuild@1
