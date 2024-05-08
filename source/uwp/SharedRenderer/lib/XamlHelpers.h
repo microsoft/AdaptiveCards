@@ -197,4 +197,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
 
     winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
-}
+
+    winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
+    }

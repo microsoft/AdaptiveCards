@@ -6,6 +6,9 @@
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
 #include "WholeItemsPanel.h"
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Web.Http.h>
+#include "Util.h"
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
@@ -269,8 +272,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
                 svgImageSource.UriSource(imageUrl);
 
+                svgImageSource.RasterizePixelHeight(600.0);
+                svgImageSource.RasterizePixelWidth(900.0);
+
                 winrt::Image backgroundImage;
                 backgroundImage.Source(svgImageSource);
+
+                return backgroundImage;
 			}            
 
             winrt::BitmapImage bitmapImage{};
@@ -286,6 +294,43 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             renderContext.AddWarning(winrt::WarningStatusCode::CustomWarning, ex.message() + L" Skipping rendering of background image.");
             return nullptr;
         }
+    }
+
+    winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
+    {
+        // Parse the size from the XamlDocument as XML
+        winrt::XmlDocument xmlDoc;
+
+        xmlDoc.LoadXml(content);
+
+        if (xmlDoc)
+        {
+            auto rootElement = xmlDoc.DocumentElement();
+
+            // Root element must be an SVG
+            if (rootElement.NodeName() == L"svg")
+            {
+                auto heightAttribute = rootElement.GetAttribute(L"height");
+                auto widthAttribute = rootElement.GetAttribute(L"width");
+
+                double height{0.0};
+                double width{0.0};
+
+                if (!heightAttribute.empty())
+                {
+                    height = TryHStringToDouble(heightAttribute).value_or(0.0);
+                }
+
+                if (!widthAttribute.empty())
+                {
+                    width = TryHStringToDouble(widthAttribute).value_or(0.0);
+                }
+
+                return {static_cast<float>(width), static_cast<float>(height)};
+            }
+        }
+
+        return {};
     }
 
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
@@ -936,6 +981,24 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         if (isImageSvg)
         {
             winrt::SvgImageSource svgImageSource{};
+            std::string data = ExtractSvgDataFromUri(imageUrl);
+
+            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
+
+            dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
+
+            dataWriter.StoreAsync().Completed(
+                [dataWriter, svgImageSource, image](winrt::IAsyncOperation<uint32_t> const& /*operation*/, winrt::AsyncStatus /*status*/) -> void
+                {
+                    if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
+                    {
+                        stream.Seek(0);
+                        image.Source(svgImageSource);
+                        svgImageSource.SetSourceAsync(stream);
+                    }
+                });
+
+            return image;
         }  
         winrt::BitmapImage bitmapImage{};
         bitmapImage.CreateOptions(winrt::BitmapCreateOptions::IgnoreImageCache);
