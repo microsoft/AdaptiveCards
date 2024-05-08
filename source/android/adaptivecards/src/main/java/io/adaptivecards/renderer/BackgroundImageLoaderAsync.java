@@ -86,12 +86,25 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
          * @param originalSizeBitmap Bitmap to be drawn in the container
          * @return Max scale factor between x and y scale factor
          */
-        private double getScaleFactorForCover(Canvas containerCanvas, Bitmap originalSizeBitmap)
+        private double[] getScaleFactorForCover(Canvas containerCanvas, Bitmap originalSizeBitmap)
         {
             double xScaleFactor = (double)containerCanvas.getWidth() / (double)originalSizeBitmap.getWidth();
             double yScaleFactor = (double)containerCanvas.getHeight() / (double)originalSizeBitmap.getHeight();
+            double[] scale = new double[]{xScaleFactor, yScaleFactor};
 
-            return Math.max(xScaleFactor, yScaleFactor);
+            // Calculate the dimensions of the bitmap after scaling
+            int scaledWidth = (int) (originalSizeBitmap.getWidth() * scale[0]);
+            int scaledHeight = (int) (originalSizeBitmap.getHeight() * scale[1]);
+
+           // Ensure the scale factor does not result in a width or height of 0 or less
+            if (scaledWidth <= 0) {
+                scale[0] = 1.0 ;
+            }
+            if (scaledHeight <= 0) {
+                scale[1] = 1.0 ;
+            }
+
+            return scale;
         }
 
         // TODO: Optimize the rendering as drawBitmap source rectangle can scale images automatically
@@ -104,15 +117,15 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
         {
             Bitmap bitmap = m_bitmap;
             double originalWidth = bitmap.getWidth(), originalHeight = bitmap.getHeight();
-            double scale = getScaleFactorForCover(canvas, bitmap);
+            double[] scale = getScaleFactorForCover(canvas, bitmap);
 
-            int scaledWidth = (int)(scale * originalWidth);
-            int scaledHeight = (int)(scale * originalHeight);
+            int scaledWidth = (int)(scale[0] * originalWidth); // scale the width with the x scale factor
+            int scaledHeight = (int)(scale[1] * originalHeight); // scale the height with the y scale factor
             Bitmap background = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
             Canvas backgroundCanvas = new Canvas(background);
 
             Matrix transformation = new Matrix();
-            transformation.preScale((float)scale, (float)scale);
+            transformation.preScale((float)scale[0], (float)scale[1]);
             Paint scaledImagePaint = new Paint();
             scaledImagePaint.setFilterBitmap(true);
             backgroundCanvas.drawBitmap(bitmap, transformation, scaledImagePaint);
