@@ -3,13 +3,15 @@
 	"version": "0.9.0-alpha.0",
 	"private": true,
 	"scripts": {
+		"build": "npm run generate && npm run generate-sw",
 		"clean": "hexo clean",
-		"build": "hexo generate && npm run generate-sw",
-		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
 		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
-		"release": "hexo clean && hexo generate && npm run generate-sw",
+		"release": "npm run generate && npm run generate-sw",
+		"release-deps": "npx lerna run --scope @microsoft/adaptivecards-site --include-dependencies release --stream",
 		"start": "hexo server",
+		"pregenerate": "hexo clean && npx workbox-cli copyLibraries node_modules/",
+		"generate": "hexo generate",
 		"generate-sw": "npx workbox-cli injectManifest workbox-config.json"
 	},
 	"hexo": {
@@ -20,7 +22,7 @@
 		"@microsoft/ac-typed-schema": "^0.8.0-alpha.0",
 		"@microsoft/marked-schema": "^0.3.0-alpha.0",
 		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^3.0.0-beta.6",
+		"adaptivecards": "^3.0.2",
 		"adaptivecards-designer": "^2.5.0-alpha.0",
 		"adaptivecards-templating": "^2.4.0-alpha.0",
 		"change-case": "^4.1.2",
@@ -38,28 +40,29 @@
 		"hexo-generator-tag": "^1.0.0",
 		"hexo-reading-time": "^1.0.3",
 		"hexo-renderer-ejs": "^2.0.0",
-		"hexo-renderer-marked": "^5.0.0",
+		"hexo-renderer-marked": "^6.0.0",
 		"hexo-renderer-stylus": "^2.1.0",
 		"hexo-server": "^3.0.0",
 		"highlightjs": "^9.16.2",
-		"js-yaml": "^4.1.0",
 		"jquery": "^3.6.1",
-		"markdown-it": "^13.0.1",
+		"js-yaml": "^4.1.0",
+		"markdown-it": "^14.0.0",
+		"marked": "^12",
 		"md5": "^2.3.0",
 		"minimist": "^1.2.6",
 		"monaco-editor": "^0.34.0",
 		"node-fetch": "^2.6.7",
 		"request": "^2.88.2",
-		"request-promise": "^4.2.6",
+		"request-promise": "^4.2.2",
 		"workbox-cli": "^6.5.4",
 		"yaml-front-matter": "^4.1.1"
 	},
 	"overrides": {
-		"workbox-cli": {
-			"got": "^11.8.5"
-		},
 		"hexo-reading-time": {
 			"html-to-text": "^8.2.1"
 		}
+	},
+	"dependencies": {
+		"mocha": "10.3.0"
 	}
 }

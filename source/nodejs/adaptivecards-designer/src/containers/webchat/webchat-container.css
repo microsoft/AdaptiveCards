@@ -91,7 +91,7 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton.style-positive {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
 }
 
@@ -250,6 +250,12 @@ a.ac-anchor:visited:active {
     padding: 8px;
     width: 416px;
     border-radius: 4px;
+}
+
+@media (max-width: 416px) {
+    .webChatOuterContainer {
+        width: 100%;
+    }
 }
 
 /* Popup menu */

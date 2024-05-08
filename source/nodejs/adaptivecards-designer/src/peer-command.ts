@@ -7,7 +7,10 @@ export class PeerCommand {
         let buttonElement = document.createElement("button");
         buttonElement.classList.add("acd-peerButton");
         buttonElement.type = "button";
+        buttonElement.setAttribute("role", "button");
         buttonElement.title = this.toolTip ? this.toolTip : this.name;
+        buttonElement.setAttribute("aria-label", this.toolTip ?? this.name);
+        buttonElement.tabIndex = 0;
 
         if (this.iconClass) {
             let iconElement = document.createElement("div");

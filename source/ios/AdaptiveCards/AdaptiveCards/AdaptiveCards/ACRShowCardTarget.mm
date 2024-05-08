@@ -126,6 +126,9 @@
     }
     _button.selected = !isSelected;
 
+    NSString *hint = hidden ? @"card expanded" : @"card collapsed";
+    _button.accessibilityValue = NSLocalizedString(hint, nil);
+
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     }

@@ -923,7 +923,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
                 valueColumn.addItem(textInput);
 
                 let removeAction = new Adaptive.SubmitAction();
-                removeAction.iconUrl = require("svg-url-loader!../assets/xmark.svg");
+                removeAction.iconUrl = require("./assets/xmark.svg");
                 removeAction.tooltip = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
@@ -1257,6 +1257,16 @@ export abstract class DesignerPeer extends DraggableElement {
             this.renderedElement.style.left = clientRect.left + "px";
             this.renderedElement.style.top = clientRect.top + "px";
         }
+
+        this.updateAriaProperties();
+    }
+
+    protected updateAriaProperties() {
+        if (this._children.length === 0 && this.getCardObject() instanceof Adaptive.CardElementContainer) {
+            this.renderedElement.setAttribute("aria-label", "Empty " + this.getCardObject().getJsonTypeName());
+        } else {
+            this.renderedElement.setAttribute("aria-label", this.getCardObject().getJsonTypeName());
+        }
     }
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
@@ -1573,6 +1583,7 @@ export class ActionPeer extends DesignerPeer {
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
     static readonly isEnabledProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "isEnabled", "Enabled");
+    static readonly roleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_6, "role", "Role", Adaptive.ActionRole);
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -1644,7 +1655,8 @@ export class ActionPeer extends DesignerPeer {
             ActionPeer.tooltipProperty,
             ActionPeer.modeProperty,
             ActionPeer.styleProperty,
-            ActionPeer.iconUrlProperty);
+            ActionPeer.iconUrlProperty,
+            ActionPeer.roleProperty);
     }
 
     get action(): Adaptive.Action {
@@ -2168,6 +2180,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                                     this.addAction(action);
 
                                     popupMenu.closePopup(false);
+                                    this.renderedElement.focus();
                                 };
 
                                 popupMenu.items.add(menuItem);
@@ -3399,6 +3412,9 @@ export class CarouselPeer extends ContainerPeer {
     // Question: What do we want the default value to be here?
     static readonly timerProperty = new CarouselTimerPropertyEditor(Adaptive.Versions.v1_6, "timer", "Timer", 5000);
     static readonly initialPageProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "initialPageIndex", "Initial page", 0);
+    static readonly orientationProperty = new EnumPropertyEditor(Adaptive.Versions.v1_6, "carouselOrientation", "Orientation", Adaptive.Orientation);
+    static readonly heightInPixelsProperty = new NumberPropertyEditor(Adaptive.Versions.v1_6, "carouselHeight", "Height in pixels");
+    static readonly loopProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_6, "carouselLoop", "Loop");
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -3436,7 +3452,10 @@ export class CarouselPeer extends ContainerPeer {
         propertySheet.add(
             defaultCategory,
             CarouselPeer.timerProperty,
-            CarouselPeer.initialPageProperty);
+            CarouselPeer.initialPageProperty,
+            CarouselPeer.orientationProperty,
+            CarouselPeer.heightInPixelsProperty,
+            CarouselPeer.loopProperty);
     }
 
     canDrop(peer: DesignerPeer) {

@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppxPackageOnBuild>True</GenerateAppxPackageOnBuild>
-    <PackageCertificateThumbprint>89D3E278136542E278C6EB28E39B64918D7093C4</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>8200d9149d9a7bd0e78e7823162f7bcec41101f4</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>UWPUITestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">

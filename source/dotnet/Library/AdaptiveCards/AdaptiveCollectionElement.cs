@@ -49,6 +49,17 @@ namespace AdaptiveCards
             throw new System.NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Horizontal alignment for element.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
         /// <summary>
         /// The content alignment for the element inside the container.
         /// </summary>
@@ -80,14 +91,22 @@ namespace AdaptiveCards
         public bool Bleed { get; set; }
 
         /// <summary>
-        /// Explicit container element minimum height.
+        /// Explicit card minimum height with 'px'. (100px, 200px)
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
         [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(0)]
-        public uint PixelMinHeight { get; set; }
+        [DefaultValue(null)]
+        public string MinHeight { get; set; }
+
+        /// <summary>
+        /// Explicit container element minimum height.
+        /// </summary>
+        [JsonIgnore]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public uint PixelMinHeight { get => uint.TryParse(MinHeight?.Replace("px", ""), out var val) ? (uint)val : 0; set => MinHeight = $"{value}px"; }
     }
 }

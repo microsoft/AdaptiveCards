@@ -14,7 +14,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Default,
         Medium,
         Large,
-        ExtraLarge
+        ExtraLarge,
     };
 
     enum TextWeight
@@ -32,7 +32,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Accent,
         Good,
         Warning,
-        Attention
+        Attention,
     };
 
     enum HAlignment
@@ -54,7 +54,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
-        Repeat
+        Repeat,
     };
 
     enum ElementType
@@ -63,6 +63,8 @@ namespace AdaptiveCards.ObjectModel.Uwp
         AdaptiveCard,
         TextBlock,
         Image,
+        Carousel,
+        CarouselPage,
         Container,
         Column,
         ColumnSet,
@@ -93,7 +95,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         OpenUrl,
         ToggleVisibility,
         Execute,
-        Custom
+        Custom,
     };
 
     enum ImageStyle
@@ -109,7 +111,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Stretch,
         Small,
         Medium,
-        Large
+        Large,
     };
 
     enum SeparatorThickness
@@ -126,7 +128,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Medium,
         Large,
         ExtraLarge,
-        Padding
+        Padding,
     };
 
     enum ChoiceSetStyle
@@ -153,7 +155,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Good,
         Attention,
         Warning,
-        Accent
+        Accent,
     };
 
     enum FontType
@@ -198,7 +200,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         Top = 0,
         Center,
-        Bottom
+        Bottom,
     };
 
     enum HeightType
@@ -211,7 +213,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         IsVisibleToggle = 0,
         IsVisibleTrue,
-        IsVisibleFalse
+        IsVisibleFalse,
     };
 
     enum FallbackType
@@ -227,7 +229,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Right = 0x0010,
         Up = 0x0100,
         Down = 0x1000,
-        All = Left | Right | Up | Down
+        All = Left | Right | Up | Down,
     };
 
     enum AssociatedInputs
@@ -247,6 +249,21 @@ namespace AdaptiveCards.ObjectModel.Uwp
     {
         Primary = 0,
         Secondary,
+    };
+
+    enum ActionRole
+    {
+        Button = 0,
+        Link,
+        Tab,
+        Menu,
+        MenuItem
+    };
+
+    enum CarouselOrientation
+    {
+        Horizontal = 0,
+        Vertical,
     };
 
     declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation>; }
@@ -584,6 +601,25 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
     };
 
+    [default_interface] runtimeclass AdaptiveCarouselPage : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveCarouselPage();
+    };
+
+    runtimeclass AdaptiveCarousel : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveCarousel();
+        Windows.Foundation.Collections.IVector<AdaptiveCarouselPage> Pages { get; };
+        CarouselOrientation Orientation;
+        Windows.Foundation.IReference<UInt64> Timer;
+        Windows.Foundation.IReference<UInt32> InitialPage;
+        Windows.Foundation.IReference<Boolean> AutoLoop;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
+        Windows.Foundation.IReference<Boolean> Rtl;
+        AdaptiveBackgroundImage BackgroundImage;
+        UInt32 HeightInPixels;
+    };
+
     runtimeclass AdaptiveFact
     {
         AdaptiveFact();
@@ -674,6 +710,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Data.Json.JsonObject AdditionalProperties;
         Boolean IsEnabled;
         ActionMode Mode;
+        ActionRole Role;
 
         Windows.Data.Json.JsonObject ToJson();
     };

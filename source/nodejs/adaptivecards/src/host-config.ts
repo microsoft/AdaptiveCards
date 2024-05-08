@@ -241,10 +241,11 @@ export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
 
 export class InputLabelConfig {
     inputSpacing: Enums.Spacing = Enums.Spacing.Small;
+    width: number = 30;
     readonly requiredInputs: RequiredInputLabelTextDefinition =
         new RequiredInputLabelTextDefinition();
     readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
-
+    
     constructor(obj?: any) {
         if (obj) {
             this.inputSpacing = parseHostConfigEnum(
@@ -254,6 +255,8 @@ export class InputLabelConfig {
             );
             this.requiredInputs = new RequiredInputLabelTextDefinition(obj["requiredInputs"]);
             this.optionalInputs = new BaseTextDefinition(obj["optionalInputs"]);
+            this.width =
+                obj["width"] != null ? obj["width"] : this.width;
         }
     }
 }
@@ -263,11 +266,20 @@ export class InputConfig {
     readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({
         color: Enums.TextColor.Attention
     });
+    readonly debounceTimeInMilliSeconds: number = 0;
+    readonly allowDynamicallyFilteredChoiceSet: boolean = true;
+    readonly allowRevealOnHoverStyle: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
             this.label = new InputLabelConfig(obj["label"]);
             this.errorMessage = new BaseTextDefinition(obj["errorMessage"]);
+            this.allowRevealOnHoverStyle =
+                obj["allowRevealOnHoverStyle"] || this.allowRevealOnHoverStyle;
+            this.allowDynamicallyFilteredChoiceSet =
+                obj["allowDynamicallyFilteredChoiceSet"] || this.allowDynamicallyFilteredChoiceSet;
+            this.debounceTimeInMilliSeconds =
+                obj["debounceTimeInMilliSeconds"] || this.debounceTimeInMilliSeconds;
         }
     }
 }
@@ -368,6 +380,7 @@ export class ActionsConfig {
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
     iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
     allowTitleToWrap: boolean = false;
+    showIconInOverflow: boolean = false;
     iconSize: number = 16;
 
     constructor(obj?: any) {
@@ -402,6 +415,7 @@ export class ActionsConfig {
             );
             this.allowTitleToWrap =
                 obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+            this.showIconInOverflow = obj["showIconInOverflow"] ?? this.showIconInOverflow;
 
             try {
                 const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
@@ -825,6 +839,20 @@ export class HostConfig {
         }
     }
 
+    getEffectiveImageSize(imageSize: Enums.ImageSize | Enums.Size): number {
+        switch (imageSize) {
+            case Enums.Size.Small:
+                return this.imageSizes.small;
+
+            case Enums.Size.Large:
+                return this.imageSizes.large;
+
+            case Enums.Size.Medium:
+            default:
+                return this.imageSizes.medium;
+        }
+    }
+
     getEffectiveSpacing(spacing: Enums.Spacing): number {
         switch (spacing) {
             case Enums.Spacing.Small:
@@ -1154,7 +1182,8 @@ export const defaultHostConfig: HostConfig = new HostConfig({
         errorMessage: {
             color: Enums.TextColor.Attention,
             weight: Enums.TextWeight.Bolder
-        }
+        },
+        debounceTimeInMilliSeconds: 250
     },
     actions: {
         maxActions: 5,
@@ -1195,5 +1224,8 @@ export const defaultHostConfig: HostConfig = new HostConfig({
     carousel: {
         maxCarouselPages: 10,
         minAutoplayDuration: 5000
+    },
+    textBlock: {
+        headingLevel: 2
     }
 });

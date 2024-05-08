@@ -21,6 +21,7 @@ parameters:
   type: string
   default: beta.1
 
+
 variables:
 - group: AdaptiveCards-KVLink
 - name: AC_FULL_VERSION_SPECIFIED

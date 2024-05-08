@@ -18,32 +18,37 @@
 			"style": "text",
 			"id": "SimpleVal",
 			"isRequired": true,
-			"errorMessage": "Name is required"
+			"errorMessage": "Name is required",
+			"placeholder": "Enter your name"
 		},
 		{
 			"type": "Input.Text",
 			"label": "Homepage",
 			"style": "url",
-			"id": "UrlVal"
+			"id": "UrlVal",
+			"placeholder": "Enter your homepage url"
 		},
 		{
 			"type": "Input.Text",
 			"label": "Email",
 			"style": "email",
-			"id": "EmailVal"
+			"id": "EmailVal",
+			"placeholder": "Enter your email"
 		},
 		{
 			"type": "Input.Text",
 			"label": "Phone",
 			"style": "tel",
-			"id": "TelVal"
+			"id": "TelVal",
+			"placeholder": "Enter your phone number"
 		},
 		{
 			"type": "Input.Text",
 			"label": "Comments",
 			"style": "text",
 			"isMultiline": true,
-			"id": "MultiLineVal"
+			"id": "MultiLineVal",
+			"placeholder": "Enter any comments"
 		},
 		{
 			"type": "TextBlock",
@@ -58,16 +63,18 @@
 			"type": "Input.Text",
 			"label": "Text input with an inline action with no icon",
 			"id": "textInlineActionId",
+			"placeholder": "Enter text",
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",
 				"tooltip": "Reply to this message",
-				"url": "https://adaptivecards.io"
+				"url": "https://adaptivecards.io",
+				"role": "button"
 			}
 		},
 		{
 			"type": "Input.Number",
-			"label": "Quantity",
+			"label": "Quantity (Minimum -5, Maximum 5)",
 			"min": -5,
 			"max": 5,
 			"value": 1,

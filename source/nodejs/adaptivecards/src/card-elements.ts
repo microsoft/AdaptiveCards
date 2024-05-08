@@ -336,7 +336,7 @@ export abstract class CardElement extends CardObject {
             element.style.color = foregroundCssColor;
         }
 
-        element.innerText = "Empty " + this.getJsonTypeName();
+        element.innerText = Strings.defaults.emptyElementText(this.getJsonTypeName());
 
         return element;
     }
@@ -347,6 +347,18 @@ export abstract class CardElement extends CardObject {
         } else {
             renderedElement.style.flex = "1 1 auto";
         }
+    }
+
+    /*
+     * Called when mouse enters or leaves the card.
+     * Inputs elements need to update their visual state in such events like showing or hiding borders etc.
+     * It calls Input.updateVisualState(eventType) for all inputs.
+     * This method on input (updateVisualState) is supposed to be called from card level on mouse events.
+     */
+    protected updateInputsVisualState(hover: boolean) {
+        const allInputs: Input[] = this.getAllInputs();
+        const inputEventType = !!hover ? InputEventType.MouseEnterOnCard : InputEventType.MouseLeaveOnCard;
+        allInputs.forEach((input) => input.updateVisualState(inputEventType));
     }
 
     protected isDisplayed(): boolean {
@@ -578,8 +590,6 @@ export abstract class CardElement extends CardObject {
             this._renderedElement = this.createPlaceholderElement();
         }
 
-        this.getRootElement().updateActionsEnabledState();
-
         return this._renderedElement;
     }
 
@@ -715,6 +725,22 @@ export abstract class CardElement extends CardObject {
 
     getActionById(_id: string): Action | undefined {
         return undefined;
+    }
+    
+    getElementByIdFromAction(id: string): CardElement | undefined {
+        let result = undefined;
+        for (let i = 0; i < this.getActionCount(); i++) {
+            const action = this.getActionAt(i);
+
+            if (action instanceof ShowCardAction) {
+                result = action.card.getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     getEffectivePadding(): PaddingDefinition {
@@ -1920,6 +1946,7 @@ export class Image extends CardElement {
     static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [
         "Action.ShowCard"
     ]);
+    static readonly shouldForceLoadProperty = new BoolProperty(Versions.v1_6, "forceLoad", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1953,6 +1980,9 @@ export class Image extends CardElement {
     @property(Image.selectActionProperty)
     selectAction?: Action;
 
+    @property(Image.shouldForceLoadProperty)
+    forceLoad: boolean;
+
     //#endregion
 
     private applySize(element: HTMLElement) {
@@ -1970,18 +2000,7 @@ export class Image extends CardElement {
                 // auto and stretch are ignored (default to medium). THis is necessary for
                 // ImageSet which uses a maximum image height as opposed to the cards width
                 // as a constraining dimension
-                switch (this.size) {
-                    case Enums.Size.Small:
-                        element.style.height = this.hostConfig.imageSizes.small + "px";
-                        break;
-                    case Enums.Size.Large:
-                        element.style.height = this.hostConfig.imageSizes.large + "px";
-                        break;
-                    default:
-                        element.style.height = this.hostConfig.imageSizes.medium + "px";
-                        break;
-                }
-
+                element.style.height = this.hostConfig.getEffectiveImageSize(this.size) + "px";
                 element.style.maxHeight = this.maxHeight + "px";
             } else {
                 switch (this.size) {
@@ -1991,14 +2010,8 @@ export class Image extends CardElement {
                     case Enums.Size.Auto:
                         element.style.maxWidth = "100%";
                         break;
-                    case Enums.Size.Small:
-                        element.style.width = this.hostConfig.imageSizes.small + "px";
-                        break;
-                    case Enums.Size.Large:
-                        element.style.width = this.hostConfig.imageSizes.large + "px";
-                        break;
-                    case Enums.Size.Medium:
-                        element.style.width = this.hostConfig.imageSizes.medium + "px";
+                    default:
+                        element.style.width = this.hostConfig.getEffectiveImageSize(this.size) + "px";
                         break;
                 }
 
@@ -2112,7 +2125,7 @@ export class Image extends CardElement {
                 imageElement.style.backgroundColor = backgroundColor;
             }
 
-            imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+            this.setImageSource(imageElement);    
 
             const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
             if (altTextProperty) {
@@ -2153,6 +2166,45 @@ export class Image extends CardElement {
 
     getResourceInformation(): IResourceInformation[] {
         return this.url ? [{ url: this.url, mimeType: "image" }] : [];
+    }
+
+    private setImageSource(imageElement: HTMLImageElement): void {
+        const imageForceLoader: ImageForceLoader = new ImageForceLoader(this.forceLoad, this.url);
+        imageForceLoader.configureImage(this);
+        imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+        imageForceLoader.resetImage(this);
+    } 
+}
+
+// configures Image element to fetch a new image data from url source instead of relying on cache
+// currently rudimentary refreshing scheme is used
+// by attaching unique query string to url, we bypass the cache usage
+class ImageForceLoader{
+    private uniqueHash : string;
+    public readonly urlWithForceLoadOption : string;
+    constructor(
+        readonly doForceLoad: boolean,
+        readonly url : string | undefined,
+    )
+    {
+        if (url && url.length && doForceLoad) {
+            // we can do better by appending unique key such as uuid instead of epoch
+            // however the current usage is for front-end ui and networking,  
+            // since ui is running in single main thread, this is sufficient mechanism
+            // without needing to depend on external library for our small use cases.
+            this.uniqueHash = '?' + Date.now();
+            this.urlWithForceLoadOption = url + this.uniqueHash;
+        }
+    }
+
+    public configureImage(image: Image): void {
+        if (this.urlWithForceLoadOption && this.urlWithForceLoadOption.length) {
+            image.url = this.urlWithForceLoadOption;
+        }
+    }
+
+    public resetImage(image: Image): void {
+        image.url = this.url;
     }
 }
 
@@ -2449,37 +2501,64 @@ export class ImageSet extends CardElementContainer {
         let element: HTMLElement | undefined = undefined;
 
         if (this._images.length > 0) {
+            const imageSetIsGrid = (this.presentationStyle === Enums.ImageSetPresentationStyle.Grid);
+
             element = document.createElement("div");
             element.style.display = "flex";
             element.style.flexWrap = "wrap";
+            element.classList.add(this.hostConfig.makeCssClassName("ac-imageSet"));
+            element.classList.toggle(this.hostConfig.makeCssClassName("ac-imageSetStyle-grid"), imageSetIsGrid);
+            element.style.gap = "5px";
+
+            let renderImageSize : Enums.Size;
+            switch (this.imageSize) {
+                case Enums.ImageSize.Small:
+                    renderImageSize = Enums.Size.Small;
+                    break;
+                case Enums.ImageSize.Large:
+                    renderImageSize = Enums.Size.Large;
+                    break;
+                default:
+                    renderImageSize = Enums.Size.Medium;
+                    break;
+            }
+
+            const effectiveImageSize = this.hostConfig.getEffectiveImageSize(renderImageSize);
 
             for (const image of this._images) {
-                switch (this.imageSize) {
-                    case Enums.ImageSize.Small:
-                        image.size = Enums.Size.Small;
-                        break;
-                    case Enums.ImageSize.Large:
-                        image.size = Enums.Size.Large;
-                        break;
-                    default:
-                        image.size = Enums.Size.Medium;
-                        break;
-                }
-
                 image.maxHeight = this.hostConfig.imageSet.maxImageHeight;
 
-                const renderedImage = image.render();
+                if (imageSetIsGrid) {
+                    image.pixelWidth = effectiveImageSize;
+                } else {
+                    image.size = renderImageSize;
+                }
 
-                if (renderedImage) {
-                    renderedImage.style.display = "inline-flex";
-                    renderedImage.style.margin = "0px";
-                    if (this.presentationStyle == Enums.ImageSetPresentationStyle.Default) {
-                        renderedImage.style.marginRight = "10px";
+                const imageContainer = image.render();
+
+                if (imageContainer) {
+                    imageContainer.style.display = "inline-flex";
+                    imageContainer.style.margin = "0px";
+
+                    if (imageSetIsGrid) {
+                        imageContainer.style.flexBasis = effectiveImageSize + "px";
+                        imageContainer.style.height =  effectiveImageSize + "px";
+                        imageContainer.style.flexGrow = "0";
+                        imageContainer.style.flexShrink = "0";
+
+                        const renderedImageStyle = image.renderedImageElement?.style;
+                        if (renderedImageStyle) {
+                            renderedImageStyle.width = "100%";
+                            renderedImageStyle.height = "100%";
+                            renderedImageStyle.objectFit = "cover";
+                            renderedImageStyle.verticalAlign = "middle";
+                        }
                     }
 
-                    Utils.appendChild(element, renderedImage);
+                    Utils.appendChild(element, imageContainer);
                 }
             }
+
             if (this.presentationStyle == Enums.ImageSetPresentationStyle.Stacked) {
                 this.applyStackedPresentationStyle();
             }
@@ -3257,12 +3336,97 @@ export class Media extends CardElement {
     }
 }
 
-export abstract class Input extends CardElement implements IInput {
-    //#region Schema
+enum InputEventType {
+    InitialRender,
+    MouseEnterOnCard,
+    MouseLeaveOnCard,
+    FocusLeave
+}
 
+export abstract class Input extends CardElement implements IInput {
+    
+    //#region Schema
     static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
     static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
     static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
+    static readonly inputStyleProperty = new EnumProperty(
+        Versions.v1_6,
+        "inputStyle",
+        Enums.InputStyle,
+        Enums.InputStyle.Default,
+        [
+            { value: Enums.InputStyle.RevealOnHover },
+            { value: Enums.InputStyle.Default }
+        ]
+    );
+    static readonly labelWidthProperty = new CustomProperty<SizeAndUnit | undefined>(
+        Versions.v1_6,
+        "labelWidth",
+        (
+            sender: SerializableObject,
+            prop: PropertyDefinition,
+            source: PropertyBag,
+            context: BaseSerializationContext
+        ) => {
+            let result: SizeAndUnit | undefined = prop.defaultValue;
+            const value = source[prop.name];
+            let invalidLabelWidth = false;
+            
+            if (typeof value === "number" && !isNaN(value)) {
+                result = new SizeAndUnit(value, Enums.SizeUnit.Weight);
+                if (result.physicalSize < 0 || result.physicalSize > 100) {
+                    invalidLabelWidth = true;
+                }
+            }
+            else if (typeof value === "string") {
+                try {
+                    result = SizeAndUnit.parse(value);
+                } catch (e) {
+                    invalidLabelWidth = true;
+                }
+            } else {
+                invalidLabelWidth = true;
+            }
+
+            if (invalidLabelWidth) {
+                context.logParseEvent(
+                    sender,
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    Strings.errors.invalidInputLabelWidth()
+                );
+                result = undefined;
+            }
+
+            return result;
+        },
+        (
+            sender: SerializableObject,
+            property: PropertyDefinition,
+            target: PropertyBag,
+            value: SizeAndUnit | undefined,
+            context: BaseSerializationContext
+        ) => {
+            if (value instanceof SizeAndUnit) {
+                if (value.unit === Enums.SizeUnit.Pixel) {
+                    context.serializeValue(target, "labelWidth", value.physicalSize + "px");
+                } else {
+                    context.serializeNumber(target, "labelWidth", value.physicalSize);
+                }
+            }
+        },
+        undefined
+    );
+
+    static readonly labelPositionProperty = new EnumProperty(
+        Versions.v1_6,
+        "labelPosition",
+        Enums.InputLabelPosition,
+        Enums.InputLabelPosition.Above,
+        [
+            { value: Enums.InputLabelPosition.Inline },
+            { value: Enums.InputLabelPosition.Above }
+        ]
+    );
 
     @property(Input.labelProperty)
     label?: string;
@@ -3272,6 +3436,15 @@ export abstract class Input extends CardElement implements IInput {
 
     @property(Input.errorMessageProperty)
     errorMessage?: string;
+
+    @property(Input.inputStyleProperty)
+    inputStyle: Enums.InputStyle = Enums.InputStyle.Default;
+    
+    @property(Input.labelWidthProperty)
+    labelWidth?: SizeAndUnit;
+
+    @property(Input.labelPositionProperty)
+    labelPosition?: Enums.InputLabelPosition;
 
     //#endregion
 
@@ -3332,7 +3505,11 @@ export abstract class Input extends CardElement implements IInput {
 
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
+        if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+            this._outerContainerElement.style.flexDirection = "row";
+        } else {
+            this._outerContainerElement.style.flexDirection = "column";
+        }
 
         const renderedInputControlId = Utils.generateUniqueId();
 
@@ -3362,9 +3539,13 @@ export abstract class Input extends CardElement implements IInput {
 
             if (this._renderedLabelElement) {
                 this._renderedLabelElement.id = Utils.generateUniqueId();
-                this._renderedLabelElement.style.marginBottom =
-                    hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
-
+                if (this.labelPosition === Enums.InputLabelPosition.Inline) {
+                    // For inline label position: label should be in center of the div and no extra spacing needed
+                    this._renderedLabelElement.style.alignSelf = "center";
+                } else {
+                    this._renderedLabelElement.style.marginBottom =
+                        hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+                }
                 this._outerContainerElement.appendChild(this._renderedLabelElement);
             }
         }
@@ -3386,7 +3567,6 @@ export abstract class Input extends CardElement implements IInput {
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
-                this._renderedInputControlElement.setAttribute("aria-required", "true");
                 this._renderedInputControlElement.classList.add(
                     hostConfig.makeCssClassName("ac-input-required")
                 );
@@ -3395,6 +3575,29 @@ export abstract class Input extends CardElement implements IInput {
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
             this._outerContainerElement.appendChild(this._inputControlContainerElement);
 
+            if (this._renderedLabelElement && this.labelPosition === Enums.InputLabelPosition.Inline) {
+                if (!this.labelWidth) {
+                    const defaultLabelWidth = hostConfig.inputs.label.width;
+                    this._renderedLabelElement.style.width = defaultLabelWidth.toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - defaultLabelWidth) + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Weight) {
+                    const labelWidthInPercent = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPercent.toString() + "%";
+                    this._inputControlContainerElement.style.width = (100 - labelWidthInPercent).toString() + "%";
+                }
+                else if (this.labelWidth.unit == Enums.SizeUnit.Pixel) {
+                    const labelWidthInPixel = this.labelWidth.physicalSize;
+                    this._renderedLabelElement.style.width = labelWidthInPixel.toString() + "px";
+                }
+            }
+
+            this.updateVisualState(InputEventType.InitialRender);
+            if (this._renderedInputControlElement) {
+                this._renderedInputControlElement.onblur = (ev: MouseEvent) => {
+                    this.updateVisualState(InputEventType.FocusLeave);
+                };
+            }
             this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
@@ -3421,9 +3624,13 @@ export abstract class Input extends CardElement implements IInput {
 
     protected resetValidationFailureCue() {
         if (this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.remove(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.removeValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
 
             this.updateInputControlAriaLabelledBy();
 
@@ -3455,6 +3662,49 @@ export abstract class Input extends CardElement implements IInput {
 
                 this.updateInputControlAriaLabelledBy();
             }
+        }
+    }
+
+    protected get allowRevealOnHoverStyle() {
+        return this.hostConfig.inputs && this.hostConfig.inputs.allowRevealOnHoverStyle;
+    }
+
+    protected shouldHideInputAdornersForRevealOnHover(input: HTMLElement, eventType: InputEventType) {
+        // show/hide input adorners (date picker, time picker, select dropdown picker) with inputStyle RevealOnHover
+        // 1. intial render of card: hide input adorners
+        // 2. mouse hover on the card: show input adorners
+        // 3. mouse hover outside the card: hide input adorners unless input is still in focus state
+        // 4. input loses focus: hide the input adorners unless mouse is still hovering on the card
+    
+        // check if input still has the focus
+        const isInputInFocus = input === document.activeElement;
+    
+        // check if mouse is still on the card
+        const inputHoverClassName = this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover");
+        const isMouseOverCard = input.classList.contains(inputHoverClassName);
+    
+        const hideInputAdorners = (eventType === InputEventType.InitialRender) ||
+                                  (eventType === InputEventType.FocusLeave && !isMouseOverCard) ||
+                                  (eventType === InputEventType.MouseLeaveOnCard && !isInputInFocus);
+        return hideInputAdorners;
+    }
+
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle || 
+            !this._renderedInputControlElement || 
+            this.inputStyle !== Enums.InputStyle.RevealOnHover) {
+            return;
+        }
+        if (eventType === InputEventType.InitialRender) {
+            // on initial render, we will show input fields as read only view
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onrender"));
+        }
+        else if (eventType === InputEventType.MouseEnterOnCard) {
+            // on hover on the card, we will reveal the inputs by showing borders etc
+            // ac-inputStyle-revealOnHover-onhover class is also used to identify if mouse is hovering on the card
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
+        } else if (eventType === InputEventType.MouseLeaveOnCard) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onhover"));
         }
     }
 
@@ -3518,10 +3768,13 @@ export abstract class Input extends CardElement implements IInput {
         const result = this.isRequired ? this.isSet() && this.isValid() : this.isValid();
 
         if (!result && this.renderedInputControlElement) {
-            this.renderedInputControlElement.classList.add(
-                this.hostConfig.makeCssClassName("ac-input-validation-failed")
-            );
-
+            if (this instanceof ChoiceSetInput && this.isDynamicTypeahead()) {
+                this.showValidationFailureCue();
+            } else {
+                this.renderedInputControlElement.classList.add(
+                    this.hostConfig.makeCssClassName("ac-input-validation-failed")
+                );
+            }
             this.showValidationErrorMessage();
         }
 
@@ -3722,6 +3975,16 @@ export class TextInput extends Input {
         return renderedInputControl;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
+        if (!(this.inlineAction || this.isMultiline)) {
+            super.updateVisualState(eventType);
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.Text";
     }
@@ -3909,6 +4172,9 @@ export class ToggleInput extends Input {
         return false;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+    }
+
     getJsonTypeName(): string {
         return "Input.Toggle";
     }
@@ -3968,6 +4234,48 @@ export class Choice extends SerializableObject {
     }
 }
 
+/**
+ * DataQuery class is declared later in the file and derives from subsequent base classes
+ * Hence, it cannot be used in ChoiceSetInput.
+ * Refactor is needed to separate elements and actions in separate files.
+ */
+export class ChoiceSetInputDataQuery extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(
+        Versions.v1_6,
+        "type",
+        true,
+        new RegExp("^Data.Query$")
+    );
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
+
+    @property(ChoiceSetInputDataQuery.typeProperty)
+    type: string;
+
+    @property(ChoiceSetInputDataQuery.datasetProperty)
+    dataset: string;
+
+    @property(ChoiceSetInputDataQuery.countProperty)
+    count?: number;
+
+    @property(ChoiceSetInputDataQuery.skipProperty)
+    skip?: number;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "choices.data";
+    }
+}
+
+export type FetchedChoice = {
+    title: string;
+    value: string;
+};
+
 export class ChoiceSetInput extends Input {
     //#region Schema
 
@@ -3976,6 +4284,11 @@ export class ChoiceSetInput extends Input {
         Versions.v1_0,
         "choices",
         Choice
+    );
+    static readonly choicesDataProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "choices.data",
+        ChoiceSetInputDataQuery
     );
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
@@ -4017,6 +4330,9 @@ export class ChoiceSetInput extends Input {
     @property(ChoiceSetInput.choicesProperty)
     choices: Choice[] = [];
 
+    @property(ChoiceSetInput.choicesDataProperty)
+    choicesData?: ChoiceSetInputDataQuery;
+
     //#endregion
 
     private static _uniqueCategoryCounter = 0;
@@ -4034,6 +4350,68 @@ export class ChoiceSetInput extends Input {
     private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+    private _filteredChoiceSet?: FilteredChoiceSet;
+
+    isDynamicTypeahead(): boolean {
+        return (
+            this.hostConfig.inputs.allowDynamicallyFilteredChoiceSet &&
+            !!this.choicesData &&
+            !!this.choicesData.dataset &&
+            this.choicesData.type === "Data.Query"
+        );
+    }
+
+    getFilterForDynamicSearch(): string | undefined {
+        return this._textInput?.value;
+    }
+
+    getDropdownElement() {
+        return this._filteredChoiceSet?.dropdown;
+    }
+
+    renderChoices(filter: string, fetchedChoices: FetchedChoice[]) {
+        this._filteredChoiceSet?.processResponse(filter, fetchedChoices);
+    }
+
+    showLoadingIndicator() {
+        this._filteredChoiceSet?.showLoadingIndicator();
+    }
+
+    removeLoadingIndicator() {
+        this._filteredChoiceSet?.removeLoadingIndicator();
+    }
+
+    showErrorIndicator(filter: string, error: string) {
+        this._filteredChoiceSet?.showErrorIndicator(filter, error);
+    }
+
+    showValidationFailureCue() {
+        this._textInput?.classList.add(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
+    }
+
+    removeValidationFailureCue() {
+        this._textInput?.classList.remove(
+            this.hostConfig.makeCssClassName("ac-input-validation-failed")
+        );
+    }
+
+    private createPlaceholderOptionWhenValueDoesNotExist(): HTMLElement | undefined {
+        if (!this.value) {
+            const placeholderOption = document.createElement("option");
+            placeholderOption.selected = true;
+            placeholderOption.disabled = true;
+            placeholderOption.hidden = true;
+            placeholderOption.value = "";
+
+            if (this.placeholder) {
+                placeholderOption.text = this.placeholder;
+            }
+            return placeholderOption;
+        }
+        return undefined;
+    }
 
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
@@ -4060,8 +4438,6 @@ export class ChoiceSetInput extends Input {
         const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
-
-        element.tabIndex = this.isDesignMode() ? -1 : 0;
 
         this._toggleInputs = [];
         this._labels = [];
@@ -4169,8 +4545,46 @@ export class ChoiceSetInput extends Input {
 
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+        if (this.isDynamicTypeahead()) {
+            const filteredChoiceSet = new FilteredChoiceSet(
+                ChoiceSetInput._uniqueCategoryCounter,
+                this.choices,
+                this.hostConfig
+            );
+            filteredChoiceSet.render();
 
-        if (this.isMultiSelect) {
+            if (filteredChoiceSet.textInput) {
+                this._textInput = filteredChoiceSet.textInput;
+                if (this.defaultValue) {
+                    this._textInput.value = this.defaultValue;
+                }
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+                this._textInput.tabIndex = this.isDesignMode() ? -1 : 0;
+                const onInputChangeEventHandler = Utils.debounce(() => {
+                    filteredChoiceSet.processChoices();
+                    this.valueChanged();
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        } else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                }, this.hostConfig.inputs.debounceTimeInMilliSeconds);
+                this._textInput.onclick = onInputChangeEventHandler;
+                this._textInput.oninput = onInputChangeEventHandler;
+            }
+            filteredChoiceSet.parent = this;
+            this._filteredChoiceSet = filteredChoiceSet;
+            return filteredChoiceSet.renderedElement;
+        } else if (this.isMultiSelect) {
             // Render as a list of toggle inputs
             return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
@@ -4261,15 +4675,7 @@ export class ChoiceSetInput extends Input {
 
                 this._selectElement.tabIndex = this.isDesignMode() ? -1 : 0;
 
-                const placeholderOption = document.createElement("option");
-                placeholderOption.selected = true;
-                placeholderOption.disabled = true;
-                placeholderOption.hidden = true;
-                placeholderOption.value = "";
-
-                if (this.placeholder) {
-                    placeholderOption.text = this.placeholder;
-                }
+                const placeholderOption = this.createPlaceholderOptionWhenValueDoesNotExist();
 
                 Utils.appendChild(this._selectElement, placeholderOption);
 
@@ -4299,6 +4705,28 @@ export class ChoiceSetInput extends Input {
                 this.internalApplyAriaCurrent();
 
                 return this._selectElement;
+            }
+        }
+    }
+
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
+        if (!this.isMultiSelect && this.isCompact) {
+            super.updateVisualState(eventType);
+
+            if (this._selectElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+                const hideDropDownPicker = this.shouldHideInputAdornersForRevealOnHover(this._selectElement, eventType);
+                
+                if (hideDropDownPicker) {
+                    this._selectElement.style.appearance = "none";
+                    this._selectElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+                } else {
+                    this._selectElement.style.appearance = "auto";
+                    this._selectElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+                }			
             }
         }
     }
@@ -4355,7 +4783,13 @@ export class ChoiceSetInput extends Input {
                     return true;
                 }
             }
-
+            if (this.dynamicChoices) {
+                for (const choice of this.dynamicChoices) {
+                    if (this.value === choice) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -4403,6 +4837,302 @@ export class ChoiceSetInput extends Input {
 
             return result ? result : undefined;
         }
+    }
+
+    get dynamicChoices() {
+        return this._filteredChoiceSet?.dynamicChoices;
+    }
+}
+
+export class FilteredChoiceSet {
+    private _parent?: CardObject;
+    private _choiceSetId: number;
+    private _choices: Choice[];
+    private _dynamicChoices: FetchedChoice[];
+    private _visibleChoiceCount: number;
+    private _highlightedChoiceId: number;
+    private _textInput?: HTMLInputElement;
+    private _dropdown?: HTMLDivElement;
+    private _loadingIndicator?: HTMLDivElement;
+    private _errorIndicator?: HTMLDivElement;
+    private _renderedElement?: HTMLElement;
+    private _hostConfig?: HostConfig;
+
+    constructor(choiceSetId: number, choices: Choice[], hostConfig?: HostConfig) {
+        this._choiceSetId = choiceSetId;
+        this._choices = choices;
+        this._dynamicChoices = [];
+        this._visibleChoiceCount = 0;
+        this._highlightedChoiceId = -1;
+        this._hostConfig = hostConfig;
+    }
+
+    render() {
+        const choiceSetContainer = document.createElement("div");
+        choiceSetContainer.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-container"
+        );
+
+        this._textInput = document.createElement("input");
+        this._textInput.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-textbox"
+        );
+        this._textInput.type = "text";
+
+        this._textInput.onkeydown = (event) => {
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId + 1);
+            } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                this.highlightChoice(this._highlightedChoiceId - 1);
+            } else if (event.key === "Enter") {
+                const choice = document.getElementById(
+                    `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+                );
+                choice?.click();
+            }
+        };
+
+        this._dropdown = document.createElement("div");
+        this._dropdown.className = this.hostConfig.makeCssClassName(
+            "ac-input",
+            "ac-choiceSetInput-filtered-dropdown"
+        );
+
+        choiceSetContainer.append(this._textInput, this._dropdown);
+
+        this._renderedElement = choiceSetContainer;
+    }
+
+    private createChoice(value: string, filter: string, id: number): HTMLSpanElement {
+        const choice = document.createElement("span");
+        choice.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-choice");
+        choice.id = `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`;
+        
+        const startIndex = value.indexOf(filter);
+        if (startIndex === -1) {
+            // Filter wasn't found, add the value as is
+            const valueSpan = document.createElement("span");
+            valueSpan.innerText = value;
+            choice.appendChild(valueSpan);
+        } else {
+            if (startIndex > 0) {
+                // Add a span with the beginning unmatched text
+                const unmatchedBeg = value.substring(0, startIndex);
+                const unmatchedBegSpan = document.createElement("span");
+                unmatchedBegSpan.innerText = unmatchedBeg;
+                choice.appendChild(unmatchedBegSpan);
+            }
+
+            // Add the matched filter with bold styling
+            const filterSpan = document.createElement("span");
+            filterSpan.innerText = filter;
+            filterSpan.style.fontWeight = "bold";
+            choice.appendChild(filterSpan);
+
+            if (startIndex + filter.length < value.length) {
+                // Add a span with the ending unmatched text
+                const unmatchedEnd = value.substring(startIndex + filter.length);
+                const unmatchedEndSpan = document.createElement("span");
+                unmatchedEndSpan.innerText = unmatchedEnd;
+                choice.appendChild(unmatchedEndSpan);
+            }
+        }
+
+        choice.tabIndex = -1;
+
+        choice.onclick = () => {
+            choice.classList.remove(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+            );
+            this._highlightedChoiceId = -1;
+            if (this._textInput) {
+                this._textInput.value = choice.innerText;
+                this._textInput.focus();
+            }
+            if (this._dropdown) {
+                this._dropdown.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+                );
+            }
+        };
+        choice.onmousemove = () => {
+            if (this._highlightedChoiceId !== id) {
+                this.highlightChoice(id, false);
+            }
+        };
+
+        return choice;
+    }
+
+    private highlightChoice(id: number, scrollIntoView: boolean = true) {
+        if (this._visibleChoiceCount > 0) {
+            const currentHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
+            );
+            const nextHighlightedChoice = document.getElementById(
+                `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
+            );
+            if (nextHighlightedChoice) {
+                currentHighlightedChoice?.classList.remove(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+                );
+                nextHighlightedChoice.classList.add(
+                    this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
+                );
+                if (scrollIntoView) {
+                    nextHighlightedChoice.scrollIntoView();
+                }
+                this._highlightedChoiceId = id;
+            } else if (currentHighlightedChoice && this._highlightedChoiceId !== 0) {
+                this.highlightChoice(0);
+            } else {
+                this.highlightChoice(this._visibleChoiceCount - 1);
+            }
+        }
+    }
+
+    private filterChoices() {
+        const filter = this._textInput?.value.toLowerCase().trim() || "";
+        const choices = [...this._choices, ...this._dynamicChoices];
+        for (const choice of choices) {
+            if (choice.title) {
+                const matchIndex = choice.title.toLowerCase().indexOf(filter);
+                if (matchIndex !== -1) {
+                    const matchedText = choice.title.substring(
+                        matchIndex,
+                        matchIndex + filter.length
+                    );
+                    const choiceContainer = this.createChoice(
+                        choice.title,
+                        matchedText,
+                        this._visibleChoiceCount++
+                    );
+                    this._dropdown?.appendChild(choiceContainer);
+                }
+            }
+        }
+    }
+
+    private getStatusIndicator(error?: string): HTMLDivElement {
+        if (error) {
+            if (!this._errorIndicator) {
+                const errorIndicator = document.createElement("div");
+                errorIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator",
+                    "ac-choiceSetInput-errorIndicator"
+                );
+                this._errorIndicator = errorIndicator;
+            }
+            this._errorIndicator.innerText = error;
+            return this._errorIndicator;
+        } else {
+            if (!this._loadingIndicator) {
+                const loadingIndicator = document.createElement("div");
+                loadingIndicator.className = this.hostConfig.makeCssClassName(
+                    "ac-input",
+                    "ac-choiceSetInput-statusIndicator"
+                );
+                this._loadingIndicator = loadingIndicator;
+            }
+            this._loadingIndicator.innerText =
+                this._visibleChoiceCount === 0 ? "Loading..." : "Loading more...";
+            return this._loadingIndicator;
+        }
+    }
+
+    private resetDropdown() {
+        if (this._dropdown) {
+            Utils.clearElementChildren(this._dropdown);
+            this._visibleChoiceCount = 0;
+            this._highlightedChoiceId = -1;
+        }
+    }
+
+    private showDropdown() {
+        if (this._dropdown?.hasChildNodes()) {
+            this._dropdown.classList.add(
+                this.hostConfig.makeCssClassName("ac-choiceSetInput-filtered-dropdown-open")
+            );
+        }
+    }
+
+    processChoices() {
+        this.resetDropdown();
+        this.filterChoices();
+        this.showDropdown();
+    }
+
+    processResponse(filter: string, fetchedChoices: FetchedChoice[]) {
+        if (filter === this._textInput?.value) {
+            this.resetDropdown();
+            this._dynamicChoices = fetchedChoices;
+            this.filterChoices();
+            if (this._visibleChoiceCount === 0) {
+                this.showErrorIndicator(filter, "No results found");
+            }
+        }
+    }
+
+    showLoadingIndicator() {
+        const loadingIndicator = this.getStatusIndicator();
+        this._dropdown?.appendChild(loadingIndicator);
+        this.showDropdown();
+    }
+
+    removeLoadingIndicator() {
+        if (this._loadingIndicator && this._dropdown?.contains(this._loadingIndicator)) {
+            this._dropdown?.removeChild(this._loadingIndicator);
+        }
+    }
+
+    showErrorIndicator(filter: string, error: string) {
+        if (filter === this._textInput?.value) {
+            this.processChoices();
+            const errorIndicator = this.getStatusIndicator(error);
+            this._dropdown?.appendChild(errorIndicator);
+            errorIndicator.scrollIntoView();
+        }
+    }
+
+    get dynamicChoices() {
+        return this._dynamicChoices?.map((choice) => choice.title);
+    }
+
+    get hostConfig(): HostConfig {
+        if (this._hostConfig) {
+            return this._hostConfig;
+        } else {
+            if (this.parent) {
+                return this.parent.hostConfig;
+            } else {
+                return defaultHostConfig;
+            }
+        }
+    }
+
+    set parent(value: CardObject | undefined) {
+        this._parent = value;
+    }
+
+    get parent() {
+        return this._parent;
+    }
+
+    get renderedElement() {
+        return this._renderedElement;
+    }
+
+    get textInput() {
+        return this._textInput;
+    }
+
+    get dropdown() {
+        return this._dropdown;
     }
 }
 
@@ -4563,6 +5293,26 @@ export class DateInput extends Input {
         return this._dateInputElement;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+
+        super.updateVisualState(eventType);
+
+        if (this._dateInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            const hideDatePicker = this.shouldHideInputAdornersForRevealOnHover(this._dateInputElement, eventType);
+
+            if (hideDatePicker) {
+                this._dateInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            } else {
+                this._dateInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            }
+
+            updateInputAdornersVisibility(this._dateInputElement, hideDatePicker  /*hide*/);
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.Date";
     }
@@ -4695,6 +5445,26 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
+    updateVisualState(eventType: InputEventType): void {
+        if (!this.allowRevealOnHoverStyle) {
+            return;
+        }
+        
+        super.updateVisualState(eventType);
+
+        if (this._timeInputElement && this.inputStyle === Enums.InputStyle.RevealOnHover) {
+            const hideTimePicker = this.shouldHideInputAdornersForRevealOnHover(this._timeInputElement, eventType);
+
+            if (hideTimePicker) {
+                this._timeInputElement.classList.remove(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            } else {
+                this._timeInputElement.classList.add(this.hostConfig.makeCssClassName("ac-inputStyle-revealOnHover-onfocus"));
+            }
+
+            updateInputAdornersVisibility(this._timeInputElement, hideTimePicker /*hide*/);
+        }
+    }
+
     getJsonTypeName(): string {
         return "Input.Time";
     }
@@ -4763,6 +5533,7 @@ export abstract class Action extends CardObject {
     );
     static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
     static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
+    static readonly roleProperty = new EnumProperty(Versions.v1_6, "role", Enums.ActionRole);
 
     @property(Action.titleProperty)
     title?: string;
@@ -4781,6 +5552,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.isEnabledProperty)
     isEnabled: boolean;
+    
+    @property(Action.roleProperty)
+    role?: Enums.ActionRole;
 
     //#endregion
 
@@ -4815,6 +5589,7 @@ export abstract class Action extends CardObject {
                 iconElement.style.width = hostConfig.actions.iconSize + "px";
                 iconElement.style.height = hostConfig.actions.iconSize + "px";
                 iconElement.style.flex = "0 0 auto";
+                iconElement.setAttribute("role", "presentation");
 
                 if (hostConfig.actions.iconPlacement === Enums.ActionIconPlacement.AboveTitle) {
                     this.renderedElement.classList.add("iconAbove");
@@ -4959,7 +5734,25 @@ export abstract class Action extends CardObject {
     }
 
     getAriaRole(): string {
-        return "button";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "button";
+    }
+    
+    getAriaRoleFromEnum(): string | undefined {
+        switch (this.role) {
+            case Enums.ActionRole.Button:
+                return "button";
+            case Enums.ActionRole.Link:
+                return "link";
+            case Enums.ActionRole.Menu:
+                return "menu";
+            case Enums.ActionRole.MenuItem:
+                return "menuitem";
+            case Enums.ActionRole.Tab:
+                return "tab";
+            default:
+                return undefined;
+        }
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
@@ -4986,14 +5779,10 @@ export abstract class Action extends CardObject {
             element.removeAttribute("title");
         }
 
-        if (this.tooltip) {
-            const targetAriaAttribute = promoteTooltipToLabel
-                ? this.title
-                    ? "aria-description"
-                    : "aria-label"
-                : "aria-description";
-
-            element.setAttribute(targetAriaAttribute, this.tooltip);
+        if (this.tooltip) {			
+            if (promoteTooltipToLabel && !this.title) {
+                element.setAttribute("aria-label", this.tooltip);
+            }
             element.title = this.tooltip;
         }
     }
@@ -5308,7 +6097,12 @@ export class SubmitAction extends SubmitActionBase {
     }
 }
 
-export class ExecuteAction extends SubmitActionBase {
+export abstract class UniversalAction extends SubmitActionBase {
+    // This is the base class for all actions that can be executed via the
+    // adaptiveCards/action activity
+}
+
+export class ExecuteAction extends UniversalAction {
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
@@ -5324,6 +6118,41 @@ export class ExecuteAction extends SubmitActionBase {
 
     getJsonTypeName(): string {
         return ExecuteAction.JsonTypeName;
+    }
+}
+
+export class DataQuery extends UniversalAction {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Data.Query" = "Data.Query";
+
+    //#region Schema
+
+    static readonly datasetProperty = new StringProperty(Versions.v1_6, "dataset");
+    static readonly filterProperty = new StringProperty(Versions.v1_6, "filter");
+    static readonly countProperty = new NumProperty(Versions.v1_6, "count");
+    static readonly skipProperty = new NumProperty(Versions.v1_6, "skip");
+
+    @property(DataQuery.datasetProperty)
+    dataset: string;
+
+    @property(DataQuery.filterProperty)
+    filter: string;
+
+    @property(DataQuery.countProperty)
+    count?: number;
+
+    @property(DataQuery.skipProperty)
+    skip?: number;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return DataQuery.JsonTypeName;
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
@@ -5346,7 +6175,8 @@ export class OpenUrlAction extends Action {
     }
 
     getAriaRole(): string {
-        return "link";
+        let ariaRole = this.getAriaRoleFromEnum();
+        return ariaRole ?? "link";
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -5836,7 +6666,7 @@ class OverflowAction extends Action {
             contextMenu.hostConfig = this.hostConfig;
 
             for (let i = 0; i < this._actions.length; i++) {
-                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "");
+                const menuItem = new MenuItem(i.toString(), this._actions[i].title ?? "", this._actions[i].iconUrl);
                 menuItem.isEnabled = this._actions[i].isEnabled;
                 menuItem.onClick = () => {
                     const actionToExecute = this._actions[i];
@@ -5852,11 +6682,13 @@ class OverflowAction extends Action {
             }
 
             contextMenu.onClose = () => {
+                this.renderedElement?.focus();
                 this.renderedElement?.setAttribute("aria-expanded", "false");
             }
 
             this.renderedElement.setAttribute("aria-expanded", "true");
             contextMenu.popup(this.renderedElement);
+            contextMenu.selectedIndex = 0;
         }
     }
     
@@ -6535,6 +7367,16 @@ export class ActionSet extends CardElement {
 
         // if not found in any Action, defer to parent implementation
         return super.findDOMNodeOwner(node);
+    }
+
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
     }
 
     get isInteractive(): boolean {
@@ -7881,6 +8723,21 @@ function raiseElementVisibilityChangedEvent(
     }
 }
 
+function updateInputAdornersVisibility(input: HTMLInputElement, hide: boolean) {
+    if (!!hide) {
+        // hides the time/date picker icon
+        input.readOnly = true;
+        // hides the cross button icon
+        input.required = true;
+    } else {
+         // shows the time/date picker icon
+         input.readOnly = false;
+         // shows the cross button icon
+         input.required = false;
+    }
+    
+}
+
 /**
  * @returns return false to continue with default context menu; return true to skip SDK default context menu
  */
@@ -8078,6 +8935,16 @@ export abstract class ContainerWithActions extends Container {
 
     getForbiddenActionNames(): string[] {
         return [];
+    }
+    
+    getElementById(id: string): CardElement | undefined {
+        let result = super.getElementById(id);
+
+        if (!result) {
+            result = this.getElementByIdFromAction(id);
+        }
+
+        return result;
     }
 
     get isStandalone(): boolean {
@@ -8582,6 +9449,16 @@ export class AdaptiveCard extends ContainerWithActions {
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);
                 }
+
+                renderedCard.onmouseenter = (ev: MouseEvent) => {
+                    this.updateInputsVisualState(true /* hover */);
+                };
+
+                renderedCard.onmouseleave = (ev: MouseEvent) => {
+                    this.updateInputsVisualState(false /* hover */);
+                };
+
+                this.getRootElement().updateActionsEnabledState();
             }
         }
 
@@ -8590,6 +9467,24 @@ export class AdaptiveCard extends ContainerWithActions {
 
             this.updateLayout();
         }
+
+        const inputElements = this.getAllInputs();
+        document.onclick = (event) => {
+            inputElements.forEach((input) => {
+                if (
+                    input instanceof ChoiceSetInput &&
+                    !input.renderedElement?.contains(event.target as Node)
+                ) {
+                    input
+                        .getDropdownElement()
+                        ?.classList.remove(
+                            this.hostConfig.makeCssClassName(
+                                "ac-choiceSetInput-filtered-dropdown-open"
+                            )
+                        );
+                }
+            });
+        };
 
         return renderedCard;
     }

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 @import 'adaptivecards-vars';
 @import 'swiper/swiper.scss';
-@import 'swiper/modules/pagination/pagination.scss';
-@import 'swiper/modules/navigation/navigation.scss';
+@import 'swiper/modules/pagination.scss';
+@import 'swiper/modules/navigation.scss';
 
 .swiper-pagination-bullet {
     text-align: center;
@@ -64,18 +64,46 @@
     @include swiper-nav-button("\EDD9");
 }
 
-.swiper-button-next,
-.swiper-rtl.swiper-button-prev {
+.swiper-button-next.ac-carousel-down {
+	@include swiper-nav-button("\EDDC");
+}
+
+.swiper-button-prev.ac-carousel-up {
+	@include swiper-nav-button("\EDDB");
+}
+
+.ac-carousel-right,
+.swiper-rtl.ac-carousel-left {
     right: 0px;
 } 
 
-.swiper-button-prev,
-.swiper-rtl.swiper-button-next {
+.ac-carousel-left,
+.swiper-rtl.ac-carousel-right {
     left: 0px;
 } 
 
+.ac-carousel-up {
+	top: 0px !important;
+	right: 0px !important;
+	left: auto !important;
+	bottom: auto !important;
+	margin: 0px !important;
+}
+
+.ac-carousel-down {
+	bottom: 0px !important;
+	right: 0px !important;
+	left: auto !important;
+	top: auto !important;
+	margin: 0px !important;
+}
+
 .ac-carousel-pagination.swiper-pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
     bottom: 0px;
+}
+
+.ac-carousel-pagination.swiper-pagination.swiper-pagination-bullets.swiper-pagination-vertical {
+    right: 0px;
 }
 
 .ac-container.ac-carousel-page-container {

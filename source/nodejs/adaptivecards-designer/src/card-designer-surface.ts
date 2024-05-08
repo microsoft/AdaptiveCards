@@ -166,9 +166,12 @@ class DragHandle extends DraggableElement {
         let element = document.createElement("div");
         element.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-drag");
         element.title = "Drag to move this element";
+        element.setAttribute("aria-label", "Drag to move this element");
+        element.setAttribute("role", "button");
         element.style.visibility = "hidden";
         element.style.position = "absolute";
         element.style.zIndex = "500";
+        element.tabIndex = 0;
 
         return element;
     }
@@ -227,6 +230,24 @@ export class CardDesignerSurface {
             this._dragHandle.renderedElement.style.visibility = this._selectedPeer.isDraggable() ? "visible" : "hidden";
             this._removeCommandElement.style.visibility = this._selectedPeer.canBeRemoved() ? "visible" : "hidden";
             this._peerCommandsHostElement.style.visibility = this._peerCommandsHostElement.childElementCount > 0 ? "visible" : "hidden";
+
+            // Remove from tree
+            if (this._designerSurface.contains(this._dragHandle.renderedElement)) {
+                this._designerSurface.removeChild(this._dragHandle.renderedElement);
+            }
+
+            if (this._designerSurface.contains(this._removeCommandElement)) {
+                this._designerSurface.removeChild(this._removeCommandElement);
+            }
+
+            if (this._designerSurface.contains(this._peerCommandsHostElement)) {
+                this._designerSurface.removeChild(this._peerCommandsHostElement);
+            }
+
+            // Insert to the correct location
+            this._selectedPeer.renderedElement.after(this._dragHandle.renderedElement);
+            this._dragHandle.renderedElement.after(this._removeCommandElement);
+            this._removeCommandElement.after(this._peerCommandsHostElement);
         }
         else {
             this._dragHandle.renderedElement.style.visibility = "hidden";
@@ -791,12 +812,20 @@ export class CardDesignerSurface {
         this._removeCommandElement = document.createElement("div");
         this._removeCommandElement.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-remove");
         this._removeCommandElement.title = "Remove";
+        this._removeCommandElement.setAttribute("aria-label", "Remove");
+        this._removeCommandElement.setAttribute("role", "button");
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";
         this._removeCommandElement.style.zIndex = "500";
+        this._removeCommandElement.tabIndex = 0;
         this._removeCommandElement.onclick = (e) => {
             this.removeSelected();
         }
+        this._removeCommandElement.onkeyup = (e: KeyboardEvent) => {
+            if (e.key === Constants.keys.enter) {
+                this.removeSelected();
+            }
+        };
 
         this._dragHandle = new DragHandle();
         this._dragHandle.onStartDrag = (sender) => {
@@ -812,10 +841,6 @@ export class CardDesignerSurface {
         this._peerCommandsHostElement.style.justifyContent = "flex-end";
         this._peerCommandsHostElement.style.zIndex = "500";
         this._peerCommandsHostElement.style.pointerEvents = "none";
-
-        this._designerSurface.appendChild(this._dragHandle.renderedElement);
-        this._designerSurface.appendChild(this._removeCommandElement);
-        this._designerSurface.appendChild(this._peerCommandsHostElement);
 
         this.updateLayout();
 

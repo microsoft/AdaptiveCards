@@ -42,6 +42,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CaptionSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Carousel.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CarouselPage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ContentSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
@@ -62,6 +64,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoicesData.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
@@ -122,9 +125,12 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CaptionSource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Carousel.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CarouselPage.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ContentSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoicesData.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
@@ -194,7 +200,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <ProjectName>ObjectModelProjection</ProjectName>
@@ -203,13 +209,15 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

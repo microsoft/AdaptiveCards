@@ -29,6 +29,28 @@ PS: Latest Build Status is against `main` branch.
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/37917/main.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564/main.svg) |
 
+## Release schedule
+
+We release the Adaptive Cards products on the third week of each month, assuming there are updates. Please see the table below for the most recent and upcoming release dates.
+
+|Product|Last Release Date|Next Release Date|
+|---|---|---|
+|Website|3/18/2024|4/22/2024|
+|Designer|1/31/2023|7/17/2023|
+|JavaScript Renderer|6/23/2023|7/17/2023|
+|JavaScript Renderer Beta|4/9/2023|7/17/2023|
+|JavaScript Templating|9/16/2022|7/17/2023|
+|XAML Renderer|2/2/2024|3/2/2024|
+|XAML Object Model|2/2/2024|3/2/2024|
+|WinUI 3 Renderer|2/2/2024|3/2/2024|
+|WinUI 3 Object Model|2/2/2024|3/2/2024|
+|C++/WinRT Templating|2/2/2024|3/2/2024|
+|C#/WinRT Templating|2/2/2024|3/2/2024|
+|.NET Renderer|12/1/2022|7/17/2023|
+|.NET Templating|3/7/2023|7/17/2023|
+
+**Note:** These release dates are subject to change based on availability and active development of each product.
+
 ## Code format
 
 We require the C++ code inside this project to follow the clang-format. If you change them, please make sure your changed files are formatted correctly.
@@ -103,3 +125,114 @@ There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/b
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
 the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Supported Features
+|Feature|Schema Version|Platform|Parsing|Rendering|
+|---|---|---|:---:|:---:|
+|Action.OpenUrl|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Action.ShowCard|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Action.Submit|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Column|v1.0|All| :white_check_mark: | :white_check_mark:|
+|ColumnSet|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Container|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Fact|v1.0|All| :white_check_mark: | :white_check_mark:|
+|FactSet|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Image|v1.0|All| :white_check_mark: | :white_check_mark:|
+|ImageSet|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.ChoiceSet|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.Date|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.Number|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.Text|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.Time|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Input.Toggle|v1.0|All| :white_check_mark: | :white_check_mark:|
+|SelectAction|v1.0|All| :white_check_mark: | :white_check_mark:|
+|TextBlock|v1.0|All| :white_check_mark: | :white_check_mark:|
+|Explicit Image Dimension|v1.1|All| :white_check_mark: | :white_check_mark:|
+|Background Color|v1.1|All| :white_check_mark: | :white_check_mark:|
+|Vertical Content Alignment|v1.1|All| :white_check_mark: | :white_check_mark:|
+|Action Icon|v1.1|All| :white_check_mark: | :white_check_mark:|
+|Action Style|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Toggle Visibility|v1.2|All| :white_check_mark: | :white_check_mark:|
+|ActionSet|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Fallback|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Container BackgroundImage|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Container MinHeight|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Container Bleed|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Container Style|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Image Data Uri|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Action Icon Data Uri|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Input.Text Inline Action|v1.2|All| :white_check_mark: | :white_check_mark:|
+|TextBlock FontType|v1.2|All| :white_check_mark: | :white_check_mark:|
+|RichTextBlock|v1.2|All| :white_check_mark: | :white_check_mark:|
+|Input Label|v1.3|All| :white_check_mark: | :white_check_mark:|
+|Input ErrorMessage|v1.3|All| :white_check_mark: | :white_check_mark:|
+|AssociatedInputs|v1.3|All| :white_check_mark: | :white_check_mark:|
+|RichTextBlock UnderLine|v1.3|All| :white_check_mark: | :white_check_mark:|
+|Action.Refresh|v1.4|All| :white_check_mark: | :white_check_mark:|
+|AdaptiveCard Authentication|v1.4|All| :white_check_mark: | :white_check_mark:|
+|Action.Execute|v1.4|All| :white_check_mark: | :white_check_mark:|
+|Action IsEnabled|v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Action IsEnabled|v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Action IsEnabled|v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Action IsEnabled|v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Action IsEnabled|v1.5|.NET| :white_check_mark: | :x:|
+|Action Mode|v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Action Mode|v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Action Mode|v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Action Mode|v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Action Mode|v1.5|.NET| :white_check_mark: | :x:|
+|Action/SelectAction ToolTip|v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Action/SelectAction ToolTip|v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Action/SelectAction ToolTip|v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Action/SelectAction ToolTip|v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Action/SelectAction ToolTip|v1.5|.NET| :white_check_mark: | :x:|
+|Input.ChoiceSet Filtered Style |v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Input.ChoiceSet Filtered Style |v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Input.ChoiceSet Filtered Style |v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Input.ChoiceSet Filtered Style |v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Input.ChoiceSet Filtered Style |v1.5|.NET| :white_check_mark: | :x:|
+|Input.Text Password Style |v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Input.Text Password Style |v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Input.Text Password Style |v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Input.Text Password Style |v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Input.Text Password Style |v1.5|.NET| :white_check_mark: | :x:|
+|TextBlock Heading Style|v1.5|JS| :white_check_mark: | :white_check_mark:|
+|TextBlock Heading Style|v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|TextBlock Heading Style|v1.5|Android| :white_check_mark: | :white_check_mark:|
+|TextBlock Heading Style|v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|TextBlock Heading Style|v1.5|.NET| :white_check_mark: | :x:|
+|RTL |v1.5|JS| :white_check_mark: | :white_check_mark:|
+|RTL |v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|RTL |v1.5|Android| :white_check_mark: | :white_check_mark:|
+|RTL |v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|RTL |v1.5|.NET| :white_check_mark: | :x:|
+|Table |v1.5|JS| :white_check_mark: | :white_check_mark:|
+|Table |v1.5|iOS| :white_check_mark: | :white_check_mark:|
+|Table |v1.5|Android| :white_check_mark: | :white_check_mark:|
+|Table |v1.5|XAML| :white_check_mark: | :white_check_mark:|
+|Table |v1.5|.NET| :white_check_mark: | :x:|
+|Carousel|v1.6|JS| :white_check_mark: | :white_check_mark:|
+|Carousel|v1.6|iOS| :x: | :x:|
+|Carousel|v1.6|Android| :x: | :x:|
+|Carousel|v1.6|XAML| :x: | :x:|
+|Carousel|v1.6|.NET| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|JS| :white_check_mark: | :white_check_mark:|
+|ImageSet Stacked Presentation Style|v1.6|iOS| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|Android| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|XAML| :x: | :x:|
+|ImageSet Stacked Presentation Style|v1.6|.NET| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|JS| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|iOS| :white_check_mark: | :x:|
+|Dynamic Type Ahead Search|v1.6|Android| :white_check_mark: | :x:|
+|Dynamic Type Ahead Search|v1.6|XAML| :x: | :x:|
+|Dynamic Type Ahead Search|v1.6|.NET| :x: | :x:|
+|Label Position|v1.6|JS| :x: | :x:|
+|Label Position|v1.6|iOS| :x: | :x:|
+|Label Position|v1.6|Android| :x: | :x:|
+|Label Position|v1.6|XAML| :x: | :x:|
+|Label Position|v1.6|.NET| :x: | :x:|
+|Inline Editable Input Style|v1.6|JS| :x: | :x:|
+|Inline Editable Input Style|v1.6|iOS| :x: | :x:|
+|Inline Editable Input Style|v1.6|Android| :x: | :x:|
+|Inline Editable Input Style|v1.6|XAML| :x: | :x:|
+|Inline Editable Input Style|v1.6|.NET| :x: | :x:|

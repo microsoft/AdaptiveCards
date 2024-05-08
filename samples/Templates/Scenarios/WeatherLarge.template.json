@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.5",
 	"speak": "<s>Weather forecast for ${formatEpoch(data[0].sunrise_ts, 'dddd')} is high of ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)} and low of ${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} degrees with a ${formatNumber(data[0].precip * 100, 0)}% chance of rain</s><s>Winds will be ${formatNumber(data[0].wind_gust_spd, 0)} mph from the ${data[0].wind_cdir}</s>",
-	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
+	"backgroundImage": "https://adaptivecards.io/content/Mostly%20Cloudy-Background.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -14,7 +14,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"url": "https://adaptivecards.io/content/Mostly%20Cloudy-Square.png",
 							"size": "stretch",
 							"altText": "Mostly cloudy weather"
 						}
@@ -99,7 +99,7 @@
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"title": "View ${formatEpoch(sunrise_ts, 'dddd')}",
+						"title": "View ${formatEpoch(sunrise_ts, 'dddd')}, ${weather.description}. Highest temperature ${formatNumber(app_max_temp / 5 * 9  + 32, 0)} degrees. Lowest temperature ${formatNumber(app_min_temp / 5 * 9  + 32, 0)} degrees.",
 						"url": "https://www.microsoft.com"
 					}
 				}

@@ -1,0 +1,101 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor",
+			"style": "compact",
+			"label": "What color do you want? (isMultiSelect:false, style:compact)",
+			"isMultiSelect": false,
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor2",
+			"style": "expanded",
+			"label": "What color do you want? (isMultiSelect:false, style:expanded)",
+			"isMultiSelect": false,
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor3",
+			"isMultiSelect": true,
+			"value": "1,3",
+			"style": "compact",
+			"label": "What colors do you want? (isMultiSelect:true, style:compact)",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor4",
+			"isMultiSelect": true,
+			"value": "1",
+			"style": "expanded",
+			"label": "What colors do you want? (isMultiSelect:true, style:expanded)",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

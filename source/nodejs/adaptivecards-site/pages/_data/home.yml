@@ -4,6 +4,8 @@ en:
   get_started: Get Started
   watch_video: Watch video
   made_for_title: Made For
+  github_title: Github
+  adaptive_cards: Adaptive Cards
   made_for:
     - title: Android
       fa: fab fa-android

@@ -54,7 +54,7 @@ export class TeamsContainer extends MultiThemeHostContainer {
     }
 
     get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_4;
+        return Adaptive.Versions.v1_5;
     }
 
     get enableDeviceEmulation(): boolean {

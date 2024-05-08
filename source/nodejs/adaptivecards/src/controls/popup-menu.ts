@@ -13,13 +13,18 @@ export class PopupMenu extends PopupControl {
     protected renderContent(): HTMLElement {
         const element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
-        element.setAttribute("role", "listbox");
+        element.setAttribute("role", "menu");
 
         for (let i = 0; i < this._items.length; i++) {
             const renderedItem = this._items.get(i).render(this.hostConfig);
             renderedItem.tabIndex = 0;
 
             element.appendChild(renderedItem);
+
+            if (i == 0)
+            {
+                renderedItem.setAttribute("aria-expanded", "true");
+            }
 
             if (i === this.selectedIndex) {
                 renderedItem.focus();
@@ -63,6 +68,7 @@ export class PopupMenu extends PopupControl {
                 }
 
                 this.selectedIndex = selectedItemIndex;
+                this.removeAriaExpanded(selectedItemIndex);
 
                 e.cancelBubble = true;
 
@@ -76,6 +82,7 @@ export class PopupMenu extends PopupControl {
                     if (selectedItemIndex >= this._renderedItems.length) {
                         selectedItemIndex = 0;
                     }
+                    this.removeAriaExpanded(selectedItemIndex);
                 }
 
                 this.selectedIndex = selectedItemIndex;
@@ -99,6 +106,13 @@ export class PopupMenu extends PopupControl {
             this._renderedItems[index].focus();
 
             this._selectedIndex = index;
+        }
+    }
+
+    // remove aria-expanded attribute from menu item
+    private removeAriaExpanded(index: number) {
+        if (this._renderedItems[index].getAttribute("aria-expanded") === "true") {
+            this._renderedItems[index].removeAttribute("aria-expanded");
         }
     }
 }

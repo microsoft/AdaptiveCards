@@ -14,6 +14,12 @@ export class PopupMenu extends PopupControl {
         super();
     }
 
+    focus() {
+        if (this._renderedItems.length >= 1) {
+            this._renderedItems[0].focus();
+        }
+    }
+
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";

@@ -15,12 +15,12 @@
 					"items": [
 						{
 							"type": "Container",
-							"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+							"backgroundImage": "https://adaptivecards.io/content/TxP_Background.png",
 							"items": [
 								{
 									"type": "Image",
 									"horizontalAlignment": "center",
-									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png",
+									"url": "https://adaptivecards.io/content/TxP_Flight.png",
 									"altText": "Departing airplane"
 								}
 							],
@@ -86,20 +86,7 @@
 													"wrap": true
 												}
 											],
-											"width": "auto"
-										},
-										{
-											"type": "Column",
-											"verticalContentAlignment": "center",
-											"items": [
-												{
-													"type": "Image",
-													"url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
-													"width": "10000px",
-													"height": "2px"
-												}
-											],
-											"width": "stretch"
+											"width": "1"
 										},
 										{
 											"type": "Column",
@@ -108,8 +95,9 @@
 											"items": [
 												{
 													"type": "Image",
-													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
-													"height": "16px"
+													"url": "https://adaptivecards.io/content/smallairplane.png",
+													"height": "16px",
+													"altText": "Flight to"
 												}
 											],
 											"width": "auto"
@@ -126,7 +114,7 @@
 													"wrap": true
 												}
 											],
-											"width": "auto"
+											"width": "1"
 										}
 									]
 								},

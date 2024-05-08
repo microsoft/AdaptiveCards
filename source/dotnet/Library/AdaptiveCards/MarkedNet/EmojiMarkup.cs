@@ -169,7 +169,7 @@ namespace Microsoft.MarkedNet
         public const string wavy_dash = ":wavy_dash:";
         public const string part_alternation_mark = ":part_alternation_mark:";
         public const string congratulations = ":congratulations:";
-        public const string secret = ":secret:";
+        public const string secret = ":secret:"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline", Justification="This is just the emoji name")]
         public const string mahjong = ":mahjong:";
         public const string black_joker = ":black_joker:";
         public const string a = ":a:";

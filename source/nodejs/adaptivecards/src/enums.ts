@@ -56,7 +56,8 @@ export enum ImageSize {
 
 export enum ImageSetPresentationStyle {
     Default,
-    Stacked
+    Stacked,
+    Grid
 }
 
 export enum SizeUnit {
@@ -70,6 +71,11 @@ export enum TextSize {
     Medium,
     Large,
     ExtraLarge
+}
+
+export enum InputStyle {
+    RevealOnHover,
+    Default
 }
 
 export enum TextWeight {
@@ -157,6 +163,11 @@ export enum InputTextStyle {
     Password
 }
 
+export enum InputLabelPosition {
+    Inline,
+    Above
+}
+
 export enum ValidationPhase {
     Parse,
     ToJSON,
@@ -212,4 +223,12 @@ export enum CarouselInteractionEvent {
     NavigationPrevious,
     Pagination,
     Autoplay
+}
+
+export enum ActionRole {
+    Button,
+    Link,
+    Tab,
+    Menu,
+    MenuItem
 }

@@ -805,6 +805,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_ColumnSetParser(long jarg1);
   public final static native long ColumnSetParser_Deserialize(long jarg1, ColumnSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ColumnSetParser_DeserializeFromString(long jarg1, ColumnSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ChoicesData();
+  public final static native long ChoicesData_SerializeToJsonValue(long jarg1, ChoicesData jarg1_);
+  public final static native boolean ChoicesData_ShouldSerialize(long jarg1, ChoicesData jarg1_);
+  public final static native String ChoicesData_Serialize(long jarg1, ChoicesData jarg1_);
+  public final static native String ChoicesData_GetChoicesDataType(long jarg1, ChoicesData jarg1_);
+  public final static native void ChoicesData_SetChoicesDataType(long jarg1, ChoicesData jarg1_, String jarg2);
+  public final static native String ChoicesData_GetDataset(long jarg1, ChoicesData jarg1_);
+  public final static native void ChoicesData_SetDataset(long jarg1, ChoicesData jarg1_, String jarg2);
+  public final static native long ChoicesData_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native long ChoicesData_DeserializeFromString(long jarg1, ParseContext jarg1_, String jarg2);
+  public final static native void delete_ChoicesData(long jarg1);
   public final static native long new_ChoiceInput();
   public final static native String ChoiceInput_Serialize(long jarg1, ChoiceInput jarg1_);
   public final static native long ChoiceInput_SerializeToJsonValue(long jarg1, ChoiceInput jarg1_);
@@ -825,6 +836,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ChoiceSetInput_GetChoiceSetStyle(long jarg1, ChoiceSetInput jarg1_);
   public final static native void ChoiceSetInput_SetChoiceSetStyle(long jarg1, ChoiceSetInput jarg1_, int jarg2);
   public final static native long ChoiceSetInput_GetChoices__SWIG_0(long jarg1, ChoiceSetInput jarg1_);
+  public final static native long ChoiceSetInput_GetChoicesData(long jarg1, ChoiceSetInput jarg1_);
+  public final static native void ChoiceSetInput_SetChoicesData(long jarg1, ChoiceSetInput jarg1_, long jarg2, ChoicesData jarg2_);
   public final static native String ChoiceSetInput_GetValue(long jarg1, ChoiceSetInput jarg1_);
   public final static native void ChoiceSetInput_SetValue(long jarg1, ChoiceSetInput jarg1_, String jarg2);
   public final static native boolean ChoiceSetInput_GetWrap(long jarg1, ChoiceSetInput jarg1_);

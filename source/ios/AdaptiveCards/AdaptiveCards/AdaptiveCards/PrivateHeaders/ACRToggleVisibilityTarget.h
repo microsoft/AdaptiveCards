@@ -5,10 +5,19 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
 #import "ToggleVisibilityAction.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/ToggleVisibilityAction.h>
+#endif
 
 #import <UIKit/UIKit.h>
 

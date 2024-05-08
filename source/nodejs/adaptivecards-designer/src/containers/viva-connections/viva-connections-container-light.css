@@ -311,6 +311,11 @@
   border-radius: 8px;
   box-shadow: 0 25px 57px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
   min-height: 0;
-  min-width: 320px;
-  max-width: 375px;
+  width: 375px;
+}
+
+@media (max-width: 375px) {
+  .vivaConnectionsContainer {
+    width: 100%;
+  }
 }

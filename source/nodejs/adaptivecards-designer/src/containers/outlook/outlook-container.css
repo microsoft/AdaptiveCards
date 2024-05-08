@@ -81,7 +81,7 @@ a.ac-anchor:visited:active {
     user-select: none;
     height: 31px;
     background-color: white;
-    color: #0079db;
+    color: #0B78D0;
     border: 1px solid #6290FF;
 }
 
@@ -106,7 +106,7 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton:hover {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
     border: 1px solid #73C1FD;
 }
@@ -118,9 +118,9 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton.style-positive {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 .ac-pushButton.style-positive:hover, .ac-pushButton.style-positive:active {
@@ -145,16 +145,16 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton.subdued:hover {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 @media (forced-colors: none) {
     .ac-pushButton.expanded {
-        background-color: #0078D7;
+        background-color: #0072CC;
         color: white;
-        border: 1px solid #0078D7;
+        border: 1px solid #0072CC;
     }
 }
 

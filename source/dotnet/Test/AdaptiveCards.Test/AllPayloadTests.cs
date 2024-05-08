@@ -100,6 +100,8 @@ namespace AdaptiveCards.Test
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.0", "elements"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.1", "elements"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.2", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.3", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.4", "elements"), null);
             TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "elements"), null); 
         }
 
@@ -124,7 +126,10 @@ namespace AdaptiveCards.Test
                     "Action.NestedDuplicateIds.json",
                 });
 
-            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.3", "tests"), null); 
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.3", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.4", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.5", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(Utilities.SamplesPath, "v1.6", "tests"), null);
         }
     }
 }

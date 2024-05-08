@@ -78,6 +78,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 6px;
+    padding-bottom: 6px;
     background-color: white;
 }
 
@@ -444,6 +445,7 @@
 
 .acd-icon-chevronDown::before {
     content: "\E70D";
+    line-height: 16px;
 }
 
 .acd-icon-chevronUp::before {
@@ -452,6 +454,7 @@
 
 .acd-icon-chevronRight::before {
     content: "\E76C";
+    line-height: 16px;
 }
 
 .acd-icon-chevronLeft::before {
@@ -773,7 +776,6 @@
     pointer-events: all !important;
     height: 20px;
     border-radius: 0;
-    outline: none;
 }
 
 .acd-peerButton.fixedWidth {
@@ -848,6 +850,14 @@
 
 .acd-tree-item {
     cursor: pointer;
+}
+
+.acd-treeView li:focus-visible {
+    outline: none;
+}
+
+.acd-treeView li:focus-visible > .acd-tree-item {
+    outline: 1px solid #2D7BB7;
 }
 
 .acd-tree-item.selected {
@@ -1120,16 +1130,16 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-pushButton.subdued:hover {
-    background-color: #0078D7;
+    background-color: #0072CC;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0072CC;
 }
 
 @media (forced-colors: none) {
     .default-ac-pushButton.expanded {
-        background-color: #0078D7;
+        background-color: #0072CC;
         color: white;
-        border: 1px solid #0078D7;
+        border: 1px solid #0072CC;
     }
 }
 
@@ -1185,6 +1195,23 @@ a.default-ac-anchor:visited:active {
 .default-ac-input.default-ac-multichoiceInput {
     border: 1px solid #DDDDDD;
     padding: 4px 8px 4px 8px;
+}
+
+.default.ac-inputStyle-revealOnHover-onrender {
+    border: 1px solid transparent;
+    background-color: white;
+}
+
+.default.ac-inputStyle-revealOnHover-onrender:hover {
+    border: 1px solid #686868 !important;
+}
+
+.default.ac-inputStyle-revealOnHover-onhover {
+    border: 1px solid #DDDDDD;
+}
+
+.default.ac-inputStyle-revealOnHover-onfocus {
+    border: 1px solid #DDDDDD;
 }
 
 .default-ac-textBlock {
@@ -1690,4 +1717,27 @@ a.default-ac-anchor:visited:active {
         padding-left: 3px;
         padding-right: 3px;
     }
+}
+
+@media (max-width: 350px) {
+    input::-webkit-calendar-picker-indicator{
+        display: none;
+    }
+
+    input[type="date"]::-webkit-input-placeholder{
+        visibility: hidden;
+    }
+}
+
+.screen-reader-only {
+    border: 0;
+    clip: rect(0,0,0,0);
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
 }

@@ -59,6 +59,7 @@ export class ToolbarButton extends ToolbarElement {
     private _isEnabled: boolean = true;
     private _allowToggle: boolean = false;
     private _isToggled: boolean = false;
+    private _isLink: boolean = false;
 
     protected clicked() {
         if (this.isEnabled && this.onClick) {
@@ -105,6 +106,10 @@ export class ToolbarButton extends ToolbarElement {
         }
 
         this.renderedElement.title = this.toolTip ? this.toolTip : "";
+        
+        if (this._isLink) {
+            this.renderedElement.setAttribute("role", "link");
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -128,12 +133,14 @@ export class ToolbarButton extends ToolbarElement {
         id: string,
         caption: string,
         iconClass: string,
-        onClick: (sender: ToolbarButton) => void = null) {
+        onClick: (sender: ToolbarButton) => void = null,
+        isLink: boolean = false) {
         super(id);
 
         this.caption = caption;
         this.iconClass = iconClass;
         this.onClick = onClick;
+        this._isLink = isLink;
     }
 
     get allowToggle(): boolean {
@@ -327,6 +334,7 @@ export class ToolbarChoicePicker extends ToolbarElement {
 export class Toolbar {
     private _elements: Array<ToolbarElement> = [];
     private _attachedTo: HTMLElement;
+    private _alertPanel: HTMLDivElement;
 
     private createSeparatorElement(): HTMLElement {
         let separatorElement = document.createElement("div");
@@ -388,6 +396,10 @@ export class Toolbar {
 
         this._attachedTo.appendChild(leftContainer);
         this._attachedTo.appendChild(rightContainer);
+
+        this._alertPanel = document.createElement("div");
+        this._alertPanel.className = "screen-reader-only";
+        this._attachedTo.appendChild(this._alertPanel);
     }
 
     addElement(element: ToolbarElement) {
@@ -430,5 +442,12 @@ export class Toolbar {
         // Insert as first element if no element was found with the
         // specified id
         this._elements.splice(0, 0, element);
+    }
+
+    addAlert(alertText: string) {
+        var alert = document.createElement('div');
+        alert.innerHTML = alertText;
+        alert.setAttribute("aria-live", "polite");
+        this._alertPanel.appendChild(alert);
     }
 }

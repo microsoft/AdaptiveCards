@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AdaptiveCards.Rendering.WinUI3</id>
+        <version>1.0.2</version>
+        <authors>Microsoft</authors>
+        <summary>Adaptive Cards library for WinUI3</summary>
+        <description>Used to render Adaptive Cards into WinUI3 XAML</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>adaptivecards;adaptive-cards</tags>
+        <projectUrl>https://adaptivecards.io</projectUrl>
+        <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+        <license type="file">EULA-Windows.txt</license>
+        <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+        <dependencies>
+            <dependency id="AdaptiveCards.ObjectModel.WinUI3" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.winmd" target="lib\uap10.0"/>
+
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-x86\native"/>
+
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-x64\native"/>
+
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
+
+        <file src="..\AnyCPU\RendererCsProjection\$Configuration$\net6.0-windows10.0.17763.0\RendererCsProjection.dll" target="lib\net6.0-windows10.0.17763.0\RendererCsProjection.dll" />
+
+        <file src="EULA-Windows.txt" target="\"/>
+        <file src="AdaptiveCards.Rendering.WinUI3.native.targets" target="build\native\AdaptiveCards.Rendering.WinUI3.targets"/>
+    </files>
+</package>

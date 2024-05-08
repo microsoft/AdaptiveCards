@@ -7,9 +7,16 @@
 //
 @class ACRBaseCardElementRenderer;
 
-#import "ACOBaseCardElement.h"
+#ifdef SWIFT_PACKAGE
+/// Swift Package Imports
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRTargetBuilder.h"
+#else
+/// Cocoapods Imports
+#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
+#import <AdaptiveCards/ACRTargetBuilder.h>
+#endif
+#import "ACOBaseCardElement.h"
 
 @interface ACRRegistration : NSObject
 

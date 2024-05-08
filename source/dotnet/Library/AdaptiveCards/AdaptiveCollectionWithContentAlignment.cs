@@ -13,8 +13,10 @@ namespace AdaptiveCards
     /// <summary>
     /// AdaptiveCard element with content alignment properties
     /// </summary>
-    public abstract class AdaptiveCollectionWithContentAlignment : AdaptiveElement, IEnumerable<AdaptiveElement>
+    public abstract class AdaptiveCollectionWithContentAlignment : AdaptiveCollectionElement
     {
+
+       
         /// <summary>
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
@@ -23,7 +25,7 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
-        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+        public AdaptiveVerticalContentAlignment VerticalCellContentAlignment { get; set; }
 
         /// <summary>
         /// The content alignment for the TableCells inside the TableRow.
@@ -33,22 +35,6 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveHorizontalContentAlignment), "left")]
-        public AdaptiveHorizontalContentAlignment HorizontalContentAlignment { get; set; }
-
-        /// <summary>
-        /// Returns enumerator
-        /// </summary>
-        /// <returns></returns>
-        public abstract IEnumerator<AdaptiveElement> GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(AdaptiveElement element)
-        {
-            throw new System.NotImplementedException();
-        }
+        public AdaptiveHorizontalContentAlignment HorizontalCellContentAlignment { get; set; }
     }
 }
