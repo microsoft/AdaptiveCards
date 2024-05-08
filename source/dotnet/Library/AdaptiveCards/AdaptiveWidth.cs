@@ -26,7 +26,12 @@ namespace AdaptiveCards
         /// <summary>
         /// The Width of the element was explicitly specified (only for Image elements).
         /// </summary>
-        Pixel
+        Pixel,
+
+        /// <summary>
+        /// The Width of the element was explicitly specified (only for Image elements).
+        /// </summary>
+        Weighted
     }
 
 
@@ -70,7 +75,7 @@ namespace AdaptiveCards
                 }
                 else if (uint.TryParse(value, out var val))
                 {
-                    WidthType = AdaptiveWidthType.Pixel;
+                    WidthType = AdaptiveWidthType.Weighted;
                     Unit = val;
                 }
                 else
@@ -97,7 +102,7 @@ namespace AdaptiveCards
         /// <param name="px">The device-independent pixel size to use.</param>
         public AdaptiveWidth(uint px)
         {
-            WidthType = AdaptiveWidthType.Pixel;
+            WidthType = AdaptiveWidthType.Weighted;
             this.Unit = px;
         }
 
@@ -108,7 +113,10 @@ namespace AdaptiveCards
         public AdaptiveWidth(AdaptiveWidthType widthType)
         {
             WidthType = widthType;
-            Unit = null;
+            if (widthType == AdaptiveWidthType.Weighted)
+                Unit = 1;
+            else
+                Unit = null;
         }
 
         /// <summary>
@@ -228,11 +236,12 @@ namespace AdaptiveCards
         /// <inheritdoc />
         public Boolean Equals(AdaptiveWidth other)
         {
-            if (this.WidthType == other.WidthType)
+            if (this.WidthType == other?.WidthType)
             {
-                if (this.WidthType == AdaptiveWidthType.Pixel)
+                if (this.WidthType == AdaptiveWidthType.Pixel ||
+                    this.WidthType == AdaptiveWidthType.Weighted)
                 {
-                    return this.Unit == other.Unit;
+                    return this.Unit == other?.Unit;
                 }
                 return true;
             }
@@ -242,12 +251,18 @@ namespace AdaptiveCards
         /// <inheritdoc/>
         public override string ToString()
         {
-            if (WidthType == AdaptiveWidthType.Stretch)
-                return "stretch";
-            if (WidthType == AdaptiveWidthType.Auto)
-                return "auto";
-            return $"{Unit}px";
+            switch (WidthType)
+            {
+                case AdaptiveWidthType.Auto:
+                    return "auto";
+                case AdaptiveWidthType.Stretch:
+                    return "stretch";
+                case AdaptiveWidthType.Pixel:
+                    return $"{Unit ?? 1}px";
+                case AdaptiveWidthType.Weighted:
+                default:
+                    return Unit?.ToString();
+            }
         }
-
     }
 }
