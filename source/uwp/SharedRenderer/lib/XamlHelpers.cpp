@@ -6,8 +6,6 @@
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
 #include "WholeItemsPanel.h"
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Web.Http.h>
 #include "Util.h"
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
@@ -261,19 +259,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
             if (isImageSvg)
             {
-                winrt::SvgImageSource svgImageSource{};             
+                winrt::SvgImageSource svgImageSource{};
 
-                /*winrt::HttpClient httpClient;
-                auto getOperation = co_await httpClient.GetAsync(imageUrl);
-                auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
-                auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
-                svgImageSource.RasterizePixelHeight(size.Height);
-                svgImageSource.RasterizePixelWidth(size.Width);*/
-
+                ConfigureSvgImageSourceAsync(imageUrl, svgImageSource);
                 svgImageSource.UriSource(imageUrl);
-
-                svgImageSource.RasterizePixelHeight(600.0);
-                svgImageSource.RasterizePixelWidth(900.0);
 
                 winrt::Image backgroundImage;
                 backgroundImage.Source(svgImageSource);
@@ -293,6 +282,24 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         {
             renderContext.AddWarning(winrt::WarningStatusCode::CustomWarning, ex.message() + L" Skipping rendering of background image.");
             return nullptr;
+        }
+    }
+
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource)
+    {
+        auto weakImageSource{winrt::make_weak(svgImageSource)};
+
+        winrt::HttpClient httpClient;
+        auto getOperation = co_await httpClient.GetAsync(uri);
+        auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
+        auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
+
+        if (auto strongImageSource = weakImageSource.get())
+        {
+            co_await wil::resume_foreground(strongImageSource.DispatcherQueue());
+            svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
+            svgImageSource.RasterizePixelHeight(size.Height);
+            svgImageSource.RasterizePixelWidth(size.Width);
         }
     }
 

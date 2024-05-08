@@ -199,4 +199,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
 
     winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
+
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource);
     }
