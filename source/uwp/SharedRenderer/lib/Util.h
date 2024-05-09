@@ -225,3 +225,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 }
 
 std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUrl);
+
+auto inline GetDispatcher(winrt::ImageSource const& imageSource)
+{
+#ifdef USE_WINUI3
+    return imageSource.DispatcherQueue();
+#else
+    return imageSource.Dispatcher();
+#endif
+}

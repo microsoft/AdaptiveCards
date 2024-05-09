@@ -243,7 +243,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return content;
     }
 
-    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
+    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url, winrt::TileControl tileControl)
     {
         try
         {
@@ -261,7 +261,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             {
                 winrt::SvgImageSource svgImageSource{};
 
-                ConfigureSvgImageSourceAsync(imageUrl, svgImageSource);
+                ConfigureSvgImageSourceAsync(imageUrl, svgImageSource, tileControl);
                 svgImageSource.UriSource(imageUrl);
 
                 winrt::Image backgroundImage;
@@ -285,7 +285,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
-    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource)
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource, winrt::TileControl tileControl)
     {
         auto weakImageSource{winrt::make_weak(svgImageSource)};
 
@@ -296,10 +296,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         if (auto strongImageSource = weakImageSource.get())
         {
-            co_await wil::resume_foreground(strongImageSource.DispatcherQueue());
+            co_await wil::resume_foreground(GetDispatcher(strongImageSource));
             svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
             svgImageSource.RasterizePixelHeight(size.Height);
             svgImageSource.RasterizePixelWidth(size.Width);
+            winrt::Image image; 
+            image.Source(svgImageSource);
+            tileControl.LoadImageBrush(image);
         }
     }
 
@@ -344,13 +347,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                winrt::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
                                winrt::AdaptiveRenderContext const& renderContext)
     {
+        // Creates the background image for all fill modes
+        auto tileControl = winrt::make<winrt::implementation::TileControl>();
+
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
-        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
+        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url(), tileControl))
         {
-            // Creates the background image for all fill modes
-            auto tileControl = winrt::make<winrt::implementation::TileControl>();
-
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
             tileControl.BackgroundImage(adaptiveBackgroundImage);

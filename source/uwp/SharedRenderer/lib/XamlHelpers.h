@@ -200,5 +200,5 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
 
-    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource);
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource, winrt::TileControl tileControl);
     }
