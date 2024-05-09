@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-#if !NETSTANDARD1_3
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     [XmlRoot("dictionary")]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
@@ -81,5 +81,5 @@ namespace AdaptiveCards
         }
         #endregion
     }
-#endif
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

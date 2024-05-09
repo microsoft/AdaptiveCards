@@ -19,13 +19,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public AdaptiveContainerStyle? Style { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Controls XML serialization of style.
         /// </summary>
@@ -39,11 +36,14 @@ namespace AdaptiveCards
         /// Determines whether to serialize the style for XML.
         /// </summary>
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
-#endif
+
+        /// <inheritdoc/>
         public abstract IEnumerator<AdaptiveElement> GetEnumerator();
 
+        /// <inheritdoc/>
         public abstract void Add(AdaptiveElement value);
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new System.NotImplementedException();
@@ -54,9 +54,7 @@ namespace AdaptiveCards
         /// Horizontal alignment for element.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
@@ -64,9 +62,7 @@ namespace AdaptiveCards
         /// The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
@@ -74,9 +70,7 @@ namespace AdaptiveCards
         /// Action for this container. This allows for setting a default action at the container level.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlElement]
-#endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
@@ -84,9 +78,7 @@ namespace AdaptiveCards
         /// Defines if the element can bleed through its parent's padding.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Bleed { get; set; }
 
@@ -94,9 +86,7 @@ namespace AdaptiveCards
         /// Explicit card minimum height with 'px'. (100px, 200px)
         /// </summary>
         [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string MinHeight { get; set; }
 
@@ -104,9 +94,7 @@ namespace AdaptiveCards
         /// Explicit container element minimum height.
         /// </summary>
         [JsonIgnore]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint PixelMinHeight { get => uint.TryParse(MinHeight?.Replace("px", ""), out var val) ? (uint)val : 0; set => MinHeight = $"{value}px"; }
     }
 }

@@ -28,7 +28,7 @@ namespace AdaptiveCards
             {
                 return AdaptiveHeight.Parse(value);
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 if (value.Length < 3)
                 {

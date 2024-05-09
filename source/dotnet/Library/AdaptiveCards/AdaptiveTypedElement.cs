@@ -20,10 +20,8 @@ namespace AdaptiveCards
         /// The AdaptiveCard element that this class implements.
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
-#if !NETSTANDARD1_3
         // don't serialize type with xml, because we use element name or attribute for type
         [XmlIgnore]
-#endif
         public abstract string Type { get; set; }
 
         /// <summary>
@@ -48,9 +46,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(AdaptiveFallbackConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlElement]
-#endif
         [DefaultValue(null)]
         public AdaptiveFallbackElement Fallback { get; set; }
 
@@ -58,19 +54,15 @@ namespace AdaptiveCards
         /// The <see cref="AdaptiveInternalID"/> for this element.
         /// </summary>
         [JsonIgnore]
-#if !NETSTANDARD1_3
         // don't serialize type with xml, because we use element name or attribute for type
         [XmlIgnore]
-#endif
         public AdaptiveInternalID InternalID { get; set; }
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs, the ID will be used as the key for Action.Submit response.
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Id { get; set; }
 
@@ -78,9 +70,7 @@ namespace AdaptiveCards
         ///  A collection representing features and feature versions that this element requires.
         /// </summary>
         [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public IDictionary<string, string> Requires;
 

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace AdaptiveCards.Test
@@ -60,7 +61,7 @@ namespace AdaptiveCards.Test
             Assert.IsTrue(result.Warnings.Count == 1);
 
             AdaptiveImage image = (AdaptiveImage) card.Body[0];
-            Assert.AreEqual(image.Url, url);
+            Assert.AreEqual(image.Url, new Uri(url));
             Assert.IsNull(image.SelectAction);
 
         }

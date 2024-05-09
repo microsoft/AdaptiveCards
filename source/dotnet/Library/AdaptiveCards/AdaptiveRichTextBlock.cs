@@ -11,18 +11,14 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the RichTextBlock element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveRichTextBlock.TypeName)]
-#endif
     public class AdaptiveRichTextBlock : AdaptiveElement
     {
         /// <inheritdoc />
         public const string TypeName = "RichTextBlock";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -36,9 +32,7 @@ namespace AdaptiveCards
         /// Horizontal alignment for element.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
@@ -47,9 +41,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
         [JsonConverter(typeof(AdaptiveInlinesConverter))]
-#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextRun))]
-#endif
         public List<AdaptiveInline> Inlines { get; set; } = new List<AdaptiveInline>();
     }
 }

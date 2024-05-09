@@ -26,7 +26,12 @@ namespace AdaptiveCards
         /// <summary>
         /// The Width of the element was explicitly specified (only for Image elements).
         /// </summary>
-        Pixel
+        Pixel,
+
+        /// <summary>
+        /// The Width of the element was explicitly specified (only for Image elements).
+        /// </summary>
+        Weighted
     }
 
 
@@ -70,7 +75,7 @@ namespace AdaptiveCards
                 }
                 else if (uint.TryParse(value, out var val))
                 {
-                    WidthType = AdaptiveWidthType.Pixel;
+                    WidthType = AdaptiveWidthType.Weighted;
                     Unit = val;
                 }
                 else
@@ -81,6 +86,11 @@ namespace AdaptiveCards
             }
         }
 
+        /// <summary>
+        /// Parse string into AdaptiveWidth
+        /// </summary>
+        /// <param name="value">string</param>
+        /// <returns>AdaptiveWidth</returns>
         public static AdaptiveWidth Parse(string value)
         {
             return new AdaptiveWidth(value);
@@ -92,39 +102,37 @@ namespace AdaptiveCards
         /// <param name="px">The device-independent pixel size to use.</param>
         public AdaptiveWidth(uint px)
         {
-            WidthType = AdaptiveWidthType.Pixel;
+            WidthType = AdaptiveWidthType.Weighted;
             this.Unit = px;
         }
 
         /// <summary>
         /// Initializes an AdaptiveWidth instance with the given <see cref="AdaptiveWidthType"/>.
         /// </summary>
-        /// <param name="WidthType">The AdaptiveWidthType to use.</param>
+        /// <param name="widthType">The AdaptiveWidthType to use.</param>
         public AdaptiveWidth(AdaptiveWidthType widthType)
         {
             WidthType = widthType;
-            Unit = null;
+            if (widthType == AdaptiveWidthType.Weighted)
+                Unit = 1;
+            else
+                Unit = null;
         }
 
         /// <summary>
         /// The <see cref="AdaptiveWidthType"/> this instance represents.
         /// </summary>
         [JsonProperty("WidthType")]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public AdaptiveWidthType WidthType { get; set; }
 
         /// <summary>
         /// The specific Width to use (only valid for the <see cref="AdaptiveWidthType.Pixel"/> type).
         /// </summary>
         [JsonProperty("unit")]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public uint? Unit { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Helper to aid in XML serialization of the <see cref="AdaptiveWidth.Unit"/> property.
         /// </summary>
@@ -136,7 +144,6 @@ namespace AdaptiveCards
         /// Determines whether to serialize the <see cref="AdaptiveWidth.UnitXml"/> property.
         /// </summary>
         public bool ShouldSerializeUnitXml() => Unit.HasValue;
-#endif
 
         /// <summary>
         /// Returns true if this <see cref="AdaptiveWidth"/> instance represents the <see
@@ -229,25 +236,33 @@ namespace AdaptiveCards
         /// <inheritdoc />
         public Boolean Equals(AdaptiveWidth other)
         {
-            if (this.WidthType == other.WidthType)
+            if (this.WidthType == other?.WidthType)
             {
-                if (this.WidthType == AdaptiveWidthType.Pixel)
+                if (this.WidthType == AdaptiveWidthType.Pixel ||
+                    this.WidthType == AdaptiveWidthType.Weighted)
                 {
-                    return this.Unit == other.Unit;
+                    return this.Unit == other?.Unit;
                 }
                 return true;
             }
             return false;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
-            if (WidthType == AdaptiveWidthType.Stretch)
-                return "stretch";
-            if (WidthType == AdaptiveWidthType.Auto)
-                return "auto";
-            return $"{Unit}px";
+            switch (WidthType)
+            {
+                case AdaptiveWidthType.Auto:
+                    return "auto";
+                case AdaptiveWidthType.Stretch:
+                    return "stretch";
+                case AdaptiveWidthType.Pixel:
+                    return $"{Unit ?? 1}px";
+                case AdaptiveWidthType.Weighted:
+                default:
+                    return Unit?.ToString();
+            }
         }
-
     }
 }

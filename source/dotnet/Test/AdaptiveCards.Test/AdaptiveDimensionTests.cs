@@ -91,7 +91,7 @@ namespace AdaptiveCards.Test
             Assert.IsNull(width.Unit);
 
             width = AdaptiveWidth.Parse("100");
-            Assert.AreEqual(AdaptiveWidthType.Pixel, width.WidthType);
+            Assert.AreEqual(AdaptiveWidthType.Weighted, width.WidthType);
             Assert.AreEqual((uint)100, width.Unit);
 
             width = AdaptiveWidth.Parse("110px");
@@ -115,7 +115,7 @@ namespace AdaptiveCards.Test
             Assert.IsNull(width.Unit);
 
             width = new AdaptiveWidth("100");
-            Assert.AreEqual(AdaptiveWidthType.Pixel, width.WidthType);
+            Assert.AreEqual(AdaptiveWidthType.Weighted, width.WidthType);
             Assert.AreEqual((uint)100, width.Unit);
 
             width = new AdaptiveWidth("110px");
@@ -139,7 +139,7 @@ namespace AdaptiveCards.Test
         public void TestAdaptiveWidthOperatorAssignment()
         {
             AdaptiveWidth width = "100";
-            Assert.AreEqual(AdaptiveWidthType.Pixel, width.WidthType);
+            Assert.AreEqual(AdaptiveWidthType.Weighted, width.WidthType);
             Assert.AreEqual((uint)100, width.Unit);
 
             width = "110px";
@@ -157,6 +157,32 @@ namespace AdaptiveCards.Test
             width = AdaptiveWidthType.Stretch;
             Assert.AreEqual(AdaptiveWidthType.Stretch, width.WidthType);
             Assert.IsNull(width.Unit);
+        }
+
+        [TestMethod]
+        public void TestAdaptiveWidthOperatorOverload()
+        {
+            Assert.IsFalse(new AdaptiveWidth("100") == null);
+            Assert.IsTrue(new AdaptiveWidth(100) == AdaptiveWidth.Parse("100"));
+            Assert.IsTrue(new AdaptiveWidth("100px") == AdaptiveWidth.Parse("100px"));
+            Assert.IsTrue(new AdaptiveWidth("auto") == AdaptiveWidth.Parse("auto"));
+            Assert.IsTrue(new AdaptiveWidth("stretch") == AdaptiveWidth.Parse("stretch"));
+            Assert.IsFalse(new AdaptiveWidth(100) == AdaptiveWidth.Parse("110"));
+            Assert.IsFalse(new AdaptiveWidth("100px") == AdaptiveWidth.Parse("100"));
+            Assert.IsFalse(new AdaptiveWidth("auto") == AdaptiveWidth.Parse("stretch"));
+        }
+
+        [TestMethod]
+        public void TestAdaptiveHeightOperatorOverload()
+        {
+            Assert.IsFalse(new AdaptiveHeight("100") == null);
+            Assert.IsTrue(new AdaptiveHeight(100) == AdaptiveHeight.Parse("100"));
+            Assert.IsTrue(new AdaptiveHeight("100px") == AdaptiveHeight.Parse("100px"));
+            Assert.IsTrue(new AdaptiveHeight("auto") == AdaptiveHeight.Parse("auto"));
+            Assert.IsTrue(new AdaptiveHeight("stretch") == AdaptiveHeight.Parse("stretch"));
+            Assert.IsFalse(new AdaptiveHeight(100) == AdaptiveHeight.Parse("110"));
+            Assert.IsTrue(new AdaptiveHeight("100px") == AdaptiveHeight.Parse("100"));
+            Assert.IsFalse(new AdaptiveHeight("auto") == AdaptiveHeight.Parse("stretch"));
         }
 
     }

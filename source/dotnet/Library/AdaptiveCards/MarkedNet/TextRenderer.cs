@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,7 @@ using Microsoft.MarkedNet;
 
 namespace Microsoft.MarkedNet
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// Renderer which renders to pure text environments like SMS
     /// </summary>

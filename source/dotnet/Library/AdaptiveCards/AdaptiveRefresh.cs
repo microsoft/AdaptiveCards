@@ -14,9 +14,7 @@ namespace AdaptiveCards
     /// Represents how a card can be refreshed by making a request to the target Bot
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-#if !NETSTANDARD1_3
     [XmlType(TypeName = "Refresh")]
-#endif
     public class AdaptiveRefresh
     {
         /// <summary>
@@ -24,9 +22,7 @@ namespace AdaptiveCards
         ///    Clients can run this refresh action automatically or can provide an affordance for users to trigger it manually.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveExecuteAction))]
-#endif
         public AdaptiveExecuteAction Action { get; set; }
 
         /// <summary>
@@ -35,9 +31,7 @@ namespace AdaptiveCards
         ///     Some clients may ignore this property and always run the refresh action automatically.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public List<string> UserIds { get; set; } = new List<string>();
 
 
@@ -46,15 +40,14 @@ namespace AdaptiveCards
         /// </summary>
         //[JsonConverter(typeof(IsoDateTimeConverter))]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public DateTime? Expires { get; set; }
 
-#if !NETSTANDARD1_3
+        /// <summary>
+        /// Internal property for serializing xml.
+        /// </summary>
         [XmlAttribute]
         [JsonIgnore]
         public string ExpiresXml { get => Expires?.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture); set => Expires = DateTime.Parse(value); }
-#endif
     }
 }

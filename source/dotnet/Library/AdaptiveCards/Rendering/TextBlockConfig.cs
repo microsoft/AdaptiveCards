@@ -5,6 +5,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
+    /// <summary>
+    /// Config for TextBlock
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class TextBlockConfig
     {
