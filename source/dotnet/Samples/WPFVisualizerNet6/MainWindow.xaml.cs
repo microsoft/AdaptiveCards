@@ -74,10 +74,6 @@ namespace WpfVisualizer
 
             Renderer.FeatureRegistration.Set("acTest", "1.0");
 
-            // Use the Xceed rich input controls
-            Renderer.UseXceedElementRenderers();
-            xceedCheckbox.IsChecked = true;
-
             // Register custom elements and actions
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();

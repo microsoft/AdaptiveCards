@@ -23,9 +23,6 @@
     <AssemblyOriginatorKeyFile>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
 
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
@@ -43,5 +40,8 @@
     <Page Include="..\AdaptiveCards.Rendering.Wpf\Themes\generic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards.Net6\AdaptiveCards.csproj" />
   </ItemGroup>
 </Project>
