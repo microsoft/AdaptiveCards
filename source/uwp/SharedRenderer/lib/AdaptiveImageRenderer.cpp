@@ -280,20 +280,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream)
-    {
-        auto inputStream = stream.GetInputStreamAt(0);
-        auto dataReader = winrt::DataReader(inputStream);
-
-        // Load the data from the stream
-        uint32_t numBytesLoaded = co_await dataReader.LoadAsync(static_cast<uint32_t>(stream.Size()));
-
-        // Read the data as a string
-        winrt::hstring svgString = dataReader.ReadString(numBytesLoaded);
-
-        co_return ParseSizeOfSVGImageFromXmlString(svgString);
-    }
-
     winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(winrt::Uri const imageUrl,
         winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg)
     {

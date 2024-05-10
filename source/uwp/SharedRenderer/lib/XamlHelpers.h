@@ -198,7 +198,9 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
     winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
 
-    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri const& uri,
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::AdaptiveRenderContext const& renderContext,
+                                                        winrt::hstring const& url,
+                                                        winrt::Uri const& uri,
                                                         winrt::SvgImageSource svgImageSource,
                                                         winrt::TileControl const& tileControl);
 }
